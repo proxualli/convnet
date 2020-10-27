@@ -1,10 +1,9 @@
-[submodule "dnn/deps/oneDNN"]
-	path = dnn/deps/oneDNN
-	url = https://github.com/oneapi-src/oneDNN
-	branch = master
 [submodule "dnn/deps/vectorclass"]
 	path = dnn/deps/vectorclass
 	url = https://github.com/zamir1001/vectorclass.git
 [submodule "dnn/deps/CImg"]
 	path = dnn/deps/CImg
 	url = https://github.com/dtschump/CImg.git
+[submodule "dnn/deps/magic_enum"]
+	path = dnn/deps/magic_enum
+	url = https://github.com/Neargye/magic_enum
