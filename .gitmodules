@@ -10,3 +10,6 @@
 	path = dnn/deps/CImg
 	url = https://github.com/dtschump/CImg
 	branch = master
+[submodule "dnn/deps/vectorclass"]
+	path = dnn/deps/vectorclass
+	url = https://github.com/zamir1001/vectorclass.git
