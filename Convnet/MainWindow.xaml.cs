@@ -276,7 +276,7 @@ namespace Convnet
 
         void HelpCmdExecuted(object target, ExecutedRoutedEventArgs e)
         {
-            ApplicationHelper.OpenBrowser("https://github.com/zulma46/convnet.git");
+            ApplicationHelper.OpenBrowser("https://github.com/zamir1001/convnet.git");
         }
 
         void HelpCmdCanExecute(object sender, CanExecuteRoutedEventArgs e)
