@@ -1,0 +1,3 @@
+C:/Users/dhaen/source/repos/convnet/dnn/deps/vectorclass/build/CMakeFiles/vectorclass.dir
+C:/Users/dhaen/source/repos/convnet/dnn/deps/vectorclass/build/CMakeFiles/ALL_BUILD.dir
+C:/Users/dhaen/source/repos/convnet/dnn/deps/vectorclass/build/CMakeFiles/ZERO_CHECK.dir

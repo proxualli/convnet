@@ -13,4 +13,4 @@
 [submodule "dnn/deps/vectorclass"]
 	path = dnn/deps/vectorclass
 	url = https://github.com/zamir1001/vectorclass
-	branch = main
+	branch = master

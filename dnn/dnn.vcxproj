@@ -241,6 +241,9 @@
     <ProjectReference Include="deps\oneDNN\build\src\dnnl.vcxproj">
       <Project>{2f09a747-18cb-3043-85bf-83bba99c5137}</Project>
     </ProjectReference>
+    <ProjectReference Include="deps\vectorclass\build\vectorclass.vcxproj">
+      <Project>{f19415d6-0631-363f-8e72-a5a79fe1b062}</Project>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\convnet\settings.extensions.cs" />
