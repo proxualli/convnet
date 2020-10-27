@@ -1,0 +1,161 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <UseWPF>true</UseWPF>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>key.snk</AssemblyOriginatorKeyFile>
+    <StartupObject>Convnet.App</StartupObject>
+    <ApplicationIcon>App.ico</ApplicationIcon>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <DelaySign>false</DelaySign>
+    <TargetZone>LocalIntranet</TargetZone>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Convnet</RootNamespace>
+    <AssemblyName>Convnet</AssemblyName>
+    <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
+    <ProjectGuid>{45AAE32B-0D5D-4494-A0A7-C170F8DBCA8B}</ProjectGuid>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <Platforms>x64</Platforms>
+  </PropertyGroup>
+  
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <PlatformTarget>x64</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <PlatformTarget>x64</PlatformTarget>
+  </PropertyGroup>
+ 
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+    <Exec Command="xcopy /Y $(SolutionDir)x64\$(ConfigurationName)\dnncore.dll $(TargetDir)" />
+    <Exec Command="xcopy /Y $(SolutionDir)x64\$(ConfigurationName)\dnn.dll $(TargetDir)" />
+    <Exec Command="xcopy /Y $(SolutionDir)x64\$(ConfigurationName)\dnnl.dll $(TargetDir)" />
+    <Exec Command="xcopy /Y $(SolutionDir)x64\$(ConfigurationName)\libpng16.dll $(TargetDir)" />
+  </Target>
+  
+  <ItemGroup>
+    <None Remove="Resources\CPP-Mode.xshd" />
+    <None Remove="Resources\CSharp-Mode.xshd" />
+    <None Remove="Resources\HTML-Mode.xshd" />
+    <None Remove="Resources\ModeV1.xsd" />
+    <None Remove="Resources\ModeV2.xsd" />
+    <None Remove="Resources\PowerShell.xshd" />
+    <None Remove="Resources\XML-Mode.xshd" />
+    <None Remove="Resources\XmlDoc.xshd" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Key.png" />
+    <Content Include="Resources\state\resnet-32-4-3-2-6-dropout-channelzeropad.definition">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Resource Include="Resources\Unlock.png" />
+    <Resource Include="Resources\PerformanceLog.png" />
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\CPP-Mode.xshd" />
+    <EmbeddedResource Include="Resources\CSharp-Mode.xshd" />
+    <EmbeddedResource Include="Resources\Definition.xshd" />
+    <EmbeddedResource Include="Resources\HTML-Mode.xshd" />
+    <EmbeddedResource Include="Resources\ModeV1.xsd" />
+    <EmbeddedResource Include="Resources\ModeV2.xsd" />
+    <EmbeddedResource Include="Resources\PowerShell.xshd" />
+    <EmbeddedResource Include="Resources\XML-Mode.xshd" />
+    <EmbeddedResource Include="Resources\XmlDoc.xshd" />
+    <None Include="Models\DNNDataSet.xsc">
+      <DependentUpon>DNNDataSet.xsd</DependentUpon>
+    </None>
+    <Resource Include="Models\DNNDataSet.xsd" />
+    <None Include="Models\DNNDataSet.xss">
+      <DependentUpon>DNNDataSet.xsd</DependentUpon>
+    </None>
+    <None Include="key.snk" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Synchronize.png" />
+    <Resource Include="Resources\Schema.png" />
+    <Resource Include="Resources\Undo.png" />
+    <Resource Include="Resources\Redo.png" />
+    <Resource Include="Resources\Saveall_6518.png" />
+    <Resource Include="Resources\Stop.png" />
+    <Resource Include="Resources\SpellCheck.png" />
+    <Resource Include="Resources\Save.png" />
+    <Resource Include="Resources\Refresh.png" />
+    <Resource Include="Resources\Property.png" />
+    <Resource Include="Resources\Play.png" />
+    <Resource Include="Resources\Pause.png" />
+    <Resource Include="Resources\Paste.png" />
+    <Resource Include="Resources\Open.png" />
+    <Resource Include="Resources\Lock.png" />
+    <Resource Include="Resources\LightningBolt.png" />
+    <Resource Include="Resources\Help.png" />
+    <Resource Include="Resources\Gear.png" />
+    <Resource Include="Resources\Forget.png" />
+    <Resource Include="Resources\Annotate_HighPriority.ico" />
+    <Resource Include="Resources\App.ico" />
+    <Resource Include="Resources\Bolt.png" />
+    <Resource Include="Resources\Calculate.png" />
+    <Resource Include="Resources\ClearContents.png" />
+    <Resource Include="Resources\Collection.png" />
+    <Resource Include="Resources\Copy.png" />
+    <Resource Include="Resources\Cut.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="App.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="NuGet.DependencyResolver.Core" Version="5.7.0" />
+    <PackageReference Include="NuGet.ProjectModel" Version="5.7.0" />
+    <PackageReference Include="NuGet.Resolver" Version="5.7.0" />
+    <PackageReference Include="Microsoft.NET.HostModel" Version="3.1.6" />
+    <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="3.1.6" />
+    <PackageReference Include="Microsoft.DotNet.PlatformAbstractions" Version="3.1.6" />
+    <PackageReference Include="AvalonEdit" Version="6.0.1" />
+    <PackageReference Include="CsvHelper" Version="15.0.8" />
+    <PackageReference Include="OxyPlot.Core" Version="2.0.0" />
+    <PackageReference Include="OxyPlot.Wpf" Version="2.0.0" />
+    <PackageReference Include="DotNetProjects.Extended.Wpf.Toolkit" Version="4.6.94" />
+    <PackageReference Include="Microsoft.Build.Locator" Version="1.2.6" />
+    <PackageReference Include="Microsoft.Build" Version="16.6.0" ExcludeAssets="runtime" />
+    <PackageReference Include="Microsoft.Build.Utilities.Core" Version="16.6.0" ExcludeAssets="runtime" />
+    <PackageReference Include="Microsoft.Build.Tasks.Core" Version="16.6.0" ExcludeAssets="runtime" />
+    <PackageReference Include="System.Collections.Immutable" Version="1.7.1" />
+    <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="4.7.1" />
+    <PackageReference Include="System.Threading.Tasks.Dataflow" Version="4.11.1" />
+    <PackageReference Include="System.Resources.Extensions" Version="4.7.1" />
+    <PackageReference Include="System.Collections.Immutable" Version="1.7.1" />
+    <PackageReference Include="Microsoft.VisualStudio.Setup.Configuration.Interop" Version="2.3.2262-g94fae01e">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <ProjectReference Include="..\dnncore\dnncore.vcxproj" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <PropertyGroup />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

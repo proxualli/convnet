@@ -1,0 +1,24 @@
+﻿Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30320.27
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScriptsDialog", "ScriptsDialog\ScriptsDialog.csproj", "{DF4B5745-A0CD-4F04-A32B-33A5AA153DEB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DF4B5745-A0CD-4F04-A32B-33A5AA153DEB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DF4B5745-A0CD-4F04-A32B-33A5AA153DEB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DF4B5745-A0CD-4F04-A32B-33A5AA153DEB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DF4B5745-A0CD-4F04-A32B-33A5AA153DEB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F9A57AAD-FAF6-40D3-B5A3-ACC78312117B}
+	EndGlobalSection
+EndGlobal

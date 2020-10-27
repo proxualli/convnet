@@ -1,0 +1,240 @@
+﻿<Window x:Class="Convnet.Dialogs.OptimizerHyperParameters"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        xmlns:c="clr-namespace:Convnet.Common"
+        xmlns:converters="clr-namespace:Convnet.Converters"
+        mc:Ignorable="d"
+        Title="Optimizer Hyperparameters" MinHeight="300" Height="420" Width="268"
+        SnapsToDevicePixels="True" ResizeMode="NoResize" ShowInTaskbar="False" WindowStartupLocation="CenterOwner" UseLayoutRounding="True" Background="Gray">
+
+    <Window.Resources>
+        <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        <converters:BooleanValueInverter x:Key="Inverter" />
+
+        <ControlTemplate x:Key="validationTemplate">
+            <DockPanel>
+                <Image Source="/Convnet;component/Resources/Annotate_HighPriority.ico" Stretch="None"></Image>
+                <AdornedElementPlaceholder/>
+            </DockPanel>
+        </ControlTemplate>
+        <Style x:Key="textBoxInError" TargetType="{x:Type TextBox}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type TextBoxBase}">
+                        <Border 
+            Name="Border"
+            CornerRadius="2" 
+            Padding="2"
+            BorderBrush="#FFD5DFE5"
+            BorderThickness="1" >
+                            <ScrollViewer Margin="0" x:Name="PART_ContentHost"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="Border" Property="Background" Value="Gray"/>
+                                <Setter TargetName="Border" Property="BorderBrush" Value="{StaticResource DisabledBorderBrush}"/>
+                                <Setter Property="Opacity" Value="0.5"/>
+                                <Setter Property="Foreground" Value="White"/>
+                                <Setter Property="CaretBrush" Value="White"/>
+                                <Setter Property="Background" Value="Gray"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="True">
+                                <Setter Property="Opacity" Value="1"/>
+                                <Setter TargetName="Border" Property="Background" Value="{StaticResource DisabledBorderBrush}"/>
+                                <Setter TargetName="Border" Property="BorderBrush" Value="{StaticResource DisabledBorderBrush}"/>
+                                <Setter Property="Foreground" Value="White"/>
+                                <Setter Property="CaretBrush" Value="White"/>
+                                <Setter Property="Background" Value="{StaticResource DisabledBorderBrush}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <MultiTrigger>
+                    <MultiTrigger.Conditions>
+                        <Condition Property="Validation.HasError" Value="true"/>
+                    </MultiTrigger.Conditions>
+
+                    <Setter Property="ToolTip"  Value="{Binding RelativeSource={x:Static RelativeSource.Self}, Path=(Validation.Errors)[0].ErrorContent}"/>
+                </MultiTrigger>
+                <MultiTrigger>
+                    <MultiTrigger.Conditions>
+                        <Condition Property="IsMouseOver" Value="true"/>
+                    </MultiTrigger.Conditions>
+                    <Setter Property="ForceCursor" Value="True"/>
+                    <Setter Property="Cursor" Value="IBeam"/>
+                </MultiTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <ContextMenu x:Key="MyContextMenu">
+            <MenuItem Header="_Cut" Command="ApplicationCommands.Cut">
+                <MenuItem.Icon>
+                    <Image Source="/Convnet;component/Resources/Cut.png" />
+                </MenuItem.Icon>
+            </MenuItem>
+            <MenuItem Header="Co_py" Command="ApplicationCommands.Copy">
+                <MenuItem.Icon>
+                    <Image Source="/Convnet;component/Resources/Copy.png" />
+                </MenuItem.Icon>
+            </MenuItem>
+            <MenuItem Header="_Paste" Command="ApplicationCommands.Paste">
+                <MenuItem.Icon>
+                    <Image Source="/Convnet;component/Resources/Paste.png" />
+                </MenuItem.Icon>
+            </MenuItem>
+            <Separator />
+            <MenuItem Header="Select _All" Command="ApplicationCommands.SelectAll" />
+            <Separator />
+            <MenuItem Header="_Undo" Command="ApplicationCommands.Undo" >
+                <MenuItem.Icon>
+                    <Image Source="/Convnet;component/Resources/Undo.png" />
+                </MenuItem.Icon>
+            </MenuItem>
+            <MenuItem Header="_Redo" Command="ApplicationCommands.Redo" >
+                <MenuItem.Icon>
+                    <Image Source="/Convnet;component/Resources/Redo.png" />
+                </MenuItem.Icon>
+            </MenuItem>
+        </ContextMenu>
+    </Window.Resources>
+
+    <Grid Margin="6">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30" MaxHeight="30"/>
+            <RowDefinition Height="30" MaxHeight="30"/>
+            <RowDefinition Height="30" MaxHeight="30"/>
+            <RowDefinition Height="30" MaxHeight="30"/>
+            <RowDefinition Height="30" MaxHeight="30"/>
+            <RowDefinition Height="30" MaxHeight="30"/>
+            <RowDefinition Height="30" MaxHeight="30"/>
+            <RowDefinition Height="30" MaxHeight="30"/>
+            <RowDefinition Height="30" MaxHeight="30"/>
+            <RowDefinition Height="30" MaxHeight="30"/>
+            <RowDefinition Height="34" MaxHeight="34"/>
+            <RowDefinition Height="30" MaxHeight="30"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="122"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <TextBlock Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="1" Grid.RowSpan="1" Height="Auto" HorizontalAlignment="Stretch" Margin="2" Name="textBlockAdaDeltaEps" Text="AdaDelta Eps:" VerticalAlignment="Center" Width="Auto" Foreground="White" FontSize="14"/>
+        <TextBlock Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="1" Grid.RowSpan="1" Height="Auto" HorizontalAlignment="Stretch" Margin="2" Name="textBlockAdaGradEps" Text="AdaGrad Eps:" VerticalAlignment="Center" Width="Auto" Foreground="White" FontSize="14"/>
+        <TextBlock Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="1" Grid.RowSpan="1" Height="Auto" HorizontalAlignment="Stretch" Margin="2" Name="textBlockAdamEps" Text="Adam Eps:" VerticalAlignment="Center" Width="Auto" Foreground="White" FontSize="14"/>
+        <TextBlock Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="1" Grid.RowSpan="1" Height="Auto" HorizontalAlignment="Stretch" Margin="2" Name="textBlockAdamBeta2" Text="Adam Beta2:" VerticalAlignment="Center" Width="Auto" Foreground="White" FontSize="14"/>
+        <TextBlock Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="1" Grid.RowSpan="1" Height="Auto" HorizontalAlignment="Stretch" Margin="2" Name="textBlockAdamaxEps" Text="Adamax Eps:" VerticalAlignment="Center" Width="Auto" Foreground="White" FontSize="14"/>
+        <TextBlock Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="1" Grid.RowSpan="1" Height="Auto" HorizontalAlignment="Stretch" Margin="2" Name="textBlockAdamaxBeta2" Text="Adamax Beta2:" VerticalAlignment="Center" Width="Auto" Foreground="White" FontSize="14"/>
+        <TextBlock Grid.Column="0" Grid.Row="6" Grid.ColumnSpan="1" Grid.RowSpan="1" Height="Auto" HorizontalAlignment="Stretch" Margin="2" Name="textBlockRMSpropEps" Text="RMSProp Eps:" VerticalAlignment="Center" Width="Auto" Foreground="White" FontSize="14"/>
+        <TextBlock Grid.Column="0" Grid.Row="7" Grid.ColumnSpan="1" Grid.RowSpan="1" Height="Auto" HorizontalAlignment="Stretch" Margin="2" Name="textBlockRAdamEps" Text="RAdam Eps:" VerticalAlignment="Center" Width="Auto" Foreground="White" FontSize="14"/>
+        <TextBlock Grid.Column="0" Grid.Row="8" Grid.ColumnSpan="1" Grid.RowSpan="1" Height="Auto" HorizontalAlignment="Stretch" Margin="2" Name="textBlockRAdamBeta1" Text="RAdam Beta1:" VerticalAlignment="Center" Width="Auto" Foreground="White" FontSize="14"/>
+        <TextBlock Grid.Column="0" Grid.Row="9" Grid.ColumnSpan="1" Grid.RowSpan="1" Height="Auto" HorizontalAlignment="Stretch" Margin="2" Name="textBlockRAdamBeta2" Text="RAdam Beta2:" VerticalAlignment="Center" Width="Auto" Foreground="White" FontSize="14"/>
+
+        <xctk:AutoSelectTextBox Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="1" Grid.RowSpan="1" Height="Auto" HorizontalAlignment="Stretch" x:Name="textBoxAdaDeltaEps" VerticalAlignment="Center" TabIndex="0" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" Validation.ErrorTemplate="{StaticResource validationTemplate}" Style="{StaticResource textBoxInError}" AllowDrop="False" MaxLines="1" AutoWordSelection="True" BorderThickness="1" SnapsToDevicePixels="True" FontSize="14" BorderBrush="DarkGray" Margin="2" AutoSelectBehavior="OnFocus" AutoMoveFocus="True" ContextMenu="{StaticResource MyContextMenu}">
+            <TextBox.Text>
+                <Binding Path="AdaDeltaEps" Mode="TwoWay" >
+                    <Binding.ValidationRules>
+                        <c:FloatRangeRule Min="0" Max="1"/>
+                    </Binding.ValidationRules>
+                </Binding>
+            </TextBox.Text>
+        </xctk:AutoSelectTextBox>
+
+        <xctk:AutoSelectTextBox Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="1" Grid.RowSpan="1" Height="Auto" HorizontalAlignment="Stretch" x:Name="textBoxAdaGradEps" VerticalAlignment="Center" TabIndex="1" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" Validation.ErrorTemplate="{StaticResource validationTemplate}" Style="{StaticResource textBoxInError}" AllowDrop="False" MaxLines="1" AutoWordSelection="True" BorderThickness="1" SnapsToDevicePixels="True" FontSize="14" BorderBrush="DarkGray" Margin="2" AutoSelectBehavior="OnFocus" AutoMoveFocus="True" ContextMenu="{StaticResource MyContextMenu}">
+            <TextBox.Text>
+                <Binding Path="AdaGradEps" Mode="TwoWay" >
+                    <Binding.ValidationRules>
+                        <c:FloatRangeRule Min="0" Max="1"/>
+                    </Binding.ValidationRules>
+                </Binding>
+            </TextBox.Text>
+        </xctk:AutoSelectTextBox>
+
+        <xctk:AutoSelectTextBox Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="1" Grid.RowSpan="1" Height="Auto" HorizontalAlignment="Stretch" x:Name="textBoxAdamEps" VerticalAlignment="Center" TabIndex="2" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" Validation.ErrorTemplate="{StaticResource validationTemplate}" Style="{StaticResource textBoxInError}" AllowDrop="False" MaxLines="1" AutoWordSelection="True" BorderThickness="1" SnapsToDevicePixels="True" FontSize="14" BorderBrush="DarkGray" Margin="2" AutoSelectBehavior="OnFocus" AutoMoveFocus="True" ContextMenu="{StaticResource MyContextMenu}">
+            <TextBox.Text>
+                <Binding Path="AdamEps" Mode="TwoWay" >
+                    <Binding.ValidationRules>
+                        <c:FloatRangeRule Min="0" Max="1"/>
+                    </Binding.ValidationRules>
+                </Binding>
+            </TextBox.Text>
+        </xctk:AutoSelectTextBox>
+
+        <xctk:AutoSelectTextBox Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="1" Grid.RowSpan="1" Height="Auto" HorizontalAlignment="Stretch" x:Name="textBoxAdamBeta2" VerticalAlignment="Center" TabIndex="3" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" Validation.ErrorTemplate="{StaticResource validationTemplate}" Style="{StaticResource textBoxInError}" AllowDrop="False" MaxLines="1" AutoWordSelection="True" BorderThickness="1" SnapsToDevicePixels="True" FontSize="14" BorderBrush="DarkGray" Margin="2" AutoSelectBehavior="OnFocus" AutoMoveFocus="True" ContextMenu="{StaticResource MyContextMenu}">
+            <TextBox.Text>
+                <Binding Path="AdamBeta2" Mode="TwoWay" >
+                    <Binding.ValidationRules>
+                        <c:FloatRangeRule Min="0" Max="1"/>
+                    </Binding.ValidationRules>
+                </Binding>
+            </TextBox.Text>
+        </xctk:AutoSelectTextBox>
+
+        <xctk:AutoSelectTextBox Grid.Column="1" Grid.Row="4" Grid.ColumnSpan="1" Grid.RowSpan="1" Height="Auto" HorizontalAlignment="Stretch" x:Name="textBoxAdamaxEps" VerticalAlignment="Center" TabIndex="4" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" Validation.ErrorTemplate="{StaticResource validationTemplate}" Style="{StaticResource textBoxInError}" AllowDrop="False" MaxLines="1" AutoWordSelection="True" BorderThickness="1" SnapsToDevicePixels="True" FontSize="14" BorderBrush="DarkGray" Margin="2" AutoSelectBehavior="OnFocus" AutoMoveFocus="True" ContextMenu="{StaticResource MyContextMenu}">
+            <TextBox.Text>
+                <Binding Path="AdamaxEps" Mode="TwoWay" >
+                    <Binding.ValidationRules>
+                        <c:FloatRangeRule Min="0" Max="1"/>
+                    </Binding.ValidationRules>
+                </Binding>
+            </TextBox.Text>
+        </xctk:AutoSelectTextBox>
+
+        <xctk:AutoSelectTextBox Grid.Column="1" Grid.Row="5" Grid.ColumnSpan="1" Grid.RowSpan="1" Height="Auto" HorizontalAlignment="Stretch" x:Name="textBoxAdamaxBeta2" VerticalAlignment="Center" TabIndex="5" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" Validation.ErrorTemplate="{StaticResource validationTemplate}" Style="{StaticResource textBoxInError}" AllowDrop="False" MaxLines="1" AutoWordSelection="True" BorderThickness="1" SnapsToDevicePixels="True" FontSize="14" BorderBrush="DarkGray" Margin="2" AutoSelectBehavior="OnFocus" AutoMoveFocus="True" ContextMenu="{StaticResource MyContextMenu}">
+            <TextBox.Text>
+                <Binding Path="AdamaxBeta2" Mode="TwoWay" >
+                    <Binding.ValidationRules>
+                        <c:FloatRangeRule Min="0" Max="1"/>
+                    </Binding.ValidationRules>
+                </Binding>
+            </TextBox.Text>
+        </xctk:AutoSelectTextBox>
+        
+        <xctk:AutoSelectTextBox Grid.Column="1" Grid.Row="6" Grid.ColumnSpan="1" Grid.RowSpan="1" Height="Auto" HorizontalAlignment="Stretch" x:Name="textBoxRMSPropEps" VerticalAlignment="Center" TabIndex="6" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" Validation.ErrorTemplate="{StaticResource validationTemplate}" Style="{StaticResource textBoxInError}" AllowDrop="False" MaxLines="1" AutoWordSelection="True" BorderThickness="1" SnapsToDevicePixels="True" FontSize="14" BorderBrush="DarkGray" Margin="2" AutoSelectBehavior="OnFocus" AutoMoveFocus="True" ContextMenu="{StaticResource MyContextMenu}">
+            <TextBox.Text>
+                <Binding Path="RMSPropEps" Mode="TwoWay" >
+                    <Binding.ValidationRules>
+                        <c:FloatRangeRule Min="0" Max="1"/>
+                    </Binding.ValidationRules>
+                </Binding>
+            </TextBox.Text>
+        </xctk:AutoSelectTextBox>
+
+        <xctk:AutoSelectTextBox Grid.Column="1" Grid.Row="7" Grid.ColumnSpan="1" Grid.RowSpan="1" Height="Auto" HorizontalAlignment="Stretch" x:Name="textBoxRAdamEps" VerticalAlignment="Center" TabIndex="7" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" Validation.ErrorTemplate="{StaticResource validationTemplate}" Style="{StaticResource textBoxInError}" AllowDrop="False" MaxLines="1" AutoWordSelection="True" BorderThickness="1" SnapsToDevicePixels="True" FontSize="14" BorderBrush="DarkGray" Margin="2" AutoSelectBehavior="OnFocus" AutoMoveFocus="True" ContextMenu="{StaticResource MyContextMenu}">
+            <TextBox.Text>
+                <Binding Path="RAdamEps" Mode="TwoWay" >
+                    <Binding.ValidationRules>
+                        <c:FloatRangeRule Min="0" Max="1"/>
+                    </Binding.ValidationRules>
+                </Binding>
+            </TextBox.Text>
+        </xctk:AutoSelectTextBox>
+
+        <xctk:AutoSelectTextBox Grid.Column="1" Grid.Row="8" Grid.ColumnSpan="1" Grid.RowSpan="1" Height="Auto" HorizontalAlignment="Stretch" x:Name="textBoxRAdamBeta1" VerticalAlignment="Center" TabIndex="8" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" Validation.ErrorTemplate="{StaticResource validationTemplate}" Style="{StaticResource textBoxInError}" AllowDrop="False" MaxLines="1" AutoWordSelection="True" BorderThickness="1" SnapsToDevicePixels="True" FontSize="14" BorderBrush="DarkGray" Margin="2" AutoSelectBehavior="OnFocus" AutoMoveFocus="True" ContextMenu="{StaticResource MyContextMenu}">
+            <TextBox.Text>
+                <Binding Path="RAdamBeta1" Mode="TwoWay" >
+                    <Binding.ValidationRules>
+                        <c:FloatRangeRule Min="0" Max="1"/>
+                    </Binding.ValidationRules>
+                </Binding>
+            </TextBox.Text>
+        </xctk:AutoSelectTextBox>
+
+        <xctk:AutoSelectTextBox Grid.Column="1" Grid.Row="9" Grid.ColumnSpan="1" Grid.RowSpan="1" Height="Auto" HorizontalAlignment="Stretch" x:Name="textBoxRAdamBeta2" VerticalAlignment="Center" TabIndex="9" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" Validation.ErrorTemplate="{StaticResource validationTemplate}" Style="{StaticResource textBoxInError}" AllowDrop="False" MaxLines="1" AutoWordSelection="True" BorderThickness="1" SnapsToDevicePixels="True" FontSize="14" BorderBrush="DarkGray" Margin="2" AutoSelectBehavior="OnFocus" AutoMoveFocus="True" ContextMenu="{StaticResource MyContextMenu}">
+            <TextBox.Text>
+                <Binding Path="RAdamBeta2" Mode="TwoWay" >
+                    <Binding.ValidationRules>
+                        <c:FloatRangeRule Min="0" Max="1"/>
+                    </Binding.ValidationRules>
+                </Binding>
+            </TextBox.Text>
+        </xctk:AutoSelectTextBox>
+        
+        <Button x:Name="ButtonReset" ClickMode="Release" Content="Reset" FontSize="14" Grid.Column="1" HorizontalAlignment="Stretch" Margin="32,6,32,6" Grid.Row="10" VerticalAlignment="Stretch" Width="Auto" Height="Auto" Click="ButtonReset_Click" TabIndex="10"/>
+        <Button x:Name="ButtonOk" ClickMode="Release" Content="Ok" FontSize="14" Grid.Column="0" HorizontalAlignment="Stretch" Margin="2" Grid.Row="11" VerticalAlignment="Stretch" Width="Auto" Height="Auto" TabIndex="11" Click="ButtonOk_Click"/>
+        <Button x:Name="ButtonCancel" ClickMode="Release" Content="Cancel" FontSize="14" Grid.Column="1" HorizontalAlignment="Stretch" Margin="2" Grid.Row="11" VerticalAlignment="Stretch" Width="Auto" Height="Auto" IsCancel="True" IsDefault="True" TabIndex="12" Click="ButtonCancel_Click"/>
+    </Grid>
+</Window>
