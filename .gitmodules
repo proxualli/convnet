@@ -13,3 +13,6 @@
 [submodule "dnn/deps/libjpeg-turbo"]
 	path = dnn/deps/libjpeg-turbo
 	url = https://github.com/libjpeg-turbo/libjpeg-turbo.git
+[submodule "dnn/deps/libpng"]
+	path = dnn/deps/libpng
+	url = https://github.com/glennrp/libpng.git
