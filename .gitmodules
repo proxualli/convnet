@@ -10,6 +10,3 @@
 [submodule "dnn/deps/oneDNN"]
 	path = dnn/deps/oneDNN
 	url = https://github.com/oneapi-src/oneDNN
-[submodule "dnn/deps/libjpeg-tubo"]
-	path = dnn/deps/libjpeg-tubo
-	url = https://github.com/libjpeg-turbo/libjpeg-turbo.git
