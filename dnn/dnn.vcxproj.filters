@@ -119,12 +119,6 @@
     <ClInclude Include="include\BatchNormHardLogistic.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\BatchNormMish.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\BatchNormMishDropout.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\PartialDepthwiseConvolution.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -152,10 +146,10 @@
     <ClInclude Include="include\Definition.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\BatchNormHardSwishDropout.h">
+    <ClInclude Include="include\BatchNormActivation.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\BatchNormActivation.h">
+    <ClInclude Include="include\BatchNormActivationDropout.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -253,12 +247,6 @@
     <ClCompile Include="src\BatchNormHardLogistic.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\BatchNormMish.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\BatchNormMishDropout.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\PartialDepthwiseConvolution.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -275,9 +263,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Scripts.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\BatchNormHardSwishDropout.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

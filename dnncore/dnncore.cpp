@@ -69,35 +69,33 @@ enum class LayerTypes
 	BatchNorm = 4,
 	BatchNormHardLogistic = 5,
 	BatchNormActivation = 6,
-	BatchNormHardSwishDropout = 7,
-	BatchNormMish = 8,
-	BatchNormMishDropout = 9,
-	BatchNormRelu = 10,
-	BatchNormReluDropout = 11,
-	BatchNormSwish = 12,
-	ChannelMultiply = 13,
-	ChannelShuffle = 14,
-	ChannelSplit = 15,
-	ChannelZeroPad = 16,
-	Concat = 17,
-	Convolution = 18,
-	ConvolutionTranspose = 19,
-	Cost = 20,
-	Dense = 21,
-	DepthwiseConvolution = 22,
-	Divide = 23,
-	Dropout = 24,
-	GlobalAvgPooling = 25,
-	GlobalMaxPooling = 26,
-	Input = 27,
-	LocalResponseNormalization = 28,
-	Max = 29,
-	MaxPooling = 30,
-	Min = 31,
-	Multiply = 32,
-	PartialDepthwiseConvolution = 33,
-	Resampling = 34,
-	Substract = 35
+	BatchNormActivationDropout = 7,
+	BatchNormRelu = 8,
+	BatchNormReluDropout = 9,
+	BatchNormSwish = 10,
+	ChannelMultiply = 11,
+	ChannelShuffle = 12,
+	ChannelSplit = 13,
+	ChannelZeroPad = 14,
+	Concat = 15,
+	Convolution = 16,
+	ConvolutionTranspose = 17,
+	Cost = 18,
+	Dense = 19,
+	DepthwiseConvolution = 20,
+	Divide = 21,
+	Dropout = 22,
+	GlobalAvgPooling = 23,
+	GlobalMaxPooling = 24,
+	Input = 25,
+	LocalResponseNormalization = 26,
+	Max = 27,
+	MaxPooling = 38,
+	Min = 29,
+	Multiply = 30,
+	PartialDepthwiseConvolution = 31,
+	Resampling = 32,
+	Substract = 33
 };
 
 enum class Activations
@@ -532,9 +530,7 @@ namespace dnncore
 			case DNNLayerTypes::BatchNorm:
 			case DNNLayerTypes::BatchNormHardLogistic:
 			case DNNLayerTypes::BatchNormActivation:
-			case DNNLayerTypes::BatchNormHardSwishDropout:
-			case DNNLayerTypes::BatchNormMish:
-			case DNNLayerTypes::BatchNormMishDropout:
+			case DNNLayerTypes::BatchNormActivationDropout:
 			case DNNLayerTypes::BatchNormRelu:
 			case DNNLayerTypes::BatchNormReluDropout:
 			case DNNLayerTypes::BatchNormSwish:
@@ -656,7 +652,7 @@ namespace dnncore
 
 		info->LayerIndex = layerIndex;
 		info->LayerType = static_cast<DNNLayerTypes>(*layerType);
-		info->IsNormalizationLayer = info->LayerType == DNNLayerTypes::BatchNorm || info->LayerType == DNNLayerTypes::BatchNormHardLogistic || info->LayerType == DNNLayerTypes::BatchNormActivation || info->LayerType == DNNLayerTypes::BatchNormHardSwishDropout || info->LayerType == DNNLayerTypes::BatchNormMish || info->LayerType == DNNLayerTypes::BatchNormMishDropout || info->LayerType == DNNLayerTypes::BatchNormRelu || info->LayerType == DNNLayerTypes::BatchNormReluDropout || info->LayerType == DNNLayerTypes::BatchNormSwish;
+		info->IsNormalizationLayer = info->LayerType == DNNLayerTypes::BatchNorm || info->LayerType == DNNLayerTypes::BatchNormHardLogistic || info->LayerType == DNNLayerTypes::BatchNormActivation || info->LayerType == DNNLayerTypes::BatchNormActivationDropout || info->LayerType == DNNLayerTypes::BatchNormRelu || info->LayerType == DNNLayerTypes::BatchNormReluDropout || info->LayerType == DNNLayerTypes::BatchNormSwish;
 		info->ActivationFunctionEnum = static_cast<DNNActivations>(*activationFunction);
 		info->CostFunction = static_cast<DNNCosts>(*costFunction);
 		info->InputCount = *inputsCount;
