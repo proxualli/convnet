@@ -27,37 +27,38 @@
         </Style>
     </UserControl.Resources>
 
-    <DockPanel Name="dockPanelPageView" Width="Auto" Height="Auto">
-        <ToolBarTray DockPanel.Dock="Top" Height="Auto" HorizontalAlignment="Stretch" Name="toolBarTray" VerticalAlignment="Top" Width="Auto">
-            <ToolBar>
-                <ComboBox Name="PageViews" Margin="2" MinWidth="50" ItemsSource="{Binding Path=Pages}" SelectedItem="{Binding Path=CurrentPage}" IsEnabled="{Binding Path=CurrentPage.IsValid, Mode=TwoWay}" UseLayoutRounding="True" SnapsToDevicePixels="True" IsReadOnly="True" IsTextSearchEnabled="False" IsSynchronizedWithCurrentItem="True" DisplayMemberPath="DisplayName"/>
-            </ToolBar>
-            <ToolBar Name="CmdToolBar" ItemsSource="{Binding Path=CommandToolBar, Mode=TwoWay, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged}" Visibility="{Binding Path=CommandToolBarVisibility}"/>
-        </ToolBarTray>
-
-        <StatusBar Name="statusBarMain" Width="Auto" Height="23" DockPanel.Dock="Bottom">
-            <!--<StatusBarItem HorizontalAlignment="Right" Width="Auto" Foreground="Black">
-                <TextBlock x:Name="SampleRate" Margin="2,0,2,0" HorizontalAlignment="Left" VerticalAlignment="Stretch" Text="{Binding Path=SampleRate}" ToolTip="Sample Rate"/>
-            </StatusBarItem>-->
-            <StatusBarItem HorizontalAlignment="Right" Width="Auto" Foreground="Black">
-                <TextBlock x:Name="AvgSampleRate" Margin="2,0,2,0" HorizontalAlignment="Left" VerticalAlignment="Stretch" Text="{Binding Path=AvgSampleRate}" ToolTip="Avg Sample Rate"/>
-            </StatusBarItem>
-            <!--<StatusBarItem HorizontalAlignment="Right" Width="Auto" Foreground="Black">
-                <TextBlock x:Name="CPULoad" Margin="2,0,2,0" HorizontalAlignment="Left" VerticalAlignment="Stretch" Text="{Binding Path=CPULoad}" ToolTip="Cpu Load %"/>
-            </StatusBarItem>-->
-            <StatusBarItem HorizontalAlignment="Left" Width="Auto" Foreground="Black">
-                <TextBlock x:Name="Time" Margin="2,0,2,0" HorizontalAlignment="Left" VerticalAlignment="Stretch" Text="{Binding Path=Duration}" ToolTip="Duration"/>
-            </StatusBarItem>
-            <StatusBarItem HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" HorizontalAlignment="Stretch">
-                <ProgressBar Margin="0" x:Name="ProgressBar" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Minimum="{Binding Path=ProgressBarMinimum}" Maximum="{Binding Path=ProgressBarMaximum}" Value="{Binding Path=ProgressBarValue}" SmallChange="1" Height="Auto" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" IsTabStop="False" Width="Auto">
-                </ProgressBar>
-            </StatusBarItem>
-        </StatusBar>
-
-        <!-- CURRENT PAGE AREA -->
-        <Border Background="White">
-            <!--<ContentPresenter Name="PageContentPresenter" ContentSource="{Binding Path=Pages}" Content="{Binding Path=CurrentPage}"/>-->
-            <ContentControl Name="PageContentControl" Content="{Binding Path=CurrentPage}"/>
-        </Border>
-    </DockPanel>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="Auto" Width="Auto">
+            <ToolBarTray Height="Auto" HorizontalAlignment="Stretch" Name="toolBarTray" VerticalAlignment="Top" Width="Auto">
+                <ToolBar>
+                    <ComboBox Name="PageViews" Margin="2" MinWidth="50" ItemsSource="{Binding Path=Pages}" SelectedItem="{Binding Path=CurrentPage}" IsEnabled="{Binding Path=CurrentPage.IsValid, Mode=TwoWay}" UseLayoutRounding="True" SnapsToDevicePixels="True" IsReadOnly="True" IsTextSearchEnabled="False" IsSynchronizedWithCurrentItem="True" DisplayMemberPath="DisplayName"/>
+                </ToolBar>
+                <ToolBar Name="CmdToolBar" ItemsSource="{Binding Path=CommandToolBar, Mode=TwoWay, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged}" Visibility="{Binding Path=CommandToolBarVisibility}"/>
+            </ToolBarTray>
+        </Grid>
+        <Grid Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="Auto" Width="Auto">
+            <Border Background="White">
+                <ContentControl Name="PageContentControl" Content="{Binding Path=CurrentPage}"/>
+            </Border>
+        </Grid>
+        <Grid Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="Auto" Width="Auto">
+            <StatusBar Name="statusBarMain" Width="Auto" Height="23">
+                <StatusBarItem HorizontalAlignment="Right" Width="Auto" Foreground="Black">
+                    <TextBlock x:Name="AvgSampleRate" Margin="2,0,2,0" HorizontalAlignment="Left" VerticalAlignment="Stretch" Text="{Binding Path=AvgSampleRate}" ToolTip="Avg Sample Rate"/>
+                </StatusBarItem>
+                <StatusBarItem HorizontalAlignment="Left" Width="Auto" Foreground="Black">
+                    <TextBlock x:Name="Time" Margin="2,0,2,0" HorizontalAlignment="Left" VerticalAlignment="Stretch" Text="{Binding Path=Duration}" ToolTip="Duration"/>
+                </StatusBarItem>
+                <StatusBarItem HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" HorizontalAlignment="Stretch">
+                    <ProgressBar Margin="0" x:Name="ProgressBar" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Minimum="{Binding Path=ProgressBarMinimum}" Maximum="{Binding Path=ProgressBarMaximum}" Value="{Binding Path=ProgressBarValue}" SmallChange="1" Height="Auto" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" IsTabStop="False" Width="Auto">
+                    </ProgressBar>
+                </StatusBarItem>
+            </StatusBar>
+        </Grid>
+    </Grid>
 </UserControl>
