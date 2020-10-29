@@ -106,7 +106,7 @@ namespace dnncli
 		AvgPooling = 3,
 		BatchNorm = 4,
 		BatchNormHardLogistic = 5,
-		BatchNormHardSwish = 6,
+		BatchNormActivation = 6,
 		BatchNormMish = 7,
 		BatchNormMishDropout = 8,
 		BatchNormRelu = 9,

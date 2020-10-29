@@ -207,7 +207,7 @@ extern "C" DNN_API void DNNGetImage(const size_t layerIndex, const unsigned char
 		{
 			case LayerTypes::BatchNorm:
 			case LayerTypes::BatchNormHardLogistic:
-			case LayerTypes::BatchNormHardSwish:
+			case LayerTypes::BatchNormActivation:
 			case LayerTypes::BatchNormMish:
 			case LayerTypes::BatchNormMishDropout:
 			case LayerTypes::BatchNormRelu:
@@ -569,8 +569,8 @@ extern "C" DNN_API void DNNGetLayerInfo(const size_t layerIndex, size_t* inputsC
 			*scaling = static_cast<BatchNormHardLogistic*>(layer)->Scaling;
 			break;
 
-		case LayerTypes::BatchNormHardSwish:
-			*scaling = static_cast<BatchNormHardSwish*>(layer)->Scaling;
+		case LayerTypes::BatchNormActivation:
+			*scaling = static_cast<BatchNormActivation<>*>(layer)->Scaling;
 			break;
 
 		case LayerTypes::BatchNormMish:

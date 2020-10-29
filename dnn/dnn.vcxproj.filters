@@ -119,9 +119,6 @@
     <ClInclude Include="include\BatchNormHardLogistic.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\BatchNormHardSwish.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\BatchNormMish.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -156,6 +153,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\BatchNormHardSwishDropout.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\BatchNormActivation.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -251,9 +251,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\BatchNormHardLogistic.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\BatchNormHardSwish.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\BatchNormMish.cpp">

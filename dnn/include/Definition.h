@@ -474,8 +474,8 @@ namespace dnn
 								model->Layers.push_back(new BatchNormHardLogistic(model->Device, model->Format, name, inputs, scaling, momentum, eps, biases));
 								model->Layers[model->Layers.size() - 1]->SetParameters(useDefaultParams, weightsFiller, weightsScale, weightsLRM, weightsWDM, biasesFiller, biasesScale, biasesLRM, biasesWDM);
 								break;
-							case LayerTypes::BatchNormHardSwish:
-								model->Layers.push_back(new BatchNormHardSwish(model->Device, model->Format, name, inputs, scaling, momentum, eps, biases));
+							case LayerTypes::BatchNormActivation:
+								model->Layers.push_back(new BatchNormActivation(model->Device, model->Format, name, inputs, scaling, momentum, eps, biases));
 								model->Layers[model->Layers.size() - 1]->SetParameters(useDefaultParams, weightsFiller, weightsScale, weightsLRM, weightsWDM, biasesFiller, biasesScale, biasesLRM, biasesWDM);
 								break;
 							case LayerTypes::BatchNormHardSwishDropout:
@@ -909,7 +909,7 @@ namespace dnn
 					{
 						case LayerTypes::BatchNorm:
 						case LayerTypes::BatchNormHardLogistic:
-						case LayerTypes::BatchNormHardSwish:
+						case LayerTypes::BatchNormActivation:
 						case LayerTypes::BatchNormHardSwishDropout:
 						case LayerTypes::BatchNormMish:
 						case LayerTypes::BatchNormMishDropout:

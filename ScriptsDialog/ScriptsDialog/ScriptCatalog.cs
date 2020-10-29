@@ -67,7 +67,7 @@ namespace ScriptsDialog
         public static string BatchNormActivation(size_t id, string inputs, bool relu = true, string group = "", string prefix = "B")
         {
             return "[" + group + prefix + to_string(id) + "]" + nwl +
-              (relu ? "Type=BatchNormRelu" + nwl : "Type=BatchNormHardSwish" + nwl) +
+              (relu ? "Type=BatchNormRelu" + nwl : "Type=BatchNormActivation" + nwl) +
               "Inputs=" + inputs + nwl + nwl;
         }
 
@@ -634,7 +634,6 @@ namespace ScriptsDialog
                                 A++; C += 5;
                             }
 
-                            var j = 1ul;
                             for (var i = 1ul; i < p.Iterations; i++)
                             {
                                 var group = In("SE", C + 3);
@@ -668,11 +667,11 @@ namespace ScriptsDialog
 
                         net +=
                             Convolution(C, In("CC", A), DIV8(W), 1, 1, 1, 1, 0, 0) +
-                            BatchNormActivationDropout(C + 1, In("C", C), p.Relu, 0.2f) +
+                            BatchNormActivation(C + 1, In("C", C), p.Relu) +
                             GlobalAvgPooling(In("B", C + 1)) +
                             Convolution(C + 2, "GAP", p.Classes, 1, 1, 1, 1, 0, 0) +
                             "[ACT]" + nwl + "Type=Activation" + nwl + "Inputs=C" + (C + 2).ToString() + nwl + "Activation=LogSoftmax" + nwl + nwl +
-                            "[Cost]" + nwl + "Type=Cost" + nwl + "Inputs=ACT" + nwl + "Cost=CategoricalCrossEntropy" + nwl + "Channels=" + to_string(p.Classes) + nwl + "Eps=0.05";
+                            "[Cost]" + nwl + "Type=Cost" + nwl + "Inputs=ACT" + nwl + "Cost=CategoricalCrossEntropy" + nwl + "Channels=" + to_string(p.Classes);
                     }
                     break;
             }

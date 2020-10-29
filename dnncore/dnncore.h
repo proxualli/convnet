@@ -120,7 +120,7 @@ namespace dnncore
 		AvgPooling = 3,
 		BatchNorm = 4,
 		BatchNormHardLogistic = 5,
-		BatchNormHardSwish = 6,
+		BatchNormActivation = 6,
 		BatchNormHardSwishDropout = 7,
 		BatchNormMish = 8,
 		BatchNormMishDropout = 9,

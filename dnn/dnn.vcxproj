@@ -141,7 +141,7 @@
     <ClInclude Include="include\AvgPooling.h" />
     <ClInclude Include="include\BatchNorm.h" />
     <ClInclude Include="include\BatchNormHardLogistic.h" />
-    <ClInclude Include="include\BatchNormHardSwish.h" />
+    <ClInclude Include="include\BatchNormActivation.h" />
     <ClInclude Include="include\BatchNormHardSwishDropout.h" />
     <ClInclude Include="include\BatchNormMish.h" />
     <ClInclude Include="include\BatchNormMishDropout.h" />
@@ -189,7 +189,6 @@
     <ClCompile Include="src\AvgPooling.cpp" />
     <ClCompile Include="src\BatchNorm.cpp" />
     <ClCompile Include="src\BatchNormHardLogistic.cpp" />
-    <ClCompile Include="src\BatchNormHardSwish.cpp" />
     <ClCompile Include="src\BatchNormHardSwishDropout.cpp" />
     <ClCompile Include="src\BatchNormMish.cpp" />
     <ClCompile Include="src\BatchNormMishDropout.cpp" />

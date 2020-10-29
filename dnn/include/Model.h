@@ -7,7 +7,7 @@
 #include "AvgPooling.h"
 #include "BatchNorm.h"
 #include "BatchNormHardLogistic.h"
-#include "BatchNormHardSwish.h"
+#include "BatchNormActivation.h"
 #include "BatchNormHardSwishDropout.h"
 #include "BatchNormMish.h"
 #include "BatchNormMishDropout.h"
