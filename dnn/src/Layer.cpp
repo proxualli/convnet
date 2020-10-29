@@ -247,6 +247,8 @@ namespace dnn
 
 			return false;
 		}
+		else
+			return true;
 	}
 
 	void Layer::CheckOptimizer(const Optimizers optimizer)
