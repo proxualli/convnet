@@ -1,5 +1,4 @@
 ﻿using Convnet.Properties;
-using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -17,22 +16,22 @@ namespace Convnet.PageViews
             InitializeComponent();
         }
 
-        private ScrollViewer sv;
+        private ScrollViewer ListViewTrainingResult_ScrollViewer;
 
-        private void ListViewTrainingResult_LayoutUpdated(object sender, EventArgs e)
+        private void ListViewTrainingResult_ScrollChanged(object sender, ScrollChangedEventArgs e)
         {
-            if (sv != null)
+            if (e.VerticalOffset == 0)
             {
-                if (sv.ComputedHorizontalScrollBarVisibility == Visibility.Visible)
-                    ScrollViewerHeader.ScrollToHorizontalOffset(sv.ContentHorizontalOffset);
-            }
-            else
-            {
-                Decorator border = VisualTreeHelper.GetChild(listViewTrainingResult, 0) as Decorator;
-                sv = border.Child as ScrollViewer;
-
-                if (sv != null && sv.ComputedHorizontalScrollBarVisibility == Visibility.Visible)
-                    ScrollViewerHeader.ScrollToHorizontalOffset(sv.ContentHorizontalOffset);
+                if (ListViewTrainingResult_ScrollViewer == null)
+                    ListViewTrainingResult_ScrollViewer = (VisualTreeHelper.GetChild(listViewTrainingResult, 0) as Decorator).Child as ScrollViewer;
+                
+                if (ListViewTrainingResult_ScrollViewer != null && ListViewTrainingResult_ScrollViewer.ComputedHorizontalScrollBarVisibility == Visibility.Visible)
+                {
+                    ScrollViewerHeader.VerticalScrollBarVisibility = ScrollBarVisibility.Visible;
+                    ScrollViewerHeader.ScrollToHorizontalOffset(e.HorizontalOffset);
+                }
+                else
+                    ScrollViewerHeader.VerticalScrollBarVisibility = ScrollBarVisibility.Hidden;
             }
         }
 
@@ -61,7 +60,6 @@ namespace Convnet.PageViews
 
         private void SnapShot_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-           
             if (e.ClickCount == 2)
             {
                 if (!Zoomout)
@@ -109,6 +107,7 @@ namespace Convnet.PageViews
 
                     Zoomout = false;
                 }
+
                 e.Handled = true;
             }
         }
@@ -165,7 +164,5 @@ namespace Convnet.PageViews
                 e.Handled = true;
             }
         }
-
-       
     }
 }
