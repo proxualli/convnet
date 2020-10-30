@@ -25,8 +25,7 @@ namespace dnn
 		FloatVector Variance;
 		FloatVector RunningVariance;
 		FloatVector InvStdDev;
-		FloatVector SrcDiff;
-
+	
 		BatchNormActivationDropout<Activation, T>(const dnn::Device& device, const dnnl::memory::format_tag format, const std::string& name, const std::vector<Layer*>& inputs, const Float dropout = Float(0.5), const bool scaling = true, const Float momentum = Float(0.99), const Float eps = Float(1e-04), const bool hasBias = true) :
 			Layer(device, format, name, T, inputs[0]->C, inputs[0]->C, inputs[0]->C, inputs[0]->D, inputs[0]->H, inputs[0]->W, 0, 0, 0, inputs, hasBias),
 			Scaling(scaling),
@@ -120,7 +119,6 @@ namespace dnn
 		{
 			Layer::SetBatchSize(batchSize);
 
-			ZeroFloatVectorAllocate(SrcDiff, batchSize * PaddedCDHW);
 			ZeroFloatVectorAllocate(NeuronsActive, batchSize * PaddedCDHW);
 			for (auto n = 0ull; n < batchSize; n++)
 				for (auto i = 0ull; i < CDHW; i++)
@@ -344,7 +342,7 @@ namespace dnn
 						for (auto w = offsetH; w < offsetH + strideH; w += VectorSize)
 						{
 							diffSrc = VecFloat().load_a(&NeuronsActive[w]) * Activation::dfVec(VecFloat().load_a(&Neurons[w])) * VecFloat().load_a(&NeuronsD1[w]);
-							diffSrc.store_a(&SrcDiff[w]);
+						
 							diffGamma = mul_add(VecFloat().load_a(&InputLayer->Neurons[w]) - mean, diffSrc, diffGamma);
 							diffBeta += diffSrc;
 						}
@@ -375,17 +373,13 @@ namespace dnn
 
 						for (auto w = offsetH; w < offsetH + strideH; w += VectorSize)
 						{
-							diffSrc.load_a(&SrcDiff[w]);
+							diffSrc = VecFloat().load_a(&NeuronsActive[w]) * Activation::dfVec(VecFloat().load_a(&Neurons[w])) * VecFloat().load_a(&NeuronsD1[w]);
 
 							// if not using global stats!
 							diffSrc -= mul_add(VecFloat().load_a(&InputLayer->Neurons[w]) - mean, diffGamma, diffBeta);
 
 							//diffSrc *= gamma;
 							mul_add(diffSrc, gamma, VecFloat().load_a(&InputLayer->NeuronsD1[w])).store_a(&InputLayer->NeuronsD1[w]);
-
-
-							//diffSrc = mul_add(HardSwish::dfVec(VecFloat().load_a(&Neurons[w])), VecFloat().load_a(&NeuronsD1[w]), -mul_add(VecFloat().load_a(&InputLayer->Neurons[w]) - mean, diffGamma, diffBeta));
-							//mul_add(diffSrc, gamma, VecFloat().load_a(&InputLayer->NeuronsD1[w])).store_a(&InputLayer->NeuronsD1[w]);
 						}
 					}
 				}
