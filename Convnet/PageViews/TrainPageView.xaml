@@ -81,7 +81,7 @@
             </Border>
         </Grid>
 
-        <ScrollViewer Grid.Row="1" x:Name="ScrollViewerHeader" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" BorderThickness="1" BorderBrush="DarkGray" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden" CanContentScroll="True" Focusable="False" IsHitTestVisible="False">
+        <ScrollViewer Grid.Row="1" x:Name="ScrollViewerHeader" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" BorderThickness="1" BorderBrush="DarkGray" UseLayoutRounding="True" TextOptions.TextFormattingMode="Display" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Visible" CanContentScroll="True" Focusable="False" IsHitTestVisible="False">
             <Grid >
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="{Binding ActualWidth, ElementName=cycle}" />
