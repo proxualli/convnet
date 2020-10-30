@@ -77,7 +77,6 @@ namespace ScriptsDialog
               (relu ? "Type=BatchNormReluDropout" + nwl : "Type=BatchNormHardSwishDropout" + nwl) +
               "Inputs=" + inputs + nwl +
               (dropout > 0f ? "Dropout=" + to_string(dropout) + nwl + nwl : nwl);
-
         }
 
         public static string BatchNormHardSwish(size_t id, string inputs, string group = "", string prefix = "B")
@@ -92,7 +91,6 @@ namespace ScriptsDialog
             return "[" + group + prefix + to_string(id) + "]" + nwl +
                "Type=BatchNormRelu" + nwl +
                "Inputs=" + inputs + nwl + nwl;
-
         }
         
         public static string BatchNormReluDropout(size_t id, string inputs, Float dropout = 0.0f, string group = "", string prefix = "B")
