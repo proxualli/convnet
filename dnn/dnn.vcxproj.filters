@@ -110,9 +110,6 @@
     <ClInclude Include="include\Resampling.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\BatchNormReluDropout.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\PartialDepthwiseConvolution.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -230,9 +227,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Resampling.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\BatchNormReluDropout.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\PartialDepthwiseConvolution.cpp">

@@ -582,8 +582,8 @@ extern "C" DNN_API void DNNGetLayerInfo(const size_t layerIndex, size_t* inputsC
 			break;
 
 		case LayerTypes::BatchNormReluDropout:
-			*scaling = static_cast<BatchNormReluDropout*>(layer)->Scaling;
-			*dropout = Float(1) - static_cast<BatchNormReluDropout*>(layer)->Keep;
+			*scaling = static_cast<BatchNormActivationDropout<Relu, LayerTypes::BatchNormReluDropout>*>(layer)->Scaling;
+			*dropout = Float(1) - static_cast<BatchNormActivationDropout<Relu, LayerTypes::BatchNormReluDropout>*>(layer)->Keep;
 			break;
 
 		case LayerTypes::BatchNormSwish:

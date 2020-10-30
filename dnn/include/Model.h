@@ -9,7 +9,6 @@
 #include "BatchNormActivation.h"
 #include "BatchNormActivationDropout.h"
 #include "BatchNormRelu.h"
-#include "BatchNormReluDropout.h"
 #include "ChannelMultiply.h"
 #include "ChannelShuffle.h"
 #include "ChannelSplit.h"

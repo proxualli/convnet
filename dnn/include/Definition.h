@@ -487,8 +487,9 @@ namespace dnn
 								model->Layers[model->Layers.size() - 1]->SetParameters(useDefaultParams, weightsFiller, weightsScale, weightsLRM, weightsWDM, biasesFiller, biasesScale, biasesLRM, biasesWDM);
 								break;
 							case LayerTypes::BatchNormReluDropout:
-								model->Layers.push_back(new BatchNormReluDropout(model->Device, model->Format, name, inputs, dropout, scaling, momentum, eps, biases));
+								model->Layers.push_back(new BatchNormActivationDropout<Relu, LayerTypes::BatchNormReluDropout>(model->Device, model->Format, name, inputs, dropout, scaling, momentum, eps, biases));
 								model->Layers[model->Layers.size() - 1]->SetParameters(useDefaultParams, weightsFiller, weightsScale, weightsLRM, weightsWDM, biasesFiller, biasesScale, biasesLRM, biasesWDM);
+								break;
 								break;
 							case LayerTypes::BatchNormSwish:
 								model->Layers.push_back(new BatchNormActivation<Swish, LayerTypes::BatchNormHardSwish>(model->Device, model->Format, name, inputs, scaling, momentum, eps, biases));
