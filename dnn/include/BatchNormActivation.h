@@ -44,8 +44,6 @@ namespace dnn
 		{
 			std::string description = GetDescriptionHeader() + GetWeightsDescription(Scaling);
 
-			description.append(nwl + " Activation:" + tab + typeid(Activation).name());
-
 			description.append(nwl + " Momentum:" + tab + FloatToString(Momentum));
 			description.append(nwl + " Eps:" + dtab + FloatToStringScientific(Eps));
 
