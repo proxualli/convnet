@@ -16,3 +16,6 @@
 [submodule "dnn/deps/libpng"]
 	path = dnn/deps/libpng
 	url = https://github.com/glennrp/libpng.git
+[submodule "dnn/deps/zlib-1.2.11"]
+	path = dnn/deps/zlib-1.2.11
+	url = https://github.com/madler/zlib.git
