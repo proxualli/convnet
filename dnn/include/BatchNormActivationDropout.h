@@ -153,7 +153,7 @@ namespace dnn
 							{
 								const auto offsetH = offsetC + h * strideH;
 								for (auto w = offsetH; w < offsetH + strideH; w += VectorSize)
-									HardSwish::fVec(mul_add(VecFloat().load_a(&InputLayer->Neurons[w]) - runningMean, weightedInvStdDev, biases)).store_a(&Neurons[w]);
+									Activation::fVec(mul_add(VecFloat().load_a(&InputLayer->Neurons[w]) - runningMean, weightedInvStdDev, biases)).store_a(&Neurons[w]);
 							}
 						}
 					});
@@ -175,7 +175,7 @@ namespace dnn
 							{
 								const auto offsetH = offsetC + h * strideH;
 								for (auto w = offsetH; w < offsetH + strideH; w += VectorSize)
-									HardSwish::fVec((VecFloat().load_a(&InputLayer->Neurons[w]) - runningMean) * invStdDev).store_a(&Neurons[w]);
+									Activation::fVec((VecFloat().load_a(&InputLayer->Neurons[w]) - runningMean) * invStdDev).store_a(&Neurons[w]);
 							}
 						}
 					});
@@ -242,7 +242,7 @@ namespace dnn
 									const auto neuronsActive = BernoulliVecFloat(Keep);
 									neuronsActive.store_a(&NeuronsActive[w]);
 
-									(neuronsActive * Scale * HardSwish::fVec(mul_add(VecFloat().load_a(&InputLayer->Neurons[w]) - mean, weightedInvStdDev, biases))).store_a(&Neurons[w]);
+									(neuronsActive * Scale * Activation::fVec(mul_add(VecFloat().load_a(&InputLayer->Neurons[w]) - mean, weightedInvStdDev, biases))).store_a(&Neurons[w]);
 #ifndef DNN_LEAN
 									vecZero.store_nt(&NeuronsD1[w]);
 #endif
@@ -304,7 +304,7 @@ namespace dnn
 									const auto neuronsActive = BernoulliVecFloat(Keep);
 									neuronsActive.store_a(&NeuronsActive[w]);
 
-									(neuronsActive * Scale * HardSwish::fVec((VecFloat().load_a(&InputLayer->Neurons[w]) - mean) * invStdDev)).store_a(&Neurons[w]);
+									(neuronsActive * Scale * Activation::fVec((VecFloat().load_a(&InputLayer->Neurons[w]) - mean) * invStdDev)).store_a(&Neurons[w]);
 #ifndef DNN_LEAN
 									vecZero.store_nt(&NeuronsD1[w]);
 #endif
@@ -343,7 +343,7 @@ namespace dnn
 
 						for (auto w = offsetH; w < offsetH + strideH; w += VectorSize)
 						{
-							diffSrc = VecFloat().load_a(&NeuronsActive[w]) * HardSwish::dfVec(VecFloat().load_a(&Neurons[w])) * VecFloat().load_a(&NeuronsD1[w]);
+							diffSrc = VecFloat().load_a(&NeuronsActive[w]) * Activation::dfVec(VecFloat().load_a(&Neurons[w])) * VecFloat().load_a(&NeuronsD1[w]);
 							diffSrc.store_a(&SrcDiff[w]);
 							diffGamma = mul_add(VecFloat().load_a(&InputLayer->Neurons[w]) - mean, diffSrc, diffGamma);
 							diffBeta += diffSrc;
