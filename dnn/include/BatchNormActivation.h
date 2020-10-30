@@ -224,10 +224,10 @@ namespace dnn
 							}
 						}
 					});
-			}
-			else
-			{
-				for_i(PaddedC / VectorSize, [=](size_t c)
+				}
+				else
+				{
+					for_i(PaddedC / VectorSize, [=](size_t c)
 					{
 						const auto channelOffset = c * VectorSize;
 						const auto mapOffset = channelOffset * HW;
@@ -276,9 +276,9 @@ namespace dnn
 								for (auto w = offsetH; w < offsetH + strideH; w += VectorSize)
 								{
 									Activation::fVec((VecFloat().load_a(&InputLayer->Neurons[w]) - mean) * invStdDev).store_a(&Neurons[w]);
-#ifndef DNN_LEAN
+	#ifndef DNN_LEAN
 									vecZero.store_nt(&NeuronsD1[w]);
-#endif
+	#endif
 								}
 							}
 						}
