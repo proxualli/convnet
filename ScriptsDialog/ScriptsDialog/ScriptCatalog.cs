@@ -71,13 +71,13 @@ namespace ScriptsDialog
               "Inputs=" + inputs + nwl + nwl;
         }
 
-        public static string BatchNormActivationDropout(size_t id, string inputs, bool relu = true, Float dropout = -1f, string group = "", string prefix = "B")
+        public static string BatchNormActivationDropout(size_t id, string inputs, bool relu = true, Float dropout = 0.0f, string group = "", string prefix = "B")
         {
             return "[" + group + prefix + to_string(id) + "]" + nwl +
               (relu ? "Type=BatchNormReluDropout" + nwl : "Type=BatchNormHardSwishDropout" + nwl) +
               "Inputs=" + inputs + nwl +
               (dropout > 0f ? "Dropout=" + to_string(dropout) + nwl + nwl : nwl);
-    
+
         }
 
         public static string BatchNormHardSwish(size_t id, string inputs, string group = "", string prefix = "B")
@@ -92,13 +92,15 @@ namespace ScriptsDialog
             return "[" + group + prefix + to_string(id) + "]" + nwl +
                "Type=BatchNormRelu" + nwl +
                "Inputs=" + inputs + nwl + nwl;
-        }
 
-        public static string BatchNormReluDropout(size_t id, string inputs, string group = "", string prefix = "B")
+        }
+        
+        public static string BatchNormReluDropout(size_t id, string inputs, Float dropout = 0.0f, string group = "", string prefix = "B")
         {
             return "[" + group + prefix + to_string(id) + "]" + nwl +
                "Type=BatchNormReluDropout" + nwl +
-               "Inputs=" + inputs + nwl + nwl;
+               "Inputs=" + inputs + nwl +
+               (dropout > 0f ? "Dropout=" + to_string(dropout) + nwl + nwl : nwl);
         }
 
         public static string Convolution(size_t id, string inputs, size_t channels, size_t kernelX = 3, size_t kernelY = 3, size_t strideX = 1, size_t strideY = 1, size_t padX = 1, size_t padY = 1, string group = "", string prefix = "C", string weightsFiller = "")
