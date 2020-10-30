@@ -10,22 +10,21 @@ namespace Convnet.PageViews
 {
     public partial class TrainPageView : UserControl
     {
-        bool Zoomout = false;
+        private bool Zoomout = false;
+        private ScrollViewer ScrollViewerListViewTrainingResult = null;
 
         public TrainPageView()
         {
             InitializeComponent();
         }
 
-        private ScrollViewer ListViewTrainingResult_ScrollViewer = null;
-
         private void ListViewTrainingResult_LayoutUpdated(object sender, System.EventArgs e)
         {
-            if (ListViewTrainingResult_ScrollViewer == null)
-                ListViewTrainingResult_ScrollViewer = (VisualTreeHelper.GetChild(listViewTrainingResult, 0) as Decorator).Child as ScrollViewer;
+            if (ScrollViewerListViewTrainingResult == null)
+                ScrollViewerListViewTrainingResult = (VisualTreeHelper.GetChild(listViewTrainingResult, 0) as Decorator).Child as ScrollViewer;
 
-            if (ListViewTrainingResult_ScrollViewer != null)
-                ScrollViewerHeader.VerticalScrollBarVisibility = ListViewTrainingResult_ScrollViewer.ComputedVerticalScrollBarVisibility == Visibility.Visible ? ScrollBarVisibility.Visible : ScrollBarVisibility.Hidden;
+            if (ScrollViewerListViewTrainingResult != null)
+                ScrollViewerHeader.VerticalScrollBarVisibility = ScrollViewerListViewTrainingResult.ComputedVerticalScrollBarVisibility == Visibility.Visible ? ScrollBarVisibility.Visible : ScrollBarVisibility.Hidden;
         }
         
         private void ListViewTrainingResult_ScrollChanged(object sender, ScrollChangedEventArgs e)
