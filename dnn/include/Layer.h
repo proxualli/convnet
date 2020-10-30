@@ -243,13 +243,14 @@ namespace dnn
 #ifdef DNN_LEAN
 		inline void ZeroGradient(const size_t batchSize)
 		{
-			AllocateZeroFloatVector(InputLayer->NeuronsD1, batchSize * InputLayer->PaddedCDHW);
+			//FloatVectorAllocate(InputLayer->NeuronsD1, batchSize * InputLayer->PaddedCDHW);
+			ZeroFloatVectorAllocate(InputLayer->NeuronsD1, batchSize * InputLayer->PaddedCDHW);
 		}
 
 		inline void ZeroGradientMulti(const size_t batchSize)
 		{
 			for (auto i = 0ull; i < Inputs.size(); i++)
-				AllocateZeroFloatVector(Inputs[i]->NeuronsD1, batchSize * Inputs[i]->PaddedCDHW);
+				ZeroFloatVectorAllocate(Inputs[i]->NeuronsD1, batchSize * Inputs[i]->PaddedCDHW);
 		}
 
 		inline void ReleaseGradient()
@@ -267,7 +268,7 @@ namespace dnn
 #ifndef DNN_LEAN
 			ZeroFloatVectorAllocate(NeuronsD1, batchSize * PaddedCDHW);
 #else
-			ReleaseGradient();;
+			ReleaseGradient();
 #endif // DNN_LEAN
 
 			InitializeDescriptors(batchSize);
