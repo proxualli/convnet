@@ -3,7 +3,7 @@
 
 namespace dnn
 {
-	template <typename Activation = HardSwish>
+	template <typename Activation = HardSwish, typename LayerTypes T = LayerTypes::BatchNormHardSwish>
 	class BatchNormActivation final : public Layer
 	{
 	private:
@@ -21,8 +21,8 @@ namespace dnn
 		FloatVector RunningVariance;
 		FloatVector InvStdDev;
 
-		BatchNormActivation<Activation>(const dnn::Device& device, const dnnl::memory::format_tag format, const std::string& name, const std::vector<Layer*>& inputs, const bool scaling = true, const Float momentum = Float(0.99), const Float eps = Float(1e-04), const bool hasBias = true) : 
-			Layer(device, format, name, LayerTypes::BatchNormHardSwish, inputs[0]->C, inputs[0]->C, inputs[0]->C, inputs[0]->D, inputs[0]->H, inputs[0]->W, 0, 0, 0, inputs, hasBias),
+		BatchNormActivation<Activation,T>(const dnn::Device& device, const dnnl::memory::format_tag format, const std::string& name, const std::vector<Layer*>& inputs, const bool scaling = true, const Float momentum = Float(0.99), const Float eps = Float(1e-04), const bool hasBias = true) : 
+			Layer(device, format, name, T, inputs[0]->C, inputs[0]->C, inputs[0]->C, inputs[0]->D, inputs[0]->H, inputs[0]->W, 0, 0, 0, inputs, hasBias),
 			Scaling(scaling),
 			Eps(eps),
 			Momentum(momentum),
@@ -42,7 +42,7 @@ namespace dnn
 	
 		std::string GetDescription() const final override
 		{
-			std::string description = GetDescriptionHeader() + GetWeightsDescription(Scaling);
+			auto description = GetDescriptionHeader() + GetWeightsDescription(Scaling);
 
 			description.append(nwl + " Momentum:" + tab + FloatToString(Momentum));
 			description.append(nwl + " Eps:" + dtab + FloatToStringScientific(Eps));
