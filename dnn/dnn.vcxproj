@@ -140,12 +140,10 @@
     <ClInclude Include="include\Average.h" />
     <ClInclude Include="include\AvgPooling.h" />
     <ClInclude Include="include\BatchNorm.h" />
-    <ClInclude Include="include\BatchNormHardLogistic.h" />
     <ClInclude Include="include\BatchNormActivation.h" />
     <ClInclude Include="include\BatchNormActivationDropout.h" />
     <ClInclude Include="include\BatchNormRelu.h" />
     <ClInclude Include="include\BatchNormReluDropout.h" />
-    <ClInclude Include="include\BatchNormSwish.h" />
     <ClInclude Include="include\ChannelSplit.h" />
     <ClInclude Include="include\Definition.h" />
     <ClInclude Include="include\Concat.h" />
@@ -186,10 +184,8 @@
     <ClCompile Include="src\Average.cpp" />
     <ClCompile Include="src\AvgPooling.cpp" />
     <ClCompile Include="src\BatchNorm.cpp" />
-    <ClCompile Include="src\BatchNormHardLogistic.cpp" />
     <ClCompile Include="src\BatchNormRelu.cpp" />
     <ClCompile Include="src\BatchNormReluDropout.cpp" />
-    <ClCompile Include="src\BatchNormSwish.cpp" />
     <ClCompile Include="src\ChannelSplit.cpp" />
     <ClCompile Include="src\Concat.cpp" />
     <ClCompile Include="src\Convolution.cpp" />

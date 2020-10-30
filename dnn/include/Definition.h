@@ -471,15 +471,15 @@ namespace dnn
 								model->Layers[model->Layers.size() - 1]->SetParameters(useDefaultParams, weightsFiller, weightsScale, weightsLRM, weightsWDM, biasesFiller, biasesScale, biasesLRM, biasesWDM);
 								break;
 							case LayerTypes::BatchNormHardLogistic:
-								model->Layers.push_back(new BatchNormHardLogistic(model->Device, model->Format, name, inputs, scaling, momentum, eps, biases));
+								model->Layers.push_back(new BatchNormActivation<HardLogistic, LayerTypes::BatchNormHardLogistic>(model->Device, model->Format, name, inputs, scaling, momentum, eps, biases));
 								model->Layers[model->Layers.size() - 1]->SetParameters(useDefaultParams, weightsFiller, weightsScale, weightsLRM, weightsWDM, biasesFiller, biasesScale, biasesLRM, biasesWDM);
 								break;
 							case LayerTypes::BatchNormHardSwish:
-								model->Layers.push_back(new BatchNormActivation(model->Device, model->Format, name, inputs, scaling, momentum, eps, biases));
+								model->Layers.push_back(new BatchNormActivation<HardSwish, LayerTypes::BatchNormHardSwish>(model->Device, model->Format, name, inputs, scaling, momentum, eps, biases));
 								model->Layers[model->Layers.size() - 1]->SetParameters(useDefaultParams, weightsFiller, weightsScale, weightsLRM, weightsWDM, biasesFiller, biasesScale, biasesLRM, biasesWDM);
 								break;
 							case LayerTypes::BatchNormHardSwishDropout:
-								model->Layers.push_back(new BatchNormActivationDropout(model->Device, model->Format, name, inputs, dropout, scaling, momentum, eps, biases));
+								model->Layers.push_back(new BatchNormActivationDropout<HardSwish, LayerTypes::BatchNormHardSwishDropout>(model->Device, model->Format, name, inputs, dropout, scaling, momentum, eps, biases));
 								model->Layers[model->Layers.size() - 1]->SetParameters(useDefaultParams, weightsFiller, weightsScale, weightsLRM, weightsWDM, biasesFiller, biasesScale, biasesLRM, biasesWDM);
 								break;
 							case LayerTypes::BatchNormRelu:
@@ -491,7 +491,7 @@ namespace dnn
 								model->Layers[model->Layers.size() - 1]->SetParameters(useDefaultParams, weightsFiller, weightsScale, weightsLRM, weightsWDM, biasesFiller, biasesScale, biasesLRM, biasesWDM);
 								break;
 							case LayerTypes::BatchNormSwish:
-								model->Layers.push_back(new BatchNormSwish(model->Device, model->Format, name, inputs, scaling, momentum, eps, biases));
+								model->Layers.push_back(new BatchNormActivation<Swish, LayerTypes::BatchNormHardSwish>(model->Device, model->Format, name, inputs, scaling, momentum, eps, biases));
 								model->Layers[model->Layers.size() - 1]->SetParameters(useDefaultParams, weightsFiller, weightsScale, weightsLRM, weightsWDM, biasesFiller, biasesScale, biasesLRM, biasesWDM);
 								break;
 							case LayerTypes::ChannelMultiply:

@@ -113,12 +113,6 @@
     <ClInclude Include="include\BatchNormReluDropout.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\BatchNormSwish.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\BatchNormHardLogistic.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\PartialDepthwiseConvolution.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -239,12 +233,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\BatchNormReluDropout.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\BatchNormSwish.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\BatchNormHardLogistic.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\PartialDepthwiseConvolution.cpp">
