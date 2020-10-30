@@ -1,4 +1,5 @@
 ﻿using Convnet.Properties;
+using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -16,23 +17,21 @@ namespace Convnet.PageViews
             InitializeComponent();
         }
 
-        private ScrollViewer ListViewTrainingResult_ScrollViewer;
+        private ScrollViewer ListViewTrainingResult_ScrollViewer = null;
 
+        private void ListViewTrainingResult_LayoutUpdated(object sender, System.EventArgs e)
+        {
+            if (ListViewTrainingResult_ScrollViewer == null)
+                ListViewTrainingResult_ScrollViewer = (VisualTreeHelper.GetChild(listViewTrainingResult, 0) as Decorator).Child as ScrollViewer;
+
+            if (ListViewTrainingResult_ScrollViewer != null)
+                ScrollViewerHeader.VerticalScrollBarVisibility = ListViewTrainingResult_ScrollViewer.ComputedVerticalScrollBarVisibility == Visibility.Visible ? ScrollBarVisibility.Visible : ScrollBarVisibility.Hidden;
+        }
+        
         private void ListViewTrainingResult_ScrollChanged(object sender, ScrollChangedEventArgs e)
         {
             if (e.VerticalOffset == 0)
-            {
-                if (ListViewTrainingResult_ScrollViewer == null)
-                    ListViewTrainingResult_ScrollViewer = (VisualTreeHelper.GetChild(listViewTrainingResult, 0) as Decorator).Child as ScrollViewer;
-                
-                if (ListViewTrainingResult_ScrollViewer != null && ListViewTrainingResult_ScrollViewer.ComputedHorizontalScrollBarVisibility == Visibility.Visible)
-                {
-                    ScrollViewerHeader.VerticalScrollBarVisibility = ScrollBarVisibility.Visible;
-                    ScrollViewerHeader.ScrollToHorizontalOffset(e.HorizontalOffset);
-                }
-                else
-                    ScrollViewerHeader.VerticalScrollBarVisibility = ScrollBarVisibility.Hidden;
-            }
+                 ScrollViewerHeader.ScrollToHorizontalOffset(e.HorizontalOffset);
         }
 
         private void ListViewTrainingResult_KeyDown(object sender, KeyEventArgs e)

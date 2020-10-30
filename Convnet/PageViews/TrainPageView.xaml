@@ -81,7 +81,7 @@
             </Border>
         </Grid>
 
-        <ScrollViewer Grid.Row="1" x:Name="ScrollViewerHeader" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" BorderThickness="1" BorderBrush="DarkGray" UseLayoutRounding="True" SnapsToDevicePixels="True" TextOptions.TextFormattingMode="Display" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Auto" CanContentScroll="True" Focusable="False" IsHitTestVisible="False">
+        <ScrollViewer Grid.Row="1" x:Name="ScrollViewerHeader" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" BorderThickness="1" BorderBrush="DarkGray" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden" CanContentScroll="True" Focusable="False" IsHitTestVisible="False">
             <Grid >
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="{Binding ActualWidth, ElementName=cycle}" />
@@ -111,7 +111,7 @@
                     <ColumnDefinition Width="{Binding ActualWidth, ElementName=testAccuracy}" />
                     <ColumnDefinition Width="{Binding ActualWidth, ElementName=duration}" />
                 </Grid.ColumnDefinitions>
-                
+
                 <Border Grid.Column="17" Grid.ColumnSpan="4" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  BorderThickness="1" BorderBrush="#FFE4E4E4" Margin="1,0,-1,0">
                     <Border.Background>
                         <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
@@ -121,7 +121,6 @@
                     </Border.Background>
                     <TextBlock Text="Train" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextAlignment="Center" Foreground="Black" FontFamily="Consolas" FontSize="14" />
                 </Border>
-                
                 <Border Grid.Column="21" Grid.ColumnSpan="4" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  BorderThickness="1" BorderBrush="#FFE4E4E4" Margin="1,0,-1,0">
                     <Border.Background>
                         <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
@@ -134,7 +133,7 @@
             </Grid>
         </ScrollViewer>
 
-        <ListView Grid.Row="2" Background="{StaticResource DisabledBorderBrush}" Foreground="Black" BorderBrush="{StaticResource DisabledBorderBrush}" Margin="0" Height="Auto" HorizontalAlignment="Stretch" x:Name="listViewTrainingResult" VerticalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Width="Auto" IsSynchronizedWithCurrentItem="True" SelectedIndex="{Binding SelectedIndex}" ItemsSource="{Binding Source={StaticResource src}}" SelectionMode="Single" UseLayoutRounding="True" IsEnabled="True" Grid.ColumnSpan="1" FontFamily="Consolas" FontSize="13" IsTextSearchEnabled="False" TextOptions.TextFormattingMode="Display" KeyDown="ListViewTrainingResult_KeyDown" BorderThickness="0" ScrollViewer.ScrollChanged="ListViewTrainingResult_ScrollChanged" SelectionChanged="ListViewTrainingResult_SelectionChanged" SnapsToDevicePixels="True">
+        <ListView Grid.Row="2" Background="{StaticResource DisabledBorderBrush}" Foreground="Black" BorderBrush="{StaticResource DisabledBorderBrush}" Margin="0" Height="Auto" HorizontalAlignment="Stretch" x:Name="listViewTrainingResult" VerticalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Width="Auto" IsSynchronizedWithCurrentItem="True" SelectedIndex="{Binding SelectedIndex}" ItemsSource="{Binding Source={StaticResource src}}" SelectionMode="Single" UseLayoutRounding="True" IsEnabled="True" Grid.ColumnSpan="1" FontFamily="Consolas" FontSize="13" IsTextSearchEnabled="False" TextOptions.TextFormattingMode="Display" KeyDown="ListViewTrainingResult_KeyDown" BorderThickness="0" ScrollViewer.ScrollChanged="ListViewTrainingResult_ScrollChanged" SelectionChanged="ListViewTrainingResult_SelectionChanged" LayoutUpdated="ListViewTrainingResult_LayoutUpdated">
             <ListView.ItemContainerStyle>
                 <Style TargetType="{x:Type ListViewItem}">
                     <Setter Property="HorizontalContentAlignment" Value="Stretch" />
