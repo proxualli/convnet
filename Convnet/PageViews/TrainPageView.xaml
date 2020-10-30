@@ -132,10 +132,9 @@
                     <TextBlock Text="Test" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextAlignment="Center" Foreground="Black" FontFamily="Consolas" FontSize="14" />
                 </Border>
             </Grid>
-           
         </ScrollViewer>
 
-        <ListView Grid.Row="2" Background="{StaticResource DisabledBorderBrush}" Foreground="Black" BorderBrush="{StaticResource DisabledBorderBrush}" Margin="0" Height="Auto" HorizontalAlignment="Stretch" x:Name="listViewTrainingResult" VerticalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Width="Auto" IsSynchronizedWithCurrentItem="True" SelectedIndex="{Binding SelectedIndex}" ItemsSource="{Binding Source={StaticResource src}}" SelectionMode="Single" UseLayoutRounding="True" IsEnabled="True" Grid.ColumnSpan="1" FontFamily="Consolas" FontSize="13" IsTextSearchEnabled="False" TextOptions.TextFormattingMode="Display" SnapsToDevicePixels="True" KeyDown="ListViewTrainingResult_KeyDown" BorderThickness="0" LayoutUpdated="ListViewTrainingResult_LayoutUpdated" SelectionChanged="ListViewTrainingResult_SelectionChanged">
+        <ListView Grid.Row="2" Background="{StaticResource DisabledBorderBrush}" Foreground="Black" BorderBrush="{StaticResource DisabledBorderBrush}" Margin="0" Height="Auto" HorizontalAlignment="Stretch" x:Name="listViewTrainingResult" VerticalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Width="Auto" IsSynchronizedWithCurrentItem="True" SelectedIndex="{Binding SelectedIndex}" ItemsSource="{Binding Source={StaticResource src}}" SelectionMode="Single" UseLayoutRounding="True" IsEnabled="True" Grid.ColumnSpan="1" FontFamily="Consolas" FontSize="13" IsTextSearchEnabled="False" TextOptions.TextFormattingMode="Display" KeyDown="ListViewTrainingResult_KeyDown" BorderThickness="0" LayoutUpdated="ListViewTrainingResult_LayoutUpdated" SelectionChanged="ListViewTrainingResult_SelectionChanged" SnapsToDevicePixels="True">
             <ListView.ItemContainerStyle>
                 <Style TargetType="{x:Type ListViewItem}">
                     <Setter Property="HorizontalContentAlignment" Value="Stretch" />

@@ -67,14 +67,14 @@ namespace ScriptsDialog
         public static string BatchNormActivation(size_t id, string inputs, bool relu = true, string group = "", string prefix = "B")
         {
             return "[" + group + prefix + to_string(id) + "]" + nwl +
-              (relu ? "Type=BatchNormRelu" + nwl : "Type=BatchNormActivation" + nwl) +
+              (relu ? "Type=BatchNormRelu" + nwl : "Type=BatchNormHardSwish" + nwl) +
               "Inputs=" + inputs + nwl + nwl;
         }
 
         public static string BatchNormActivationDropout(size_t id, string inputs, bool relu = true, Float dropout = -1f, string group = "", string prefix = "B")
         {
             return "[" + group + prefix + to_string(id) + "]" + nwl +
-              (relu ? "Type=BatchNormReluDropout" + nwl : "Type=BatchNormActivationDropout" + nwl) +
+              (relu ? "Type=BatchNormReluDropout" + nwl : "Type=BatchNormHardSwishDropout" + nwl) +
               "Inputs=" + inputs + nwl +
               (dropout > 0f ? "Dropout=" + to_string(dropout) + nwl + nwl : nwl);
     
@@ -83,7 +83,7 @@ namespace ScriptsDialog
         public static string BatchNormHardSwish(size_t id, string inputs, string group = "", string prefix = "B")
         {
             return "[" + group + prefix + to_string(id) + "]" + nwl +
-              "Type=BatchNormActivation" + nwl +
+              "Type=BatchNormHardSwish" + nwl +
               "Inputs=" + inputs + nwl + nwl;
         }
 

@@ -28,7 +28,7 @@ namespace dnn
 		FloatVector SrcDiff;
 
 		BatchNormActivationDropout<Activation>(const dnn::Device& device, const dnnl::memory::format_tag format, const std::string& name, const std::vector<Layer*>& inputs, const Float dropout = Float(0.5), const bool scaling = true, const Float momentum = Float(0.99), const Float eps = Float(1e-04), const bool hasBias = true) :
-			Layer(device, format, name, LayerTypes::BatchNormActivationDropout, inputs[0]->C, inputs[0]->C, inputs[0]->C, inputs[0]->D, inputs[0]->H, inputs[0]->W, 0, 0, 0, inputs, hasBias),
+			Layer(device, format, name, LayerTypes::BatchNormHardSwishDropout, inputs[0]->C, inputs[0]->C, inputs[0]->C, inputs[0]->D, inputs[0]->H, inputs[0]->W, 0, 0, 0, inputs, hasBias),
 			Scaling(scaling),
 			Eps(eps),
 			Momentum(momentum),

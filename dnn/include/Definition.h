@@ -474,11 +474,11 @@ namespace dnn
 								model->Layers.push_back(new BatchNormHardLogistic(model->Device, model->Format, name, inputs, scaling, momentum, eps, biases));
 								model->Layers[model->Layers.size() - 1]->SetParameters(useDefaultParams, weightsFiller, weightsScale, weightsLRM, weightsWDM, biasesFiller, biasesScale, biasesLRM, biasesWDM);
 								break;
-							case LayerTypes::BatchNormActivation:
+							case LayerTypes::BatchNormHardSwish:
 								model->Layers.push_back(new BatchNormActivation(model->Device, model->Format, name, inputs, scaling, momentum, eps, biases));
 								model->Layers[model->Layers.size() - 1]->SetParameters(useDefaultParams, weightsFiller, weightsScale, weightsLRM, weightsWDM, biasesFiller, biasesScale, biasesLRM, biasesWDM);
 								break;
-							case LayerTypes::BatchNormActivationDropout:
+							case LayerTypes::BatchNormHardSwishDropout:
 								model->Layers.push_back(new BatchNormActivationDropout(model->Device, model->Format, name, inputs, dropout, scaling, momentum, eps, biases));
 								model->Layers[model->Layers.size() - 1]->SetParameters(useDefaultParams, weightsFiller, weightsScale, weightsLRM, weightsWDM, biasesFiller, biasesScale, biasesLRM, biasesWDM);
 								break;
@@ -901,8 +901,8 @@ namespace dnn
 					{
 						case LayerTypes::BatchNorm:
 						case LayerTypes::BatchNormHardLogistic:
-						case LayerTypes::BatchNormActivation:
-						case LayerTypes::BatchNormActivationDropout:
+						case LayerTypes::BatchNormHardSwish:
+						case LayerTypes::BatchNormHardSwishDropout:
 						case LayerTypes::BatchNormRelu:
 						case LayerTypes::BatchNormReluDropout:
 						case LayerTypes::BatchNormSwish:
@@ -1371,7 +1371,7 @@ namespace dnn
 				}
 				else if (strLine.rfind("Dropout=") == 0)
 				{
-					if (!isNormalizationLayer && layerType != LayerTypes::Input && layerType != LayerTypes::Dropout && layerType != LayerTypes::BatchNormReluDropout && layerType != LayerTypes::BatchNormActivationDropout)
+					if (!isNormalizationLayer && layerType != LayerTypes::Input && layerType != LayerTypes::Dropout && layerType != LayerTypes::BatchNormReluDropout && layerType != LayerTypes::BatchNormHardSwishDropout)
 					{
 						msg = CheckMsg(line, col, "Dropout cannot be specified in a " + std::string(magic_enum::enum_name<LayerTypes>(layerType)) + " layer.");
 						goto FAIL;
