@@ -190,6 +190,7 @@ namespace dnn
 				description.append(nwl + " Weights:" + tab + std::to_string(WeightCount));
 				description.append(nwl + "  lr mult:" + tab + FloatToString(WeightsLRM));
 				description.append(nwl + "  wd mult:" + tab + FloatToString(WeightsWDM));
+
 				if (HasBias)
 				{
 					description.append(nwl + " Biases:" + tab + std::to_string(BiasCount));

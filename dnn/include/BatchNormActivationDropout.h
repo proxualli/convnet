@@ -108,7 +108,7 @@ namespace dnn
 						throw std::invalid_argument("Src and Diff format are different in " + std::string(magic_enum::enum_name<LayerTypes>(LayerType)) + " layer " + Name);
 				}
 
-				plainFormat = (Format == dnnl::memory::format_tag::nchw);
+				plainFormat = Format == dnnl::memory::format_tag::nchw;
 
 				DstMemDesc = std::make_unique<dnnl::memory::desc>(dnnl::memory::desc(dnnl::memory::dims({ dnnl::memory::dim(batchSize), dnnl::memory::dim(C), dnnl::memory::dim(H), dnnl::memory::dim(W) }), dnnl::memory::data_type::f32, Format));
 				DiffDstMemDesc = std::make_unique<dnnl::memory::desc>(dnnl::memory::desc(dnnl::memory::dims({ dnnl::memory::dim(batchSize), dnnl::memory::dim(C), dnnl::memory::dim(H), dnnl::memory::dim(W) }), dnnl::memory::data_type::f32, Format));
@@ -133,28 +133,53 @@ namespace dnn
 			{
 				if (Scaling)
 				{
-					for_i(PaddedC / VectorSize, [=](size_t c)
+					if (plainFormat) // nchw
 					{
-						const auto channelOffset = c * VectorSize;
-						const auto mapOffset = channelOffset * HW;
-
-						const auto runningMean = VecFloat().load_a(&RunningMean[channelOffset]);
-						const auto invStdDev = VecFloat(1) / sqrt(VecFloat().load_a(&RunningVariance[channelOffset]) + Eps);
-
-						const auto weightedInvStdDev = invStdDev * VecFloat().load_a(&Weights[channelOffset]);
-						const auto biases = HasBias ? VecFloat().load_a(&Biases[channelOffset]) : VecFloat(0);
-
-						for (auto n = 0ull; n < batchSize; n++)
+						for_i(C, [=](size_t c)
 						{
-							const auto offsetC = n * PaddedCDHW + mapOffset;
-							for (auto h = 0ull; h < H; h++)
+							const auto runningMean = RunningMean[c];
+							const auto invStdDev = Float(1) / std::sqrt(RunningVariance[c] + Eps);
+
+							const auto weightedInvStdDev = invStdDev * Weights[c];
+							const auto biases = Biases[c];
+
+							for (auto n = 0ull; n < batchSize; n++)
 							{
-								const auto offsetH = offsetC + h * strideH;
-								for (auto w = offsetH; w < offsetH + strideH; w += VectorSize)
-									Activation::fVec(mul_add(VecFloat().load_a(&InputLayer->Neurons[w]) - runningMean, weightedInvStdDev, biases)).store_a(&Neurons[w]);
+								const auto offsetC = n * PaddedCDHW + c * HW;
+								for (auto h = 0ull; h < H; h++)
+								{
+									const auto offsetH = offsetC + h * W;
+									for (auto w = offsetH; w < offsetH + W; w++)
+										Neurons[w] = Activation::f((((InputLayer->Neurons[w]) - runningMean) * weightedInvStdDev) + biases);
+								}
 							}
-						}
-					});
+						});
+					}
+					else
+					{
+						for_i(PaddedC / VectorSize, [=](size_t c)
+						{
+							const auto channelOffset = c * VectorSize;
+							const auto mapOffset = channelOffset * HW;
+
+							const auto runningMean = VecFloat().load_a(&RunningMean[channelOffset]);
+							const auto invStdDev = VecFloat(1) / sqrt(VecFloat().load_a(&RunningVariance[channelOffset]) + Eps);
+
+							const auto weightedInvStdDev = invStdDev * VecFloat().load_a(&Weights[channelOffset]);
+							const auto biases = HasBias ? VecFloat().load_a(&Biases[channelOffset]) : VecFloat(0);
+
+							for (auto n = 0ull; n < batchSize; n++)
+							{
+								const auto offsetC = n * PaddedCDHW + mapOffset;
+								for (auto h = 0ull; h < H; h++)
+								{
+									const auto offsetH = offsetC + h * strideH;
+									for (auto w = offsetH; w < offsetH + strideH; w += VectorSize)
+										Activation::fVec(mul_add(VecFloat().load_a(&InputLayer->Neurons[w]) - runningMean, weightedInvStdDev, biases)).store_a(&Neurons[w]);
+								}
+							}
+						});
+					}
 				}
 				else
 				{
