@@ -422,6 +422,7 @@ extern "C" DNN_API void DNNGetTrainingInfo(size_t* currentCycle, size_t* totalCy
 		*momentum = model->CurrentTrainingRate.Momentum;
 		*l2Penalty = model->CurrentTrainingRate.L2Penalty;
 		*batchSize = model->BatchSize;
+		
 		*networkState = model->State.load();
 		*taskState = model->TaskState.load();
 	}

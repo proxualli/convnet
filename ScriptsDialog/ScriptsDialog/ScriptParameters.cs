@@ -140,13 +140,13 @@ namespace ScriptsDialog
                 switch (Script)
                 {
                     case Scripts.densenet:
-                        return Script.ToString() + "-" + H.ToString() + "x" + W.ToString() + "-" + Groups.ToString() + "-" + Iterations.ToString() + "-" + GrowthRate.ToString() + (Dropout > 0 ? "-dropout" : "") + (Compression > 0 ? "-compression" : "") + (Bottleneck ? "-bottleneck" : "");
+                        return Script.ToString() + "-" + H.ToString() + "x" + W.ToString() + "-" + Groups.ToString() + "-" + Iterations.ToString() + "-" + GrowthRate.ToString() + (Dropout > 0 ? "-dropout" : "") + (Compression > 0 ? "-compression" : "") + (Bottleneck ? "-bottleneck" : "") + (Relu ? "" : "-hardswish");
                     case Scripts.mobilenetv3:
-                        return Script.ToString() + "-" + H.ToString() + "x" + W.ToString() + "-" + Groups.ToString() + "-" + Iterations.ToString() + "-" + Width.ToString() + (SqueezeExcitation ? "-se" : "");
+                        return Script.ToString() + "-" + H.ToString() + "x" + W.ToString() + "-" + Groups.ToString() + "-" + Iterations.ToString() + "-" + Width.ToString() + (Relu ? "" : "-hardswish") + (SqueezeExcitation ? "-se" : "");
                     case Scripts.resnet:
-                        return Script.ToString() + "-" + H.ToString() + "x" + W.ToString() + "-" + Groups.ToString() + "-" + Iterations.ToString() + "-" + Width.ToString() + (Dropout > 0 ? "-dropout" : "") + (Bottleneck ? "-bottleneck" : "") + (ChannelZeroPad ? "-channelzeropad" : "");
+                        return Script.ToString() + "-" + H.ToString() + "x" + W.ToString() + "-" + Groups.ToString() + "-" + Iterations.ToString() + "-" + Width.ToString() + (Dropout > 0 ? "-dropout" : "") + (Bottleneck ? "-bottleneck" : "") + (ChannelZeroPad ? "-channelzeropad" : "") + (Relu ? "" : "-hardswish");
                     case Scripts.shufflenetv2:
-                        return Script.ToString() + "-" + H.ToString() + "x" + W.ToString() + "-" + Groups.ToString() + "-" + Iterations.ToString() + "-" + Width.ToString() + (SqueezeExcitation ? "-se" : "");
+                        return Script.ToString() + "-" + H.ToString() + "x" + W.ToString() + "-" + Groups.ToString() + "-" + Iterations.ToString() + "-" + Width.ToString() + (Relu ? "" : "-hardswish") +  (SqueezeExcitation ? "-se" : "");
                     default:
                         return Script.ToString() + "-" + H.ToString() + "x" + W.ToString() + "-" + Groups.ToString() + "-" + Iterations.ToString();
                 }
