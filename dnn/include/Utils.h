@@ -134,15 +134,11 @@ namespace dnn
 		}
 	}
 
-	inline static void FloatVectorAllocate(FloatVector& destination, const size_t elements) noexcept
+	inline static void ZeroFloatVectorAllocate(FloatVector& destination, const size_t elements) noexcept
 	{
 		if (destination.size() < elements)
 			destination = FloatVector(elements);
-	}
 
-	inline static void ZeroFloatVectorAllocate(FloatVector& destination, const size_t elements) noexcept
-	{
-		FloatVectorAllocate(destination, elements);
 		ZeroFloatVector(destination.data(), elements);
 	}
 	

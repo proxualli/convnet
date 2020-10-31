@@ -141,16 +141,32 @@ namespace dnn
 							const auto invStdDev = Float(1) / std::sqrt(RunningVariance[c] + Eps);
 
 							const auto weightedInvStdDev = invStdDev * Weights[c];
-							const auto biases = Biases[c];
+							const auto biases = HasBias ? Biases[c] : Float(0);
 
-							for (auto n = 0ull; n < batchSize; n++)
+							if (W % VectorSize == 0)
 							{
-								const auto offsetC = n * PaddedCDHW + c * HW;
-								for (auto h = 0ull; h < H; h++)
+								for (auto n = 0ull; n < batchSize; n++)
 								{
-									const auto offsetH = offsetC + h * W;
-									for (auto w = offsetH; w < offsetH + W; w++)
-										Neurons[w] = Activation::f((((InputLayer->Neurons[w]) - runningMean) * weightedInvStdDev) + biases);
+									const auto offsetC = n * PaddedCDHW + c * HW;
+									for (auto h = 0ull; h < H; h++)
+									{
+										const auto offsetH = offsetC + h * W;
+										for (auto w = offsetH; w < offsetH + W; w+=VectorSize)
+											Activation::fVec(mul_add(VecFloat().load_a(&InputLayer->Neurons[w]) - runningMean, weightedInvStdDev, biases)).store_a(&Neurons[w]);
+									}
+								}
+							}
+							else
+							{
+								for (auto n = 0ull; n < batchSize; n++)
+								{
+									const auto offsetC = n * PaddedCDHW + c * HW;
+									for (auto h = 0ull; h < H; h++)
+									{
+										const auto offsetH = offsetC + h * W;
+										for (auto w = offsetH; w < offsetH + W; w++)
+											Neurons[w] = Activation::f((((InputLayer->Neurons[w]) - runningMean) * weightedInvStdDev) + biases);
+									}
 								}
 							}
 						});

@@ -244,7 +244,6 @@ namespace dnn
 #ifdef DNN_LEAN
 		inline void ZeroGradient(const size_t batchSize)
 		{
-			//FloatVectorAllocate(InputLayer->NeuronsD1, batchSize * InputLayer->PaddedCDHW);
 			ZeroFloatVectorAllocate(InputLayer->NeuronsD1, batchSize * InputLayer->PaddedCDHW);
 		}
 
