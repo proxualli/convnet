@@ -47,7 +47,7 @@
 #define MAGIC_ENUM_RANGE_MIN 0
 #define MAGIC_ENUM_RANGE_MAX 255
 
-#include "magic_enum.hpp"
+#include "include/magic_enum.hpp"
 #include "dnnl.hpp"
 
 #include "AlignedAllocator.h"
@@ -61,6 +61,7 @@ namespace dnn
 	#define DNN_ALIGN(alignment) __attribute__((__aligned__(alignment)))
 #endif
 	#define DNN_SIMD_ALIGN DNN_ALIGN(64)
+
 #ifndef DNN_UNREF_PAR
 	#define DNN_UNREF_PAR(P) (P)
 #endif
