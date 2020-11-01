@@ -15,13 +15,9 @@ set(libdnn_headers
   include/Average.h
   include/AvgPooling.h
   include/BatchNorm.h
-  include/BatchNormHardLogistic.h
-  include/BatchNormHardSwish.h
-  include/BatchNormMish.h
-  include/BatchNormMishDropout.h
+  include/BatchNormActivation.h
+  include/BatchNormActivationDropout.h
   include/BatchNormRelu.h
-  include/BatchNormReluDropout.h
-  include/BatchNormSwish.h
   include/ChannelMultiply.h
   include/ChannelShuffle.h
   include/ChannelSplit.h
@@ -39,6 +35,7 @@ set(libdnn_headers
   include/Dropout.h
   include/GlobalAvgPooling.h
   include/GlobalMaxPooling.h
+  include/Image.h
   include/Input.h
   include/Layer.h
   include/LocalResponseNormalization.h
@@ -47,6 +44,7 @@ set(libdnn_headers
   include/Min.h
   include/Model.h
   include/Multiply.h
+  include/ParallelFor.h
   include/PartialDepthwiseConvolution.h
   include/Resampling.h
   include/Scripts.h
@@ -63,13 +61,7 @@ set(libdnn_sources
   src/Average.cpp
   src/AvgPooling.cpp
   src/BatchNorm.cpp
-  src/BatchNormHardLogistic.cpp
-  src/BatchNormHardSwish.cpp
-  src/BatchNormMish.cpp
-  src/BatchNormMishDropout.cpp
   src/BatchNormRelu.cpp
-  src/BatchNormReluDropout.cpp
-  src/BatchNormSwish.cpp
   src/ChannelMultiply.cpp
   src/ChannelShuffle.cpp
   src/ChannelSplit.cpp
@@ -167,6 +159,16 @@ IF(NOT DEFINED VECTORCLASS_SOURCE_DIR)
   EXECUTE_PROCESS(COMMAND "${CMAKE_COMMAND}" --build .
     WORKING_DIRECTORY "${DNN_DEPENDENCIES_BINARY_DIR}/oneDNN-download")
   SET(ONEDNN_SOURCE_DIR "${DNN_DEPENDENCIES_SOURCE_DIR}/oneDNN" CACHE STRING "oneDNN source directory")
+ ENDIF()
+
+ IF(NOT DEFINED CIMG_SOURCE_DIR)
+  MESSAGE(STATUS "Downloading CImg to ${DNN_DEPENDENCIES_SOURCE_DIR}/CImg (define CIMG_SOURCE_DIR to avoid it)")
+  CONFIGURE_FILE(cmake/DownloadCImg.cmake "${DNN_DEPENDENCIES_BINARY_DIR}/cimg-download/CMakeLists.txt")
+  EXECUTE_PROCESS(COMMAND "${CMAKE_COMMAND}" -G "${CMAKE_GENERATOR}" .
+    WORKING_DIRECTORY "${DNN_DEPENDENCIES_BINARY_DIR}/cimg-download")
+  EXECUTE_PROCESS(COMMAND "${CMAKE_COMMAND}" --build .
+    WORKING_DIRECTORY "${DNN_DEPENDENCIES_BINARY_DIR}/cimg-download")
+  SET(CIMG_SOURCE_DIR "${DNN_DEPENDENCIES_SOURCE_DIR}/CImg" CACHE STRING "CImg source directory")
  ENDIF()
 
 # Library
