@@ -71,6 +71,8 @@ namespace dnn
 	typedef std::vector<Float, AlignedAllocator<Float, 64ull>> FloatVector;
 	typedef std::vector<Byte, AlignedAllocator<Byte, 64ull>> ByteVector;
 	
+	constexpr auto NEURONS_LIMIT = Float(100);
+	constexpr auto WEIGHTS_LIMIT = Float(100);
 	constexpr auto LIGHT_COMPUTE = 4ull;         // number of threads
 	constexpr auto MEDIUM_COMPUTE = 8ull;
 	constexpr auto FloatSquare(const Float& value) noexcept { return (value * value); }

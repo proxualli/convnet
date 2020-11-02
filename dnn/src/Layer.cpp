@@ -118,7 +118,7 @@ namespace dnn
 						NeuronsMin = std::min(NeuronsMin, horizontal_min(neurons));
 						NeuronsMax = std::max(NeuronsMax, horizontal_max(neurons));
 
-						if ((NeuronsMin < Float(-1000)) || (NeuronsMax > Float(1000)))
+						if ((NeuronsMin < -NEURONS_LIMIT) || (NeuronsMax > NEURONS_LIMIT))
 							goto FAIL;
 						
 						sum += horizontal_add(neurons);
@@ -149,7 +149,7 @@ namespace dnn
 						NeuronsMin = std::min(NeuronsMin, Neurons[i]);
 						NeuronsMax = std::max(NeuronsMax, Neurons[i]);
 
-						if ((NeuronsMin < Float(-1000)) || (NeuronsMax > Float(1000)))
+						if ((NeuronsMin < -NEURONS_LIMIT) || (NeuronsMax > NEURONS_LIMIT))
 							goto FAIL;
 
 						sum += Neurons[i];
@@ -181,6 +181,10 @@ namespace dnn
 				{
 					WeightsMin = std::min(WeightsMin, Weights[i]);
 					WeightsMax = std::max(WeightsMax, Weights[i]);
+
+					if ((WeightsMin < -WEIGHTS_LIMIT) || (WeightsMax > WEIGHTS_LIMIT))
+						goto FAIL;
+
 					sum += Weights[i];
 				}
 
@@ -208,6 +212,10 @@ namespace dnn
 					{
 						BiasesMin = std::min(BiasesMin, Biases[i]);
 						BiasesMax = std::max(BiasesMax, Biases[i]);
+
+						if ((BiasesMin < -WEIGHTS_LIMIT) || (BiasesMax > WEIGHTS_LIMIT))
+							goto FAIL;
+
 						sum += Biases[i];
 					}
 
