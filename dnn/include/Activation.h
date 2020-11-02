@@ -186,6 +186,26 @@ namespace dnn
 
 	class Activation final : public Layer
 	{
+	private:
+		std::unique_ptr<dnnl::logsoftmax_forward::primitive_desc> fwdDescLogSoftmax;
+		std::unique_ptr<dnnl::logsoftmax_backward::primitive_desc> bwdDescLogSoftmax;
+		std::unique_ptr<dnnl::softmax_forward::primitive_desc> fwdDescSoftmax;
+		std::unique_ptr<dnnl::softmax_backward::primitive_desc> bwdDescSoftmax;
+		std::unique_ptr<dnnl::eltwise_forward::primitive_desc> fwdDesc;
+		std::unique_ptr<dnnl::eltwise_backward::primitive_desc> bwdDesc;
+		std::unique_ptr<dnnl::binary::primitive_desc> bwdAddDesc;
+		std::unique_ptr<dnnl::logsoftmax_forward> fwdLogSoftmax;
+		std::unique_ptr<dnnl::logsoftmax_backward> bwdLogSoftmax;
+		std::unique_ptr<dnnl::softmax_forward> fwdSoftmax;
+		std::unique_ptr<dnnl::softmax_backward> bwdSoftmax;
+		std::unique_ptr<dnnl::eltwise_forward> fwd;
+		std::unique_ptr<dnnl::eltwise_backward> bwd;
+		std::unique_ptr<dnnl::binary> bwdAdd;
+		dnnl::algorithm algorithm;
+		bool reorderFwdSrc;
+		bool reorderBwdSrc;
+		bool reorderBwdDiffSrc;
+
 	public:
 		const Activations ActivationFunction;
 		const Float Alpha;
@@ -204,7 +224,6 @@ namespace dnn
 			assert(Inputs.size() == 1);
 		}
 				
-
 		std::string GetDescription() const final override
 		{
 			std::string description = GetDescriptionHeader();
@@ -1174,27 +1193,5 @@ namespace dnn
 			ReleaseGradient();
 #endif // DNN_LEAN
 		}
-
-	private:
-		std::unique_ptr<dnnl::logsoftmax_forward::primitive_desc> fwdDescLogSoftmax;
-		std::unique_ptr<dnnl::logsoftmax_backward::primitive_desc> bwdDescLogSoftmax;
-		std::unique_ptr<dnnl::softmax_forward::primitive_desc> fwdDescSoftmax;
-		std::unique_ptr<dnnl::softmax_backward::primitive_desc> bwdDescSoftmax;
-		std::unique_ptr<dnnl::eltwise_forward::primitive_desc> fwdDesc;
-		std::unique_ptr<dnnl::eltwise_backward::primitive_desc> bwdDesc;
-		std::unique_ptr<dnnl::binary::primitive_desc> bwdAddDesc;
-
-		std::unique_ptr<dnnl::logsoftmax_forward> fwdLogSoftmax;
-		std::unique_ptr<dnnl::logsoftmax_backward> bwdLogSoftmax;
-		std::unique_ptr<dnnl::softmax_forward> fwdSoftmax;
-		std::unique_ptr<dnnl::softmax_backward> bwdSoftmax;
-		std::unique_ptr<dnnl::eltwise_forward> fwd;
-		std::unique_ptr<dnnl::eltwise_backward> bwd;
-		std::unique_ptr<dnnl::binary> bwdAdd;
-
-		dnnl::algorithm algorithm;
-		bool reorderFwdSrc;
-		bool reorderBwdSrc;
-		bool reorderBwdDiffSrc;
 	};
 }
