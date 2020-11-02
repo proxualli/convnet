@@ -178,7 +178,6 @@
     <ClInclude Include="include\ChannelZeroPad.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Activation.cpp" />
     <ClCompile Include="src\Add.cpp" />
     <ClCompile Include="src\Average.cpp" />
     <ClCompile Include="src\AvgPooling.cpp" />
@@ -198,7 +197,6 @@
     <ClCompile Include="src\Dense.cpp" />
     <ClCompile Include="src\GlobalAvgPooling.cpp" />
     <ClCompile Include="src\GlobalMaxPooling.cpp" />
-    <ClCompile Include="src\Input.cpp" />
     <ClCompile Include="src\Layer.cpp" />
     <ClCompile Include="src\LocalResponseNormalization.cpp" />
     <ClCompile Include="src\MaxPooling.cpp" />

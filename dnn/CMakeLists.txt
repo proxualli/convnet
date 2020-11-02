@@ -56,7 +56,6 @@ set(libdnn_headers
 
 set(libdnn_sources
   ${libdnn_headers}
-  src/Activation.cpp
   src/Add.cpp
   src/Average.cpp
   src/AvgPooling.cpp
@@ -78,7 +77,6 @@ set(libdnn_sources
   src/Dropout.cpp
   src/GlobalAvgPooling.cpp
   src/GlobalMaxPooling.cpp
-  src/Input.cpp
   src/Layer.cpp
   src/LocalResponseNormalization.cpp
   src/Max.cpp

@@ -166,9 +166,6 @@
     <ClCompile Include="src\GlobalAvgPooling.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Input.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\MaxPooling.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -209,9 +206,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\BatchNormRelu.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Activation.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Cost.cpp">
