@@ -108,8 +108,6 @@ namespace dnn
 				DstMemDesc = std::make_unique<dnnl::memory::desc>(dnnl::memory::desc(dnnl::memory::dims({ dnnl::memory::dim(batchSize), dnnl::memory::dim(C), dnnl::memory::dim(H), dnnl::memory::dim(W) }), dnnl::memory::data_type::f32, Format));
 				DiffDstMemDesc = std::make_unique<dnnl::memory::desc>(dnnl::memory::desc(dnnl::memory::dims({ dnnl::memory::dim(batchSize), dnnl::memory::dim(C), dnnl::memory::dim(H), dnnl::memory::dim(W) }), dnnl::memory::data_type::f32, Format));
 			}
-
-			PlainFormat = Format == dnnl::memory::format_tag::ab || Format == dnnl::memory::format_tag::abc || Format == dnnl::memory::format_tag::abcd || Format == dnnl::memory::format_tag::abcde;
 		}
 
 		void SetBatchSize(const size_t batchSize) final override
@@ -128,7 +126,7 @@ namespace dnn
 
 			if (!training)
 			{
-				if (PlainFormat) // nchw
+				if (IsPlainFormat()) // nchw
 				{
 					const auto partialHW = (HW / VectorSize) * VectorSize;
 
@@ -183,7 +181,7 @@ namespace dnn
 #ifndef DNN_LEAN
 				const auto vecZero = VecFloat(0);
 #endif
-				if (PlainFormat)
+				if (IsPlainFormat())
 				{
 					const auto partialHW = (HW / VectorSize) * VectorSize;
 
@@ -328,7 +326,7 @@ namespace dnn
 
 			const auto strideH = W * VectorSize;
 
-			if (PlainFormat)
+			if (IsPlainFormat())
 			{
 				const auto partialHW = (HW / VectorSize) * VectorSize;
 				
