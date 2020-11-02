@@ -102,6 +102,5 @@ namespace dnn
 			bool reorderFwdSrc;
 			bool reorderBwdSrc;
 			bool reorderBwdDiffSrc;
-			bool plainFormat;
 	};
 }

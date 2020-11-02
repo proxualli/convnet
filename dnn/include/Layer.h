@@ -79,7 +79,8 @@ namespace dnn
 	protected:
 		dnn::Device Device;
 		std::mt19937 RandomEngine;
-		
+		bool PlainFormat;
+
 	public:
 		const std::string Name;
 		const LayerTypes LayerType;

@@ -75,7 +75,8 @@ namespace dnn
 			DstMemDesc = std::make_unique<dnnl::memory::desc>(dnnl::memory::desc(dnnl::memory::dims({ dnnl::memory::dim(batchSize), dnnl::memory::dim(C) }), dnnl::memory::data_type::f32, dnnl::memory::format_tag::nc));
 			DiffDstMemDesc = std::make_unique<dnnl::memory::desc>(dnnl::memory::desc(dnnl::memory::dims({ dnnl::memory::dim(batchSize), dnnl::memory::dim(C) }), dnnl::memory::data_type::f32, dnnl::memory::format_tag::nc));
 
-			plainFormat = true;
+			Format = dnnl::memory::format_tag::nc;
+			PlainFormat = true;
 		}
 		else
 		{
@@ -86,7 +87,7 @@ namespace dnn
 					throw std::invalid_argument("Src and Diff format are different in " + std::string(magic_enum::enum_name<LayerTypes>(LayerType)) + " layer " + Name);
 			}
 
-			plainFormat = (Format == dnnl::memory::format_tag::nchw);
+			PlainFormat = (Format == dnnl::memory::format_tag::ab || Format == dnnl::memory::format_tag::abc || Format == dnnl::memory::format_tag::abcd || Format == dnnl::memory::format_tag::abcde);
 
 			DstMemDesc = std::make_unique<dnnl::memory::desc>(dnnl::memory::desc(dnnl::memory::dims({ dnnl::memory::dim(batchSize), dnnl::memory::dim(C), dnnl::memory::dim(H), dnnl::memory::dim(W) }), dnnl::memory::data_type::f32, Format));
 			DiffDstMemDesc = std::make_unique<dnnl::memory::desc>(dnnl::memory::desc(dnnl::memory::dims({ dnnl::memory::dim(batchSize), dnnl::memory::dim(C), dnnl::memory::dim(H), dnnl::memory::dim(W) }), dnnl::memory::data_type::f32, Format));

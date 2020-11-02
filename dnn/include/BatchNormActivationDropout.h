@@ -6,9 +6,6 @@ namespace dnn
 	template <typename Activation = HardSwish, typename LayerTypes T = LayerTypes::BatchNormHardSwishDropout>
 	class BatchNormActivationDropout final : public Layer
 	{
-	private:
-		bool plainFormat;
-
 	public:
 		const bool Scaling;
 		const Float Eps;
@@ -97,7 +94,8 @@ namespace dnn
 				DstMemDesc = std::make_unique<dnnl::memory::desc>(dnnl::memory::desc(dnnl::memory::dims({ dnnl::memory::dim(batchSize), dnnl::memory::dim(C) }), dnnl::memory::data_type::f32, dnnl::memory::format_tag::nc));
 				DiffDstMemDesc = std::make_unique<dnnl::memory::desc>(dnnl::memory::desc(dnnl::memory::dims({ dnnl::memory::dim(batchSize), dnnl::memory::dim(C) }), dnnl::memory::data_type::f32, dnnl::memory::format_tag::nc));
 
-				plainFormat = true;
+				Format = dnnl::memory::format_tag::nc;
+				PlainFormat = true;
 			}
 			else
 			{
@@ -108,7 +106,7 @@ namespace dnn
 						throw std::invalid_argument("Src and Diff format are different in " + std::string(magic_enum::enum_name<LayerTypes>(LayerType)) + " layer " + Name);
 				}
 
-				plainFormat = Format == dnnl::memory::format_tag::nchw;
+				PlainFormat = (Format == dnnl::memory::format_tag::ab || Format == dnnl::memory::format_tag::abc || Format == dnnl::memory::format_tag::abcd || Format == dnnl::memory::format_tag::abcde);
 
 				DstMemDesc = std::make_unique<dnnl::memory::desc>(dnnl::memory::desc(dnnl::memory::dims({ dnnl::memory::dim(batchSize), dnnl::memory::dim(C), dnnl::memory::dim(H), dnnl::memory::dim(W) }), dnnl::memory::data_type::f32, Format));
 				DiffDstMemDesc = std::make_unique<dnnl::memory::desc>(dnnl::memory::desc(dnnl::memory::dims({ dnnl::memory::dim(batchSize), dnnl::memory::dim(C), dnnl::memory::dim(H), dnnl::memory::dim(W) }), dnnl::memory::data_type::f32, Format));
@@ -131,7 +129,7 @@ namespace dnn
 
 			if (!training)
 			{
-				if (plainFormat) // nchw
+				if (PlainFormat) // nchw
 				{
 					const auto partialHW = (HW / VectorSize) * VectorSize;
 
@@ -186,7 +184,7 @@ namespace dnn
 #ifndef DNN_LEAN
 				const auto vecZero = VecFloat(0);
 #endif
-				if (plainFormat)
+				if (PlainFormat)
 				{
 					const auto partialHW = (HW / VectorSize) * VectorSize;
 
@@ -331,7 +329,7 @@ namespace dnn
 
 			const auto strideH = W * VectorSize;
 
-			if (plainFormat)
+			if (PlainFormat)
 			{
 				const auto partialHW = (HW / VectorSize) * VectorSize;
 				
