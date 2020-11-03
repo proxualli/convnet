@@ -107,14 +107,16 @@ namespace dnn
 		else
 		{
 #endif
+			const auto size = IsPlainFormat() ? CDHW : PaddedCDHW;
+
 			switch (Inputs.size())
 			{
 			case 2:
 			{
 				for_i(batchSize, LIGHT_COMPUTE, [=](size_t b)
 				{
-					const auto start = b * PaddedCDHW;
-					const auto end = start + CDHW;
+					const auto start = b * size;
+					const auto end = start + size;
 					for (auto n = start; n < end; n++)
 					{
 						Inputs[0]->NeuronsD1[n] += NeuronsD1[n];
@@ -128,8 +130,8 @@ namespace dnn
 			{
 				for_i(batchSize, LIGHT_COMPUTE, [=](size_t b)
 				{
-					const auto start = b * PaddedCDHW;
-					const auto end = start + CDHW;
+					const auto start = b * size;
+					const auto end = start + size;
 					for (auto n = start; n < end; n++)
 					{
 						Inputs[0]->NeuronsD1[n] += NeuronsD1[n];
@@ -144,8 +146,8 @@ namespace dnn
 			{
 				for_i(batchSize, LIGHT_COMPUTE, [=](size_t b)
 				{
-					const auto start = b * PaddedCDHW;
-					const auto end = start + CDHW;
+					const auto start = b * size;
+					const auto end = start + size;
 					for (auto n = start; n < end; n++)
 					{
 						Inputs[0]->NeuronsD1[n] += NeuronsD1[n];
@@ -161,8 +163,8 @@ namespace dnn
 			{
 				for_i(batchSize, LIGHT_COMPUTE, [=](size_t b)
 				{
-					const auto start = b * PaddedCDHW;
-					const auto end = start + CDHW;
+					const auto start = b * size;
+					const auto end = start + size;
 					for (auto n = start; n < end; n++)
 					{
 						Inputs[0]->NeuronsD1[n] += NeuronsD1[n];
@@ -179,8 +181,8 @@ namespace dnn
 			{
 				for_i(batchSize, LIGHT_COMPUTE, [=](size_t b)
 				{
-					const auto start = b * PaddedCDHW;
-					const auto end = start + CDHW;
+					const auto start = b * size;
+					const auto end = start + size;
 					for (auto n = start; n < end; n++)
 					{
 						Inputs[0]->NeuronsD1[n] += NeuronsD1[n];
@@ -198,8 +200,8 @@ namespace dnn
 			{
 				for_i(batchSize, LIGHT_COMPUTE, [=](size_t b)
 				{
-					const auto start = b * PaddedCDHW;
-					const auto end = start + CDHW;
+					const auto start = b * size;
+					const auto end = start + size;
 					for (auto n = start; n < end; n++)
 					{
 						Inputs[0]->NeuronsD1[n] += NeuronsD1[n];
@@ -218,8 +220,8 @@ namespace dnn
 			{
 				for_i(batchSize, LIGHT_COMPUTE, [=](size_t b)
 				{
-					const auto start = b * PaddedCDHW;
-					const auto end = start + CDHW;
+					const auto start = b * size;
+					const auto end = start + size;
 					for (auto n = start; n < end; n++)
 					{
 						Inputs[0]->NeuronsD1[n] += NeuronsD1[n];
@@ -238,8 +240,8 @@ namespace dnn
 			default:
 				for_i(batchSize, LIGHT_COMPUTE, [=](size_t b)
 				{
-					const auto start = b * PaddedCDHW;
-					const auto end = start + CDHW;
+					const auto start = b * size;
+					const auto end = start + size;
 					for (auto n = start; n < end; n++)
 					{
 						Inputs[0]->NeuronsD1[n] += NeuronsD1[n];
