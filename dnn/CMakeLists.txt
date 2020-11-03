@@ -66,7 +66,6 @@ set(libdnn_sources
   src/ChannelSplit.cpp
   src/ChannelMultiply.cpp
   src/ChannelZeroPad.cpp
-  src/Concat.cpp
   src/Convolution.cpp
   src/ConvolutionTranspose.cpp
   src/Cost.cpp

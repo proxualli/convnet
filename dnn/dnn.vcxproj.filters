@@ -148,9 +148,6 @@
     <ClCompile Include="src\AvgPooling.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Concat.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\Convolution.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
