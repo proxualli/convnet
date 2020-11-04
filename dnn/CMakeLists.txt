@@ -57,14 +57,10 @@ set(libdnn_headers
 set(libdnn_sources
   ${libdnn_headers}
   src/dllmain.cpp
-  src/LocalResponseNormalization.cpp
-  src/Model.cpp
-  src/Multiply.cpp
   src/PartialDepthwiseConvolution.cpp
   src/Resampling.cpp
   src/Scripts.cpp
   src/stdafx.cpp
-  src/Substract.cpp
 )
 
 # ---[ Download deps

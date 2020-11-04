@@ -180,14 +180,8 @@
   <ItemGroup>
     <ClCompile Include="src\PartialDepthwiseConvolution.cpp" />
     <ClCompile Include="src\dllmain.cpp" />
-    <ClCompile Include="src\Multiply.cpp" />
-    <ClCompile Include="src\Model.cpp">
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Full</Optimization>
-      <OmitFramePointers Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</OmitFramePointers>
-    </ClCompile>
     <ClCompile Include="src\Resampling.cpp" />
     <ClCompile Include="src\Scripts.cpp" />
-    <ClCompile Include="src\Substract.cpp" />
     <ClCompile Include="src\stdafx.cpp" />
   </ItemGroup>
   <ItemGroup>

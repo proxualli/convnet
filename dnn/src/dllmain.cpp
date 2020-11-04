@@ -1,4 +1,5 @@
 #include "Model.h"
+#include "Definition.h"
 
 #if defined _WIN32 || defined __CYGWIN__ || defined __MINGW32__
 #if defined DNN_LOG 
@@ -93,14 +94,14 @@ extern "C" DNN_API bool DNNLoadDataset()
 
 extern "C" DNN_API bool DNNCheckDefinition(std::string& definition, CheckMsg& checkMsg)
 {
-	return Model::CheckDefinition(definition, checkMsg);
+	return Definition::CheckDefinition(definition, checkMsg);
 }
 
 extern "C" DNN_API int DNNReadDefinition(const char* definition, const Optimizers optimizer, CheckMsg& checkMsg)
 {
 	dnn::Model *ptr = nullptr;
 	
-	ptr = Model::ReadDefinition(definition, optimizer, dataprovider.get(), checkMsg);
+	ptr = Definition::ReadDefinition(definition, optimizer, dataprovider.get(), checkMsg);
 
 	if (ptr)
 	{
@@ -118,7 +119,7 @@ extern "C" DNN_API int DNNLoadDefinition(const char* fileName, const Optimizers 
 {
 	dnn::Model *ptr = nullptr;
 	
-	ptr = Model::LoadDefinition(fileName, optimizer, dataprovider.get(), checkMsg);
+	ptr = Definition::LoadDefinition(fileName, optimizer, dataprovider.get(), checkMsg);
 
 	if (ptr)
 	{
