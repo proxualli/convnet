@@ -178,11 +178,8 @@
     <ClInclude Include="include\ChannelZeroPad.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Min.cpp" />
     <ClCompile Include="src\PartialDepthwiseConvolution.cpp" />
     <ClCompile Include="src\dllmain.cpp" />
-    <ClCompile Include="src\LocalResponseNormalization.cpp" />
-    <ClCompile Include="src\MaxPooling.cpp" />
     <ClCompile Include="src\Multiply.cpp" />
     <ClCompile Include="src\Model.cpp">
       <Optimization Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Full</Optimization>

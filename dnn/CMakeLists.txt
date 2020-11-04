@@ -58,8 +58,6 @@ set(libdnn_sources
   ${libdnn_headers}
   src/dllmain.cpp
   src/LocalResponseNormalization.cpp
-  src/MaxPooling.cpp
-  src/Min.cpp
   src/Model.cpp
   src/Multiply.cpp
   src/PartialDepthwiseConvolution.cpp
