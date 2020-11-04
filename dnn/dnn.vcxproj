@@ -178,8 +178,6 @@
     <ClInclude Include="include\ChannelZeroPad.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\BatchNorm.cpp" />
-    <ClCompile Include="src\BatchNormRelu.cpp" />
     <ClCompile Include="src\ChannelSplit.cpp" />
     <ClCompile Include="src\Convolution.cpp" />
     <ClCompile Include="src\Cost.cpp" />

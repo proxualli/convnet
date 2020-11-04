@@ -56,8 +56,6 @@ set(libdnn_headers
 
 set(libdnn_sources
   ${libdnn_headers}
-  src/BatchNorm.cpp
-  src/BatchNormRelu.cpp
   src/ChannelMultiply.cpp
   src/ChannelShuffle.cpp
   src/ChannelSplit.cpp
