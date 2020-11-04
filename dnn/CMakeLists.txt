@@ -57,7 +57,6 @@ set(libdnn_headers
 set(libdnn_sources
   ${libdnn_headers}
   src/dllmain.cpp
-  src/Dropout.cpp
   src/GlobalAvgPooling.cpp
   src/GlobalMaxPooling.cpp
   src/Layer.cpp
