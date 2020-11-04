@@ -56,7 +56,6 @@ set(libdnn_headers
 
 set(libdnn_sources
   ${libdnn_headers}
-  src/Dense.cpp
   src/DepthwiseConvolution.cpp
   src/Divide.cpp
   src/dllmain.cpp

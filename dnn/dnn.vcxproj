@@ -184,7 +184,6 @@
     <ClCompile Include="src\Divide.cpp" />
     <ClCompile Include="src\dllmain.cpp" />
     <ClCompile Include="src\Dropout.cpp" />
-    <ClCompile Include="src\Dense.cpp" />
     <ClCompile Include="src\GlobalAvgPooling.cpp" />
     <ClCompile Include="src\GlobalMaxPooling.cpp" />
     <ClCompile Include="src\Layer.cpp" />

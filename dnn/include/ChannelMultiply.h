@@ -97,25 +97,25 @@ namespace dnn
 			{
 #endif
 				for_i(batchSize, MEDIUM_COMPUTE, [=](size_t n)
+				{
+					for (auto c = 0ull; c < PaddedC; c += VectorSize)
 					{
-						for (auto c = 0ull; c < PaddedC; c += VectorSize)
+						const auto offsetC = n * PaddedCDHW + c * HW;
+						const auto channelOffset = n * PaddedC + c;
+
+						for (auto h = 0ull; h < H; h++)
 						{
-							const auto offsetC = n * PaddedCDHW + c * HW;
-							const auto channelOffset = n * PaddedC + c;
+							const auto offsetH = offsetC + h * strideH;
 
-							for (auto h = 0ull; h < H; h++)
+							for (auto w = offsetH; w < offsetH + strideH; w += VectorSize)
 							{
-								const auto offsetH = offsetC + h * strideH;
-
-								for (auto w = offsetH; w < offsetH + strideH; w += VectorSize)
-								{
-									const auto neuronsD1 = VecFloat().load_a(&NeuronsD1[w]);
-									mul_add(neuronsD1, VecFloat().load_a(&Inputs[1]->Neurons[channelOffset]), VecFloat().load_a(&Inputs[0]->NeuronsD1[w])).store_a(&Inputs[0]->NeuronsD1[w]);
-									mul_add(neuronsD1, VecFloat().load_a(&Inputs[0]->Neurons[w]), VecFloat().load_a(&Inputs[1]->NeuronsD1[channelOffset])).store_a(&Inputs[1]->NeuronsD1[channelOffset]);
-								}
+								const auto neuronsD1 = VecFloat().load_a(&NeuronsD1[w]);
+								mul_add(neuronsD1, VecFloat().load_a(&Inputs[1]->Neurons[channelOffset]), VecFloat().load_a(&Inputs[0]->NeuronsD1[w])).store_a(&Inputs[0]->NeuronsD1[w]);
+								mul_add(neuronsD1, VecFloat().load_a(&Inputs[0]->Neurons[w]), VecFloat().load_a(&Inputs[1]->NeuronsD1[channelOffset])).store_a(&Inputs[1]->NeuronsD1[channelOffset]);
 							}
 						}
-					});
+					}
+				});
 #ifdef DNN_STOCHASTIC
 			}
 #endif

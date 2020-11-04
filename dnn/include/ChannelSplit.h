@@ -83,29 +83,29 @@ namespace dnn
 			{
 #endif
 				for_i(batchSize, MEDIUM_COMPUTE, [=](size_t n)
+				{
+					const auto vecZero = VecFloat(0);
+
+					for (auto c = 0ull; c < PaddedC; c += VectorSize)
 					{
-						const auto vecZero = VecFloat(0);
+						const auto offsetC = n * InputLayer->PaddedCDHW + (c + ((Group - 1) * PaddedC)) * HW;
+						const auto offsetCHalf = n * PaddedCDHW + c * HW;
 
-						for (auto c = 0ull; c < PaddedC; c += VectorSize)
+						for (auto h = 0ull; h < H; h++)
 						{
-							const auto offsetC = n * InputLayer->PaddedCDHW + (c + ((Group - 1) * PaddedC)) * HW;
-							const auto offsetCHalf = n * PaddedCDHW + c * HW;
+							const auto offsetH = offsetC + h * strideH;
+							const auto offsetHHalf = offsetCHalf + h * strideH;
 
-							for (auto h = 0ull; h < H; h++)
+							for (auto w = 0ull; w < strideH; w += VectorSize)
 							{
-								const auto offsetH = offsetC + h * strideH;
-								const auto offsetHHalf = offsetCHalf + h * strideH;
-
-								for (auto w = 0ull; w < strideH; w += VectorSize)
-								{
-									(VecFloat().load_a(&InputLayer->Neurons[w + offsetH])).store_a(&Neurons[w + offsetHHalf]);
+								(VecFloat().load_a(&InputLayer->Neurons[w + offsetH])).store_a(&Neurons[w + offsetHHalf]);
 #ifndef DNN_LEAN
-									vecZero.store_nt(&NeuronsD1[w + offsetHHalf]);
+								vecZero.store_nt(&NeuronsD1[w + offsetHHalf]);
 #endif // DNN_LEAN
-								}
 							}
 						}
-					});
+					}
+				});
 #ifdef DNN_STOCHASTIC
 			}
 #endif

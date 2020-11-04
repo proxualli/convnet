@@ -235,12 +235,12 @@ namespace dnn
 			return description;
 		}
 
-		size_t Activation::FanIn() const final override
+		size_t FanIn() const final override
 		{
 			return 1;
 		}
 
-		size_t Activation::FanOut() const final override
+		size_t FanOut() const final override
 		{
 			return 1;
 		}

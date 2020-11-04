@@ -62,7 +62,7 @@ namespace dnn
 			WeightsMemDesc = std::make_unique<dnnl::memory::desc>(dnnl::memory::desc(dnnl::memory::dims({ dnnl::memory::dim(C), dnnl::memory::dim(InputLayer->C), dnnl::memory::dim(KernelH), dnnl::memory::dim(KernelW) }), dnnl::memory::data_type::f32, dnnl::memory::format_tag::oihw));
 		}
 
-		std::string ConvolutionTranspose::GetDescription() const final override
+		std::string GetDescription() const final override
 		{
 			std::string description = GetDescriptionHeader();
 
@@ -85,17 +85,17 @@ namespace dnn
 			return description;
 		}
 
-		size_t ConvolutionTranspose::FanIn() const final override
+		size_t FanIn() const final override
 		{
 			return InputLayer->C * KernelH * KernelW;
 		}
 
-		size_t ConvolutionTranspose::FanOut() const final override
+		size_t FanOut() const final override
 		{
 			return C * (KernelH * StrideW) * (KernelH * StrideW);
 		}
 
-		void ConvolutionTranspose::InitializeDescriptors(const size_t batchSize) final override
+		void InitializeDescriptors(const size_t batchSize) final override
 		{
 			std::vector<dnnl::memory::desc> memDesc = std::vector<dnnl::memory::desc>({
 				dnnl::memory::desc(dnnl::memory::dims({ dnnl::memory::dim(batchSize), dnnl::memory::dim(InputLayer->C), dnnl::memory::dim(InputLayer->H), dnnl::memory::dim(InputLayer->W) }), dnnl::memory::data_type::f32, Format),
@@ -147,7 +147,7 @@ namespace dnn
 #endif
 		}
 
-		void ConvolutionTranspose::ForwardProp(const size_t batchSize, const bool training) final override
+		void ForwardProp(const size_t batchSize, const bool training) final override
 		{
 			auto memSrc = dnnl::memory(*InputLayer->DstMemDesc, Device.first, InputLayer->Neurons.data());
 			auto srcMem = reorderFwdSrc ? dnnl::memory(fwdDesc->src_desc(), Device.first) : memSrc;
@@ -181,7 +181,7 @@ namespace dnn
 #endif // DNN_LEAN
 		}
 
-		void ConvolutionTranspose::BackwardProp(const size_t batchSize) final override
+		void BackwardProp(const size_t batchSize) final override
 		{
 #ifdef DNN_LEAN
 			ZeroGradient(batchSize);
@@ -254,7 +254,7 @@ namespace dnn
 #endif // DNN_LEAN
 		}
 
-		ByteVector ConvolutionTranspose::GetImage(const Byte fillColor) final override
+		ByteVector GetImage(const Byte fillColor) final override
 		{
 			const auto rangeWeights = GetColorRange(WeightsMin, WeightsMax);
 			const auto rangeBiases = GetColorRange(BiasesMin, BiasesMax);

@@ -13,7 +13,7 @@ namespace dnn
 		std::unordered_map<int, dnnl::memory> bwdArgs;
 
 	public:
-		inline static const size_t GetSumInputChannels(const std::vector<Layer*>& inputs)
+		static const size_t GetSumInputChannels(const std::vector<Layer*>& inputs)
 		{
 			auto channels = 0ull;
 			for (auto layer : inputs)
@@ -28,17 +28,17 @@ namespace dnn
 			assert(Inputs.size() > 1);
 		}
 
-		std::string Concat::GetDescription() const final override
+		std::string GetDescription() const final override
 		{
 			return GetDescriptionHeader();
 		}
 
-		size_t Concat::FanIn() const final override
+		size_t FanIn() const final override
 		{
 			return 1;
 		}
 
-		size_t Concat::FanOut() const final override
+		size_t FanOut() const final override
 		{
 			return 1;
 		}

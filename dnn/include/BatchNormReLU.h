@@ -68,8 +68,6 @@ namespace dnn
 			PersistWeightsMemDesc = std::make_unique<dnnl::memory::desc>(dnnl::memory::desc(dnnl::memory::dims({ 2, dnnl::memory::dim(C) }), dnnl::memory::data_type::f32, dnnl::memory::format_tag::nc));
 		}
 
-
-
 		std::string GetDescription() const final override
 		{
 			auto description = GetDescriptionHeader() + GetWeightsDescription(Scaling);

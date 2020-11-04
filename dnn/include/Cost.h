@@ -68,7 +68,7 @@ namespace dnn
 			ConfusionMatrix = std::vector<std::vector<size_t>>(C, std::vector<size_t>(C, 0));
 		}
 
-		std::string Cost::GetDescription() const final override
+		std::string GetDescription() const final override
 		{
 			std::string description = GetDescriptionHeader();
 
@@ -83,34 +83,34 @@ namespace dnn
 			return description;
 		}
 
-		size_t Cost::FanIn() const final override
+		size_t FanIn() const final override
 		{
 			return 1;
 		}
 
-		size_t Cost::FanOut() const final override
+		size_t FanOut() const final override
 		{
 			return 1;
 		}
 
-		void Cost::InitializeDescriptors(const size_t batchSize) final override
+		void InitializeDescriptors(const size_t batchSize) final override
 		{
 			DstMemDesc = std::make_unique<dnnl::memory::desc>(dnnl::memory::desc(dnnl::memory::dims({ int(batchSize), int(C) }), dnnl::memory::data_type::f32, dnnl::memory::format_tag::nc));
 			DiffDstMemDesc = std::make_unique<dnnl::memory::desc>(dnnl::memory::desc(dnnl::memory::dims({ int(batchSize), int(C) }), dnnl::memory::data_type::f32, dnnl::memory::format_tag::nc));
 			isLogSoftmax = static_cast<Activation*>(InputLayer)->ActivationFunction == Activations::LogSoftmax;
 		}
 
-		void Cost::SetSampleLabel(const std::vector<size_t>& sampleLabel)
+		void SetSampleLabel(const std::vector<size_t>& sampleLabel)
 		{
 			SampleLabel = sampleLabel;
 		}
 
-		void Cost::SetSampleLabels(const std::vector<std::vector<size_t>>& sampleLabels)
+		void SetSampleLabels(const std::vector<std::vector<size_t>>& sampleLabels)
 		{
 			SampleLabels = sampleLabels;
 		}
 
-		void Cost::Reset()
+		void Reset()
 		{
 			TrainErrors = 0;
 			TrainErrorPercentage = Float(0);
@@ -125,7 +125,7 @@ namespace dnn
 			ConfusionMatrix = std::vector<std::vector<size_t>>(C, std::vector<size_t>(C, 0));
 		}
 
-		void Cost::ForwardProp(const size_t batchSize, const bool training) final override
+		void ForwardProp(const size_t batchSize, const bool training) final override
 		{
 			switch (CostFunction)
 			{
@@ -373,7 +373,7 @@ namespace dnn
 			}
 		}
 
-		void Cost::BackwardProp(const size_t batchSize) final override
+		void BackwardProp(const size_t batchSize) final override
 		{
 #ifdef DNN_LEAN
 			ZeroGradient(batchSize);

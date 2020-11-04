@@ -5,6 +5,13 @@ namespace dnn
 {
 	class Add final : public Layer
 	{
+	private:
+		std::vector<Float> Scales;
+		std::vector<dnnl::memory::desc> srcsMemsDesc;
+		std::unordered_map<int, dnnl::memory> fwdArgs;
+		std::unique_ptr<dnnl::sum::primitive_desc> fwdDesc;
+		std::unique_ptr<dnnl::sum> fwd;
+
 	public:
 		Add(const dnn::Device& device, const dnnl::memory::format_tag format, const std::string& name, const std::vector<Layer*>& inputs) :
 			Layer(device, format, name, LayerTypes::Add, 0, 0, inputs[0]->C, inputs[0]->D, inputs[0]->H, inputs[0]->W, 0, 0, 0, inputs)
@@ -268,12 +275,5 @@ namespace dnn
 			ReleaseGradient();
 #endif // DNN_LEAN
 		}
-
-	private:
-		std::vector<Float> Scales;
-		std::vector<dnnl::memory::desc> srcsMemsDesc;
-		std::unordered_map<int, dnnl::memory> fwdArgs;
-		std::unique_ptr<dnnl::sum::primitive_desc> fwdDesc;
-		std::unique_ptr<dnnl::sum> fwd;
 	};
 }

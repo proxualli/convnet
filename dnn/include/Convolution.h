@@ -76,7 +76,7 @@ namespace dnn
 			}
 		}
 
-		std::string Convolution::GetDescription() const final override
+		std::string GetDescription() const final override
 		{
 			std::string description = GetDescriptionHeader();
 
@@ -101,17 +101,17 @@ namespace dnn
 			return description;
 		}
 
-		size_t Convolution::FanIn() const  final override
+		size_t FanIn() const  final override
 		{
 			return InputLayer->C / Groups * KernelH * KernelW;
 		}
 
-		size_t Convolution::FanOut() const final override
+		size_t FanOut() const final override
 		{
 			return C / Groups * KernelH * KernelW / StrideH * StrideW;
 		}
 
-		void Convolution::InitializeDescriptors(const size_t batchSize) final override
+		void InitializeDescriptors(const size_t batchSize) final override
 		{
 			std::vector<dnnl::memory::desc> memDesc;
 
@@ -178,7 +178,7 @@ namespace dnn
 #endif
 		}
 
-		void Convolution::ForwardProp(const size_t batchSize, const bool training) final override
+		void ForwardProp(const size_t batchSize, const bool training) final override
 		{
 			auto memSrc = dnnl::memory(*InputLayer->DstMemDesc, Device.first, InputLayer->Neurons.data());
 			auto srcMem = reorderFwdSrc ? dnnl::memory(fwdDesc->src_desc(), Device.first) : memSrc;
@@ -209,7 +209,7 @@ namespace dnn
 #endif // DNN_LEAN		
 		}
 
-		void Convolution::BackwardProp(const size_t batchSize) final override
+		void BackwardProp(const size_t batchSize) final override
 		{
 #ifdef DNN_LEAN
 			ZeroGradient(batchSize);
@@ -282,7 +282,7 @@ namespace dnn
 #endif // DNN_LEAN		
 		}
 
-		ByteVector Convolution::GetImage(const Byte fillColor) final override
+		ByteVector GetImage(const Byte fillColor) final override
 		{
 			const auto rangeWeights = GetColorRange(WeightsMin, WeightsMax);
 			const auto rangeBiases = GetColorRange(BiasesMin, BiasesMax);
