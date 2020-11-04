@@ -57,9 +57,6 @@ set(libdnn_headers
 set(libdnn_sources
   ${libdnn_headers}
   src/dllmain.cpp
-  src/PartialDepthwiseConvolution.cpp
-  src/Resampling.cpp
-  src/Scripts.cpp
   src/stdafx.cpp
 )
 

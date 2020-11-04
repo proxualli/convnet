@@ -1,4 +1,3 @@
-#include "Model.h"
 #include "Definition.h"
 
 #if defined _WIN32 || defined __CYGWIN__ || defined __MINGW32__

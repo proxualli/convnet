@@ -178,10 +178,7 @@
     <ClInclude Include="include\ChannelZeroPad.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\PartialDepthwiseConvolution.cpp" />
     <ClCompile Include="src\dllmain.cpp" />
-    <ClCompile Include="src\Resampling.cpp" />
-    <ClCompile Include="src\Scripts.cpp" />
     <ClCompile Include="src\stdafx.cpp" />
   </ItemGroup>
   <ItemGroup>
