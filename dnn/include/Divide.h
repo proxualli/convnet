@@ -51,7 +51,7 @@ namespace dnn
 			}
 		}
 
-		void Divide::ForwardProp(const size_t batchSize, const bool training) final override
+		void ForwardProp(const size_t batchSize, const bool training) final override
 		{
 #ifdef DNN_STOCHASTIC
 			if (batchSize == 1)
@@ -73,43 +73,43 @@ namespace dnn
 				if (Inputs.size() == 2)
 				{
 					for_i(batchSize, LIGHT_COMPUTE, [=](size_t b)
+					{
+						const auto start = b * CDHW;
+						const auto end = start + CDHW;
+						for (auto n = start; n < end; n++)
 						{
-							const auto start = b * CDHW;
-							const auto end = start + CDHW;
-							for (auto n = start; n < end; n++)
-							{
-								Neurons[n] = Inputs[0]->Neurons[n] / Inputs[1]->Neurons[n];
+							Neurons[n] = Inputs[0]->Neurons[n] / Inputs[1]->Neurons[n];
 #ifndef DNN_LEAN
-								NeuronsD1[n] = Float(0);
+							NeuronsD1[n] = Float(0);
 #endif // DNN_LEAN
-							}
-						});
+						}
+					});
 
 				}
 				else
 				{
 					for_i(batchSize, LIGHT_COMPUTE, [=](size_t b)
+					{
+						const auto start = b * CDHW;
+						const auto end = start + CDHW;
+						for (auto n = start; n < end; n++)
 						{
-							const auto start = b * CDHW;
-							const auto end = start + CDHW;
-							for (auto n = start; n < end; n++)
-							{
-								Neurons[n] = Inputs[0]->Neurons[n];
+							Neurons[n] = Inputs[0]->Neurons[n];
 #ifndef DNN_LEAN
-								NeuronsD1[n] = Float(0);
+							NeuronsD1[n] = Float(0);
 #endif // DNN_LEAN
-							}
-							for (auto i = 1ull; i < Inputs.size(); i++)
-								for (auto n = start; n < end; n++)
-									Neurons[n] /= Inputs[i]->Neurons[n];
-						});
+						}
+						for (auto i = 1ull; i < Inputs.size(); i++)
+							for (auto n = start; n < end; n++)
+								Neurons[n] /= Inputs[i]->Neurons[n];
+					});
 				}
 #ifdef DNN_STOCHASTIC
 			}
 #endif
 		}
 
-		void Divide::BackwardProp(const size_t batchSize) final override
+		void BackwardProp(const size_t batchSize) final override
 		{
 #ifdef DNN_LEAN
 			ZeroGradientMulti(batchSize);
@@ -145,29 +145,29 @@ namespace dnn
 				if (Inputs.size() == 2)
 				{
 					for_i(batchSize, LIGHT_COMPUTE, [=](size_t b)
+					{
+						const auto start = b * CDHW;
+						const auto end = start + CDHW;
+						for (auto n = start; n < end; n++)
 						{
-							const auto start = b * CDHW;
-							const auto end = start + CDHW;
-							for (auto n = start; n < end; n++)
-							{
-								Inputs[0]->NeuronsD1[n] += NeuronsD1[n] / Inputs[1]->Neurons[n];
-								Inputs[1]->NeuronsD1[n] += NeuronsD1[n] * Inputs[0]->Neurons[n] / FloatSquare(Inputs[1]->Neurons[n]);
-							}
-						});
+							Inputs[0]->NeuronsD1[n] += NeuronsD1[n] / Inputs[1]->Neurons[n];
+							Inputs[1]->NeuronsD1[n] += NeuronsD1[n] * Inputs[0]->Neurons[n] / FloatSquare(Inputs[1]->Neurons[n]);
+						}
+					});
 				}
 				else if (Inputs.size() == 3)
 				{
 					for_i(batchSize, LIGHT_COMPUTE, [=](size_t b)
+					{
+						const auto start = b * CDHW;
+						const auto end = start + CDHW;
+						for (auto n = start; n < end; n++)
 						{
-							const auto start = b * CDHW;
-							const auto end = start + CDHW;
-							for (auto n = start; n < end; n++)
-							{
-								Inputs[0]->NeuronsD1[n] += NeuronsD1[n] / (Inputs[1]->Neurons[n] * Inputs[2]->Neurons[n]);
-								Inputs[1]->NeuronsD1[n] += NeuronsD1[n] * Inputs[0]->Neurons[n] / (FloatSquare(Inputs[1]->Neurons[n]) * Inputs[2]->Neurons[n]);
-								Inputs[2]->NeuronsD1[n] += NeuronsD1[n] * Inputs[0]->Neurons[n] / (Inputs[1]->Neurons[n] * FloatSquare(Inputs[2]->Neurons[n]));
-							}
-						});
+							Inputs[0]->NeuronsD1[n] += NeuronsD1[n] / (Inputs[1]->Neurons[n] * Inputs[2]->Neurons[n]);
+							Inputs[1]->NeuronsD1[n] += NeuronsD1[n] * Inputs[0]->Neurons[n] / (FloatSquare(Inputs[1]->Neurons[n]) * Inputs[2]->Neurons[n]);
+							Inputs[2]->NeuronsD1[n] += NeuronsD1[n] * Inputs[0]->Neurons[n] / (Inputs[1]->Neurons[n] * FloatSquare(Inputs[2]->Neurons[n]));
+						}
+					});
 				}
 				else
 				{

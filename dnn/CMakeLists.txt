@@ -56,8 +56,6 @@ set(libdnn_headers
 
 set(libdnn_sources
   ${libdnn_headers}
-  src/DepthwiseConvolution.cpp
-  src/Divide.cpp
   src/dllmain.cpp
   src/Dropout.cpp
   src/GlobalAvgPooling.cpp
