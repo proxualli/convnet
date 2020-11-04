@@ -57,7 +57,6 @@ set(libdnn_headers
 set(libdnn_sources
   ${libdnn_headers}
   src/dllmain.cpp
-  src/Layer.cpp
   src/LocalResponseNormalization.cpp
   src/Max.cpp
   src/MaxPooling.cpp

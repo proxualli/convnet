@@ -160,9 +160,6 @@
     <ClCompile Include="src\Multiply.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Layer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\LocalResponseNormalization.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
