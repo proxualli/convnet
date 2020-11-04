@@ -178,7 +178,6 @@
     <ClInclude Include="include\ChannelZeroPad.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Max.cpp" />
     <ClCompile Include="src\Min.cpp" />
     <ClCompile Include="src\PartialDepthwiseConvolution.cpp" />
     <ClCompile Include="src\dllmain.cpp" />
