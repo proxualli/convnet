@@ -56,9 +56,6 @@ set(libdnn_headers
 
 set(libdnn_sources
   ${libdnn_headers}
-  src/Add.cpp
-  src/Average.cpp
-  src/AvgPooling.cpp
   src/BatchNorm.cpp
   src/BatchNormRelu.cpp
   src/ChannelMultiply.cpp

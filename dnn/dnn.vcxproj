@@ -178,9 +178,6 @@
     <ClInclude Include="include\ChannelZeroPad.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Add.cpp" />
-    <ClCompile Include="src\Average.cpp" />
-    <ClCompile Include="src\AvgPooling.cpp" />
     <ClCompile Include="src\BatchNorm.cpp" />
     <ClCompile Include="src\BatchNormRelu.cpp" />
     <ClCompile Include="src\ChannelSplit.cpp" />

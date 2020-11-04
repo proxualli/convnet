@@ -145,9 +145,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\AvgPooling.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\Convolution.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -178,9 +175,6 @@
     <ClCompile Include="src\GlobalMaxPooling.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Add.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\DepthwiseConvolution.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -197,9 +191,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\ChannelZeroPad.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Average.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\BatchNormRelu.cpp">
