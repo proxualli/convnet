@@ -163,16 +163,10 @@
     <ClCompile Include="src\GlobalMaxPooling.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\DepthwiseConvolution.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\Substract.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Multiply.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Divide.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Layer.cpp">

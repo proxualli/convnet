@@ -181,7 +181,6 @@
     <ClCompile Include="src\Max.cpp" />
     <ClCompile Include="src\Min.cpp" />
     <ClCompile Include="src\PartialDepthwiseConvolution.cpp" />
-    <ClCompile Include="src\Divide.cpp" />
     <ClCompile Include="src\dllmain.cpp" />
     <ClCompile Include="src\Dropout.cpp" />
     <ClCompile Include="src\GlobalAvgPooling.cpp" />
@@ -194,7 +193,6 @@
       <Optimization Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Full</Optimization>
       <OmitFramePointers Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</OmitFramePointers>
     </ClCompile>
-    <ClCompile Include="src\DepthwiseConvolution.cpp" />
     <ClCompile Include="src\Resampling.cpp" />
     <ClCompile Include="src\Scripts.cpp" />
     <ClCompile Include="src\Substract.cpp" />
