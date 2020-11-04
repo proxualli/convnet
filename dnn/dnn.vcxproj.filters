@@ -148,16 +148,10 @@
     <ClCompile Include="src\dllmain.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\GlobalAvgPooling.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\MaxPooling.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\stdafx.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\GlobalMaxPooling.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Substract.cpp">
