@@ -56,11 +56,6 @@ set(libdnn_headers
 
 set(libdnn_sources
   ${libdnn_headers}
-  src/ChannelMultiply.cpp
-  src/ChannelShuffle.cpp
-  src/ChannelSplit.cpp
-  src/ChannelMultiply.cpp
-  src/ChannelZeroPad.cpp
   src/Convolution.cpp
   src/ConvolutionTranspose.cpp
   src/Cost.cpp

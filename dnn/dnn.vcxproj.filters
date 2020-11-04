@@ -184,12 +184,6 @@
     <ClCompile Include="src\Divide.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\ChannelMultiply.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ChannelZeroPad.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\Cost.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -199,16 +193,10 @@
     <ClCompile Include="src\LocalResponseNormalization.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\ChannelShuffle.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\Resampling.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\PartialDepthwiseConvolution.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ChannelSplit.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Min.cpp">

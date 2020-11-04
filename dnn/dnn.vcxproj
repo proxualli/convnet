@@ -178,7 +178,6 @@
     <ClInclude Include="include\ChannelZeroPad.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\ChannelSplit.cpp" />
     <ClCompile Include="src\Convolution.cpp" />
     <ClCompile Include="src\Cost.cpp" />
     <ClCompile Include="src\ConvolutionTranspose.cpp" />
@@ -200,12 +199,9 @@
       <OmitFramePointers Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</OmitFramePointers>
     </ClCompile>
     <ClCompile Include="src\DepthwiseConvolution.cpp" />
-    <ClCompile Include="src\ChannelMultiply.cpp" />
-    <ClCompile Include="src\ChannelShuffle.cpp" />
     <ClCompile Include="src\Resampling.cpp" />
     <ClCompile Include="src\Scripts.cpp" />
     <ClCompile Include="src\Substract.cpp" />
-    <ClCompile Include="src\ChannelZeroPad.cpp" />
     <ClCompile Include="src\stdafx.cpp" />
   </ItemGroup>
   <ItemGroup>
