@@ -145,9 +145,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Convolution.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\Dense.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -166,9 +163,6 @@
     <ClCompile Include="src\stdafx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\ConvolutionTranspose.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\GlobalMaxPooling.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -182,9 +176,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Divide.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Cost.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Layer.cpp">

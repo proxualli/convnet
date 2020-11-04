@@ -56,9 +56,6 @@ set(libdnn_headers
 
 set(libdnn_sources
   ${libdnn_headers}
-  src/Convolution.cpp
-  src/ConvolutionTranspose.cpp
-  src/Cost.cpp
   src/Dense.cpp
   src/DepthwiseConvolution.cpp
   src/Divide.cpp
