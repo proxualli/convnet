@@ -125,7 +125,7 @@ namespace dnn
 					auto channelOffset = 0ull;
 					for (auto input = 0ull; input < Inputs.size(); input++)
 					{
-						const auto inputSampleOffset = b * plain ? Inputs[input]->CDHW : Inputs[input]->PaddedCDHW;
+						const auto inputSampleOffset = b * Inputs[input]->CDHW;
 							
 						for (auto c = channelOffset; c < channelOffset + Inputs[input]->C; c++)
 						{
