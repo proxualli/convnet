@@ -124,149 +124,149 @@ namespace dnn
 				case 2:
 				{
 					for_i(batchSize, LIGHT_COMPUTE, [=](size_t b)
+					{
+						const auto start = b * size;
+						const auto end = start + size;
+						for (auto n = start; n < end; n++)
 						{
-							const auto start = b * size;
-							const auto end = start + size;
-							for (auto n = start; n < end; n++)
-							{
-								Inputs[0]->NeuronsD1[n] += NeuronsD1[n];
-								Inputs[1]->NeuronsD1[n] += NeuronsD1[n];
-							}
-						});
+							Inputs[0]->NeuronsD1[n] += NeuronsD1[n];
+							Inputs[1]->NeuronsD1[n] += NeuronsD1[n];
+						}
+					});
 				}
 				break;
 
 				case 3:
 				{
 					for_i(batchSize, LIGHT_COMPUTE, [=](size_t b)
+					{
+						const auto start = b * size;
+						const auto end = start + size;
+						for (auto n = start; n < end; n++)
 						{
-							const auto start = b * size;
-							const auto end = start + size;
-							for (auto n = start; n < end; n++)
-							{
-								Inputs[0]->NeuronsD1[n] += NeuronsD1[n];
-								Inputs[1]->NeuronsD1[n] += NeuronsD1[n];
-								Inputs[2]->NeuronsD1[n] += NeuronsD1[n];
-							}
-						});
+							Inputs[0]->NeuronsD1[n] += NeuronsD1[n];
+							Inputs[1]->NeuronsD1[n] += NeuronsD1[n];
+							Inputs[2]->NeuronsD1[n] += NeuronsD1[n];
+						}
+					});
 				}
 				break;
 
 				case 4:
 				{
 					for_i(batchSize, LIGHT_COMPUTE, [=](size_t b)
+					{
+						const auto start = b * size;
+						const auto end = start + size;
+						for (auto n = start; n < end; n++)
 						{
-							const auto start = b * size;
-							const auto end = start + size;
-							for (auto n = start; n < end; n++)
-							{
-								Inputs[0]->NeuronsD1[n] += NeuronsD1[n];
-								Inputs[1]->NeuronsD1[n] += NeuronsD1[n];
-								Inputs[2]->NeuronsD1[n] += NeuronsD1[n];
-								Inputs[3]->NeuronsD1[n] += NeuronsD1[n];
-							}
-						});
+							Inputs[0]->NeuronsD1[n] += NeuronsD1[n];
+							Inputs[1]->NeuronsD1[n] += NeuronsD1[n];
+							Inputs[2]->NeuronsD1[n] += NeuronsD1[n];
+							Inputs[3]->NeuronsD1[n] += NeuronsD1[n];
+						}
+					});
 				}
 				break;
 
 				case 5:
 				{
 					for_i(batchSize, LIGHT_COMPUTE, [=](size_t b)
+					{
+						const auto start = b * size;
+						const auto end = start + size;
+						for (auto n = start; n < end; n++)
 						{
-							const auto start = b * size;
-							const auto end = start + size;
-							for (auto n = start; n < end; n++)
-							{
-								Inputs[0]->NeuronsD1[n] += NeuronsD1[n];
-								Inputs[1]->NeuronsD1[n] += NeuronsD1[n];
-								Inputs[2]->NeuronsD1[n] += NeuronsD1[n];
-								Inputs[3]->NeuronsD1[n] += NeuronsD1[n];
-								Inputs[4]->NeuronsD1[n] += NeuronsD1[n];
-							}
-						});
+							Inputs[0]->NeuronsD1[n] += NeuronsD1[n];
+							Inputs[1]->NeuronsD1[n] += NeuronsD1[n];
+							Inputs[2]->NeuronsD1[n] += NeuronsD1[n];
+							Inputs[3]->NeuronsD1[n] += NeuronsD1[n];
+							Inputs[4]->NeuronsD1[n] += NeuronsD1[n];
+						}
+					});
 				}
 				break;
 
 				case 6:
 				{
 					for_i(batchSize, LIGHT_COMPUTE, [=](size_t b)
+					{
+						const auto start = b * size;
+						const auto end = start + size;
+						for (auto n = start; n < end; n++)
 						{
-							const auto start = b * size;
-							const auto end = start + size;
-							for (auto n = start; n < end; n++)
-							{
-								Inputs[0]->NeuronsD1[n] += NeuronsD1[n];
-								Inputs[1]->NeuronsD1[n] += NeuronsD1[n];
-								Inputs[2]->NeuronsD1[n] += NeuronsD1[n];
-								Inputs[3]->NeuronsD1[n] += NeuronsD1[n];
-								Inputs[4]->NeuronsD1[n] += NeuronsD1[n];
-								Inputs[5]->NeuronsD1[n] += NeuronsD1[n];
-							}
-						});
+							Inputs[0]->NeuronsD1[n] += NeuronsD1[n];
+							Inputs[1]->NeuronsD1[n] += NeuronsD1[n];
+							Inputs[2]->NeuronsD1[n] += NeuronsD1[n];
+							Inputs[3]->NeuronsD1[n] += NeuronsD1[n];
+							Inputs[4]->NeuronsD1[n] += NeuronsD1[n];
+							Inputs[5]->NeuronsD1[n] += NeuronsD1[n];
+						}
+					});
 				}
 				break;
 
 				case 7:
 				{
 					for_i(batchSize, LIGHT_COMPUTE, [=](size_t b)
+					{
+						const auto start = b * size;
+						const auto end = start + size;
+						for (auto n = start; n < end; n++)
 						{
-							const auto start = b * size;
-							const auto end = start + size;
-							for (auto n = start; n < end; n++)
-							{
-								Inputs[0]->NeuronsD1[n] += NeuronsD1[n];
-								Inputs[1]->NeuronsD1[n] += NeuronsD1[n];
-								Inputs[2]->NeuronsD1[n] += NeuronsD1[n];
-								Inputs[3]->NeuronsD1[n] += NeuronsD1[n];
-								Inputs[4]->NeuronsD1[n] += NeuronsD1[n];
-								Inputs[5]->NeuronsD1[n] += NeuronsD1[n];
-								Inputs[6]->NeuronsD1[n] += NeuronsD1[n];
-							}
-						});
+							Inputs[0]->NeuronsD1[n] += NeuronsD1[n];
+							Inputs[1]->NeuronsD1[n] += NeuronsD1[n];
+							Inputs[2]->NeuronsD1[n] += NeuronsD1[n];
+							Inputs[3]->NeuronsD1[n] += NeuronsD1[n];
+							Inputs[4]->NeuronsD1[n] += NeuronsD1[n];
+							Inputs[5]->NeuronsD1[n] += NeuronsD1[n];
+							Inputs[6]->NeuronsD1[n] += NeuronsD1[n];
+						}
+					});
 				}
 				break;
 
 				case 8:
 				{
 					for_i(batchSize, LIGHT_COMPUTE, [=](size_t b)
+					{
+						const auto start = b * size;
+						const auto end = start + size;
+						for (auto n = start; n < end; n++)
 						{
-							const auto start = b * size;
-							const auto end = start + size;
-							for (auto n = start; n < end; n++)
-							{
-								Inputs[0]->NeuronsD1[n] += NeuronsD1[n];
-								Inputs[1]->NeuronsD1[n] += NeuronsD1[n];
-								Inputs[2]->NeuronsD1[n] += NeuronsD1[n];
-								Inputs[3]->NeuronsD1[n] += NeuronsD1[n];
-								Inputs[4]->NeuronsD1[n] += NeuronsD1[n];
-								Inputs[5]->NeuronsD1[n] += NeuronsD1[n];
-								Inputs[6]->NeuronsD1[n] += NeuronsD1[n];
-								Inputs[7]->NeuronsD1[n] += NeuronsD1[n];
-							}
-						});
+							Inputs[0]->NeuronsD1[n] += NeuronsD1[n];
+							Inputs[1]->NeuronsD1[n] += NeuronsD1[n];
+							Inputs[2]->NeuronsD1[n] += NeuronsD1[n];
+							Inputs[3]->NeuronsD1[n] += NeuronsD1[n];
+							Inputs[4]->NeuronsD1[n] += NeuronsD1[n];
+							Inputs[5]->NeuronsD1[n] += NeuronsD1[n];
+							Inputs[6]->NeuronsD1[n] += NeuronsD1[n];
+							Inputs[7]->NeuronsD1[n] += NeuronsD1[n];
+						}
+					});
 				}
 				break;
 
 				default:
 					for_i(batchSize, LIGHT_COMPUTE, [=](size_t b)
+					{
+						const auto start = b * size;
+						const auto end = start + size;
+						for (auto n = start; n < end; n++)
 						{
-							const auto start = b * size;
-							const auto end = start + size;
+							Inputs[0]->NeuronsD1[n] += NeuronsD1[n];
+							Inputs[1]->NeuronsD1[n] += NeuronsD1[n];
+							Inputs[2]->NeuronsD1[n] += NeuronsD1[n];
+							Inputs[3]->NeuronsD1[n] += NeuronsD1[n];
+							Inputs[4]->NeuronsD1[n] += NeuronsD1[n];
+							Inputs[5]->NeuronsD1[n] += NeuronsD1[n];
+							Inputs[6]->NeuronsD1[n] += NeuronsD1[n];
+							Inputs[7]->NeuronsD1[n] += NeuronsD1[n];
+						}
+						for (auto i = 8ull; i < Inputs.size(); i++)
 							for (auto n = start; n < end; n++)
-							{
-								Inputs[0]->NeuronsD1[n] += NeuronsD1[n];
-								Inputs[1]->NeuronsD1[n] += NeuronsD1[n];
-								Inputs[2]->NeuronsD1[n] += NeuronsD1[n];
-								Inputs[3]->NeuronsD1[n] += NeuronsD1[n];
-								Inputs[4]->NeuronsD1[n] += NeuronsD1[n];
-								Inputs[5]->NeuronsD1[n] += NeuronsD1[n];
-								Inputs[6]->NeuronsD1[n] += NeuronsD1[n];
-								Inputs[7]->NeuronsD1[n] += NeuronsD1[n];
-							}
-							for (auto i = 8ull; i < Inputs.size(); i++)
-								for (auto n = start; n < end; n++)
-									Inputs[i]->NeuronsD1[n] += NeuronsD1[n];
-						});
+								Inputs[i]->NeuronsD1[n] += NeuronsD1[n];
+					});
 				}
 #ifdef DNN_STOCHASTIC
 			}
