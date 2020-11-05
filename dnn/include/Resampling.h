@@ -80,7 +80,7 @@ namespace dnn
 			fwd = std::make_unique<dnnl::resampling_forward>(dnnl::resampling_forward(*fwdDesc));
 
 			DstMemDesc = std::make_unique<dnnl::memory::desc>(fwdDesc->dst_desc());
-			DiffDstMemDesc = std::make_unique<dnnl::memory::desc>(fwdDesc->dst_desc());
+			DiffDstMemDesc = std::make_unique<dnnl::memory::desc>(fwdDesc->diff_dst_desc());
 
 			bwdDesc = std::make_unique<dnnl::resampling_backward::primitive_desc>(dnnl::resampling_backward::primitive_desc(dnnl::resampling_backward::desc(algorithm, factor, memDesc[0], *DiffDstMemDesc), Device.first, *fwdDesc));
 			bwd = std::make_unique<dnnl::resampling_backward>(dnnl::resampling_backward(*bwdDesc));

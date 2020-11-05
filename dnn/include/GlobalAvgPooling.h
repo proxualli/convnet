@@ -131,6 +131,7 @@ namespace dnn
 				bwdAdd->execute(Device.second, std::unordered_map<int, dnnl::memory>{ { DNNL_ARG_SRC_0, dnnl::memory(*InputLayer->DiffDstMemDesc, Device.first, InputLayer->NeuronsD1.data()) }, { DNNL_ARG_SRC_1, memDiffSrc }, { DNNL_ARG_DST, dnnl::memory(*InputLayer->DiffDstMemDesc, Device.first, InputLayer->NeuronsD1.data()) } });
 				Device.second.wait();
 			}
+
 #ifdef DNN_LEAN
 			ReleaseGradient();
 #endif // DNN_LEAN

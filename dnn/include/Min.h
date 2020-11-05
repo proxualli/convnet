@@ -88,15 +88,15 @@ namespace dnn
 			{
 #endif
 				for_i(batchSize, LIGHT_COMPUTE, [=](size_t b)
+				{
+					const auto start = b * PaddedCDHW;
+					const auto end = start + CDHW;
+					for (auto n = start; n < end; n++)
 					{
-						const auto start = b * PaddedCDHW;
-						const auto end = start + CDHW;
-						for (auto n = start; n < end; n++)
-						{
-							Inputs[0]->NeuronsD1[n] += NeuronsD1[n];
-							Inputs[1]->NeuronsD1[n] += NeuronsD1[n];
-						}
-					});
+						Inputs[0]->NeuronsD1[n] += NeuronsD1[n];
+						Inputs[1]->NeuronsD1[n] += NeuronsD1[n];
+					}
+				});
 #ifdef DNN_STOCHASTIC
 			}
 #endif

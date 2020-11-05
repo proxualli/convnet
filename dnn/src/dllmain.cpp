@@ -382,7 +382,6 @@ extern "C" DNN_API void DNNGetTrainingInfo(size_t* currentCycle, size_t* totalCy
 			*avgTrainLoss = model->AvgTrainLoss;
 			*trainErrorPercentage = model->TrainErrorPercentage;
 			*trainErrors = model->TrainErrors;
-
 		}
 		break;
 
