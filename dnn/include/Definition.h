@@ -8,7 +8,7 @@ namespace dnn
 	typedef BatchNormActivationDropout<HardSwish, LayerTypes::BatchNormHardSwishDropout> BatchNormHardSwishDropout;
 	typedef BatchNormActivationDropout<Relu, LayerTypes::BatchNormReluDropout> BatchNormReluDropout;
 	typedef BatchNormActivation<Swish, LayerTypes::BatchNormSwish> BatchNormSwish;
-	
+
 	class Definition final
 	{
 	public:
@@ -120,7 +120,6 @@ namespace dnn
 			return defNorm;
 		}
 
-		
 		static Model* Read(const char* definition, CheckMsg& msg, const bool onlyCheck = false, Dataprovider* dataprovider = nullptr, const Optimizers optimizer = Optimizers::NAG)
 		{
 			auto userLocale = std::setlocale(LC_ALL, "C");

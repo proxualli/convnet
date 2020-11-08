@@ -1,5 +1,6 @@
 #pragma once
 #include "Dataprovider.h"
+#include <exception>
 
 namespace dnn
 {
@@ -912,11 +913,11 @@ namespace dnn
 					auto distribution = std::normal_distribution<Float>(Float(0), WeightsScale);
 					auto max = 2 * std::abs(WeightsScale);
 					std::generate_n(weights.begin(), WeightCount, [&]()
-						{
-							Float value;
-							do { value = distribution(RandomEngine); } while ((value < -max) || (value > max));
-							return value;
-						});
+					{
+						Float value;
+						do { value = distribution(RandomEngine); } while ((value < -max) || (value > max));
+						return value;
+					});
 				}
 				break;
 
@@ -1025,11 +1026,11 @@ namespace dnn
 					auto distribution = std::normal_distribution<Float>(Float(0), BiasesScale);
 					auto max = 2 * std::abs(BiasesScale);
 					std::generate_n(Biases.begin(), BiasCount, [&]()
-						{
-							Float value;
-							do { value = distribution(RandomEngine); } while ((value < -max) || (value > max));
-							return value;
-						});
+					{
+						Float value;
+						do { value = distribution(RandomEngine); } while ((value < -max) || (value > max));
+						return value;
+					});
 				}
 				break;
 

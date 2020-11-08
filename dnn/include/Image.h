@@ -1,12 +1,12 @@
 #pragma once
 #include "Utils.h"
 
-#include "jpeglib.h"
-#include "jerror.h"
+#include "../deps/libjpeg-turbo/jpeglib.h"
+#include "../deps/libjpeg-turbo/jerror.h"
 
 #undef cimg_display
 #define cimg_display 0
-#include "CImg.h"
+#include "../deps/CImg/CImg.h"
 
 namespace dnn
 {

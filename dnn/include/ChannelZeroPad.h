@@ -1,12 +1,13 @@
 #pragma once
 #include "Layer.h"
+#include <stdexcept>
 
 namespace dnn
 {
 	class ChannelZeroPad final : public Layer
 	{
 	public:
-		ChannelZeroPad::ChannelZeroPad(const dnn::Device& device, const dnnl::memory::format_tag format, const std::string& name, const std::vector<Layer*>& inputs, const size_t c) :
+		ChannelZeroPad(const dnn::Device& device, const dnnl::memory::format_tag format, const std::string& name, const std::vector<Layer*>& inputs, const size_t c) :
 			Layer(device, format, name, LayerTypes::ChannelZeroPad, 0, 0, c, inputs[0]->D, inputs[0]->H, inputs[0]->W, 0, 0, 0, inputs)
 		{
 			assert(Inputs.size() == 1);
@@ -33,7 +34,7 @@ namespace dnn
 		void InitializeDescriptors(const size_t batchSize) final override
 		{
 			if (GetDataFmt(*InputLayer->DstMemDesc) != BlockedFmt)
-				throw std::exception("Blocked format expected in ChannelZeroPad");
+				throw std::runtime_error("Blocked format expected in ChannelZeroPad");
 
 			DstMemDesc = std::make_unique<dnnl::memory::desc>(dnnl::memory::desc(dnnl::memory::dims({ dnnl::memory::dim(batchSize), dnnl::memory::dim(C), dnnl::memory::dim(H), dnnl::memory::dim(W) }), dnnl::memory::data_type::f32, BlockedFmt));
 			DiffDstMemDesc = std::make_unique<dnnl::memory::desc>(dnnl::memory::desc(dnnl::memory::dims({ dnnl::memory::dim(batchSize), dnnl::memory::dim(C), dnnl::memory::dim(H), dnnl::memory::dim(W) }), dnnl::memory::data_type::f32, BlockedFmt));
