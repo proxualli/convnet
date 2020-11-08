@@ -92,7 +92,7 @@ namespace ScriptsDialog
                "Type=BatchNormRelu" + nwl +
                "Inputs=" + inputs + nwl + nwl;
         }
-        
+
         public static string BatchNormReluDropout(size_t id, string inputs, Float dropout = 0.0f, string group = "", string prefix = "B")
         {
             return "[" + group + prefix + to_string(id) + "]" + nwl +
@@ -594,7 +594,7 @@ namespace ScriptsDialog
                         var W = p.Width * 16;
                         var kernel = 3ul;
                         var pad = 1ul;
-                      
+
                         net += Convolution(1, "Input", DIV8(W), kernel, kernel, 1, 1, pad, pad);
 
                         blocks.Add(
@@ -617,7 +617,7 @@ namespace ScriptsDialog
                             {
                                 se = p.SqueezeExcitation;
                                 W *= 2;
-                               
+
                                 blocks.Add(
                                     Convolution(C, In("CC", A), DIV8(W), 1, 1, 1, 1, 0, 0) +
                                     BatchNormActivation(C + 1, In("C", C), p.Relu) +
@@ -666,11 +666,10 @@ namespace ScriptsDialog
                             net += block;
 
                         net +=
-                            Convolution(C, In("CC", A), DIV8(W), 1, 1, 1, 1, 0, 0) +
+                            Convolution(C, In("CC", A), p.Classes, 1, 1, 1, 1, 0, 0) +
                             BatchNormActivation(C + 1, In("C", C), p.Relu) +
                             GlobalAvgPooling(In("B", C + 1)) +
-                            Convolution(C + 2, "GAP", p.Classes, 1, 1, 1, 1, 0, 0) +
-                            "[ACT]" + nwl + "Type=Activation" + nwl + "Inputs=C" + (C + 2).ToString() + nwl + "Activation=LogSoftmax" + nwl + nwl +
+                            "[ACT]" + nwl + "Type=Activation" + nwl + "Inputs=GAP" + nwl + "Activation=LogSoftmax" + nwl + nwl +
                             "[Cost]" + nwl + "Type=Cost" + nwl + "Inputs=ACT" + nwl + "Cost=CategoricalCrossEntropy" + nwl + "Channels=" + to_string(p.Classes);
                     }
                     break;
