@@ -565,16 +565,16 @@ extern "C" DNN_API void DNNGetLayerInfo(const size_t layerIndex, size_t* inputsC
 			break;
 
 		case LayerTypes::BatchNormHardLogistic:
-			*scaling = static_cast<BatchNormActivation<HardLogistic, LayerTypes::BatchNormHardLogistic>*>(layer)->Scaling;
+			*scaling = static_cast<BatchNormHardLogistic*>(layer)->Scaling;
 			break;
 
 		case LayerTypes::BatchNormHardSwish:
-			*scaling = static_cast<BatchNormActivation<HardSwish, LayerTypes::BatchNormHardSwish>*>(layer)->Scaling;
+			*scaling = static_cast<BatchNormHardSwish*>(layer)->Scaling;
 			break;
 
 		case LayerTypes::BatchNormHardSwishDropout:
-			*scaling = static_cast<BatchNormActivationDropout<HardSwish, LayerTypes::BatchNormHardSwishDropout>*>(layer)->Scaling;
-			*dropout = Float(1) - static_cast<BatchNormActivationDropout<HardSwish, LayerTypes::BatchNormHardSwishDropout>*>(layer)->Keep;
+			*scaling = static_cast<BatchNormHardSwishDropout*>(layer)->Scaling;
+			*dropout = Float(1) - static_cast<BatchNormHardSwishDropout*>(layer)->Keep;
 			break;
 
 		case LayerTypes::BatchNormRelu:
@@ -582,12 +582,12 @@ extern "C" DNN_API void DNNGetLayerInfo(const size_t layerIndex, size_t* inputsC
 			break;
 
 		case LayerTypes::BatchNormReluDropout:
-			*scaling = static_cast<BatchNormActivationDropout<Relu, LayerTypes::BatchNormReluDropout>*>(layer)->Scaling;
-			*dropout = Float(1) - static_cast<BatchNormActivationDropout<Relu, LayerTypes::BatchNormReluDropout>*>(layer)->Keep;
+			*scaling = static_cast<BatchNormReluDropout*>(layer)->Scaling;
+			*dropout = Float(1) - static_cast<BatchNormReluDropout*>(layer)->Keep;
 			break;
 
 		case LayerTypes::BatchNormSwish:
-			*scaling = static_cast<BatchNormActivation<Swish, LayerTypes::BatchNormSwish>*>(layer)->Scaling;
+			*scaling = static_cast<BatchNormSwish*>(layer)->Scaling;
 			break;
 
 		case LayerTypes::Dropout:

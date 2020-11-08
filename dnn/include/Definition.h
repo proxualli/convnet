@@ -8,7 +8,7 @@ namespace dnn
 	typedef BatchNormActivationDropout<HardSwish, LayerTypes::BatchNormHardSwishDropout> BatchNormHardSwishDropout;
 	typedef BatchNormActivationDropout<Relu, LayerTypes::BatchNormReluDropout> BatchNormReluDropout;
 	typedef BatchNormActivation<Swish, LayerTypes::BatchNormSwish> BatchNormSwish;
-
+	
 	class Definition final
 	{
 	public:
