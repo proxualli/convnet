@@ -131,9 +131,6 @@
     <ClInclude Include="include\Model.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\magic_enum\include\magic_enum.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\Definition.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -151,8 +148,5 @@
     <ClCompile Include="src\stdafx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\convnet\settings.extensions.cs" />
   </ItemGroup>
 </Project>

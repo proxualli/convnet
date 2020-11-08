@@ -333,17 +333,17 @@ namespace dnn
 		{
 			auto description = std::string("");
 
-			description.append(" Type:" + dtab + std::string(magic_enum::enum_name<LayerTypes>(LayerType)));
+			description.append(std::string(" Type:") + dtab + std::string(magic_enum::enum_name<LayerTypes>(LayerType)));
 
 			if (LayerType != LayerTypes::Input)
 			{
-				description.append(nwl + " Inputs:" + tab);
+				description.append(nwl + std::string(" Inputs:") + tab);
 				for (auto i = 0ull; i < Inputs.size(); i++)
-					description.append((i == 0 ? "" : ",") + Inputs[i]->Name);
+					description.append((i == 0 ? std::string("") : std::string(",")) + Inputs[i]->Name);
 			}
 
-			description.append(nwl + " Features:" + tab + std::to_string(C) + "x" + std::to_string(H) + "x" + std::to_string(W));
-			description.append(nwl + " Neurons:" + tab + std::to_string(CDHW));
+			description.append(nwl + std::string(" Features:") + tab + std::to_string(C) + std::string("x") + std::to_string(H) + std::string("x") + std::to_string(W));
+			description.append(nwl + std::string(" Neurons:") + tab + std::to_string(CDHW));
 
 			return description;
 		}
@@ -354,15 +354,15 @@ namespace dnn
 
 			if (visible)
 			{
-				description.append(nwl + " Weights:" + tab + std::to_string(WeightCount));
-				description.append(nwl + "  lr mult:" + tab + FloatToString(WeightsLRM));
-				description.append(nwl + "  wd mult:" + tab + FloatToString(WeightsWDM));
+				description.append(nwl + std::string(" Weights:") + tab + std::to_string(WeightCount));
+				description.append(nwl + std::string("  lr mult:") + tab + FloatToString(WeightsLRM));
+				description.append(nwl + std::string("  wd mult:") + tab + FloatToString(WeightsWDM));
 
 				if (HasBias)
 				{
-					description.append(nwl + " Biases:" + tab + std::to_string(BiasCount));
-					description.append(nwl + "  lr mult:" + tab + FloatToString(BiasesLRM));
-					description.append(nwl + "  wd mult:" + tab + FloatToString(BiasesWDM));
+					description.append(nwl + std::string(" Biases:") + tab + std::to_string(BiasCount));
+					description.append(nwl + std::string("  lr mult:") + tab + FloatToString(BiasesLRM));
+					description.append(nwl + std::string("  wd mult:") + tab + FloatToString(BiasesWDM));
 				}
 			}
 

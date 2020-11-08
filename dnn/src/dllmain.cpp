@@ -554,14 +554,14 @@ extern "C" DNN_API void DNNGetLayerInfo(const size_t layerIndex, size_t* inputsC
 
 		case LayerTypes::LocalResponseNormalization:
 		{
-			auto lcn = dynamic_cast<LocalResponseNormalization*>(layer);
-			if (lcn)
+			auto lrn = dynamic_cast<LocalResponseNormalization*>(layer);
+			if (lrn)
 			{
-				*acrossChannels = lcn->AcrossChannels;
-				*localSize = lcn->LocalSize;
-				*alpha = lcn->Alpha;
-				*beta = lcn->Beta;
-				*k = lcn->K;
+				*acrossChannels = lrn->AcrossChannels;
+				*localSize = lrn->LocalSize;
+				*alpha = lrn->Alpha;
+				*beta = lrn->Beta;
+				*k = lrn->K;
 			}
 		}
 		break;
