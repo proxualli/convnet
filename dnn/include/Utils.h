@@ -9,6 +9,8 @@
 #include <array>
 #include <atomic>
 #include <cstdio>
+#include <cstring>
+#include <cmath>
 #include <exception>
 #include <filesystem>
 #include <functional> 
@@ -47,7 +49,7 @@
 #define MAGIC_ENUM_RANGE_MIN 0
 #define MAGIC_ENUM_RANGE_MAX 255
 
-#include "include/magic_enum.hpp"
+#include "../deps/magic_enum/include/magic_enum.hpp"
 #include "../deps/oneDNN/include/dnnl.hpp"
 
 #include "AlignedAllocator.h"
@@ -127,14 +129,14 @@ namespace dnn
 	inline static void ZeroFloatVector(Float* destination, const size_t elements) noexcept
 	{
 		if (elements < 1048576ull)
-			memset(destination, 0, elements * sizeof(Float));
+			::memset(destination, 0, elements * sizeof(Float));
 		else
 		{
 			const auto threads = elements < 2097152ull ? 2ull : elements < 8338608ull ? LIGHT_COMPUTE : MEDIUM_COMPUTE;
 			const auto part = elements / threads;
-			for_i(threads, [=](const size_t thread) { std::memset(destination + part * thread, 0, part * sizeof(Float)); });
+			for_i(threads, [=](const size_t thread) { ::memset(destination + part * thread, 0, part * sizeof(Float)); });
 			if (elements % threads != 0)
-				memset(destination + part * threads, 0, (elements - part * threads) * sizeof(Float));
+				::memset(destination + part * threads, 0, (elements - part * threads) * sizeof(Float));
 		}
 	}
 
@@ -178,19 +180,25 @@ namespace dnn
 		return std::uniform_real_distribution<T>(min, max)(generator);
 	}
 		
-	static std::string FloatToString(const Float value, const std::streamsize precision = 8)
+	static const std::string FloatToString(const Float value, const std::streamsize precision = 8)
 	{
-		return (std::ostringstream() << std::setprecision(precision) << value).str();
+		std::stringstream stream; 
+		stream << std::setprecision(precision) << value;
+		return stream.str();
 	}
 
-	static std::string FloatToStringFixed(const Float value, const std::streamsize precision = 8)
+	static const std::string FloatToStringFixed(const Float value, const std::streamsize precision = 8)
 	{
-		return (std::ostringstream() << std::setprecision(precision) << std::fixed << value).str();
+		std::stringstream stream; 
+		stream << std::setprecision(precision) << std::fixed << value;
+		return stream.str();
 	}
 
-	static std::string FloatToStringScientific(const Float value, const std::streamsize precision = 4)
+	static const std::string FloatToStringScientific(const Float value, const std::streamsize precision = 4)
 	{
-		return (std::ostringstream() << std::setprecision(precision) << std::scientific << value).str();
+		std::stringstream stream; 
+		stream << std::setprecision(precision) << std::scientific << value;
+		return stream.str();
 	}
 
    	static const auto GetFileSize(const char* fileName)
@@ -209,23 +217,27 @@ namespace dnn
 		return static_cast<std::streamsize>(end - start);
 	}
 
-	static const auto IsStringBool(std::string text)
+	inline static std::string StringToLower(std::string s)
 	{
-		auto str = std::string(text);
-		std::transform(str.begin(), str.end(), str.begin(), std::tolower);
+		std::transform(s.begin(), s.end(), s.begin(), ::tolower);
+		return s;
+	};
 
-		if (str == "true" || str == "yes" || str =="false" || str == "no")
+	static const bool IsStringBool(std::string text)
+	{
+		auto textLower = StringToLower(text);
+		
+		if (textLower == "true" || textLower == "yes" || textLower =="false" || textLower == "no")
 			return true;
 
 		return false;
 	}
 
-	static const auto StringToBool(std::string text)
+	static const bool StringToBool(std::string text)
 	{
-		auto str = std::string(text);
-		std::transform(str.begin(), str.end(), str.begin(), std::tolower);
-
-		if (str == "true" || str == "yes")
+		auto textLower = StringToLower(text);
+		
+		if (textLower == "true" || textLower == "yes")
 			return true;
 
 		return false;
@@ -243,7 +255,7 @@ namespace dnn
 		if (sysinfo(&info) == 0)
 			return static_cast<size_t>(info.totalram - info.freeram);
 		else
-			return 0ull;
+			return static_cast <size_t>(0);
 #endif
 	}
 	

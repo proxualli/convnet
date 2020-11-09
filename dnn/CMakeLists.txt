@@ -3,8 +3,10 @@ cmake_minimum_required(VERSION 3.5.0)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
+string(APPEND CMAKE_CXX_FLAGS " -mfma -mavx2 -march=native -fopenmp")
+string(APPEND CMAKE_C_FLAGS " -mfma -mavx2 -march=native -fopenmp")
 
-project(dnn VERSION 1.0.0 LANGUAGES CXX)
+project(dnn VERSION 1.0.0 LANGUAGES C CXX ASM)
 
 INCLUDE(GNUInstallDirs)
 
@@ -143,9 +145,11 @@ IF(NOT DEFINED VECTORCLASS_SOURCE_DIR)
 add_library(${PROJECT_NAME} SHARED ${libdnn_sources})
 
 target_include_directories(${PROJECT_NAME}
+    PRIVATE
+        ${DNN_DEPENDENCIES_BINARY_DIR}/oneDNN/include
     PUBLIC 
         $<INSTALL_INTERFACE:include>    
-        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>     
 )
 
 # ---[ Configure VectorClass
@@ -194,5 +198,4 @@ IF(NOT TARGET oneDNN)
     "${ONEDNN_SOURCE_DIR}"
     "${DNN_DEPENDENCIES_BINARY_DIR}/oneDNN")
 ENDIF()
-
 TARGET_LINK_LIBRARIES(${PROJECT_NAME} PUBLIC oneDNN)

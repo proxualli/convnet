@@ -432,7 +432,7 @@ namespace dnn
 					NeuronsMin = std::numeric_limits<Float>::max();
 					NeuronsMax = std::numeric_limits<Float>::lowest();
 
-					auto sum = Float(0);
+					float sum = Float(0);
 
 					if (ncdhw % VectorSize == 0ull)
 					{
@@ -449,7 +449,7 @@ namespace dnn
 							sum += horizontal_add(neurons);
 						}
 
-						if (!std::isnan<Float>(sum) && !std::isinf<Float>(sum))
+						if (!std::isnan(sum) && !std::isinf(sum))
 						{
 							NeuronsMean = sum / ncdhw;
 							VecFloat vecSum = VecFloat(0);
@@ -459,7 +459,7 @@ namespace dnn
 								vecSum += square(neurons - NeuronsMean);
 							}
 							sum = horizontal_add(vecSum);
-							if (!std::isnan<Float>(sum) && !std::isinf<Float>(sum))
+							if (!std::isnan(sum) && !std::isinf(sum))
 								NeuronsStdDev = std::sqrt(sum / ncdhw);
 							else
 								NeuronsStdDev = Float(0);
@@ -480,14 +480,14 @@ namespace dnn
 							sum += Neurons[i];
 						}
 
-						if (!std::isnan<Float>(sum) && !std::isinf<Float>(sum))
+						if (!std::isnan(sum) && !std::isinf(sum))
 						{
 							NeuronsMean = sum / ncdhw;
 							sum = Float(0);
 							for (auto i = 0ull; i < ncdhw; i++)
 								sum += FloatSquare(Neurons[i] - NeuronsMean);
 
-							if (!std::isnan<Float>(sum) && !std::isinf<Float>(sum))
+							if (!std::isnan(sum) && !std::isinf(sum))
 								NeuronsStdDev = std::sqrt(sum / ncdhw);
 							else
 								NeuronsStdDev = Float(0);
@@ -501,7 +501,8 @@ namespace dnn
 				{
 					WeightsMin = std::numeric_limits<Float>::max();
 					WeightsMax = std::numeric_limits<Float>::lowest();
-					auto sum = Float(0);
+					float sum = Float(0);
+
 					for (auto i = 0ull; i < Weights.size(); i++)
 					{
 						WeightsMin = std::min(WeightsMin, Weights[i]);
@@ -513,14 +514,14 @@ namespace dnn
 						sum += Weights[i];
 					}
 
-					if (!std::isnan<Float>(sum) && !std::isinf<Float>(sum))
+					if (!std::isnan(sum) && !std::isinf(sum))
 					{
 						WeightsMean = sum / Weights.size();
 						sum = Float(0);
 						for (auto i = 0ull; i < Weights.size(); i++)
 							sum += FloatSquare(Weights[i] - WeightsMean);
 
-						if (!std::isnan<Float>(sum) && !std::isinf<Float>(sum))
+						if (!std::isnan(sum) && !std::isinf(sum))
 							WeightsStdDev = std::sqrt(sum / Weights.size());
 						else
 							WeightsStdDev = Float(0);
@@ -544,14 +545,14 @@ namespace dnn
 							sum += Biases[i];
 						}
 
-						if (!std::isnan<Float>(sum) && !std::isinf<Float>(sum))
+						if (!std::isnan(sum) && !std::isinf(sum))
 						{
 							BiasesMean = sum / BiasCount;
 							sum = Float(0);
 							for (auto i = 0ull; i < BiasCount; i++)
 								sum += FloatSquare(Biases[i] - BiasesMean);
 
-							if (!std::isnan<Float>(sum) && !std::isinf<Float>(sum))
+							if (!std::isnan(sum) && !std::isinf(sum))
 								BiasesStdDev = std::sqrt(sum / BiasCount);
 							else
 								BiasesStdDev = Float(0);
@@ -596,12 +597,12 @@ namespace dnn
 				{
 					for (auto i = 0ull; i < Weights.size(); i++)
 					{
-						if (std::isnan<Float>(WeightsPar1[i]) || std::isinf<Float>(WeightsPar1[i]))
+						if (std::isnan(WeightsPar1[i]) || std::isinf(WeightsPar1[i]))
 						{
 							dirty = true;
 							break;
 						}
-						if (std::isnan<Float>(WeightsPar2[i]) || std::isinf<Float>(WeightsPar2[i]))
+						if (std::isnan(WeightsPar2[i]) || std::isinf(WeightsPar2[i]))
 						{
 							dirty = true;
 							break;
@@ -613,12 +614,12 @@ namespace dnn
 				{
 					for (auto i = 0ull; i < BiasCount; i++)
 					{
-						if (std::isnan<Float>(BiasesPar1[i]) || std::isinf<Float>(BiasesPar1[i]))
+						if (std::isnan(BiasesPar1[i]) || std::isinf(BiasesPar1[i]))
 						{
 							dirty = true;
 							break;
 						}
-						if (std::isnan<Float>(BiasesPar2[i]) || std::isinf<Float>(BiasesPar2[i]))
+						if (std::isnan(BiasesPar2[i]) || std::isinf(BiasesPar2[i]))
 						{
 							dirty = true;
 							break;
@@ -635,12 +636,12 @@ namespace dnn
 				{
 					for (auto i = 0ull; i < Weights.size(); i++)
 					{
-						if (std::isnan<Float>(WeightsPar1[i]) || std::isinf<Float>(WeightsPar1[i]))
+						if (std::isnan(WeightsPar1[i]) || std::isinf(WeightsPar1[i]))
 						{
 							dirty = true;
 							break;
 						}
-						if (std::isnan<Float>(WeightsPar2[i]) || std::isinf<Float>(WeightsPar2[i]))
+						if (std::isnan(WeightsPar2[i]) || std::isinf(WeightsPar2[i]))
 						{
 							dirty = true;
 							break;
@@ -652,12 +653,12 @@ namespace dnn
 				{
 					for (auto i = 0ull; i < BiasCount; i++)
 					{
-						if (std::isnan<Float>(BiasesPar1[i]) || std::isinf<Float>(BiasesPar1[i]))
+						if (std::isnan(BiasesPar1[i]) || std::isinf(BiasesPar1[i]))
 						{
 							dirty = true;
 							break;
 						}
-						if (std::isnan<Float>(BiasesPar2[i]) || std::isinf<Float>(BiasesPar2[i]))
+						if (std::isnan(BiasesPar2[i]) || std::isinf(BiasesPar2[i]))
 						{
 							dirty = true;
 							break;
@@ -665,9 +666,9 @@ namespace dnn
 					}
 				}
 
-				if (std::isnan<Float>(B1) || std::isinf<Float>(B1))
+				if (std::isnan(B1) || std::isinf(B1))
 					dirty = true;
-				if (std::isnan<Float>(B2) || std::isinf<Float>(B2))
+				if (std::isnan(B2) || std::isinf(B2))
 					dirty = true;
 			}
 			break;
@@ -678,12 +679,12 @@ namespace dnn
 				{
 					for (auto i = 0ull; i < Weights.size(); i++)
 					{
-						if (std::isnan<Float>(WeightsPar1[i]) || std::isinf<Float>(WeightsPar1[i]))
+						if (std::isnan(WeightsPar1[i]) || std::isinf(WeightsPar1[i]))
 						{
 							dirty = true;
 							break;
 						}
-						if (std::isnan<Float>(WeightsPar2[i]) || std::isinf<Float>(WeightsPar2[i]))
+						if (std::isnan(WeightsPar2[i]) || std::isinf(WeightsPar2[i]))
 						{
 							dirty = true;
 							break;
@@ -695,12 +696,12 @@ namespace dnn
 				{
 					for (auto i = 0ull; i < BiasCount; i++)
 					{
-						if (std::isnan<Float>(BiasesPar1[i]) || std::isinf<Float>(BiasesPar1[i]))
+						if (std::isnan(BiasesPar1[i]) || std::isinf(BiasesPar1[i]))
 						{
 							dirty = true;
 							break;
 						}
-						if (std::isnan<Float>(BiasesPar2[i]) || std::isinf<Float>(BiasesPar2[i]))
+						if (std::isnan(BiasesPar2[i]) || std::isinf(BiasesPar2[i]))
 						{
 							dirty = true;
 							break;
@@ -708,7 +709,7 @@ namespace dnn
 					}
 				}
 
-				if (std::isnan<Float>(B1) || std::isinf<Float>(B1))
+				if (std::isnan(B1) || std::isinf(B1))
 					dirty = true;
 			}
 			break;
@@ -722,7 +723,7 @@ namespace dnn
 				{
 					for (auto i = 0ull; i < Weights.size(); i++)
 					{
-						if (std::isnan<Float>(WeightsPar1[i]) || std::isinf<Float>(WeightsPar1[i]))
+						if (std::isnan(WeightsPar1[i]) || std::isinf(WeightsPar1[i]))
 						{
 							dirty = true;
 							break;
@@ -734,7 +735,7 @@ namespace dnn
 				{
 					for (auto i = 0ull; i < BiasCount; i++)
 					{
-						if (std::isnan<Float>(BiasesPar1[i]) || std::isinf<Float>(BiasesPar1[i]))
+						if (std::isnan(BiasesPar1[i]) || std::isinf(BiasesPar1[i]))
 						{
 							dirty = true;
 							break;
