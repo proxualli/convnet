@@ -23,7 +23,7 @@ namespace Convnet.PageViewModels
         public static string StateDirectory { get; } = StorageDirectory + @"state\";
         public static string DefinitionsDirectory { get; } = StorageDirectory + @"definitions\";
         public static string ScriptsDirectory { get; } = StorageDirectory + @"scripts\";
-        public static string ScriptPath { get; } = ScriptsDirectory + @"ScriptsDialog\bin\" + Mode + @"\netcoreapp3.1\";
+        public static string ScriptPath { get; } = ScriptsDirectory + @"ScriptsDialog\bin\" + Mode + @"\net5.0-windows\";
 
 
         public event PropertyChangedEventHandler PropertyChanged;

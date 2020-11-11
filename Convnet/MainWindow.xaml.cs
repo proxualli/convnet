@@ -78,7 +78,7 @@ namespace Convnet
             if (!Directory.Exists(ScriptsDirectory))
             {
                 Directory.CreateDirectory(ScriptsDirectory);
-                Copy(ApplicationPath.Replace(@"Convnet\bin\x64\" + Mode + @"\netcoreapp3.1\", "") + @"ScriptsDialog\", ScriptsDirectory);
+                Copy(ApplicationPath.Replace(@"Convnet\bin\x64\" + Mode + @"\net5.0-windows\", "") + @"ScriptsDialog\", ScriptsDirectory);
             }
 
             if (!File.Exists(Path.Combine(StateDirectory, Settings.Default.ModelNameActive + ".definition")))
