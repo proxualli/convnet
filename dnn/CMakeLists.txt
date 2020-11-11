@@ -3,8 +3,8 @@ cmake_minimum_required(VERSION 3.5.0)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
-string(APPEND CMAKE_CXX_FLAGS " -mfma -mavx2 -march=native -fopenmp")
-string(APPEND CMAKE_C_FLAGS " -mfma -mavx2 -march=native -fopenmp")
+string(APPEND CMAKE_CXX_FLAGS " /arch:AVX2 /openmp:experimental")
+string(APPEND CMAKE_C_FLAGS " /arch:AVX2 /openmp:experimental")
 
 project(dnn VERSION 1.0.0 LANGUAGES C CXX ASM)
 
