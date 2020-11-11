@@ -98,6 +98,10 @@ namespace dnn
 		{
 			DstMemDesc = std::make_unique<dnnl::memory::desc>(dnnl::memory::desc(dnnl::memory::dims({ int(batchSize), int(C) }), dnnl::memory::data_type::f32, dnnl::memory::format_tag::nc));
 			DiffDstMemDesc = std::make_unique<dnnl::memory::desc>(dnnl::memory::desc(dnnl::memory::dims({ int(batchSize), int(C) }), dnnl::memory::data_type::f32, dnnl::memory::format_tag::nc));
+			
+			if (Format == dnnl::memory::format_tag::any)
+				Format = GetDataFmt(*DstMemDesc);
+
 			isLogSoftmax = static_cast<Activation*>(InputLayer)->ActivationFunction == Activations::LogSoftmax;
 		}
 
