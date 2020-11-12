@@ -18,11 +18,7 @@ namespace ScriptsDialog
 #endif
         public static string StorageDirectory { get; } = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\convnet\";
         public static string ScriptsDirectory { get; } = StorageDirectory + @"scripts\";
-#if NET48
-        public static string ScriptPath { get; } = ScriptsDirectory + @"ScriptsDialog\bin\" + Mode + @"\net48\";
-#else
         public static string ScriptPath { get; } = ScriptsDirectory + @"ScriptsDialog\bin\" + Mode + @"\net5.0-windows\";
-#endif
       
         public MainWindow()
         {
