@@ -93,7 +93,7 @@ namespace dnn
 			if (HasPadding)
 				description.append(nwl + std::string(" Padding:") + tab + std::to_string(PadH) + std::string("x") + std::to_string(PadW));
 
-			description.append(GetWeightsDescription(true));
+			description.append(GetWeightsDescription());
 
 			description.append(nwl + std::string(" Connections:") + tab + std::to_string(Groups * (InputLayer->C / Groups) * (C / Groups) * (H / StrideW) * (W / StrideH) * (HasBias ? KernelH * KernelW + 1 : KernelH * KernelW)));
 
