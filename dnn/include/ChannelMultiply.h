@@ -89,7 +89,7 @@ namespace dnn
 
 						for (auto w = offsetH; w < offsetH + strideH; w += VectorSize)
 						{
-							const auto neuronsD1 = VecFloat().load_a(&NeuronsD1[w]);
+							const auto& neuronsD1 = VecFloat().load_a(&NeuronsD1[w]);
 							mul_add(neuronsD1, VecFloat().load_a(&Inputs[1]->Neurons[c]), VecFloat().load_a(&Inputs[0]->NeuronsD1[w])).store_a(&Inputs[0]->NeuronsD1[w]);
 							mul_add(neuronsD1, VecFloat().load_a(&Inputs[0]->Neurons[w]), VecFloat().load_a(&Inputs[1]->NeuronsD1[c])).store_a(&Inputs[1]->NeuronsD1[c]);
 						}
@@ -112,7 +112,7 @@ namespace dnn
 
 							for (auto w = offsetH; w < offsetH + strideH; w += VectorSize)
 							{
-								const auto neuronsD1 = VecFloat().load_a(&NeuronsD1[w]);
+								const auto& neuronsD1 = VecFloat().load_a(&NeuronsD1[w]);
 								mul_add(neuronsD1, VecFloat().load_a(&Inputs[1]->Neurons[channelOffset]), VecFloat().load_a(&Inputs[0]->NeuronsD1[w])).store_a(&Inputs[0]->NeuronsD1[w]);
 								mul_add(neuronsD1, VecFloat().load_a(&Inputs[0]->Neurons[w]), VecFloat().load_a(&Inputs[1]->NeuronsD1[channelOffset])).store_a(&Inputs[1]->NeuronsD1[channelOffset]);
 							}

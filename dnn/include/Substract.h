@@ -116,28 +116,28 @@ namespace dnn
 				if (Inputs.size() == 2)
 				{
 					for_i(batchSize, LIGHT_COMPUTE, [=](size_t b)
+					{
+						const auto start = b * PaddedCDHW;
+						const auto end = start + CDHW;
+						for (auto n = start; n < end; n++)
 						{
-							const auto start = b * PaddedCDHW;
-							const auto end = start + CDHW;
-							for (auto n = start; n < end; n++)
-							{
-								Inputs[0]->NeuronsD1[n] += NeuronsD1[n];
-								Inputs[1]->NeuronsD1[n] -= NeuronsD1[n];
-							}
-						});
+							Inputs[0]->NeuronsD1[n] += NeuronsD1[n];
+							Inputs[1]->NeuronsD1[n] -= NeuronsD1[n];
+						}
+					});
 				}
 				else
 				{
 					for_i(batchSize, LIGHT_COMPUTE, [=](size_t b)
-						{
-							const auto start = b * PaddedCDHW;
-							const auto end = start + CDHW;
+					{
+						const auto start = b * PaddedCDHW;
+						const auto end = start + CDHW;
+						for (auto n = start; n < end; n++)
+							Inputs[0]->NeuronsD1[n] += NeuronsD1[n];
+						for (auto i = 1ull; i < Inputs.size(); i++)
 							for (auto n = start; n < end; n++)
-								Inputs[0]->NeuronsD1[n] += NeuronsD1[n];
-							for (auto i = 1ull; i < Inputs.size(); i++)
-								for (auto n = start; n < end; n++)
-									Inputs[i]->NeuronsD1[n] -= NeuronsD1[n];
-						});
+								Inputs[i]->NeuronsD1[n] -= NeuronsD1[n];
+					});
 				}
 #ifdef DNN_STOCHASTIC
 			}
