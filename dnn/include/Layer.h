@@ -158,6 +158,7 @@ namespace dnn
 	{
 	protected:
 		dnn::Device Device;
+		dnnl::memory::format_tag chosenFormat;
 		std::mt19937 RandomEngine;
 		
 	public:
@@ -182,7 +183,7 @@ namespace dnn
 		std::vector<Layer*> Outputs;
 		bool LayerBeforeCost;
 		bool SharesInput;
-		dnnl::memory::format_tag Format;
+		const dnnl::memory::format_tag Format;
 		const bool HasBias;
 		const bool HasWeights;
 		bool UseDefaultParameters;
@@ -316,6 +317,7 @@ namespace dnn
 			bpropTime(std::chrono::duration<Float>(Float(0))),
 			updateTime(std::chrono::duration<Float>(Float(0)))
 		{
+			chosenFormat = format;
 		}
 
 		virtual ~Layer() = default;
@@ -350,7 +352,7 @@ namespace dnn
 
 			description.append(nwl + std::string(" Features:") + tab + std::to_string(C) + std::string("x") + std::to_string(H) + std::string("x") + std::to_string(W));
 			description.append(nwl + std::string(" Neurons:") + tab + std::to_string(CDHW));
-			description.append(nwl + std::string(" Format:") + tab + std::string(magic_enum::enum_name<dnnl::memory::format_tag>(Format)));
+			description.append(nwl + std::string(" Format:") + tab + std::string(magic_enum::enum_name<dnnl::memory::format_tag>(chosenFormat)));
 
 			return description;
 		}
