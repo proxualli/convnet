@@ -169,14 +169,15 @@ namespace dnncore
 		LogSoftmax = 13,
 		Mish = 14,
 		Pow = 15,
-		Relu = 16,
-		Round = 17,
-		Softmax = 18,
-		SoftRelu = 19,
-		Sqrt = 20,
-		Square = 21,
-		Swish = 22,
-		Tanh = 23
+		PRelu = 16,
+		Relu = 17,
+		Round = 18,
+		Softmax = 19,
+		SoftRelu = 20,
+		Sqrt = 21,
+		Square = 22,
+		Swish = 23,
+		Tanh = 24
 	};
 
 	[Serializable()]

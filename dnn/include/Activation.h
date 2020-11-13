@@ -174,34 +174,45 @@ namespace dnn
 		LogSoftmax = 13,
 		Mish = 14,
 		Pow = 15,
-		Relu = 16,
-		Round = 17,
-		Softmax = 18,
-		SoftRelu = 19,
-		Sqrt = 20,
-		Square = 21,
-		Swish = 22,
-		Tanh = 23
+		PRelu = 16,
+		Relu = 17,
+		Round = 18,
+		Softmax = 19,
+		SoftRelu = 20,
+		Sqrt = 21,
+		Square = 22,
+		Swish = 23,
+		Tanh = 24
 	};
 
 	class Activation final : public Layer
 	{
 	private:
+		std::unique_ptr<dnnl::prelu_forward::primitive_desc> fwdDescPRelu;
+		std::unique_ptr<dnnl::prelu_backward::primitive_desc> bwdDescPRelu;
+		std::unique_ptr<dnnl::prelu_forward> fwdPRelu;
+		std::unique_ptr<dnnl::prelu_backward> bwdPRelu;
+
 		std::unique_ptr<dnnl::logsoftmax_forward::primitive_desc> fwdDescLogSoftmax;
 		std::unique_ptr<dnnl::logsoftmax_backward::primitive_desc> bwdDescLogSoftmax;
-		std::unique_ptr<dnnl::softmax_forward::primitive_desc> fwdDescSoftmax;
-		std::unique_ptr<dnnl::softmax_backward::primitive_desc> bwdDescSoftmax;
-		std::unique_ptr<dnnl::eltwise_forward::primitive_desc> fwdDesc;
-		std::unique_ptr<dnnl::eltwise_backward::primitive_desc> bwdDesc;
-		std::unique_ptr<dnnl::binary::primitive_desc> bwdAddDesc;
 		std::unique_ptr<dnnl::logsoftmax_forward> fwdLogSoftmax;
 		std::unique_ptr<dnnl::logsoftmax_backward> bwdLogSoftmax;
+
+		std::unique_ptr<dnnl::softmax_forward::primitive_desc> fwdDescSoftmax;
+		std::unique_ptr<dnnl::softmax_backward::primitive_desc> bwdDescSoftmax;
 		std::unique_ptr<dnnl::softmax_forward> fwdSoftmax;
 		std::unique_ptr<dnnl::softmax_backward> bwdSoftmax;
+
+		std::unique_ptr<dnnl::eltwise_forward::primitive_desc> fwdDesc;
+		std::unique_ptr<dnnl::eltwise_backward::primitive_desc> bwdDesc;
 		std::unique_ptr<dnnl::eltwise_forward> fwd;
 		std::unique_ptr<dnnl::eltwise_backward> bwd;
+
+		std::unique_ptr<dnnl::binary::primitive_desc> bwdAddDesc;
 		std::unique_ptr<dnnl::binary> bwdAdd;
+
 		dnnl::algorithm algorithm;
+
 		bool reorderFwdSrc;
 		bool reorderBwdSrc;
 		bool reorderBwdDiffSrc;
@@ -269,6 +280,21 @@ namespace dnn
 
 			switch (ActivationFunction)
 			{
+			case Activations::PRelu:
+			{
+				/*
+				fwdDescPRelu = std::make_unique<dnnl::prelu_forward::primitive_desc>(dnnl::prelu_forward::primitive_desc(dnnl::prelu_forward::desc(dnnl::prop_kind::forward, *DstMemDesc, axis), Device.engine));
+				bwdDescPRelu = std::make_unique<dnnl::prelu_backward::primitive_desc>(dnnl::prelu_backward::primitive_desc(dnnl::prelu_backward::desc(*DiffDstMemDesc, *DstMemDesc, axis), Device.engine, *fwdDescSoftmax));
+
+				fwdPRelu = std::make_unique<dnnl::prelu_forward>(dnnl::prelu_forward(*fwdDescPRelu));
+				bwdPRelu = std::make_unique<dnnl::prelu_backward>(dnnl::prelu_backward(*bwdDescPRelu));
+
+				reorderFwdSrc = fwdDescPRelu->src_desc() != *InputLayer->DstMemDesc;
+				reorderBwdDiffSrc = bwdDescPRelu->diff_src_desc() != *InputLayer->DiffDstMemDesc;
+				*/
+			}
+			break;
+
 			case Activations::LogSoftmax:
 			{
 				const auto axis = (H == 1 && W == 1) ? 1 : 3;
