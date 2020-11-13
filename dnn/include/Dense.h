@@ -7,14 +7,13 @@ namespace dnn
 	{
 	private:
 		std::unique_ptr<dnnl::inner_product_forward::primitive_desc> fwdDesc;
-		std::unique_ptr<dnnl::inner_product_backward_weights::primitive_desc> bwdWeightsDesc;
-		std::unique_ptr<dnnl::inner_product_backward_data::primitive_desc> bwdDataDesc;
-		std::unique_ptr<dnnl::binary::primitive_desc> bwdAddDesc;
 		std::unique_ptr<dnnl::inner_product_forward> fwd;
+		std::unique_ptr<dnnl::inner_product_backward_weights::primitive_desc> bwdWeightsDesc;
 		std::unique_ptr<dnnl::inner_product_backward_weights> bwdWeights;
+		std::unique_ptr<dnnl::inner_product_backward_data::primitive_desc> bwdDataDesc;
 		std::unique_ptr<dnnl::inner_product_backward_data> bwdData;
+		std::unique_ptr<dnnl::binary::primitive_desc> bwdAddDesc;
 		std::unique_ptr<dnnl::binary> bwdAdd;
-
 		bool reorderFwdSrc;
 		bool reorderBwdSrc;
 		bool reorderBwdDiffSrc;
