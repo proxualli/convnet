@@ -77,7 +77,7 @@ namespace dnn
 
 		std::string GetDescription() const final override
 		{
-			std::string description = GetDescriptionHeader();
+			auto description = GetDescriptionHeader();
 
 			if (Groups > 1)
 				description.append(nwl + std::string(" Groups:") + tab + std::to_string(Groups));

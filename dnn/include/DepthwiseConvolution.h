@@ -69,7 +69,7 @@ namespace dnn
 
 		std::string GetDescription() const final override
 		{
-			std::string description = GetDescriptionHeader();
+			auto description = GetDescriptionHeader();
 
 			if (Multiplier > 1)
 				description.append(nwl + std::string(" Multiplier:") + tab + std::to_string(Multiplier));

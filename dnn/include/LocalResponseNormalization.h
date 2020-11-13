@@ -7,10 +7,10 @@ namespace dnn
 	{
 	private:
 		std::unique_ptr<dnnl::lrn_forward::primitive_desc> fwdDesc;
-		std::unique_ptr<dnnl::lrn_backward::primitive_desc> bwdDesc;
-		std::unique_ptr<dnnl::binary::primitive_desc> bwdAddDesc;
 		std::unique_ptr<dnnl::lrn_forward> fwd;
+		std::unique_ptr<dnnl::lrn_backward::primitive_desc> bwdDesc;
 		std::unique_ptr<dnnl::lrn_backward> bwd;
+		std::unique_ptr<dnnl::binary::primitive_desc> bwdAddDesc;
 		std::unique_ptr<dnnl::binary> bwdAdd;
 		std::unique_ptr<dnnl::memory> WorkspaceMemory;
 		dnnl::algorithm algorithm;
@@ -42,7 +42,7 @@ namespace dnn
 
 		std::string GetDescription() const final override
 		{
-			std::string description = GetDescriptionHeader();
+			auto description = GetDescriptionHeader();
 
 			description.append(nwl + std::string(" AcrossChannels:") + tab + (AcrossChannels ? std::string("Yes") : std::string("No")));
 			description.append(nwl + std::string(" LocalSize:") + tab + std::to_string(LocalSize));

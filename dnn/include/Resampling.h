@@ -35,7 +35,7 @@ namespace dnn
 
 		std::string GetDescription() const final override
 		{
-			std::string description = GetDescriptionHeader();
+			auto description = GetDescriptionHeader();
 
 			description.append(nwl + std::string(" Scaling:") + tab + FloatToString(FactorH, 4) + std::string("x") + FloatToString(FactorW, 4));
 			if (Algorithm == Algorithms::Linear)

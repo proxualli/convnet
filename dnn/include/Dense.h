@@ -46,7 +46,7 @@ namespace dnn
 
 		std::string GetDescription() const final override
 		{
-			std::string description = GetDescriptionHeader() + GetWeightsDescription();
+			auto description = GetDescriptionHeader() + GetWeightsDescription();
 
 			description.append(nwl + std::string(" Connections:") + tab + std::to_string(CDHW * (InputLayer->CDHW + 1)));
 
