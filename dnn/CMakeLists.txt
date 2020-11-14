@@ -1,14 +1,61 @@
-cmake_minimum_required(VERSION 3.5.0)
+cmake_minimum_required(VERSION 3.1)
 
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_EXTENSIONS OFF)
-string(APPEND CMAKE_CXX_FLAGS " /arch:AVX2 /openmp:experimental")
-string(APPEND CMAKE_C_FLAGS " /arch:AVX2 /openmp:experimental")
+if("${CMAKE_BUILD_TYPE}" STREQUAL "")
+    message(STATUS "CMAKE_BUILD_TYPE is unset, defaulting to Release")
+    set(CMAKE_BUILD_TYPE "Release" CACHE STRING
+        "Choose the type of build, options are: None Debug Release RelWithDebInfo MinSizeRel RelWithAssert ...")
+endif()
 
-project(dnn VERSION 1.0.0 LANGUAGES C CXX ASM)
+set(DNN_VERSION_MAJOR 1)
+set(DNN_VERSION_MINOR 0)
+set(DNN_VERSION_PATCH 0)
+set(DNN_VERSION_NOTE "")
+
+set(DNN_VERSION ${DNN_VERSION_MAJOR}.${DNN_VERSION_MINOR}.${DNN_VERSION_PATCH})
+math(EXPR DNN_VERSION_NUMBER "10000*${DNN_VERSION_MAJOR} + 100*${DNN_VERSION_MINOR} + ${DNN_VERSION_PATCH}")
+
+message(STATUS "Using CMake version ${CMAKE_VERSION}")
 
 INCLUDE(GNUInstallDirs)
+INCLUDE(CheckCSourceCompiles)
+
+set(DNNL_LIBRARY_TYPE "STATIC" CACHE STRING "" FORCE)
+set(DNNL_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
+set(DNNL_BUILD_TESTS OFF CACHE BOOL "" FORCE)
+set(WITH_TURBOJPEG FALSE CACHE BOOL "" FORCE) 
+set(ENABLE_SHARED FALSE CACHE BOOL "" FORCE)
+set(ENABLE_STATIC TRUE CACHE BOOL "" FORCE)
+set(PNG_BUILD_ZLIB TRUE CACHE BOOL "" FORCE)
+set(PNG_SHARED FALSE CACHE BOOL "" FORCE)
+set(PNG_STATIC TRUE CACHE BOOL "" FORCE)
+set(PNG_EXECUTABLES FALSE CACHE BOOL "" FORCE)
+set(PNG_TESTS FALSE CACHE BOOL "" FORCE)
+
+project(dnn VERSION ${DNN_VERSION} LANGUAGES C CXX ASM)
+
+MACRO(DNN_TARGET_ENABLE_CXX14 target)
+  IF(MSVC)
+    TARGET_COMPILE_OPTIONS(${target} PRIVATE /arch:AVX2 /openmp:experimental)
+  ELSE()
+    TARGET_COMPILE_OPTIONS(${target} PRIVATE -mavx2 -mfma -march=znver2 -fopenmp)
+  ENDIF()
+  SET_TARGET_PROPERTIES(${target} PROPERTIES
+    CXX_STANDARD 14
+    CXX_STANDARD_REQUIRED YES
+    CXX_EXTENSIONS OFF)
+ENDMACRO()
+
+MACRO(DNN_TARGET_ENABLE_CXX17 target)
+  IF(MSVC)
+    TARGET_COMPILE_OPTIONS(${target} PRIVATE /arch:AVX2 /openmp:experimental)
+  ELSE()
+    TARGET_COMPILE_OPTIONS(${target} PRIVATE -mavx2 -mfma -march=znver2 -fopenmp)
+  ENDIF()
+  SET_TARGET_PROPERTIES(${target} PROPERTIES
+    CXX_STANDARD 17
+    CXX_STANDARD_REQUIRED YES
+    CXX_EXTENSIONS OFF)
+ENDMACRO()
 
 set(libdnn_headers
   include/Activation.h
@@ -68,17 +115,7 @@ SET(DNN_DEPENDENCIES_SOURCE_DIR ${CMAKE_SOURCE_DIR}/deps
 SET(DNN_DEPENDENCIES_BINARY_DIR ${CMAKE_BINARY_DIR}/deps
   CACHE PATH "Confu-style dependencies binary directory")
 
-IF(NOT DEFINED VECTORCLASS_SOURCE_DIR)
-  MESSAGE(STATUS "Downloading VectorClass to ${DNN_DEPENDENCIES_SOURCE_DIR}/vectorclass (define VECTORCLASS_SOURCE_DIR to avoid it)")
-  CONFIGURE_FILE(cmake/DownloadVectorClass.cmake "${DNN_DEPENDENCIES_BINARY_DIR}/vectorclass-download/CMakeLists.txt")
-  EXECUTE_PROCESS(COMMAND "${CMAKE_COMMAND}" -G "${CMAKE_GENERATOR}" .
-    WORKING_DIRECTORY "${DNN_DEPENDENCIES_BINARY_DIR}/vectorclass-download")
-  EXECUTE_PROCESS(COMMAND "${CMAKE_COMMAND}" --build .
-    WORKING_DIRECTORY "${DNN_DEPENDENCIES_BINARY_DIR}/vectorclass-download")
-  SET(VECTORCLASS_SOURCE_DIR "${DNN_DEPENDENCIES_SOURCE_DIR}/vectorclass" CACHE STRING "VectorClass source directory")
- ENDIF()
-
- IF(NOT DEFINED ZLIB_SOURCE_DIR)
+IF(NOT DEFINED ZLIB_SOURCE_DIR)
   MESSAGE(STATUS "Downloading ZLib to ${DNN_DEPENDENCIES_SOURCE_DIR}/zlib-1.2.11 (define ZLIB_SOURCE_DIR to avoid it)")
   CONFIGURE_FILE(cmake/DownloadZLIB.cmake "${DNN_DEPENDENCIES_BINARY_DIR}/zlib-download/CMakeLists.txt")
   EXECUTE_PROCESS(COMMAND "${CMAKE_COMMAND}" -G "${CMAKE_GENERATOR}" .
@@ -86,8 +123,8 @@ IF(NOT DEFINED VECTORCLASS_SOURCE_DIR)
   EXECUTE_PROCESS(COMMAND "${CMAKE_COMMAND}" --build .
     WORKING_DIRECTORY "${DNN_DEPENDENCIES_BINARY_DIR}/zlib-download")
   SET(ZLIB_SOURCE_DIR "${DNN_DEPENDENCIES_SOURCE_DIR}/zlib-1.2.11" CACHE STRING "ZLib source directory")
-  SET(ZLIB_INCLUDE_DIR "${DNN_DEPENDENCIES_SOURCE_DIR}/ZLIB_SOURCE_DIR/include" CACHE STRING "ZLib include directory")
-  SET(ZLIB_LIBRARY "${DNN_DEPENDENCIES_SOURCE_DIR}/ZLIB_SOURCE_DIR/bin" CACHE STRING "ZLib bin directory")
+  SET(ZLIB_INCLUDE_DIR "${DNN_DEPENDENCIES_BINARY_DIR}/zlib-1.2.11" CACHE STRING "ZLib include directory")
+  SET(ZLIB_LIBRARY "${DNN_DEPENDENCIES_SOURCE_DIR}/zlib-1.2.11" CACHE STRING "ZLib bin directory")
  ENDIF()
 
  IF(NOT DEFINED PNG_SOURCE_DIR)
@@ -98,6 +135,16 @@ IF(NOT DEFINED VECTORCLASS_SOURCE_DIR)
   EXECUTE_PROCESS(COMMAND "${CMAKE_COMMAND}" --build .
     WORKING_DIRECTORY "${DNN_DEPENDENCIES_BINARY_DIR}/png-download")
   SET(PNG_SOURCE_DIR "${DNN_DEPENDENCIES_SOURCE_DIR}/libpng" CACHE STRING "PNG source directory")
+ ENDIF()
+
+IF(NOT DEFINED VECTORCLASS_SOURCE_DIR)
+  MESSAGE(STATUS "Downloading VectorClass to ${DNN_DEPENDENCIES_SOURCE_DIR}/vectorclass (define VECTORCLASS_SOURCE_DIR to avoid it)")
+  CONFIGURE_FILE(cmake/DownloadVectorClass.cmake "${DNN_DEPENDENCIES_BINARY_DIR}/vectorclass-download/CMakeLists.txt")
+  EXECUTE_PROCESS(COMMAND "${CMAKE_COMMAND}" -G "${CMAKE_GENERATOR}" .
+    WORKING_DIRECTORY "${DNN_DEPENDENCIES_BINARY_DIR}/vectorclass-download")
+  EXECUTE_PROCESS(COMMAND "${CMAKE_COMMAND}" --build .
+    WORKING_DIRECTORY "${DNN_DEPENDENCIES_BINARY_DIR}/vectorclass-download")
+  SET(VECTORCLASS_SOURCE_DIR "${DNN_DEPENDENCIES_SOURCE_DIR}/vectorclass" CACHE STRING "VectorClass source directory")
  ENDIF()
 
  IF(NOT DEFINED JPEG_SOURCE_DIR)
@@ -142,31 +189,26 @@ IF(NOT DEFINED VECTORCLASS_SOURCE_DIR)
 
 # Library
 #--------------------------------------
-add_library(${PROJECT_NAME} SHARED ${libdnn_sources})
-
+add_library(${PROJECT_NAME} STATIC ${libdnn_sources})
+DNN_TARGET_ENABLE_CXX17(${PROJECT_NAME})
 target_include_directories(${PROJECT_NAME}
-    PRIVATE
-        ${DNN_DEPENDENCIES_BINARY_DIR}/oneDNN/include
-    PUBLIC 
+     PUBLIC 
         $<INSTALL_INTERFACE:include>    
-        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>     
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
 )
 
-# ---[ Configure VectorClass
-IF(NOT TARGET vectorclass)
-  ADD_SUBDIRECTORY(
-    "${VECTORCLASS_SOURCE_DIR}"
-    "${DNN_DEPENDENCIES_BINARY_DIR}/vectorclass")
-ENDIF()
-TARGET_LINK_LIBRARIES(${PROJECT_NAME} PUBLIC vectorclass)
-
-# ---[ Configure JPEG
-IF(NOT TARGET libjpeg)
-  ADD_SUBDIRECTORY(
-    "${JPEG_SOURCE_DIR}"
-    "${DNN_DEPENDENCIES_BINARY_DIR}/libjpeg-turbo")
-ENDIF()
-TARGET_LINK_LIBRARIES(${PROJECT_NAME} PUBLIC libjpeg)
+include_directories(${DNN_DEPENDENCIES_SOURCE_DIR}/zlib-1.2.11)
+include_directories(${DNN_DEPENDENCIES_BINARY_DIR}/zlib-1.2.11)
+include_directories(${DNN_DEPENDENCIES_SOURCE_DIR}/libpng)
+include_directories(${DNN_DEPENDENCIES_BINARY_DIR}/libpng)
+include_directories(${DNN_DEPENDENCIES_SOURCE_DIR}/libjpeg-turbo)
+include_directories(${DNN_DEPENDENCIES_BINARY_DIR}/libjpeg-turbo)
+include_directories(${DNN_DEPENDENCIES_SOURCE_DIR}/oneDNN/include)
+include_directories(${DNN_DEPENDENCIES_BINARY_DIR}/oneDNN/include)
+include_directories(${DNN_DEPENDENCIES_SOURCE_DIR}/vectorclass)
+include_directories(${DNN_DEPENDENCIES_BINARY_DIR}/vectorclass)
+include_directories(${DNN_DEPENDENCIES_SOURCE_DIR}/magic_enum/include)
+include_directories(${DNN_DEPENDENCIES_BINARY_DIR}/magic_enum/include)
 
 # ---[ Configure ZLIB
 IF(NOT TARGET zlib)
@@ -182,15 +224,16 @@ IF(NOT TARGET libpng)
     "${PNG_SOURCE_DIR}"
     "${DNN_DEPENDENCIES_BINARY_DIR}/libpng")
 ENDIF()
+include_directories(libpng ${ZLIB_INCLUDE_DIR})
 TARGET_LINK_LIBRARIES(${PROJECT_NAME} PUBLIC libpng)
 
-# ---[ Configure MagicEnum
-IF(NOT TARGET magic_enum)
+# ---[ Configure JPEG
+IF(NOT TARGET libjpeg)
   ADD_SUBDIRECTORY(
-    "${MAGIC_ENUM_SOURCE_DIR}"
-    "${DNN_DEPENDENCIES_BINARY_DIR}/magic_enum")
+    "${JPEG_SOURCE_DIR}"
+    "${DNN_DEPENDENCIES_BINARY_DIR}/libjpeg-turbo")
 ENDIF()
-TARGET_LINK_LIBRARIES(${PROJECT_NAME} PUBLIC magic_enum)
+TARGET_LINK_LIBRARIES(${PROJECT_NAME} PUBLIC libjpeg)
 
 # ---[ Configure oneDNN
 IF(NOT TARGET oneDNN)
@@ -199,3 +242,19 @@ IF(NOT TARGET oneDNN)
     "${DNN_DEPENDENCIES_BINARY_DIR}/oneDNN")
 ENDIF()
 TARGET_LINK_LIBRARIES(${PROJECT_NAME} PUBLIC oneDNN)
+
+# ---[ Configure VectorClass
+IF(NOT TARGET vectorclass)
+  ADD_SUBDIRECTORY(
+    "${VECTORCLASS_SOURCE_DIR}"
+    "${DNN_DEPENDENCIES_BINARY_DIR}/vectorclass")
+ENDIF()
+TARGET_LINK_LIBRARIES(${PROJECT_NAME} PUBLIC vectorclass)
+
+# ---[ Configure MagicEnum
+IF(NOT TARGET magic_enum)
+  ADD_SUBDIRECTORY(
+    "${MAGIC_ENUM_SOURCE_DIR}"
+    "${DNN_DEPENDENCIES_BINARY_DIR}/magic_enum")
+ENDIF()
+TARGET_LINK_LIBRARIES(${PROJECT_NAME} PUBLIC magic_enum)
