@@ -30,20 +30,12 @@ set(PNG_SHARED FALSE CACHE BOOL "" FORCE)
 set(PNG_STATIC TRUE CACHE BOOL "" FORCE)
 set(PNG_EXECUTABLES FALSE CACHE BOOL "" FORCE)
 set(PNG_TESTS FALSE CACHE BOOL "" FORCE)
+set(DNN_CACHE_PRIMITIVES TRUE CACHE BOOL "" FORCE)
+set(DNN_OMP TRUE CACHE BOOL "" FORCE)
 
-project(dnn VERSION ${DNN_VERSION} LANGUAGES C CXX ASM)
+add_compile_definitions(DNN_EXPORTS DNN_CACHE_PRIMITIVES DNN_OMP cimg_use_cpp11 cimg_use_jpeg cimg_use_png cimg_use_zlib)
 
-MACRO(DNN_TARGET_ENABLE_CXX14 target)
-  IF(MSVC)
-    TARGET_COMPILE_OPTIONS(${target} PRIVATE /arch:AVX2 /openmp:experimental)
-  ELSE()
-    TARGET_COMPILE_OPTIONS(${target} PRIVATE -mavx2 -mfma -march=znver2 -fopenmp)
-  ENDIF()
-  SET_TARGET_PROPERTIES(${target} PROPERTIES
-    CXX_STANDARD 14
-    CXX_STANDARD_REQUIRED YES
-    CXX_EXTENSIONS OFF)
-ENDMACRO()
+project(dnn VERSION ${DNN_VERSION} LANGUAGES CXX)
 
 MACRO(DNN_TARGET_ENABLE_CXX17 target)
   IF(MSVC)
@@ -57,7 +49,7 @@ MACRO(DNN_TARGET_ENABLE_CXX17 target)
     CXX_EXTENSIONS OFF)
 ENDMACRO()
 
-set(libdnn_headers
+set(dnn_headers
   include/Activation.h
   include/Add.h
   include/AlignedAllocator.h
@@ -99,12 +91,12 @@ set(libdnn_headers
   include/Scripts.h
   include/stdafx.h
   include/Substract.h
-  include/targetver.h
   include/Utils.h
+  include/targetver.h
 )
 
-set(libdnn_sources
-  ${libdnn_headers}
+set(dnn_sources
+  ${dnn_headers}
   src/dllmain.cpp
   src/stdafx.cpp
 )
@@ -189,7 +181,7 @@ IF(NOT DEFINED VECTORCLASS_SOURCE_DIR)
 
 # Library
 #--------------------------------------
-add_library(${PROJECT_NAME} STATIC ${libdnn_sources})
+add_library(${PROJECT_NAME} STATIC ${dnn_sources})
 DNN_TARGET_ENABLE_CXX17(${PROJECT_NAME})
 target_include_directories(${PROJECT_NAME}
      PUBLIC 
