@@ -50,7 +50,9 @@
 #define MAGIC_ENUM_RANGE_MAX 255
 
 #include "magic_enum.hpp"
+
 #include "dnnl.hpp"
+#include "dnnl_debug.h"
 
 #include "AlignedAllocator.h"
 #include "ParallelFor.h"
