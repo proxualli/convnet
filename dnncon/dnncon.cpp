@@ -1,15 +1,19 @@
 #ifdef _WIN32
 #include "stdafx.h"
-static std::string Path = std::string(getenv("USERPROFILE")) + "\\Documents\\convnet\\";
 #else
 #include <stdlib.h>
-static std::string Path = std::string(getenv("HOME"))  + "/convnet/";
 #endif
 
 #include <chrono>
 
 #include "Utils.h"
 #include "Scripts.h"
+
+#ifdef _WIN32
+static std::string Path = std::string(getenv("USERPROFILE")) + "\\Documents\\convnet\\";
+#else
+static std::string Path = std::string(getenv("HOME")) + "/convnet/";
+#endif
 
 using namespace dnn;
 
