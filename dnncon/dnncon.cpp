@@ -1,10 +1,15 @@
+#ifdef _WIN32
 #include "stdafx.h"
+static std::string Path = std::string(getenv("USERPROFILE")) + "\\Documents\\convnet\\";
+#else
+#include <stdlib.h>
+static std::string Path = std::string(getenv("HOME"))  + "/convnet/";
+#endif
+
 #include <chrono>
 
 #include "Utils.h"
 #include "Scripts.h"
-
-static std::string Path = std::string(getenv("USERPROFILE")) + "\\Documents\\convnet\\";
 
 using namespace dnn;
 
@@ -54,7 +59,7 @@ DNN_API void DNNGetImage(const size_t layer, const unsigned char fillColor, unsi
 
 void NewEpoch(size_t CurrentCycle, size_t CurrentEpoch, size_t TotalEpochs, bool HorizontalFlip, bool VerticalFlip, Float Dropout, Float Cutout, Float AutoAugment, Float ColorCast, size_t ColorAngle, Float Distortion, size_t Interpolation, Float Scaling, Float Rotation, Float MaximumRate, size_t BatchSize, Float Momentum, Float L2Penalty, Float AvgTrainLoss, Float TrainErrorPercentage, Float TrainAccuracy, size_t TrainErrors, Float AvgTestLoss, Float TestErrorPercentage, Float TestAccuracy, size_t TestErrors)
 {
-    std::cout << "\r\nEpoch:\t" << std::to_string(CurrentEpoch) << "\r\nTest Accuracy:\t" << std::to_string(TestAccuracy) << std::endl;
+    std::cout << nwl + "Epoch:\t" << std::to_string(CurrentEpoch) << nwl + "Test Accuracy:\t" << std::to_string(TestAccuracy) << std::endl;
 }
 
 int main()
@@ -80,13 +85,13 @@ int main()
   
     if (DNNReadDefinition(dnn::ScriptsCatalog::Generate(param).c_str(), Optimizers::NAG, msg) == 1)
     {
-        std::cout << "\r\nDefinition loaded...";
+        std::cout << nwl + "Definition loaded...";
            
         DNNSetNewEpochDelegate(&NewEpoch);
 
         if (DNNLoadDataset())
         {
-            std::cout << "\r\nDataset loaded...";
+            std::cout << nwl + "Dataset loaded...";
 
             DNNAddLearningRateSGDR(true, 1, 0.05f, 128, 1, 200, 1, 0.0001f, 0.0005f, 0.9f, 1.0f, 200, true, false, 0.0f, 0.7f, 0.7f, 0.7f, 20, 0.7f, 0, 10.0f, 12.0f);
 
@@ -128,7 +133,7 @@ int main()
 
             DNNTraining();
 
-            std::cout << "\r\nTraining started...";
+            std::cout << nwl + "Training started...";
                
             while (!stop)
             {
@@ -170,7 +175,7 @@ int main()
                 Float seconds = Float(std::chrono::duration_cast<std::chrono::microseconds>(time).count()) / 1000000;
                 Float samplesPerSecond = samples / seconds;
 
-                std::cout << "\r\nCycle: " << Cycle << "\r\nEpoch: " << Epoch << "\r\nSampleIndex: " << SampleIndex << "\r\nErrorPercentage: " << TrainErrorPercentage << "\r\nSamples/second: " << std::to_string(samplesPerSecond) << std::endl;
+                std::cout << nwl + "Cycle: " << Cycle << nwl + "Epoch: " << Epoch << nwl + "SampleIndex: " << SampleIndex << nwl + "ErrorPercentage: " << TrainErrorPercentage << nwl + "Samples/second: " << std::to_string(samplesPerSecond) << std::endl;
 
                 oldSampleIndex = SampleIndex;
 
@@ -210,11 +215,10 @@ int main()
             DNNModelDispose();
         }
         else
-            std::cout << "\r\nCould not load dataset";
+            std::cout << nwl + "Could not load dataset";
     }
     else
     {
         throw std::exception(msg.Message.c_str());
     }
-   
 }
