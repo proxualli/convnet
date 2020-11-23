@@ -923,7 +923,7 @@ namespace dnn
 					auto max = 2 * std::abs(WeightsScale);
 					std::generate_n(weights.begin(), WeightCount, [&]()
 					{
-						Float value;
+						Float value = 0;
 						do { value = distribution(RandomEngine); } while ((value < -max) || (value > max));
 						return value;
 					});
@@ -1036,7 +1036,7 @@ namespace dnn
 					auto max = 2 * std::abs(BiasesScale);
 					std::generate_n(Biases.begin(), BiasCount, [&]()
 					{
-						Float value;
+						Float value = 0;
 						do { value = distribution(RandomEngine); } while ((value < -max) || (value > max));
 						return value;
 					});
