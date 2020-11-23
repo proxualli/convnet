@@ -1,4 +1,8 @@
-cmake_minimum_required(VERSION 3.2 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.7...3.19)
+
+if(${CMAKE_VERSION} VERSION_LESS 3.12)
+    cmake_policy(VERSION ${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION})
+endif()
 
 message(STATUS "Using CMake version ${CMAKE_VERSION}")
 
@@ -50,25 +54,51 @@ else(NOT CMAKE_BUILD_TYPE)
 endif(NOT CMAKE_BUILD_TYPE)
 
 option(BUILD_SHARED_LIBS "Build shared library" ON)
-option(BUILD_STATIC_LIBS "Build static library" OFF)
 
-####
-# Create the library target
-set(PACKAGE_NAME dnn)
-
-add_compile_definitions(DNN_EXPORTS DNN_CACHE_PRIMITIVES DNN_OMP cimg_use_cpp11 cimg_use_jpeg cimg_use_png cimg_use_zlib)
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 MACRO(DNN_TARGET_ENABLE_CXX17 target)
-  IF(WIN32 OR MSVC)
-    TARGET_COMPILE_OPTIONS(${target} PRIVATE /arch:AVX2 /openmp:experimental)
-  ELSE()
-    TARGET_COMPILE_OPTIONS(${target} PRIVATE -mavx2 -mfma -march=znver2 -fopenmp)
-  ENDIF()
+  if(WIN32 OR MSVC)
+    if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+      # warning level 4 and all warnings as errors
+      TARGET_COMPILE_OPTIONS(${target} PRIVATE /W4 /arch:AVX2 /openmp:experimental)
+    else()
+      TARGET_COMPILE_OPTIONS(${target} PRIVATE /W3 /arch:AVX2 /openmp:experimental)
+    endif()
+  else()
+    if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+      # warning level 4 and all warnings as errors
+      TARGET_COMPILE_OPTIONS(${target} PRIVATE -Wextra -mavx2 -mfma -march=znver2 -fopenmp -fPIC $<$<CXX_COMPILER_ID:GNU>:-Wno-psabi>)
+    else()
+      TARGET_COMPILE_OPTIONS(${target} PRIVATE -Ofast -Wno-error -mavx2 -mfma -march=znver2 -fopenmp -fPIC $<$<CXX_COMPILER_ID:GNU>:-Wno-psabi>)
+    endif()
+  endif()
   SET_TARGET_PROPERTIES(${target} PROPERTIES
     CXX_STANDARD 17
     CXX_STANDARD_REQUIRED YES
-    CXX_EXTENSIONS OFF)
+    CXX_EXTENSIONS ON)
 ENDMACRO()
+
+set(DNNL_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
+set(DNNL_BUILD_TESTS OFF CACHE BOOL "" FORCE)
+set(WITH_TURBOJPEG FALSE CACHE BOOL "" FORCE) 
+set(PNG_EXECUTABLES FALSE CACHE BOOL "" FORCE)
+set(PNG_TESTS FALSE CACHE BOOL "" FORCE)
+set(PNG_BUILD_ZLIB TRUE CACHE BOOL "" FORCE)
+
+if(BUILD_SHARED_LIBS)
+  set(DNNL_LIBRARY_TYPE "SHARED" CACHE STRING "" FORCE)
+  set(PNG_SHARED TRUE CACHE BOOL "" FORCE)
+  set(PNG_STATIC FALSE CACHE BOOL "" FORCE)
+  set(ENABLE_SHARED TRUE CACHE BOOL "" FORCE)
+  set(ENABLE_STATIC FALSE CACHE BOOL "" FORCE)
+else()
+  set(DNNL_LIBRARY_TYPE "STATIC" CACHE STRING "" FORCE)
+  set(PNG_SHARED FALSE CACHE BOOL "" FORCE)
+  set(PNG_STATIC TRUE CACHE BOOL "" FORCE)
+  set(ENABLE_SHARED FALSE CACHE BOOL "" FORCE)
+  set(ENABLE_STATIC TRUE CACHE BOOL "" FORCE)
+endif()
 
 set(libdnn_headers
   include/Activation.h
@@ -120,6 +150,10 @@ set(libdnn_sources
   ${libdnn_headers}
   src/dllmain.cpp
   src/stdafx.cpp
+)
+
+set(libdnn_test
+  src/test.cpp
 )
 
 # ---[ Download deps
@@ -200,36 +234,25 @@ IF(NOT DEFINED VECTORCLASS_SOURCE_DIR)
   SET(CIMG_SOURCE_DIR "${DNN_DEPENDENCIES_SOURCE_DIR}/CImg" CACHE STRING "CImg source directory")
  ENDIF()
 
-set(DNNL_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
-set(DNNL_BUILD_TESTS OFF CACHE BOOL "" FORCE)
-set(WITH_TURBOJPEG FALSE CACHE BOOL "" FORCE) 
-set(PNG_EXECUTABLES FALSE CACHE BOOL "" FORCE)
-set(PNG_TESTS FALSE CACHE BOOL "" FORCE)
-set(PNG_BUILD_ZLIB TRUE CACHE BOOL "" FORCE)
-
-if(BUILD_STATIC_LIBS)
-  set(DNNL_LIBRARY_TYPE "STATIC" CACHE STRING "" FORCE)
-  set(ENABLE_SHARED FALSE CACHE BOOL "" FORCE)
-  set(ENABLE_STATIC TRUE CACHE BOOL "" FORCE)
-  set(PNG_SHARED FALSE CACHE BOOL "" FORCE)
-  set(PNG_STATIC TRUE CACHE BOOL "" FORCE)
-endif()
-
-if(BUILD_SHARED_LIBS)
-  set(DNNL_LIBRARY_TYPE "SHARED" CACHE STRING "" FORCE)
-  set(ENABLE_SHARED TRUE CACHE BOOL "" FORCE)
-  set(ENABLE_STATIC FALSE CACHE BOOL "" FORCE)
-  set(PNG_SHARED TRUE CACHE BOOL "" FORCE)
-  set(PNG_STATIC FALSE CACHE BOOL "" FORCE)
-endif()
 
 add_library(${PROJECT_NAME} ${libdnn_sources})
 DNN_TARGET_ENABLE_CXX17(${PROJECT_NAME})
+target_compile_definitions(${PROJECT_NAME} PUBLIC DNN_EXPORTS DNN_CACHE_PRIMITIVES DNN_OMP cimg_use_cpp11 cimg_use_jpeg cimg_use_png cimg_use_zlib)
 target_include_directories(${PROJECT_NAME}
-     PRIVATE
-       ${PROJECT_NAME} PRIVATE
-       $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include> 
-       $<INSTALL_INTERFACE:include>)
+    PUBLIC
+       $<INSTALL_INTERFACE:include>
+       $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+    PRIVATE
+       ${CMAKE_CURRENT_SOURCE_DIR}/src)
+
+add_executable(test ${libdnn_test})
+DNN_TARGET_ENABLE_CXX17(test)
+target_include_directories(test 
+    PUBLIC
+       $<INSTALL_INTERFACE:include>
+       $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+    PRIVATE
+       ${CMAKE_CURRENT_SOURCE_DIR}/src)
 
 include_directories(${DNN_DEPENDENCIES_SOURCE_DIR}/zlib-1.2.11)
 include_directories(${DNN_DEPENDENCIES_BINARY_DIR}/zlib-1.2.11)
@@ -242,11 +265,8 @@ include_directories(${DNN_DEPENDENCIES_BINARY_DIR}/oneDNN/include)
 include_directories(${DNN_DEPENDENCIES_SOURCE_DIR}/oneDNN/src)
 include_directories(${DNN_DEPENDENCIES_BINARY_DIR}/oneDNN/src)
 include_directories(${DNN_DEPENDENCIES_SOURCE_DIR}/vectorclass)
-include_directories(${DNN_DEPENDENCIES_BINARY_DIR}/vectorclass)
 include_directories(${DNN_DEPENDENCIES_SOURCE_DIR}/magic_enum/include)
-include_directories(${DNN_DEPENDENCIES_BINARY_DIR}/magic_enum/include)
 include_directories(${DNN_DEPENDENCIES_SOURCE_DIR}/CImg)
-include_directories(${DNN_DEPENDENCIES_BINARY_DIR}/CImg)
 
 # ---[ Configure ZLIB
 IF(NOT TARGET zlib)
@@ -262,7 +282,7 @@ IF(NOT TARGET png)
     "${PNG_SOURCE_DIR}"
     "${DNN_DEPENDENCIES_BINARY_DIR}/libpng")
 ENDIF()
-TARGET_LINK_LIBRARIES(${PROJECT_NAME} PRIVATE	png)
+TARGET_LINK_LIBRARIES(${PROJECT_NAME} PUBLIC png)
 
 # ---[ Configure JPEG
 IF(NOT TARGET jpeg)
@@ -270,7 +290,7 @@ IF(NOT TARGET jpeg)
     "${JPEG_SOURCE_DIR}"
     "${DNN_DEPENDENCIES_BINARY_DIR}/libjpeg-turbo")
 ENDIF()
-TARGET_LINK_LIBRARIES(${PROJECT_NAME} PRIVATE	jpeg)
+TARGET_LINK_LIBRARIES(${PROJECT_NAME} PUBLIC jpeg)
 
 # ---[ Configure oneDNN
 IF(NOT TARGET dnnl)
@@ -278,7 +298,7 @@ IF(NOT TARGET dnnl)
     "${ONEDNN_SOURCE_DIR}"
     "${DNN_DEPENDENCIES_BINARY_DIR}/oneDNN")
 ENDIF()
-TARGET_LINK_LIBRARIES(${PROJECT_NAME} PRIVATE	dnnl)
+TARGET_LINK_LIBRARIES(${PROJECT_NAME} PUBLIC dnnl)
 
 # ---[ Configure VectorClass
 IF(NOT TARGET vectorclass)
@@ -286,7 +306,7 @@ IF(NOT TARGET vectorclass)
     "${VECTORCLASS_SOURCE_DIR}"
     "${DNN_DEPENDENCIES_BINARY_DIR}/vectorclass")
 ENDIF()
-TARGET_LINK_LIBRARIES(${PROJECT_NAME} PRIVATE	vectorclass)
+TARGET_LINK_LIBRARIES(${PROJECT_NAME} PUBLIC vectorclass)
 
 # ---[ Configure MagicEnum
 IF(NOT TARGET magic_enum)
@@ -294,3 +314,9 @@ IF(NOT TARGET magic_enum)
     "${MAGIC_ENUM_SOURCE_DIR}"
     "${DNN_DEPENDENCIES_BINARY_DIR}/magic_enum")
 ENDIF()
+
+install(TARGETS ${PROJECT_NAME}
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+
+TARGET_LINK_LIBRARIES(test PUBLIC ${PROJECT_NAME})

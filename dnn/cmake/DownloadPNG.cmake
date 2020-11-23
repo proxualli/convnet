@@ -1,9 +1,9 @@
-CMAKE_MINIMUM_REQUIRED(VERSION 3.5.0 FATAL_ERROR)
+CMAKE_MINIMUM_REQUIRED(VERSION 3.7.0 FATAL_ERROR)
 
 PROJECT(png-download NONE)
 
 INCLUDE(ExternalProject)
-ExternalProject_Add(libpng
+ExternalProject_Add(png
 	GIT_REPOSITORY https://github.com/glennrp/libpng.git
 	GIT_TAG master
 	SOURCE_DIR "${DNN_DEPENDENCIES_SOURCE_DIR}/linpng"
