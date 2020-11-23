@@ -1905,7 +1905,7 @@ namespace dnn
 					
 		virtual size_t GetNeuronsSize(const size_t batchSize) const
 		{
-			auto neuronsSize = 0ull;
+			size_t neuronsSize = 0;
 
 #ifndef DNN_LEAN
 			neuronsSize += PaddedCDHW * batchSize * sizeof(Float) * 2;
