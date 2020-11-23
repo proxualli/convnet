@@ -94,16 +94,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="dnncon.cpp" />
-    <ClCompile Include="stdafx.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\dnn\dnn.vcxproj">
       <Project>{78f1bb71-c716-48f5-9429-4537f1ae6319}</Project>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="stdafx.h" />
-    <ClInclude Include="targetver.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

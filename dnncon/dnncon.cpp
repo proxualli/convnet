@@ -1,6 +1,4 @@
-#ifdef _WIN32
-#include "stdafx.h"
-#else
+#ifndef _WIN32
 #include <stdlib.h>
 #endif
 
@@ -69,7 +67,7 @@ void NewEpoch(size_t CurrentCycle, size_t CurrentEpoch, size_t TotalEpochs, bool
 int main()
 {
     dnn::ScriptParameters param;
-
+    
     param.Dataset = dnn::Datasets::cifar10;
     param.C = 3;
     param.H = 32;
@@ -98,8 +96,7 @@ int main()
             std::cout << nwl + "Dataset loaded...";
 
             DNNAddLearningRateSGDR(true, 1, 0.05f, 128, 1, 200, 1, 0.0001f, 0.0005f, 0.9f, 1.0f, 200, true, false, 0.0f, 0.7f, 0.7f, 0.7f, 20, 0.7f, 0, 10.0f, 12.0f);
-
-                           
+                                       
             size_t* cycle = new size_t();
             size_t* totalCycles = new size_t();
             size_t* epoch = new size_t();
@@ -129,7 +126,6 @@ int main()
             States* state = new States();
             TaskStates* taskState = new TaskStates();
 
-            bool stop = false;
             std::chrono::duration<Float> time = std::chrono::duration<Float>(Float(0));
             std::chrono::high_resolution_clock timer = std::chrono::high_resolution_clock();
             std::chrono::high_resolution_clock::time_point timePoint;
@@ -138,7 +134,8 @@ int main()
             DNNTraining();
 
             std::cout << nwl + "Training started...";
-               
+
+            bool stop = false;
             while (!stop)
             {
                 timePoint = timer.now();
@@ -223,6 +220,6 @@ int main()
     }
     else
     {
-        throw std::exception(msg.Message.c_str());
+        std::cout << msg.Message;
     }
 }

@@ -290,7 +290,7 @@ namespace dnn
 			}
 			break;
 			}
-
+			
 			batch.close();
 
 			std::filesystem::permissions((DatasetsDirectory / fileName).string(), std::filesystem::perms::owner_all | std::filesystem::perms::group_all);
