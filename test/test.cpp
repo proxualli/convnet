@@ -221,3 +221,4 @@ int main()
     {
         std::cout << nwl + "Could not load model" + nwl << msg.Message << std::endl << model;
     }
+}
