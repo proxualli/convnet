@@ -252,17 +252,22 @@ namespace dnn
 		return false;
 	}
 
-	static const auto GetTotalFreeMemory()
+	static auto GetTotalFreeMemory()
 	{
 #if defined _WIN32 || defined __CYGWIN__ || defined __MINGW32__
 		MEMORYSTATUSEX statusEx;
 		statusEx.dwLength = sizeof(MEMORYSTATUSEX);
 		GlobalMemoryStatusEx(&statusEx);
 		return statusEx.ullAvailPhys;
-#else
+#else        
 		struct sysinfo info;
 		if (sysinfo(&info) == 0)
-			return static_cast<size_t>(info.totalram - info.freeram);
+		{
+			std::cout << "Total  RAM: " << std::to_string(info.totalram*info.mem_unit/1024/1024) << " MB" << std::endl;
+			std::cout << "Free   RAM: " << std::to_string(info.freeram*info.mem_unit/1024/1024) << " MB" << std::endl;
+
+			return static_cast<size_t>(info.freeram * info.mem_unit);
+		}
 		else
 			return static_cast<size_t>(0);
 #endif

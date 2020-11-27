@@ -1,8 +1,8 @@
 #ifndef _WIN32
-#include <stdlib.h>
-#define DNN_API extern "C" 
+  #include <stdlib.h>
+  #define DNN_API extern "C" 
 #else
-#define DNN_API extern "C" __declspec(dllimport)
+  #define DNN_API extern "C" __declspec(dllimport)
 #endif
 
 #include <chrono>
@@ -17,6 +17,7 @@ static std::string Path = std::string(getenv("HOME")) + "/convnet/";
 #endif
 
 using namespace dnn;
+
 
 
 DNN_API bool DNNStochasticEnabled();
@@ -69,7 +70,7 @@ void NewEpoch(size_t CurrentCycle, size_t CurrentEpoch, size_t TotalEpochs, bool
 int main()
 {
     ScriptParameters param;
-
+   
     param.Dataset = Datasets::cifar10;
     param.C = 3;
     param.H = 32;
@@ -82,11 +83,11 @@ int main()
     param.Iterations = 6;
     param.Width = 10;
     param.Relu = true;
-
+  
     CheckMsg msg;
 
     DNNDataprovider(Path.c_str());
-
+  
     std::string model = ScriptsCatalog::Generate(param);
     if (DNNReadDefinition(model.c_str(), Optimizers::NAG, msg) == 1)
     {
@@ -95,7 +96,7 @@ int main()
         if (DNNLoadDataset())
         {
             DNNAddLearningRateSGDR(true, 1, 0.05f, 128, 1, 200, 1, 0.0001f, 0.0005f, 0.9f, 1.0f, 200, true, false, 0.0f, 0.7f, 0.7f, 0.7f, 20, 0.7f, 0, 10.0f, 12.0f);
-
+                                       
             size_t* cycle = new size_t();
             size_t* totalCycles = new size_t();
             size_t* epoch = new size_t();
@@ -131,8 +132,6 @@ int main()
             size_t oldSampleIndex = 0;
 
             DNNTraining();
-
-            std::cout << nwl + "training started..." << std::endl;
 
             bool stop = false;
             while (!stop)
@@ -175,7 +174,7 @@ int main()
                 Float seconds = Float(std::chrono::duration_cast<std::chrono::microseconds>(time).count()) / 1000000;
                 Float samplesPerSecond = samples / seconds;
 
-                std::cout << nwl + "Cycle: " << Cycle << nwl + "Epoch: " << Epoch << nwl + "SampleIndex: " << SampleIndex << nwl + "ErrorPercentage: " << TrainErrorPercentage << nwl + "Samples/second: " << std::to_string(samplesPerSecond) << std::endl;
+                std::cout << std::endl << "Cycle: " << Cycle << std::endl << "Epoch: " << Epoch << std::endl << "SampleIndex: " << SampleIndex << std::endl << "ErrorPercentage: " << TrainErrorPercentage << std::endl <<  "Samples/second: " << std::to_string(samplesPerSecond) << std::endl;
 
                 oldSampleIndex = SampleIndex;
 
