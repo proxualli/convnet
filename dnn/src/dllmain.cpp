@@ -222,6 +222,9 @@ extern "C" DNN_API void DNNGetImage(const size_t layerIndex, const unsigned char
 				std::memcpy(image, img.data(), img.size());
 			}
 			break;
+
+			default:
+				return;
 		}
 	}
 }
@@ -397,6 +400,15 @@ extern "C" DNN_API void DNNGetTrainingInfo(size_t* currentCycle, size_t* totalCy
 			*avgTestLoss = model->AvgTestLoss;
 			*testErrorPercentage = model->TestErrorPercentage;
 			*testErrors = model->TestErrors;
+		}
+		break;
+
+		case States::Idle:
+		case States::NewEpoch:
+	    case States::SaveWeights:
+		case States::Completed:
+		{
+			// Do nothing
 		}
 		break;
 		}
@@ -794,6 +806,9 @@ extern "C" DNN_API void DNNGetLayerInfo(const size_t layerIndex, size_t* inputsC
 			}
 		}
 		break;
+
+		default:
+			return;
 		}
 	}
 }
