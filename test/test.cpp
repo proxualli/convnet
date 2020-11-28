@@ -11,13 +11,12 @@
 #include "Scripts.h"
 
 #ifdef _WIN32
-static std::string Path = std::string(getenv("USERPROFILE")) + "\\Documents\\convnet\\";
+static std::string path = std::string(getenv("USERPROFILE")) + std::string("\\Documents\\convnet\\");
 #else
-static std::string Path = std::string(getenv("HOME")) + "/convnet/";
+static std::string path = std::string(getenv("HOME")) + std::string("/convnet/");
 #endif
 
 using namespace dnn;
-
 
 
 DNN_API bool DNNStochasticEnabled();
@@ -61,163 +60,161 @@ DNN_API void DNNSetCostIndex(const size_t index);
 DNN_API void DNNGetCostInfo(const size_t costIndex, size_t* trainErrors, Float* trainLoss, Float* avgTrainLoss, Float* trainErrorPercentage, size_t* testErrors, Float* testLoss, Float* avgTestLoss, Float* testErrorPercentage);
 DNN_API void DNNGetImage(const size_t layer, const unsigned char fillColor, unsigned char* image);
 
+static bool stop = false;
+static size_t oldSampleIndex = 0;
 
 void NewEpoch(size_t CurrentCycle, size_t CurrentEpoch, size_t TotalEpochs, bool HorizontalFlip, bool VerticalFlip, Float Dropout, Float Cutout, Float AutoAugment, Float ColorCast, size_t ColorAngle, Float Distortion, size_t Interpolation, Float Scaling, Float Rotation, Float MaximumRate, size_t BatchSize, Float Momentum, Float L2Penalty, Float AvgTrainLoss, Float TrainErrorPercentage, Float TrainAccuracy, size_t TrainErrors, Float AvgTestLoss, Float TestErrorPercentage, Float TestAccuracy, size_t TestErrors)
 {
-    std::cout << nwl + "Epoch:\t" << std::to_string(CurrentEpoch) << nwl + "Test Accuracy:\t" << std::to_string(TestAccuracy) << std::endl;
+    std::cout << std::endl << "Epoch:\t" << std::to_string(CurrentEpoch) << std::endl <<  "Test Accuracy:\t" << std::to_string(TestAccuracy) << std::endl;
 }
+
+void GetProgress(int minutes)
+{
+    size_t* cycle = new size_t();
+    size_t* totalCycles = new size_t();
+    size_t* epoch = new size_t();
+    size_t* totalEpochs = new size_t();
+    bool* horizontalMirror = new bool();
+    bool* verticalMirror = new bool();
+    Float* dropout = new Float();
+    Float* cutout = new Float();
+    Float* autoAugment = new Float();
+    Float* colorCast = new Float();
+    size_t* colorAngle = new size_t();
+    Float* distortion = new Float();
+    size_t* interpolation = new size_t();
+    Float* scaling = new Float();
+    Float* rotation = new Float();
+    size_t* sampleIndex = new size_t();
+    Float* rate = new Float();
+    Float* momentum = new Float();
+    Float* l2Penalty = new Float();
+    size_t* batchSize = new size_t();
+    Float* avgTrainLoss = new Float();
+    Float* trainErrorPercentage = new Float();
+    size_t* trainErrors = new size_t();
+    Float* avgTestLoss = new Float();
+    Float* testErrorPercentage = new Float();
+    size_t* testErrors = new size_t();
+    States* state = new States();
+    TaskStates* taskState = new TaskStates();
+
+    std::chrono::high_resolution_clock::time_point timePoint = std::chrono::high_resolution_clock().now();
+    
+    std::this_thread::sleep_for(std::chrono::minutes(minutes));
+
+    DNNGetTrainingInfo(cycle, totalCycles, epoch, totalEpochs, horizontalMirror, verticalMirror, dropout, cutout, autoAugment, colorCast, colorAngle, distortion, interpolation, scaling, rotation, sampleIndex, batchSize, rate, momentum, l2Penalty, avgTrainLoss, trainErrorPercentage, trainErrors, avgTestLoss, testErrorPercentage, testErrors, state, taskState);
+
+    size_t Cycle = *cycle;
+    size_t Epoch = *epoch;
+    size_t TotalEpochs = *totalEpochs;
+    bool Mirror = *horizontalMirror;
+    Float Dropout = *dropout;
+    Float Cutout = *cutout;
+    Float AutoAugment = *autoAugment;
+    Float ColorCast = *colorCast;
+    size_t ColorAngle = *colorAngle;
+    Float Distortion = *distortion;
+    size_t Interpolation = *interpolation;
+    size_t SampleIndex = *sampleIndex;
+    Float Rate = *rate;
+    Float Momentum = *momentum;
+    Float L2Penalty = *l2Penalty;
+    size_t BatchSize = *batchSize;
+    Float AvgTrainLoss = *avgTrainLoss;
+    Float TrainErrorPercentage = *trainErrorPercentage;
+    size_t TrainErrors = *trainErrors;
+    Float AvgTestLoss = *avgTestLoss;
+    Float TestErrorPercentage = *testErrorPercentage;
+    size_t TestErrors = *testErrors;
+    States State = static_cast<States>(*state);
+    TaskStates TaskState = static_cast<TaskStates>(*taskState);
+
+    if (oldSampleIndex > SampleIndex)
+        oldSampleIndex = 0;
+
+    size_t samples = SampleIndex - oldSampleIndex;
+    std::chrono::duration<Float> time = std::chrono::high_resolution_clock().now() - timePoint;
+    Float seconds = Float(std::chrono::duration_cast<std::chrono::microseconds>(time).count()) / 1000000;
+    Float samplesPerSecond = samples / seconds;
+
+    std::cout << std::endl << "Cycle: " << Cycle << std::endl << "Epoch: " << Epoch << std::endl << "SampleIndex: " << SampleIndex << std::endl << "ErrorPercentage: " << TrainErrorPercentage << std::endl << "Samples/second: " << std::to_string(samplesPerSecond) << std::endl;
+
+    oldSampleIndex = SampleIndex;
+
+    stop = State == States::Completed;
+
+    delete cycle;
+    delete totalCycles;
+    delete epoch;
+    delete totalEpochs;
+    delete horizontalMirror;
+    delete verticalMirror;
+    delete dropout;
+    delete cutout;
+    delete autoAugment;
+    delete colorCast;
+    delete colorAngle;
+    delete distortion;
+    delete interpolation;
+    delete scaling;
+    delete rotation;
+    delete sampleIndex;
+    delete rate;
+    delete momentum;
+    delete l2Penalty;
+    delete batchSize;
+    delete avgTrainLoss;
+    delete trainErrorPercentage;
+    delete trainErrors;
+    delete avgTestLoss;
+    delete testErrorPercentage;
+    delete testErrors;
+    delete state;
+    delete taskState;
+}
+
 
 int main()
 {
-    ScriptParameters param;
-   
-    param.Dataset = Datasets::cifar10;
-    param.C = 3;
-    param.H = 32;
-    param.W = 32;
-    param.PadH = 4;
-    param.PadW = 4;
-    param.MirrorPad = false;
-    param.Script = Scripts::shufflenetv2;
-    param.Groups = 3;
-    param.Iterations = 6;
-    param.Width = 10;
-    param.Relu = true;
-  
     CheckMsg msg;
 
-    DNNDataprovider(Path.c_str());
+    ScriptParameters p;
+    p.Dataset = Datasets::cifar10;
+    p.C = 3;
+    p.H = 32;
+    p.W = 32;
+    p.PadH = 4;
+    p.PadW = 4;
+    p.MirrorPad = false;
+    p.Script = Scripts::shufflenetv2;
+    p.Groups = 3;
+    p.Iterations = 6;
+    p.Width = 10;
+    p.Relu = true;
   
-    std::string model = ScriptsCatalog::Generate(param);
+    auto model = ScriptsCatalog::Generate(p);
+
+    DNNDataprovider(path.c_str());
     if (DNNReadDefinition(model.c_str(), Optimizers::NAG, msg) == 1)
     {
-        DNNSetNewEpochDelegate(&NewEpoch);
-
         if (DNNLoadDataset())
         {
+            DNNSetNewEpochDelegate(&NewEpoch);
             DNNAddLearningRateSGDR(true, 1, 0.05f, 128, 1, 200, 1, 0.0001f, 0.0005f, 0.9f, 1.0f, 200, true, false, 0.0f, 0.7f, 0.7f, 0.7f, 20, 0.7f, 0, 10.0f, 12.0f);
-                                       
-            size_t* cycle = new size_t();
-            size_t* totalCycles = new size_t();
-            size_t* epoch = new size_t();
-            size_t* totalEpochs = new size_t();
-            bool* horizontalMirror = new bool();
-            bool* verticalMirror = new bool();
-            Float* dropout = new Float();
-            Float* cutout = new Float();
-            Float* autoAugment = new Float();
-            Float* colorCast = new Float();
-            size_t* colorAngle = new size_t();
-            Float* distortion = new Float();
-            size_t* interpolation = new size_t();
-            Float* scaling = new Float();
-            Float* rotation = new Float();
-            size_t* sampleIndex = new size_t();
-            Float* rate = new Float();
-            Float* momentum = new Float();
-            Float* l2Penalty = new Float();
-            size_t* batchSize = new size_t();
-            Float* avgTrainLoss = new Float();
-            Float* trainErrorPercentage = new Float();
-            size_t* trainErrors = new size_t();
-            Float* avgTestLoss = new Float();
-            Float* testErrorPercentage = new Float();
-            size_t* testErrors = new size_t();
-            States* state = new States();
-            TaskStates* taskState = new TaskStates();
-
-            std::chrono::duration<Float> time = std::chrono::duration<Float>(Float(0));
-            std::chrono::high_resolution_clock timer = std::chrono::high_resolution_clock();
-            std::chrono::high_resolution_clock::time_point timePoint;
-            size_t oldSampleIndex = 0;
-
+            
             DNNTraining();
 
-            bool stop = false;
+            stop = false;
             while (!stop)
-            {
-                timePoint = timer.now();
-                std::this_thread::sleep_for(std::chrono::milliseconds(60000));
-
-                DNNGetTrainingInfo(cycle, totalCycles, epoch, totalEpochs, horizontalMirror, verticalMirror, dropout, cutout, autoAugment, colorCast, colorAngle, distortion, interpolation, scaling, rotation, sampleIndex, batchSize, rate, momentum, l2Penalty, avgTrainLoss, trainErrorPercentage, trainErrors, avgTestLoss, testErrorPercentage, testErrors, state, taskState);
-
-                size_t Cycle = *cycle;
-                size_t Epoch = *epoch;
-                size_t TotalEpochs = *totalEpochs;
-                bool Mirror = *horizontalMirror;
-                Float Dropout = *dropout;
-                Float Cutout = *cutout;
-                Float AutoAugment = *autoAugment;
-                Float ColorCast = *colorCast;
-                size_t ColorAngle = *colorAngle;
-                Float Distortion = *distortion;
-                size_t Interpolation = *interpolation;
-                size_t SampleIndex = *sampleIndex;
-                Float Rate = *rate;
-                Float Momentum = *momentum;
-                Float L2Penalty = *l2Penalty;
-                size_t BatchSize = *batchSize;
-                Float AvgTrainLoss = *avgTrainLoss;
-                Float TrainErrorPercentage = *trainErrorPercentage;
-                size_t TrainErrors = *trainErrors;
-                Float AvgTestLoss = *avgTestLoss;
-                Float TestErrorPercentage = *testErrorPercentage;
-                size_t TestErrors = *testErrors;
-                States State = static_cast<States>(*state);
-                TaskStates TaskState = static_cast<TaskStates>(*taskState);
-
-                if (oldSampleIndex > SampleIndex)
-                    oldSampleIndex = 0;
-
-                size_t samples = SampleIndex - oldSampleIndex;
-                time = timer.now() - timePoint;
-                Float seconds = Float(std::chrono::duration_cast<std::chrono::microseconds>(time).count()) / 1000000;
-                Float samplesPerSecond = samples / seconds;
-
-                std::cout << std::endl << "Cycle: " << Cycle << std::endl << "Epoch: " << Epoch << std::endl << "SampleIndex: " << SampleIndex << std::endl << "ErrorPercentage: " << TrainErrorPercentage << std::endl <<  "Samples/second: " << std::to_string(samplesPerSecond) << std::endl;
-
-                oldSampleIndex = SampleIndex;
-
-                stop = State == States::Completed;
-            }
-
-            delete cycle;
-            delete totalCycles;
-            delete epoch;
-            delete totalEpochs;
-            delete horizontalMirror;
-            delete verticalMirror;
-            delete dropout;
-            delete cutout;
-            delete autoAugment;
-            delete colorCast;
-            delete colorAngle;
-            delete distortion;
-            delete interpolation;
-            delete scaling;
-            delete rotation;
-            delete sampleIndex;
-            delete rate;
-            delete momentum;
-            delete l2Penalty;
-            delete batchSize;
-            delete avgTrainLoss;
-            delete trainErrorPercentage;
-            delete trainErrors;
-            delete avgTestLoss;
-            delete testErrorPercentage;
-            delete testErrors;
-            delete state;
-            delete taskState;
-
+               GetProgress(1);
+            
             DNNStop();
             DNNModelDispose();
         }
         else
-            std::cout << nwl + "Could not load dataset" << std::endl;
+            std::cout << std::endl << "Could not load dataset" << std::endl;
     }
     else
-    {
-        std::cout << nwl + "Could not load model" + nwl << msg.Message << std::endl << model;
-    }
+        std::cout << std::endl <<  "Could not load model" << std::endl << msg.Message << std::endl << model << std::endl;
 }

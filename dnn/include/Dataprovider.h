@@ -77,6 +77,8 @@ namespace dnn
 				if (std::filesystem::exists(path / "wnids.txt") && std::filesystem::exists(path / "words.txt"))
 					available = true;
 				break;
+			default:
+				available = false;
 			}
 
 			return available;
@@ -116,6 +118,11 @@ namespace dnn
 				path = DatasetsDirectory / std::string(magic_enum::enum_name<Datasets>(dataset));
 				std::filesystem::create_directories(path);
 			}
+			break;
+
+			case Datasets::cifar10:
+			case Datasets::cifar100:
+			case Datasets::tinyimagenet:
 			break;
 			}
 
@@ -174,6 +181,10 @@ namespace dnn
 				unzipScript.close();
 				
 			}
+			break;
+
+			case Datasets::cifar10:
+			case Datasets::cifar100:
 			break;
 			}
 
@@ -395,6 +406,10 @@ namespace dnn
 				Mean = std::vector<Float>({ Float(33.318443) });
 				StdDev = std::vector<Float>({ Float(78.567261) });
 				break;
+			case Datasets::cifar10:
+			case Datasets::cifar100:
+			case Datasets::tinyimagenet:
+			break;
 			}
 
 			switch (dataset)

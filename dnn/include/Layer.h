@@ -752,6 +752,9 @@ namespace dnn
 				}
 			}
 			break;
+
+			default:
+				break;
 			}
 
 			if (dirty)
@@ -1565,6 +1568,9 @@ namespace dnn
 							os.write(reinterpret_cast<const char*>(&Moments), std::streamsize(sizeof(size_t)));
 						}
 						break;
+
+						case Optimizers::SGD:
+						break;
 						}
 				}
 				else
@@ -1576,6 +1582,18 @@ namespace dnn
 					if (persistOptimizer)
 						switch (optimizer)
 						{
+						case Optimizers::AdaDelta:
+						{
+							os.write(reinterpret_cast<const char*>(WeightsPar1.data()), std::streamsize(WeightCount * sizeof(Float)));
+							if (HasBias)
+								os.write(reinterpret_cast<const char*>(BiasesPar1.data()), std::streamsize(BiasCount * sizeof(Float)));
+
+							os.write(reinterpret_cast<const char*>(WeightsPar2.data()), std::streamsize(WeightCount * sizeof(Float)));
+							if (HasBias)
+								os.write(reinterpret_cast<const char*>(BiasesPar2.data()), std::streamsize(BiasCount * sizeof(Float)));
+						}
+						break;
+
 						case Optimizers::Adam:
 						{
 							os.write(reinterpret_cast<const char*>(WeightsPar1.data()), std::streamsize(WeightCount * sizeof(Float)));
@@ -1624,6 +1642,9 @@ namespace dnn
 							os.write(reinterpret_cast<const char*>(&B2), std::streamsize(sizeof(Float)));
 							os.write(reinterpret_cast<const char*>(&Moments), std::streamsize(sizeof(size_t)));
 						}
+						break;
+
+						case Optimizers::SGD:
 						break;
 						}
 				}
@@ -1762,6 +1783,9 @@ namespace dnn
 							is.read(reinterpret_cast<char*>(&Moments), std::streamsize(sizeof(size_t)));
 						}
 						break;
+
+						case Optimizers::SGD:
+						break;
 						}
 				}
 				else
@@ -1773,6 +1797,17 @@ namespace dnn
 					if (persistOptimizer)
 						switch (optimizer)
 						{
+						case Optimizers::AdaDelta:
+						{
+							is.read(reinterpret_cast<char*>(WeightsPar1.data()), std::streamsize(WeightCount * sizeof(Float)));
+							if (HasBias)
+								is.read(reinterpret_cast<char*>(BiasesPar1.data()), std::streamsize(BiasCount * sizeof(Float)));
+							is.read(reinterpret_cast<char*>(WeightsPar2.data()), std::streamsize(WeightCount * sizeof(Float)));
+							if (HasBias)
+								is.read(reinterpret_cast<char*>(BiasesPar2.data()), std::streamsize(BiasCount * sizeof(Float)));
+						}
+						break;
+
 						case Optimizers::Adam:
 						{
 							is.read(reinterpret_cast<char*>(WeightsPar1.data()), std::streamsize(WeightCount * sizeof(Float)));
@@ -1821,6 +1856,9 @@ namespace dnn
 							is.read(reinterpret_cast<char*>(&B2), std::streamsize(sizeof(Float)));
 							is.read(reinterpret_cast<char*>(&Moments), std::streamsize(sizeof(size_t)));
 						}
+						break;
+
+						case Optimizers::SGD:
 						break;
 						}
 				}
