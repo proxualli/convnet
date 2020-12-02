@@ -113,3 +113,5 @@
 * OxyPlot .NET Plotting Library - MIT License (https://github.com/oxyplot/oxyplot/tree/master)
 
 <p align="center"><img src="https://github.com/zamir1001/convnet/blob/main/convnet_train.png" alt="Train" title="Train"/></p>
+<p align="center"><img src="https://github.com/zamir1001/convnet/blob/main/convnet_test.png" alt="Test" title="Test"/></p>
+<p align="center"><img src="https://github.com/zamir1001/convnet/blob/main/convnet_edit.png" alt="Edit" title="Edit"/></p>
