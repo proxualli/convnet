@@ -111,3 +111,5 @@
 * libpng - PNG Reference Library License version 2 (https://github.com/glennrp/libpng)
 * Magic Enum C++ - MIT License (https://github.com/Neargye/magic_enum)
 * OxyPlot .NET Plotting Library - MIT License (https://github.com/oxyplot/oxyplot/tree/master)
+
+<p align="center"><img src="https://github.com/zamir1001/concnet/convnet_train.png" alt="Train" title="Train"/></p>
