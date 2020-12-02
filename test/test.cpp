@@ -68,7 +68,38 @@ void NewEpoch(size_t CurrentCycle, size_t CurrentEpoch, size_t TotalEpochs, bool
     std::cout << std::endl << "Epoch:\t" << std::to_string(CurrentEpoch) << std::endl <<  "Test Accuracy:\t" << std::to_string(TestAccuracy) << std::endl;
 }
 
-void GetProgress(int minutes)
+void print_progress_bar(int percentage) {
+    string progress = "[" + string(percentage, '*') + string(100 - percentage, ' ') + "]";
+    cout << progress << "\r\033[F\033[F\033[F" << flush;
+}
+
+
+void load() {
+    float progress = 0.0;
+
+    while (progress < 1.0) {
+
+        int barWidth = 70;
+        int pos = barWidth * progress;
+
+        Sleep(100);
+
+        std::cout << "[";
+        for (int i = 0; i < barWidth; i++) {
+            if (i < pos) std::cout << "=";
+            else if (i == pos) std::cout << ">";
+            else std::cout << " ";
+        }
+        std::cout << "]" << int(progress * 100.0) << " %\r";
+        std::cout.flush();
+
+        progress += 0.01;
+    }
+    std::cout << std::endl;
+}
+
+
+inline void GetProgress(int minutes)
 {
     size_t* cycle = new size_t();
     size_t* totalCycles = new size_t();
@@ -138,8 +169,9 @@ void GetProgress(int minutes)
     Float seconds = Float(std::chrono::duration_cast<std::chrono::microseconds>(time).count()) / 1000000;
     Float samplesPerSecond = samples / seconds;
 
-    std::cout << std::endl << "Cycle: " << Cycle << std::endl << "Epoch: " << Epoch << std::endl << "SampleIndex: " << SampleIndex << std::endl << "ErrorPercentage: " << TrainErrorPercentage << std::endl << "Samples/second: " << std::to_string(samplesPerSecond) << std::endl;
-
+    if (SampleIndex > 0)
+        std::cout << std::endl << "Cycle: " << Cycle << std::endl << "Epoch: " << Epoch << std::endl << "SampleIndex: " << SampleIndex << std::endl << "ErrorPercentage: " << TrainErrorPercentage << std::endl << "Samples/second: " << std::to_string(samplesPerSecond) << std::endl;
+    print_progress_bar(SampleIndex / 500);
     oldSampleIndex = SampleIndex;
 
     stop = State == States::Completed;
@@ -177,22 +209,28 @@ void GetProgress(int minutes)
 
 int main()
 {
+    //std::future<void> startLoading = std::async(std::launch::async, load);
+
     CheckMsg msg;
 
     ScriptParameters p;
-    p.Dataset = Datasets::cifar10;
-    p.C = 3;
+    
+    p.Script = Scripts::shufflenetv2;
+
+    p.Dataset = Datasets::fashionmnist;
+    p.C = 1;
     p.H = 32;
     p.W = 32;
     p.PadH = 4;
     p.PadW = 4;
     p.MirrorPad = false;
-    p.Script = Scripts::shufflenetv2;
+
     p.Groups = 3;
-    p.Iterations = 6;
-    p.Width = 10;
+    p.Iterations = 3;
+    p.Width = 6;
     p.Relu = true;
-  
+    p.SqueezeExcitation = false;
+
     auto model = ScriptsCatalog::Generate(p);
 
     DNNDataprovider(path.c_str());
@@ -201,8 +239,8 @@ int main()
         if (DNNLoadDataset())
         {
             DNNSetNewEpochDelegate(&NewEpoch);
-            DNNAddLearningRateSGDR(true, 1, 0.05f, 128, 1, 200, 1, 0.0001f, 0.0005f, 0.9f, 1.0f, 200, true, false, 0.0f, 0.7f, 0.7f, 0.7f, 20, 0.7f, 0, 10.0f, 12.0f);
             
+            DNNAddLearningRateSGDR(true, 1, 0.05f, 128, 1, 200, 1, 0.0001f, 0.0005f, 0.9f, 1.0f, 200, true, false, 0.0f, 0.7f, 0.0f, 0.0f, 0, 0.7f, 0, 10.0f, 12.0f);
             DNNTraining();
 
             stop = false;
