@@ -1375,13 +1375,13 @@ namespace dnn
 					if (CurrentTrainingRate.VerticalFlip && TrainingSamplesVFlip[randomIndex])
 						dstImageByte = Image<Byte>::VerticalMirror(dstImageByte);
 
-					if (DataProv->Channels == 3 && Bernoulli<bool>(CurrentTrainingRate.ColorCast))
+					if (DataProv->C == 3 && Bernoulli<bool>(CurrentTrainingRate.ColorCast))
 						dstImageByte = Image<Byte>::ColorCast(dstImageByte, CurrentTrainingRate.ColorAngle);
 
 					if (resize)
 						dstImageByte = Image<Byte>::Resize(dstImageByte, SampleD, SampleH, SampleW, Interpolation(CurrentTrainingRate.Interpolation));
 
-					if (DataProv->Channels == 3 && Bernoulli<bool>(CurrentTrainingRate.AutoAugment))
+					if (DataProv->C == 3 && Bernoulli<bool>(CurrentTrainingRate.AutoAugment))
 						dstImageByte = Image<Byte>::AutoAugment(dstImageByte, PadD, PadH, PadW, DataProv->Mean, MirrorPad);
 					else
 						dstImageByte = Image<Byte>::Padding(dstImageByte, PadD, PadH, PadW, DataProv->Mean, MirrorPad);
@@ -1463,7 +1463,7 @@ namespace dnn
 
 					auto dstImageByte = DataProv->TestingSamples[sampleIndex];
 
-					if (DataProv->Channels == 3 && Bernoulli<bool>(CurrentTrainingRate.ColorCast))
+					if (DataProv->C == 3 && Bernoulli<bool>(CurrentTrainingRate.ColorCast))
 						dstImageByte = Image<Byte>::ColorCast(dstImageByte, CurrentTrainingRate.ColorAngle);
 
 					if (CurrentTrainingRate.HorizontalFlip && TestingSamplesHFlip[sampleIndex])
@@ -1475,7 +1475,7 @@ namespace dnn
 					if (resize)
 						dstImageByte = Image<Byte>::Resize(dstImageByte, SampleD, SampleH, SampleW, Interpolation(CurrentTrainingRate.Interpolation));
 
-					if (DataProv->Channels == 3 && Bernoulli<bool>(CurrentTrainingRate.AutoAugment))
+					if (DataProv->C == 3 && Bernoulli<bool>(CurrentTrainingRate.AutoAugment))
 						dstImageByte = Image<Byte>::AutoAugment(dstImageByte, PadD, PadH, PadW, DataProv->Mean, MirrorPad);
 					else
 						dstImageByte = Image<Byte>::Padding(dstImageByte, PadD, PadH, PadW, DataProv->Mean, MirrorPad);
