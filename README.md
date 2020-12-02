@@ -112,4 +112,4 @@
 * Magic Enum C++ - MIT License (https://github.com/Neargye/magic_enum)
 * OxyPlot .NET Plotting Library - MIT License (https://github.com/oxyplot/oxyplot/tree/master)
 
-<p align="center"><img src="https://github.com/zamir1001/convnet/convnet_train.png" alt="Train" title="Train"/></p>
+<p align="center"><img src="https://github.com/zamir1001/convnet/blob/main/convnet_train.png" alt="Train" title="Train"/></p>
