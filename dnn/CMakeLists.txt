@@ -6,10 +6,6 @@ endif()
 
 message(STATUS "Using CMake version ${CMAKE_VERSION}")
 
-INCLUDE(GNUInstallDirs)
-INCLUDE(CheckCSourceCompiles)
-INCLUDE(CheckCXXSourceCompiles)
-
 set(DNN_VERSION_MAJOR 1)
 set(DNN_VERSION_MINOR 0)
 set(DNN_VERSION_PATCH 0)
@@ -19,72 +15,75 @@ set(DNN_VERSION ${DNN_VERSION_MAJOR}.${DNN_VERSION_MINOR}.${DNN_VERSION_PATCH})
 math(EXPR DNN_VERSION_NUMBER "10000*${DNN_VERSION_MAJOR} + 100*${DNN_VERSION_MINOR} + ${DNN_VERSION_PATCH}")
 
 #####
-# Enables project() command manages VERSION variables.
-if(POLICY CMP0048)
-    cmake_policy(SET CMP0048 NEW)
-endif(POLICY CMP0048)
-
-#####
 # Enables link_directories() treat paths relative
 # to the source dir.
 if(POLICY CMP0015)
     cmake_policy(SET CMP0015 NEW)
 endif(POLICY CMP0015)
 
-project(dnn VERSION ${DNN_VERSION} LANGUAGES CXX)
-
 #####
-# Change the default build type from Debug to Release, while still
-# supporting overriding the build type.
-#
-# The CACHE STRING logic here and elsewhere is needed to force CMake
-# to pay attention to the value of these variables.
-if(NOT CMAKE_BUILD_TYPE)
-    message(STATUS "No build type specified; defaulting to CMAKE_BUILD_TYPE=Release.")
-    set(CMAKE_BUILD_TYPE Release CACHE STRING
-        "Choose the type of build, options are: None Debug Release RelWithDebInfo MinSizeRel."
-        FORCE)
-else(NOT CMAKE_BUILD_TYPE)
-    if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-        message("==========================================================================================")
-        message(STATUS "Build type: Debug. Performance will be terrible!")
-        message(STATUS "Add -DCMAKE_BUILD_TYPE=Release to the CMake command line to get an optimized build.")
-        message("==========================================================================================")
-    endif(CMAKE_BUILD_TYPE STREQUAL "Debug")
-endif(NOT CMAKE_BUILD_TYPE)
+# Enables project() command manages VERSION variables.
+if(POLICY CMP0048)
+    cmake_policy(SET CMP0048 NEW)
+endif(POLICY CMP0048)
+
+if("${CMAKE_BUILD_TYPE}" STREQUAL "")
+    message(STATUS "CMAKE_BUILD_TYPE is unset, defaulting to Release")
+    set(CMAKE_BUILD_TYPE "Release" CACHE STRING
+        "Choose the type of build, options are: None Debug Release RelWithDebInfo MinSizeRel RelWithAssert ...")
+endif()
+
+project(dnn VERSION ${DNN_VERSION} LANGUAGES C CXX)
+
+INCLUDE(GNUInstallDirs)
+INCLUDE(CheckCSourceCompiles)
+INCLUDE(CheckCXXSourceCompiles)
 
 option(BUILD_SHARED_LIBS "Build shared library" ON)
 
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
+if(WIN32 OR MSVC)
+  set(flags /arch:AVX2)
+  add_compile_options(
+    "$<$<COMPILE_LANGUAGE:CXX>:${flags}>"
+    "$<$<COMPILE_LANGUAGE:C>:${flags}>")
+  set(debug_flags /openmp:experimental /W4 /Od)
+  set(release_flags /openmp:experimental /W3 /O2 /Ob2 /Oi /Ot /GL /GF /Gy /fp:fast)
+else()
+  set(flags -mfma -mavx2 -march=znver2 -fopenmp)
+  add_compile_options(
+    "$<$<COMPILE_LANGUAGE:CXX>:${flags}>"
+    "$<$<COMPILE_LANGUAGE:C>:${flags}>")
+  set(debug_flags -g -Wextra)
+  set(release_flags -Ofast -funroll-loops -ftree-vectorize -Wno-error)
+endif()
+
 MACRO(DNN_TARGET_ENABLE_CXX17 target)
-  if(WIN32 OR MSVC)
-    if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-      # warning level 4 and all warnings as errors
-      TARGET_COMPILE_OPTIONS(${target} PRIVATE /W4 /arch:AVX2 /openmp:experimental)
-    else()
-      TARGET_COMPILE_OPTIONS(${target} PRIVATE /W3 /arch:AVX2 /openmp:experimental)
-    endif()
-  else()
-    if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-      # warning level 4 and all warnings as errors
-      TARGET_COMPILE_OPTIONS(${target} PRIVATE -Wextra -mavx2 -mfma -march=znver2 -fopenmp -fPIC $<$<CXX_COMPILER_ID:GNU>:-Wno-psabi>)
-    else()
-      TARGET_COMPILE_OPTIONS(${target} PRIVATE -Ofast -Wno-error -mavx2 -mfma -march=znver2 -fopenmp -fPIC $<$<CXX_COMPILER_ID:GNU>:-Wno-psabi>)
-    endif()
-  endif()
   SET_TARGET_PROPERTIES(${target} PROPERTIES
     CXX_STANDARD 17
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS ON)
+  target_compile_options(${target} PRIVATE
+    "$<$<CONFIG:RELEASE>:${release_flags}>"
+    "$<$<CONFIG:DEBUG>:${debug_flags}>")
 ENDMACRO()
 
 set(DNNL_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
 set(DNNL_BUILD_TESTS OFF CACHE BOOL "" FORCE)
+if(WIN32 OR MSVC)
+  set(DNNL_ARCH_OPT_FLAGS "/arch:AVX2" CACHE STRING "" FORCE)
+else()
+  if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+    set(DNNL_ARCH_OPT_FLAGS "-Ofast -funroll-loops -ftree-vectorize -Wno-error -mfma -mavx2 -march=znver2 -fopenmp" CACHE STRING "" FORCE)
+  else()
+    set(DNNL_ARCH_OPT_FLAGS "-Ofast -funroll-loops -ftree-vectorize -Wno-error -mfma -mavx2 -march=znver2 -fopenmp -unroll-aggressive" CACHE STRING "" FORCE)
+  endif()
+endif()
 set(WITH_TURBOJPEG FALSE CACHE BOOL "" FORCE) 
 set(PNG_EXECUTABLES FALSE CACHE BOOL "" FORCE)
 set(PNG_TESTS FALSE CACHE BOOL "" FORCE)
-set(PNG_BUILD_ZLIB TRUE CACHE BOOL "" FORCE)
+set(PNG_BUILD_ZLIB ON CACHE BOOL "" FORCE)
 
 if(BUILD_SHARED_LIBS)
   set(DNNL_LIBRARY_TYPE "SHARED" CACHE STRING "" FORCE)
@@ -169,11 +168,12 @@ IF(NOT DEFINED ZLIB_SOURCE_DIR)
     WORKING_DIRECTORY "${DNN_DEPENDENCIES_BINARY_DIR}/zlib-download")
   EXECUTE_PROCESS(COMMAND "${CMAKE_COMMAND}" --build .
     WORKING_DIRECTORY "${DNN_DEPENDENCIES_BINARY_DIR}/zlib-download")
-  SET(ZLIB_SOURCE_DIR "${DNN_DEPENDENCIES_SOURCE_DIR}/zlib-1.2.11" CACHE STRING "ZLib source directory")
-  SET(ZLIB_INCLUDE_DIR "${DNN_DEPENDENCIES_BINARY_DIR}/zlib-1.2.11" CACHE STRING "ZLib include directory")
-  SET(ZLIB_LIBRARY "${DNN_DEPENDENCIES_BINARY_DIR}/zlib-1.2.11" CACHE STRING "ZLib bin directory")
+  SET(ZLIB_SOURCE_DIR "${DNN_DEPENDENCIES_SOURCE_DIR}/zlib-1.2.11" CACHE STRING "zlib source directory")
+  SET(ZLIB_INCLUDE_DIR "${DNN_DEPENDENCIES_BINARY_DIR}/zlib-1.2.11" CACHE STRING "zlib include directory")
+  set(ZLIB_LIBRARY zlib)
+  EXECUTE_PROCESS(COMMAND "${CMAKE_COMMAND}" -E copy "${ZLIB_SOURCE_DIR}/zlib.h" "${ZLIB_INCLUDE_DIR}/zlib.h")
  ENDIF()
-
+ 
  IF(NOT DEFINED PNG_SOURCE_DIR)
   MESSAGE(STATUS "Downloading PNG to ${DNN_DEPENDENCIES_SOURCE_DIR}/libpng (define PNG_SOURCE_DIR to avoid it)")
   CONFIGURE_FILE(cmake/DownloadPNG.cmake "${DNN_DEPENDENCIES_BINARY_DIR}/png-download/CMakeLists.txt")
@@ -182,6 +182,7 @@ IF(NOT DEFINED ZLIB_SOURCE_DIR)
   EXECUTE_PROCESS(COMMAND "${CMAKE_COMMAND}" --build .
     WORKING_DIRECTORY "${DNN_DEPENDENCIES_BINARY_DIR}/png-download")
   SET(PNG_SOURCE_DIR "${DNN_DEPENDENCIES_SOURCE_DIR}/libpng" CACHE STRING "PNG source directory")
+  EXECUTE_PROCESS(COMMAND "${CMAKE_COMMAND}" -E copy "${PNG_SOURCE_DIR}/scripts/pnglibconf.h.prebuilt" "${DNN_DEPENDENCIES_BINARY_DIR}/libpng/scripts/pnglibconf.h")
  ENDIF()
 
 IF(NOT DEFINED VECTORCLASS_SOURCE_DIR)
@@ -237,7 +238,7 @@ IF(NOT DEFINED VECTORCLASS_SOURCE_DIR)
 
 add_library(${PROJECT_NAME} ${libdnn_sources})
 DNN_TARGET_ENABLE_CXX17(${PROJECT_NAME})
-target_compile_definitions(${PROJECT_NAME} PUBLIC DNN_EXPORTS DNN_CACHE_PRIMITIVES DNN_OMP cimg_use_cpp11 cimg_use_jpeg cimg_use_png cimg_use_zlib)
+target_compile_definitions(${PROJECT_NAME} PRIVATE DNN_EXPORTS DNN_CACHE_PRIMITIVES DNN_OMP cimg_use_cpp11 cimg_use_jpeg cimg_use_png cimg_use_zlib)
 target_include_directories(${PROJECT_NAME}
     PUBLIC
        $<INSTALL_INTERFACE:include>
@@ -276,12 +277,18 @@ IF(NOT TARGET zlib)
 ENDIF()
 TARGET_LINK_LIBRARIES(${PROJECT_NAME} PUBLIC zlib)
 
+if(WIN32 OR MSVC)
+  set(SKIP_INSTALL_ALL ON)
+endif()
 # ---[ Configure PNG
 IF(NOT TARGET png)
   ADD_SUBDIRECTORY(
     "${PNG_SOURCE_DIR}"
     "${DNN_DEPENDENCIES_BINARY_DIR}/libpng")
 ENDIF()
+if(WIN32 OR MSVC)
+  TARGET_LINK_LIBRARIES(png PRIVATE zlib)
+endif()
 TARGET_LINK_LIBRARIES(${PROJECT_NAME} PUBLIC png)
 
 # ---[ Configure JPEG
@@ -315,8 +322,13 @@ IF(NOT TARGET magic_enum)
     "${DNN_DEPENDENCIES_BINARY_DIR}/magic_enum")
 ENDIF()
 
+TARGET_LINK_LIBRARIES(test PUBLIC ${PROJECT_NAME})
+
+install(TARGETS test DESTINATION bin)
+if(WIN32 OR MSVC)
+install(TARGETS zlib LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+endif()
 install(TARGETS ${PROJECT_NAME}
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
-
-TARGET_LINK_LIBRARIES(test PUBLIC ${PROJECT_NAME})
