@@ -1515,7 +1515,7 @@ namespace dnncore
 		property Float Rate;
 		property Float Momentum;
 		property Float L2Penalty;
-		property Float AvgSampleRate;
+		property Float SampleRate;
 		property DNNStates State;
 		property DNNTaskStates TaskState;
 		property Float fpropTime;

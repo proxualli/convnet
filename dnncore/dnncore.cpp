@@ -830,7 +830,7 @@ namespace dnncore
 			AvgTestLoss = *avgTestLoss;
 			TestErrorPercentage = *testErrorPercentage;
 			TestErrors = *testErrors;
-			AvgSampleRate = *sampleSpeed;;
+			SampleRate = *sampleSpeed;;
 			State = static_cast<dnncore::DNNStates>(*aState);
 			TaskState = static_cast<dnncore::DNNTaskStates>(*aTaskState);
 
@@ -843,7 +843,7 @@ namespace dnncore
 			if (State != OldState)
 			{
 				OldState = State;
-				AvgSampleRate = Float(0);
+				SampleRate = Float(0);
 			}
 
 			delete cycle;
@@ -896,7 +896,7 @@ namespace dnncore
 			TestErrors = *testErrors;
 			State = static_cast<dnncore::DNNStates>(*aState);
 			TaskState = static_cast<dnncore::DNNTaskStates>(*aTaskState);
-			AvgSampleRate = *sampleSpeed;
+			SampleRate = *sampleSpeed;
 
 			AdjustedTestingSamplesCount = TestingSamples % BatchSize == 0 ? TestingSamples : ((TestingSamples / BatchSize) + 1) * BatchSize;
 
@@ -905,7 +905,7 @@ namespace dnncore
 			if (State != OldState)
 			{
 				OldState = State;
-				AvgSampleRate = Float(0);
+				SampleRate = Float(0);
 			}
 
 			delete batchSize;
@@ -1177,7 +1177,7 @@ namespace dnncore
 		IsTraining = training;
 		if (NewEpoch != nullptr)
 			DNNSetNewEpochDelegate((void(*)(size_t, size_t, size_t, bool, bool, Float, Float, Float, Float, size_t, Float, size_t, Float, Float, Float, size_t, Float, Float, Float, Float, Float, size_t, Float, Float, Float, size_t))(Marshal::GetFunctionPointerForDelegate(NewEpoch).ToPointer()));
-		AvgSampleRate = Float(0);
+		SampleRate = Float(0);
 		State = DNNStates::Idle;
 		if (training)
 			DNNTraining();
@@ -1190,7 +1190,7 @@ namespace dnncore
 
 	void Model::Stop()
 	{
-		AvgSampleRate = Float(0);
+		SampleRate = Float(0);
 		Duration->Reset();
 		DNNStop();
 		WorkerTimer->Stop();

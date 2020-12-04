@@ -21,7 +21,7 @@ namespace Convnet.PageViewModels
         private double progressBarMaximum;
         private double progressBarValue;
         private double progressValue;
-        private string avgSampleRate;
+        private string sampleRate;
         private string duration;
 
         public event EventHandler PageChange;
@@ -103,7 +103,7 @@ namespace Convnet.PageViewModels
 
             ProgressBarValue = SampleIndex;
             Duration = Model.DurationString;
-            AvgSampleRate = Model.AvgSampleRate.ToString("N1");
+            SampleRate = Model.SampleRate.ToString("N1");
         }
 
         private void TestProgress(UInt64 BatchSize, UInt64 SampleIndex, float AvgTestLoss, float TestErrorPercentage, float Accuracy, UInt64 TestErrors, DNNStates NetworkState, DNNTaskStates TaskState)
@@ -121,7 +121,7 @@ namespace Convnet.PageViewModels
 
             ProgressBarValue = SampleIndex;
             Duration = Model.DurationString;
-            AvgSampleRate = Model.AvgSampleRate.ToString("N1");
+            SampleRate = Model.SampleRate.ToString("N1");
         }
 
         private void EditPageVM_ModelChanged(object sender, EventArgs e)
@@ -140,16 +140,16 @@ namespace Convnet.PageViewModels
 
         public override string DisplayName => "Main";
 
-        public string AvgSampleRate
+        public string SampleRate
         {
-            get { return avgSampleRate; }
+            get { return sampleRate; }
             set
             {
-                if (value == avgSampleRate)
+                if (value == sampleRate)
                     return;
 
-                avgSampleRate = value;
-                OnPropertyChanged(nameof(AvgSampleRate));
+                sampleRate = value;
+                OnPropertyChanged(nameof(SampleRate));
             }
         }
 

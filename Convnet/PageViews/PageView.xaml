@@ -47,7 +47,7 @@
 
         <StatusBar Grid.Row="2" Name="statusBarMain" Width="Auto" Height="23">
             <StatusBarItem HorizontalAlignment="Right" Width="Auto" Foreground="Black">
-                <TextBlock x:Name="AvgSampleRate" Margin="2,0,2,0" HorizontalAlignment="Left" VerticalAlignment="Stretch" Text="{Binding Path=AvgSampleRate}" ToolTip="Avg Sample Rate"/>
+                <TextBlock x:Name="SampleRate" Margin="2,0,2,0" HorizontalAlignment="Left" VerticalAlignment="Stretch" Text="{Binding Path=SampleRate}" ToolTip="Sample Rate"/>
             </StatusBarItem>
             <StatusBarItem HorizontalAlignment="Left" Width="Auto" Foreground="Black">
                 <TextBlock x:Name="Time" Margin="2,0,2,0" HorizontalAlignment="Left" VerticalAlignment="Stretch" Text="{Binding Path=Duration}" ToolTip="Duration"/>
