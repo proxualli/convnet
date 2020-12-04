@@ -413,8 +413,8 @@ namespace dnn
 			case Datasets::cifar10:
 			case Datasets::cifar100:
 			case Datasets::tinyimagenet:
-				C = 3;
-			break;
+			    C = 3;
+			    break;
 			}
 
 			switch (dataset)

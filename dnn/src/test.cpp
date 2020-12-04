@@ -137,7 +137,7 @@ void GetTrainingProgress(int seconds = 10, size_t trainingSamples = 50000, size_
                 progress = Float(*sampleIndex) / trainingSamples; 
 
             std::cout << "[";
-            int pos = int(barWidth * progress);
+            int pos = barWidth * progress;
             for (int i = 0; i < barWidth; ++i) {
                 if (i < pos) std::cout << "=";
                 else if (i == pos) std::cout << ">";

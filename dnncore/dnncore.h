@@ -1563,8 +1563,6 @@ namespace dnncore
 
 	protected:
 		System::Timers::Timer^ WorkerTimer;
-		Stopwatch^ SampleSpeedTimer;
-		TimeSpan^ OptimizeTime;
 		StringBuilder^ sb;
 		String^ oldWeightSaveFileName;
 		DNNStates OldState;

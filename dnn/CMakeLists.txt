@@ -39,12 +39,13 @@ INCLUDE(GNUInstallDirs)
 INCLUDE(CheckCSourceCompiles)
 INCLUDE(CheckCXXSourceCompiles)
 
-option(BUILD_SHARED_LIBS "Build shared library" ON)
+option(BUILD_SHARED_LIBS "Build shared library" OFF)
 
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 if(WIN32 OR MSVC)
   set(flags /arch:AVX2)
+  set(linkflags "")
   add_compile_options(
     "$<$<COMPILE_LANGUAGE:CXX>:${flags}>"
     "$<$<COMPILE_LANGUAGE:C>:${flags}>")
@@ -52,6 +53,11 @@ if(WIN32 OR MSVC)
   set(release_flags /openmp:experimental /W3 /O2 /Ob2 /Oi /Ot /GL /GF /Gy /fp:fast)
 else()
   set(flags -mfma -mavx2 -march=znver2 -fopenmp)
+  if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+    set(linkflags -fopenmp=libiomp5)
+  else()
+    set(linkflags -fopenmp)
+  endif()
   add_compile_options(
     "$<$<COMPILE_LANGUAGE:CXX>:${flags}>"
     "$<$<COMPILE_LANGUAGE:C>:${flags}>")
@@ -67,6 +73,9 @@ MACRO(DNN_TARGET_ENABLE_CXX17 target)
   target_compile_options(${target} PRIVATE
     "$<$<CONFIG:RELEASE>:${release_flags}>"
     "$<$<CONFIG:DEBUG>:${debug_flags}>")
+  target_link_options(${target} PRIVATE
+    "$<$<COMPILE_LANGUAGE:CXX>:${linkflags}>"
+    "$<$<COMPILE_LANGUAGE:C>:${linkflags}>")
 ENDMACRO()
 
 set(DNNL_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
@@ -238,7 +247,11 @@ IF(NOT DEFINED VECTORCLASS_SOURCE_DIR)
 
 add_library(${PROJECT_NAME} ${libdnn_sources})
 DNN_TARGET_ENABLE_CXX17(${PROJECT_NAME})
-target_compile_definitions(${PROJECT_NAME} PRIVATE DNN_EXPORTS DNN_CACHE_PRIMITIVES DNN_OMP cimg_use_cpp11 cimg_use_jpeg cimg_use_png cimg_use_zlib)
+if(BUILD_SHARED_LIBS)
+  target_compile_definitions(${PROJECT_NAME} PRIVATE DNN_EXPORTS DNN_DLL DNN_CACHE_PRIMITIVES DNN_OMP cimg_use_cpp11 cimg_use_jpeg cimg_use_png cimg_use_zlib)
+else()
+  target_compile_definitions(${PROJECT_NAME} PRIVATE DNN_EXPORTS DNN_CACHE_PRIMITIVES DNN_OMP cimg_use_cpp11 cimg_use_jpeg cimg_use_png cimg_use_zlib)
+endif()
 target_include_directories(${PROJECT_NAME}
     PUBLIC
        $<INSTALL_INTERFACE:include>
@@ -275,7 +288,11 @@ IF(NOT TARGET zlib)
     "${ZLIB_SOURCE_DIR}"
     "${DNN_DEPENDENCIES_BINARY_DIR}/zlib-1.2.11")
 ENDIF()
-TARGET_LINK_LIBRARIES(${PROJECT_NAME} PUBLIC zlib)
+if(BUILD_SHARED_LIBS)
+  TARGET_LINK_LIBRARIES(${PROJECT_NAME} PUBLIC zlib)
+else()
+  TARGET_LINK_LIBRARIES(${PROJECT_NAME} PUBLIC zlibstatic)
+endif()
 
 if(WIN32 OR MSVC)
   set(SKIP_INSTALL_ALL ON)
@@ -286,10 +303,14 @@ IF(NOT TARGET png)
     "${PNG_SOURCE_DIR}"
     "${DNN_DEPENDENCIES_BINARY_DIR}/libpng")
 ENDIF()
-if(WIN32 OR MSVC)
+if(WIN32 OR MSVC AND BUILD_SHARED_LIBS)
   TARGET_LINK_LIBRARIES(png PRIVATE zlib)
 endif()
-TARGET_LINK_LIBRARIES(${PROJECT_NAME} PUBLIC png)
+if(BUILD_SHARED_LIBS)
+  TARGET_LINK_LIBRARIES(${PROJECT_NAME} PUBLIC png)
+else()
+  TARGET_LINK_LIBRARIES(${PROJECT_NAME} PUBLIC png_static)
+endif()
 
 # ---[ Configure JPEG
 IF(NOT TARGET jpeg)
@@ -297,7 +318,11 @@ IF(NOT TARGET jpeg)
     "${JPEG_SOURCE_DIR}"
     "${DNN_DEPENDENCIES_BINARY_DIR}/libjpeg-turbo")
 ENDIF()
-TARGET_LINK_LIBRARIES(${PROJECT_NAME} PUBLIC jpeg)
+if(BUILD_SHARED_LIBS)
+  TARGET_LINK_LIBRARIES(${PROJECT_NAME} PUBLIC jpeg)
+else()
+  TARGET_LINK_LIBRARIES(${PROJECT_NAME} PUBLIC jpeg-static)
+endif()
 
 # ---[ Configure oneDNN
 IF(NOT TARGET dnnl)
@@ -307,7 +332,7 @@ IF(NOT TARGET dnnl)
 ENDIF()
 TARGET_LINK_LIBRARIES(${PROJECT_NAME} PUBLIC dnnl)
 
-# ---[ Configure VectorClass
+# ---[ Configure vectorclass
 IF(NOT TARGET vectorclass)
   ADD_SUBDIRECTORY(
     "${VECTORCLASS_SOURCE_DIR}"
@@ -325,9 +350,9 @@ ENDIF()
 TARGET_LINK_LIBRARIES(test PUBLIC ${PROJECT_NAME})
 
 install(TARGETS test DESTINATION bin)
-if(WIN32 OR MSVC)
-install(TARGETS zlib LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-    PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+if(WIN32 OR MSVC AND BUILD_SHARED_LIBS)
+  install(TARGETS zlib LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+      PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 endif()
 install(TARGETS ${PROJECT_NAME}
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}

@@ -139,6 +139,7 @@ namespace dnn
 		Float TrainErrorPercentage;
 		Float TestErrorPercentage;
 		Float Accuracy;
+		Float SampleSpeed;
 		Float Rate;
 		bool BatchNormScaling;
 		bool HasBias;
@@ -221,6 +222,7 @@ namespace dnn
 			fpropTime(std::chrono::duration<Float>(Float(0))),
 			bpropTime(std::chrono::duration<Float>(Float(0))),
 			updateTime(std::chrono::duration<Float>(Float(0))),
+		    SampleSpeed(Float(0)),
 			NewEpoch(nullptr),
 			AdjustedTrainingSamplesCount(0),
 			AdjustedTestingSamplesCount(0),
@@ -739,12 +741,13 @@ namespace dnn
 				State.store(States::Idle);
 
 				//auto oldWeightSaveFileName = std::string();
-
+                
 				auto timer = std::chrono::high_resolution_clock();
 				auto timePoint = timer.now();
-				auto timePointGlobal = timer.now();;
+				auto timePointGlobal = timer.now();
 				auto bpropTimeCount = std::chrono::duration<Float>(Float(0));
 				auto updateTimeCount = std::chrono::duration<Float>(Float(0));
+                auto elapsedTime = std::chrono::duration<Float>(Float(0));
 
 				TotalEpochs = 0;
 				for (const auto& rate : TrainingRates)
@@ -808,6 +811,7 @@ namespace dnn
 						break;
 					}
 
+				
 				while (CurrentEpoch < TotalEpochs)
 				{
 					if (CurrentEpoch - (GoToEpoch - 1) == learningRateEpochs)
@@ -833,7 +837,7 @@ namespace dnn
 						for (auto index = 0ull; index < DataProv->TrainingSamplesCount; index++)
 							TrainingSamplesVFlip[index].flip();
 
-					if (CheckTaskState())
+                   	if (CheckTaskState())
 					{
 						State.store(States::Training);
 
@@ -954,6 +958,9 @@ namespace dnn
 								bpropTime = bpropTimeCount;
 								updateTime = updateTimeCount;
 
+                                elapsedTime = timer.now() - timePointGlobal;
+								SampleSpeed = BatchSize / (Float(std::chrono::duration_cast<std::chrono::microseconds>(elapsedTime).count()) / 1000000);
+
 								if (TaskState.load() != TaskStates::Running && !CheckTaskState())
 									break;
 							}
@@ -1014,6 +1021,9 @@ namespace dnn
 								overflow = SampleIndex >= TestOverflowCount;
 								CostFunctionBatch(State.load(), BatchSize, overflow, TestSkipCount);
 								RecognizedBatch(State.load(), BatchSize, overflow, TestSkipCount, SampleLabels);
+
+								elapsedTime = timer.now() - timePointGlobal;
+								SampleSpeed = BatchSize / (Float(std::chrono::duration_cast<std::chrono::microseconds>(elapsedTime).count()) / 1000000);
 
 								if (TaskState.load() != TaskStates::Running && !CheckTaskState())
 									break;
@@ -1084,6 +1094,7 @@ namespace dnn
 				auto timer = std::chrono::high_resolution_clock();
 				auto timePoint = timer.now();
 				auto timePointGlobal = timer.now();;
+                auto elapsedTime = std::chrono::duration<Float>(Float(0));
 
 				CurrentTrainingRate = TrainingRates[0];
 				// check first if we have enough memory available
@@ -1163,6 +1174,8 @@ namespace dnn
 
 					fpropTime = timer.now() - timePointGlobal;
 
+                   	SampleSpeed = BatchSize / (Float(std::chrono::duration_cast<std::chrono::microseconds>(fpropTime).count()) / 1000000);
+					
 					if (TaskState.load() != TaskStates::Running && !CheckTaskState())
 						break;
 				}
@@ -1240,13 +1253,13 @@ namespace dnn
 			if (CurrentTrainingRate.VerticalFlip && TrainingSamplesVFlip[randomIndex])
 				dstImageByte = Image<Byte>::VerticalMirror(dstImageByte);
 
-			if (DataProv->Channels == 3 && Bernoulli<bool>(CurrentTrainingRate.ColorCast))
+			if (DataProv->C == 3 && Bernoulli<bool>(CurrentTrainingRate.ColorCast))
 				dstImageByte = Image<Byte>::ColorCast(dstImageByte, CurrentTrainingRate.ColorAngle);
 
 			if (dstImageByte.Depth != SampleD || dstImageByte.Height != SampleH || dstImageByte.Width != SampleW)
 				dstImageByte = Image<Byte>::Resize(dstImageByte, SampleD, SampleH, SampleW, Interpolation(CurrentTrainingRate.Interpolation));
 
-			if (DataProv->Channels == 3 && Bernoulli<bool>(CurrentTrainingRate.AutoAugment))
+			if (DataProv->C == 3 && Bernoulli<bool>(CurrentTrainingRate.AutoAugment))
 				dstImageByte = Image<Byte>::AutoAugment(dstImageByte, PadD, PadH, PadW, DataProv->Mean, MirrorPad);
 			else
 				dstImageByte = Image<Byte>::Padding(dstImageByte, PadD, PadH, PadW, DataProv->Mean, MirrorPad);
@@ -1311,7 +1324,7 @@ namespace dnn
 
 			auto dstImageByte = DataProv->TestingSamples[index];
 
-			if (DataProv->Channels == 3 && Bernoulli<bool>(CurrentTrainingRate.ColorCast))
+			if (DataProv->C == 3 && Bernoulli<bool>(CurrentTrainingRate.ColorCast))
 				dstImageByte = Image<Byte>::ColorCast(dstImageByte, CurrentTrainingRate.ColorAngle);
 
 			if (CurrentTrainingRate.HorizontalFlip && TestingSamplesHFlip[index])
@@ -1323,7 +1336,7 @@ namespace dnn
 			if (dstImageByte.Depth != SampleD || dstImageByte.Height != SampleH || dstImageByte.Width != SampleW)
 				dstImageByte = Image<Byte>::Resize(dstImageByte, SampleD, SampleH, SampleW, Interpolation(CurrentTrainingRate.Interpolation));
 
-			if (DataProv->Channels == 3 && Bernoulli<bool>(CurrentTrainingRate.AutoAugment))
+			if (DataProv->C == 3 && Bernoulli<bool>(CurrentTrainingRate.AutoAugment))
 				dstImageByte = Image<Byte>::AutoAugment(dstImageByte, PadD, PadH, PadW, DataProv->Mean, MirrorPad);
 			else
 				dstImageByte = Image<Byte>::Padding(dstImageByte, PadD, PadH, PadW, DataProv->Mean, MirrorPad);

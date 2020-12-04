@@ -1,5 +1,6 @@
 #include "Definition.h"
 
+#ifdef DNN_DLL
 #if defined _WIN32 || defined __CYGWIN__ || defined __MINGW32__
 #if defined DNN_LOG 
 FILE* stream;
@@ -49,6 +50,9 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD fdwReason, LPVOID lpReserved)
 #else
 #define DNN_API
 #endif
+#endif
+#else
+#define DNN_API
 #endif
 
 using namespace dnn;
@@ -367,7 +371,7 @@ extern "C" DNN_API void DNNGetNetworkInfo(std::string* name, size_t* costIndex, 
 	}
 }
 
-extern "C" DNN_API void DNNGetTrainingInfo(size_t* currentCycle, size_t* totalCycles, size_t* currentEpoch, size_t* totalEpochs, bool* horizontalFlip, bool* verticalFlip, Float* inputDropOut, Float* inputCutout, Float* autoAugment, Float* colorCast, size_t* colorAngle, Float* distortion, size_t* interpolation, Float* scaling, Float* rotation, size_t* sampleIndex, size_t* batchSize, Float* maximumRate, Float* momentum, Float* l2Penalty, Float* avgTrainLoss, Float* trainErrorPercentage, size_t* trainErrors, Float* avgTestLoss, Float* testErrorPercentage, size_t* testErrors, States* networkState, TaskStates* taskState)
+extern "C" DNN_API void DNNGetTrainingInfo(size_t* currentCycle, size_t* totalCycles, size_t* currentEpoch, size_t* totalEpochs, bool* horizontalFlip, bool* verticalFlip, Float* inputDropOut, Float* inputCutout, Float* autoAugment, Float* colorCast, size_t* colorAngle, Float* distortion, size_t* interpolation, Float* scaling, Float* rotation, size_t* sampleIndex, size_t* batchSize, Float* maximumRate, Float* momentum, Float* l2Penalty, Float* avgTrainLoss, Float* trainErrorPercentage, size_t* trainErrors, Float* avgTestLoss, Float* testErrorPercentage, size_t* testErrors, Float* sampleSpeed, States* networkState, TaskStates* taskState)
 {
 	if (model)
 	{
@@ -381,7 +385,7 @@ extern "C" DNN_API void DNNGetTrainingInfo(size_t* currentCycle, size_t* totalCy
 			model->TrainErrors = model->CostLayers[model->CostIndex]->TrainErrors;
 			model->TrainErrorPercentage = Float(model->TrainErrors * 100) / sampleIdx;
 			model->AvgTrainLoss = model->TrainLoss / sampleIdx;
-
+   
 			*avgTrainLoss = model->AvgTrainLoss;
 			*trainErrorPercentage = model->TrainErrorPercentage;
 			*trainErrors = model->TrainErrors;
@@ -433,13 +437,14 @@ extern "C" DNN_API void DNNGetTrainingInfo(size_t* currentCycle, size_t* totalCy
 		*momentum = model->CurrentTrainingRate.Momentum;
 		*l2Penalty = model->CurrentTrainingRate.L2Penalty;
 		*batchSize = model->BatchSize;
+		*sampleSpeed = model->SampleSpeed;
 		
 		*networkState = model->State.load();
 		*taskState = model->TaskState.load();
 	}
 }
 
-extern "C" DNN_API void DNNGetTestingInfo(size_t* batchSize, size_t* sampleIndex, Float* avgTestLoss, Float* testErrorPercentage, size_t* testErrors, States* networkState, TaskStates* taskState)
+extern "C" DNN_API void DNNGetTestingInfo(size_t* batchSize, size_t* sampleIndex, Float* avgTestLoss, Float* testErrorPercentage, size_t* testErrors, Float* sampleSpeed, States* networkState, TaskStates* taskState)
 {
 	if (model)
 	{
@@ -455,6 +460,7 @@ extern "C" DNN_API void DNNGetTestingInfo(size_t* batchSize, size_t* sampleIndex
 		*avgTestLoss = model->AvgTestLoss;
 		*testErrorPercentage = model->TestErrorPercentage;
 		*testErrors = model->TestErrors;
+		*sampleSpeed = model->SampleSpeed;
 				
 		*networkState = model->State.load();
 		*taskState = model->TaskState.load();

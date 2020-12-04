@@ -281,8 +281,8 @@ DNN_API void DNNStop();
 DNN_API void DNNPause();
 DNN_API void DNNResume();
 DNN_API void DNNTesting();
-DNN_API void DNNGetTrainingInfo(size_t* currentCycle, size_t* totalCycles, size_t* currentEpoch, size_t* totalEpochs, bool* verticalMirror, bool* horizontalMirror, Float* dropout, Float* cutout, Float* autoAugment, Float* colorCast, size_t* colorAngle, Float* distortion, size_t* interpolation, Float* scaling, Float* rotation, size_t* sampleIndex, size_t* batchSize, Float* rate, Float* momentum, Float* l2Penalty, Float* avgTrainLoss, Float* trainErrorPercentage, size_t* trainErrors, Float* avgTestLoss, Float* testErrorPercentage, size_t* testErrors, States* networkState, TaskStates* taskState);
-DNN_API void DNNGetTestingInfo(size_t* batchSize, size_t* sampleIndex, Float* avgTestLoss, Float* testErrorPercentage, size_t* testErrors, States* networkState, TaskStates* taskState);
+DNN_API void DNNGetTrainingInfo(size_t* currentCycle, size_t* totalCycles, size_t* currentEpoch, size_t* totalEpochs, bool* verticalMirror, bool* horizontalMirror, Float* dropout, Float* cutout, Float* autoAugment, Float* colorCast, size_t* colorAngle, Float* distortion, size_t* interpolation, Float* scaling, Float* rotation, size_t* sampleIndex, size_t* batchSize, Float* rate, Float* momentum, Float* l2Penalty, Float* avgTrainLoss, Float* trainErrorPercentage, size_t* trainErrors, Float* avgTestLoss, Float* testErrorPercentage, size_t* testErrors, Float* sampleSpeed, States* networkState, TaskStates* taskState);
+DNN_API void DNNGetTestingInfo(size_t* batchSize, size_t* sampleIndex, Float* avgTestLoss, Float* testErrorPercentage, size_t* testErrors, Float* sampleSpeed, States* networkState, TaskStates* taskState);
 DNN_API void DNNGetNetworkInfo(std::string* name, size_t* costIndex, size_t* costLayerCount, size_t* groupIndex, size_t* labelindex, size_t* hierarchies, bool* meanStdNormalization, Costs* lossFunction, Datasets* dataset, size_t* layerCount, size_t* trainingSamples, size_t* testingSamples, std::vector<Float>* meanTrainSet, std::vector<Float>* stdTrainSet);
 DNN_API void DNNSetOptimizer(const Optimizers strategy);
 DNN_API void DNNRefreshStatistics(const size_t layerIndex, std::string* description, Float* neuronsStdDev, Float* neuronsMean, Float* neuronsMin, Float* neuronsMax, Float* weightsStdDev, Float* weightsMean, Float* weightsMin, Float* weightsMax, Float* biasesStdDev, Float* biasesMean, Float* biasesMin, Float* biasesMax, Float* fpropLayerTime, Float* bpropLayerTime, Float* updateLayerTime, Float* fpropTime, Float* bpropTime, Float* updateTime, bool* locked);
@@ -306,8 +306,7 @@ namespace dnncore
 	{
 		Name = name;
 		Duration = gcnew System::Diagnostics::Stopwatch();
-		SampleSpeedTimer = gcnew System::Diagnostics::Stopwatch();
-
+		
 		sb = gcnew System::Text::StringBuilder();
 		State = DNNStates::Idle;
 		OldState = DNNStates::Idle;
@@ -593,8 +592,6 @@ namespace dnncore
 			if (outputImage->CanFreeze)
 				outputImage->Freeze();
 
-			snapshot.~vector();
-
 			InputSnapshot = outputImage;
 			Label = pictureLoaded ? LabelsCollection[int(LabelIndex)][int(labelVector[LabelIndex])] : System::String::Empty;
 		}
@@ -801,10 +798,11 @@ namespace dnncore
 			auto avgTestLoss = new Float();
 			auto testErrorPercentage = new Float();
 			auto testErrors = new size_t();
+			auto sampleSpeed = new Float();
 			auto aState = new States();
 			auto aTaskState = new TaskStates();
 
-			DNNGetTrainingInfo(cycle, totalCycles, epoch, totalEpochs, horizontalFlip, verticalFlip, dropout, cutout, autoAugment, colorCast, colorAngle, distortion, interpolation, scaling, rotation, sampleIndex, batchSize, rate, momentum, l2Penalty, avgTrainLoss, trainErrorPercentage, trainErrors, avgTestLoss, testErrorPercentage, testErrors, aState, aTaskState);
+			DNNGetTrainingInfo(cycle, totalCycles, epoch, totalEpochs, horizontalFlip, verticalFlip, dropout, cutout, autoAugment, colorCast, colorAngle, distortion, interpolation, scaling, rotation, sampleIndex, batchSize, rate, momentum, l2Penalty, avgTrainLoss, trainErrorPercentage, trainErrors, avgTestLoss, testErrorPercentage, testErrors, sampleSpeed, aState, aTaskState);
 
 			Cycle = *cycle;
 			TotalCycles = *totalCycles;
@@ -832,13 +830,10 @@ namespace dnncore
 			AvgTestLoss = *avgTestLoss;
 			TestErrorPercentage = *testErrorPercentage;
 			TestErrors = *testErrors;
+			AvgSampleRate = *sampleSpeed;;
 			State = static_cast<dnncore::DNNStates>(*aState);
 			TaskState = static_cast<dnncore::DNNTaskStates>(*aTaskState);
 
-			if (SampleIndex > 0)
-				AvgSampleRate = Float(SampleIndex + 1) / Float(SampleSpeedTimer->Elapsed.TotalSeconds - OptimizeTime->TotalSeconds);
-			else
-				OptimizeTime = SampleSpeedTimer->Elapsed;
 
 			AdjustedTrainingSamplesCount = TrainingSamples % BatchSize == 0 ? TrainingSamples : ((TrainingSamples / BatchSize) + 1) * BatchSize;
 			AdjustedTestingSamplesCount = TestingSamples % BatchSize == 0 ? TestingSamples : ((TestingSamples / BatchSize) + 1) * BatchSize;
@@ -847,10 +842,8 @@ namespace dnncore
 
 			if (State != OldState)
 			{
-				SampleSpeedTimer->Restart();
 				OldState = State;
 				AvgSampleRate = Float(0);
-				OptimizeTime = gcnew TimeSpan(0);
 			}
 
 			delete cycle;
@@ -879,6 +872,7 @@ namespace dnncore
 			delete avgTestLoss;
 			delete testErrorPercentage;
 			delete testErrors;
+			delete sampleSpeed;
 			delete aState;
 			delete aTaskState;
 		}
@@ -889,10 +883,11 @@ namespace dnncore
 			auto avgTestLoss = new Float();
 			auto testErrorPercentage = new Float();
 			auto testErrors = new size_t();
+			auto sampleSpeed = new Float();
 			auto aState = new States();
 			auto aTaskState = new TaskStates();
 
-			DNNGetTestingInfo(batchSize, sampleIndex, avgTestLoss, testErrorPercentage, testErrors, aState, aTaskState);
+			DNNGetTestingInfo(batchSize, sampleIndex, avgTestLoss, testErrorPercentage, testErrors, sampleSpeed, aState, aTaskState);
 
 			BatchSize = *batchSize;
 			SampleIndex = *sampleIndex;
@@ -901,7 +896,7 @@ namespace dnncore
 			TestErrors = *testErrors;
 			State = static_cast<dnncore::DNNStates>(*aState);
 			TaskState = static_cast<dnncore::DNNTaskStates>(*aTaskState);
-			AvgSampleRate = Float(SampleIndex + 1) / Float(SampleSpeedTimer->Elapsed.TotalSeconds);
+			AvgSampleRate = *sampleSpeed;
 
 			AdjustedTestingSamplesCount = TestingSamples % BatchSize == 0 ? TestingSamples : ((TestingSamples / BatchSize) + 1) * BatchSize;
 
@@ -909,7 +904,6 @@ namespace dnncore
 
 			if (State != OldState)
 			{
-				SampleSpeedTimer->Restart();
 				OldState = State;
 				AvgSampleRate = Float(0);
 			}
@@ -919,6 +913,7 @@ namespace dnncore
 			delete avgTestLoss;
 			delete testErrorPercentage;
 			delete testErrors;
+			delete sampleSpeed;
 			delete aState;
 			delete aTaskState;
 		}
@@ -1182,7 +1177,6 @@ namespace dnncore
 		IsTraining = training;
 		if (NewEpoch != nullptr)
 			DNNSetNewEpochDelegate((void(*)(size_t, size_t, size_t, bool, bool, Float, Float, Float, Float, size_t, Float, size_t, Float, Float, Float, size_t, Float, Float, Float, Float, Float, size_t, Float, Float, Float, size_t))(Marshal::GetFunctionPointerForDelegate(NewEpoch).ToPointer()));
-		OptimizeTime = gcnew TimeSpan(0);
 		AvgSampleRate = Float(0);
 		State = DNNStates::Idle;
 		if (training)
@@ -1191,16 +1185,13 @@ namespace dnncore
 			DNNTesting();
 		TaskState = DNNTaskStates::Running;
 		WorkerTimer->Start();
-		SampleSpeedTimer->Start();
 		Duration->Start();
 	}
 
 	void Model::Stop()
 	{
-		OptimizeTime = gcnew TimeSpan(0);
 		AvgSampleRate = Float(0);
 		Duration->Reset();
-		SampleSpeedTimer->Reset();
 		DNNStop();
 		WorkerTimer->Stop();
 		State = DNNStates::Completed;
@@ -1211,7 +1202,6 @@ namespace dnncore
 	{
 		WorkerTimer->Stop();
 		Duration->Stop();
-		SampleSpeedTimer->Stop();
 		DNNPause();
 		TaskState = DNNTaskStates::Paused;
 	}
@@ -1219,7 +1209,6 @@ namespace dnncore
 	void Model::Resume()
 	{
 		DNNResume();
-		SampleSpeedTimer->Start();
 		Duration->Start();
 		WorkerTimer->Start();
 		TaskState = DNNTaskStates::Running;
