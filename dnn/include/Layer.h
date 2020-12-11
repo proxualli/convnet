@@ -153,7 +153,9 @@ namespace dnn
 		Device(const dnnl::engine& eng, dnnl::stream str) : engine(eng), stream(str) {}
 	};
 	
-	class Layer
+	class Layer;
+
+    class Layer
 	{
 	protected:
 		dnn::Device Device;
@@ -179,7 +181,7 @@ namespace dnn
 		const bool HasPadding;
 		const std::vector<Layer*> Inputs;
 		Layer* InputLayer;
-		std::vector<Layer*> Outputs;
+		//std::vector<std::shared_ptr<Layer>> Outputs;
 		bool LayerBeforeCost;
 		bool SharesInput;
 		const dnnl::memory::format_tag Format;
@@ -294,7 +296,7 @@ namespace dnn
 			RAdamEps(Float(1e-08)),
 			RAdamBeta1(Float(0.9)),
 			RAdamBeta2(Float(0.999)),
-			Outputs(std::vector<Layer*>()),
+			//Outputs(std::vector<std::shared_ptr<Layer>>()),
 			UseDefaultParameters(true),
 			LockUpdate(false),
 			RefreshingStats(false),
@@ -320,7 +322,7 @@ namespace dnn
 		}
 
 		virtual ~Layer() = default;
-
+		
 		void SetParameters(const bool useDefaults, const Fillers weightsFiller, const Float weightsScale, const Float weightsLRM, const Float weightsWDM, const Fillers biasesFiller, const Float biasesScale, const Float biasesLRM, const Float biasesWDM)
 		{
 			UseDefaultParameters = useDefaults;
@@ -1954,6 +1956,7 @@ namespace dnn
 			return neuronsSize;
 		}
 
-		virtual ByteVector GetImage(const Byte fillColor) { return ByteVector(); }
+		virtual ByteVector GetImage(const Byte) { return ByteVector(); }
 	};
+
 }

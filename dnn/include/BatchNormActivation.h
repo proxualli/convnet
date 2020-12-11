@@ -19,7 +19,7 @@ namespace dnn
 		FloatVector RunningVariance;
 		FloatVector InvStdDev;
 
-		BatchNormActivation<Activation,T>(const dnn::Device& device, const dnnl::memory::format_tag format, const std::string& name, const std::vector<Layer*>& inputs, const bool scaling = true, const Float momentum = Float(0.99), const Float eps = Float(1e-04), const bool hasBias = true) : 
+		BatchNormActivation<Activation,T>(const dnn::Device& device, const dnnl::memory::format_tag format, const std::string& name, const std::vector<Layer*>& inputs, const bool scaling = true, const Float momentum = Float(0.99), const Float eps = Float(1e-04), const bool hasBias = true) :
 			Layer(device, format, name, T, inputs[0]->C, inputs[0]->C, inputs[0]->C, inputs[0]->D, inputs[0]->H, inputs[0]->W, 0, 0, 0, inputs, hasBias),
 			Scaling(scaling),
 			Eps(eps),
@@ -88,7 +88,7 @@ namespace dnn
 				{
 					chosenFormat = GetDataFmt(*InputLayer->DstMemDesc);
 					if (chosenFormat != GetDataFmt(*InputLayer->DiffDstMemDesc))
-						throw std::invalid_argument("Src and Diff format are different in " + std::string(magic_enum::enum_name<LayerTypes>(LayerType)) + " layer " + Name);
+						throw std::invalid_argument(std::string("Src and Diff format are different in ") + std::string(magic_enum::enum_name<LayerTypes>(LayerType)) + std::string(" layer ") + Name);
 				}
 
 				DstMemDesc = std::make_unique<dnnl::memory::desc>(dnnl::memory::desc(dnnl::memory::dims({ dnnl::memory::dim(batchSize), dnnl::memory::dim(C), dnnl::memory::dim(H), dnnl::memory::dim(W) }), dnnl::memory::data_type::f32, chosenFormat));
@@ -493,6 +493,11 @@ namespace dnn
 
 			RunningMean = FloatVector(PaddedC, Float(0));
 			RunningVariance = FloatVector(PaddedC, Float(1));
+
+			DNN_UNREF_PAR(weightFiller);
+			DNN_UNREF_PAR(weightFillerScale);
+			DNN_UNREF_PAR(biasFiller);
+			DNN_UNREF_PAR(biasFillerScale);
 		}
 
 		void Save(std::ostream& os, const bool persistOptimizer = false, const Optimizers optimizer = Optimizers::SGD) override

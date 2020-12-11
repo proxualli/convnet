@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <array>
 #include <atomic>
+//#include <bit>
 #include <cstdio>
 #include <cstring>
 #include <cmath>
@@ -70,9 +71,10 @@ namespace dnn
 	typedef unsigned char Byte;
 	typedef std::vector<Float, AlignedAllocator<Float, 64ull>> FloatVector;
 	typedef std::vector<Byte, AlignedAllocator<Byte, 64ull>> ByteVector;
-	
-	constexpr auto NEURONS_LIMIT = Float(100);
-	constexpr auto WEIGHTS_LIMIT = Float(100);
+
+    //constexpr bool IS_LITTLE_ENDIAN = (std::endian::native == std::endian::little);
+	constexpr auto NEURONS_LIMIT = Float(100);   // limit for all the value of the neurons and its derivatives [-NEURONS_LIMIT,NEURONS_LIMIT]
+	constexpr auto WEIGHTS_LIMIT = Float(100);   // limit for all the value of the weights and biases [-WEIGHTS_LIMIT,WEIGHTS_LIMIT]
 	constexpr auto LIGHT_COMPUTE = 4ull;         // number of threads
 	constexpr auto MEDIUM_COMPUTE = 8ull;
 	constexpr auto FloatSquare(const Float& value) noexcept { return (value * value); }
@@ -153,7 +155,7 @@ namespace dnn
 		ZeroFloatVector(destination.data(), elements);
 	}
 	
-	inline static const auto BernoulliVecFloat(const Float prob = Float(0.5)) noexcept
+	inline static auto BernoulliVecFloat(const Float prob = Float(0.5)) noexcept
 	{
 		static thread_local auto generator = Ranvec1(3);
 		generator.init(static_cast<int>(__rdtsc()), static_cast<int>(std::hash<std::thread::id>()(std::this_thread::get_id())));
@@ -165,48 +167,48 @@ namespace dnn
 	}
 
 	template<typename T>
-	static const auto Bernoulli(const Float prob = Float(0.5)) noexcept
+	static auto Bernoulli(const Float prob = Float(0.5)) noexcept
 	{
 		static thread_local auto generator = std::mt19937(static_cast<unsigned>(__rdtsc()));
 		return static_cast<T>(std::bernoulli_distribution(double(prob))(generator));
 	}
 
 	template<typename T>
-	static const auto UniformInt(const T min, const T max) noexcept
+	static auto UniformInt(const T min, const T max) noexcept
 	{
 		static thread_local auto generator = std::mt19937(static_cast<unsigned>(__rdtsc()));
 		return std::uniform_int_distribution<T>(min, max)(generator);
 	}
 
 	template<typename T>
-	static const auto UniformReal(const T min, const T max) noexcept
+	static auto UniformReal(const T min, const T max) noexcept
 	{
 		static thread_local auto generator = std::mt19937(static_cast<unsigned>(__rdtsc()));
 		return std::uniform_real_distribution<T>(min, max)(generator);
 	}
 		
-	static const std::string FloatToString(const Float value, const std::streamsize precision = 8)
+	static std::string FloatToString(const Float value, const std::streamsize precision = 8)
 	{
 		std::stringstream stream; 
 		stream << std::setprecision(precision) << value;
 		return stream.str();
 	}
 
-	static const std::string FloatToStringFixed(const Float value, const std::streamsize precision = 8)
+	static std::string FloatToStringFixed(const Float value, const std::streamsize precision = 8)
 	{
 		std::stringstream stream; 
 		stream << std::setprecision(precision) << std::fixed << value;
 		return stream.str();
 	}
 
-	static const std::string FloatToStringScientific(const Float value, const std::streamsize precision = 4)
+	static std::string FloatToStringScientific(const Float value, const std::streamsize precision = 4)
 	{
 		std::stringstream stream; 
 		stream << std::setprecision(precision) << std::scientific << value;
 		return stream.str();
 	}
 
-   	static const auto GetFileSize(const char* fileName)
+   	static auto GetFileSize(std::string fileName)
 	{
 		auto file = std::ifstream(fileName, std::ifstream::in | std::ifstream::binary);
 
@@ -232,7 +234,7 @@ namespace dnn
 	{
 		auto textLower = StringToLower(text);
 		
-		if (textLower == "true" || textLower == "yes" || textLower =="false" || textLower == "no")
+		if (textLower == "true" || textLower == "yes" || textLower == "false" || textLower == "no")
 			return true;
 
 		return false;
@@ -254,14 +256,13 @@ namespace dnn
 		MEMORYSTATUSEX statusEx;
 		statusEx.dwLength = sizeof(MEMORYSTATUSEX);
 		GlobalMemoryStatusEx(&statusEx);
+		std::cout << std::string("Available memory: ") << std::to_string(statusEx.ullAvailPhys/1024/1024) << std::string("/") << std::to_string(statusEx.ullTotalPhys/1024/1024) << " MB" << std::endl;
 		return statusEx.ullAvailPhys;
 #else        
 		struct sysinfo info;
 		if (sysinfo(&info) == 0)
 		{
-			std::cout << "Total  RAM: " << std::to_string(info.totalram*info.mem_unit/1024/1024) << " MB" << std::endl;
-			std::cout << "Free   RAM: " << std::to_string(info.freeram*info.mem_unit/1024/1024) << " MB" << std::endl;
-
+			std::cout << std::string("Available memory: ") << std::to_string(info.freeram*info.mem_unit/1024/1024) << std::string("/") << std::to_string(info.totalram*info.mem_unit/1024/1024) << " MB" << std::endl;
 			return static_cast<size_t>(info.freeram * info.mem_unit);
 		}
 		else
@@ -336,7 +337,7 @@ namespace dnn
 	template <typename T>
 	constexpr void SwapEndian(T& buffer)
 	{
-		static_assert(std::is_standard_layout<T>::value, "SwapEndian support standard layout types only");
+		static_assert(std::is_standard_layout<T>::value, "SwapEndian supports standard layout types only");
 		auto startIndex = static_cast<char*>((void*)buffer.data());
 		auto endIndex = startIndex + sizeof(buffer);
 		std::reverse(startIndex, endIndex);

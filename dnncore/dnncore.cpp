@@ -288,14 +288,14 @@ DNN_API void DNNSetOptimizer(const Optimizers strategy);
 DNN_API void DNNRefreshStatistics(const size_t layerIndex, std::string* description, Float* neuronsStdDev, Float* neuronsMean, Float* neuronsMin, Float* neuronsMax, Float* weightsStdDev, Float* weightsMean, Float* weightsMin, Float* weightsMax, Float* biasesStdDev, Float* biasesMean, Float* biasesMin, Float* biasesMax, Float* fpropLayerTime, Float* bpropLayerTime, Float* updateLayerTime, Float* fpropTime, Float* bpropTime, Float* updateTime, bool* locked);
 DNN_API bool DNNGetInputSnapShot(std::vector<Float>* snapshot, std::vector<size_t>* label);
 DNN_API bool DNNCheckDefinition(std::string& definition, CheckMsg& checkMsg);
-DNN_API int DNNLoadDefinition(const char* fileName, const Optimizers optimizer, CheckMsg& checkMsg);
-DNN_API int DNNReadDefinition(const char* definition, const Optimizers optimizer, CheckMsg& checkMsg);
-DNN_API void DNNDataprovider(const char* directory);
-DNN_API int DNNLoadNetworkWeights(const char* fileName, const bool persistOptimizer);
-DNN_API int DNNSaveNetworkWeights(const char* fileName, const bool persistOptimizer);
-DNN_API int DNNLoadLayerWeights(const char* fileName, const size_t layerIndex, const bool persistOptimizer);
-DNN_API int DNNSaveLayerWeights(const char* fileName, const size_t layerIndex, const bool persistOptimizer);
-// DNN_API void DNNGetLayerWeights(const size_t layerIndex, std::vector<Float>* weights, std::vector<Float>* biases);
+DNN_API int DNNLoadDefinition(const std::string& fileName, const Optimizers optimizer, CheckMsg& checkMsg);
+DNN_API int DNNReadDefinition(const std::string& definition, const Optimizers optimizer, CheckMsg& checkMsg);
+DNN_API void DNNDataprovider(const std::string& directory);
+DNN_API int DNNLoadNetworkWeights(const std::string& fileName, const bool persistOptimizer);
+DNN_API int DNNSaveNetworkWeights(const std::string& fileName, const bool persistOptimizer);
+DNN_API int DNNLoadLayerWeights(const std::string& fileName, const size_t layerIndex, const bool persistOptimizer);
+DNN_API int DNNSaveLayerWeights(const std::string& fileName, const size_t layerIndex, const bool persistOptimizer);
+DNN_API void DNNGetLayerWeights(const size_t layerIndex, std::vector<Float>* weights, std::vector<Float>* biases);
 DNN_API void DNNSetCostIndex(const size_t index);
 DNN_API void DNNGetCostInfo(const size_t costIndex, size_t* trainErrors, Float* trainLoss, Float* avgTrainLoss, Float* trainErrorPercentage, size_t* testErrors, Float* testLoss, Float* avgTestLoss, Float* testErrorPercentage);
 DNN_API void DNNGetImage(const size_t layer, const unsigned char fillColor, unsigned char* image);
@@ -332,10 +332,10 @@ namespace dnncore
 		CostIndex = 0;
 		Multiplier = 1;
 
-		DNNDataprovider(ToUnmanagedString(StorageDirectory).c_str());
+		DNNDataprovider(ToUnmanagedString(StorageDirectory));
 
 		CheckMsg checkMsg;
-		if (DNNLoadDefinition(ToUnmanagedString(fileName).c_str(), (Optimizers)optimizer, checkMsg))
+		if (DNNLoadDefinition(ToUnmanagedString(fileName), (Optimizers)optimizer, checkMsg))
 		{
 			Optimizer = optimizer;
 
@@ -1230,11 +1230,11 @@ namespace dnncore
 		CheckMsg checkMsg;
 
 		DNNModelDispose();
-		DNNDataprovider(ToUnmanagedString(StorageDirectory).c_str());
+		DNNDataprovider(ToUnmanagedString(StorageDirectory));
 
 		GC::Collect(GC::MaxGeneration, GCCollectionMode::Forced, true, true);
 
-		if (DNNLoadDefinition(ToUnmanagedString(fileName).c_str(), (Optimizers)Optimizer, checkMsg))
+		if (DNNLoadDefinition(ToUnmanagedString(fileName), (Optimizers)Optimizer, checkMsg))
 		{
 			DNNLoadDataset();
 
@@ -1268,7 +1268,7 @@ namespace dnncore
 
 	int Model::LoadWeights(String^ fileName, bool persist)
 	{
-		int ret = DNNLoadNetworkWeights(ToUnmanagedString(fileName).c_str(), persist);
+		int ret = DNNLoadNetworkWeights(ToUnmanagedString(fileName), persist);
 
 		for (size_t layerIndex = 0; layerIndex < LayerCount; layerIndex++)
 			UpdateLayerStatistics(Layers[layerIndex], layerIndex, layerIndex == SelectedIndex);
@@ -1278,7 +1278,7 @@ namespace dnncore
 
 	int Model::SaveWeights(String^ fileName, bool persist)
 	{
-		return DNNSaveNetworkWeights(ToUnmanagedString(fileName).c_str(), persist);
+		return DNNSaveNetworkWeights(ToUnmanagedString(fileName), persist);
 	}
 
 	int Model::LoadLayerWeights(String^ fileName, size_t layerIndex)
@@ -1293,7 +1293,7 @@ namespace dnncore
 
 	int Model::SaveLayerWeights(String^ fileName, size_t layerIndex)
 	{
-		return DNNSaveLayerWeights(ToUnmanagedString(fileName).c_str(), layerIndex, false);
+		return DNNSaveLayerWeights(ToUnmanagedString(fileName), layerIndex, false);
 	}
 
 	bool Model::StochasticEnabled()

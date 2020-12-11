@@ -37,6 +37,8 @@ namespace dnn
 
 		void InitializeDescriptors(const size_t batchSize)  final override
 		{
+			DNN_UNREF_PAR(batchSize);
+
 			DstMemDesc = std::make_unique<dnnl::memory::desc>(*InputLayer->DstMemDesc);
 			DiffDstMemDesc = std::make_unique<dnnl::memory::desc>(*InputLayer->DiffDstMemDesc);
 			chosenFormat = GetDataFmt(*DstMemDesc);
@@ -51,6 +53,8 @@ namespace dnn
 
 		void ForwardProp(const size_t batchSize, const bool training)  final override
 		{
+			DNN_UNREF_PAR(training);
+
 #ifdef DNN_STOCHASTIC
 			if (batchSize == 1)
 			{

@@ -146,7 +146,7 @@ namespace dnn
 		bool PersistOptimizer;
 		bool DisableLocking;
 		TrainingRate CurrentTrainingRate;
-		std::vector<Layer*> Layers;
+		std::vector<std::unique_ptr<Layer>> Layers;
 		std::vector<Cost*> CostLayers;
 		std::vector<TrainingRate> TrainingRates;
 		std::chrono::duration<Float> fpropTime;
@@ -158,7 +158,7 @@ namespace dnn
 
 		void(*NewEpoch)(size_t, size_t, size_t, bool, bool, Float, Float, Float, Float, size_t, Float, size_t, Float, Float, Float, size_t, Float, Float, Float, Float, Float, size_t, Float, Float, Float, size_t);
 
-		Model(const char* name, Dataprovider* dataprovider) :
+		Model(const std::string& name, Dataprovider* dataprovider) :
 			Name(name),
 			DataProv(dataprovider),
 			Engine(dnnl::engine(dnnl::engine::kind::cpu, 0)),
@@ -217,7 +217,7 @@ namespace dnn
 			CostIndex(0),
 			CostFuction(Costs::CategoricalCrossEntropy),
 			CostLayers(std::vector<Cost*>()),
-			Layers(std::vector<Layer*>()),
+			Layers(std::vector< std::unique_ptr<Layer>>()),
 			TrainingRates(std::vector<TrainingRate>()),
 			fpropTime(std::chrono::duration<Float>(Float(0))),
 			bpropTime(std::chrono::duration<Float>(Float(0))),
@@ -248,11 +248,7 @@ namespace dnn
 #endif
 		}
 
-		~Model()
-		{
-			for (auto i = 0ull; i < Layers.size(); i++)
-				delete Layers[i];
-		}		
+		virtual ~Model() = default;
 		
 		void ResetWeights()
 		{
@@ -260,38 +256,38 @@ namespace dnn
 			{
 				ResettingWeights.store(true);
 
-				for (auto layer : Layers)
+				for (auto l = 0ull; l < Layers.size(); l++)
 				{
-					while (layer->RefreshingStats.load())
+					while (Layers[l]->RefreshingStats.load())
 						std::this_thread::sleep_for(std::chrono::milliseconds(100));
 
-					layer->ResetWeights(WeightsFiller, WeightsScale, BiasesFiller, BiasesScale);
-					layer->ResetOptimizer(Optimizer);
+					Layers[l]->ResetWeights(WeightsFiller, WeightsScale, BiasesFiller, BiasesScale);
+					Layers[l]->ResetOptimizer(Optimizer);
 				}
 
 				ResettingWeights.store(false);
 			}
 		}
 
-		bool IsUniqueLayerName(const char* name) const
+		bool IsUniqueLayerName(const std::string& name) const
 		{
 			std::string nameLower(name);
 			std::transform(nameLower.begin(), nameLower.end(), nameLower.begin(), ::tolower);
-
-			for (auto layer : Layers)
+			
+			for (auto &layer : Layers)
 			{
 				auto layerName = layer->Name;
 				std::transform(layerName.begin(), layerName.end(), layerName.begin(), ::tolower);
 				if (layerName == nameLower)
 					return false;
-		}
+			}
 
 			return true;
-	}
+		}
 
 		void SetHyperParameters(const Float adaDeltaEps, const Float adaGradEps, const Float adamEps, const Float adamBeta2, const Float adamaxEps, const Float adamaxBeta2, const Float rmsPropEps, const Float radamEps, const Float radamBeta1, const Float radamBeta2)
 		{
-			for (auto layer : Layers)
+			for (auto &layer : Layers)
 			{
 				layer->AdaDeltaEps = adaDeltaEps;
 				layer->AdaGradEps = adaGradEps;
@@ -311,14 +307,14 @@ namespace dnn
 			auto list = std::vector<Layer*>();
 
 			bool exists;
-			for (auto name : inputs)
+			for (auto &name : inputs)
 			{
 				exists = false;
-				for (auto layer : Layers)
+				for (auto &layer : Layers)
 				{
 					if (layer->Name == name)
 					{
-						list.push_back(layer);
+						list.push_back(layer.get());
 						exists = true;
 					}
 				}
@@ -330,25 +326,19 @@ namespace dnn
 			return list;
 		}
 
-		std::vector<Layer*> GetLayerOutputs(const Layer* layer) const
+		std::vector<Layer*> GetLayerOutputs(const Layer* parentLayer) const
 		{
 			auto list = std::vector<Layer*>();
 
-			for (auto l : Layers)
-			{
-				if (l->Name == layer->Name)
-					continue;
-
-				for (auto inputs : l->Inputs)
-				{
-					if (inputs->Name == layer->Name)
-					{
-						list.push_back(inputs);
-						break;
-					}
-				}
-			}
-
+			for (auto &layer : Layers)
+				if (layer->Name != parentLayer->Name)
+					for (auto inputs : layer->Inputs)
+						if (inputs->Name == parentLayer->Name)
+						{
+							list.push_back(inputs);
+							break;
+						}
+			
 			return list;
 		}
 
@@ -356,21 +346,21 @@ namespace dnn
 		{
 			// This determines how the backprop step correctly flows
 			// When SharesInput is true we have to add our diff vector instead of just copying it because there's more than one layer involved
-			for (auto layer : Layers)
+			for (auto &layer : Layers)
 			{
 				layer->SharesInput = false;
-				layer->Outputs = GetLayerOutputs(layer);
+				//layer->Outputs = GetLayerOutputs(*layer.get());
 			}
 
 			auto unreferencedLayers = std::vector<Layer*>();
 
-			for (auto layer : Layers)
+			for (auto &layer : Layers)
 			{
-				auto count = layer->Outputs.size();
+				auto count = GetLayerOutputs(layer.get()).size();
 
 				if (count > 1)
 				{
-					for (auto l : Layers)
+					for (auto &l : Layers)
 					{
 						if (l->Name == layer->Name)
 							continue;
@@ -392,7 +382,7 @@ namespace dnn
 				else
 				{
 					if (count == 0 && layer->LayerType != LayerTypes::Cost)
-						unreferencedLayers.push_back(layer);
+						unreferencedLayers.push_back(layer.get());
 				}
 			}
 
@@ -401,12 +391,10 @@ namespace dnn
 
 		void SetLocking(const bool locked)
 		{
-			for (auto layer = 0ull; layer < Layers.size(); layer++)
-			{
-				if (Layers[layer]->Lockable() && !DisableLocking)
-					Layers[layer]->LockUpdate.store(locked);
-			}
-
+			for (auto &layer : Layers)
+				if (layer->Lockable() && !DisableLocking)
+					layer->LockUpdate.store(locked);
+			
 			if (!DisableLocking)
 			{
 				FirstUnlockedLayer.store(Layers.size() - 2);
@@ -449,7 +437,7 @@ namespace dnn
 		{
 			std::streamsize weightsSize = 0;
 
-			for (auto layer : Layers)
+			for (auto &layer : Layers)
 				weightsSize += layer->GetWeightsSize(persistOptimizer, Optimizer);
 
 			return weightsSize;
@@ -459,7 +447,7 @@ namespace dnn
 		{
 			size_t neuronsSize = 0;
 
-			for (auto layer : Layers)
+			for (auto &layer : Layers)
 				neuronsSize += layer->GetNeuronsSize(batchSize);
 
 			return neuronsSize;
@@ -467,7 +455,7 @@ namespace dnn
 
 		bool BatchNormalizationUsed() const
 		{
-			for (auto layer : Layers)
+			for (auto &layer : Layers)
 				if (layer->LayerType == LayerTypes::BatchNorm || layer->LayerType == LayerTypes::BatchNormHardLogistic || layer->LayerType == LayerTypes::BatchNormHardSwish || layer->LayerType == LayerTypes::BatchNormHardSwishDropout || layer->LayerType == LayerTypes::BatchNormRelu || layer->LayerType == LayerTypes::BatchNormReluDropout || layer->LayerType == LayerTypes::BatchNormSwish)
 					return true;
 
@@ -568,13 +556,13 @@ namespace dnn
 
 				if (task.valid())
 					try
-				{
-					task.get();
-				}
-				catch (const std::runtime_error& e)
-				{
-					std::cout << "Async task threw exception: " << e.what() << std::endl;
-				}
+				    {
+					    task.get();
+				    }
+				    catch (const std::runtime_error& e)
+				    {
+					    std::cout << "Async task threw exception: " << e.what() << std::endl;
+				    }
 
 				State.store(States::Completed);
 			}
@@ -594,7 +582,7 @@ namespace dnn
 
 		void SetOptimizer(const Optimizers optimizer)
 		{
-			for (auto layer : Layers)
+			for (auto &layer : Layers)
 				layer->SetOptimizer(optimizer);
 
 			Optimizer = optimizer;
@@ -676,7 +664,7 @@ namespace dnn
 		{
 			for (auto cost : CostLayers)
 			{
-				const auto inputLayer = cost->InputLayer;
+				const auto &inputLayer = cost->InputLayer;
 				const auto labelIndex = cost->LabelIndex;
 
 				for (auto b = 0ull; b < batchSize; b++)
@@ -717,8 +705,8 @@ namespace dnn
 			{
 				BatchSizeChanging.store(true);
 
-				for (auto layer : Layers)
-					layer->SetBatchSize(batchSize);
+				for (auto i = 0ull; i < Layers.size(); i++)
+					Layers[i]->SetBatchSize(batchSize);
 
 				AdjustedTrainingSamplesCount = (DataProv->TrainingSamplesCount % batchSize == 0) ? DataProv->TrainingSamplesCount : ((DataProv->TrainingSamplesCount / batchSize) + 1) * batchSize;
 				AdjustedTestingSamplesCount = (DataProv->TestingSamplesCount % batchSize == 0) ? DataProv->TestingSamplesCount : ((DataProv->TestingSamplesCount / batchSize) + 1) * batchSize;
@@ -763,13 +751,15 @@ namespace dnn
 				CurrentTrainingRate = TrainingRates[0];
 				Rate = CurrentTrainingRate.MaximumRate;
 				CurrentCycle = CurrentTrainingRate.Cycles;
-				std::cout << "Needed RAM: " << std::to_string(GetNeuronsSize(CurrentTrainingRate.BatchSize - BatchSize)/1024/1024) << " MB" << std::endl;
+				
 				if (CurrentTrainingRate.BatchSize > BatchSize)
 					if (GetTotalFreeMemory() < GetNeuronsSize(CurrentTrainingRate.BatchSize - BatchSize))
 					{
+						std::cout << std::string("Total model size: ") << std::to_string(GetNeuronsSize(CurrentTrainingRate.BatchSize - BatchSize)/1024/1024) << " MB" << std::endl << std::endl;
 						State.store(States::Completed);
 						return;
 					}
+				std::cout << std::string("Total model size: ") << std::to_string(GetNeuronsSize(CurrentTrainingRate.BatchSize - BatchSize)/1024/1024) << " MB" << std::endl << std::endl;
 				SetBatchSize(CurrentTrainingRate.BatchSize);
 			
 				auto learningRateEpochs = CurrentTrainingRate.Epochs;
@@ -810,7 +800,6 @@ namespace dnn
 						FirstUnlockedLayer.store(i);
 						break;
 					}
-
 				
 				while (CurrentEpoch < TotalEpochs)
 				{
@@ -1053,16 +1042,16 @@ namespace dnn
 
 							// save the weights
 							State.store(States::SaveWeights);
-							SaveWeights((DataProv->StorageDirectory / "Definitions" / (Name + "-weights") / (Name + " (epoch " + std::to_string(CurrentEpoch) + " - " + std::to_string(TestErrors) + " errors).weights")).string().c_str(), PersistOptimizer);
+							SaveWeights((DataProv->StorageDirectory / "Definitions" / (Name + "-weights") / (Name + " (epoch " + std::to_string(CurrentEpoch) + " - " + std::to_string(TestErrors) + " errors).weights")).string(), PersistOptimizer);
 
-							//auto fileName = (DataProv->StorageDirectory / "Definitions" /  (Name + "-weights") / (Name + " (epoch " + std::to_string(CurrentEpoch) + " - " + std::to_string(TestErrors) + " errors).weights")).string().c_str();
+							//auto fileName = (DataProv->StorageDirectory / "Definitions" /  (Name + "-weights") / (Name + " (epoch " + std::to_string(CurrentEpoch) + " - " + std::to_string(TestErrors) + " errors).weights")).string();
 							//if (TestErrors <= BestScore)
 							//{
 							//	BestScore = TestErrors;
 							//	oldWeightSaveFileName = fileName;
 							//}
 							/*if (!oldWeightSaveFileName.empty() && file_exist(oldWeightSaveFileName))
-							DeleteFile(oldWeightSaveFileName.c_str());
+							DeleteFile(oldWeightSaveFileName);
 							oldWeightSaveFileName = fileName;*/
 
 							//auto cycle = CurrentCycle;
@@ -1375,53 +1364,53 @@ namespace dnn
 			const auto resize = DataProv->TrainingSamples[0].Depth != SampleD || DataProv->TrainingSamples[0].Height != SampleH || DataProv->TrainingSamples[0].Width != SampleW;
 
 			for_i(batchSize, [=, &SampleLabels](const size_t batchIndex)
+			{
+				const auto randomIndex = (index + batchIndex >= DataProv->TrainingSamplesCount) ? RandomTrainingSamples[batchIndex] : RandomTrainingSamples[index + batchIndex];
+
+				SampleLabels[batchIndex] = DataProv->TrainingLabels[randomIndex];
+
+				auto dstImageByte = Image<Byte>(DataProv->TrainingSamples[randomIndex]);
+
+				if (CurrentTrainingRate.HorizontalFlip && TrainingSamplesHFlip[randomIndex])
+					dstImageByte = Image<Byte>::HorizontalMirror(dstImageByte);
+
+				if (CurrentTrainingRate.VerticalFlip && TrainingSamplesVFlip[randomIndex])
+					dstImageByte = Image<Byte>::VerticalMirror(dstImageByte);
+
+				if (DataProv->C == 3 && Bernoulli<bool>(CurrentTrainingRate.ColorCast))
+					dstImageByte = Image<Byte>::ColorCast(dstImageByte, CurrentTrainingRate.ColorAngle);
+
+				if (resize)
+					dstImageByte = Image<Byte>::Resize(dstImageByte, SampleD, SampleH, SampleW, Interpolation(CurrentTrainingRate.Interpolation));
+
+				if (DataProv->C == 3 && Bernoulli<bool>(CurrentTrainingRate.AutoAugment))
+					dstImageByte = Image<Byte>::AutoAugment(dstImageByte, PadD, PadH, PadW, DataProv->Mean, MirrorPad);
+				else
+					dstImageByte = Image<Byte>::Padding(dstImageByte, PadD, PadH, PadW, DataProv->Mean, MirrorPad);
+
+				if (Bernoulli<bool>(CurrentTrainingRate.Distortion))
+					dstImageByte = Image<Byte>::Distorted(dstImageByte, CurrentTrainingRate.Scaling, CurrentTrainingRate.Rotation, Interpolation(CurrentTrainingRate.Interpolation), DataProv->Mean);
+
+				if (Bernoulli<bool>(CurrentTrainingRate.Cutout))
+					dstImageByte = Image<Byte>::RandomCutout(dstImageByte, DataProv->Mean);
+
+				if (RandomCrop)
+					dstImageByte = Image<Byte>::RandomCrop(dstImageByte, SampleD, SampleH, SampleW, DataProv->Mean);
+
+				if (CurrentTrainingRate.Dropout > Float(0))
+					dstImageByte = Image<Byte>::Dropout(dstImageByte, CurrentTrainingRate.Dropout, DataProv->Mean);
+
+				for (auto c = 0ull; c < dstImageByte.Channels; c++)
 				{
-					const auto randomIndex = (index + batchIndex >= DataProv->TrainingSamplesCount) ? RandomTrainingSamples[batchIndex] : RandomTrainingSamples[index + batchIndex];
+					const auto mean = MeanStdNormalization ? DataProv->Mean[c] : Image<Byte>::GetChannelMean(dstImageByte, c);
+					const auto stddev = MeanStdNormalization ? DataProv->StdDev[c] : Image<Byte>::GetChannelStdDev(dstImageByte, c);
 
-					SampleLabels[batchIndex] = DataProv->TrainingLabels[randomIndex];
-
-					auto dstImageByte = Image<Byte>(DataProv->TrainingSamples[randomIndex]);
-
-					if (CurrentTrainingRate.HorizontalFlip && TrainingSamplesHFlip[randomIndex])
-						dstImageByte = Image<Byte>::HorizontalMirror(dstImageByte);
-
-					if (CurrentTrainingRate.VerticalFlip && TrainingSamplesVFlip[randomIndex])
-						dstImageByte = Image<Byte>::VerticalMirror(dstImageByte);
-
-					if (DataProv->C == 3 && Bernoulli<bool>(CurrentTrainingRate.ColorCast))
-						dstImageByte = Image<Byte>::ColorCast(dstImageByte, CurrentTrainingRate.ColorAngle);
-
-					if (resize)
-						dstImageByte = Image<Byte>::Resize(dstImageByte, SampleD, SampleH, SampleW, Interpolation(CurrentTrainingRate.Interpolation));
-
-					if (DataProv->C == 3 && Bernoulli<bool>(CurrentTrainingRate.AutoAugment))
-						dstImageByte = Image<Byte>::AutoAugment(dstImageByte, PadD, PadH, PadW, DataProv->Mean, MirrorPad);
-					else
-						dstImageByte = Image<Byte>::Padding(dstImageByte, PadD, PadH, PadW, DataProv->Mean, MirrorPad);
-
-					if (Bernoulli<bool>(CurrentTrainingRate.Distortion))
-						dstImageByte = Image<Byte>::Distorted(dstImageByte, CurrentTrainingRate.Scaling, CurrentTrainingRate.Rotation, Interpolation(CurrentTrainingRate.Interpolation), DataProv->Mean);
-
-					if (Bernoulli<bool>(CurrentTrainingRate.Cutout))
-						dstImageByte = Image<Byte>::RandomCutout(dstImageByte, DataProv->Mean);
-
-					if (RandomCrop)
-						dstImageByte = Image<Byte>::RandomCrop(dstImageByte, SampleD, SampleH, SampleW, DataProv->Mean);
-
-					if (CurrentTrainingRate.Dropout > Float(0))
-						dstImageByte = Image<Byte>::Dropout(dstImageByte, CurrentTrainingRate.Dropout, DataProv->Mean);
-
-					for (auto c = 0ull; c < dstImageByte.Channels; c++)
-					{
-						const auto mean = MeanStdNormalization ? DataProv->Mean[c] : Image<Byte>::GetChannelMean(dstImageByte, c);
-						const auto stddev = MeanStdNormalization ? DataProv->StdDev[c] : Image<Byte>::GetChannelStdDev(dstImageByte, c);
-
-						for (auto d = 0ull; d < dstImageByte.Depth; d++)
-							for (auto h = 0ull; h < dstImageByte.Height; h++)
-								for (auto w = 0ull; w < dstImageByte.Width; w++)
-									Layers[0]->Neurons[batchIndex * dstImageByte.Size() + (c * dstImageByte.ChannelSize()) + (d * dstImageByte.Area()) + (h * dstImageByte.Width) + w] = (dstImageByte(c, d, h, w) - mean) / stddev;
-					}
-				});
+					for (auto d = 0ull; d < dstImageByte.Depth; d++)
+						for (auto h = 0ull; h < dstImageByte.Height; h++)
+							for (auto w = 0ull; w < dstImageByte.Width; w++)
+								Layers[0]->Neurons[batchIndex * dstImageByte.Size() + (c * dstImageByte.ChannelSize()) + (d * dstImageByte.Area()) + (h * dstImageByte.Width) + w] = (dstImageByte(c, d, h, w) - mean) / stddev;
+				}
+			});
 
 			return SampleLabels;
 		}
@@ -1433,31 +1422,31 @@ namespace dnn
 			const auto resize = DataProv->TestingSamples[0].Depth != SampleD || DataProv->TestingSamples[0].Height != SampleH || DataProv->TestingSamples[0].Width != SampleW;
 
 			for_i(batchSize, MEDIUM_COMPUTE, [=, &SampleLabels](const size_t batchIndex)
+			{
+				const auto sampleIndex = ((index + batchIndex) >= DataProv->TestingSamplesCount) ? batchIndex : index + batchIndex;
+
+				SampleLabels[batchIndex] = DataProv->TestingLabels[sampleIndex];
+
+				auto dstImageByte = DataProv->TestingSamples[sampleIndex];
+
+				if (resize)
+					dstImageByte = Image<Byte>::Resize(dstImageByte, SampleD, SampleH, SampleW, Interpolation(CurrentTrainingRate.Interpolation));
+
+				dstImageByte = Image<Byte>::Padding(dstImageByte, PadD, PadH, PadW, DataProv->Mean, MirrorPad);
+
+				dstImageByte = Image<Byte>::Crop(dstImageByte, Position::Center, SampleD, SampleH, SampleW, DataProv->Mean);
+
+				for (auto c = 0ull; c < dstImageByte.Channels; c++)
 				{
-					const auto sampleIndex = ((index + batchIndex) >= DataProv->TestingSamplesCount) ? batchIndex : index + batchIndex;
+					const Float mean = MeanStdNormalization ? DataProv->Mean[c] : Image<Byte>::GetChannelMean(dstImageByte, c);
+					const Float stddev = MeanStdNormalization ? DataProv->StdDev[c] : Image<Byte>::GetChannelStdDev(dstImageByte, c);
 
-					SampleLabels[batchIndex] = DataProv->TestingLabels[sampleIndex];
-
-					auto dstImageByte = DataProv->TestingSamples[sampleIndex];
-
-					if (resize)
-						dstImageByte = Image<Byte>::Resize(dstImageByte, SampleD, SampleH, SampleW, Interpolation(CurrentTrainingRate.Interpolation));
-
-					dstImageByte = Image<Byte>::Padding(dstImageByte, PadD, PadH, PadW, DataProv->Mean, MirrorPad);
-
-					dstImageByte = Image<Byte>::Crop(dstImageByte, Position::Center, SampleD, SampleH, SampleW, DataProv->Mean);
-
-					for (auto c = 0ull; c < dstImageByte.Channels; c++)
-					{
-						const Float mean = MeanStdNormalization ? DataProv->Mean[c] : Image<Byte>::GetChannelMean(dstImageByte, c);
-						const Float stddev = MeanStdNormalization ? DataProv->StdDev[c] : Image<Byte>::GetChannelStdDev(dstImageByte, c);
-
-						for (auto d = 0ull; d < dstImageByte.Depth; d++)
-							for (auto h = 0ull; h < dstImageByte.Height; h++)
-								for (auto w = 0ull; w < dstImageByte.Width; w++)
-									Layers[0]->Neurons[batchIndex * dstImageByte.Size() + (c * dstImageByte.ChannelSize()) + (d * dstImageByte.Area()) + (h * dstImageByte.Width) + w] = (dstImageByte(c, d, h, w) - mean) / stddev;
-					}
-				});
+					for (auto d = 0ull; d < dstImageByte.Depth; d++)
+						for (auto h = 0ull; h < dstImageByte.Height; h++)
+							for (auto w = 0ull; w < dstImageByte.Width; w++)
+								Layers[0]->Neurons[batchIndex * dstImageByte.Size() + (c * dstImageByte.ChannelSize()) + (d * dstImageByte.Area()) + (h * dstImageByte.Width) + w] = (dstImageByte(c, d, h, w) - mean) / stddev;
+				}
+			});
 
 			return SampleLabels;
 		}
@@ -1469,53 +1458,53 @@ namespace dnn
 			const auto resize = DataProv->TestingSamples[0].Depth != SampleD || DataProv->TestingSamples[0].Height != SampleH || DataProv->TestingSamples[0].Width != SampleW;
 
 			for_i(batchSize, [=, &SampleLabels](const size_t batchIndex)
+			{
+				const auto sampleIndex = ((index + batchIndex) >= DataProv->TestingSamplesCount) ? batchIndex : index + batchIndex;
+
+				SampleLabels[batchIndex] = DataProv->TestingLabels[sampleIndex];
+
+				auto dstImageByte = DataProv->TestingSamples[sampleIndex];
+
+				if (DataProv->C == 3 && Bernoulli<bool>(CurrentTrainingRate.ColorCast))
+					dstImageByte = Image<Byte>::ColorCast(dstImageByte, CurrentTrainingRate.ColorAngle);
+
+				if (CurrentTrainingRate.HorizontalFlip && TestingSamplesHFlip[sampleIndex])
+					dstImageByte = Image<Byte>::HorizontalMirror(dstImageByte);
+
+				if (CurrentTrainingRate.VerticalFlip && TestingSamplesVFlip[sampleIndex])
+					dstImageByte = Image<Byte>::VerticalMirror(dstImageByte);
+
+				if (resize)
+					dstImageByte = Image<Byte>::Resize(dstImageByte, SampleD, SampleH, SampleW, Interpolation(CurrentTrainingRate.Interpolation));
+
+				if (DataProv->C == 3 && Bernoulli<bool>(CurrentTrainingRate.AutoAugment))
+					dstImageByte = Image<Byte>::AutoAugment(dstImageByte, PadD, PadH, PadW, DataProv->Mean, MirrorPad);
+				else
+					dstImageByte = Image<Byte>::Padding(dstImageByte, PadD, PadH, PadW, DataProv->Mean, MirrorPad);
+
+				if (Bernoulli<bool>(CurrentTrainingRate.Distortion))
+					dstImageByte = Image<Byte>::Distorted(dstImageByte, CurrentTrainingRate.Scaling, CurrentTrainingRate.Rotation, Interpolation(CurrentTrainingRate.Interpolation), DataProv->Mean);
+
+				if (Bernoulli<bool>(CurrentTrainingRate.Cutout))
+					dstImageByte = Image<Byte>::RandomCutout(dstImageByte, DataProv->Mean);
+
+				if (RandomCrop)
+					dstImageByte = Image<Byte>::Crop(dstImageByte, Position::Center, SampleD, SampleH, SampleW, DataProv->Mean);
+
+				if (CurrentTrainingRate.Dropout > Float(0))
+					dstImageByte = Image<Byte>::Dropout(dstImageByte, CurrentTrainingRate.Dropout, DataProv->Mean);
+
+				for (auto c = 0ull; c < dstImageByte.Channels; c++)
 				{
-					const auto sampleIndex = ((index + batchIndex) >= DataProv->TestingSamplesCount) ? batchIndex : index + batchIndex;
+					const auto mean = MeanStdNormalization ? DataProv->Mean[c] : Image<Byte>::GetChannelMean(dstImageByte, c);
+					const auto stddev = MeanStdNormalization ? DataProv->StdDev[c] : Image<Byte>::GetChannelStdDev(dstImageByte, c);
 
-					SampleLabels[batchIndex] = DataProv->TestingLabels[sampleIndex];
-
-					auto dstImageByte = DataProv->TestingSamples[sampleIndex];
-
-					if (DataProv->C == 3 && Bernoulli<bool>(CurrentTrainingRate.ColorCast))
-						dstImageByte = Image<Byte>::ColorCast(dstImageByte, CurrentTrainingRate.ColorAngle);
-
-					if (CurrentTrainingRate.HorizontalFlip && TestingSamplesHFlip[sampleIndex])
-						dstImageByte = Image<Byte>::HorizontalMirror(dstImageByte);
-
-					if (CurrentTrainingRate.VerticalFlip && TestingSamplesVFlip[sampleIndex])
-						dstImageByte = Image<Byte>::VerticalMirror(dstImageByte);
-
-					if (resize)
-						dstImageByte = Image<Byte>::Resize(dstImageByte, SampleD, SampleH, SampleW, Interpolation(CurrentTrainingRate.Interpolation));
-
-					if (DataProv->C == 3 && Bernoulli<bool>(CurrentTrainingRate.AutoAugment))
-						dstImageByte = Image<Byte>::AutoAugment(dstImageByte, PadD, PadH, PadW, DataProv->Mean, MirrorPad);
-					else
-						dstImageByte = Image<Byte>::Padding(dstImageByte, PadD, PadH, PadW, DataProv->Mean, MirrorPad);
-
-					if (Bernoulli<bool>(CurrentTrainingRate.Distortion))
-						dstImageByte = Image<Byte>::Distorted(dstImageByte, CurrentTrainingRate.Scaling, CurrentTrainingRate.Rotation, Interpolation(CurrentTrainingRate.Interpolation), DataProv->Mean);
-
-					if (Bernoulli<bool>(CurrentTrainingRate.Cutout))
-						dstImageByte = Image<Byte>::RandomCutout(dstImageByte, DataProv->Mean);
-
-					if (RandomCrop)
-						dstImageByte = Image<Byte>::Crop(dstImageByte, Position::Center, SampleD, SampleH, SampleW, DataProv->Mean);
-
-					if (CurrentTrainingRate.Dropout > Float(0))
-						dstImageByte = Image<Byte>::Dropout(dstImageByte, CurrentTrainingRate.Dropout, DataProv->Mean);
-
-					for (auto c = 0ull; c < dstImageByte.Channels; c++)
-					{
-						const auto mean = MeanStdNormalization ? DataProv->Mean[c] : Image<Byte>::GetChannelMean(dstImageByte, c);
-						const auto stddev = MeanStdNormalization ? DataProv->StdDev[c] : Image<Byte>::GetChannelStdDev(dstImageByte, c);
-
-						for (auto d = 0ull; d < dstImageByte.Depth; d++)
-							for (auto h = 0ull; h < dstImageByte.Height; h++)
-								for (auto w = 0ull; w < dstImageByte.Width; w++)
-									Layers[0]->Neurons[batchIndex * dstImageByte.Size() + (c * dstImageByte.ChannelSize()) + (d * dstImageByte.Area()) + (h * dstImageByte.Width) + w] = (dstImageByte(c, d, h, w) - mean) / stddev;
-					}
-				});
+					for (auto d = 0ull; d < dstImageByte.Depth; d++)
+						for (auto h = 0ull; h < dstImageByte.Height; h++)
+							for (auto w = 0ull; w < dstImageByte.Width; w++)
+								Layers[0]->Neurons[batchIndex * dstImageByte.Size() + (c * dstImageByte.ChannelSize()) + (d * dstImageByte.Area()) + (h * dstImageByte.Width) + w] = (dstImageByte(c, d, h, w) - mean) / stddev;
+				}
+			});
 
 			return SampleLabels;
 		}
@@ -1543,14 +1532,14 @@ namespace dnn
 			}
 		}
 		
-		int SaveWeights(const char* fileName, const bool persistOptimizer = false) const
+		int SaveWeights(std::string fileName, const bool persistOptimizer = false) const
 		{
 			auto os = std::ofstream(fileName, std::ios::out | std::ios::binary | std::ios::trunc);
 
 			if (!os.bad() && os.is_open())
 			{
-				for (auto layer : Layers)
-					layer->Save(os, persistOptimizer, Optimizer);
+				for (auto i = 0ull; i < Layers.size(); i++)
+					Layers[i]->Save(os, persistOptimizer, Optimizer);
 
 				os.close();
 
@@ -1560,7 +1549,7 @@ namespace dnn
 			return -1;
 		}
 
-		int LoadWeights(const char* fileName, const bool persistOptimizer = false)
+		int LoadWeights(std::string fileName, const bool persistOptimizer = false)
 		{
 			if (GetFileSize(fileName) == GetWeightsSize(persistOptimizer))
 			{
@@ -1568,8 +1557,8 @@ namespace dnn
 
 				if (!is.bad() && is.is_open())
 				{
-					for (auto layer : Layers)
-						layer->Load(is, persistOptimizer, Optimizer);
+					for (auto i = 0ull; i < Layers.size(); i++)
+						Layers[i]->Load(is, persistOptimizer, Optimizer);
 
 					is.close();
 
@@ -1580,7 +1569,7 @@ namespace dnn
 			return -1;
 		}
 
-		int SaveLayerWeights(const char* fileName, const size_t layerIndex, const bool persistOptimizer = false) const
+		int SaveLayerWeights(std::string fileName, const size_t layerIndex, const bool persistOptimizer = false) const
 		{
 			auto os = std::ofstream(fileName, std::ios::out | std::ios::binary | std::ios::trunc);
 
@@ -1596,7 +1585,7 @@ namespace dnn
 			return -1;
 		}
 
-		int LoadLayerWeights(const char* fileName, const size_t layerIndex, const bool persistOptimizer = false)
+		int LoadLayerWeights(std::string fileName, const size_t layerIndex, const bool persistOptimizer = false)
 		{
 			if (GetFileSize(fileName) == Layers[layerIndex]->GetWeightsSize(persistOptimizer, Optimizer))
 			{

@@ -50,13 +50,13 @@ DNN_API void DNNSetOptimizer(const Optimizers strategy);
 DNN_API void DNNRefreshStatistics(const size_t layerIndex, std::string* description, Float* neuronsStdDev, Float* neuronsMean, Float* neuronsMin, Float* neuronsMax, Float* weightsStdDev, Float* weightsMean, Float* weightsMin, Float* weightsMax, Float* biasesStdDev, Float* biasesMean, Float* biasesMin, Float* biasesMax, Float* fpropLayerTime, Float* bpropLayerTime, Float* updateLayerTime, Float* fpropTime, Float* bpropTime, Float* updateTime, bool* locked);
 DNN_API bool DNNGetInputSnapShot(std::vector<Float>* snapshot, std::vector<size_t>* label);
 DNN_API bool DNNCheckDefinition(std::string& definition, CheckMsg& checkMsg);
-DNN_API int DNNLoadDefinition(const char* fileName, const Optimizers optimizer, CheckMsg& checkMsg);
-DNN_API int DNNReadDefinition(const char* definition, const Optimizers optimizer, CheckMsg& checkMsg);
-DNN_API void DNNDataprovider(const char* directory);
-DNN_API int DNNLoadNetworkWeights(const char* fileName, const bool persistOptimizer);
-DNN_API int DNNSaveNetworkWeights(const char* fileName, const bool persistOptimizer);
-DNN_API int DNNLoadLayerWeights(const char* fileName, const size_t layerIndex, const bool persistOptimizer);
-DNN_API int DNNSaveLayerWeights(const char* fileName, const size_t layerIndex, const bool persistOptimizer);
+DNN_API int DNNLoadDefinition(const std::string& fileName, const Optimizers optimizer, CheckMsg& checkMsg);
+DNN_API int DNNReadDefinition(const std::string& definition, const Optimizers optimizer, CheckMsg& checkMsg);
+DNN_API void DNNDataprovider(const std::string& directory);
+DNN_API int DNNLoadNetworkWeights(const std::string& fileName, const bool persistOptimizer);
+DNN_API int DNNSaveNetworkWeights(const std::string& fileName, const bool persistOptimizer);
+DNN_API int DNNLoadLayerWeights(const std::string& fileName, const size_t layerIndex, const bool persistOptimizer);
+DNN_API int DNNSaveLayerWeights(const std::string& fileName, const size_t layerIndex, const bool persistOptimizer);
 DNN_API void DNNGetLayerWeights(const size_t layerIndex, std::vector<Float>* weights, std::vector<Float>* biases);
 DNN_API void DNNSetCostIndex(const size_t index);
 DNN_API void DNNGetCostInfo(const size_t costIndex, size_t* trainErrors, Float* trainLoss, Float* avgTrainLoss, Float* trainErrorPercentage, size_t* testErrors, Float* testLoss, Float* avgTestLoss, Float* testErrorPercentage);
@@ -65,8 +65,32 @@ DNN_API void DNNGetImage(const size_t layer, const unsigned char fillColor, unsi
 
 void NewEpoch(size_t CurrentCycle, size_t CurrentEpoch, size_t TotalEpochs, bool HorizontalFlip, bool VerticalFlip, Float Dropout, Float Cutout, Float AutoAugment, Float ColorCast, size_t ColorAngle, Float Distortion, size_t Interpolation, Float Scaling, Float Rotation, Float MaximumRate, size_t BatchSize, Float Momentum, Float L2Penalty, Float AvgTrainLoss, Float TrainErrorPercentage, Float TrainAccuracy, size_t TrainErrors, Float AvgTestLoss, Float TestErrorPercentage, Float TestAccuracy, size_t TestErrors)
 {
-    std::cout << "Cycle: " << std::to_string(CurrentCycle) << "  Epoch: " << std::to_string(CurrentEpoch) << "  Test Accuracy: " << FloatToStringFixed(TestAccuracy, 2) << std::string("                                                                            ") << std::endl;
+    std::cout << "Cycle: " << std::to_string(CurrentCycle) << "  Epoch: " << std::to_string(CurrentEpoch) << "  Test Accuracy: " << FloatToStringFixed(TestAccuracy, 2) << std::string("%                                                                           ") << std::endl;
     std::cout.flush();
+
+    DNN_UNREF_PAR(TotalEpochs);
+    DNN_UNREF_PAR(HorizontalFlip);
+    DNN_UNREF_PAR(VerticalFlip);
+    DNN_UNREF_PAR(Dropout);
+    DNN_UNREF_PAR(Cutout);
+    DNN_UNREF_PAR(AutoAugment);
+    DNN_UNREF_PAR(ColorCast);
+    DNN_UNREF_PAR(ColorAngle);
+    DNN_UNREF_PAR(Distortion);
+    DNN_UNREF_PAR(Interpolation);
+    DNN_UNREF_PAR(Scaling);
+    DNN_UNREF_PAR(Rotation);
+    DNN_UNREF_PAR(MaximumRate);
+    DNN_UNREF_PAR(BatchSize);
+    DNN_UNREF_PAR(Momentum);
+    DNN_UNREF_PAR(L2Penalty);
+    DNN_UNREF_PAR(AvgTrainLoss);
+    DNN_UNREF_PAR(TrainErrorPercentage);
+    DNN_UNREF_PAR(TrainAccuracy);
+    DNN_UNREF_PAR(TrainErrors);
+    DNN_UNREF_PAR(AvgTestLoss);
+    DNN_UNREF_PAR(TestErrorPercentage);
+    DNN_UNREF_PAR(TestErrors);
 }
 
 void GetTrainingProgress(int seconds = 5, size_t trainingSamples = 50000, size_t testingSamples = 10000)
@@ -109,7 +133,7 @@ void GetTrainingProgress(int seconds = 5, size_t trainingSamples = 50000, size_t
     } 
     while (*state == States::Idle);
 
-    int barWidth = 52;
+    int barWidth = 50;
     float progress = 0.0;
   
     while (*state != States::Completed)
@@ -123,20 +147,28 @@ void GetTrainingProgress(int seconds = 5, size_t trainingSamples = 50000, size_t
         else
             progress = Float(*sampleIndex) / trainingSamples; 
 
-        std::cout << "[";
-        int pos = int(barWidth * progress);
-        for (int i = 0; i < barWidth; ++i) {
-            if (i < pos) std::cout << "=";
-            else if (i == pos) std::cout << ">";
-            else std::cout << " ";
+        if (*state != States::Completed)
+        {
+            std::cout << "[";
+            int pos = int(barWidth * progress);
+            for (int i = 0; i < barWidth; ++i)
+            {
+                if (i < pos)
+                    std::cout << "=";
+                else
+                    if (i == pos)
+                        std::cout << ">";
+                    else
+                        std::cout << " ";
+            }
+            std::cout << "] " << int(progress * 100.0) << "%  Cycle:" << std::to_string(*cycle) << "  Epoch:" << std::to_string(*epoch) << "  Error:";
+            if (*state == States::Testing)
+                std::cout << FloatToStringFixed(*testErrorPercentage, 2);
+            else
+                std::cout << FloatToStringFixed(*trainErrorPercentage, 2);
+            std::cout << "%  " << FloatToStringFixed(*sampleSpeed, 2) << " samples/s   \r";
+            std::cout.flush();
         }
-        std::cout << "] " << int(progress * 100.0) << "%  Cycle:" << std::to_string(*cycle) << "  Epoch:" << std::to_string(*epoch) << "  Error:";
-        if (*state == States::Testing)
-            std::cout << FloatToStringFixed(*testErrorPercentage, 2);
-        else
-            std::cout << FloatToStringFixed(*trainErrorPercentage, 2);
-        std::cout << "%  " << FloatToStringFixed(*sampleSpeed, 2) << " samples/s   \r";
-        std::cout.flush();
     }
    
     delete cycle;
@@ -189,20 +221,18 @@ int main()
     p.Iterations = 2;
     p.Width = 4;
     p.Relu = true;
+    p.Dropout = 0;
+    p.Bottleneck = false;
     p.SqueezeExcitation = false;
+    p.ChannelZeroPad = true;
 
     auto model = ScriptsCatalog::Generate(p);
 
-    DNNDataprovider(path.c_str());
-    if (DNNReadDefinition(model.c_str(), Optimizers::NAG, msg) == 1)
+    DNNDataprovider(path);
+    if (DNNReadDefinition(model, Optimizers::NAG, msg) == 1)
     {
         if (DNNLoadDataset())
         {
-            DNNSetNewEpochDelegate(&NewEpoch);
-
-            DNNAddLearningRateSGDR(true, 1, 0.05f, 128, 1, 20, 1, 0.0001f, 0.0005f, 0.9f, 1.0f, 20, true, false, 0.0f, 0.7f, 0.7f, 0.7f, 20, 0.7f, 0, 10.0f, 12.0f);
-            DNNTraining();
-
             auto name = new std::string();
             auto costIndex = new size_t(); 
             auto costLayerCount = new size_t(); 
@@ -219,11 +249,16 @@ int main()
             auto stdTrainSet = new std::vector<Float>();
             
             DNNGetNetworkInfo(name, costIndex, costLayerCount, groupIndex, labelIndex, hierarchies, meanStdNormalization, lossFunction, dataset, layerCount, trainingSamples, testingSamples, meanTrainSet, stdTrainSet);
+            std::cout << std::string("Training ") << *name << std::string(" on ") << std::string(magic_enum::enum_name<Datasets>(*dataset)) << std::endl << std::endl;
+            std::cout.flush();
+
+            DNNSetNewEpochDelegate(&NewEpoch);
+
+            DNNAddLearningRateSGDR(true, 1, 0.05f, 128, 1, 20, 1, 0.0001f, 0.0005f, 0.9f, 1.0f, 20, true, false, 0.0f, 0.7f, 0.7f, 0.7f, 20, 0.7f, 0, 10.0f, 12.0f);
+            DNNTraining();
 
             GetTrainingProgress(1, *trainingSamples, *testingSamples);
             
-            DNNStop();
-
             delete name;
             delete costIndex; 
             delete costLayerCount; 
@@ -238,12 +273,12 @@ int main()
             delete testingSamples; 
             delete meanTrainSet;
             delete stdTrainSet;
-
-            DNNModelDispose();
+        
+            DNNStop();
         }
         else
             std::cout << std::endl << "Could not load dataset" << std::endl;
     }
     else
-        std::cout << std::endl <<  "Could not load model" << std::endl << msg.Message << std::endl << model << std::endl;
+        std::cout << std::endl << "Could not load model" << std::endl << msg.Message << std::endl << model << std::endl;
 }
