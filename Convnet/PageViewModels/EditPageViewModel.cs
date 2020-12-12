@@ -554,7 +554,7 @@ namespace Convnet.PageViewModels
                         Xceed.Wpf.Toolkit.MessageBox.Show(File.ReadAllText(fileInfo.FullName), "Compiler Result", MessageBoxButton.OK);
                         fileInfo.Delete();
 
-                        /*
+
                         Mouse.OverrideCursor = Cursors.Wait;
                         IsValid = false;
 
@@ -571,7 +571,7 @@ namespace Convnet.PageViewModels
                             else
                                 Xceed.Wpf.Toolkit.MessageBox.Show(buildOutput, "Compiler Result", MessageBoxButton.OK);
                         }
-                        */
+
                     }
                 }
 

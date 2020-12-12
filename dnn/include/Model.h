@@ -146,9 +146,9 @@ namespace dnn
 		bool PersistOptimizer;
 		bool DisableLocking;
 		TrainingRate CurrentTrainingRate;
+		std::vector<TrainingRate> TrainingRates;
 		std::vector<std::unique_ptr<Layer>> Layers;
 		std::vector<Cost*> CostLayers;
-		std::vector<TrainingRate> TrainingRates;
 		std::chrono::duration<Float> fpropTime;
 		std::chrono::duration<Float> bpropTime;
 		std::chrono::duration<Float> updateTime;
@@ -217,7 +217,7 @@ namespace dnn
 			CostIndex(0),
 			CostFuction(Costs::CategoricalCrossEntropy),
 			CostLayers(std::vector<Cost*>()),
-			Layers(std::vector< std::unique_ptr<Layer>>()),
+			Layers(std::vector<std::unique_ptr<Layer>>()),
 			TrainingRates(std::vector<TrainingRate>()),
 			fpropTime(std::chrono::duration<Float>(Float(0))),
 			bpropTime(std::chrono::duration<Float>(Float(0))),
@@ -269,16 +269,15 @@ namespace dnn
 			}
 		}
 
-		bool IsUniqueLayerName(const std::string& name) const
+		bool IsUniqueLayerName(std::string name) const
 		{
-			std::string nameLower(name);
-			std::transform(nameLower.begin(), nameLower.end(), nameLower.begin(), ::tolower);
+			std::transform(name.begin(), name.end(), name.begin(), ::tolower);
 			
 			for (auto &layer : Layers)
 			{
 				auto layerName = layer->Name;
 				std::transform(layerName.begin(), layerName.end(), layerName.begin(), ::tolower);
-				if (layerName == nameLower)
+				if (layerName == name)
 					return false;
 			}
 
@@ -754,12 +753,12 @@ namespace dnn
 				
 				if (CurrentTrainingRate.BatchSize > BatchSize)
 					if (GetTotalFreeMemory() < GetNeuronsSize(CurrentTrainingRate.BatchSize - BatchSize))
-					{
-						std::cout << std::string("Total model size: ") << std::to_string(GetNeuronsSize(CurrentTrainingRate.BatchSize - BatchSize)/1024/1024) << " MB" << std::endl << std::endl;
+					{                           
+						std::cout << std::string("Memory required: ") << std::to_string(GetNeuronsSize(CurrentTrainingRate.BatchSize - BatchSize)/1024/1024) << " MB with BatchSize " << std::to_string(CurrentTrainingRate.BatchSize) << std::endl << std::endl;
 						State.store(States::Completed);
 						return;
 					}
-				std::cout << std::string("Total model size: ") << std::to_string(GetNeuronsSize(CurrentTrainingRate.BatchSize - BatchSize)/1024/1024) << " MB" << std::endl << std::endl;
+				std::cout << std::string("Memory required: ") << std::to_string(GetNeuronsSize(CurrentTrainingRate.BatchSize - BatchSize) / 1024 / 1024) << " MB with BatchSize " << std::to_string(CurrentTrainingRate.BatchSize) << std::endl << std::endl;
 				SetBatchSize(CurrentTrainingRate.BatchSize);
 			
 				auto learningRateEpochs = CurrentTrainingRate.Epochs;
@@ -850,7 +849,7 @@ namespace dnn
 								for (auto cost : CostLayers)
 									cost->SetSampleLabel(SampleLabel);
 
-								for (auto i = 0ull; i < Layers.size(); i++)
+								for (auto i = 1ull; i < Layers.size(); i++)
 								{
 									timePoint = timer.now();
 									Layers[i]->ForwardProp(1, true);
@@ -1042,7 +1041,8 @@ namespace dnn
 
 							// save the weights
 							State.store(States::SaveWeights);
-							SaveWeights((DataProv->StorageDirectory / "Definitions" / (Name + "-weights") / (Name + " (epoch " + std::to_string(CurrentEpoch) + " - " + std::to_string(TestErrors) + " errors).weights")).string(), PersistOptimizer);
+							std::filesystem::create_directories(DataProv->StorageDirectory / std::string("definitions") / (Name + std::string("-weights")));
+							SaveWeights((DataProv->StorageDirectory / "definitions" / (Name + "-weights") / ("epoch " + std::to_string(CurrentEpoch) + std::string("(") + std::to_string(TestErrors) + " errors).weights")).string(), PersistOptimizer);
 
 							//auto fileName = (DataProv->StorageDirectory / "Definitions" /  (Name + "-weights") / (Name + " (epoch " + std::to_string(CurrentEpoch) + " - " + std::to_string(TestErrors) + " errors).weights")).string();
 							//if (TestErrors <= BestScore)
@@ -1512,8 +1512,8 @@ namespace dnn
 		
 		void ForwardProp(const size_t batchSize)
 		{
-			for (size_t i = 0; i < Layers.size(); i++)
-				Layers[i]->ForwardProp(batchSize, State.load() == States::Training);
+			for (auto &layer : Layers)
+				layer->ForwardProp(batchSize, State.load() == States::Training);
 		}
 
 		void BackwardProp(const size_t batchSize)
@@ -1538,8 +1538,8 @@ namespace dnn
 
 			if (!os.bad() && os.is_open())
 			{
-				for (auto i = 0ull; i < Layers.size(); i++)
-					Layers[i]->Save(os, persistOptimizer, Optimizer);
+				for (auto& layer : Layers)
+					layer->Save(os, persistOptimizer, Optimizer);
 
 				os.close();
 
@@ -1557,8 +1557,8 @@ namespace dnn
 
 				if (!is.bad() && is.is_open())
 				{
-					for (auto i = 0ull; i < Layers.size(); i++)
-						Layers[i]->Load(is, persistOptimizer, Optimizer);
+					for (auto& layer : Layers)
+						layer->Load(is, persistOptimizer, Optimizer);
 
 					is.close();
 

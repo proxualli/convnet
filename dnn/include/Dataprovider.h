@@ -214,7 +214,7 @@ namespace dnn
 					"cd " + path.string() << std::endl <<
 					"curl -O http://www.cs.toronto.edu/~kriz/cifar-10-binary.tar.gz && tar -xf cifar-10-binary.tar.gz --strip-components=1 && del /Q cifar-10-binary.tar.gz" << std::endl;
 #else
-					std::string("#!/bin/sh") << std::endl <<
+					std::string("#!/bin/bash") << std::endl <<
 					std::string("echo loading ") + std::string(magic_enum::enum_name<Datasets>(dataset)) + std::string(" dataset...") << std::endl <<
 					std::string("cd ") + path.string() << std::endl <<
 					std::string("curl -O http://www.cs.toronto.edu/~kriz/cifar-10-binary.tar.gz") << std::endl << 
@@ -235,9 +235,9 @@ namespace dnn
 					"echo Downloading " + std::string(magic_enum::enum_name<Datasets>(dataset)) + " dataset" << std::endl <<
 					"echo." << std::endl <<
 					"cd " + path.string() << std::endl <<
-					"curl -O http://www.cs.toronto.edu/~kriz/cifar-10-binary.tar.gz && tar -xf cifar-10-binary.tar.gz --strip-components=1 && del /Q cifar-10-binary.tar.gz" << std::endl;
+					"curl -O http://www.cs.toronto.edu/~kriz/cifar-100-binary.tar.gz && tar -xf cifar-100-binary.tar.gz --strip-components=1 && del /Q cifar-100-binary.tar.gz" << std::endl;
 #else
-					std::string("#!/bin/sh") << std::endl <<
+					std::string("#!/bin/bash") << std::endl <<
 					std::string("echo loading ") + std::string(magic_enum::enum_name<Datasets>(dataset)) + std::string(" dataset...") << std::endl <<
 					std::string("cd ") + path.string() << std::endl <<
 					std::string("curl -O http://www.cs.toronto.edu/~kriz/cifar-100-binary.tar.gz") << std::endl << 
@@ -256,7 +256,7 @@ namespace dnn
 					"echo." << std::endl <<
 					"cd " + path.string() << std::endl <<
 #else
-					std::string("#!/bin/sh") << std::endl <<
+					std::string("#!/bin/bash") << std::endl <<
 					std::string("echo loading ") + std::string(magic_enum::enum_name<Datasets>(dataset)) + std::string(" dataset...") << std::endl <<
 					std::string("cd ") + path.string() << std::endl <<
 #endif
@@ -286,7 +286,7 @@ namespace dnn
 					"echo." << std::endl <<
 					"cd " + path.string() << std::endl <<
 #else
-					std::string("#!/bin/sh") << std::endl <<
+					std::string("#!/bin/bash") << std::endl <<
 					std::string("echo loading ") + std::string(magic_enum::enum_name<Datasets>(dataset)) + std::string(" dataset...") << std::endl <<
 					std::string("cd ") + path.string() << std::endl <<
 #endif
@@ -318,17 +318,19 @@ namespace dnn
 					"echo." << std::endl <<
 					"cd " + path.string() << std::endl <<
 #else
-					std::string("#!/bin/sh") << std::endl <<
+					std::string("#!/bin/bash") << std::endl <<
 					std::string("echo loading ") + std::string(magic_enum::enum_name<Datasets>(dataset)) + std::string(" dataset...") << std::endl <<
 					std::string("cd ") + path.string() << std::endl <<
 #endif
 					std::string("curl -O http://cs231n.stanford.edu/tiny-imagenet-200.zip") << std::endl <<
 #if defined _WIN32 || defined __CYGWIN__ || defined __MINGW32__
 					"powershell -ExecutionPolicy Bypass -command \"& {&./UnZip-File.ps1}\";" << std::endl <<
-				    "ren tiny-imagenet-200 tinyimagenet && del /Q tiny-imagenet-200.zip" << std::endl <<
+					"ren tiny-imagenet-200 tinyimagenet && del /Q tiny-imagenet-200.zip" << std::endl <<
 					"del UnZip-File.ps1" << std::endl;
 #else
-					std::string("unzip -o -d ./tiny-imagenet ./tiny-imagenet-200.zip") << std::endl;
+					std::string("unzip -o ./tiny-imagenet-200.zip") << std::endl <<
+					std::string("mv tiny-imagenet-200 tinyimagenet") << std::endl <<
+					std::string("rm tiny-imagenet-200.zip") << std::endl;
 #endif
 			}
 			break;
@@ -442,8 +444,7 @@ namespace dnn
 				const auto pathTestPatterns = (DatasetsDirectory / std::string(magic_enum::enum_name<Datasets>(dataset)) / "test_batch.bin").string();
 
 				auto ok = true;
-				for(size_t batch = 0; batch < 5; batch++)
-				//for_i(5, [=, &ok](size_t batch)
+				for_i(5, [=, &ok](size_t batch)
 				{
 					auto infile = std::ifstream(pathTrainPatterns[batch], std::ios::binary | std::ios::in);
 
@@ -464,7 +465,7 @@ namespace dnn
 					}
 					else
 						ok = false;
-				} //);
+				});
 
 				if (!ok)
 					return false;
@@ -657,8 +658,7 @@ namespace dnn
 				else
 					return false;
 
-                for(size_t item = 0; item < 200; item++)
-				//for_i(200ull, [=](size_t item)
+                for_i(200ull, [=](size_t item)
 				{
 					const auto offset = item * 500;
 					for (size_t i = 0; i < 500; i++)
@@ -668,7 +668,7 @@ namespace dnn
 						TrainingSamples[pos] = Image<Byte>::LoadJPEG(fileName, true);
 						TrainingLabels[pos][0] = item;
 					}
-				}//);
+				});
 
 				infile.open((DatasetsDirectory / std::string(magic_enum::enum_name<Datasets>(dataset))  / "val" / "val_annotations.txt").string());
 				if (!infile.bad() && infile.is_open())
@@ -699,14 +699,13 @@ namespace dnn
 				else
 					return false;
 
-				 for(size_t i = 0; i < TestingSamplesCount; i++)
-				//for_i(TestingSamplesCount, [=](size_t i)
+				for_i(TestingSamplesCount, [=](size_t i)
 				{
 					const auto fileName = (DatasetsDirectory / std::string(magic_enum::enum_name<Datasets>(dataset))  / "val" / "images" / ("val_" + std::to_string(i) + ".JPEG")).string();
 					//const auto fileName = (DatasetsDirectory() / std::string(magic_enum::enum_name<Datasets>(dataset))  / "test" / "images" / ("test_" + std::to_string(i) + ".JPEG")).string();
 					TestingSamples[i] = Image<Byte>::LoadJPEG(fileName, true);
 					TestingLabels[i][0] = labels_idx[i];
-				} //);
+				});
 			}
 			break;
 			}
