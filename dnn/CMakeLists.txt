@@ -52,7 +52,7 @@ if(WIN32 OR MSVC)
   set(debug_flags /openmp:experimental /W4 /Od)
   set(release_flags /openmp:experimental /W3 /O2 /Ob2 /Oi /Ot /GL /GF /Gy /fp:fast)
 else()
-  set(flags -mfma -mavx2 -march=znver2 -fopenmp)
+  set(flags -mfma -mavx2 -march=native -fopenmp)
   if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
     set(linkflags -fopenmp=libiomp5)
   else()
@@ -69,9 +69,9 @@ else()
   endif()
 endif()
 
-MACRO(DNN_TARGET_ENABLE_CXX17 target)
+MACRO(DNN_TARGET_ENABLE_CXX20 target)
   SET_TARGET_PROPERTIES(${target} PROPERTIES
-    CXX_STANDARD 17
+    CXX_STANDARD 20
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS ON)
   target_compile_options(${target} PRIVATE
@@ -88,9 +88,9 @@ if(WIN32 OR MSVC)
   set(DNNL_ARCH_OPT_FLAGS "/arch:AVX2" CACHE STRING "" FORCE)
 else()
   if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-    set(DNNL_ARCH_OPT_FLAGS "-Ofast -funroll-loops -ftree-vectorize -Wno-error -mfma -mavx2 -march=znver2 -fopenmp" CACHE STRING "" FORCE)
+    set(DNNL_ARCH_OPT_FLAGS "-Ofast -funroll-loops -ftree-vectorize -Wno-error -mfma -mavx2 -march=native -fopenmp" CACHE STRING "" FORCE)
   else()
-    set(DNNL_ARCH_OPT_FLAGS "-Ofast -funroll-loops -ftree-vectorize -Wno-error -mfma -mavx2 -march=znver2 -fopenmp -unroll-aggressive" CACHE STRING "" FORCE)
+    set(DNNL_ARCH_OPT_FLAGS "-Ofast -funroll-loops -ftree-vectorize -Wno-error -mfma -mavx2 -march=native -fopenmp -unroll-aggressive" CACHE STRING "" FORCE)
   endif()
 endif()
 set(WITH_TURBOJPEG FALSE CACHE BOOL "" FORCE) 
@@ -250,7 +250,7 @@ IF(NOT DEFINED VECTORCLASS_SOURCE_DIR)
 
 
 add_library(${PROJECT_NAME} ${libdnn_sources})
-DNN_TARGET_ENABLE_CXX17(${PROJECT_NAME})
+DNN_TARGET_ENABLE_CXX20(${PROJECT_NAME})
 if(BUILD_SHARED_LIBS)
   target_compile_definitions(${PROJECT_NAME} PRIVATE DNN_EXPORTS DNN_DLL DNN_CACHE_PRIMITIVES DNN_OMP cimg_use_cpp11 cimg_use_jpeg cimg_use_png cimg_use_zlib)
 else()
@@ -264,7 +264,7 @@ target_include_directories(${PROJECT_NAME}
        ${CMAKE_CURRENT_SOURCE_DIR}/src)
 
 add_executable(test ${libdnn_test})
-DNN_TARGET_ENABLE_CXX17(test)
+DNN_TARGET_ENABLE_CXX20(test)
 target_include_directories(test 
     PUBLIC
        $<INSTALL_INTERFACE:include>
