@@ -133,7 +133,7 @@ void GetTrainingProgress(int seconds = 5, size_t trainingSamples = 50000, size_t
     } 
     while (*state == States::Idle);
 
-    int barWidth = 50;
+    int barWidth = 40;
     float progress = 0.0;
   
     while (*state != States::Completed)
@@ -210,7 +210,7 @@ int main()
     ScriptParameters p;
 
     p.Script = Scripts::shufflenetv2;
-    p.Dataset = Datasets::cifar100;
+    p.Dataset = Datasets::cifar10;
     p.C = 3;
     p.H = 32;
     p.W = 32;
@@ -218,18 +218,23 @@ int main()
     p.PadW = 4;
     p.MirrorPad = false;
     p.Groups = 3;
-    p.Iterations = 2;
-    p.Width = 4;
+    p.Iterations = 6;
+    p.Width = 10;
     p.Relu = true;
     p.Dropout = 0;
     p.Bottleneck = false;
-    p.SqueezeExcitation = false;
+    p.SqueezeExcitation = true;
     p.ChannelZeroPad = true;
 
     auto model = ScriptsCatalog::Generate(p);
 
+
+    const auto optimizer = Optimizers::NAG;
+    const auto persistOptimizer = true;
+
     DNNDataprovider(path);
-    if (DNNReadDefinition(model, Optimizers::NAG, msg) == 1)
+    
+    if (DNNReadDefinition(model, optimizer, msg) == 1)
     {
         if (DNNLoadDataset())
         {
@@ -249,12 +254,12 @@ int main()
             auto stdTrainSet = new std::vector<Float>();
             
             DNNGetNetworkInfo(name, costIndex, costLayerCount, groupIndex, labelIndex, hierarchies, meanStdNormalization, lossFunction, dataset, layerCount, trainingSamples, testingSamples, meanTrainSet, stdTrainSet);
-            std::cout << std::string("Training ") << *name << std::string(" on ") << std::string(magic_enum::enum_name<Datasets>(*dataset)) << std::endl << std::endl;
+            std::cout << std::string("Training ") << *name << std::string(" on ") << std::string(magic_enum::enum_name<Datasets>(*dataset)) << std::string(" with " +  std::string(magic_enum::enum_name<Optimizers>(optimizer)) + " optimizer") << std::endl << std::endl;
             std::cout.flush();
 
             DNNSetNewEpochDelegate(&NewEpoch);
-
-            DNNAddLearningRateSGDR(true, 1, 0.05f, 128, 1, 20, 1, 0.0001f, 0.0005f, 0.9f, 1.0f, 20, true, false, 0.0f, 0.7f, 0.7f, 0.7f, 20, 0.7f, 0, 10.0f, 12.0f);
+            DNNPersistOptimizer(persistOptimizer);
+            DNNAddLearningRateSGDR(true, 1, 0.05f, 128, 1, 200, 1, 0.0001f, 0.0005f, 0.9f, 1.0f, 20, true, false, 0.0f, 0.7f, 0.7f, 0.7f, 20, 0.7f, 0, 10.0f, 12.0f);
             DNNTraining();
 
             GetTrainingProgress(1, *trainingSamples, *testingSamples);
