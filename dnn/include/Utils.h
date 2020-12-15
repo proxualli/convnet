@@ -110,8 +110,7 @@ namespace dnn
 	constexpr auto GetDataFmt(const dnnl::memory::desc& md) noexcept
 	{
 		if (md.data.format_kind == dnnl_blocked)
-		{
-			if (md.data.format_desc.blocking.inner_nblks == 0)
+		    if (md.data.format_desc.blocking.inner_nblks == 0)
 				return PlainFmt;
 			else 
 				if (md.data.format_desc.blocking.inner_nblks == 1 && md.data.format_desc.blocking.inner_idxs[0] == 1)
@@ -128,7 +127,6 @@ namespace dnn
 						return dnnl::memory::format_tag::undef;
 					}
 				}
-		}
 
 		return dnnl::memory::format_tag::undef;
 	}
