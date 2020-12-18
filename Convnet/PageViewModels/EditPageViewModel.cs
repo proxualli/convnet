@@ -557,22 +557,22 @@ namespace Convnet.PageViewModels
                         fileInfo.Delete();
 
 
-                        //Mouse.OverrideCursor = Cursors.Wait;
-                        //IsValid = false;
+                        Mouse.OverrideCursor = Cursors.Wait;
+                        IsValid = false;
 
-                        //if (dirty)
-                        //{
-                        //    var builder = new MsBuilder(projectFilePath, Mode, "AnyCPU");
-                        //    var success = builder.Build(out string buildOutput);
+                        if (dirty)
+                        {
+                            var builder = new MsBuilder(projectFilePath, Mode, "AnyCPU");
+                            var success = builder.Build(out string buildOutput);
 
-                        //    Mouse.OverrideCursor = null;
-                        //    IsValid = true;
+                            Mouse.OverrideCursor = null;
+                            IsValid = true;
 
-                        //    if (success)
-                        //        dirty = false;
-                        //    else
-                        //        Xceed.Wpf.Toolkit.MessageBox.Show(buildOutput, "Compiler Result", MessageBoxButton.OK);
-                        //}
+                            if (success)
+                                dirty = false;
+                            else
+                                Xceed.Wpf.Toolkit.MessageBox.Show(buildOutput, "Compiler Result", MessageBoxButton.OK);
+                        }
 
                     }
                 }
