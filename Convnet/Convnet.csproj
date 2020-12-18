@@ -116,18 +116,26 @@
     <Resource Include="App.ico" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="NuGet.DependencyResolver.Core" Version="5.9.0-preview.2" />
-    <PackageReference Include="NuGet.ProjectModel" Version="5.9.0-preview.2" />
-    <PackageReference Include="NuGet.Resolver" Version="5.9.0-preview.2" />
     <PackageReference Include="Microsoft.NET.HostModel" Version="5.0.0-preview.1.20120.5" />
     <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="5.0.0" />
     <PackageReference Include="Microsoft.DotNet.PlatformAbstractions" Version="5.0.0-preview.5.20278.1" />
     <PackageReference Include="AvalonEdit" Version="6.1.0-preview1" />
     <PackageReference Include="CsvHelper" Version="18.0.0" />
+    <PackageReference Include="NuGet.Build" Version="2.12.1" />
+    <PackageReference Include="NuGet.Build.Tasks.Pack" Version="5.9.0-preview.2">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="NuGet.Common" Version="5.9.0-preview.2" />
+    <PackageReference Include="NuGet.DependencyResolver.Core" Version="5.9.0-preview.2" />
+    <PackageReference Include="NuGet.Frameworks" Version="5.9.0-preview.2" />
+    <PackageReference Include="NuGet.LibraryModel" Version="5.9.0-preview.2" />
+    <PackageReference Include="NuGet.Packaging" Version="5.9.0-preview.2" />
+    <PackageReference Include="NuGet.ProjectModel" Version="5.9.0-preview.2" />
     <PackageReference Include="OxyPlot.Core" Version="2.0.0" />
     <PackageReference Include="OxyPlot.Wpf" Version="2.0.0" />
     <PackageReference Include="DotNetProjects.Extended.Wpf.Toolkit" Version="4.6.96" />
-    <PackageReference Include="Microsoft.Build.Locator" Version="1.2.15-ge4e3fc36c9" />
+    <PackageReference Include="Microsoft.Build.Locator" Version="1.3.2" />
     <PackageReference Include="Microsoft.Build" Version="16.8.0" ExcludeAssets="runtime" />
     <PackageReference Include="Microsoft.Build.Utilities.Core" Version="16.8.0" ExcludeAssets="runtime" />
     <PackageReference Include="Microsoft.Build.Tasks.Core" Version="16.8.0" ExcludeAssets="runtime" />
