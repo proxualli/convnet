@@ -62,7 +62,7 @@ namespace Convnet.Common
                 else
                 {
                     // Unexpected failure
-                    throw ex;
+                    //throw ex;
                 }
             }
 

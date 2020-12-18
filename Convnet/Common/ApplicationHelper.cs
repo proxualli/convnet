@@ -23,7 +23,7 @@ namespace Convnet.Common
         /// </summary>
         /// <param name="priority">The DispatcherPriority to use
         /// as the lowest level of messages to get processed</param>
-        [SecurityPermissionAttribute(SecurityAction.Demand, Flags = SecurityPermissionFlag.UnmanagedCode)]
+        //[SecurityPermissionAttribute(SecurityAction.Demand, Flags = SecurityPermissionFlag.UnmanagedCode)]
         public static void DoEvents(DispatcherPriority priority)
         {
             DispatcherFrame frame = new DispatcherFrame();
@@ -39,7 +39,7 @@ namespace Convnet.Common
         /// Forces the WPF message pump to process all enqueued messages
         /// that are DispatcherPriority.Background or above
         /// </summary>
-        [SecurityPermissionAttribute(SecurityAction.Demand, Flags = SecurityPermissionFlag.UnmanagedCode)]
+        //[SecurityPermissionAttribute(SecurityAction.Demand, Flags = SecurityPermissionFlag.UnmanagedCode)]
         public static void DoEvents()
         {
             DoEvents(DispatcherPriority.Background);
