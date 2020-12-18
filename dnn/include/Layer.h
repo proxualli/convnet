@@ -153,9 +153,7 @@ namespace dnn
 		Device(const dnnl::engine& eng, dnnl::stream str) : engine(eng), stream(str) {}
 	};
 	
-	class Layer;
-
-    class Layer
+	class Layer
 	{
 	protected:
 		dnn::Device Device;
@@ -400,8 +398,8 @@ namespace dnn
 
 		inline void ZeroGradientMulti(const size_t batchSize)
 		{
-			for (auto i = 0ull; i < Inputs.size(); i++)
-				ZeroFloatVectorAllocate(Inputs[i]->NeuronsD1, batchSize * Inputs[i]->PaddedCDHW);
+			for (auto& layer : Inputs)
+			    ZeroFloatVectorAllocate(layer->NeuronsD1, batchSize * layer->PaddedCDHW);
 		}
 
 		inline void ReleaseGradient()
