@@ -273,7 +273,7 @@ namespace Convnet.PageViewModels
             }
             ProgressText = sb.ToString();
         }
-
+        
         private void AddCommandButtons()
         {
             Button startButton = new Button
@@ -643,7 +643,7 @@ namespace Convnet.PageViewModels
             Model.SetLocked(true);
         }
 
-        private DataTemplate GetLockTemplate()
+        private static DataTemplate GetLockTemplate()
         {
             DataTemplate checkBoxLayout = new DataTemplate
             {
@@ -1699,7 +1699,7 @@ namespace Convnet.PageViewModels
 
                     ShowSample = Model.TaskState == DNNTaskStates.Running;
                     ShowWeights = Model.Layers[index].HasWeights || Settings.Default.Timings;
-                    ShowWeightsSnapshot = (Model.Layers[index].IsNormalizationLayer && Model.Layers[index].Scaling) || Model.Layers[index].LayerType == DNNLayerTypes.PartialDepthwiseConvolution || Model.Layers[index].LayerType == DNNLayerTypes.DepthwiseConvolution || Model.Layers[index].LayerType == DNNLayerTypes.ConvolutionTranspose || Model.Layers[index].LayerType == DNNLayerTypes.Convolution || Model.Layers[index].LayerType == DNNLayerTypes.Dense;
+                    ShowWeightsSnapshot = (Model.Layers[index].IsNormalizationLayer && Model.Layers[index].Scaling) || Model.Layers[index].LayerType == DNNLayerTypes.PartialDepthwiseConvolution || Model.Layers[index].LayerType == DNNLayerTypes.DepthwiseConvolution || Model.Layers[index].LayerType == DNNLayerTypes.ConvolutionTranspose || Model.Layers[index].LayerType == DNNLayerTypes.Convolution || Model.Layers[index].LayerType == DNNLayerTypes.Dense || (Model.Layers[index].LayerType == DNNLayerTypes.Activation && Model.Layers[index].HasWeights);
 
                     Model.UpdateLayerInfo((ulong)index, ShowWeightsSnapshot);
 

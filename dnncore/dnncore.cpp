@@ -491,7 +491,7 @@ namespace dnncore
 			switch (info->LayerType)
 			{
 			case DNNLayerTypes::Input:
-				UpdateInputSbapshot(info->C, info->H, info->W);
+				UpdateInputSnapshot(info->C, info->H, info->W);
 				break;
 
 			case DNNLayerTypes::Convolution:
@@ -561,11 +561,39 @@ namespace dnncore
 				}
 			}
 			break;
+
+			case DNNLayerTypes::Activation:
+			{
+				const auto width = info->WeightCount;
+				const auto height = 4;
+				const auto totalSize = width * height;
+				auto pixelFormat = PixelFormats::Gray8;
+
+				if (totalSize <= INT_MAX)
+				{
+					auto img = gcnew cli::array<Byte>(int(totalSize));
+					pin_ptr<Byte> p = &img[0];
+					Byte* np = p;
+
+					DNNGetImage(info->LayerIndex, 100, np);
+
+					auto outputImage = System::Windows::Media::Imaging::BitmapSource::Create(int(width), int(height), 96.0, 96.0, pixelFormat, nullptr, img, int(width) * ((pixelFormat.BitsPerPixel + 7) / 8));
+					if (outputImage->CanFreeze)
+						outputImage->Freeze();
+
+					info->WeightsSnapshotX = int(width * BlockSize);
+					info->WeightsSnapshotY = int(height * BlockSize);
+					info->WeightsSnapshot = outputImage;
+
+					GC::Collect(GC::MaxGeneration, GCCollectionMode::Forced, true, true);
+				}
+			}
+			break;
 			}
 		}
 	}
 
-	void Model::UpdateInputSbapshot(size_t C, size_t H, size_t W)
+	void Model::UpdateInputSnapshot(size_t C, size_t H, size_t W)
 	{
 		const auto totalSize = C * H * W;
 		auto snapshot = std::vector<Float>(totalSize);

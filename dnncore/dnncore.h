@@ -1530,7 +1530,7 @@ namespace dnncore
 		bool LoadDataset();
 		cli::array<String^>^ GetTextLabels(String^ fileName);
 		void OnElapsed(Object^ sender, System::Timers::ElapsedEventArgs^ e);
-		void UpdateInputSbapshot(size_t C, size_t H, size_t W);
+		void UpdateInputSnapshot(size_t C, size_t H, size_t W);
 		void SetPersistOptimizer(bool persist);
 		void SetDisableLocking(bool disable);
 		void SetOptimizersHyperParameters(Float adaDeltaEps, Float adaGradEps, Float adamEps, Float adamBeta2, Float adamaxEps, Float adamaxBeta2, Float rmsPropEps, Float radamEps, Float radamBeta1, Float radamBeta2);
