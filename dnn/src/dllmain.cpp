@@ -97,7 +97,7 @@ extern "C" DNN_API bool DNNCheckDefinition(std::string& definition, CheckMsg& ch
 	return Definition::CheckDefinition(definition, checkMsg);
 }
 
-extern "C" DNN_API int DNNReadDefinition(const std::string& definition, const Optimizers optimizer, CheckMsg& checkMsg)
+extern "C" DNN_API int DNNReadDefinition(std::string definition, const Optimizers optimizer, CheckMsg& checkMsg)
 {
 	dnn::Model* ptr = nullptr;
 
