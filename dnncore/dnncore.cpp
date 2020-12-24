@@ -289,7 +289,7 @@ DNN_API void DNNRefreshStatistics(const size_t layerIndex, std::string* descript
 DNN_API bool DNNGetInputSnapShot(std::vector<Float>* snapshot, std::vector<size_t>* label);
 DNN_API bool DNNCheckDefinition(std::string& definition, CheckMsg& checkMsg);
 DNN_API int DNNLoadDefinition(const std::string& fileName, const Optimizers optimizer, CheckMsg& checkMsg);
-DNN_API int DNNReadDefinition(std::string definition, const Optimizers optimizer, CheckMsg& checkMsg);
+DNN_API int DNNReadDefinition(const std::string& definition, const Optimizers optimizer, CheckMsg& checkMsg);
 DNN_API void DNNDataprovider(const std::string& directory);
 DNN_API int DNNLoadNetworkWeights(const std::string& fileName, const bool persistOptimizer);
 DNN_API int DNNSaveNetworkWeights(const std::string& fileName, const bool persistOptimizer);
