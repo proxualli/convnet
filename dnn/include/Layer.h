@@ -1956,5 +1956,4 @@ namespace dnn
 
 		virtual ByteVector GetImage(const Byte) { return ByteVector(); }
 	};
-
 }

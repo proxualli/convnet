@@ -6,110 +6,112 @@ namespace dnn
 	class Definition final
 	{
 	public:
-		static std::string Normalize(std::string& definition)
+		static std::string Normalize(const std::string& definition)
 		{
-			definition = CaseInsensitiveReplace(definition.begin(), definition.end(), tab, "");
-			definition = CaseInsensitiveReplace(definition.begin(), definition.end(), " ", "");
-			definition = CaseInsensitiveReplace(definition.begin(), definition.end(), nwl + nwl + nwl + nwl + nwl + nwl + nwl + nwl, nwl);
-			definition = CaseInsensitiveReplace(definition.begin(), definition.end(), nwl + nwl + nwl + nwl + nwl + nwl + nwl, nwl);
-			definition = CaseInsensitiveReplace(definition.begin(), definition.end(), nwl + nwl + nwl + nwl + nwl + nwl, nwl);
-			definition = CaseInsensitiveReplace(definition.begin(), definition.end(), nwl + nwl + nwl + nwl + nwl, nwl);
-			definition = CaseInsensitiveReplace(definition.begin(), definition.end(), nwl + nwl + nwl + nwl, nwl);
-			definition = CaseInsensitiveReplace(definition.begin(), definition.end(), nwl + nwl + nwl, nwl);
-			definition = CaseInsensitiveReplace(definition.begin(), definition.end(), nwl + nwl, nwl);
-			definition = CaseInsensitiveReplace(definition.begin(), definition.end(), "[", nwl + "[");
+			auto defNorm = std::string(definition);
+						
+			defNorm = CaseInsensitiveReplace(defNorm.begin(), defNorm.end(), tab, "");
+			defNorm = CaseInsensitiveReplace(defNorm.begin(), defNorm.end(), " ", "");
+			defNorm = CaseInsensitiveReplace(defNorm.begin(), defNorm.end(), nwl + nwl + nwl + nwl + nwl + nwl + nwl + nwl, nwl);
+			defNorm = CaseInsensitiveReplace(defNorm.begin(), defNorm.end(), nwl + nwl + nwl + nwl + nwl + nwl + nwl, nwl);
+			defNorm = CaseInsensitiveReplace(defNorm.begin(), defNorm.end(), nwl + nwl + nwl + nwl + nwl + nwl, nwl);
+			defNorm = CaseInsensitiveReplace(defNorm.begin(), defNorm.end(), nwl + nwl + nwl + nwl + nwl, nwl);
+			defNorm = CaseInsensitiveReplace(defNorm.begin(), defNorm.end(), nwl + nwl + nwl + nwl, nwl);
+			defNorm = CaseInsensitiveReplace(defNorm.begin(), defNorm.end(), nwl + nwl + nwl, nwl);
+			defNorm = CaseInsensitiveReplace(defNorm.begin(), defNorm.end(), nwl + nwl, nwl);
+			defNorm = CaseInsensitiveReplace(defNorm.begin(), defNorm.end(), "[", nwl + "[");
 			
-			definition = Trim(definition);
+			defNorm = Trim(defNorm);
 			
-			definition = CaseInsensitiveReplace(definition.begin(), definition.end(), "=Yes", "=Yes");
-			definition = CaseInsensitiveReplace(definition.begin(), definition.end(), "=No", "=No");
-			definition = CaseInsensitiveReplace(definition.begin(), definition.end(), "=True", "=True");
-			definition = CaseInsensitiveReplace(definition.begin(), definition.end(), "=False", "=False");
+			defNorm = CaseInsensitiveReplace(defNorm.begin(), defNorm.end(), "=Yes", "=Yes");
+			defNorm = CaseInsensitiveReplace(defNorm.begin(), defNorm.end(), "=No", "=No");
+			defNorm = CaseInsensitiveReplace(defNorm.begin(), defNorm.end(), "=True", "=True");
+			defNorm = CaseInsensitiveReplace(defNorm.begin(), defNorm.end(), "=False", "=False");
 
-			definition = CaseInsensitiveReplace(definition.begin(), definition.end(), "Inputs=", "Inputs=");
-			definition = CaseInsensitiveReplace(definition.begin(), definition.end(), "WeightsScale=", "WeightsScale=");
-			definition = CaseInsensitiveReplace(definition.begin(), definition.end(), "WeightsLRM=", "WeightsLRM=");
-			definition = CaseInsensitiveReplace(definition.begin(), definition.end(), "WeightsWDM=", "WeightsWDM=");
-			definition = CaseInsensitiveReplace(definition.begin(), definition.end(), "BiasesScale=", "BiasesScale=");
-			definition = CaseInsensitiveReplace(definition.begin(), definition.end(), "BiasesLRM=", "BiasesLRM=");
-			definition = CaseInsensitiveReplace(definition.begin(), definition.end(), "BiasesWDM=", "BiasesWDM=");
-			definition = CaseInsensitiveReplace(definition.begin(), definition.end(), "Biases=", "Biases=");
-			definition = CaseInsensitiveReplace(definition.begin(), definition.end(), "Momentum=", "Momentum=");
-			definition = CaseInsensitiveReplace(definition.begin(), definition.end(), "Scaling=", "Scaling=");
-			definition = CaseInsensitiveReplace(definition.begin(), definition.end(), "Eps=", "Eps=");
-			definition = CaseInsensitiveReplace(definition.begin(), definition.end(), "Dim=", "Dim=");
-			definition = CaseInsensitiveReplace(definition.begin(), definition.end(), "MeanStd=", "MeanStd=");
-			definition = CaseInsensitiveReplace(definition.begin(), definition.end(), "ZeroPad=", "ZeroPad=");
-			definition = CaseInsensitiveReplace(definition.begin(), definition.end(), "MirrorPad=", "MirrorPad=");
-			definition = CaseInsensitiveReplace(definition.begin(), definition.end(), "RandomCrop=", "RandomCrop=");
-			definition = CaseInsensitiveReplace(definition.begin(), definition.end(), "Dropout=", "Dropout=");
-			definition = CaseInsensitiveReplace(definition.begin(), definition.end(), "Channels=", "Channels=");
-			definition = CaseInsensitiveReplace(definition.begin(), definition.end(), "Kernel=", "Kernel=");
-			definition = CaseInsensitiveReplace(definition.begin(), definition.end(), "Stride=", "Stride=");
-			definition = CaseInsensitiveReplace(definition.begin(), definition.end(), "Dilation=", "Dilation=");
-			definition = CaseInsensitiveReplace(definition.begin(), definition.end(), "Pad=", "Pad=");
-			definition = CaseInsensitiveReplace(definition.begin(), definition.end(), "Alpha=", "Alpha=");
-			definition = CaseInsensitiveReplace(definition.begin(), definition.end(), "Beta=", "Beta=");
-			definition = CaseInsensitiveReplace(definition.begin(), definition.end(), "Factor=", "Factor=");
-			definition = CaseInsensitiveReplace(definition.begin(), definition.end(), "Groups=", "Groups=");
-			definition = CaseInsensitiveReplace(definition.begin(), definition.end(), "Group=", "Group=");
-			definition = CaseInsensitiveReplace(definition.begin(), definition.end(), "Multiplier=", "Multiplier=");
-			definition = CaseInsensitiveReplace(definition.begin(), definition.end(), "AcrossChannel=", "AcrossChannel=");
-			definition = CaseInsensitiveReplace(definition.begin(), definition.end(), "LocalSize=", "LocalSize=");
-			definition = CaseInsensitiveReplace(definition.begin(), definition.end(), "K=", "K=");
-			definition = CaseInsensitiveReplace(definition.begin(), definition.end(), "CostIndex=", "CostIndex=");
-			definition = CaseInsensitiveReplace(definition.begin(), definition.end(), "GroupIndex=", "GroupIndex=");
-			definition = CaseInsensitiveReplace(definition.begin(), definition.end(), "LabelIndex=", "LabelIndex=");
-			definition = CaseInsensitiveReplace(definition.begin(), definition.end(), "LabelTrue=", "LabelTrue=");
-			definition = CaseInsensitiveReplace(definition.begin(), definition.end(), "LabelFalse=", "LabelFalse=");
-			definition = CaseInsensitiveReplace(definition.begin(), definition.end(), "Weight=", "Weight=");
+			defNorm = CaseInsensitiveReplace(defNorm.begin(), defNorm.end(), "Inputs=", "Inputs=");
+			defNorm = CaseInsensitiveReplace(defNorm.begin(), defNorm.end(), "WeightsScale=", "WeightsScale=");
+			defNorm = CaseInsensitiveReplace(defNorm.begin(), defNorm.end(), "WeightsLRM=", "WeightsLRM=");
+			defNorm = CaseInsensitiveReplace(defNorm.begin(), defNorm.end(), "WeightsWDM=", "WeightsWDM=");
+			defNorm = CaseInsensitiveReplace(defNorm.begin(), defNorm.end(), "BiasesScale=", "BiasesScale=");
+			defNorm = CaseInsensitiveReplace(defNorm.begin(), defNorm.end(), "BiasesLRM=", "BiasesLRM=");
+			defNorm = CaseInsensitiveReplace(defNorm.begin(), defNorm.end(), "BiasesWDM=", "BiasesWDM=");
+			defNorm = CaseInsensitiveReplace(defNorm.begin(), defNorm.end(), "Biases=", "Biases=");
+			defNorm = CaseInsensitiveReplace(defNorm.begin(), defNorm.end(), "Momentum=", "Momentum=");
+			defNorm = CaseInsensitiveReplace(defNorm.begin(), defNorm.end(), "Scaling=", "Scaling=");
+			defNorm = CaseInsensitiveReplace(defNorm.begin(), defNorm.end(), "Eps=", "Eps=");
+			defNorm = CaseInsensitiveReplace(defNorm.begin(), defNorm.end(), "Dim=", "Dim=");
+			defNorm = CaseInsensitiveReplace(defNorm.begin(), defNorm.end(), "MeanStd=", "MeanStd=");
+			defNorm = CaseInsensitiveReplace(defNorm.begin(), defNorm.end(), "ZeroPad=", "ZeroPad=");
+			defNorm = CaseInsensitiveReplace(defNorm.begin(), defNorm.end(), "MirrorPad=", "MirrorPad=");
+			defNorm = CaseInsensitiveReplace(defNorm.begin(), defNorm.end(), "RandomCrop=", "RandomCrop=");
+			defNorm = CaseInsensitiveReplace(defNorm.begin(), defNorm.end(), "Dropout=", "Dropout=");
+			defNorm = CaseInsensitiveReplace(defNorm.begin(), defNorm.end(), "Channels=", "Channels=");
+			defNorm = CaseInsensitiveReplace(defNorm.begin(), defNorm.end(), "Kernel=", "Kernel=");
+			defNorm = CaseInsensitiveReplace(defNorm.begin(), defNorm.end(), "Stride=", "Stride=");
+			defNorm = CaseInsensitiveReplace(defNorm.begin(), defNorm.end(), "Dilation=", "Dilation=");
+			defNorm = CaseInsensitiveReplace(defNorm.begin(), defNorm.end(), "Pad=", "Pad=");
+			defNorm = CaseInsensitiveReplace(defNorm.begin(), defNorm.end(), "Alpha=", "Alpha=");
+			defNorm = CaseInsensitiveReplace(defNorm.begin(), defNorm.end(), "Beta=", "Beta=");
+			defNorm = CaseInsensitiveReplace(defNorm.begin(), defNorm.end(), "Factor=", "Factor=");
+			defNorm = CaseInsensitiveReplace(defNorm.begin(), defNorm.end(), "Groups=", "Groups=");
+			defNorm = CaseInsensitiveReplace(defNorm.begin(), defNorm.end(), "Group=", "Group=");
+			defNorm = CaseInsensitiveReplace(defNorm.begin(), defNorm.end(), "Multiplier=", "Multiplier=");
+			defNorm = CaseInsensitiveReplace(defNorm.begin(), defNorm.end(), "AcrossChannel=", "AcrossChannel=");
+			defNorm = CaseInsensitiveReplace(defNorm.begin(), defNorm.end(), "LocalSize=", "LocalSize=");
+			defNorm = CaseInsensitiveReplace(defNorm.begin(), defNorm.end(), "K=", "K=");
+			defNorm = CaseInsensitiveReplace(defNorm.begin(), defNorm.end(), "CostIndex=", "CostIndex=");
+			defNorm = CaseInsensitiveReplace(defNorm.begin(), defNorm.end(), "GroupIndex=", "GroupIndex=");
+			defNorm = CaseInsensitiveReplace(defNorm.begin(), defNorm.end(), "LabelIndex=", "LabelIndex=");
+			defNorm = CaseInsensitiveReplace(defNorm.begin(), defNorm.end(), "LabelTrue=", "LabelTrue=");
+			defNorm = CaseInsensitiveReplace(defNorm.begin(), defNorm.end(), "LabelFalse=", "LabelFalse=");
+			defNorm = CaseInsensitiveReplace(defNorm.begin(), defNorm.end(), "Weight=", "Weight=");
 			
 			auto types = magic_enum::enum_names<LayerTypes>();
 			for (auto type : types)
 			{
 				auto text = "Type=" + std::string(type);
-				definition = CaseInsensitiveReplace(definition.begin(), definition.end(), text, text);
+				defNorm = CaseInsensitiveReplace(defNorm.begin(), defNorm.end(), text, text);
 			}
 
 			auto activations = magic_enum::enum_names<Activations>();
 			for (auto activation : activations)
 			{
 				auto text = "Activation=" + std::string(activation);
-				definition = CaseInsensitiveReplace(definition.begin(), definition.end(), text, text);
+				defNorm = CaseInsensitiveReplace(defNorm.begin(), defNorm.end(), text, text);
 			}
 			
 			auto costs = magic_enum::enum_names<Costs>();
 			for (auto cost : costs)
 			{
 				auto text = "Cost=" + std::string(cost);
-				definition = CaseInsensitiveReplace(definition.begin(), definition.end(), text, text);
+				defNorm = CaseInsensitiveReplace(defNorm.begin(), defNorm.end(), text, text);
 			}
 			
 			auto fillers = magic_enum::enum_names<Fillers>();
 			for (auto filler : fillers)
 			{
 				auto textFillerWeights = "WeightsFiller=" + std::string(filler);
-				definition = CaseInsensitiveReplace(definition.begin(), definition.end(), textFillerWeights, textFillerWeights);
+				defNorm = CaseInsensitiveReplace(defNorm.begin(), defNorm.end(), textFillerWeights, textFillerWeights);
 				
 				auto textFillerBiases = "BiasesFiller=" + std::string(filler);
-				definition = CaseInsensitiveReplace(definition.begin(), definition.end(), textFillerBiases, textFillerBiases);
+				defNorm = CaseInsensitiveReplace(defNorm.begin(), defNorm.end(), textFillerBiases, textFillerBiases);
 			}
 			
 			auto datasets = magic_enum::enum_names<Datasets>();
 			for (auto dataset : datasets)
 			{
 				auto text = "Dataset=" + std::string(dataset);
-				definition = CaseInsensitiveReplace(definition.begin(), definition.end(), text, text);
+				defNorm = CaseInsensitiveReplace(defNorm.begin(), defNorm.end(), text, text);
 			}
 			
 			auto algorithms = magic_enum::enum_names<Algorithms>();
 			for (auto algorithm : algorithms)
 			{
 				auto text = "Algorithm=" + std::string(algorithm);
-				definition = CaseInsensitiveReplace(definition.begin(), definition.end(), text, text);
+				defNorm = CaseInsensitiveReplace(defNorm.begin(), defNorm.end(), text, text);
 			}
 
-			return definition;
+			return defNorm;
 		}
 
 		static Model* Read(const std::string& definition, CheckMsg& msg, const bool onlyCheck = false, Dataprovider* dataprovider = nullptr, const Optimizers optimizer = Optimizers::NAG)
@@ -282,12 +284,21 @@ namespace dnn
 
 						if (layerType == LayerTypes::Activation)
 						{
+
 							switch(activationFunction)
 							{
+							case Activations::FTS:
+							break;
+
 							case Activations::PRelu:
-							case Activations::Swish:
+								if (alpha == 0)
+								{
+									msg = CheckMsg(line - 1, col, "Activation used without Alpha parameter.");
+									goto FAIL;
+								}
 								break;
 
+							case Activations::Swish:
 							case Activations::Mish:
 							case Activations::Abs:
 							case Activations::Exp:
@@ -308,7 +319,7 @@ namespace dnn
 							case Activations::Tanh:
 								if (alpha != 0 || beta != 0)
 								{
-									msg = CheckMsg(line - 1, col, "This Activation doesn't have an Alpha or Beta parameter.");
+									msg = CheckMsg(line - 1, col, "This Activation cannot have an Alpha or Beta parameter.");
 									goto FAIL;
 								}
 								break;
@@ -494,6 +505,14 @@ namespace dnn
 								break;
 							case LayerTypes::BatchNorm:
 								model->Layers.push_back(std::make_unique<BatchNorm>(model->Device, model->Format, name, inputs, scaling, momentum, eps, biases));
+								model->Layers[model->Layers.size() - 1]->SetParameters(useDefaultParams, weightsFiller, weightsScale, weightsLRM, weightsWDM, biasesFiller, biasesScale, biasesLRM, biasesWDM);
+								break;
+							case LayerTypes::BatchNormFTS:
+								model->Layers.push_back(std::make_unique<BatchNormActivation<FTS, LayerTypes::BatchNormFTS>>(model->Device, model->Format, name, inputs, scaling, momentum, eps, biases));
+								model->Layers[model->Layers.size() - 1]->SetParameters(useDefaultParams, weightsFiller, weightsScale, weightsLRM, weightsWDM, biasesFiller, biasesScale, biasesLRM, biasesWDM);
+								break;
+							case LayerTypes::BatchNormFTSDropout:
+								model->Layers.push_back(std::make_unique<BatchNormActivationDropout<FTS, LayerTypes::BatchNormFTSDropout>>(model->Device, model->Format, name, inputs, dropout, scaling, momentum, eps, biases));
 								model->Layers[model->Layers.size() - 1]->SetParameters(useDefaultParams, weightsFiller, weightsScale, weightsLRM, weightsWDM, biasesFiller, biasesScale, biasesLRM, biasesWDM);
 								break;
 							case LayerTypes::BatchNormHardLogistic:
@@ -926,6 +945,8 @@ namespace dnn
 					switch (layerType)
 					{
 						case LayerTypes::BatchNorm:
+						case LayerTypes::BatchNormFTS:
+						case LayerTypes::BatchNormFTSDropout:
 						case LayerTypes::BatchNormHardLogistic:
 						case LayerTypes::BatchNormHardSwish:
 						case LayerTypes::BatchNormHardSwishDropout:
@@ -1397,7 +1418,7 @@ namespace dnn
 				}
 				else if (strLine.rfind("Dropout=") == 0)
 				{
-					if (!isNormalizationLayer && layerType != LayerTypes::Input && layerType != LayerTypes::Dropout && layerType != LayerTypes::BatchNormReluDropout && layerType != LayerTypes::BatchNormHardSwishDropout)
+					if (!isNormalizationLayer && layerType != LayerTypes::Input && layerType != LayerTypes::Dropout && layerType != LayerTypes::BatchNormReluDropout && layerType != LayerTypes::BatchNormHardSwishDropout && layerType != LayerTypes::BatchNormFTSDropout)
 					{
 						msg = CheckMsg(line, col, "Dropout cannot be specified in a " + std::string(magic_enum::enum_name<LayerTypes>(layerType)) + " layer.");
 						goto FAIL;
@@ -1993,6 +2014,9 @@ namespace dnn
 
 					switch (activationFunction)
 					{
+					case Activations::FTS:
+					    alpha = Float(-0.2);
+						break;
 					case Activations::BoundedRelu:
 						alpha = Float(6);
 						break;
@@ -2017,7 +2041,7 @@ namespace dnn
 						beta = Float(1);
 						break;
 					case Activations::PRelu:
-						alpha = Float(0.3);
+						alpha = Float(0.25);
 						break;
 					case Activations::Relu:
 						alpha = Float(0);
@@ -2341,12 +2365,14 @@ namespace dnn
 
 		static bool CheckDefinition(std::string& definition, CheckMsg& checkMsg)
 		{
-			Read(Normalize(definition), checkMsg, true);
+			definition = Normalize(definition);
+
+			Read(definition, checkMsg, true);
 
 			return checkMsg.Error;
 		}
 
-		static Model* ReadDefinition(std::string definition, const Optimizers optimizer, Dataprovider* dataprovider, CheckMsg& checkMsg)
+		static Model* ReadDefinition(const std::string& definition, const Optimizers optimizer, Dataprovider* dataprovider, CheckMsg& checkMsg)
 		{
 			Model* model = Read(Normalize(definition), checkMsg, false, dataprovider, optimizer);
 

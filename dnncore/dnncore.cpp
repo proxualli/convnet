@@ -1250,7 +1250,9 @@ namespace dnncore
 
 		DNNCheckDefinition(def, checkMsg);
 				
-		return gcnew DNNCheckMsg(checkMsg.Row, checkMsg.Column, ToManagedString(checkMsg.Message), checkMsg.Error, ToManagedString(def));
+		definition = ToManagedString(def);
+
+		return gcnew DNNCheckMsg(checkMsg.Row, checkMsg.Column, ToManagedString(checkMsg.Message), checkMsg.Error, definition);
 	}
 
 	int Model::LoadDefinition(String^ fileName)
