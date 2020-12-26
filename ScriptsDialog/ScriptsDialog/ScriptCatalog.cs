@@ -64,13 +64,45 @@ namespace ScriptsDialog
                "Inputs=" + inputs + nwl + nwl;
         }
 
+        /*
         public static string BatchNormActivation(size_t id, string inputs, bool relu = true, string group = "", string prefix = "B")
         {
             return "[" + group + prefix + to_string(id) + "]" + nwl +
               (relu ? "Type=BatchNormRelu" + nwl : "Type=BatchNormFTS" + nwl) +
               "Inputs=" + inputs + nwl + nwl;
         }
+        */
+        
+        public static string BatchNormActivation(size_t id, string inputs, bool relu = true, string group = "", string prefix = "B")
+        {
+            if (relu)
+            {
+                return "[" + group + prefix + to_string(id) + "]" + nwl +
+                    "Type=BatchNormRelu" + nwl +
+                    "Inputs=" + inputs + nwl + nwl;
+            }
+            else
+            {
+                return "[" + group + "B" + to_string(id) + "B1]" + nwl +
+                     "Type=BatchNorm" + nwl +
+                     "Inputs=" + inputs + nwl + nwl +
 
+                     "[" + group + "DC" + to_string(id) + "DC]" + nwl +
+                     "Type=DepthwiseConvolution" + nwl +
+                     "Inputs=" + group + "B" + to_string(id) + "B1" + nwl +
+                     "Kernel=3,3" + nwl +
+                     "Pad=1,1" + nwl + nwl +                     
+
+                     "[" + group + "B" + to_string(id) + "B2]" + nwl +
+                     "Type=BatchNorm" + nwl +
+                     "Inputs=" + group + "DC" + to_string(id) + "DC" + nwl + nwl +
+
+                     "[" + group + prefix + to_string(id) + "]" + nwl +
+                     "Type=Max" + nwl +
+                     "Inputs=" + group + "B" + to_string(id) + "B2," + group + "B" + to_string(id) + "B1" + nwl + nwl;
+            }
+        }
+        
         public static string BatchNormActivationDropout(size_t id, string inputs, bool relu = true, Float dropout = 0.0f, string group = "", string prefix = "B")
         {
             return "[" + group + prefix + to_string(id) + "]" + nwl +
@@ -670,7 +702,7 @@ namespace ScriptsDialog
                             BatchNorm(C + 1, In("C", C)) +
                             GlobalAvgPooling(In("B", C + 1)) +
                             "[ACT]" + nwl + "Type=Activation" + nwl + "Inputs=GAP" + nwl + "Activation=LogSoftmax" + nwl + nwl +
-                            "[Cost]" + nwl + "Type=Cost" + nwl + "Inputs=ACT" + nwl + "Cost=CategoricalCrossEntropy" + nwl + "Channels=" + to_string(p.Classes);
+                            "[Cost]" + nwl + "Type=Cost" + nwl + "Inputs=ACT" + nwl + "Cost=CategoricalCrossEntropy" + nwl + "Channels=" + to_string(p.Classes) + nwl + "Eps=0.125";
                     }
                     break;
             }
