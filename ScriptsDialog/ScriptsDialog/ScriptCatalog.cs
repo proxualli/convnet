@@ -63,7 +63,6 @@ namespace ScriptsDialog
                "Type=BatchNorm" + nwl +
                "Inputs=" + inputs + nwl + nwl;
         }
-
         /*
         public static string BatchNormActivation(size_t id, string inputs, bool relu = true, string group = "", string prefix = "B")
         {
@@ -71,8 +70,8 @@ namespace ScriptsDialog
               (relu ? "Type=BatchNormRelu" + nwl : "Type=BatchNormFTS" + nwl) +
               "Inputs=" + inputs + nwl + nwl;
         }
+       
         */
-        
         public static string BatchNormActivation(size_t id, string inputs, bool relu = true, string group = "", string prefix = "B")
         {
             if (relu)
