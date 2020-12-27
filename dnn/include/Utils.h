@@ -105,6 +105,10 @@ namespace dnn
 	constexpr auto VectorSize = 8ull;
 	constexpr auto BlockedFmt = dnnl::memory::format_tag::nChw8c;
 #endif
+//	typedef Vec4f VecFloat;
+//	typedef Vec4fb VecFloatBool;
+//	constexpr auto VectorSize = 4ull;
+//	constexpr auto BlockedFmt = dnnl::memory::format_tag::nChw4c;
 
 	constexpr auto DivUp(const size_t& c) noexcept { return (((c - 1) / VectorSize) + 1) * VectorSize; }
 	constexpr auto IsPlainDataFmt(const dnnl::memory::desc& md) noexcept { return md.data.format_kind == dnnl_blocked && md.data.format_desc.blocking.inner_nblks == 0; }
