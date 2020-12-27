@@ -96,10 +96,12 @@ namespace dnn
 	constexpr auto PlainFmt = dnnl::memory::format_tag::nchw;
 #ifdef DNN_AVX512
 	typedef Vec16f VecFloat;
+	typedef Vec16fb VecFloatBool;
 	constexpr auto VectorSize = 16ull;
 	constexpr auto BlockedFmt = dnnl::memory::format_tag::nChw16c;
 #else // assuming AVX2
 	typedef Vec8f VecFloat;
+	typedef Vec8fb VecFloatBool;
 	constexpr auto VectorSize = 8ull;
 	constexpr auto BlockedFmt = dnnl::memory::format_tag::nChw8c;
 #endif
