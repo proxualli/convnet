@@ -117,7 +117,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="AvalonEdit" Version="6.1.0-preview1" />
-    <PackageReference Include="CsvHelper" Version="18.0.0" />
+    <PackageReference Include="CsvHelper" Version="19.0.0" />
     <PackageReference Include="NuGet.Frameworks" Version="5.9.0-preview.2" />
     <PackageReference Include="NuGet.Packaging" Version="5.9.0-preview.2" />
     <PackageReference Include="NuGet.ProjectModel" Version="5.9.0-preview.2" />
