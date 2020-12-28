@@ -77,7 +77,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>DNN_DLL;NDEBUG;_CONSOLE;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>DNN_AVX2;DNN_DLL;NDEBUG;_CONSOLE;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>C:\Users\dhaen\source\repos\convnet\dnn\include;C:\Users\dhaen\source\repos\convnet\dnn\deps\vectorclass;C:\Users\dhaen\source\repos\convnet\dnn\deps\magic_enum\include;C:\Users\dhaen\source\repos\convnet\dnn\deps\libjpeg-turbo;C:\Users\dhaen\source\repos\convnet\dnn\deps\CImg;C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\build\include;C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\include;C:\Users\dhaen\source\repos\convnet\dnn\deps\libpng;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
