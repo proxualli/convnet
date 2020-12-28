@@ -94,25 +94,30 @@ namespace dnn
 	static const auto dtab = std::string("\t\t");
 
 	constexpr auto PlainFmt = dnnl::memory::format_tag::nchw;
+
 #ifdef DNN_AVX512
 	typedef Vec16f VecFloat;
 	typedef Vec16fb VecFloatBool;
 	constexpr auto VectorSize = 16ull;
 	constexpr auto BlockedFmt = dnnl::memory::format_tag::nChw16c;
-#else // assuming AVX2
+#endif
+#ifdef DNN_AVX2
 	typedef Vec8f VecFloat;
 	typedef Vec8fb VecFloatBool;
 	constexpr auto VectorSize = 8ull;
 	constexpr auto BlockedFmt = dnnl::memory::format_tag::nChw8c;
 #endif
-//	typedef Vec4f VecFloat;
-//	typedef Vec4fb VecFloatBool;
-//	constexpr auto VectorSize = 4ull;
-//	constexpr auto BlockedFmt = dnnl::memory::format_tag::nChw4c;
+#ifdef DNN_SSE4
+	typedef Vec4f VecFloat;
+	typedef Vec4fb VecFloatBool;
+	constexpr auto VectorSize = 4ull;
+	constexpr auto BlockedFmt = dnnl::memory::format_tag::nChw4c;
+#endif
 
 	constexpr auto DivUp(const size_t& c) noexcept { return (((c - 1) / VectorSize) + 1) * VectorSize; }
 	constexpr auto IsPlainDataFmt(const dnnl::memory::desc& md) noexcept { return md.data.format_kind == dnnl_blocked && md.data.format_desc.blocking.inner_nblks == 0; }
 	constexpr auto IsBlockedDataFmt(const dnnl::memory::desc& md) noexcept { return md.data.format_kind == dnnl_blocked && md.data.format_desc.blocking.inner_nblks == 1 && md.data.format_desc.blocking.inner_idxs[0] == 1 && (md.data.format_desc.blocking.inner_blks[0] == 4 || md.data.format_desc.blocking.inner_blks[0] == 8 || md.data.format_desc.blocking.inner_blks[0] == 16); }
+
 	constexpr auto GetDataFmt(const dnnl::memory::desc& md) noexcept
 	{
 		if (md.data.format_kind == dnnl_blocked)
