@@ -1551,6 +1551,7 @@ namespace dnncore
 		void UpdateLayerInfo(size_t layerIndex, bool updateUI);
 		void SetCostIndex(size_t costIndex);
 		void SetOptimizer(DNNOptimizers optimizer);
+		void ResetOptimizer();
 		void SetLocked(bool locked);
 		void SetLayerLocked(size_t layerIndex, bool locked);
 		void GetConfusionMatrix();

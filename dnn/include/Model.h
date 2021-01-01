@@ -456,7 +456,7 @@ namespace dnn
 		bool BatchNormalizationUsed() const
 		{
 			for (auto &layer : Layers)
-				if (layer->LayerType == LayerTypes::BatchNorm || layer->LayerType == LayerTypes::BatchNormFTS || layer->LayerType == LayerTypes::BatchNormFTSDropout || layer->LayerType == LayerTypes::BatchNormHardLogistic || layer->LayerType == LayerTypes::BatchNormHardSwish || layer->LayerType == LayerTypes::BatchNormHardSwishDropout || layer->LayerType == LayerTypes::BatchNormRelu || layer->LayerType == LayerTypes::BatchNormReluDropout || layer->LayerType == LayerTypes::BatchNormSwish)
+				if (layer->IsNormalization())
 					return true;
 
 			return false;
@@ -588,10 +588,10 @@ namespace dnn
 			Optimizer = optimizer;
 		}
 
-		void ResetOptimizer(const Optimizers optimizer)
+		void ResetOptimizer()
 		{
 			for (auto &layer : Layers)
-				layer->ResetOptimizer(optimizer);
+				layer->ResetOptimizer(Optimizer);
 		}
 
 #ifdef DNN_STOCHASTIC

@@ -64,15 +64,16 @@ namespace ScriptsDialog
                "Inputs=" + inputs + nwl + nwl;
         }
        
+       /*
         public static string BatchNormActivation(size_t id, string inputs, bool relu = true, string group = "", string prefix = "B")
         {
             return "[" + group + prefix + to_string(id) + "]" + nwl +
-              (relu ? "Type=BatchNormRelu" + nwl : "Type=BatchNormFTS" + nwl) +
+              (relu ? "Type=BatchNormRelu" + nwl : "Type=BatchNormHardSwish" + nwl) +
               "Inputs=" + inputs + nwl + nwl;
         }
+       */
        
-        /*
-        public static string BatchNormActivation(size_t id, string inputs, bool relu = true, string group = "", string prefix = "B")
+        public static string BatchNormActivation(size_t id, string inputs, bool relu = true, size_t channels = 1, string group = "", string prefix = "B")
         {
             if (relu)
             {
@@ -90,19 +91,24 @@ namespace ScriptsDialog
                      "Type=DepthwiseConvolution" + nwl +
                      "Inputs=" + group + "B" + to_string(id) + "B1" + nwl +
                      "Kernel=3,3" + nwl +
-                     "Pad=1,1" + nwl + nwl +                     
+                     "Pad=1,1" + nwl + nwl +
 
+                      "[" + group + "C" + to_string(id) + "C]" + nwl +
+                     "Type=Convolution" + nwl +
+                     "Inputs=" + group + "DC" + to_string(id) + "DC" + nwl + nwl +
+                     "Channels=" + to_string(channels) + nwl +
+                     "Kernel=1,1" + nwl + nwl +
+                    
                      "[" + group + "B" + to_string(id) + "B2]" + nwl +
                      "Type=BatchNorm" + nwl +
-                     "Inputs=" + group + "DC" + to_string(id) + "DC" + nwl + nwl +
+                     "Inputs=" + group + "C" + to_string(id) + "C" + nwl + nwl +
 
                      "[" + group + prefix + to_string(id) + "]" + nwl +
                      "Type=Max" + nwl +
                      "Inputs=" + group + "B" + to_string(id) + "B2," + group + "B" + to_string(id) + "B1" + nwl + nwl;
             }
         }
-        */
-
+       
         public static string BatchNormActivationDropout(size_t id, string inputs, bool relu = true, Float dropout = 0.0f, string group = "", string prefix = "B")
         {
             return "[" + group + prefix + to_string(id) + "]" + nwl +
@@ -254,7 +260,7 @@ namespace ScriptsDialog
                "Type=Dropout" + nwl +
                "Inputs=" + inputs + nwl + nwl;
         }
-
+        /*
         public static string Logistic(size_t id, string inputs, string group = "", string prefix = "ACT")
         {
             return "[" + group + prefix + to_string(id) + "]" + nwl +
@@ -262,7 +268,7 @@ namespace ScriptsDialog
                "Inputs=" + inputs + nwl +
                "Activation=Logistic" + nwl + nwl;
         }
-
+        */
         public static string HardLogistic(size_t id, string inputs, string group = "", string prefix = "ACT")
         {
             return "[" + group + prefix + to_string(id) + "]" + nwl +
@@ -445,7 +451,7 @@ namespace ScriptsDialog
                                 var strSE =
                                     se ? GlobalAvgPooling(In("B", C + 1), group) +
                                     Convolution(1, group + "GAP", DIV8((6 * W) / 4), 1, 1, 1, 1, 0, 0, group) +
-                                    BatchNormActivation(1, group + "C1", p.Relu, group) +
+                                    BatchNormActivation(1, group + "C1", p.Relu, DIV8(W), group) +
                                     Convolution(2, group + "B1", DIV8(6 * W), 1, 1, 1, 1, 0, 0, group) +
                                     HardLogistic(2, group + "C2", group) +
                                     ChannelMultiply(In("B", C + 1) + "," + group + "ACT2", group) +
@@ -476,7 +482,7 @@ namespace ScriptsDialog
                                 var strSE =
                                     se ? GlobalAvgPooling(In("B", C + 1), group) +
                                     Convolution(1, group + "GAP", DIV8((6 * W) / 4), 1, 1, 1, 1, 0, 0, group) +
-                                    BatchNormActivation(1, group + "C1", p.Relu, group) +
+                                    BatchNormActivation(1, group + "C1", p.Relu, DIV8(W), group) +
                                     Convolution(2, group + "B1", DIV8(6 * W), 1, 1, 1, 1, 0, 0, group) +
                                     HardLogistic(2, group + "C2", group) +
                                     ChannelMultiply(In("B", C + 1) + "," + group + "ACT2", group) +
@@ -638,13 +644,13 @@ namespace ScriptsDialog
                         net += Convolution(1, "Input", DIV8(W), kernel, kernel, 1, 1, pad, pad);
 
                         blocks.Add(
-                            BatchNormActivation(1, "C1", p.Relu) +
+                            BatchNormActivation(1,  "C1", p.Relu, DIV8(W)) +
                             Convolution(2, "B1", DIV8(W), 1, 1, 1, 1, 0, 0) +
-                            BatchNormActivation(2, "C2", p.Relu) +
+                            BatchNormActivation(2, "C2", p.Relu, DIV8(W)) +
                             DepthwiseConvolution(3, "B2", 1, kernel, kernel, 1, 1, pad, pad) +
                             BatchNorm(3, "DC3") +
                             Convolution(4, "B3", DIV8(W), 1, 1, 1, 1, 0, 0) +
-                            BatchNormActivation(4, "C4", p.Relu) +
+                            BatchNormActivation(4, "C4", p.Relu, DIV8(W)) +
                             Convolution(5, "B1", DIV8(W), 1, 1, 1, 1, 0, 0) +
                             Concat(1, "C5,B4"));
 
@@ -660,15 +666,15 @@ namespace ScriptsDialog
 
                                 blocks.Add(
                                     Convolution(C, In("CC", A), DIV8(W), 1, 1, 1, 1, 0, 0) +
-                                    BatchNormActivation(C + 1, In("C", C), p.Relu) +
+                                    BatchNormActivation(C + 1, In("C", C), p.Relu, DIV8(W)) +
                                     DepthwiseConvolution(C + 1, In("B", C + 1), 1, kernel, kernel, 2, 2, pad, pad) +
                                     BatchNorm(C + 2, In("DC", C + 1)) +
                                     Convolution(C + 2, In("B", C + 2), DIV8(W), 1, 1, 1, 1, 0, 0) +
-                                    BatchNormActivation(C + 3, In("C", C + 2), p.Relu) +
+                                    BatchNormActivation(C + 3, In("C", C + 2), p.Relu, DIV8(W)) +
                                     DepthwiseConvolution(C + 3, In("CC", A), 1, kernel, kernel, 2, 2, pad, pad) +
                                     BatchNorm(C + 4, In("DC", C + 3)) +
                                     Convolution(C + 4, In("B", C + 4), DIV8(W), 1, 1, 1, 1, 0, 0) +
-                                    BatchNormActivation(C + 5, In("C", C + 4), p.Relu) +
+                                    BatchNormActivation(C + 5, In("C", C + 4), p.Relu, DIV8(W)) +
                                     Concat(A + 1, In("B", C + 5) + "," + In("B", C + 3)));
 
                                 A++; C += 5;
@@ -679,10 +685,10 @@ namespace ScriptsDialog
                                 var group = In("SE", C + 3);
                                 var strSE =
                                     se ? GlobalAvgPooling(In("B", C + 3), group) +
-                                    Convolution(1, group + "GAP", DIV8(W / 4), 1, 1, 1, 1, 0, 0, group, "C", "Normal(0.01)") +
-                                    BatchNormActivation(1, group + "C1", false, group) +
-                                    Convolution(2, group + "B1", DIV8(W), 1, 1, 1, 1, 0, 0, group, "C", "Normal(0.01)") +
-                                    Logistic(2, group + "C2", group) +
+                                    Convolution(1, group + "GAP", DIV8(W / 4), 1, 1, 1, 1, 0, 0, group) +
+                                    BatchNormHardSwish(1, group + "C1", group) +
+                                    Convolution(2, group + "B1", DIV8(W), 1, 1, 1, 1, 0, 0, group) +
+                                    HardLogistic(2, group + "C2", group) +
                                     ChannelMultiply(In("B", C + 3) + "," + group + "ACT2", group) +
                                     Concat(A + 1, In("LCS", A) + "," + group + "CM") :
                                     Concat(A + 1, In("LCS", A) + "," + In("B", C + 3));
@@ -691,11 +697,11 @@ namespace ScriptsDialog
                                     ChannelShuffle(A, In("CC", A), 2) +
                                     ChannelSplit(A, In("CSH", A), 2, 1, "L") + ChannelSplit(A, In("CSH", A), 2, 2, "R") +
                                     Convolution(C, In("RCS", A), DIV8(W), 1, 1, 1, 1, 0, 0) +
-                                    BatchNormActivation(C + 1, In("C", C), p.Relu) +
+                                    BatchNormActivation(C + 1, In("C", C), p.Relu, DIV8(W)) +
                                     DepthwiseConvolution(C + 1, In("B", C + 1), 1, kernel, kernel, 1, 1, pad, pad) +
                                     BatchNorm(C + 2, In("DC", C + 1)) +
                                     Convolution(C + 2, In("B", C + 2), DIV8(W), 1, 1, 1, 1, 0, 0) +
-                                    BatchNormActivation(C + 3, In("C", C + 2), p.Relu) +
+                                    BatchNormActivation(C + 3, In("C", C + 2), p.Relu, DIV8(W)) +
                                     strSE);
 
                                 A++; C += 3;
