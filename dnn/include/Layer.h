@@ -1106,7 +1106,7 @@ namespace dnn
 		{
 			if (HasWeights && (disableLocking || (!disableLocking && !LockUpdate.load())))
 			{
-				GradientClipping(1);
+				GradientClipping(2);
 
 				switch (optimizer)
 				{
@@ -1141,7 +1141,7 @@ namespace dnn
 			}
 		}
 
-		inline void GradientClipping(const Float norm = 1)
+		inline void GradientClipping(const Float treshold = 1)
 		{
 			if (!IsNormalization() && HasWeights)
 			{
@@ -1150,10 +1150,25 @@ namespace dnn
 				for (auto i = 0ull; i < WeightsD1.size(); i++)
 					sum += FloatSquare(WeightsD1[i]);
 
-				const auto l2norm = std::sqrt(sum);
+				const auto l2norm = treshold / std::sqrt(sum);
 #pragma omp simd
 				for (auto i = 0ull; i < WeightsD1.size(); i++)
-					WeightsD1[i] = norm * WeightsD1[i] / l2norm;
+					if (std::abs(WeightsD1[i]) > treshold)
+						WeightsD1[i] *= l2norm;
+
+				if (HasBias)
+				{
+					sum = Float(0);
+#pragma omp simd
+					for (auto i = 0ull; i < BiasesD1.size(); i++)
+						sum += FloatSquare(BiasesD1[i]);
+
+					const auto l2norm = treshold / std::sqrt(sum);
+#pragma omp simd
+					for (auto i = 0ull; i < BiasesD1.size(); i++)
+						if (std::abs(BiasesD1[i]) > treshold)
+							BiasesD1[i] *= l2norm;
+				}
 			}
 		}
 
