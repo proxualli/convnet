@@ -261,7 +261,7 @@ namespace ScriptsDialog
                "Type=Dropout" + nwl +
                "Inputs=" + inputs + nwl + nwl;
         }
-        /*
+        
         public static string Logistic(size_t id, string inputs, string group = "", string prefix = "ACT")
         {
             return "[" + group + prefix + to_string(id) + "]" + nwl +
@@ -269,7 +269,7 @@ namespace ScriptsDialog
                "Inputs=" + inputs + nwl +
                "Activation=Logistic" + nwl + nwl;
         }
-        */
+        
         public static string HardLogistic(size_t id, string inputs, string group = "", string prefix = "ACT")
         {
             return "[" + group + prefix + to_string(id) + "]" + nwl +
@@ -686,9 +686,9 @@ namespace ScriptsDialog
                                 var group = In("SE", C + 3);
                                 var strSE =
                                     se ? GlobalAvgPooling(In("B", C + 3), group) +
-                                    Convolution(1, group + "GAP", DIV8(W / 4), 1, 1, 1, 1, 0, 0, group) +
+                                    Convolution(1, group + "GAP", DIV8(W / 4), 1, 1, 1, 1, 0, 0, group, "C", "Normal(0.01)") +
                                     BatchNormHardSwish(1, group + "C1", group) +
-                                    Convolution(2, group + "B1", DIV8(W), 1, 1, 1, 1, 0, 0, group) +
+                                    Convolution(2, group + "B1", DIV8(W), 1, 1, 1, 1, 0, 0, group, "C", "Normal(0.01)") +
                                     HardLogistic(2, group + "C2", group) +
                                     ChannelMultiply(In("B", C + 3) + "," + group + "ACT2", group) +
                                     Concat(A + 1, In("LCS", A) + "," + group + "CM") :
