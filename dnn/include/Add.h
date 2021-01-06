@@ -186,8 +186,26 @@ namespace dnn
 					for_i(batchSize, LIGHT_COMPUTE, [=](size_t b)
 					{
 						const auto start = b * size;
-						const auto end = start + size;
-						for (auto n = start; n < end; n++)
+						const auto end = start + part;
+
+						VecFloat In, D1;
+						for (auto n = start; n < part; n += VectorSize)
+						{
+							D1.load_a(&NeuronsD1[n]);
+
+							In.load_a(&Inputs[0]->NeuronsD1[n]);
+							In += D1;
+							In.store_a(&Inputs[0]->NeuronsD1[n]);
+
+							In.load_a(&Inputs[1]->NeuronsD1[n]);
+							In += D1;
+							In.store_a(&Inputs[1]->NeuronsD1[n]);
+
+							In.load_a(&Inputs[2]->NeuronsD1[n]);
+							In += D1;
+							In.store_a(&Inputs[2]->NeuronsD1[n]);
+						}
+						for (auto n = part; n < size; n++)
 						{
 							Inputs[0]->NeuronsD1[n] += NeuronsD1[n];
 							Inputs[1]->NeuronsD1[n] += NeuronsD1[n];
@@ -202,8 +220,30 @@ namespace dnn
 					for_i(batchSize, LIGHT_COMPUTE, [=](size_t b)
 					{
 						const auto start = b * size;
-						const auto end = start + size;
-						for (auto n = start; n < end; n++)
+						const auto end = start + part;
+
+						VecFloat In, D1;
+						for (auto n = start; n < part; n += VectorSize)
+						{
+							D1.load_a(&NeuronsD1[n]);
+
+							In.load_a(&Inputs[0]->NeuronsD1[n]);
+							In += D1;
+							In.store_a(&Inputs[0]->NeuronsD1[n]);
+
+							In.load_a(&Inputs[1]->NeuronsD1[n]);
+							In += D1;
+							In.store_a(&Inputs[1]->NeuronsD1[n]);
+
+							In.load_a(&Inputs[2]->NeuronsD1[n]);
+							In += D1;
+							In.store_a(&Inputs[2]->NeuronsD1[n]);
+
+							In.load_a(&Inputs[3]->NeuronsD1[n]);
+							In += D1;
+							In.store_a(&Inputs[3]->NeuronsD1[n]);
+						}
+						for (auto n = part; n < size; n++)
 						{
 							Inputs[0]->NeuronsD1[n] += NeuronsD1[n];
 							Inputs[1]->NeuronsD1[n] += NeuronsD1[n];
@@ -219,8 +259,34 @@ namespace dnn
 					for_i(batchSize, LIGHT_COMPUTE, [=](size_t b)
 					{
 						const auto start = b * size;
-						const auto end = start + size;
-						for (auto n = start; n < end; n++)
+						const auto end = start + part;
+
+						VecFloat In, D1;
+						for (auto n = start; n < part; n += VectorSize)
+						{
+							D1.load_a(&NeuronsD1[n]);
+
+							In.load_a(&Inputs[0]->NeuronsD1[n]);
+							In += D1;
+							In.store_a(&Inputs[0]->NeuronsD1[n]);
+
+							In.load_a(&Inputs[1]->NeuronsD1[n]);
+							In += D1;
+							In.store_a(&Inputs[1]->NeuronsD1[n]);
+
+							In.load_a(&Inputs[2]->NeuronsD1[n]);
+							In += D1;
+							In.store_a(&Inputs[2]->NeuronsD1[n]);
+
+							In.load_a(&Inputs[3]->NeuronsD1[n]);
+							In += D1;
+							In.store_a(&Inputs[3]->NeuronsD1[n]);
+
+							In.load_a(&Inputs[4]->NeuronsD1[n]);
+							In += D1;
+							In.store_a(&Inputs[4]->NeuronsD1[n]);
+						}
+						for (auto n = part; n < size; n++)
 						{
 							Inputs[0]->NeuronsD1[n] += NeuronsD1[n];
 							Inputs[1]->NeuronsD1[n] += NeuronsD1[n];
