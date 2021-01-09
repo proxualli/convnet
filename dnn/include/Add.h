@@ -185,14 +185,16 @@ namespace dnn
 					{
 						const auto start = b * size;
 						const auto end = start + size;
-							
+#pragma omp simd	
 						for (auto n = start; n < end; n++)
 						{
 							NeuronsD1[n] = 0;
 							Neurons[n] = 0;
-							for (auto y = 0ull; y < inputs; y++)
-								Neurons[n] += Inputs[y]->Neurons[n];
 						}
+						for (auto n = start; n < end; n++)
+							for (auto i = 0ull; i < inputs; i++)
+								Neurons[n] += Inputs[i]->Neurons[n];
+						
 					});
 				}
 				break;
