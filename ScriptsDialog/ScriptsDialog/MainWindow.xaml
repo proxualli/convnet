@@ -7,7 +7,7 @@
         xmlns:converters="clr-namespace:ScriptsDialog.Converters"
         xmlns:xctk="clr-namespace:ScriptsDialog.AutoSelectTextBox"
         mc:Ignorable="d"
-        Title="Model Parameters" Height="910" Width="330" WindowStartupLocation="CenterScreen" ShowInTaskbar="False" ResizeMode="NoResize" Closing="Window_Closing" Loaded="Window_Loaded" Background="Gray" Icon="App.ico" Topmost="True">
+        Title="Model Parameters" Height="910" Width="330" WindowStartupLocation="CenterScreen" ShowInTaskbar="False" ResizeMode="NoResize" Closing="Window_Closing" Loaded="Window_Loaded" Background="Gray" Icon="Resources\App.ico" Topmost="True">
 
     <Window.Resources>
         <converters:BoolToGridLengthConverter x:Key="BooleanToGridLengthConverter"/>

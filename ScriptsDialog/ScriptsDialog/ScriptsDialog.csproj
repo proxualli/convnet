@@ -8,6 +8,7 @@
     <StartupObject>ScriptsDialog.App</StartupObject>
     <ApplicationIcon>Resources\App.ico</ApplicationIcon>
     <ApplicationManifest>app.manifest</ApplicationManifest>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Platforms>x64</Platforms>
   </PropertyGroup>
@@ -20,21 +21,8 @@
   </PropertyGroup>
   
   <ItemGroup>
-    <None Remove="App.ico" />
-    <None Remove="Resources\Annotate_HighPriority.ico" />
-    <None Remove="Resources\App.ico" />
-    <None Remove="Resources\Copy.png" />
-    <None Remove="Resources\Cut.png" />
-    <None Remove="Resources\Paste.png" />
-    <None Remove="Resources\Redo.png" />
-    <None Remove="Resources\Undo.png" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Resource Include="Resources\Annotate_HighPriority.ico" />
-    <Content Include="Resources\App.ico">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <Resource Include="Resources\App.ico" />
     <Resource Include="Resources\Copy.png" />
     <Resource Include="Resources\Cut.png" />
     <Resource Include="Resources\Paste.png" />
@@ -45,44 +33,21 @@
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Resource Include="App.ico" />
-  </ItemGroup>
- 
-  <ItemGroup>
-    <None Update="global.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Settings.settings">
+    <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
+    <None Include="App.config" />
   </ItemGroup>
-
+ 
   <ItemGroup>
-    <Page Update="App.xaml">
-      <Generator></Generator>
-      <LastGenOutput>App.xaml.cs</LastGenOutput>
-      <CustomToolNamespace>MSBuild:Compile</CustomToolNamespace>
-    </Page>
-    <Page Remove="Resources\shared.xaml" />
-    <Page Include="Resources\shared.xaml">
-      <Generator></Generator>
-      <CustomToolNamespace>MSBuild:Compile</CustomToolNamespace>
-    </Page>
+    <None Include="global.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <Content Include="obj\project.assets.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Update="App.xaml.cs">
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-      <DependentUpon>App.xaml</DependentUpon>
-    </Compile>
   </ItemGroup>
 
   <ItemGroup>

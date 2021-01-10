@@ -21,6 +21,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_0AC0FB970406404BA2072F8604971784"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_21F5092F6CF443ACABFC27029E51BEFB"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -51,12 +57,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_3C0DE088F8A84BE793F3A9D04DEC9351"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_3C666250B6F54DB28EBCB76855807F0C"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -75,12 +75,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_4A0C6FB655AB463CA8479067B110E9F7"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_619CD8E3FEAE4FB588C722B3E9D85BC1"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -94,6 +88,12 @@
         "Entry"
         {
         "MsmKey" = "8:_62E7C69C603542FAA21D13E6061FEAB3"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_6A2D321A03A848CCA8C3A684CFE5CCA6"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -217,12 +217,6 @@
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
-        "Entry"
-        {
-        "MsmKey" = "8:_F43686C751AD43A2B10934B8E1EB9912"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
     }
     "Configurations"
     {
@@ -325,7 +319,7 @@
                 {
                 "Name" = "8:.NET Core"
                 "Message" = "8:[VSDNETCOREMSG]"
-                "FrameworkVersion" = "8:3.1      "
+                "FrameworkVersion" = "8:3.1       "
                 "AllowLaterVersions" = "11:FALSE"
                 "InstallUrl" = "8:https://dotnet.microsoft.com/download/dotnet-core/[NetCoreVerMajorDotMinor]"
                 "IsNETCore" = "11:TRUE"
@@ -342,6 +336,26 @@
             "TargetName" = "8:Undo.png"
             "Tag" = "8:"
             "Folder" = "8:_47A5B6B60B554571A6DDB6FA3ED7138F"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_0AC0FB970406404BA2072F8604971784"
+            {
+            "SourcePath" = "8:..\\ScriptsDialog\\ScriptsDialog\\Properties\\Settings.settings"
+            "TargetName" = "8:Settings.settings"
+            "Tag" = "8:"
+            "Folder" = "8:_A73A65EA35E247BA84882CC5F63A129D"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -456,26 +470,6 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_3C0DE088F8A84BE793F3A9D04DEC9351"
-            {
-            "SourcePath" = "8:..\\ScriptsDialog\\ScriptsDialog\\Settings.settings"
-            "TargetName" = "8:Settings.settings"
-            "Tag" = "8:"
-            "Folder" = "8:_5D5C780570E54084A453823CD1FC189E"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_3C666250B6F54DB28EBCB76855807F0C"
             {
             "SourcePath" = "8:..\\ScriptsDialog\\ScriptsDialog\\AutoSelectTextBox\\AutoSelectTextBox.cs"
@@ -520,26 +514,6 @@
             {
             "SourcePath" = "8:..\\ScriptsDialog\\ScriptsDialog\\ScriptsDialog.csproj"
             "TargetName" = "8:ScriptsDialog.csproj"
-            "Tag" = "8:"
-            "Folder" = "8:_5D5C780570E54084A453823CD1FC189E"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_4A0C6FB655AB463CA8479067B110E9F7"
-            {
-            "SourcePath" = "8:..\\ScriptsDialog\\ScriptsDialog\\Settings.Designer.cs"
-            "TargetName" = "8:Settings.Designer.cs"
             "Tag" = "8:"
             "Folder" = "8:_5D5C780570E54084A453823CD1FC189E"
             "Condition" = "8:"
@@ -602,6 +576,26 @@
             "TargetName" = "8:Annotate_HighPriority.ico"
             "Tag" = "8:"
             "Folder" = "8:_47A5B6B60B554571A6DDB6FA3ED7138F"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_6A2D321A03A848CCA8C3A684CFE5CCA6"
+            {
+            "SourcePath" = "8:..\\ScriptsDialog\\ScriptsDialog\\Properties\\Settings.Designer.cs"
+            "TargetName" = "8:Settings.Designer.cs"
+            "Tag" = "8:"
+            "Folder" = "8:_A73A65EA35E247BA84882CC5F63A129D"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -976,26 +970,6 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_F43686C751AD43A2B10934B8E1EB9912"
-            {
-            "SourcePath" = "8:..\\ScriptsDialog\\ScriptsDialog\\App.ico"
-            "TargetName" = "8:App.ico"
-            "Tag" = "8:"
-            "Folder" = "8:_5D5C780570E54084A453823CD1FC189E"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
         }
         "FileType"
         {
@@ -1152,7 +1126,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Convnet"
         "ProductCode" = "8:{D4B4AC62-642E-467C-85CB-CD72DA196999}"
-        "PackageCode" = "8:{9B25257C-330A-4AA7-B6B7-96A6202A5175}"
+        "PackageCode" = "8:{62675966-0EEB-4227-98E8-333B0BBB1E26}"
         "UpgradeCode" = "8:{6AC0B11F-6D71-4203-ACC9-2E07A968F844}"
         "AspNetVersion" = "8:"
         "RestartWWWService" = "11:FALSE"
@@ -1729,7 +1703,7 @@
             }
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_A8084872AE5046948D4BE9C5379C2BE1"
             {
-            "SourcePath" = "8:..\\Convnet\\obj\\x64\\Release\\netcoreapp3.1\\Convnet.exe"
+            "SourcePath" = "8:..\\Convnet\\obj\\x64\\Release\\netcoreapp3.1\\apphost.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_6AC6560B9ACC4F54A4DE534A0DB0B67E"
