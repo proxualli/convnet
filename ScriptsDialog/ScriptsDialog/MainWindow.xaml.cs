@@ -16,9 +16,10 @@ namespace ScriptsDialog
 #else
         const string Mode = "Release";
 #endif
+        const string Framework = @"\netcoreapp3.1\";
         public static string StorageDirectory { get; } = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\convnet\";
         public static string ScriptsDirectory { get; } = StorageDirectory + @"scripts\";
-        public static string ScriptPath { get; } = ScriptsDirectory + @"ScriptsDialog\bin\" + Mode + @"\net5.0-windows\";
+        public static string ScriptPath { get; } = ScriptsDirectory + @"ScriptsDialog\bin\" + Mode + Framework;
       
         public MainWindow()
         {

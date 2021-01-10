@@ -1,13 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net5.0-windows</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <UseWPF>true</UseWPF>
-    <LangVersion>latest</LangVersion>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <StartupObject>ScriptsDialog.App</StartupObject>
-    <ApplicationIcon>App.ico</ApplicationIcon>
+    <ApplicationIcon>Resources\App.ico</ApplicationIcon>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Platforms>x64</Platforms>
@@ -33,7 +32,9 @@
 
   <ItemGroup>
     <Resource Include="Resources\Annotate_HighPriority.ico" />
-    <Resource Include="Resources\App.ico" />
+    <Content Include="Resources\App.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Resource Include="Resources\Copy.png" />
     <Resource Include="Resources\Cut.png" />
     <Resource Include="Resources\Paste.png" />

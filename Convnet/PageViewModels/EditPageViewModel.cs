@@ -28,6 +28,7 @@ namespace Convnet.PageViewModels
 #else
         const string Mode = "Release";
 #endif
+        
         private static DispatcherTimer clickWaitTimer = new DispatcherTimer(new TimeSpan(0, 0, 0, 1), DispatcherPriority.Background, mouseWaitTimer_Tick, Dispatcher.CurrentDispatcher);
         private static Action ScriptDialogAction { get; set; }
 
