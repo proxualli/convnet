@@ -70,7 +70,7 @@ namespace ScriptsDialog
               (relu ? "Type=BatchNormRelu" + nwl : "Type=BatchNormHardSwish" + nwl) +
               "Inputs=" + inputs + nwl + nwl;
         }
-       
+
         /*
         public static string BatchNormActivation(size_t id, string inputs, bool relu = true, size_t channels = 1, string group = "", string prefix = "B")
         {
@@ -92,15 +92,9 @@ namespace ScriptsDialog
                      "Kernel=3,3" + nwl +
                      "Pad=1,1" + nwl + nwl +
                     
-                      "[" + group + "C" + to_string(id) + "C]" + nwl +
-                     "Type=Convolution" + nwl +
-                     "Inputs=" + group + "DC" + to_string(id) + "DC" + nwl + nwl +
-                     "Channels=" + to_string(channels) + nwl +
-                     "Kernel=1,1" + nwl + nwl +
-                    
                      "[" + group + "B" + to_string(id) + "B2]" + nwl +
                      "Type=BatchNorm" + nwl +
-                     "Inputs=" + group + "C" + to_string(id) + "C" + nwl + nwl +
+                      "Inputs=" + group + "DC" + to_string(id) + "DC" + nwl + nwl +
 
                      "[" + group + prefix + to_string(id) + "]" + nwl +
                      "Type=Max" + nwl +
