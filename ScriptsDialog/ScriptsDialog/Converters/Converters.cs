@@ -7,24 +7,22 @@ namespace ScriptsDialog.Converters
 {
     public class EnumConverter : IValueConverter
     {
-        public object Convert(object value, Type targetType, object parameter,
-                              System.Globalization.CultureInfo culture)
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            Enum enumValue = default(Enum);
-            if (parameter is Type)
+            Enum enumValue = default;
+            if (parameter is Type type && value != null)
             {
-                enumValue = (Enum)Enum.Parse((Type)parameter, value.ToString());
+                enumValue = (Enum)Enum.Parse(type, value.ToString());
             }
             return enumValue;
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter,
-                                  System.Globalization.CultureInfo culture)
+        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
             int returnValue = 0;
-            if (parameter is Type)
+            if (parameter is Type type)
             {
-                returnValue = (int)Enum.Parse((Type)parameter, value.ToString());
+                returnValue = (int)Enum.Parse(type, value.ToString());
             }
             return returnValue;
         }

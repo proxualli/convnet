@@ -40,7 +40,7 @@ namespace ScriptsDialog.Common
             try
             {
                 string str = value as string;
-                if (str.Length > 0)
+                if (value != null && str.Length > 0)
                     intValue = uint.Parse(str, cultureInfo);
             }
             catch (Exception e)
