@@ -170,10 +170,13 @@ namespace dnn
 		ZeroFloatVector(destination.data(), elements);
 	}
 	
+#ifdef _MSC_VER
+#pragma intrinsic(__rdtsc)
+#endif
 	inline static auto BernoulliVecFloat(const Float prob = Float(0.5)) noexcept
 	{
 		static thread_local auto generator = Ranvec1(3);
-		
+
 		generator.init(static_cast<int>(__rdtsc()), static_cast<int>(std::hash<std::thread::id>()(std::this_thread::get_id())));
 #if defined(DNN_AVX512)
 		return select(generator.random16f() < prob, VecFloat(1), VecFloat(0));
@@ -184,6 +187,9 @@ namespace dnn
 #endif
 	}
 
+#ifdef _MSC_VER
+#pragma intrinsic(__rdtsc)
+#endif
 	template<typename T>
 	static auto Bernoulli(const Float prob = Float(0.5)) noexcept
 	{
@@ -191,6 +197,9 @@ namespace dnn
 		return static_cast<T>(std::bernoulli_distribution(double(prob))(generator));
 	}
 
+#ifdef _MSC_VER
+#pragma intrinsic(__rdtsc)
+#endif
 	template<typename T>
 	static auto UniformInt(const T min, const T max) noexcept
 	{
@@ -198,6 +207,9 @@ namespace dnn
 		return std::uniform_int_distribution<T>(min, max)(generator);
 	}
 
+#ifdef _MSC_VER
+#pragma intrinsic(__rdtsc)
+#endif
 	template<typename T>
 	static auto UniformReal(const T min, const T max) noexcept
 	{

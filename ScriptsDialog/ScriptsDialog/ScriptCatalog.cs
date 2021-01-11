@@ -64,14 +64,15 @@ namespace ScriptsDialog
                "Inputs=" + inputs + nwl + nwl;
         }
 
+        /*
         public static string BatchNormActivation(size_t id, string inputs, bool relu = true, size_t channels = 1, string group = "", string prefix = "B")
         {
             return "[" + group + prefix + to_string(id) + "]" + nwl +
               (relu ? "Type=BatchNormRelu" + nwl : "Type=BatchNormHardSwish" + nwl) +
               "Inputs=" + inputs + nwl + nwl;
         }
-
-        /*
+        */
+  
         public static string BatchNormActivation(size_t id, string inputs, bool relu = true, size_t channels = 1, string group = "", string prefix = "B")
         {
             if (relu)
@@ -101,8 +102,7 @@ namespace ScriptsDialog
                      "Inputs=" + group + "B" + to_string(id) + "B2," + group + "B" + to_string(id) + "B1" + nwl + nwl;
             }
         }
-        */
-
+        
         public static string BatchNormActivationDropout(size_t id, string inputs, bool relu = true, Float dropout = 0.0f, string group = "", string prefix = "B")
         {
             return "[" + group + prefix + to_string(id) + "]" + nwl +
