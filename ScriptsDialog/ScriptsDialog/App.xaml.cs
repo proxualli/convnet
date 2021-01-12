@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ScriptsDialog.Properties;
+using System;
 using System.ComponentModel;
 using System.Globalization;
 using System.Windows;

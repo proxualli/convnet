@@ -12,7 +12,6 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <DelaySign>false</DelaySign>
     <TargetZone>LocalIntranet</TargetZone>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Convnet</RootNamespace>
     <AssemblyName>Convnet</AssemblyName>
     <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
@@ -50,40 +49,9 @@
     <Content Include="Resources\state\resnet-32-4-3-2-6-dropout-channelzeropad.definition">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Resource Include="App.ico" />
     <Resource Include="Resources\Unlock.png" />
     <Resource Include="Resources\PerformanceLog.png" />
-    <EmbeddedResource Update="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <SubType>Designer</SubType>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\CPP-Mode.xshd" />
-    <EmbeddedResource Include="Resources\CSharp-Mode.xshd" />
-    <EmbeddedResource Include="Resources\Definition.xshd" />
-    <EmbeddedResource Include="Resources\HTML-Mode.xshd" />
-    <EmbeddedResource Include="Resources\ModeV1.xsd" />
-    <EmbeddedResource Include="Resources\ModeV2.xsd" />
-    <EmbeddedResource Include="Resources\PowerShell.xshd" />
-    <EmbeddedResource Include="Resources\XML-Mode.xshd" />
-    <EmbeddedResource Include="Resources\XmlDoc.xshd" />
-    <None Include="Models\DNNDataSet.xsc">
-      <DependentUpon>DNNDataSet.xsd</DependentUpon>
-    </None>
-    <Resource Include="Models\DNNDataSet.xsd" />
-    <None Include="Models\DNNDataSet.xss">
-      <DependentUpon>DNNDataSet.xsd</DependentUpon>
-    </None>
-    <None Include="key.snk" />
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
-    <AppDesigner Include="Properties\" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Resources\Synchronize.png" />
     <Resource Include="Resources\Schema.png" />
     <Resource Include="Resources\Undo.png" />
@@ -111,10 +79,36 @@
     <Resource Include="Resources\Collection.png" />
     <Resource Include="Resources\Copy.png" />
     <Resource Include="Resources\Cut.png" />
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\CPP-Mode.xshd" />
+    <EmbeddedResource Include="Resources\CSharp-Mode.xshd" />
+    <EmbeddedResource Include="Resources\Definition.xshd" />
+    <EmbeddedResource Include="Resources\HTML-Mode.xshd" />
+    <EmbeddedResource Include="Resources\ModeV1.xsd" />
+    <EmbeddedResource Include="Resources\ModeV2.xsd" />
+    <EmbeddedResource Include="Resources\PowerShell.xshd" />
+    <EmbeddedResource Include="Resources\XML-Mode.xshd" />
+    <EmbeddedResource Include="Resources\XmlDoc.xshd" />
+    <None Include="Models\DNNDataSet.xsc">
+      <DependentUpon>DNNDataSet.xsd</DependentUpon>
+    </None>
+    <Resource Include="Models\DNNDataSet.xsd" />
+    <None Include="Models\DNNDataSet.xss">
+      <DependentUpon>DNNDataSet.xsd</DependentUpon>
+    </None>
+    <None Include="key.snk" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <AppDesigner Include="Properties\" />
+    <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Resource Include="App.ico" />
-  </ItemGroup>
+ 
   <ItemGroup>
     <PackageReference Include="NuGet.ProjectModel" Version="5.7.0" />
     <PackageReference Include="NuGet.Resolver" Version="5.7.0" />

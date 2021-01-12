@@ -1,4 +1,4 @@
-﻿namespace ScriptsDialog
+﻿namespace ScriptsDialog.Properties
 {
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase
     {
