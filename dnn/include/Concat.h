@@ -71,7 +71,7 @@ namespace dnn
 			{
 				assert(*DstMemDesc == *Inputs[i]->DstMemDesc);
 				if (*DstMemDesc != *Inputs[i]->DstMemDesc)
-					throw std::invalid_argument("Incompatible memory formats in Concat layer");
+					throw std::invalid_argument("Incompatible memory formats in " + std::string(magic_enum::enum_name<LayerTypes>(LayerType)) + " layer");
 			}
 
 			srcsMemsDesc = std::vector<dnnl::memory::desc>();
