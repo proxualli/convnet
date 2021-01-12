@@ -160,7 +160,7 @@ namespace dnn
 					if (!plain)
 					{
 						const auto strideH = HW * VectorSize;
-						for_i(batchSize, MEDIUM_COMPUTE, [=](size_t b)
+						for_i(batchSize, LIGHT_COMPUTE, [=](size_t b)
 						{
 							const auto vecZero = VecFloat(0);
 							const auto outputSampleOffset = b * PaddedCDHW;
@@ -185,7 +185,7 @@ namespace dnn
 					}
 					else
 					{
-						for_i(batchSize, MEDIUM_COMPUTE, [=](size_t b)
+						for_i(batchSize, LIGHT_COMPUTE, [=](size_t b)
 						{
 							const auto outputSampleOffset = b * CDHW;
 							auto channelOffset = 0ull;
