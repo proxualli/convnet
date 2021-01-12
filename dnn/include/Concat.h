@@ -227,6 +227,7 @@ namespace dnn
 #ifdef DNN_LEAN
 			ZeroGradientMulti(batchSize);
 #endif // DNN_LEAN
+
 			const auto plain = IsPlainFormat();
 
 #ifdef DNN_STOCHASTIC

@@ -224,7 +224,7 @@ int main()
     p.Dropout = 0;
     p.Bottleneck = false;
     p.SqueezeExcitation = true;
-    p.ChannelZeroPad = true;
+    p.ChannelZeroPad = false;
 
     auto model = ScriptsCatalog::Generate(p);
 
