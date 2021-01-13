@@ -157,7 +157,7 @@ namespace dnn
  							size_t inputOffset, outputOffset;
 							for (auto c = 0ull; c < PaddedC; c += VectorSize)
 							{
-								inputOffset = InputLayer->PaddedCDHW + (c + groupC) * HW;
+								inputOffset = n * InputLayer->PaddedCDHW + (c + groupC) * HW;
 								outputOffset = n * PaddedCDHW + c * HW;
 
 								for (auto w = 0ull; w < strideH; w += VectorSize)
