@@ -509,6 +509,11 @@ namespace dnn
 
 		void ForwardProp(const size_t batchSize, const bool training) final override
 		{
+			const auto plain = IsPlainFormat();
+			const auto elements = plain ? batchSize * CDHW : batchSize * PaddedCDHW;
+			const auto threads = elements < 2097152ull ? 2ull : elements < 8338608ull ? LIGHT_COMPUTE : MEDIUM_COMPUTE;
+			//const auto strideH = HW * VectorSize;
+
 			switch (ActivationFunction)
 			{
 			case Activations::LogSoftmax:
@@ -606,7 +611,7 @@ namespace dnn
 					else
 					{
 #endif
-						for_i(batchSize, LIGHT_COMPUTE, [=](size_t n)
+						for_i(batchSize, threads, [=](size_t n)
 						{
 							const auto offsetN = n * CDHW;
 
@@ -652,7 +657,7 @@ namespace dnn
 					else
 					{
 #endif
-						for_i(batchSize, MEDIUM_COMPUTE, [=](size_t n)
+						for_i(batchSize, threads, [=](size_t n)
 						{
 							size_t offsetC, offsetH;
 
@@ -700,7 +705,7 @@ namespace dnn
 					else
 					{
 #endif
-						for_i(batchSize, LIGHT_COMPUTE, [=](size_t n)
+						for_i(batchSize, threads, [=](size_t n)
 						{
 							const auto offsetN = n * CDHW;
 
@@ -746,7 +751,7 @@ namespace dnn
 					else
 					{
 #endif
-						for_i(batchSize, MEDIUM_COMPUTE, [=](size_t n)
+						for_i(batchSize, threads, [=](size_t n)
 						{
 							size_t offsetC, offsetH;
 
@@ -793,7 +798,7 @@ namespace dnn
 					else
 					{
 #endif
-						for_i(batchSize, LIGHT_COMPUTE, [=](size_t n)
+						for_i(batchSize, threads, [=](size_t n)
 						{
 							const auto offsetN = n * CDHW;
 
@@ -839,7 +844,7 @@ namespace dnn
 					else
 					{
 #endif
-						for_i(batchSize, MEDIUM_COMPUTE, [=](size_t n)
+						for_i(batchSize, threads, [=](size_t n)
 						{
 							size_t offsetC, offsetH;
 
