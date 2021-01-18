@@ -526,7 +526,7 @@ namespace dnn
                         auto strSE =
                             se ? GlobalAvgPooling(In("B", C + 1), group) +
                             Convolution(1, group + "GAP", DIV8((6 * W) / 4), 1, 1, 1, 1, 0, 0, group) +
-                            BatchNormActivation(1, group + "C1", p.Relu, group) +
+                            BatchNormActivation(1, group + "C1", false, group) +
                             Convolution(2, group + "B1", DIV8(6 * W), 1, 1, 1, 1, 0, 0, group) +
                             Logistic(2, group + "C2", group) +
                             ChannelMultiply(In("B", C + 1) + "," + group + "ACT2", group) +
@@ -771,7 +771,7 @@ namespace dnn
                             Concat(A + 1, In("LCS", A) + "," + In("B", C + 4));
 
                         blocks.push_back(
-                            ChannelShuffle(A, In("CC", A), 4) +
+                            ChannelShuffle(A, In("CC", A), 2) +
                             ChannelSplit(A, In("CSH", A), 2, 1, "L") + ChannelSplit(A, In("CSH", A), 2, 2, "R") +
                             Convolution(C, In("RCS", A), DIV8(W), 1, 1, 1, 1, 0, 0) +
                             BatchNormActivation(C + 1, In("C", C), p.Relu) +
