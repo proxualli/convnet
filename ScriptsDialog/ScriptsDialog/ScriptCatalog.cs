@@ -639,17 +639,19 @@ namespace ScriptsDialog
                         net += Convolution(1, "Input", DIV8(W), kernel, kernel, 1, 1, pad, pad);
 
                         blocks.Add(
-                            BatchNormActivation(1,  "C1", p.Relu, DIV8(W)) +
+                            BatchNormActivation(1, "C1", p.Relu, DIV8(W)) +
                             Convolution(2, "B1", DIV8(W), 1, 1, 1, 1, 0, 0) +
                             BatchNormActivation(2, "C2", p.Relu, DIV8(W)) +
                             DepthwiseConvolution(3, "B2", 1, kernel, kernel, 1, 1, pad, pad) +
                             BatchNorm(3, "DC3") +
-                            Convolution(4, "B3", DIV8(W), 1, 1, 1, 1, 0, 0) +
-                            BatchNormActivation(4, "C4", p.Relu, DIV8(W)) +
-                            Convolution(5, "B1", DIV8(W), 1, 1, 1, 1, 0, 0) +
-                            Concat(1, "C5,B4"));
+                            DepthwiseConvolution(4, "B3", 1, kernel, kernel, 1, 1, pad, pad) +
+                            BatchNorm(4, "DC4") +
+                            Convolution(5, "B4", DIV8(W), 1, 1, 1, 1, 0, 0) +
+                            BatchNormActivation(5, "C5", p.Relu, DIV8(W)) +
+                            Convolution(6, "B1", DIV8(W), 1, 1, 1, 1, 0, 0) +
+                            Concat(1, "C6,B5"));
 
-                        var C = 6ul;
+                        var C = 7ul;
                         var A = 1ul;
 
                         for (var g = 1ul; g <= p.Groups; g++)  // 32*32 16*16 8*8 or 28*28 14*14 7*7
@@ -677,29 +679,31 @@ namespace ScriptsDialog
 
                             for (var i = 1ul; i < p.Iterations; i++)
                             {
-                                var group = In("SE", C + 3);
+                                var group = In("SE", C + 4);
                                 var strSE =
-                                    se ? GlobalAvgPooling(In("B", C + 3), group) +
+                                    se ? GlobalAvgPooling(In("B", C + 4), group) +
                                     Convolution(1, group + "GAP", DIV8(W / 4), 1, 1, 1, 1, 0, 0, group, "C", "Normal(0.01)") +
                                     BatchNormHardSwish(1, group + "C1", group) +
                                     Convolution(2, group + "B1", DIV8(W), 1, 1, 1, 1, 0, 0, group, "C", "Normal(0.01)") +
                                     HardLogistic(2, group + "C2", group) +
                                     ChannelMultiply(In("B", C + 3) + "," + group + "ACT2", group) +
                                     Concat(A + 1, In("LCS", A) + "," + group + "CM") :
-                                    Concat(A + 1, In("LCS", A) + "," + In("B", C + 3));
+                                    Concat(A + 1, In("LCS", A) + "," + In("B", C + 4));
 
                                 blocks.Add(
-                                    ChannelShuffle(A, In("CC", A), 2) +
+                                    ChannelShuffle(A, In("CC", A), 4) +
                                     ChannelSplit(A, In("CSH", A), 2, 1, "L") + ChannelSplit(A, In("CSH", A), 2, 2, "R") +
                                     Convolution(C, In("RCS", A), DIV8(W), 1, 1, 1, 1, 0, 0) +
                                     BatchNormActivation(C + 1, In("C", C), p.Relu, DIV8(W)) +
                                     DepthwiseConvolution(C + 1, In("B", C + 1), 1, kernel, kernel, 1, 1, pad, pad) +
                                     BatchNorm(C + 2, In("DC", C + 1)) +
-                                    Convolution(C + 2, In("B", C + 2), DIV8(W), 1, 1, 1, 1, 0, 0) +
-                                    BatchNormActivation(C + 3, In("C", C + 2), p.Relu, DIV8(W)) +
+                                    DepthwiseConvolution(C + 2, In("B", C + 2), 1, kernel, kernel, 1, 1, pad, pad) +
+                                    BatchNorm(C + 3, In("DC", C + 2)) +
+                                    Convolution(C + 3, In("B", C + 3), DIV8(W), 1, 1, 1, 1, 0, 0) +
+                                    BatchNormActivation(C + 4, In("C", C + 3), p.Relu, DIV8(W)) +
                                     strSE);
 
-                                A++; C += 3;
+                                A++; C += 4;
                             }
                         }
 
