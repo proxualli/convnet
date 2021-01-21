@@ -424,9 +424,7 @@ namespace Convnet
                                 {
                                     HasHeaderRecord = true
                                 };
-                                //CsvContext context = new CsvContext(config);
-                                //var map = context.AutoMap<DNNTrainingResult>();
-                               
+                                                              
                                 TextReader reader = new StreamReader(openFileDialog.FileName);
                                 var csvReader = new CsvReader(reader, config);
                                 var log = csvReader.GetRecords<DNNTrainingResult>();
