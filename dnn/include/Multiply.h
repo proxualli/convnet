@@ -55,24 +55,54 @@ namespace dnn
 		{
 			DNN_UNREF_PAR(training);
 
+			const auto plain = IsPlainFormat();
+			const auto size = plain ? CDHW : PaddedCDHW;
+			const auto elements = batchSize * size;
+			const auto threads = elements < 2097152ull ? 2ull : elements < 8338608ull ? LIGHT_COMPUTE : MEDIUM_COMPUTE;
+			const auto part = (size / VectorSize) * VectorSize;
+			const auto inputs = Inputs.size();
+
 #ifdef DNN_STOCHASTIC
 			if (batchSize == 1)
 			{
-				for (auto n = 0ull; n < CDHW; n++)
+				if (!plain)
 				{
-					Neurons[n] = Inputs[0]->Neurons[n];
+					VecFloat In, Out;
+					VecFloat vecZero = VecFloat(0);
+					for (auto n = 0ull; n < PaddedCDHW; n+=VectorSize)
+					{
+						In.load_a(&Inputs[0]->Neurons[n]);
+						In.store_a(&Neurons[n]);
 #ifndef DNN_LEAN
-					NeuronsD1[n] = Float(0);
+						vecZero.store_nt(&NeuronsD1[n]);
 #endif // DNN_LEAN
+					}
+					for (auto i = 1ull; i < inputs; i++)
+						for (auto n = 0ull; n < PaddedCDHW; n += VectorSize)
+						{
+							Out.load_a(&Neurons[n]);
+							In.load_a(&Inputs[i]->Neurons[n]);
+							Out *= In;
+							Out.store_a(&Neurons[n]);
+						}
 				}
-				for (auto i = 1ull; i < Inputs.size(); i++)
+				else
 					for (auto n = 0ull; n < CDHW; n++)
-						Neurons[n] *= Inputs[i]->Neurons[n];
+					{
+						Neurons[n] = Inputs[0]->Neurons[n];
+#ifndef DNN_LEAN
+						NeuronsD1[n] = Float(0);
+#endif // DNN_LEAN
+					}
+					for (auto i = 1ull; i < inputs; i++)
+						for (auto n = 0ull; n < CDHW; n++)
+							Neurons[n] *= Inputs[i]->Neurons[n];
+			    }
 			}
 			else
 			{
 #endif
-				if (Inputs.size() == 2)
+				if (inputs == 2)
 				{
 					for_i(batchSize, LIGHT_COMPUTE, [=](size_t b)
 					{
@@ -117,10 +147,17 @@ namespace dnn
 			ZeroGradientMulti(batchSize);
 #endif // DNN_LEAN
 
+			const auto plain = IsPlainFormat();
+			const auto size = plain ? CDHW : PaddedCDHW;
+			const auto elements = batchSize * size;
+			const auto threads = elements < 2097152ull ? 2ull : elements < 8338608ull ? LIGHT_COMPUTE : MEDIUM_COMPUTE;
+			const auto part = (size / VectorSize) * VectorSize;
+			const auto inputs = Inputs.size();
+
 #ifdef DNN_STOCHASTIC
 			if (batchSize == 1)
 			{
-				if (Inputs.size() == 2)
+				if (inputs == 2)
 				{
 					for (auto n = 0ull; n < CDHW; n++)
 					{
@@ -128,7 +165,7 @@ namespace dnn
 						Inputs[1]->NeuronsD1[n] += NeuronsD1[n] * Inputs[0]->Neurons[n];
 					}
 				}
-				else if (Inputs.size() == 3)
+				else if (inputs == 3)
 				{
 					for (auto n = 0ull; n < CDHW; n++)
 					{
@@ -145,7 +182,7 @@ namespace dnn
 			else
 			{
 #endif
-				if (Inputs.size() == 2)
+				if (inputs == 2)
 				{
 					for_i(batchSize, LIGHT_COMPUTE, [=](size_t b)
 					{
@@ -158,7 +195,7 @@ namespace dnn
 						}
 					});
 				}
-				else if (Inputs.size() == 3)
+				else if (inputs == 3)
 				{
 					for_i(batchSize, LIGHT_COMPUTE, [=](size_t b)
 					{
