@@ -11,7 +11,6 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Platforms>x64</Platforms>
-    <IncludePackageReferencesDuringMarkupCompilation>true</IncludePackageReferencesDuringMarkupCompilation>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
@@ -34,18 +33,20 @@
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="C:\Users\dhaen\source\repos\convnet\global.json" Link="global.json" />
+    <None Include="C:\Users\dhaen\source\repos\convnet\ScriptsDialog\global.json" Link="global.json" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
+    <Content Include="obj\project.assets.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="App.config" />
     <None Include="global.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <Content Include="obj\project.assets.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
 
   <ItemGroup>
