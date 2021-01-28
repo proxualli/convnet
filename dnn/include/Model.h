@@ -255,6 +255,20 @@ namespace dnn
 
 		virtual ~Model() = default;
 		
+		bool SetFormat(bool plain = false)
+		{
+			if (TaskState.load() == TaskStates::Stopped)
+			{
+				Format = plain ? dnnl::memory::format_tag::nchw : dnnl::memory::format_tag::any;
+				for (auto &layer : Layers)
+					layer->Format = Format;
+
+				return true;
+			}
+			else
+			    return false;
+		}
+
 		void ResetWeights()
 		{
 			if (!BatchSizeChanging.load() && !ResettingWeights.load())
