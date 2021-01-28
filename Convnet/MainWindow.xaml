@@ -44,6 +44,7 @@
         <CommandBinding Command="ApplicationCommands.Close" Executed="CloseCmdExecuted" CanExecute="CloseCmdCanExecute"/>
         <CommandBinding Command="{x:Static main:MainWindow.AboutCmd}" Executed="AboutCmdExecuted" CanExecute="AboutCmdCanExecute"/>
         <CommandBinding Command="{x:Static main:MainWindow.DisableLockingCmd}" Executed="DisableLockingCmdExecuted" CanExecute="DisableLockingCmdCanExecute"/>
+        <CommandBinding Command="{x:Static main:MainWindow.PlainFormatCmd}" Executed="PlainFormatCmdExecuted" CanExecute="PlainFormatCmdCanExecute"/>
         <CommandBinding Command="{x:Static main:MainWindow.LockAllCmd}" Executed="LockAllCmdExecuted" CanExecute="LockAllCmdCanExecute"/>
         <CommandBinding Command="{x:Static main:MainWindow.UnlockAllCmd}" Executed="UnlockAllCmdExecuted" CanExecute="UnlockAllCmdCanExecute"/>
         <CommandBinding Command="{x:Static main:MainWindow.PersistOptimizerCmd}" Executed="PersistOptimizerCmdExecuted" CanExecute="PersistOptimizerCmdCanExecute"/>
@@ -106,6 +107,9 @@
                     <MenuItem Header="Lock All" Command="{x:Static main:MainWindow.LockAllCmd}"/>
                     <MenuItem Header="Unlock All" Command="{x:Static main:MainWindow.UnlockAllCmd}"/>
                 </MenuItem>
+                <MenuItem Header="_Format">
+                    <MenuItem x:Name="Plain" Header="_Plain" IsCheckable="True" IsChecked="{Binding Default.PlainFormat, Mode=TwoWay, Source={StaticResource Settings}, UpdateSourceTrigger=PropertyChanged}" Command="{x:Static main:MainWindow.PlainFormatCmd}"/>
+                 </MenuItem>
                 <MenuItem x:Name="PersistOptimizer" Header="Persist _Optimizer" IsCheckable="True" IsChecked="{Binding Default.PersistOptimizer, Mode=TwoWay, Source={StaticResource Settings}, UpdateSourceTrigger=PropertyChanged}" Command="{x:Static main:MainWindow.PersistOptimizerCmd}"/>
                 <MenuItem Header="_Priority">
                     <c:FormattedSlider x:Name="PrioritySlider" Value="{Binding Default.PrioritySetter, Mode=TwoWay, Source={StaticResource Settings}, UpdateSourceTrigger=PropertyChanged}" Minimum="1" Maximum="6" LargeChange="1" SmallChange="1" Width="60" ValueChanged="PrioritySlider_ValueChanged" IsSnapToTickEnabled="True" AutoToolTipPlacement="TopLeft" Interval="10" ToolTipService.IsEnabled="True" AutoToolTipFormat="Priority"/>

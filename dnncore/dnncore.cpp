@@ -303,6 +303,7 @@ DNN_API void DNNGetLayerWeights(const size_t layerIndex, std::vector<Float>* wei
 DNN_API void DNNSetCostIndex(const size_t index);
 DNN_API void DNNGetCostInfo(const size_t costIndex, size_t* trainErrors, Float* trainLoss, Float* avgTrainLoss, Float* trainErrorPercentage, size_t* testErrors, Float* testLoss, Float* avgTestLoss, Float* testErrorPercentage);
 DNN_API void DNNGetImage(const size_t layer, const unsigned char fillColor, unsigned char* image);
+DNN_API bool DNNSetFormat(const bool plain);
 
 namespace dnncore
 {
@@ -959,6 +960,16 @@ namespace dnncore
 	void Model::ResetLayerWeights(size_t layerIndex)
 	{
 		DNNResetLayerWeights(layerIndex);
+	}
+
+	bool Model::SetFormat(bool plain)
+	{
+		bool ret = DNNSetFormat(plain);
+
+		if (ret)
+			PlainFormat = plain;
+
+		return ret;
 	}
 
 	void Model::SetOptimizer(DNNOptimizers strategy)

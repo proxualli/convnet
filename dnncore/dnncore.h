@@ -1526,6 +1526,7 @@ namespace dnncore
 		property Float updateTime;
 		property bool PersistOptimizer;
 		property bool DisableLocking;
+		property bool PlainFormat;
 
 		Model(String^ name, String^ fileName, DNNOptimizers optimizer);
 		virtual ~Model();
@@ -1538,6 +1539,7 @@ namespace dnncore
 		void SetDisableLocking(bool disable);
 		void SetOptimizersHyperParameters(Float adaDeltaEps, Float adaGradEps, Float adamEps, Float adamBeta2, Float adamaxEps, Float adamaxBeta2, Float rmsPropEps, Float radamEps, Float radamBeta1, Float radamBeta2);
 		void ApplyParameters();
+		bool SetFormat(bool plain);
 		void ResetLayerWeights(size_t layerIndex);
 		void ResetWeights();
 		void AddLearningRate(bool clear, size_t gotoEpoch, DNNTrainingRate^ rate);

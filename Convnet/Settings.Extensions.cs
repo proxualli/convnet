@@ -1,8 +1,6 @@
-﻿#if NET48
-using dnnclr;
-#else
-using dnncore;
-#endif
+﻿using dnncore;
+
+
 using System.Collections.ObjectModel;
 
 namespace Convnet.Properties

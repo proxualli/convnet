@@ -505,7 +505,22 @@ namespace Convnet.Properties
                 this["DisableLocking"] = value;
             }
         }
-        
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool PlainFormat
+        {
+            get
+            {
+                return ((bool)(this["PlainFormat"]));
+            }
+            set
+            {
+                this["PlainFormat"] = value;
+            }
+        }
+
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("using System;\r\nusing System.Collections.Generic;\r\nusing System.ComponentModel;\r\nu" +

@@ -33,6 +33,7 @@ namespace Convnet
 
         public static RoutedUICommand AboutCmd = new RoutedUICommand();
         public static RoutedUICommand DisableLockingCmd = new RoutedUICommand();
+        public static RoutedUICommand PlainFormatCmd = new RoutedUICommand();
         public static RoutedUICommand LockAllCmd = new RoutedUICommand();
         public static RoutedUICommand UnlockAllCmd = new RoutedUICommand();
         public static RoutedUICommand PersistOptimizerCmd = new RoutedUICommand();
@@ -769,6 +770,31 @@ namespace Convnet
 
             if (DisableLocking != null && PageVM != null && PageVM.Model != null)
                 e.CanExecute = true;
+        }
+
+        void PlainFormatCmdExecuted(object target, ExecutedRoutedEventArgs e)
+        {
+            if (Plain != null && PageVM != null && PageVM.Model != null)
+            {
+                if (PageVM.Pages[2] is TrainPageViewModel tpvm)
+                {
+                    if (tpvm.Model.TaskState == DNNTaskStates.Stopped)
+                    {
+                        if (PageVM.Model.SetFormat(Plain.IsChecked))
+                        {
+                            Settings.Default.PlainFormat = Plain.IsChecked;
+                            Settings.Default.Save();
+                        }
+                    }
+                }
+            }
+        }
+        void PlainFormatCmdCanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = false;
+
+            if (Plain != null && PageVM != null && PageVM.Model != null)
+              e.CanExecute = PageVM.Model.TaskState == DNNTaskStates.Stopped;
         }
 
 

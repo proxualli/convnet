@@ -1219,5 +1219,8 @@ public class ScriptsCatalogDynamic
     <Setting Name="EditSplitPositionB" Type="System.Windows.GridLength" Scope="User">
       <Value Profile="(Default)">840</Value>
     </Setting>
+    <Setting Name="PlainFormat" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
