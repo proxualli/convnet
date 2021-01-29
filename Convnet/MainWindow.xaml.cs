@@ -112,6 +112,7 @@ namespace Convnet
                     PageVM = new PageViewModel(model);
                     if (PageVM != null)
                     {
+                        PageVM.Model.SetFormat(Settings.Default.PlainFormat);
                         PageVM.Model.SetOptimizer((DNNOptimizers)Settings.Default.Optimizer);
                         PageVM.Model.SetPersistOptimizer(Settings.Default.PersistOptimizer);
                         PageVM.Model.SetDisableLocking(Settings.Default.DisableLocking);
