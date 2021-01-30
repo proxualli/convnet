@@ -3,8 +3,6 @@
 
 namespace dnn
 {
-	constexpr size_t DivideRoundUp(const size_t dividend, const size_t divisor) { return dividend % divisor == 0ull ? dividend / divisor : dividend / divisor + 1ull; }
-
 	class Convolution final : public Layer
 	{
 	private:
