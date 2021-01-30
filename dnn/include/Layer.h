@@ -151,8 +151,8 @@ namespace dnn
 	{
 		const dnnl::engine engine;
 		dnnl::stream stream;
-
-		Device(const dnnl::engine& eng, dnnl::stream str) : engine(eng), stream(str) {}
+		
+		Device(const dnnl::engine& eng, dnnl::stream str) : engine(eng), stream(str) { }
 	};
 	
 	class Layer

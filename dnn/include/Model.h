@@ -251,6 +251,8 @@ namespace dnn
 			dnnl::set_max_cpu_isa(dnnl::cpu_isa::sse41);
 			dnnl::set_cpu_isa_hints(dnnl::cpu_isa_hints::no_hints);
 #endif
+			if (nnp_initialize() != nnp_status_success)
+				throw std::invalid_argument("NNPACK initialization failed");
 		}
 
 		virtual ~Model() = default;

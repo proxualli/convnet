@@ -47,20 +47,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libpng", "dnn\deps\libpng\p
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test", "test\test.vcxproj", "{42A112E4-E623-4F72-BDFA-1CE5AFE7DD9C}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "nnpack_reference_layers", "dnn\deps\NNPACK\build\nnpack_reference_layers.vcxproj", "{972B9046-7C4E-371E-B2EC-2659F5D4A931}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "nnpack", "dnn\deps\NNPACK\build\nnpack.vcxproj", "{1090182C-BB3B-364D-87D6-33E7DCD6DED2}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cpuinfo_internals", "dnn\deps\NNPACK\build\deps\cpuinfo\cpuinfo_internals.vcxproj", "{4742EE21-0223-35C8-9520-30747984BBDC}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cpuinfo", "dnn\deps\NNPACK\build\deps\cpuinfo\cpuinfo.vcxproj", "{F3716E52-4D01-3B70-B731-FAF8025E30FD}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "clog", "dnn\deps\NNPACK\build\deps\cpuinfo\deps\clog\clog.vcxproj", "{A927FD09-31BE-3323-AF97-8A4CD48F9944}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "pthreadpool", "dnn\deps\NNPACK\build\deps\pthreadpool\pthreadpool.vcxproj", "{AEEA360F-DCDE-317B-8FC1-3C4AC365DD5C}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "vectorclass1", "dnn\deps\NNPACK\build\deps\vectorclass1\vectorclass1.vcxproj", "{2F356DB1-CD40-397D-B255-DD917BDAD3AD}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -137,34 +123,6 @@ Global
 		{42A112E4-E623-4F72-BDFA-1CE5AFE7DD9C}.Debug|x64.Build.0 = Debug|x64
 		{42A112E4-E623-4F72-BDFA-1CE5AFE7DD9C}.Release|x64.ActiveCfg = Release|x64
 		{42A112E4-E623-4F72-BDFA-1CE5AFE7DD9C}.Release|x64.Build.0 = Release|x64
-		{972B9046-7C4E-371E-B2EC-2659F5D4A931}.Debug|x64.ActiveCfg = Debug|x64
-		{972B9046-7C4E-371E-B2EC-2659F5D4A931}.Debug|x64.Build.0 = Debug|x64
-		{972B9046-7C4E-371E-B2EC-2659F5D4A931}.Release|x64.ActiveCfg = Release|x64
-		{972B9046-7C4E-371E-B2EC-2659F5D4A931}.Release|x64.Build.0 = Release|x64
-		{1090182C-BB3B-364D-87D6-33E7DCD6DED2}.Debug|x64.ActiveCfg = Debug|x64
-		{1090182C-BB3B-364D-87D6-33E7DCD6DED2}.Debug|x64.Build.0 = Debug|x64
-		{1090182C-BB3B-364D-87D6-33E7DCD6DED2}.Release|x64.ActiveCfg = Release|x64
-		{1090182C-BB3B-364D-87D6-33E7DCD6DED2}.Release|x64.Build.0 = Release|x64
-		{4742EE21-0223-35C8-9520-30747984BBDC}.Debug|x64.ActiveCfg = Debug|x64
-		{4742EE21-0223-35C8-9520-30747984BBDC}.Debug|x64.Build.0 = Debug|x64
-		{4742EE21-0223-35C8-9520-30747984BBDC}.Release|x64.ActiveCfg = Release|x64
-		{4742EE21-0223-35C8-9520-30747984BBDC}.Release|x64.Build.0 = Release|x64
-		{F3716E52-4D01-3B70-B731-FAF8025E30FD}.Debug|x64.ActiveCfg = Debug|x64
-		{F3716E52-4D01-3B70-B731-FAF8025E30FD}.Debug|x64.Build.0 = Debug|x64
-		{F3716E52-4D01-3B70-B731-FAF8025E30FD}.Release|x64.ActiveCfg = Release|x64
-		{F3716E52-4D01-3B70-B731-FAF8025E30FD}.Release|x64.Build.0 = Release|x64
-		{A927FD09-31BE-3323-AF97-8A4CD48F9944}.Debug|x64.ActiveCfg = Debug|x64
-		{A927FD09-31BE-3323-AF97-8A4CD48F9944}.Debug|x64.Build.0 = Debug|x64
-		{A927FD09-31BE-3323-AF97-8A4CD48F9944}.Release|x64.ActiveCfg = Release|x64
-		{A927FD09-31BE-3323-AF97-8A4CD48F9944}.Release|x64.Build.0 = Release|x64
-		{AEEA360F-DCDE-317B-8FC1-3C4AC365DD5C}.Debug|x64.ActiveCfg = Debug|x64
-		{AEEA360F-DCDE-317B-8FC1-3C4AC365DD5C}.Debug|x64.Build.0 = Debug|x64
-		{AEEA360F-DCDE-317B-8FC1-3C4AC365DD5C}.Release|x64.ActiveCfg = Release|x64
-		{AEEA360F-DCDE-317B-8FC1-3C4AC365DD5C}.Release|x64.Build.0 = Release|x64
-		{2F356DB1-CD40-397D-B255-DD917BDAD3AD}.Debug|x64.ActiveCfg = Debug|x64
-		{2F356DB1-CD40-397D-B255-DD917BDAD3AD}.Debug|x64.Build.0 = Debug|x64
-		{2F356DB1-CD40-397D-B255-DD917BDAD3AD}.Release|x64.ActiveCfg = Release|x64
-		{2F356DB1-CD40-397D-B255-DD917BDAD3AD}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

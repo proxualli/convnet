@@ -98,7 +98,7 @@ namespace dnn
 #endif
 	static const auto tab = std::string("\t");
 	static const auto dtab = std::string("\t\t");
-
+	
 	constexpr auto PlainFmt = dnnl::memory::format_tag::nchw;
 
 #if defined(DNN_AVX512)
