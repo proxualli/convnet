@@ -190,6 +190,9 @@
     <ProjectReference Include="deps\libpng\projects\vstudio\zlib\zlib.vcxproj">
       <Project>{60f89955-91c6-3a36-8000-13c592fec2df}</Project>
     </ProjectReference>
+    <ProjectReference Include="deps\NNPACK\build\nnpack.vcxproj">
+      <Project>{1090182c-bb3b-364d-87d6-33e7dcd6ded2}</Project>
+    </ProjectReference>
     <ProjectReference Include="deps\oneDNN\build\src\dnnl.vcxproj">
       <Project>{2f09a747-18cb-3043-85bf-83bba99c5137}</Project>
     </ProjectReference>
