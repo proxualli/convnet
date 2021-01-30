@@ -363,6 +363,7 @@ namespace Convnet.PageViewModels
                         {
                             Model.Dispose();
                             Model = new Model(ModelName, pathDefinition, (DNNOptimizers)Settings.Default.Optimizer);
+                            Model.SetFormat(Settings.Default.PlainFormat);
                             Model.SetPersistOptimizer(Settings.Default.PersistOptimizer);
                             Model.SetDisableLocking(Settings.Default.DisableLocking);
                             Model.SetOptimizersHyperParameters(Settings.Default.AdaDeltaEps, Settings.Default.AdaGradEps, Settings.Default.AdamEps, Settings.Default.AdamBeta2, Settings.Default.AdamaxEps, Settings.Default.AdamaxBeta2, Settings.Default.RMSpropEps, Settings.Default.RAdamEps, Settings.Default.RAdamBeta1, Settings.Default.RAdamBeta2);
@@ -428,6 +429,7 @@ namespace Convnet.PageViewModels
                             {
                                 Model.Dispose();
                                 Model = new Model(ModelName, pathDefinition, (DNNOptimizers)Settings.Default.Optimizer);
+                                Model.SetFormat(Settings.Default.PlainFormat);
                                 Model.SetPersistOptimizer(Settings.Default.PersistOptimizer);
                                 Model.SetDisableLocking(Settings.Default.DisableLocking);
                                 Model.SetOptimizersHyperParameters(Settings.Default.AdaDeltaEps, Settings.Default.AdaGradEps, Settings.Default.AdamEps, Settings.Default.AdamBeta2, Settings.Default.AdamaxEps, Settings.Default.AdamaxBeta2, Settings.Default.RMSpropEps, Settings.Default.RAdamEps, Settings.Default.RAdamBeta1, Settings.Default.RAdamBeta2);
