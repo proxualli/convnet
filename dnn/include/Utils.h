@@ -103,7 +103,7 @@
                 || (__clang_major__ == 3 && __clang_minor__ < 9))) \
         || (defined(__INTEL_COMPILER) && __INTEL_COMPILER < 1700) \
         || (!defined(__INTEL_COMPILER) && !defined(__clang__) \
-                && (!defined(_MSC_VER) || __GNUC__ < 6 \
+                && (defined(_MSC_VER) || __GNUC__ < 6 \
                         || (__GNUC__ == 6 && __GNUC_MINOR__ < 1)))
 #define simdlen(x)
 #endif // long simdlen if
