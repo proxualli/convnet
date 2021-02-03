@@ -130,8 +130,8 @@ namespace dnn
 	typedef std::vector<Byte, AlignedAllocator<Byte, 64ull>> ByteVector;
 
     //constexpr bool IS_LITTLE_ENDIAN = std::endian::native == std::endian::little;
-	constexpr auto NEURONS_LIMIT = Float(1000);   // limit for all the value of the neurons and its derivatives [-NEURONS_LIMIT,NEURONS_LIMIT]
-	constexpr auto WEIGHTS_LIMIT = Float(100);   // limit for all the value of the weights and biases [-WEIGHTS_LIMIT,WEIGHTS_LIMIT]
+	constexpr auto NEURONS_LIMIT = Float(1000);   // limit for all the neurons and derivative [-NEURONS_LIMIT,NEURONS_LIMIT]
+	constexpr auto WEIGHTS_LIMIT = Float(100);   // limit for all the weights and biases [-WEIGHTS_LIMIT,WEIGHTS_LIMIT]
 	constexpr auto LIGHT_COMPUTE = 4ull;         // number of threads
 	constexpr auto MEDIUM_COMPUTE = 8ull;
 	constexpr auto FloatSquare(const Float& value) noexcept { return (value * value); }
