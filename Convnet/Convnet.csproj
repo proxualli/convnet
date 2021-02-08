@@ -119,7 +119,7 @@
     <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="5.0.0" />
     <PackageReference Include="Microsoft.DotNet.PlatformAbstractions" Version="3.1.6" />
     <PackageReference Include="AvalonEdit" Version="6.1.0-preview1" />
-    <PackageReference Include="CsvHelper" Version="22.1.1" />
+    <PackageReference Include="CsvHelper" Version="22.1.2" />
     <PackageReference Include="OxyPlot.Core" Version="2.0.0" />
     <PackageReference Include="OxyPlot.Wpf" Version="2.0.0" />
     <PackageReference Include="DotNetProjects.Extended.Wpf.Toolkit" Version="4.6.96" />

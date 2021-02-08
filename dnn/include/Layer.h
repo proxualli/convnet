@@ -87,11 +87,11 @@ namespace dnn
 		Average = 2,
 		AvgPooling = 3,
 		BatchNorm = 4,
-		BatchNormFTS = 5,
-		BatchNormFTSDropout = 6,
-		BatchNormHardLogistic = 7,
-		BatchNormHardSwish = 8,
-		BatchNormHardSwishDropout = 9,
+		BatchNormHardLogistic = 5,
+		BatchNormHardSwish = 6,
+		BatchNormHardSwishDropout = 7,
+		BatchNormMish = 8,
+		BatchNormMishDropout = 9,
 		BatchNormRelu = 10,
 		BatchNormReluDropout = 11,
 		BatchNormSwish = 12,
@@ -347,8 +347,8 @@ namespace dnn
 
 		bool IsNormalization() const { 
 			return LayerType == LayerTypes::BatchNorm || 
-			LayerType == LayerTypes::BatchNormFTS || 
-			LayerType == LayerTypes::BatchNormFTSDropout || 
+			LayerType == LayerTypes::BatchNormMish || 
+			LayerType == LayerTypes::BatchNormMishDropout || 
 			LayerType == LayerTypes::BatchNormHardLogistic || 
 			LayerType == LayerTypes::BatchNormHardSwish ||
 			LayerType == LayerTypes::BatchNormHardSwishDropout || 
@@ -429,7 +429,10 @@ namespace dnn
 
 		inline void ReleaseGradient()
 		{
-			NeuronsD1.resize(0);
+			NeuronsD1.clear();
+			NeuronsD1.shrink_to_fit();
+			//NeuronsD1.resize(0);
+			FloatVector().swap(NeuronsD1);
 		}
 #endif // DNN_LEAN
 
@@ -1321,11 +1324,12 @@ namespace dnn
 			const auto momentum = rate.Momentum;
 			const auto momentumPlusOne = momentum + Float(1);
 			const auto batchRecip = Float(1) / rate.BatchSize * lr;
+			const auto meanD1 = std::accumulate(std::begin(WeightsD1), std::end(WeightsD1), Float(0)) / std::size(WeightsD1);
 
 			PRAGMA_OMP_SIMD()
 			for (auto i = 0ull; i < Weights.size(); i++)
 			{
-				const auto V = momentum * WeightsPar1[i] - (WeightsD1[i] * batchRecip + Weights[i] * l2Penalty);
+				const auto V = momentum * WeightsPar1[i] - ((WeightsD1[i] - meanD1) * batchRecip + Weights[i] * l2Penalty);
 				Weights[i] += -momentum * WeightsPar1[i] + momentumPlusOne * V;
 				WeightsPar1[i] = V;
 			}
@@ -1334,11 +1338,12 @@ namespace dnn
 			{
 				const auto lr = rate.MaximumRate * BiasesLRM;
 				const auto batchRecip = Float(1) / rate.BatchSize * lr;
+				const auto meanD1 = std::accumulate(std::begin(BiasesD1), std::end(BiasesD1), Float(0)) / BiasCount;
 
 				PRAGMA_OMP_SIMD()
 				for (auto i = 0ull; i < BiasCount; i++)
 				{
-					const auto V = momentum * BiasesPar1[i] - BiasesD1[i] * batchRecip;
+					const auto V = momentum * BiasesPar1[i] - (BiasesD1[i] - meanD1) * batchRecip;
 					Biases[i] += -momentum * BiasesPar1[i] + momentumPlusOne * V;
 					BiasesPar1[i] = V;
 				}

@@ -215,8 +215,8 @@ namespace dnn
 
 	inline static void ZeroFloatVectorAllocate(FloatVector& destination, const size_t elements) noexcept
 	{
-		if (destination.size() < elements)
-			destination = FloatVector(elements);
+		//if (destination.size() < elements)
+		destination.resize(elements);
 
 		ZeroFloatVector(destination.data(), elements);
 	}
