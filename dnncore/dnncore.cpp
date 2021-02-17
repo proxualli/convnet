@@ -244,6 +244,30 @@ struct TrainingRate
 	}
 };
 
+struct Stats
+{
+	Float Mean;
+	Float StdDev;
+	Float Min;
+	Float Max;
+
+	Stats() :
+		Mean(0),
+		StdDev(0),
+		Min(0),
+		Max(0)
+	{
+	}
+
+	Stats(const Float mean, const Float stddev, const Float min, const Float  max) :
+		Mean(mean),
+		StdDev(stddev),
+		Min(min),
+		Max(max)
+	{
+	}
+};
+
 struct CheckMsg
 {
 	size_t Row;
@@ -289,7 +313,7 @@ DNN_API void DNNGetTestingInfo(size_t* batchSize, size_t* sampleIndex, Float* av
 DNN_API void DNNGetNetworkInfo(std::string* name, size_t* costIndex, size_t* costLayerCount, size_t* groupIndex, size_t* labelindex, size_t* hierarchies, bool* meanStdNormalization, Costs* lossFunction, Datasets* dataset, size_t* layerCount, size_t* trainingSamples, size_t* testingSamples, std::vector<Float>* meanTrainSet, std::vector<Float>* stdTrainSet);
 DNN_API void DNNSetOptimizer(const Optimizers strategy);
 DNN_API void DNNResetOptimizer();
-DNN_API void DNNRefreshStatistics(const size_t layerIndex, std::string* description, Float* neuronsStdDev, Float* neuronsMean, Float* neuronsMin, Float* neuronsMax, Float* weightsStdDev, Float* weightsMean, Float* weightsMin, Float* weightsMax, Float* biasesStdDev, Float* biasesMean, Float* biasesMin, Float* biasesMax, Float* fpropLayerTime, Float* bpropLayerTime, Float* updateLayerTime, Float* fpropTime, Float* bpropTime, Float* updateTime, bool* locked);
+DNN_API void DNNRefreshStatistics(const size_t layerIndex, std::string* description, Stats* neuronsStats, Stats* weightsStats, Stats* biasesStats, Float* fpropLayerTime, Float* bpropLayerTime, Float* updateLayerTime, Float* fpropTime, Float* bpropTime, Float* updateTime, bool* locked);
 DNN_API bool DNNGetInputSnapShot(std::vector<Float>* snapshot, std::vector<size_t>* label);
 DNN_API bool DNNCheckDefinition(std::string& definition, CheckMsg& checkMsg);
 DNN_API int DNNLoadDefinition(const std::string& fileName, const Optimizers optimizer, CheckMsg& checkMsg);
@@ -427,18 +451,9 @@ namespace dnncore
 	void Model::UpdateLayerStatistics(LayerInformation^ info, size_t layerIndex, bool updateUI)
 	{
 		auto description = new std::string();
-		auto neuronsStdDev = new Float();
-		auto neuronsMean = new Float();
-		auto neuronsMin = new Float();
-		auto neuronsMax = new Float();
-		auto weightsStdDev = new Float();
-		auto weightsMean = new Float();
-		auto weightsMin = new Float();
-		auto weightsMax = new Float();
-		auto biasesStdDev = new Float();
-		auto biasesMean = new Float();
-		auto biasesMin = new Float();
-		auto biasesMax = new Float();
+		auto neuronsStats = new Stats();
+		auto weightsStats = new Stats();
+		auto biasesStats = new Stats();
 		auto fpropLayerTime = new Float();
 		auto bpropLayerTime = new Float();
 		auto updateLayerTime = new Float();
@@ -447,21 +462,21 @@ namespace dnncore
 		auto updateTiming = new Float();
 		auto islocked = new bool();
 
-		DNNRefreshStatistics(layerIndex, description, neuronsStdDev, neuronsMean, neuronsMin, neuronsMax, weightsStdDev, weightsMean, weightsMin, weightsMax, biasesStdDev, biasesMean, biasesMin, biasesMax, fpropLayerTime, bpropLayerTime, updateLayerTime, fpropTiming, bpropTiming, updateTiming, islocked);
+		DNNRefreshStatistics(layerIndex, description, neuronsStats, weightsStats, biasesStats, fpropLayerTime, bpropLayerTime, updateLayerTime, fpropTiming, bpropTiming, updateTiming, islocked);
 
 		info->Description = ToManagedString(*description);
-		info->NeuronsStdDev = *neuronsStdDev;
-		info->NeuronsMean = *neuronsMean;
-		info->NeuronsMin = *neuronsMin;
-		info->NeuronsMax = *neuronsMax;
-		info->WeightsStdDev = *weightsStdDev;
-		info->WeightsMean = *weightsMean;
-		info->WeightsMin = *weightsMin;
-		info->WeightsMax = *weightsMax;
-		info->BiasesStdDev = *biasesStdDev;
-		info->BiasesMean = *biasesMean;
-		info->BiasesMin = *biasesMin;
-		info->BiasesMax = *biasesMax;
+		info->NeuronsStdDev = neuronsStats->StdDev;
+		info->NeuronsMean = neuronsStats->Mean;
+		info->NeuronsMin = neuronsStats->Min;
+		info->NeuronsMax = neuronsStats->Max;
+		info->WeightsStdDev = weightsStats->StdDev;
+		info->WeightsMean = weightsStats->Mean;
+		info->WeightsMin = weightsStats->Min;
+		info->WeightsMax = weightsStats->Max;
+		info->BiasesStdDev = biasesStats->StdDev;
+		info->BiasesMean = biasesStats->Mean;
+		info->BiasesMin = biasesStats->Min;
+		info->BiasesMax = biasesStats->Max;
 		info->FPropLayerTime = *fpropLayerTime;
 		info->BPropLayerTime = *bpropLayerTime;
 		info->UpdateLayerTime = *updateLayerTime;
@@ -471,18 +486,9 @@ namespace dnncore
 		info->LockUpdate = info->Lockable ? Nullable<bool>(*islocked) : Nullable<bool>(false);
 
 		delete description;
-		delete neuronsStdDev;
-		delete neuronsMean;
-		delete neuronsMin;
-		delete neuronsMax;
-		delete weightsStdDev;
-		delete weightsMean;
-		delete weightsMin;
-		delete weightsMax;
-		delete biasesStdDev;
-		delete biasesMean;
-		delete biasesMin;
-		delete biasesMax;
+		delete neuronsStats;
+		delete weightsStats;
+		delete biasesStats;
 		delete fpropLayerTime;
 		delete bpropLayerTime;
 		delete updateLayerTime;
