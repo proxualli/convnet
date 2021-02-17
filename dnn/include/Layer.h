@@ -620,6 +620,11 @@ namespace dnn
 				NeuronsStats.Mean = Float(0);
 				NeuronsStats.StdDev = Float(0);
 
+				WeightsStats.Min = Float(0);
+				WeightsStats.Max = Float(0);
+				WeightsStats.Mean = Float(0);
+				WeightsStats.StdDev = Float(0);
+
 				BiasesStats.Min = Float(0);
 				BiasesStats.Max = Float(0);
 				BiasesStats.Mean = Float(0);
