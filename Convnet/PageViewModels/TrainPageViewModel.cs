@@ -1750,9 +1750,8 @@ namespace Convnet.PageViewModels
                         sb.AppendFormat(" Max:     {0:N8}", Model.Layers[index].NeuronsMax);
                     else
                         sb.AppendFormat(" Max:    {0:N8}", Model.Layers[index].NeuronsMax);
-
-
                     weightsMinMax += "<Span>" + sb.ToString() + "</Span><LineBreak/>";
+
                     if (ShowWeightsSnapshot)
                     {
                         weightsMinMax += "<Span><Bold>Weights</Bold></Span><LineBreak/>";

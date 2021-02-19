@@ -465,6 +465,7 @@ namespace dnncore
 		DNNRefreshStatistics(layerIndex, description, neuronsStats, weightsStats, biasesStats, fpropLayerTime, bpropLayerTime, updateLayerTime, fpropTiming, bpropTiming, updateTiming, islocked);
 
 		info->Description = ToManagedString(*description);
+
 		info->NeuronsStdDev = neuronsStats->StdDev;
 		info->NeuronsMean = neuronsStats->Mean;
 		info->NeuronsMin = neuronsStats->Min;
@@ -477,12 +478,14 @@ namespace dnncore
 		info->BiasesMean = biasesStats->Mean;
 		info->BiasesMin = biasesStats->Min;
 		info->BiasesMax = biasesStats->Max;
+
 		info->FPropLayerTime = *fpropLayerTime;
 		info->BPropLayerTime = *bpropLayerTime;
 		info->UpdateLayerTime = *updateLayerTime;
 		fpropTime = *fpropTiming;
 		bpropTime = *bpropTiming;
 		updateTime = *updateTiming;
+
 		info->LockUpdate = info->Lockable ? Nullable<bool>(*islocked) : Nullable<bool>(false);
 
 		delete description;

@@ -507,7 +507,7 @@ extern "C" DNN_API void DNNRefreshStatistics(const size_t layerIndex, std::strin
 		*neuronsStats = model->Layers[layerIndex]->NeuronsStats;
 		*weightsStats = model->Layers[layerIndex]->WeightsStats;
 		*biasesStats = model->Layers[layerIndex]->BiasesStats;
-		
+
 		*fpropLayerTime = Float(std::chrono::duration_cast<std::chrono::microseconds>(model->Layers[layerIndex]->fpropTime).count()) / 1000;
 		*bpropLayerTime = Float(std::chrono::duration_cast<std::chrono::microseconds>(model->Layers[layerIndex]->bpropTime).count()) / 1000;
 		*updateLayerTime = Float(std::chrono::duration_cast<std::chrono::microseconds>(model->Layers[layerIndex]->updateTime).count()) / 1000;

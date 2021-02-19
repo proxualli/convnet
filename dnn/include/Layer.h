@@ -244,11 +244,9 @@ namespace dnn
 		Float RAdamEps;
 		Float RAdamBeta1;
 		Float RAdamBeta2;
-
 		Stats NeuronsStats;
 		Stats WeightsStats;
 		Stats BiasesStats;
-		
 		std::atomic<bool> LockUpdate;
 		std::atomic<bool> RefreshingStats;
 		std::chrono::duration<Float> fpropTime;
@@ -478,9 +476,9 @@ namespace dnn
 
 					NeuronsStats.Min = std::numeric_limits<Float>::max();
 					NeuronsStats.Max = std::numeric_limits<Float>::lowest();
-
-					float sum = Float(0);
-
+					
+					Float sum = Float(0);
+					
 					if (ncdhw % VectorSize == 0ull)
 					{
 						VecFloat neurons;
@@ -499,13 +497,16 @@ namespace dnn
 						if (!std::isnan(sum) && !std::isinf(sum))
 						{
 							NeuronsStats.Mean = sum / ncdhw;
+							
 							VecFloat vecSum = VecFloat(0);
+							
 							for (auto i = 0ull; i < ncdhw; i += VectorSize)
 							{
 								neurons.load_a(&Neurons[i]);
 								vecSum += square(neurons - NeuronsStats.Mean);
 							}
 							sum = horizontal_add(vecSum);
+						
 							if (!std::isnan(sum) && !std::isinf(sum))
 								NeuronsStats.StdDev = std::sqrt(sum / ncdhw);
 							else
@@ -524,17 +525,18 @@ namespace dnn
 							if ((NeuronsStats.Min < -NEURONS_LIMIT) || (NeuronsStats.Max > NEURONS_LIMIT))
 								goto FAIL;
 
-							sum += Neurons[i];
+							sum += Neurons[i];						
 						}
 
 						if (!std::isnan(sum) && !std::isinf(sum))
 						{
 							NeuronsStats.Mean = sum / ncdhw;
 							sum = Float(0);
+							
 							PRAGMA_OMP_SIMD()
 							for (auto i = 0ull; i < ncdhw; i++)
 								sum += FloatSquare(Neurons[i] - NeuronsStats.Mean);
-
+							
 							if (!std::isnan(sum) && !std::isinf(sum))
 								NeuronsStats.StdDev = std::sqrt(sum / ncdhw);
 							else
