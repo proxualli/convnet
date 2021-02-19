@@ -152,7 +152,9 @@ namespace dnn
 		const dnnl::engine engine;
 		dnnl::stream stream;
 		
-		Device(const dnnl::engine& eng, dnnl::stream str) : engine(eng), stream(str) { }
+		Device(const dnnl::engine& eng, dnnl::stream str) : engine(eng), stream(str) 
+		{ 
+		}
 	};
 	
 	struct Stats
@@ -355,14 +357,14 @@ namespace dnn
 		bool IsNormalization() const 
 		{ 
 			return LayerType == LayerTypes::BatchNorm || 
-			LayerType == LayerTypes::BatchNormMish || 
-			LayerType == LayerTypes::BatchNormMishDropout || 
-			LayerType == LayerTypes::BatchNormHardLogistic || 
-			LayerType == LayerTypes::BatchNormHardSwish ||
-			LayerType == LayerTypes::BatchNormHardSwishDropout || 
-			LayerType == LayerTypes::BatchNormRelu || 
-			LayerType == LayerTypes::BatchNormReluDropout || 
-			LayerType == LayerTypes::BatchNormSwish; 
+				LayerType == LayerTypes::BatchNormMish || 
+				LayerType == LayerTypes::BatchNormMishDropout || 
+				LayerType == LayerTypes::BatchNormHardLogistic || 
+				LayerType == LayerTypes::BatchNormHardSwish ||
+				LayerType == LayerTypes::BatchNormHardSwishDropout || 
+				LayerType == LayerTypes::BatchNormRelu || 
+				LayerType == LayerTypes::BatchNormReluDropout || 
+				LayerType == LayerTypes::BatchNormSwish; 
 		};
 
 		bool IsNormalizationUnscaled() const 
@@ -551,7 +553,8 @@ namespace dnn
 				{
 					WeightsStats.Min = std::numeric_limits<Float>::max();
 					WeightsStats.Max = std::numeric_limits<Float>::lowest();
-					float sum = Float(0);
+					
+					Float sum = Float(0);
 
 					for (auto i = 0ull; i < Weights.size(); i++)
 					{
@@ -583,6 +586,7 @@ namespace dnn
 					{
 						BiasesStats.Min = std::numeric_limits<Float>::max();
 						BiasesStats.Max = std::numeric_limits<Float>::lowest();
+						
 						sum = Float(0);
 						for (auto i = 0ull; i < BiasCount; i++)
 						{
@@ -1415,7 +1419,6 @@ namespace dnn
 
 		inline void SGDMomentum(const TrainingRate& rate, const size_t epoch)
 		{
-			//const auto part = rate.Epochs / 4;
 			//const auto prop = (rate.Epochs - epoch) / rate.Epochs;
 			//const auto momentum = epoch >= 150 ? rate.Momentum * (prop / (Float(1) - rate.Momentum + rate.Momentum * prop)) : rate.Momentum; // decaying momentum (Deamon SGDM)
 			const auto momentum = rate.Momentum;
