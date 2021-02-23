@@ -479,7 +479,7 @@ namespace dnn
 					NeuronsStats.Min = std::numeric_limits<Float>::max();
 					NeuronsStats.Max = std::numeric_limits<Float>::lowest();
 					
-					Float sum = Float(0);
+					auto sum = Float(0);
 					
 					if (ncdhw % VectorSize == 0ull)
 					{
@@ -500,7 +500,7 @@ namespace dnn
 						{
 							NeuronsStats.Mean = sum / ncdhw;
 							
-							VecFloat vecSum = VecFloat(0);
+							auto vecSum = VecFloat(0);
 							
 							for (auto i = 0ull; i < ncdhw; i += VectorSize)
 							{
@@ -554,7 +554,7 @@ namespace dnn
 					WeightsStats.Min = std::numeric_limits<Float>::max();
 					WeightsStats.Max = std::numeric_limits<Float>::lowest();
 					
-					Float sum = Float(0);
+					auto sum = Float(0);
 
 					for (auto i = 0ull; i < Weights.size(); i++)
 					{
@@ -977,7 +977,7 @@ namespace dnn
 					auto max = 2 * std::abs(WeightsScale);
 					std::generate_n(weights.begin(), WeightCount, [&]()
 					{
-						Float value = Float(0);
+						auto value = Float(0);
 						do { value = distribution(RandomEngine); } while ((value < -max) || (value > max));
 						return value;
 					});
@@ -1419,8 +1419,6 @@ namespace dnn
 
 		inline void SGDMomentum(const TrainingRate& rate, const size_t epoch)
 		{
-			//const auto prop = (rate.Epochs - epoch) / rate.Epochs;
-			//const auto momentum = epoch >= 150 ? rate.Momentum * (prop / (Float(1) - rate.Momentum + rate.Momentum * prop)) : rate.Momentum; // decaying momentum (Deamon SGDM)
 			const auto momentum = rate.Momentum;
 			const auto lr = rate.MaximumRate * WeightsLRM / rate.BatchSize;
 			const auto l2Penalty = rate.MaximumRate * WeightsLRM * rate.L2Penalty * WeightsWDM;
@@ -1937,7 +1935,7 @@ namespace dnn
 
 		virtual std::streamsize GetWeightsSize(const bool persistOptimizer = false, const Optimizers optimizer = Optimizers::SGD) const
 		{
-			std::streamsize weightsSize = 0;
+			auto weightsSize = std::streamsize(0);
 
 			if (HasWeights)
 			{
@@ -1997,7 +1995,6 @@ namespace dnn
 							weightsSize += 3 * BiasCount * sizeof(Float);
 					}
 					break;
-
 					}
 				}
 				else
