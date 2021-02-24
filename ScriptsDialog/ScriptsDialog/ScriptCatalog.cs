@@ -436,7 +436,7 @@ namespace ScriptsDialog
 
                         for (var g = 1ul; g <= p.Groups; g++)  // 32*32 16*16 8*8 or 28*28 14*14 7*7
                         {
-                            var mix = g - 1ul;
+                            var mix = 0ul; // g - 1ul;
 
                             if (g > 1)
                             {
