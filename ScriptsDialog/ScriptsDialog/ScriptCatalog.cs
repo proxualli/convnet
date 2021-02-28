@@ -415,7 +415,7 @@ namespace ScriptsDialog
 
                 case Scripts.mobilenetv3:
                     {
-                        var se = p.Relu ? false : p.SqueezeExcitation;
+                        var se = p.SqueezeExcitation;
                         var channelsplit = true;
                         var W = p.Width * 16;
 
