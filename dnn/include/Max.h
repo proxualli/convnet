@@ -102,7 +102,7 @@ namespace dnn
 				{
 					const auto start = n * size;
 					const auto end = start + part;
-					const VecFloat vecZero = VecFloat(0);
+					const auto vecZero = VecFloat(0);
 					VecFloat In0, In1;
 					for (auto cdhw = start; cdhw < end; cdhw += VectorSize)
 					{
