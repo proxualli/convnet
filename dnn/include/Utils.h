@@ -222,7 +222,7 @@ namespace dnn
 	}
 	
 #ifdef _MSC_VER
-#pragma intrinsic(__rdtsc)
+#pragma intrinsic(__rdtscp)
 #endif
 	inline static auto BernoulliVecFloat(const Float prob = Float(0.5)) noexcept
 	{
@@ -240,7 +240,7 @@ namespace dnn
 	}
 
 #ifdef _MSC_VER
-#pragma intrinsic(__rdtsc)
+#pragma intrinsic(__rdtscp)
 #endif
 	template<typename T>
 	static auto Bernoulli(const Float prob = Float(0.5)) noexcept
@@ -252,7 +252,7 @@ namespace dnn
 	}
 
 #ifdef _MSC_VER
-#pragma intrinsic(__rdtsc)
+#pragma intrinsic(__rdtscp)
 #endif
 	template<typename T>
 	static auto UniformInt(const T min, const T max) noexcept
@@ -263,7 +263,7 @@ namespace dnn
 	}
 
 #ifdef _MSC_VER
-#pragma intrinsic(__rdtsc)
+#pragma intrinsic(__rdtscp)
 #endif
 	template<typename T>
 	static auto UniformReal(const T min, const T max) noexcept
