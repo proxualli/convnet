@@ -215,21 +215,17 @@ namespace dnn
 
 	inline static void ZeroFloatVectorAllocate(FloatVector& destination, const size_t elements) noexcept
 	{
-		//if (destination.size() < elements)
 		destination.resize(elements);
-
 		ZeroFloatVector(destination.data(), elements);
 	}
 	
 #ifdef _MSC_VER
-#pragma intrinsic(__rdtscp)
+#pragma intrinsic(__rdtsc)
 #endif
 	inline static auto BernoulliVecFloat(const Float prob = Float(0.5)) noexcept
 	{
-		static unsigned int ui;
 		static thread_local auto generator = Ranvec1(3);
-		
-		generator.init(static_cast<int>(__rdtscp(&ui)), static_cast<int>(std::hash<std::thread::id>()(std::this_thread::get_id())));
+		generator.init(static_cast<int>(__rdtsc()), static_cast<int>(std::hash<std::thread::id>()(std::this_thread::get_id())));
 #if defined(DNN_AVX512)
 		return select(generator.random16f() < prob, VecFloat(1), VecFloat(0));
 #elif defined(DNN_AVX2)
@@ -240,36 +236,32 @@ namespace dnn
 	}
 
 #ifdef _MSC_VER
-#pragma intrinsic(__rdtscp)
+#pragma intrinsic(__rdtsc)
 #endif
 	template<typename T>
 	static auto Bernoulli(const Float prob = Float(0.5)) noexcept
 	{
-		static unsigned int ui;
-		static thread_local auto generator = std::mt19937(static_cast<unsigned>(__rdtscp(&ui)));
-
+		static thread_local auto generator = std::mt19937(static_cast<unsigned>(__rdtsc()));
 		return static_cast<T>(std::bernoulli_distribution(double(prob))(generator));
 	}
 
 #ifdef _MSC_VER
-#pragma intrinsic(__rdtscp)
+#pragma intrinsic(__rdtsc)
 #endif
 	template<typename T>
 	static auto UniformInt(const T min, const T max) noexcept
 	{
-		static unsigned int ui;
-		static thread_local auto generator = std::mt19937(static_cast<unsigned>(__rdtscp(&ui)));
+		static thread_local auto generator = std::mt19937(static_cast<unsigned>(__rdtsc()));
 		return std::uniform_int_distribution<T>(min, max)(generator);
 	}
 
 #ifdef _MSC_VER
-#pragma intrinsic(__rdtscp)
+#pragma intrinsic(__rdtsc)
 #endif
 	template<typename T>
 	static auto UniformReal(const T min, const T max) noexcept
 	{
-		static unsigned int ui;
-		static thread_local auto generator = std::mt19937(static_cast<unsigned>(__rdtscp(&ui)));
+		static thread_local auto generator = std::mt19937(static_cast<unsigned>(__rdtsc()));
 		return std::uniform_real_distribution<T>(min, max)(generator);
 	}
 		
