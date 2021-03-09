@@ -68,7 +68,7 @@ namespace ScriptsDialog
         public static string BatchNormActivation(size_t id, string inputs, bool relu = true, size_t channels = 1, string group = "", string prefix = "B")
         {
             return "[" + group + prefix + to_string(id) + "]" + nwl +
-              (relu ? "Type=BatchNormRelu" + nwl : "Type=BatchNormMish" + nwl) +
+              (relu ? "Type=BatchNormRelu" + nwl : "Type=BatchNormHardSwish" + nwl) +
               "Inputs=" + inputs + nwl + nwl;
         }
 
@@ -107,7 +107,7 @@ namespace ScriptsDialog
         public static string BatchNormActivationDropout(size_t id, string inputs, bool relu = true, Float dropout = 0.0f, string group = "", string prefix = "B")
         {
             return "[" + group + prefix + to_string(id) + "]" + nwl +
-              (relu ? "Type=BatchNormReluDropout" + nwl : "Type=BatchNormMishDropout" + nwl) +
+              (relu ? "Type=BatchNormReluDropout" + nwl : "Type=BatchNormHardSwishDropout" + nwl) +
               "Inputs=" + inputs + nwl +
               (dropout > 0f ? "Dropout=" + to_string(dropout) + nwl + nwl : nwl);
         }
@@ -331,7 +331,7 @@ namespace ScriptsDialog
 
                         channels += p.GrowthRate;
 
-                        for (var g = 1ul; g <= p.Groups; g++)  // 32*32 16*16 8*8 or 28*28 14*14 7*7
+                        for (var g = 1ul; g <= p.Groups; g++)
                         {
                             for (var i = 1ul; i < p.Iterations; i++)
                             {
@@ -434,7 +434,7 @@ namespace ScriptsDialog
                         var A = 1ul;
                         var C = 5ul;
 
-                        for (var g = 1ul; g <= p.Groups; g++)  // 32*32 16*16 8*8 or 28*28 14*14 7*7
+                        for (var g = 1ul; g <= p.Groups; g++)
                         {
                             var mix = 0ul; // g - 1ul;
 
@@ -546,7 +546,7 @@ namespace ScriptsDialog
                                 Add(1, "C3,C4"));
                         }
 
-                        for (var g = 0ul; g < p.Groups; g++)  // 32*32 16*16 8*8 or 28*28 14*14 7*7
+                        for (var g = 0ul; g < p.Groups; g++)
                         {
                             if (g > 0)
                             {
@@ -652,7 +652,7 @@ namespace ScriptsDialog
                         var C = 6ul;
                         var A = 1ul;
 
-                        for (var g = 1ul; g <= p.Groups; g++)  // 32*32 16*16 8*8 or 28*28 14*14 7*7
+                        for (var g = 1ul; g <= p.Groups; g++)
                         {
                             if (g > 1)
                             {

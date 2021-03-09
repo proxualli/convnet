@@ -112,7 +112,7 @@ namespace dnn
         bool DropoutVisible() const { return Script == Scripts::densenet || Script == Scripts::resnet; }
         bool CompressionVisible() const { return Script == Scripts::densenet; }
         bool BottleneckVisible() const { return Script == Scripts::densenet || Script == Scripts::resnet; }
-        bool SqueezeExcitationVisible() const { return Script == Scripts::mobilenetv3; }
+        bool SqueezeExcitationVisible() const { return Script == Scripts::mobilenetv3 || Script == Scripts::shufflenetv2; }
         bool ChannelZeroPadVisible() const { return Script == Scripts::resnet; }
 
         auto GetName() const
@@ -411,7 +411,7 @@ namespace dnn
 
                 channels += p.GrowthRate;
 
-                for (auto g = 1ull; g <= p.Groups; g++)  // 32*32 16*16 8*8 or 28*28 14*14 7*7
+                for (auto g = 1ull; g <= p.Groups; g++)
                 {
                     for (auto i = 1ull; i < p.Iterations; i++)
                     {
@@ -495,7 +495,7 @@ namespace dnn
 
             case Scripts::mobilenetv3:
             {
-                auto se = p.Relu ? false : p.SqueezeExcitation;
+                auto se = p.SqueezeExcitation;
                 auto channelsplit = true;
                 auto W = p.Width * 16;
 
@@ -514,9 +514,9 @@ namespace dnn
                 auto A = 1ull;
                 auto C = 5ull;
 
-                for (auto g = 1ull; g <= p.Groups; g++)  // 32*32 16*16 8*8 or 28*28 14*14 7*7
+                for (auto g = 1ull; g <= p.Groups; g++)
                 {
-                    auto mix = g - 1ull;
+                    auto mix = 0ull; // g - 1ull;
 
                     if (g > 1)
                     {
@@ -626,7 +626,7 @@ namespace dnn
                         Add(1, "C3,C4"));
                 }
 
-                for (auto g = 0ull; g < p.Groups; g++)  // 32*32 16*16 8*8 or 28*28 14*14 7*7
+                for (auto g = 0ull; g < p.Groups; g++)
                 {
                     if (g > 0)
                     {
@@ -732,7 +732,7 @@ namespace dnn
                 auto C = 6ull;
                 auto A = 1ull;
 
-                for (auto g = 1ull; g <= p.Groups; g++)  // 32*32 16*16 8*8 or 28*28 14*14 7*7
+                for (auto g = 1ull; g <= p.Groups; g++)
                 {
                     if (g > 1)
                     {
