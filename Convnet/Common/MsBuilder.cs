@@ -40,11 +40,11 @@ namespace Convnet.Common
                 $"/fileLoggerParameters:LogFile=\"{LogPath}\";Append;Verbosity=diagnostic;Encoding=UTF-8",
             };
 
-            using (CommandLineProcess cmd = new CommandLineProcess(MsBuildPath, string.Join(" ", arguments)))
+            using (CommandLineProcess cmd = new(MsBuildPath, string.Join(" ", arguments)))
             {
                 StringBuilder sb = new StringBuilder();
                 sb.AppendLine($"Build started: Project: '{ProjectPath}', Configuration: {Configuration}, Platform: {Platform}");
-                
+
                 // Call MsBuild:
                 int exitCode = cmd.Run(out string processOutput, out string processError);
 
@@ -66,6 +66,5 @@ namespace Convnet.Common
                 }
             }
         }
-
     }
 }

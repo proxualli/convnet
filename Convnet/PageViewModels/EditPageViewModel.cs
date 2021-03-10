@@ -518,13 +518,13 @@ namespace Convnet.PageViewModels
                     IsValid = false;
 
                     var projectFilePath = ScriptsDirectory + @"ScriptsDialog\ScriptsDialog.csproj";
-                    Dictionary<string, string> GlobalProperty = new Dictionary<string, string>
+                    Dictionary<string, string> GlobalProperty = new()
                     {
                         { "Configuration", Mode },
                         { "Platform", "AnyCPU" },
                     };
                     ProjectCollection pc = new ProjectCollection(GlobalProperty, null, ToolsetDefinitionLocations.Default);
-                    BuildParameters bp = new BuildParameters(pc)
+                    BuildParameters bp = new(pc)
                     {
                         OnlyLogCriticalEvents = true,
                         DetailedSummary = true,
@@ -577,7 +577,6 @@ namespace Convnet.PageViewModels
                                 Xceed.Wpf.Toolkit.MessageBox.Show(buildOutput, "Compiler Result", MessageBoxButton.OK);
                         }
                         */
-
                     }
                 }
 
