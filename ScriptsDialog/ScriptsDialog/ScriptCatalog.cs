@@ -126,6 +126,15 @@ namespace ScriptsDialog
                "Inputs=" + inputs + nwl + nwl;
         }
 
+        public static string Resampling(size_t id, string inputs, string group = "", string prefix = "R")
+        {
+            return "[" + group + prefix + to_string(id) + "]" + nwl +
+               "Type=Resampling" + nwl +
+               "Inputs=" + inputs + nwl +
+               "Factor=0.5,0.5" + nwl +
+               "Algorithm=Linear" + nwl + nwl;
+        }
+
         public static string BatchNormReluDropout(size_t id, string inputs, Float dropout = 0.0f, string group = "", string prefix = "B")
         {
             return "[" + group + prefix + to_string(id) + "]" + nwl +
@@ -677,16 +686,16 @@ namespace ScriptsDialog
 
                             for (var i = 1ul; i < p.Iterations; i++)
                             {
-                                var group = In("SE", C + 4);
+                                var group = In("SE", C + 3);
                                 var strSE =
-                                    se ? GlobalAvgPooling(In("B", C + 4), group) +
+                                    se ? GlobalAvgPooling(In("B", C + 3), group) +
                                     Convolution(1, group + "GAP", DIV8(W / 4), 1, 1, 1, 1, 0, 0, group, "C", "Normal(0.01)") +
                                     BatchNormActivation(1, group + "C1", p.Relu, DIV8(W / 4), group) +
                                     Convolution(2, group + "B1", DIV8(W), 1, 1, 1, 1, 0, 0, group, "C", "Normal(0.01)") +
                                     Logistic(2, group + "C2", group) +
-                                    ChannelMultiply(In("B", C + 4) + "," + group + "ACT2", group) +
+                                    ChannelMultiply(In("B", C + 3) + "," + group + "ACT2", group) +
                                     Concat(A + 1, In("LCS", A) + "," + group + "CM") :
-                                    Concat(A + 1, In("LCS", A) + "," + In("B", C + 4));
+                                    Concat(A + 1, In("LCS", A) + "," + In("B", C + 3));
 
                                 blocks.Add(
                                     ChannelShuffle(A, In("CC", A), 2) +

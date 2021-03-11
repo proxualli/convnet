@@ -41,7 +41,7 @@
     </None>
     <AppDesigner Include="Properties\" />
     <Content Include="obj\project.assets.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="App.config" />
     <None Include="global.json">
