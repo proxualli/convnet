@@ -21,7 +21,6 @@
   </PropertyGroup>
  
   <ItemGroup>
-    <PackageReference Include="System.Text.Encodings.Web" Version="5.0.0" PrivateAssets="all" ExcludeAssets="runtime"/>
     <Resource Include="Resources\Annotate_HighPriority.ico" />
     <Resource Include="Resources\App.ico" />
     <Resource Include="Resources\Copy.png" />
@@ -34,8 +33,6 @@
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="C:\Users\dhaen\source\repos\convnet\global.json" Link="global.json" />
-    <None Include="C:\Users\dhaen\source\repos\convnet\ScriptsDialog\global.json" Link="global.json" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
