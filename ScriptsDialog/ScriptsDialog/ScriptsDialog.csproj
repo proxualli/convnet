@@ -21,6 +21,7 @@
   </PropertyGroup>
  
   <ItemGroup>
+    <PackageReference Include="System.Text.Encodings.Web" Version="5.0.0" PrivateAssets="all" ExcludeAssets="runtime"/>
     <Resource Include="Resources\Annotate_HighPriority.ico" />
     <Resource Include="Resources\App.ico" />
     <Resource Include="Resources\Copy.png" />
