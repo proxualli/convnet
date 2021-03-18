@@ -518,6 +518,7 @@ namespace Convnet.PageViewModels
                     IsValid = false;
 
                     var projectFilePath = ScriptsDirectory + @"ScriptsDialog\ScriptsDialog.csproj";
+
                     Dictionary<string, string> GlobalProperty = new()
                     {
                         { "Configuration", Mode },
@@ -551,14 +552,14 @@ namespace Convnet.PageViewModels
 
                     Mouse.OverrideCursor = null;
                     IsValid = true;
-
+                    
                     if (buildResult.OverallResult == BuildResultCode.Success)
                         dirty = false;
                     else
                     {
                         Xceed.Wpf.Toolkit.MessageBox.Show(File.ReadAllText(fileInfo.FullName), "Compiler Result", MessageBoxButton.OK);
                         fileInfo.Delete();
-                        
+                             
                         /*
                         Mouse.OverrideCursor = Cursors.Wait;
                         IsValid = false;

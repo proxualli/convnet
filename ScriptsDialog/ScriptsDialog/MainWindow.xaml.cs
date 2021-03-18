@@ -102,6 +102,8 @@ namespace ScriptsDialog
             {
                 var script = ScriptCatalog.Generate(Settings.Default.Parameters);
                 var fileInfo = new FileInfo(ScriptPath + @"script.txt");
+                if (!fileInfo.Directory.Exists)
+                    fileInfo.Directory.Create();
                 var streamWriter = fileInfo.CreateText();
                 streamWriter.AutoFlush = true;
                 streamWriter.Write(script);
