@@ -49,7 +49,7 @@ namespace Convnet.PageViewModels
         private string parameters = File.ReadAllText(ScriptsDirectory + @"ScriptsDialog\ScriptParameters.cs");
         private bool dirty = true;
         private bool initAction = true;
-       
+        
         public EditPageViewModel(Model model) : base(model)
         {
             ScriptDialogAction = new Action(() => ScriptDialog());
@@ -518,6 +518,36 @@ namespace Convnet.PageViewModels
                     IsValid = false;
 
                     var projectFilePath = ScriptsDirectory + @"ScriptsDialog\ScriptsDialog.csproj";
+                    /*
+                    ProcessStartInfo ProcStartInfo = new ProcessStartInfo("cmd.exe")
+                    {
+                        RedirectStandardOutput = true,
+                        UseShellExecute = false,
+                        CreateNoWindow = false,
+                        RedirectStandardError = true
+                    };
+                    
+                    ProcStartInfo.Arguments = "/c start build.bat";
+                    ProcStartInfo.WorkingDirectory = ScriptsDirectory + @"ScriptsDialog";
+
+                    //await ProcessAsyncHelper.RunAsync(ProcStartInfo, null);
+                    Process.Start(ProcStartInfo).WaitForExit();
+                    
+                    dirty = true;
+                    Mouse.OverrideCursor = null;
+                    IsValid = true;
+
+                   */
+/*
+                    var builder = new MsBuilder(projectFilePath, Mode, "AnyCPU");
+                    var success = builder.Build(out string buildOutput);
+                    Mouse.OverrideCursor = null;
+                    IsValid = true;
+                    if (success)
+                        dirty = false;
+                    else
+                        Xceed.Wpf.Toolkit.MessageBox.Show(buildOutput, "Compiler Result", MessageBoxButton.OK);
+                     */
 
                     Dictionary<string, string> GlobalProperty = new()
                     {
@@ -559,28 +589,27 @@ namespace Convnet.PageViewModels
                     {
                         Xceed.Wpf.Toolkit.MessageBox.Show(File.ReadAllText(fileInfo.FullName), "Compiler Result", MessageBoxButton.OK);
                         fileInfo.Delete();
-                             
+
                         /*
-                        Mouse.OverrideCursor = Cursors.Wait;
-                        IsValid = false;
-
-                        if (dirty)
-                        {
-                            var builder = new MsBuilder(projectFilePath, Mode, "AnyCPU");
-                            var success = builder.Build(out string buildOutput);
-
-                            Mouse.OverrideCursor = null;
-                            IsValid = true;
-
-                            if (success)
-                                dirty = false;
-                            else
-                                Xceed.Wpf.Toolkit.MessageBox.Show(buildOutput, "Compiler Result", MessageBoxButton.OK);
-                        }
-                        */
+-                        Mouse.OverrideCursor = Cursors.Wait;
+-                        IsValid = false;
+-
+-                        if (dirty)
+-                        {
+-                            var builder = new MsBuilder(projectFilePath, Mode, "AnyCPU");
+-                            var success = builder.Build(out string buildOutput);
+-
+-                            Mouse.OverrideCursor = null;
+-                            IsValid = true;
+-
+-                            if (success)
+-                                dirty = false;
+-                            else
+-                                Xceed.Wpf.Toolkit.MessageBox.Show(buildOutput, "Compiler Result", MessageBoxButton.OK);
+-                        }
+-                        */
                     }
                 }
-
                 try
                 {
                     if (!dirty)

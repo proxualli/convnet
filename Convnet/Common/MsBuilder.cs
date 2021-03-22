@@ -15,6 +15,7 @@ namespace Convnet.Common
         public int MaxCpuCount { get; set; } = 1;
         public string Target { get; set; } = "Build";
         public string MsBuildPath { get; set; } = @"C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Current\Bin\MsBuild.exe";
+
         public string BuildOutput { get; private set; }
 
         public MsBuilder(string projectPath, string configuration, string platform = "AnyCPU")

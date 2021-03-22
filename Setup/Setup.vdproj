@@ -217,6 +217,12 @@
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
+        "Entry"
+        {
+        "MsmKey" = "8:_FF2C1D97B09B4687917E3217D535C425"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
     }
     "Configurations"
     {
@@ -319,7 +325,7 @@
                 {
                 "Name" = "8:.NET Core"
                 "Message" = "8:[VSDNETCOREMSG]"
-                "FrameworkVersion" = "8:3.1       "
+                "FrameworkVersion" = "8:3.1              "
                 "AllowLaterVersions" = "11:FALSE"
                 "InstallUrl" = "8:https://dotnet.microsoft.com/download/dotnet-core/[NetCoreVerMajorDotMinor]"
                 "IsNETCore" = "11:TRUE"
@@ -970,6 +976,26 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_FF2C1D97B09B4687917E3217D535C425"
+            {
+            "SourcePath" = "8:..\\ScriptsDialog\\ScriptsDialog\\build.bat"
+            "TargetName" = "8:build.bat"
+            "Tag" = "8:"
+            "Folder" = "8:_5D5C780570E54084A453823CD1FC189E"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
         }
         "FileType"
         {
@@ -1126,7 +1152,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Convnet"
         "ProductCode" = "8:{D4B4AC62-642E-467C-85CB-CD72DA196999}"
-        "PackageCode" = "8:{62675966-0EEB-4227-98E8-333B0BBB1E26}"
+        "PackageCode" = "8:{6E41E09F-DAFB-46ED-B2D9-D3A538E153AC}"
         "UpgradeCode" = "8:{6AC0B11F-6D71-4203-ACC9-2E07A968F844}"
         "AspNetVersion" = "8:"
         "RestartWWWService" = "11:FALSE"
