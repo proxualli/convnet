@@ -501,21 +501,41 @@ namespace Convnet.PageViewModels
 
         private void VisualStudioButtonClick(object sender, RoutedEventArgs e)
         {
-            var devEnv = @"C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\devenv.exe";
-            var projectPath = ScriptsDirectory + @"ScriptsDialog.sln";
-          
-            var ProcStartInfo = new ProcessStartInfo(devEnv)
+            var ProcStartInfo = new ProcessStartInfo("dotnet", "build ScriptsDialog.csproj -c Release")
             {
-                Arguments = projectPath,
-                WorkingDirectory = ScriptsDirectory + @"ScriptsDialog",
+                WorkingDirectory = ScriptsDirectory + @"ScriptsDialog\",
                 RedirectStandardOutput = false,
                 UseShellExecute = true,
                 Verb = "runas",
-                CreateNoWindow = true,
+                CreateNoWindow = false,
                 RedirectStandardError = false
+            };
+            Process.Start(ProcStartInfo).WaitForExit();
+
+            try
+            {
+                var task = ScriptsDialogAsync();
+            }
+            catch (Exception exception)
+            {
+                Xceed.Wpf.Toolkit.MessageBox.Show(exception.Message, "Load Assembly", MessageBoxButton.OK);
+            }
+        }
+        /*
+        private void VisualStudioButtonClick(object sender, RoutedEventArgs e)
+        {
+            var ProcStartInfo = new ProcessStartInfo(@"C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\devenv.exe", ScriptsDirectory + @"ScriptsDialog.sln")
+            {
+                WorkingDirectory = ScriptsDirectory + @"ScriptsDialog",
+                Verb = "runas",
+                UseShellExecute = true,
+                CreateNoWindow = true,
+                RedirectStandardError = false,
+                RedirectStandardOutput = false
             };
             Process.Start(ProcStartInfo);
         }
+        */
 
         private async Task ScriptsDialogAsync()
         {
