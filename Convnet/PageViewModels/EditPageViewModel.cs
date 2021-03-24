@@ -501,29 +501,6 @@ namespace Convnet.PageViewModels
 
         private void VisualStudioButtonClick(object sender, RoutedEventArgs e)
         {
-            var ProcStartInfo = new ProcessStartInfo("dotnet", "build ScriptsDialog.csproj -c Release")
-            {
-                WorkingDirectory = ScriptsDirectory + @"ScriptsDialog\",
-                RedirectStandardOutput = false,
-                UseShellExecute = true,
-                Verb = "runas",
-                CreateNoWindow = false,
-                RedirectStandardError = false
-            };
-            Process.Start(ProcStartInfo).WaitForExit();
-
-            try
-            {
-                var task = ScriptsDialogAsync();
-            }
-            catch (Exception exception)
-            {
-                Xceed.Wpf.Toolkit.MessageBox.Show(exception.Message, "Load Assembly", MessageBoxButton.OK);
-            }
-        }
-        /*
-        private void VisualStudioButtonClick(object sender, RoutedEventArgs e)
-        {
             var ProcStartInfo = new ProcessStartInfo(@"C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\devenv.exe", ScriptsDirectory + @"ScriptsDialog.sln")
             {
                 WorkingDirectory = ScriptsDirectory + @"ScriptsDialog",
@@ -535,7 +512,6 @@ namespace Convnet.PageViewModels
             };
             Process.Start(ProcStartInfo);
         }
-        */
 
         private async Task ScriptsDialogAsync()
         {
@@ -609,6 +585,18 @@ namespace Convnet.PageViewModels
                     {
                         Xceed.Wpf.Toolkit.MessageBox.Show(File.ReadAllText(fileInfo.FullName), "Compiler Result", MessageBoxButton.OK);
                         fileInfo.Delete();
+
+                        var ProcStartInfo = new ProcessStartInfo("dotnet", "build ScriptsDialog.csproj -c Release")
+                        {
+                            WorkingDirectory = ScriptsDirectory + @"ScriptsDialog\",
+                            RedirectStandardOutput = false,
+                            UseShellExecute = true,
+                            Verb = "runas",
+                            CreateNoWindow = false,
+                            RedirectStandardError = false
+                        };
+                        Process.Start(ProcStartInfo).WaitForExit();
+                        dirty = false;
                     }
                 }
                 try
