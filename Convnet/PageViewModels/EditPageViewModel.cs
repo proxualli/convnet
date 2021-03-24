@@ -130,28 +130,6 @@ namespace Convnet.PageViewModels
             CommandToolBar.Add(visualStudioButton);
         }
 
-        private void VisualStudioButtonClick(object sender, RoutedEventArgs e)
-        {
-            var devEnv = @"C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\devenv.exe";
-            var projectPath = ScriptsDirectory + @"ScriptsDialog.sln"; 
-            // @"ScriptsDialog\ScriptsDialog.csproj";
-            var script = string.Format("start \"{0}\" \"{1}\" ", devEnv, projectPath);
-            script += "\r\nexit 0";
-            File.WriteAllText(ScriptsDirectory + @"ScriptsDialog\edit.bat", script);
-            
-            var ProcStartInfo = new ProcessStartInfo(devEnv)
-            {
-                Arguments = projectPath,
-                WorkingDirectory = ScriptsDirectory + @"ScriptsDialog",
-                RedirectStandardOutput = false,
-                UseShellExecute = true,
-                Verb = "runas",
-                CreateNoWindow = true,
-                RedirectStandardError = false
-            };
-            Process.Start(ProcStartInfo).WaitForExit();
-        }
-
         public override string DisplayName => "Edit";
 
         public override void Reset()
@@ -521,6 +499,28 @@ namespace Convnet.PageViewModels
             e.Handled = true;
         }
 
+        private void VisualStudioButtonClick(object sender, RoutedEventArgs e)
+        {
+            var devEnv = @"C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\devenv.exe";
+            var projectPath = ScriptsDirectory + @"ScriptsDialog.sln";
+            // @"ScriptsDialog\ScriptsDialog.csproj";
+            // var script = string.Format("start \"{0}\" \"{1}\" ", devEnv, projectPath);
+            // script += "\r\nexit 0";
+            // File.WriteAllText(ScriptsDirectory + @"ScriptsDialog\edit.bat", script);
+
+            var ProcStartInfo = new ProcessStartInfo(devEnv)
+            {
+                Arguments = projectPath,
+                WorkingDirectory = ScriptsDirectory + @"ScriptsDialog",
+                RedirectStandardOutput = false,
+                UseShellExecute = true,
+                Verb = "runas",
+                CreateNoWindow = true,
+                RedirectStandardError = false
+            };
+            Process.Start(ProcStartInfo);
+        }
+
         private async Task ScriptsDialogAsync()
         {
             await ProcessAsyncHelper.RunAsync(new ProcessStartInfo(ScriptPath + @"ScriptsDialog.exe"), null);
@@ -553,27 +553,6 @@ namespace Convnet.PageViewModels
 
                     var projectFilePath = ScriptsDirectory + @"ScriptsDialog\ScriptsDialog.csproj";
 
-
-                    /*
-                    ProcessStartInfo ProcStartInfo = new ProcessStartInfo("cmd.exe")
-                    {
-                        RedirectStandardOutput = true,
-                        UseShellExecute = false,
-                        CreateNoWindow = false,
-                        RedirectStandardError = true
-                    };
-
-                    ProcStartInfo.Arguments = "/c start build.bat";
-                    ProcStartInfo.WorkingDirectory = ScriptsDirectory + @"ScriptsDialog";
-
-                    //await ProcessAsyncHelper.RunAsync(ProcStartInfo, null);
-                    Process.Start(ProcStartInfo).WaitForExit();
-
-                    dirty = true;
-                    Mouse.OverrideCursor = null;
-                    IsValid = true;
-
-                    */
                     /*
                     var builder = new MsBuilder(projectFilePath, Mode, "AnyCPU");
                     var success = builder.Build(out string buildOutput);
@@ -583,7 +562,7 @@ namespace Convnet.PageViewModels
                         dirty = false;
                     else
                         Xceed.Wpf.Toolkit.MessageBox.Show(buildOutput, "Compiler Result", MessageBoxButton.OK);
-                        */
+                    */
 
                     Dictionary<string, string> GlobalProperty = new()
                     {
