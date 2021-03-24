@@ -49,7 +49,9 @@ namespace Convnet.PageViewModels
         private string parameters = File.ReadAllText(ScriptsDirectory + @"ScriptsDialog\ScriptParameters.cs");
         private bool dirty = true;
         private bool initAction = true;
-        
+        private string visualStudioPath = ScriptsDirectory + @"ScriptsDialog\ScriptsDialog.csproj";
+
+
         public EditPageViewModel(Model model) : base(model)
         {
             ScriptDialogAction = new Action(() => ScriptDialog());
@@ -86,7 +88,7 @@ namespace Convnet.PageViewModels
             };
             checkButton.Click += new RoutedEventHandler(CheckButtonClick);
 
-            Button synchronizeButton = new Button
+            var synchronizeButton = new Button
             {
                 Name = "ButtonSynchronize",
                 ToolTip = "Synchronize",
@@ -111,11 +113,43 @@ namespace Convnet.PageViewModels
             scriptsButton.Click += new RoutedEventHandler(ScriptsButtonClick);
             scriptsButton.MouseDoubleClick += ScriptsButtonMouseDoubleClick;
 
+            var visualStudioButton = new Button
+            {
+                Name = "ButtonVisualStudio",
+                ToolTip = "Open in Visual Studio",
+                Content = new BitmapToImage(Resources.VisualStudio),
+                ClickMode = ClickMode.Release,
+            };
+            visualStudioButton.Click += new RoutedEventHandler(VisualStudioButtonClick); 
+
             CommandToolBar.Add(openButton);
             CommandToolBar.Add(saveButton);
             CommandToolBar.Add(checkButton);
             CommandToolBar.Add(synchronizeButton);
             CommandToolBar.Add(scriptsButton);
+            CommandToolBar.Add(visualStudioButton);
+        }
+
+        private void VisualStudioButtonClick(object sender, RoutedEventArgs e)
+        {
+            var devEnv = @"C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\devenv.exe";
+            var projectPath = ScriptsDirectory + @"ScriptsDialog.sln"; 
+            // @"ScriptsDialog\ScriptsDialog.csproj";
+            var script = string.Format("start \"{0}\" \"{1}\" ", devEnv, projectPath);
+            script += "\r\nexit 0";
+            File.WriteAllText(ScriptsDirectory + @"ScriptsDialog\edit.bat", script);
+            
+            var ProcStartInfo = new ProcessStartInfo(devEnv)
+            {
+                Arguments = projectPath,
+                WorkingDirectory = ScriptsDirectory + @"ScriptsDialog",
+                RedirectStandardOutput = false,
+                UseShellExecute = true,
+                Verb = "runas",
+                CreateNoWindow = true,
+                RedirectStandardError = false
+            };
+            Process.Start(ProcStartInfo).WaitForExit();
         }
 
         public override string DisplayName => "Edit";
@@ -494,12 +528,12 @@ namespace Convnet.PageViewModels
 
             if (fileInfo.Exists)
             {
-#pragma warning disable CA1416 // Validate platform compatibility
+        #pragma warning disable CA1416 // Validate platform compatibility
                 var security = new FileSecurity(fileInfo.FullName, AccessControlSections.Owner | AccessControlSections.Group | AccessControlSections.Access);
                 //var authorizationRules = security.GetAccessRules(true, true, typeof(NTAccount));
                 var owner = security.GetOwner(typeof(NTAccount));
                 security.ModifyAccessRule(AccessControlModification.Add, new FileSystemAccessRule(owner, FileSystemRights.Modify, AccessControlType.Allow), out bool modified);
-#pragma warning restore CA1416 // Validate platform compatibility
+        #pragma warning restore CA1416 // Validate platform compatibility
 
                 Definition = File.ReadAllText(ScriptPath + @"script.txt");
                 ModelName = Definition.Split(new string[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries)[0].Replace("[", "").Replace("]", "");
@@ -518,6 +552,8 @@ namespace Convnet.PageViewModels
                     IsValid = false;
 
                     var projectFilePath = ScriptsDirectory + @"ScriptsDialog\ScriptsDialog.csproj";
+
+
                     /*
                     ProcessStartInfo ProcStartInfo = new ProcessStartInfo("cmd.exe")
                     {
@@ -526,19 +562,19 @@ namespace Convnet.PageViewModels
                         CreateNoWindow = false,
                         RedirectStandardError = true
                     };
-                    
+
                     ProcStartInfo.Arguments = "/c start build.bat";
                     ProcStartInfo.WorkingDirectory = ScriptsDirectory + @"ScriptsDialog";
 
                     //await ProcessAsyncHelper.RunAsync(ProcStartInfo, null);
                     Process.Start(ProcStartInfo).WaitForExit();
-                    
+
                     dirty = true;
                     Mouse.OverrideCursor = null;
                     IsValid = true;
 
-                   */
-/*
+                    */
+                    /*
                     var builder = new MsBuilder(projectFilePath, Mode, "AnyCPU");
                     var success = builder.Build(out string buildOutput);
                     Mouse.OverrideCursor = null;
@@ -547,7 +583,7 @@ namespace Convnet.PageViewModels
                         dirty = false;
                     else
                         Xceed.Wpf.Toolkit.MessageBox.Show(buildOutput, "Compiler Result", MessageBoxButton.OK);
-                     */
+                        */
 
                     Dictionary<string, string> GlobalProperty = new()
                     {
@@ -591,23 +627,23 @@ namespace Convnet.PageViewModels
                         fileInfo.Delete();
 
                         /*
--                        Mouse.OverrideCursor = Cursors.Wait;
--                        IsValid = false;
--
--                        if (dirty)
--                        {
--                            var builder = new MsBuilder(projectFilePath, Mode, "AnyCPU");
--                            var success = builder.Build(out string buildOutput);
--
--                            Mouse.OverrideCursor = null;
--                            IsValid = true;
--
--                            if (success)
--                                dirty = false;
--                            else
--                                Xceed.Wpf.Toolkit.MessageBox.Show(buildOutput, "Compiler Result", MessageBoxButton.OK);
--                        }
--                        */
+    -                        Mouse.OverrideCursor = Cursors.Wait;
+    -                        IsValid = false;
+    -
+    -                        if (dirty)
+    -                        {
+    -                            var builder = new MsBuilder(projectFilePath, Mode, "AnyCPU");
+    -                            var success = builder.Build(out string buildOutput);
+    -
+    -                            Mouse.OverrideCursor = null;
+    -                            IsValid = true;
+    -
+    -                            if (success)
+    -                                dirty = false;
+    -                            else
+    -                                Xceed.Wpf.Toolkit.MessageBox.Show(buildOutput, "Compiler Result", MessageBoxButton.OK);
+    -                        }
+    -                        */
                     }
                 }
                 try

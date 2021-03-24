@@ -684,7 +684,7 @@ namespace ScriptsDialog
                                 A++; C += 5;
                             }
 
-                            var iter = g > 1 ? p.Iterations : p.Iterations - 2;
+                            var iter = g > 1 ? p.Iterations : p.Iterations - 1;
                             for (var i = 1ul; i < iter; i++)
                             {
                                 var group = In("SE", C + 3);
