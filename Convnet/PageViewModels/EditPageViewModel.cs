@@ -503,11 +503,7 @@ namespace Convnet.PageViewModels
         {
             var devEnv = @"C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\devenv.exe";
             var projectPath = ScriptsDirectory + @"ScriptsDialog.sln";
-            // @"ScriptsDialog\ScriptsDialog.csproj";
-            // var script = string.Format("start \"{0}\" \"{1}\" ", devEnv, projectPath);
-            // script += "\r\nexit 0";
-            // File.WriteAllText(ScriptsDirectory + @"ScriptsDialog\edit.bat", script);
-
+          
             var ProcStartInfo = new ProcessStartInfo(devEnv)
             {
                 Arguments = projectPath,
@@ -553,17 +549,6 @@ namespace Convnet.PageViewModels
 
                     var projectFilePath = ScriptsDirectory + @"ScriptsDialog\ScriptsDialog.csproj";
 
-                    /*
-                    var builder = new MsBuilder(projectFilePath, Mode, "AnyCPU");
-                    var success = builder.Build(out string buildOutput);
-                    Mouse.OverrideCursor = null;
-                    IsValid = true;
-                    if (success)
-                        dirty = false;
-                    else
-                        Xceed.Wpf.Toolkit.MessageBox.Show(buildOutput, "Compiler Result", MessageBoxButton.OK);
-                    */
-
                     Dictionary<string, string> GlobalProperty = new()
                     {
                         { "Configuration", Mode },
@@ -604,25 +589,6 @@ namespace Convnet.PageViewModels
                     {
                         Xceed.Wpf.Toolkit.MessageBox.Show(File.ReadAllText(fileInfo.FullName), "Compiler Result", MessageBoxButton.OK);
                         fileInfo.Delete();
-
-                        /*
-    -                        Mouse.OverrideCursor = Cursors.Wait;
-    -                        IsValid = false;
-    -
-    -                        if (dirty)
-    -                        {
-    -                            var builder = new MsBuilder(projectFilePath, Mode, "AnyCPU");
-    -                            var success = builder.Build(out string buildOutput);
-    -
-    -                            Mouse.OverrideCursor = null;
-    -                            IsValid = true;
-    -
-    -                            if (success)
-    -                                dirty = false;
-    -                            else
-    -                                Xceed.Wpf.Toolkit.MessageBox.Show(buildOutput, "Compiler Result", MessageBoxButton.OK);
-    -                        }
-    -                        */
                     }
                 }
                 try
