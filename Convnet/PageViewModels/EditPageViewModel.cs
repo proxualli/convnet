@@ -596,15 +596,11 @@ namespace Convnet.PageViewModels
                             RedirectStandardError = false
                         };
                         Process.Start(ProcStartInfo).WaitForExit();
-                        dirty = false;
                     }
                 }
                 try
                 {
-                    if (!dirty)
-                    {
-                        var task = ScriptsDialogAsync();
-                    }
+                    var task = ScriptsDialogAsync();
                 }
                 catch (Exception exception)
                 {
