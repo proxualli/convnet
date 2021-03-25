@@ -541,23 +541,12 @@ namespace Convnet.PageViewModels
                     Mouse.OverrideCursor = Cursors.Wait;
                     IsValid = false;
 
-                    //var ProcStartInfo = new ProcessStartInfo("dotnet", "build ScriptsDialog.csproj -c Release")
-                    //{
-                    //    WorkingDirectory = ScriptsDirectory + @"ScriptsDialog\",
-                    //    RedirectStandardOutput = false,
-                    //    UseShellExecute = true,
-                    //    Verb = "runas",
-                    //    CreateNoWindow = true,
-                    //    RedirectStandardError = false
-                    //};
-                    //Process.Start(ProcStartInfo).WaitForExit();
-
                     var projectFilePath = ScriptsDirectory + @"ScriptsDialog\ScriptsDialog.csproj";
 
                     Dictionary<string, string> GlobalProperty = new()
                     {
                         { "Configuration", Mode },
-                        { "Platform", "x64" },
+                        { "Platform", "AnyCPU" },
                     };
                     ProjectCollection pc = new ProjectCollection(GlobalProperty, null, ToolsetDefinitionLocations.Default);
                     BuildParameters bp = new(pc)
@@ -589,16 +578,13 @@ namespace Convnet.PageViewModels
                     IsValid = true;
 
                     if (buildResult.OverallResult == BuildResultCode.Success)
-                    {
                         dirty = false;
-
-                    }
                     else
                     {
                         Xceed.Wpf.Toolkit.MessageBox.Show(File.ReadAllText(fileInfo.FullName), "Compiler Result", MessageBoxButton.OK);
                         fileInfo.Delete();
 
-                        var ProcStartInfoA = new ProcessStartInfo("dotnet", "build ScriptsDialog.csproj -c Release")
+                        var ProcStartInfo = new ProcessStartInfo("dotnet", "build ScriptsDialog.csproj -c Release")
                         {
                             WorkingDirectory = ScriptsDirectory + @"ScriptsDialog\",
                             RedirectStandardOutput = false,
@@ -607,7 +593,7 @@ namespace Convnet.PageViewModels
                             CreateNoWindow = true,
                             RedirectStandardError = false
                         };
-                        Process.Start(ProcStartInfoA).WaitForExit();
+                        Process.Start(ProcStartInfo).WaitForExit();
                     }   
                 }
                 try
