@@ -499,16 +499,27 @@ namespace Convnet.PageViewModels
 
         private void VisualStudioButtonClick(object sender, RoutedEventArgs e)
         {
-            var ProcStartInfo = new ProcessStartInfo(@"C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\devenv.exe", ScriptsDirectory + @"ScriptsDialog.sln")
+            string version = "";
+            if (Directory.Exists(@"C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE"))
+                version = "Community";
+            else if (Directory.Exists(@"C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\Common7\IDE"))
+                version = "Professional";
+            else if (Directory.Exists(@"C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\Common7\IDE"))
+                version = "Enterprise";
+
+            if (version.Length > 1)
             {
-                WorkingDirectory = ScriptsDirectory + @"ScriptsDialog",
-                Verb = "runas",
-                UseShellExecute = true,
-                CreateNoWindow = true,
-                RedirectStandardError = false,
-                RedirectStandardOutput = false
-            };
-            Process.Start(ProcStartInfo);
+                var ProcStartInfo = new ProcessStartInfo(@"C:\Program Files (x86)\Microsoft Visual Studio\2019\" + version + @"\Common7\IDE\devenv.exe", ScriptsDirectory + @"ScriptsDialog.sln")
+                {
+                    WorkingDirectory = ScriptsDirectory + @"ScriptsDialog",
+                    Verb = "runas",
+                    UseShellExecute = true,
+                    CreateNoWindow = true,
+                    RedirectStandardError = false,
+                    RedirectStandardOutput = false
+                };
+                Process.Start(ProcStartInfo);
+            }
         }
 
         private async Task ScriptsDialogAsync()
