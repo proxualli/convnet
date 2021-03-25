@@ -49,9 +49,7 @@ namespace Convnet.PageViewModels
         private string parameters = File.ReadAllText(ScriptsDirectory + @"ScriptsDialog\ScriptParameters.cs");
         private bool dirty = true;
         private bool initAction = true;
-        private string visualStudioPath = ScriptsDirectory + @"ScriptsDialog\ScriptsDialog.csproj";
-
-
+      
         public EditPageViewModel(Model model) : base(model)
         {
             ScriptDialogAction = new Action(() => ScriptDialog());
@@ -543,12 +541,23 @@ namespace Convnet.PageViewModels
                     Mouse.OverrideCursor = Cursors.Wait;
                     IsValid = false;
 
+                    //var ProcStartInfo = new ProcessStartInfo("dotnet", "build ScriptsDialog.csproj -c Release")
+                    //{
+                    //    WorkingDirectory = ScriptsDirectory + @"ScriptsDialog\",
+                    //    RedirectStandardOutput = false,
+                    //    UseShellExecute = true,
+                    //    Verb = "runas",
+                    //    CreateNoWindow = true,
+                    //    RedirectStandardError = false
+                    //};
+                    //Process.Start(ProcStartInfo).WaitForExit();
+
                     var projectFilePath = ScriptsDirectory + @"ScriptsDialog\ScriptsDialog.csproj";
 
                     Dictionary<string, string> GlobalProperty = new()
                     {
                         { "Configuration", Mode },
-                        { "Platform", "AnyCPU" },
+                        { "Platform", "x64" },
                     };
                     ProjectCollection pc = new ProjectCollection(GlobalProperty, null, ToolsetDefinitionLocations.Default);
                     BuildParameters bp = new(pc)
@@ -578,25 +587,28 @@ namespace Convnet.PageViewModels
 
                     Mouse.OverrideCursor = null;
                     IsValid = true;
-                    
+
                     if (buildResult.OverallResult == BuildResultCode.Success)
+                    {
                         dirty = false;
+
+                    }
                     else
                     {
                         Xceed.Wpf.Toolkit.MessageBox.Show(File.ReadAllText(fileInfo.FullName), "Compiler Result", MessageBoxButton.OK);
                         fileInfo.Delete();
 
-                        var ProcStartInfo = new ProcessStartInfo("dotnet", "build ScriptsDialog.csproj -c Release")
+                        var ProcStartInfoA = new ProcessStartInfo("dotnet", "build ScriptsDialog.csproj -c Release")
                         {
                             WorkingDirectory = ScriptsDirectory + @"ScriptsDialog\",
                             RedirectStandardOutput = false,
                             UseShellExecute = true,
                             Verb = "runas",
-                            CreateNoWindow = false,
+                            CreateNoWindow = true,
                             RedirectStandardError = false
                         };
-                        Process.Start(ProcStartInfo).WaitForExit();
-                    }
+                        Process.Start(ProcStartInfoA).WaitForExit();
+                    }   
                 }
                 try
                 {
