@@ -592,9 +592,6 @@ namespace Convnet.PageViewModels
                         dirty = false;
                     else
                     {
-                        Xceed.Wpf.Toolkit.MessageBox.Show(File.ReadAllText(fileInfo.FullName), "Compiler Result", MessageBoxButton.OK);
-                        fileInfo.Delete();
-
                         var ProcStartInfo = new ProcessStartInfo("dotnet", "build ScriptsDialog.csproj -c Release")
                         {
                             WorkingDirectory = ScriptsDirectory + @"ScriptsDialog\",
@@ -604,12 +601,28 @@ namespace Convnet.PageViewModels
                             CreateNoWindow = true,
                             RedirectStandardError = false
                         };
-                        Process.Start(ProcStartInfo).WaitForExit();
+                        var process = Process.Start(ProcStartInfo);
+                        process.WaitForExit();
+                        if (process.ExitCode != 0)
+                        {
+                            // build error occured
+                            Xceed.Wpf.Toolkit.MessageBox.Show(File.ReadAllText(fileInfo.FullName), "Compiler Result", MessageBoxButton.OK);
+                        }
+                        else
+                        {
+                            // ok
+                            dirty = false;
+                        }
+                        process.Close();
+                        fileInfo.Delete();
                     }   
                 }
                 try
                 {
-                    var task = ScriptsDialogAsync();
+                    if (!dirty)
+                    {
+                        var task = ScriptsDialogAsync();
+                    }
                 }
                 catch (Exception exception)
                 {
