@@ -43,6 +43,7 @@ namespace ScriptsDialog
             return ((channels / 8ul) + 1ul) * 8ul;
         }
 
+        /*
         public static size_t GetKernel(size_t index)
         {
             size_t kernel = 1ul;
@@ -51,6 +52,7 @@ namespace ScriptsDialog
 
             return kernel;
         }
+        */
 
         public static string In(string prefix, size_t id)
         {
