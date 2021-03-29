@@ -592,7 +592,7 @@ namespace Convnet.PageViewModels
                         dirty = false;
                     else
                     {
-                        var ProcStartInfo = new ProcessStartInfo("dotnet", "build ScriptsDialog.csproj -c Release")
+                        var ProcStartInfo = new ProcessStartInfo("dotnet", "build ScriptsDialog.csproj -p:Platform=AnyCPU -c Release")
                         {
                             WorkingDirectory = ScriptsDirectory + @"ScriptsDialog\",
                             RedirectStandardOutput = false,
@@ -601,18 +601,15 @@ namespace Convnet.PageViewModels
                             CreateNoWindow = true,
                             RedirectStandardError = false
                         };
+
                         var process = Process.Start(ProcStartInfo);
                         process.WaitForExit();
+
                         if (process.ExitCode != 0)
-                        {
-                            // build error occured
                             Xceed.Wpf.Toolkit.MessageBox.Show(File.ReadAllText(fileInfo.FullName), "Compiler Result", MessageBoxButton.OK);
-                        }
                         else
-                        {
-                            // ok
                             dirty = false;
-                        }
+                        
                         process.Close();
                         fileInfo.Delete();
                     }   
