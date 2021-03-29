@@ -34,6 +34,7 @@
 * Abs
 * BoundedRelu
 * Clip
+* ClipV2
 * Elu
 * Exp
 * Gelu
