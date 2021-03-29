@@ -128,14 +128,6 @@ namespace ScriptsDialog
                "Algorithm=Linear" + nwl + nwl;
         }
 
-        public static string BatchNormReluDropout(size_t id, string inputs, Float dropout = 0.0f, string group = "", string prefix = "B")
-        {
-            return "[" + group + prefix + to_string(id) + "]" + nwl +
-               "Type=BatchNormReluDropout" + nwl +
-               "Inputs=" + inputs + nwl +
-               (dropout > 0f ? "Dropout=" + to_string(dropout) + nwl + nwl : nwl);
-        }
-
         public static string Convolution(size_t id, string inputs, size_t channels, size_t kernelX = 3, size_t kernelY = 3, size_t strideX = 1, size_t strideY = 1, size_t padX = 1, size_t padY = 1, string group = "", string prefix = "C", string weightsFiller = "")
         {
             return "[" + group + prefix + to_string(id) + "]" + nwl +
