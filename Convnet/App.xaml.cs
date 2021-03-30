@@ -3,6 +3,7 @@ using dnncore;
 using Microsoft.Build.Locator;
 using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Markup;
@@ -17,7 +18,7 @@ namespace Convnet
         {
             MSBuildLocator.RegisterDefaults();
 
-            System.Diagnostics.Process.GetCurrentProcess().PriorityClass = Settings.Default.Priority;
+            Process.GetCurrentProcess().PriorityClass = Settings.Default.Priority;
             FrameworkElement.LanguageProperty.OverrideMetadata(typeof(FrameworkElement), new FrameworkPropertyMetadata(XmlLanguage.GetLanguage(CultureInfo.CurrentCulture.IetfLanguageTag)));
             FrameworkContentElement.LanguageProperty.OverrideMetadata(typeof(System.Windows.Documents.TextElement), new FrameworkPropertyMetadata(XmlLanguage.GetLanguage(CultureInfo.CurrentCulture.IetfLanguageTag)));
         }
