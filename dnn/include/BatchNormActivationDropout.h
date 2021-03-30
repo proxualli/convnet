@@ -213,8 +213,8 @@ namespace dnn
 								vecVariance += square(VecFloat().load_a(&InputLayer->Neurons[hw]) - mean);
 							const auto end = start + HW;
 							PRAGMA_OMP_SIMD()
-							for (auto i = part; i < end; i++)
-								variance += FloatSquare(InputLayer->Neurons[i] - mean);
+							for (auto hw = part; hw < end; hw++)
+								variance += FloatSquare(InputLayer->Neurons[hw] - mean);
 						}
 						variance += horizontal_add(vecVariance);
 						const auto unbiasedVariance = variance / Float(batchSize * HW - 1);
