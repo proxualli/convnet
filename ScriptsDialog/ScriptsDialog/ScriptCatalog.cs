@@ -543,9 +543,9 @@ namespace ScriptsDialog
                                 else
                                 {
                                     blocks.Add(
-                                        BatchNormActivation(C, In("A", A), p.Relu) +
+                                        BatchNormActivation(C, In("A", A), p.Relu, DIV8(W)) +
                                         Convolution(C, In("B", C), DIV8(W), 3, 3, 2, 2, 1, 1) +
-                                        (p.Dropout > 0 ? BatchNormActivationDropout(C + 1, In("C", C)) : BatchNormActivation(C + 1, In("C", C), p.Relu)) +
+                                        (p.Dropout > 0 ? BatchNormActivationDropout(C + 1, In("C", C)) : BatchNormActivation(C + 1, In("C", C), p.Relu, DIV8(W))) +
                                         Convolution(C + 1, In("B", C + 1), DIV8(W), 3, 3, 1, 1, 1, 1) +
                                         strChannelZeroPad);
                                 }
@@ -573,7 +573,7 @@ namespace ScriptsDialog
                                 else
                                 {
                                     blocks.Add(
-                                        BatchNormActivation(C, In("A", A), p.Relu) +
+                                        BatchNormActivation(C, In("A", A), p.Relu, DIV8(W)) +
                                         Convolution(C, In("B", C), DIV8(W), 3, 3, 1, 1, 1, 1) +
                                         (p.Dropout > 0 ? BatchNormActivationDropout(C + 1, In("C", C)) : BatchNormActivation(C + 1, In("C", C), p.Relu, DIV8(W))) +
                                         Convolution(C + 1, In("B", C + 1), DIV8(W), 3, 3, 1, 1, 1, 1) +
