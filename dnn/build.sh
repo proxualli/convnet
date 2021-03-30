@@ -1,8 +1,6 @@
 #!/bin/bash
-sudo apt-get install nasm
-sudo apt-get install doxygen
-sudo apt-get install cmake
-sudo apt-get install ninja-build
+sudo apt-get update
+sudo apt-get install build-essential curl unzip clang nasm graphviz doxygen cmake ninja-build
 
 export CC=clang and export CXX=clang++
 export KMP_AFFINITY=granularity=fine,compact,1,0
@@ -12,5 +10,5 @@ export KMP_BLOCKTIME=0
 export vCPUs=`cat /proc/cpuinfo | grep processor | wc -l`
 export OMP_NUM_THREADS=$((vCPUs / 2))
 
-mkdir -p build && cd build && cmake -G Ninja ..
+mkdir -p build && cd build && cmake -G Ninja .. -DCMAKE_BUILD_WITH_INSTALL_RPATH=ON
 ninja
