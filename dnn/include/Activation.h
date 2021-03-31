@@ -160,9 +160,9 @@ namespace dnn
 		Abs = 0,
 		BoundedRelu = 1,
 		Clip = 2,
-		ClipV2 = 3,
-		Elu = 4,
-		Exp = 5,
+		ClipV2 = 3,			//
+		Elu = 4,			//
+		Exp = 5,			//
 		FTS = 6,
 		Gelu = 7,
 		GeluErf = 8,
@@ -170,20 +170,20 @@ namespace dnn
 		HardSwish = 10,
 		Linear = 11,
 		Log = 12,
-		Logistic = 13,
+		Logistic = 13,		//
 		LogLogistic = 14,
 		LogSoftmax = 15,
 		Mish = 16,
 		Pow = 17,
 		PRelu = 18,
-		Relu = 19,
+		Relu = 19,			//
 		Round = 20,
 		Softmax = 21,
 		SoftRelu = 22,
-		Sqrt = 23,
+		Sqrt = 23,			//
 		Square = 24,
 		Swish = 25,
-		Tanh = 26
+		Tanh = 26			//
 	};
 
 	class Activation final : public Layer
