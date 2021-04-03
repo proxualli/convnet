@@ -481,9 +481,11 @@ namespace Convnet.PageViewModels
         private void mouseWaitTimer_Tick(object sender, EventArgs e)
         {
             clickWaitTimer.Stop();
-            ScriptDialog();
+
+            if (!initAction)
+                ScriptDialog();
         }
-       
+        
         private void ScriptsButtonClick(object sender, RoutedEventArgs e)
         {
             initAction = false;
@@ -492,7 +494,6 @@ namespace Convnet.PageViewModels
 
         private void ScriptsButtonMouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            clickWaitTimer.Stop();
             e.Handled = true;
         }
         
@@ -551,52 +552,52 @@ namespace Convnet.PageViewModels
 
         private void ScriptDialog()
         {
-            if (!initAction)
+            if (dirty)
             {
-                if (dirty)
+                Mouse.OverrideCursor = Cursors.Wait;
+                IsValid = false;
+
+                var projectFilePath = ScriptsDirectory + @"ScriptsDialog\ScriptsDialog.csproj";
+
+                Dictionary<string, string> GlobalProperty = new()
                 {
-                    Mouse.OverrideCursor = Cursors.Wait;
-                    IsValid = false;
+                    { "Configuration", Mode },
+                    { "Platform", "AnyCPU" },
+                };
+                ProjectCollection pc = new ProjectCollection(GlobalProperty, null, ToolsetDefinitionLocations.Default);
+                BuildParameters bp = new(pc)
+                {
+                    OnlyLogCriticalEvents = true,
+                    DetailedSummary = true,
+                    MaxNodeCount = 1
+                };
 
-                    var projectFilePath = ScriptsDirectory + @"ScriptsDialog\ScriptsDialog.csproj";
+                var tempFilePath = Path.GetTempFileName();
+                var fileInfo = new FileInfo(tempFilePath)
+                {
+                    Attributes = FileAttributes.Temporary
+                };
+                bp.Loggers = new List<ILogger>() { new BasicFileLogger() { Parameters = fileInfo.FullName } };
+                bp.Loggers.FirstOrDefault().Verbosity = LoggerVerbosity.Diagnostic;
 
-                    Dictionary<string, string> GlobalProperty = new()
-                    {
-                        { "Configuration", Mode },
-                        { "Platform", "AnyCPU" },
-                    };
-                    ProjectCollection pc = new ProjectCollection(GlobalProperty, null, ToolsetDefinitionLocations.Default);
-                    BuildParameters bp = new(pc)
-                    {
-                        OnlyLogCriticalEvents = true,
-                        DetailedSummary = true,
-                        MaxNodeCount = 1
-                    };
+                BuildRequestData buildRequest = new BuildRequestData(projectFilePath, GlobalProperty, null, new string[] { "Build" }, null);
+                BuildResult buildResult = BuildManager.DefaultBuildManager.Build(bp, buildRequest);
+                BuildManager.DefaultBuildManager.ResetCaches();
+                BuildManager.DefaultBuildManager.ShutdownAllNodes();
 
-                    var tempFilePath = Path.GetTempFileName();
-                    var fileInfo = new FileInfo(tempFilePath)
-                    {
-                        Attributes = FileAttributes.Temporary
-                    };
-                    bp.Loggers = new List<ILogger>() { new BasicFileLogger() { Parameters = fileInfo.FullName } };
-                    bp.Loggers.FirstOrDefault().Verbosity = LoggerVerbosity.Diagnostic;
+                pc.UnloadAllProjects();
+                pc.UnregisterAllLoggers();
+                pc.Dispose();
+                BuildManager.DefaultBuildManager.Dispose();
 
-                    BuildRequestData buildRequest = new BuildRequestData(projectFilePath, GlobalProperty, null, new string[] { "Build" }, null);
-                    BuildResult buildResult = BuildManager.DefaultBuildManager.Build(bp, buildRequest);
-                    BuildManager.DefaultBuildManager.ResetCaches();
-                    BuildManager.DefaultBuildManager.ShutdownAllNodes();
+                Mouse.OverrideCursor = null;
+                IsValid = true;
 
-                    pc.UnloadAllProjects();
-                    pc.UnregisterAllLoggers();
-                    pc.Dispose();
-                    BuildManager.DefaultBuildManager.Dispose();
-
-                    Mouse.OverrideCursor = null;
-                    IsValid = true;
-
-                    if (buildResult.OverallResult == BuildResultCode.Success)
-                        dirty = false;
-                    else
+                if (buildResult.OverallResult == BuildResultCode.Success)
+                    dirty = false;
+                else
+                {
+                    try
                     {
                         var ProcStartInfo = new ProcessStartInfo("dotnet", "build ScriptsDialog.csproj -p:Platform=AnyCPU -c Release")
                         {
@@ -608,38 +609,35 @@ namespace Convnet.PageViewModels
                             RedirectStandardError = false
                         };
 
-                        try
-                        {
-                            var process = Process.Start(ProcStartInfo);
-                            process.WaitForExit();
+                        var process = Process.Start(ProcStartInfo);
+                        process.WaitForExit();
 
-                            if (process.ExitCode != 0)
-                                Xceed.Wpf.Toolkit.MessageBox.Show(File.ReadAllText(fileInfo.FullName), "Compiler Result", MessageBoxButton.OK);
-                            else
-                                dirty = false;
+                        if (process.ExitCode != 0)
+                            Xceed.Wpf.Toolkit.MessageBox.Show(File.ReadAllText(fileInfo.FullName), "Compiler Result", MessageBoxButton.OK);
+                        else
+                            dirty = false;
 
-                            process.Close();
-                            fileInfo.Delete();
-                        }
-                        catch (Exception)
-                        {
-                        }
+                        process.Close();
+                        fileInfo.Delete();
                     }
-
-                    File.Delete(ScriptPath + @"ScriptsDialog.deps.json");
-                }
-
-                try
-                {
-                    if (!dirty)
+                    catch (Exception)
                     {
-                        var task = ScriptsDialogAsync();
                     }
                 }
-                catch (Exception exception)
+
+                File.Delete(ScriptPath + @"ScriptsDialog.deps.json");
+            }
+
+            try
+            {
+                if (!dirty)
                 {
-                    Xceed.Wpf.Toolkit.MessageBox.Show(exception.Message, "Load Assembly", MessageBoxButton.OK);
+                    var task = ScriptsDialogAsync();
                 }
+            }
+            catch (Exception exception)
+            {
+                Xceed.Wpf.Toolkit.MessageBox.Show(exception.Message, "Load Assembly", MessageBoxButton.OK);
             }
         }
 
