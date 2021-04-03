@@ -48,10 +48,11 @@ namespace Convnet.PageViewModels
         private string script = File.ReadAllText(ScriptsDirectory + @"ScriptsDialog\ScriptCatalog.cs");
         private string parameters = File.ReadAllText(ScriptsDirectory + @"ScriptsDialog\ScriptParameters.cs");
         private bool dirty = true;
-        private bool initAction = true;
+        private static bool initAction = true;
       
         public EditPageViewModel(Model model) : base(model)
         {
+            initAction = true;
             ScriptDialogAction = new Action(() => ScriptDialog());
 
             AddCommandButtons();
@@ -487,8 +488,8 @@ namespace Convnet.PageViewModels
        
         void ScriptsButtonClick(object sender, RoutedEventArgs e)
         {
-            clickWaitTimer.Start();
             initAction = false;
+            clickWaitTimer.Start();
         }
 
         private void ScriptsButtonMouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -626,9 +627,10 @@ namespace Convnet.PageViewModels
                         {
                         }
                     }
+
                     File.Delete(ScriptPath + @"ScriptsDialog.deps.json");
-                    
                 }
+
                 try
                 {
                     if (!dirty)
