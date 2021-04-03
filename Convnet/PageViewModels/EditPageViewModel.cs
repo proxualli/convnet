@@ -484,7 +484,7 @@ namespace Convnet.PageViewModels
             clickWaitTimer.Stop();
             Dispatcher.CurrentDispatcher.Invoke(ScriptDialogAction);
         }
-
+       
         void ScriptsButtonClick(object sender, RoutedEventArgs e)
         {
             clickWaitTimer.Start();
@@ -496,7 +496,7 @@ namespace Convnet.PageViewModels
             clickWaitTimer.Stop();
             e.Handled = true;
         }
-
+        
         private void VisualStudioButtonClick(object sender, RoutedEventArgs e)
         {
             string version = "";
@@ -509,16 +509,23 @@ namespace Convnet.PageViewModels
 
             if (version.Length > 1)
             {
-                var ProcStartInfo = new ProcessStartInfo(@"C:\Program Files (x86)\Microsoft Visual Studio\2019\" + version + @"\Common7\IDE\devenv.exe", ScriptsDirectory + @"ScriptsDialog.sln")
+                try
                 {
-                    WorkingDirectory = ScriptsDirectory + @"ScriptsDialog",
-                    Verb = "runas",
-                    UseShellExecute = true,
-                    CreateNoWindow = true,
-                    RedirectStandardError = false,
-                    RedirectStandardOutput = false
-                };
-                Process.Start(ProcStartInfo);
+                    var ProcStartInfo = new ProcessStartInfo(@"C:\Program Files (x86)\Microsoft Visual Studio\2019\" + version + @"\Common7\IDE\devenv.exe", ScriptsDirectory + @"ScriptsDialog.sln")
+                    {
+                        WorkingDirectory = ScriptsDirectory + @"ScriptsDialog",
+                        Verb = "runas",
+                        UseShellExecute = true,
+                        CreateNoWindow = true,
+                        RedirectStandardError = false,
+                        RedirectStandardOutput = false
+                    };
+                    
+                    Process.Start(ProcStartInfo);
+                }
+                catch (Exception)
+                {
+                }
             }
         }
 
@@ -618,7 +625,9 @@ namespace Convnet.PageViewModels
                         catch (Exception)
                         {
                         }
-                    }   
+                    }
+                    File.Delete(ScriptPath + @"ScriptsDialog.deps.json");
+                    
                 }
                 try
                 {
