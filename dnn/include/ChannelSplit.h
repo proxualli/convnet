@@ -39,15 +39,15 @@ namespace dnn
 
 		void InitializeDescriptors(const size_t batchSize) final override
 		{
-			if (InputLayer->PaddedC % Groups != 0)
-				throw std::invalid_argument("input not splittable in " + std::string(magic_enum::enum_name<LayerTypes>(LayerType)) + " layer " + Name);
-
 			if (InputLayer->DstMemDesc->data.ndims == 2)
 			{
 				chosenFormat = dnnl::memory::format_tag::nc;
 
 				DstMemDesc = std::make_unique<dnnl::memory::desc>(dnnl::memory::desc(dnnl::memory::dims({ dnnl::memory::dim(batchSize), dnnl::memory::dim(C) }), dnnl::memory::data_type::f32, chosenFormat));
 				DiffDstMemDesc = std::make_unique<dnnl::memory::desc>(dnnl::memory::desc(dnnl::memory::dims({ dnnl::memory::dim(batchSize), dnnl::memory::dim(C) }), dnnl::memory::data_type::f32, chosenFormat));
+
+				if (InputLayer->C % Groups != 0)
+					throw std::invalid_argument("input not splittable in " + std::string(magic_enum::enum_name<LayerTypes>(LayerType)) + " layer " + Name);
 			}
 			else
 			{
@@ -60,8 +60,24 @@ namespace dnn
 				else
 					chosenFormat = PlainFmt;
 
-				DstMemDesc = std::make_unique<dnnl::memory::desc>(dnnl::memory::desc(dnnl::memory::dims({ dnnl::memory::dim(batchSize), dnnl::memory::dim(C), dnnl::memory::dim(H), dnnl::memory::dim(W) }), dnnl::memory::data_type::f32, chosenFormat));
-				DiffDstMemDesc = std::make_unique<dnnl::memory::desc>(dnnl::memory::desc(dnnl::memory::dims({ dnnl::memory::dim(batchSize), dnnl::memory::dim(C), dnnl::memory::dim(H), dnnl::memory::dim(W) }), dnnl::memory::data_type::f32, chosenFormat));
+				if (chosenFormat == PlainFmt)
+				{
+					if (InputLayer->C % Groups != 0)
+						throw std::invalid_argument("input not splittable in " + std::string(magic_enum::enum_name<LayerTypes>(LayerType)) + " layer " + Name);
+
+					DstMemDesc = std::make_unique<dnnl::memory::desc>(dnnl::memory::desc(dnnl::memory::dims({ dnnl::memory::dim(batchSize), dnnl::memory::dim(C), dnnl::memory::dim(H), dnnl::memory::dim(W) }), dnnl::memory::data_type::f32, chosenFormat));
+					DiffDstMemDesc = std::make_unique<dnnl::memory::desc>(dnnl::memory::desc(dnnl::memory::dims({ dnnl::memory::dim(batchSize), dnnl::memory::dim(C), dnnl::memory::dim(H), dnnl::memory::dim(W) }), dnnl::memory::data_type::f32, chosenFormat));
+
+				}
+				else
+				{
+					if (InputLayer->PaddedC % Groups != 0)
+						throw std::invalid_argument("input not splittable in " + std::string(magic_enum::enum_name<LayerTypes>(LayerType)) + " layer " + Name);
+
+					DstMemDesc = std::make_unique<dnnl::memory::desc>(dnnl::memory::desc(dnnl::memory::dims({ dnnl::memory::dim(batchSize), dnnl::memory::dim(PaddedC), dnnl::memory::dim(H), dnnl::memory::dim(W) }), dnnl::memory::data_type::f32, chosenFormat));
+					DiffDstMemDesc = std::make_unique<dnnl::memory::desc>(dnnl::memory::desc(dnnl::memory::dims({ dnnl::memory::dim(batchSize), dnnl::memory::dim(PaddedC), dnnl::memory::dim(H), dnnl::memory::dim(W) }), dnnl::memory::data_type::f32, chosenFormat));
+
+				}
 			}
 		}
 

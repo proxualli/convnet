@@ -602,16 +602,23 @@ namespace Convnet.PageViewModels
                             RedirectStandardError = false
                         };
 
-                        var process = Process.Start(ProcStartInfo);
-                        process.WaitForExit();
+                        try
+                        {
+                            var process = Process.Start(ProcStartInfo);
+                            process.WaitForExit();
 
-                        if (process.ExitCode != 0)
-                            Xceed.Wpf.Toolkit.MessageBox.Show(File.ReadAllText(fileInfo.FullName), "Compiler Result", MessageBoxButton.OK);
-                        else
-                            dirty = false;
-                        
-                        process.Close();
-                        fileInfo.Delete();
+                            if (process.ExitCode != 0)
+                                Xceed.Wpf.Toolkit.MessageBox.Show(File.ReadAllText(fileInfo.FullName), "Compiler Result", MessageBoxButton.OK);
+                            else
+                                dirty = false;
+
+                            process.Close();
+                            fileInfo.Delete();
+                        }
+                        catch (Exception)
+                        { 
+                        }
+
                     }   
                 }
                 try
