@@ -616,9 +616,8 @@ namespace Convnet.PageViewModels
                             fileInfo.Delete();
                         }
                         catch (Exception)
-                        { 
+                        {
                         }
-
                     }   
                 }
                 try
