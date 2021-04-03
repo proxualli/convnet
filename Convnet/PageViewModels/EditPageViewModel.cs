@@ -28,9 +28,6 @@ namespace Convnet.PageViewModels
 #else
         const string Mode = "Release";
 #endif
-        
-        private static DispatcherTimer clickWaitTimer = new DispatcherTimer(new TimeSpan(0, 0, 0, 1), DispatcherPriority.Background, mouseWaitTimer_Tick, Dispatcher.CurrentDispatcher);
-        private static Action ScriptDialogAction { get; set; }
 
         public event EventHandler Open;
         public event EventHandler Save;
@@ -49,12 +46,13 @@ namespace Convnet.PageViewModels
         private string parameters = File.ReadAllText(ScriptsDirectory + @"ScriptsDialog\ScriptParameters.cs");
         private bool dirty = true;
         private static bool initAction = true;
-      
+        private DispatcherTimer clickWaitTimer;
+
         public EditPageViewModel(Model model) : base(model)
         {
             initAction = true;
-            ScriptDialogAction = new Action(() => ScriptDialog());
-
+            clickWaitTimer = new DispatcherTimer(new TimeSpan(0, 0, 0, 1), DispatcherPriority.Background, mouseWaitTimer_Tick, Dispatcher.CurrentDispatcher);
+        
             AddCommandButtons();
         }
 
@@ -480,13 +478,13 @@ namespace Convnet.PageViewModels
             }
         }
 
-        private static void mouseWaitTimer_Tick(object sender, EventArgs e)
+        private void mouseWaitTimer_Tick(object sender, EventArgs e)
         {
             clickWaitTimer.Stop();
-            Dispatcher.CurrentDispatcher.Invoke(ScriptDialogAction);
+            ScriptDialog();
         }
        
-        void ScriptsButtonClick(object sender, RoutedEventArgs e)
+        private void ScriptsButtonClick(object sender, RoutedEventArgs e)
         {
             initAction = false;
             clickWaitTimer.Start();
