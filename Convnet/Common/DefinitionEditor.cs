@@ -32,9 +32,8 @@ namespace Convnet.Common
             var currentLine = editor.Document.GetLineByOffset(editor.CaretOffset);
             foreach (var rect in BackgroundGeometryBuilder.GetRectsForSegment(textView, currentLine))
             {
-                drawingContext.DrawRectangle(
-                    new SolidColorBrush(Color.FromArgb(0x50, 0xFF, 0xCF, 0)), null,
-                    new Rect(rect.Location, new Size(textView.ActualWidth - 32, rect.Height)));
+                if (textView.ActualWidth >= 32)
+                    drawingContext.DrawRectangle(new SolidColorBrush(Color.FromArgb(0x50, 0xFF, 0xCF, 0)), null, new Rect(rect.Location, new Size(textView.ActualWidth - 32, rect.Height)));
             }
         }
     }
