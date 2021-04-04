@@ -624,8 +624,8 @@ namespace Convnet.PageViewModels
                     {
                     }
                 }
-
-                File.Delete(ScriptPath + @"ScriptsDialog.deps.json");
+                File.Copy(ApplicationPath + @"ScriptsDialog.deps.json", ScriptPath + @"ScriptsDialog.deps.json", true);
+                //File.Delete(ScriptPath + @"ScriptsDialog.deps.json");
             }
 
             try
