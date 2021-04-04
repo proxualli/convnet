@@ -51,7 +51,7 @@ namespace Convnet.PageViewModels
         public EditPageViewModel(Model model) : base(model)
         {
             initAction = true;
-            clickWaitTimer = new DispatcherTimer(new TimeSpan(0, 0, 0, 1), DispatcherPriority.Background, mouseWaitTimer_Tick, Dispatcher.CurrentDispatcher);
+            clickWaitTimer = new DispatcherTimer(new TimeSpan(0, 0, 0, 0, 500), DispatcherPriority.Background, mouseWaitTimer_Tick, Dispatcher.CurrentDispatcher);
         
             AddCommandButtons();
         }
