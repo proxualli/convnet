@@ -681,7 +681,7 @@ extern "C" DNN_API void DNNGetLayerInfo(const UInt layerIndex, UInt* inputsCount
 
 		case LayerTypes::BatchNormSwishDropout:
 		{
-			auto bn = dynamic_cast<BatchNormActivationDropout<Swish, LayerTypes::BatchNormSwish>*>(model->Layers[layerIndex].get());
+			auto bn = dynamic_cast<BatchNormActivationDropout<Swish, LayerTypes::BatchNormSwishDropout>*>(model->Layers[layerIndex].get());
 			if (bn)
 			{
 				*scaling = bn->Scaling;
