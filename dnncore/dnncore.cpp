@@ -75,29 +75,30 @@ enum class LayerTypes
 	BatchNormRelu = 10,
 	BatchNormReluDropout = 11,
 	BatchNormSwish = 12,
-	ChannelMultiply = 13,
-	ChannelShuffle = 14,
-	ChannelSplit = 15,
-	ChannelZeroPad = 16,
-	Concat = 17,
-	Convolution = 18,
-	ConvolutionTranspose = 19,
-	Cost = 20,
-	Dense = 21,
-	DepthwiseConvolution = 22,
-	Divide = 23,
-	Dropout = 24,
-	GlobalAvgPooling = 25,
-	GlobalMaxPooling = 26,
-	Input = 27,
-	LocalResponseNormalization = 28,
-	Max = 29,
-	MaxPooling = 30,
-	Min = 31,
-	Multiply = 32,
-	PartialDepthwiseConvolution = 33,
-	Resampling = 34,
-	Substract = 35
+	BatchNormSwishDropout = 13,
+	ChannelMultiply = 14,
+	ChannelShuffle = 15,
+	ChannelSplit = 16,
+	ChannelZeroPad = 17,
+	Concat = 18,
+	Convolution = 19,
+	ConvolutionTranspose = 20,
+	Cost = 21,
+	Dense = 22,
+	DepthwiseConvolution = 23,
+	Divide = 24,
+	Dropout = 25,
+	GlobalAvgPooling = 26,
+	GlobalMaxPooling = 27,
+	Input = 28,
+	LocalResponseNormalization = 29,
+	Max = 30,
+	MaxPooling = 31,
+	Min = 32,
+	Multiply = 33,
+	PartialDepthwiseConvolution = 34,
+	Resampling = 35,
+	Substract = 36
 };
 
 enum class Activations
@@ -327,7 +328,7 @@ DNN_API int DNNSaveLayerWeights(const std::string& fileName, const UInt layerInd
 DNN_API void DNNGetLayerWeights(const UInt layerIndex, std::vector<Float>* weights, std::vector<Float>* biases);
 DNN_API void DNNSetCostIndex(const UInt index);
 DNN_API void DNNGetCostInfo(const UInt costIndex, UInt* trainErrors, Float* trainLoss, Float* avgTrainLoss, Float* trainErrorPercentage, UInt* testErrors, Float* testLoss, Float* avgTestLoss, Float* testErrorPercentage);
-DNN_API void DNNGetImage(const UInt layer, const unsigned char fillColor, unsigned char* image);
+DNN_API void DNNGetImage(const UInt layer, const dnncore::Byte fillColor, dnncore::Byte* image);
 DNN_API bool DNNSetFormat(const bool plain);
 
 namespace dnncore
@@ -549,6 +550,7 @@ namespace dnncore
 			case DNNLayerTypes::BatchNormRelu:
 			case DNNLayerTypes::BatchNormReluDropout:
 			case DNNLayerTypes::BatchNormSwish:
+			case DNNLayerTypes::BatchNormSwishDropout:
 			case DNNLayerTypes::Dense:
 			{
 				const auto width = info->BiasCount;
