@@ -44,7 +44,7 @@ namespace ScriptsDialog
         }
 
         /*
-        public static size_t GetKernel(UInt index)
+        public static UInt GetKernel(UInt index)
         {
             UInt kernel = 1ul;
             for (UInt k = 0ul; k < index; k++)
