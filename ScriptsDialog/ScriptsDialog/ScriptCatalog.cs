@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Globalization;
 
 using Float = System.Single;
-using size_t = System.UInt64;
+using UInt = System.UInt64;
 
 namespace ScriptsDialog
 {
@@ -15,7 +15,7 @@ namespace ScriptsDialog
             return variable ? "Yes" : "No";
         }
 
-        public static string to_string(size_t number)
+        public static string to_string(UInt number)
         {
             return number.ToString();
         }
@@ -35,7 +35,7 @@ namespace ScriptsDialog
             return filler.ToString();
         }
 
-        public static size_t DIV8(size_t channels)
+        public static UInt DIV8(UInt channels)
         {
             if (channels % 8ul == 0ul)
                 return channels;
@@ -44,22 +44,22 @@ namespace ScriptsDialog
         }
 
         /*
-        public static size_t GetKernel(size_t index)
+        public static size_t GetKernel(UInt index)
         {
-            size_t kernel = 1ul;
-            for (size_t k = 0ul; k < index; k++)
+            UInt kernel = 1ul;
+            for (UInt k = 0ul; k < index; k++)
                 kernel += 2;
 
             return kernel;
         }
         */
 
-        public static string In(string prefix, size_t id)
+        public static string In(string prefix, UInt id)
         {
             return prefix + to_string(id);
         }
 
-        public static string BatchNorm(size_t id, string inputs, string group = "", string prefix = "B")
+        public static string BatchNorm(UInt id, string inputs, string group = "", string prefix = "B")
         {
             return "[" + group + prefix + to_string(id) + "]" + nwl +
                "Type=BatchNorm" + nwl +
@@ -67,7 +67,7 @@ namespace ScriptsDialog
         }
 
         
-        public static string BatchNormActivation(size_t id, string inputs, bool relu = true, size_t channels = 1, string group = "", string prefix = "B")
+        public static string BatchNormActivation(UInt id, string inputs, bool relu = true, UInt channels = 1, string group = "", string prefix = "B")
         {
             return "[" + group + prefix + to_string(id) + "]" + nwl +
               (relu ? "Type=BatchNormRelu" + nwl : "Type=BatchNormHardSwish" + nwl) +
@@ -75,7 +75,7 @@ namespace ScriptsDialog
         }
 
         /*
-        public static string BatchNormActivation(size_t id, string inputs, bool relu = true, size_t channels = 1, string group = "", string prefix = "B")
+        public static string BatchNormActivation(UInt id, string inputs, bool relu = true, UInt channels = 1, string group = "", string prefix = "B")
         {
             if (relu)
             {
@@ -106,7 +106,7 @@ namespace ScriptsDialog
         }
         */
 
-        public static string BatchNormActivationDropout(size_t id, string inputs, bool relu = true, Float dropout = 0.0f, string group = "", string prefix = "B")
+        public static string BatchNormActivationDropout(UInt id, string inputs, bool relu = true, Float dropout = 0.0f, string group = "", string prefix = "B")
         {
             return "[" + group + prefix + to_string(id) + "]" + nwl +
               (relu ? "Type=BatchNormReluDropout" + nwl : "Type=BatchNormHardSwishDropout" + nwl) +
@@ -114,14 +114,14 @@ namespace ScriptsDialog
               (dropout > 0f ? "Dropout=" + to_string(dropout) + nwl + nwl : nwl);
         }
 
-        public static string BatchNormHardLogistic(size_t id, string inputs, string group = "", string prefix = "B")
+        public static string BatchNormHardLogistic(UInt id, string inputs, string group = "", string prefix = "B")
         {
             return "[" + group + prefix + to_string(id) + "]" + nwl +
               "Type=BatchNormHardLogistic" + nwl +
               "Inputs=" + inputs + nwl + nwl;
         }
 
-        public static string Resampling(size_t id, string inputs, string group = "", string prefix = "R")
+        public static string Resampling(UInt id, string inputs, string group = "", string prefix = "R")
         {
             return "[" + group + prefix + to_string(id) + "]" + nwl +
                "Type=Resampling" + nwl +
@@ -130,7 +130,7 @@ namespace ScriptsDialog
                "Algorithm=Linear" + nwl + nwl;
         }
 
-        public static string Convolution(size_t id, string inputs, size_t channels, size_t kernelX = 3, size_t kernelY = 3, size_t strideX = 1, size_t strideY = 1, size_t padX = 1, size_t padY = 1, string group = "", string prefix = "C", string weightsFiller = "")
+        public static string Convolution(UInt id, string inputs, UInt channels, UInt kernelX = 3, UInt kernelY = 3, UInt strideX = 1, UInt strideY = 1, UInt padX = 1, UInt padY = 1, string group = "", string prefix = "C", string weightsFiller = "")
         {
             return "[" + group + prefix + to_string(id) + "]" + nwl +
                 "Type=Convolution" + nwl +
@@ -142,7 +142,7 @@ namespace ScriptsDialog
                 (weightsFiller != "" ? "WeightsFiller=" + weightsFiller + nwl + nwl : nwl);
         }
 
-        public static string DepthwiseConvolution(size_t id, string inputs, size_t multiplier = 1, size_t kernelX = 3, size_t kernelY = 3, size_t strideX = 1, size_t strideY = 1, size_t padX = 1, size_t padY = 1, string group = "", string prefix = "DC", string weightsFiller = "")
+        public static string DepthwiseConvolution(UInt id, string inputs, UInt multiplier = 1, UInt kernelX = 3, UInt kernelY = 3, UInt strideX = 1, UInt strideY = 1, UInt padX = 1, UInt padY = 1, string group = "", string prefix = "DC", string weightsFiller = "")
         {
             return "[" + group + prefix + to_string(id) + "]" + nwl +
                 "Type=DepthwiseConvolution" + nwl +
@@ -154,7 +154,7 @@ namespace ScriptsDialog
                 (weightsFiller != "" ? "WeightsFiller=" + weightsFiller + nwl + nwl : nwl);
         }
 
-        public static string PartialDepthwiseConvolution(size_t id, string inputs, size_t part = 1, size_t groups = 1, size_t kernelX = 3, size_t kernelY = 3, size_t strideX = 1, size_t strideY = 1, size_t padX = 1, size_t padY = 1, string group = "", string prefix = "DC", string weightsFiller = "")
+        public static string PartialDepthwiseConvolution(UInt id, string inputs, UInt part = 1, UInt groups = 1, UInt kernelX = 3, UInt kernelY = 3, UInt strideX = 1, UInt strideY = 1, UInt padX = 1, UInt padY = 1, string group = "", string prefix = "DC", string weightsFiller = "")
         {
             return "[" + group + prefix + to_string(id) + "]" + nwl +
                 "Type=PartialDepthwiseConvolution" + nwl +
@@ -167,7 +167,7 @@ namespace ScriptsDialog
                 (weightsFiller != "" ? "WeightsFiller=" + weightsFiller + nwl + nwl : nwl);
         }
 
-        public static string DepthwiseMixedConvolution(size_t g, size_t id, string inputs, size_t strideX = 1, size_t strideY = 1, bool useChannelSplit = true, string group = "", string prefix = "DC")
+        public static string DepthwiseMixedConvolution(UInt g, UInt id, string inputs, UInt strideX = 1, UInt strideY = 1, bool useChannelSplit = true, string group = "", string prefix = "DC")
         {
             switch (g)
             {
@@ -200,7 +200,7 @@ namespace ScriptsDialog
             }
         }
 
-        public static string ChannelSplit(size_t id, string inputs, size_t groups, size_t part, string group = "", string prefix = "CS")
+        public static string ChannelSplit(UInt id, string inputs, UInt groups, UInt part, string group = "", string prefix = "CS")
         {
             return "[" + group + prefix + to_string(id) + "]" + nwl +
                "Type=ChannelSplit" + nwl +
@@ -209,7 +209,7 @@ namespace ScriptsDialog
                "Group=" + to_string(part) + nwl + nwl;
         }
 
-        public static string ChannelShuffle(size_t id, string inputs, size_t groups = 2, string group = "", string prefix = "CSH")
+        public static string ChannelShuffle(UInt id, string inputs, UInt groups = 2, string group = "", string prefix = "CSH")
         {
             return "[" + group + prefix + to_string(id) + "]" + nwl +
                "Type=ChannelShuffle" + nwl +
@@ -217,7 +217,7 @@ namespace ScriptsDialog
                "Groups=" + to_string(groups) + nwl + nwl;
         }
 
-        public static string Concat(size_t id, string inputs, string group = "", string prefix = "CC")
+        public static string Concat(UInt id, string inputs, string group = "", string prefix = "CC")
         {
             return "[" + group + prefix + to_string(id) + "]" + nwl +
                "Type=Concat" + nwl +
@@ -231,7 +231,7 @@ namespace ScriptsDialog
                 "Inputs=" + input + nwl + nwl;
         }
 
-        public static string Add(size_t id, string inputs, string group = "", string prefix = "A")
+        public static string Add(UInt id, string inputs, string group = "", string prefix = "A")
         {
             return "[" + group + prefix + to_string(id) + "]" + nwl +
                "Type=Add" + nwl +
@@ -245,14 +245,14 @@ namespace ScriptsDialog
                "Inputs=" + inputs + nwl + nwl;
         }
 
-        public static string Dropout(size_t id, string inputs, string group = "", string prefix = "D")
+        public static string Dropout(UInt id, string inputs, string group = "", string prefix = "D")
         {
             return "[" + group + prefix + to_string(id) + "]" + nwl +
                "Type=Dropout" + nwl +
                "Inputs=" + inputs + nwl + nwl;
         }
         
-        public static string Logistic(size_t id, string inputs, string group = "", string prefix = "ACT")
+        public static string Logistic(UInt id, string inputs, string group = "", string prefix = "ACT")
         {
             return "[" + group + prefix + to_string(id) + "]" + nwl +
                "Type=Activation" + nwl +
@@ -260,7 +260,7 @@ namespace ScriptsDialog
                "Activation=Logistic" + nwl + nwl;
         }
 
-        public static string HardLogistic(size_t id, string inputs, string group = "", string prefix = "ACT")
+        public static string HardLogistic(UInt id, string inputs, string group = "", string prefix = "ACT")
         {
             return "[" + group + prefix + to_string(id) + "]" + nwl +
                "Type=Activation" + nwl +
@@ -350,7 +350,7 @@ namespace ScriptsDialog
 
                             if (g < p.Groups)
                             {
-                                channels = DIV8((size_t)System.Math.Floor(2.0 * channels * p.Compression));
+                                channels = DIV8((UInt)System.Math.Floor(2.0 * channels * p.Compression));
 
                                 if (p.Dropout > 0)
                                     blocks.Add(
@@ -511,8 +511,8 @@ namespace ScriptsDialog
                                 BatchNormActivation(1, "C1", p.Relu, DIV8(W)) +
                                 Convolution(2, "B1", DIV8(W), 1, 1, 1, 1, 0, 0) +
                                 BatchNormActivation(2, "C2", p.Relu, DIV8(W)) +
-                                Convolution(3, "B2", DIV8((size_t)(K * W / 4)), 3, 3, 1, 1, 1, 1) +
-                                (p.Dropout > 0 ? BatchNormActivationDropout(3, "C3") : BatchNormActivation(3, "C3", p.Relu, DIV8((size_t)(K * W / 4)))) +
+                                Convolution(3, "B2", DIV8((UInt)(K * W / 4)), 3, 3, 1, 1, 1, 1) +
+                                (p.Dropout > 0 ? BatchNormActivationDropout(3, "C3") : BatchNormActivation(3, "C3", p.Relu, DIV8((UInt)(K * W / 4)))) +
                                 Convolution(4, "B3", DIV8(W), 1, 1, 1, 1, 0, 0) +
                                 Convolution(5, "B1", DIV8(W), 1, 1, 1, 1, 0, 0) +
                                 Add(1, "C4,C5")) ;
@@ -581,8 +581,8 @@ namespace ScriptsDialog
                                         BatchNormActivation(C, In("A", A), p.Relu, DIV8(W)) +
                                         Convolution(C, In("B", C), DIV8(W), 1, 1, 1, 1, 0, 0) +
                                         BatchNormActivation(C + 1, In("C", C), p.Relu, DIV8(W)) +
-                                        Convolution(C + 1, In("B", C + 1), DIV8((size_t)(K * W / 4)), 3, 3, 1, 1, 1, 1) +
-                                        (p.Dropout > 0 ? BatchNormActivationDropout(C + 2, In("C", C + 1)) : BatchNormActivation(C + 2, In("C", C + 1), p.Relu, DIV8((size_t)(K * W / 4)))) +
+                                        Convolution(C + 1, In("B", C + 1), DIV8((UInt)(K * W / 4)), 3, 3, 1, 1, 1, 1) +
+                                        (p.Dropout > 0 ? BatchNormActivationDropout(C + 2, In("C", C + 1)) : BatchNormActivation(C + 2, In("C", C + 1), p.Relu, DIV8((UInt)(K * W / 4)))) +
                                         Convolution(C + 2, In("B", C + 2), DIV8(W), 1, 1, 1, 1, 0, 0) +
                                         Add(A + 1, In("C", C + 2) + "," + In("A", A)));
                                 }

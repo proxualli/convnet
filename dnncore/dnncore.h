@@ -25,6 +25,7 @@ using namespace msclr::interop;
 namespace dnncore 
 {
 	typedef float Float;
+	typedef size_t UInt;
 	typedef unsigned char Byte;
 
 	constexpr Byte FloatSaturate(const Float value) { return value > Float(255) ? Byte(255) : value < Float(0) ? Byte(0) : Byte(value); }
@@ -317,9 +318,9 @@ namespace dnncore
 			}
 		}
 
-		property size_t Classes
+		property UInt Classes
 		{
-			size_t get()
+			UInt get()
 			{
 				switch (Dataset)
 				{
@@ -333,10 +334,10 @@ namespace dnncore
 			}
 		}
 
-		property size_t C
+		property UInt C
 		{
-			size_t get() { return c; }
-			void set(size_t value)
+			UInt get() { return c; }
+			void set(UInt value)
 			{
 				if (value != c)
 				{
@@ -345,14 +346,14 @@ namespace dnncore
 				}
 			}
 		}
-		property size_t D
+		property UInt D
 		{
-			size_t get() { return 1; }
+			UInt get() { return 1; }
 		}
-		property size_t H
+		property UInt H
 		{
-			size_t get() { return h; }
-			void set(size_t value)
+			UInt get() { return h; }
+			void set(UInt value)
 			{
 				if (value >= 14 && value <= 256 && value != h)
 				{
@@ -361,10 +362,10 @@ namespace dnncore
 				}
 			}
 		}
-		property size_t W
+		property UInt W
 		{
-			size_t get() { return w; }
-			void set(size_t value)
+			UInt get() { return w; }
+			void set(UInt value)
 			{
 				if (value >= 14 && value <= 256 && value != w)
 				{
@@ -373,14 +374,14 @@ namespace dnncore
 				}
 			}
 		}
-		property size_t PadD
+		property UInt PadD
 		{
-			size_t get() { return 0; }
+			UInt get() { return 0; }
 		}
-		property size_t PadH
+		property UInt PadH
 		{
-			size_t get() { return padH; }
-			void set(size_t value)
+			UInt get() { return padH; }
+			void set(UInt value)
 			{
 				if (value <= H && value != padH)
 				{
@@ -390,10 +391,10 @@ namespace dnncore
 				}
 			}
 		}
-		property size_t PadW
+		property UInt PadW
 		{
-			size_t get() { return padW; }
-			void set(size_t value)
+			UInt get() { return padW; }
+			void set(UInt value)
 			{
 				if (value <= W && value != padW)
 				{
@@ -619,10 +620,10 @@ namespace dnncore
 				}
 			}
 		}
-		property size_t Groups
+		property UInt Groups
 		{
-			size_t get() { return groups; }
-			void set(size_t value)
+			UInt get() { return groups; }
+			void set(UInt value)
 			{
 				if (value == groups)
 					return;
@@ -632,10 +633,10 @@ namespace dnncore
 				OnPropertyChanged("Depth");
 			}
 		}
-		property size_t Iterations
+		property UInt Iterations
 		{
-			size_t get() { return iterations; }
-			void set(size_t value)
+			UInt get() { return iterations; }
+			void set(UInt value)
 			{
 				if (value == iterations)
 					return;
@@ -645,9 +646,9 @@ namespace dnncore
 				OnPropertyChanged("Depth");
 			}
 		}
-		property size_t Depth
+		property UInt Depth
 		{
-			size_t get()
+			UInt get()
 			{
 				switch (Script)
 				{
@@ -668,10 +669,10 @@ namespace dnncore
 			}
 		}
 
-		property size_t Width
+		property UInt Width
 		{
-			size_t get() { return width; }
-			void set(size_t value)
+			UInt get() { return width; }
+			void set(UInt value)
 			{
 				if (value == width)
 					return;
@@ -687,10 +688,10 @@ namespace dnncore
 				return Script == DNNScripts::mobilenetv3 || Script == DNNScripts::resnet || Script == DNNScripts::shufflenetv2;
 			}
 		}
-		property size_t GrowthRate
+		property UInt GrowthRate
 		{
-			size_t get() { return growthRate; }
-			void set(size_t value)
+			UInt get() { return growthRate; }
+			void set(UInt value)
 			{
 				if (value == growthRate)
 					return;
@@ -808,7 +809,7 @@ namespace dnncore
 
 		void OnPropertyChanged(String^ propertyName) { PropertyChanged(this, gcnew System::ComponentModel::PropertyChangedEventArgs(propertyName)); }
 
-		DNNModelParameters(DNNScripts model, DNNDatasets dataset, size_t h, size_t w, size_t padH, size_t padW, bool mirrorPad, bool meanStdNorm, DNNFillers weightsFiller, Float weightsScale, Float weightsLRM, Float weightsWDM, bool hasBias, DNNFillers biasesFiller, Float biasesScale, Float biasesLRM, Float biasesWDM, Float batchNormMomentum, Float batchNormEps, bool batchNormScaling, Float alpha, Float beta, size_t groups, size_t iterations, size_t width, size_t growthRate, bool bottleneck, Float dropout, Float compression, bool squeezeExcitation, bool channelZeroPad)
+		DNNModelParameters(DNNScripts model, DNNDatasets dataset, UInt h, UInt w, UInt padH, UInt padW, bool mirrorPad, bool meanStdNorm, DNNFillers weightsFiller, Float weightsScale, Float weightsLRM, Float weightsWDM, bool hasBias, DNNFillers biasesFiller, Float biasesScale, Float biasesLRM, Float biasesWDM, Float batchNormMomentum, Float batchNormEps, bool batchNormScaling, Float alpha, Float beta, UInt groups, UInt iterations, UInt width, UInt growthRate, bool bottleneck, Float dropout, Float compression, bool squeezeExcitation, bool channelZeroPad)
 		{
 			Script = model;
 			Dataset = dataset;
@@ -851,11 +852,11 @@ namespace dnncore
 		String^ modelName;
 		DNNScripts model;
 		DNNDatasets dataset;
-		size_t c;
-		size_t h;
-		size_t w;
-		size_t padH;
-		size_t padW;
+		UInt c;
+		UInt h;
+		UInt w;
+		UInt padH;
+		UInt padW;
 		bool mirrorPad;
 		bool meanStdNormalization;
 		DNNFillers weightsFiller;
@@ -872,10 +873,10 @@ namespace dnncore
 		bool batchNormScaling;
 		Float alpha;
 		Float beta;
-		size_t groups;
-		size_t iterations;
-		size_t width;
-		size_t growthRate;
+		UInt groups;
+		UInt iterations;
+		UInt width;
+		UInt growthRate;
 		bool bottleneck;
 		Float dropout;
 		Float compression;
@@ -889,26 +890,26 @@ namespace dnncore
 	{
 	public:
 		property DNNCosts CostFunction;
-		property size_t LayerIndex;
-		property size_t GroupIndex;
-		property size_t LabelIndex;
-		property size_t ClassCount;
+		property UInt LayerIndex;
+		property UInt GroupIndex;
+		property UInt LabelIndex;
+		property UInt ClassCount;
 		property String^ Name;
 		property Float Weight;
 
-		property size_t TrainErrors;
+		property UInt TrainErrors;
 		property Float TrainLoss;
 		property Float AvgTrainLoss;
 		property Float TrainErrorPercentage;
 		property Float TrainAccuracy;
 
-		property size_t TestErrors;
+		property UInt TestErrors;
 		property Float TestLoss;
 		property Float AvgTestLoss;
 		property Float TestErrorPercentage;
 		property Float TestAccuracy;
 
-		DNNCostLayer(DNNCosts costFunction, size_t layerIndex, size_t groupIndex, size_t labelIndex, size_t classCount, String^ name, Float weight)
+		DNNCostLayer(DNNCosts costFunction, UInt layerIndex, UInt groupIndex, UInt labelIndex, UInt classCount, String^ name, Float weight)
 		{
 			CostFunction = costFunction;
 			LayerIndex = layerIndex;
@@ -936,10 +937,10 @@ namespace dnncore
 	public ref struct DNNTrainingRate : public System::ComponentModel::INotifyPropertyChanged
 	{
 	public:
-		property size_t BatchSize
+		property UInt BatchSize
 		{
-			size_t get() { return batchSize; }
-			void set(size_t value)
+			UInt get() { return batchSize; }
+			void set(UInt value)
 			{
 				if (value == batchSize && value == 0)
 					return;
@@ -948,10 +949,10 @@ namespace dnncore
 				OnPropertyChanged("BatchSize");
 			}
 		}
-		property size_t Cycles
+		property UInt Cycles
 		{
-			size_t get() { return cycles; }
-			void set(size_t value)
+			UInt get() { return cycles; }
+			void set(UInt value)
 			{
 				if (value == cycles && value == 0)
 					return;
@@ -960,10 +961,10 @@ namespace dnncore
 				OnPropertyChanged("Cycles");
 			}
 		}
-		property size_t Epochs
+		property UInt Epochs
 		{
-			size_t get() { return epochs; }
-			void set(size_t value)
+			UInt get() { return epochs; }
+			void set(UInt value)
 			{
 				if (value == epochs && value == 0)
 					return;
@@ -972,10 +973,10 @@ namespace dnncore
 				OnPropertyChanged("Epochs");
 			}
 		}
-		property size_t EpochMultiplier
+		property UInt EpochMultiplier
 		{
-			size_t get() { return epochMultiplier; }
-			void set(size_t value)
+			UInt get() { return epochMultiplier; }
+			void set(UInt value)
 			{
 				if (value == epochMultiplier && value == 0)
 					return;
@@ -984,10 +985,10 @@ namespace dnncore
 				OnPropertyChanged("EpochMultiplier");
 			}
 		}
-		property size_t DecayAfterEpochs
+		property UInt DecayAfterEpochs
 		{
-			size_t get() { return decayAfterEpochs; }
-			void set(size_t value)
+			UInt get() { return decayAfterEpochs; }
+			void set(UInt value)
 			{
 				if (value == decayAfterEpochs && value == 0)
 					return;
@@ -996,10 +997,10 @@ namespace dnncore
 				OnPropertyChanged("DecayAfterEpochs");
 			}
 		}
-		property size_t Interpolation
+		property UInt Interpolation
 		{
-			size_t get() { return interpolation; }
-			void set(size_t value)
+			UInt get() { return interpolation; }
+			void set(UInt value)
 			{
 				if (value == interpolation)
 					return;
@@ -1008,10 +1009,10 @@ namespace dnncore
 				OnPropertyChanged("Interpolation");
 			}
 		}
-		property size_t ColorAngle
+		property UInt ColorAngle
 		{
-			size_t get() { return colorAngle; }
-			void set(size_t value)
+			UInt get() { return colorAngle; }
+			void set(UInt value)
 			{
 				if (value == colorAngle || value < Float(-360) || value > Float(360))
 					return;
@@ -1189,7 +1190,7 @@ namespace dnncore
 			}
 		}
 
-		DNNTrainingRate(Float maximumRate, size_t batchSize, size_t cycles, size_t epochs, size_t epochMultiplier, Float minRate, Float l2Penalty, Float momentum, Float decayFactor, size_t decayAfterEpochs, bool horizontalFlip, bool verticalFlip, Float dropout, Float cutout, Float autoAugment, Float colorCast, size_t colorAngle, Float distortion, size_t interpolation, Float scaling, Float rotation)
+		DNNTrainingRate(Float maximumRate, UInt batchSize, UInt cycles, UInt epochs, UInt epochMultiplier, Float minRate, Float l2Penalty, Float momentum, Float decayFactor, UInt decayAfterEpochs, bool horizontalFlip, bool verticalFlip, Float dropout, Float cutout, Float autoAugment, Float colorCast, UInt colorAngle, Float distortion, UInt interpolation, Float scaling, Float rotation)
 		{
 			BatchSize = batchSize;
 			Cycles = cycles;
@@ -1220,13 +1221,13 @@ namespace dnncore
 		void OnPropertyChanged(String^ propertyName) { PropertyChanged(this, gcnew System::ComponentModel::PropertyChangedEventArgs(propertyName)); }
 
 	private:
-		size_t batchSize = 128;
-		size_t cycles = 1;
-		size_t epochs = 200;
-		size_t epochMultiplier = 1;
-		size_t decayAfterEpochs = 1;
-		size_t interpolation = 0;
-		size_t colorAngle = 0;
+		UInt batchSize = 128;
+		UInt cycles = 1;
+		UInt epochs = 200;
+		UInt epochMultiplier = 1;
+		UInt decayAfterEpochs = 1;
+		UInt interpolation = 0;
+		UInt colorAngle = 0;
 		Float colorCast = Float(0);
 		Float distortion = Float(0);
 		Float dropout = Float(0);
@@ -1247,32 +1248,32 @@ namespace dnncore
 	public ref class DNNTrainingResult
 	{
 	public:
-		property size_t Cycle;
-		property size_t Epoch;
-		property size_t GroupIndex;
-		property size_t CostIndex;
+		property UInt Cycle;
+		property UInt Epoch;
+		property UInt GroupIndex;
+		property UInt CostIndex;
 		property String^ CostName;
 		property Float Rate;
-		property size_t BatchSize;
+		property UInt BatchSize;
 		property Float Momentum;
 		property Float L2Penalty;
 		property Float Dropout;
 		property Float Cutout;
 		property Float AutoAugment;
 		property Float ColorCast;
-		property size_t ColorAngle;
+		property UInt ColorAngle;
 		property Float Distortion;
-		property size_t Interpolation;
+		property UInt Interpolation;
 		property Float Scaling;
 		property Float Rotation;
 		property bool HorizontalFlip;
 		property bool VerticalFlip;
 		property Float AvgTrainLoss;
-		property size_t TrainErrors;
+		property UInt TrainErrors;
 		property Float TrainErrorPercentage;
 		property Float TrainAccuracy;
 		property Float AvgTestLoss;
-		property size_t TestErrors;
+		property UInt TestErrors;
 		property Float TestErrorPercentage;
 		property Float TestAccuracy;
 		property long long ElapsedTicks;
@@ -1280,7 +1281,7 @@ namespace dnncore
 
 		DNNTrainingResult::DNNTrainingResult() {}
 
-		DNNTrainingResult::DNNTrainingResult(size_t cycle, size_t epoch, size_t groupIndex, size_t costIndex, String^ costName, Float rate, size_t batchSize, Float momentum, Float l2Penalty, Float dropout, Float cutout, Float autoAugment, Float colorCast, size_t colorAngle, Float distortion, size_t interpolation, Float scaling, Float rotation, bool horizontalFlip, bool verticalFlip, Float avgTrainLoss, size_t trainErrors, Float trainErrorPercentage, Float trainAccuracy, Float avgTestLoss, size_t testErrors, Float testErrorPercentage, Float testAccuracy, long long elapsedTicks)
+		DNNTrainingResult::DNNTrainingResult(UInt cycle, UInt epoch, UInt groupIndex, UInt costIndex, String^ costName, Float rate, UInt batchSize, Float momentum, Float l2Penalty, Float dropout, Float cutout, Float autoAugment, Float colorCast, UInt colorAngle, Float distortion, UInt interpolation, Float scaling, Float rotation, bool horizontalFlip, bool verticalFlip, Float avgTrainLoss, UInt trainErrors, Float trainErrorPercentage, Float trainAccuracy, Float avgTestLoss, UInt testErrors, Float testErrorPercentage, Float testAccuracy, long long elapsedTicks)
 		{
 			Cycle = cycle;
 			Epoch = epoch;
@@ -1319,13 +1320,13 @@ namespace dnncore
 	public ref struct DNNCheckMsg
 	{
 	public:
-		property size_t Row;
-		property size_t Column;
+		property UInt Row;
+		property UInt Column;
 		property bool Error;
 		property String^ Message;
 		property String^ Definition;
 
-		DNNCheckMsg::DNNCheckMsg(size_t row, size_t column, String^ message, bool error, String^ definition)
+		DNNCheckMsg::DNNCheckMsg(UInt row, UInt column, String^ message, bool error, String^ definition)
 		{
 			Row = row;
 			Column = column;
@@ -1344,7 +1345,7 @@ namespace dnncore
 		property DNNLayerTypes LayerType;
 		property DNNActivations ActivationFunctionEnum;
 		property DNNCosts CostFunction;
-		property System::Collections::Generic::List<size_t>^ Inputs;
+		property System::Collections::Generic::List<UInt>^ Inputs;
 		property System::Collections::Generic::List<String^>^ InputsNames;
 		property System::Windows::Media::Imaging::BitmapSource^ WeightsSnapshot;
 		property bool Lockable;
@@ -1374,34 +1375,34 @@ namespace dnncore
 		property bool AcrossChannels;
 		property int WeightsSnapshotX;
 		property int WeightsSnapshotY;
-		property size_t InputCount;
-		property size_t LayerIndex;
-		property size_t NeuronCount;
-		property size_t C;
-		property size_t D;
-		property size_t W;
-		property size_t H;
-		property size_t HW;
-		property size_t KernelH;
-		property size_t KernelW;
-		property size_t KernelHW;
-		property size_t DilationH;
-		property size_t DilationW;
-		property size_t StrideH;
-		property size_t StrideW;
-		property size_t PadD;
-		property size_t PadH;
-		property size_t PadW;
-		property size_t Multiplier;
-		property size_t Groups;
-		property size_t Group;
-		property size_t LocalSize;
-		property size_t WeightCount;
-		property size_t BiasCount;
-		property size_t GroupSize;
-		property size_t InputC;
-		property size_t GroupIndex;
-		property size_t LabelIndex;
+		property UInt InputCount;
+		property UInt LayerIndex;
+		property UInt NeuronCount;
+		property UInt C;
+		property UInt D;
+		property UInt W;
+		property UInt H;
+		property UInt HW;
+		property UInt KernelH;
+		property UInt KernelW;
+		property UInt KernelHW;
+		property UInt DilationH;
+		property UInt DilationW;
+		property UInt StrideH;
+		property UInt StrideW;
+		property UInt PadD;
+		property UInt PadH;
+		property UInt PadW;
+		property UInt Multiplier;
+		property UInt Groups;
+		property UInt Group;
+		property UInt LocalSize;
+		property UInt WeightCount;
+		property UInt BiasCount;
+		property UInt GroupSize;
+		property UInt InputC;
+		property UInt GroupIndex;
+		property UInt LabelIndex;
 		property Float Dropout;
 		property Float Cutout;
 		property Float NeuronsStdDev;
@@ -1451,9 +1452,9 @@ namespace dnncore
 	public ref class Model
 	{
 	public:
-		delegate void TrainProgressEventDelegate(size_t, size_t, size_t, size_t, size_t, bool, bool, Float, Float, Float, Float, size_t, Float, size_t, Float, Float, size_t, Float, Float, Float, Float, Float, Float, size_t, Float, Float, Float, size_t, DNNStates, DNNTaskStates);
-		delegate void TestProgressEventDelegate(size_t, size_t, Float, Float, Float, size_t, DNNStates, DNNTaskStates);
-		delegate void NewEpochEventDelegate(size_t, size_t, size_t, bool, bool, Float, Float, Float, Float, size_t, Float, size_t, Float, Float, Float, size_t, Float, Float, Float, Float, Float, size_t, Float, Float, Float, size_t);
+		delegate void TrainProgressEventDelegate(UInt, UInt, UInt, UInt, UInt, bool, bool, Float, Float, Float, Float, UInt, Float, UInt, Float, Float, UInt, Float, Float, Float, Float, Float, Float, UInt, Float, Float, Float, UInt, DNNStates, DNNTaskStates);
+		delegate void TestProgressEventDelegate(UInt, UInt, Float, Float, Float, UInt, DNNStates, DNNTaskStates);
+		delegate void NewEpochEventDelegate(UInt, UInt, UInt, bool, bool, Float, Float, Float, Float, UInt, Float, UInt, Float, Float, Float, UInt, Float, Float, Float, Float, Float, UInt, Float, Float, Float, UInt);
 
 		property TrainProgressEventDelegate^ TrainProgress;
 		property TestProgressEventDelegate^ TestProgress;
@@ -1466,7 +1467,7 @@ namespace dnncore
 		property cli::array<DNNCostLayer^>^ CostLayers;
 		property cli::array<Float>^ MeanTrainSet;
 		property cli::array<Float>^ StdTrainSet;
-		property cli::array<cli::array<size_t>^>^ ConfusionMatrix;
+		property cli::array<cli::array<UInt>^>^ ConfusionMatrix;
 		property cli::array<cli::array<String^>^>^ LabelsCollection;
 		property cli::array<DNNTrainingRate^>^ TrainingRates;
 		property DNNTrainingRate^ TrainingRate;
@@ -1484,30 +1485,30 @@ namespace dnncore
 		property bool VerticalFlip;
 		property bool MeanStdNormalization;
 		property bool IsTraining;
-		property size_t CostIndex;
-		property size_t Hierarchies;
-		property size_t ClassCount;
-		property size_t GroupIndex;
-		property size_t LabelIndex;
-		property size_t BatchSize;
-		property size_t LayerCount;
-		property size_t Multiplier;
-		property size_t CostLayersCount;
-		property size_t TrainingSamples;
-		property size_t AdjustedTrainingSamplesCount;
-		property size_t TestingSamples;
-		property size_t AdjustedTestingSamplesCount;
-		property size_t Cycle;
-		property size_t TotalCycles;
-		property size_t Epoch;
-		property size_t TotalEpochs;
+		property UInt CostIndex;
+		property UInt Hierarchies;
+		property UInt ClassCount;
+		property UInt GroupIndex;
+		property UInt LabelIndex;
+		property UInt BatchSize;
+		property UInt LayerCount;
+		property UInt Multiplier;
+		property UInt CostLayersCount;
+		property UInt TrainingSamples;
+		property UInt AdjustedTrainingSamplesCount;
+		property UInt TestingSamples;
+		property UInt AdjustedTestingSamplesCount;
+		property UInt Cycle;
+		property UInt TotalCycles;
+		property UInt Epoch;
+		property UInt TotalEpochs;
 		property Float ColorCast;
-		property size_t ColorAngle;
-		property size_t Interpolation;
-		property size_t SampleIndex;
-		property size_t TrainErrors;
-		property size_t TestErrors;
-		property size_t BlockSize;
+		property UInt ColorAngle;
+		property UInt Interpolation;
+		property UInt SampleIndex;
+		property UInt TrainErrors;
+		property UInt TestErrors;
+		property UInt BlockSize;
 		property Float Dropout;
 		property Float Cutout;
 		property Float AutoAugment;
@@ -1547,37 +1548,37 @@ namespace dnncore
 		bool LoadDataset();
 		cli::array<String^>^ GetTextLabels(String^ fileName);
 		void OnElapsed(Object^ sender, System::Timers::ElapsedEventArgs^ e);
-		void UpdateInputSnapshot(size_t C, size_t H, size_t W);
+		void UpdateInputSnapshot(UInt C, UInt H, UInt W);
 		void SetPersistOptimizer(bool persist);
 		void SetDisableLocking(bool disable);
 		void SetOptimizersHyperParameters(Float adaDeltaEps, Float adaGradEps, Float adamEps, Float adamBeta2, Float adamaxEps, Float adamaxBeta2, Float rmsPropEps, Float radamEps, Float radamBeta1, Float radamBeta2);
 		void ApplyParameters();
 		bool SetFormat(bool plain);
-		void ResetLayerWeights(size_t layerIndex);
+		void ResetLayerWeights(UInt layerIndex);
 		void ResetWeights();
-		void AddLearningRate(bool clear, size_t gotoEpoch, DNNTrainingRate^ rate);
-		void AddLearningRateSGDR(bool clear, size_t gotoEpoch, DNNTrainingRate^ rate);
+		void AddLearningRate(bool clear, UInt gotoEpoch, DNNTrainingRate^ rate);
+		void AddLearningRateSGDR(bool clear, UInt gotoEpoch, DNNTrainingRate^ rate);
 		void Start(bool training);
 		void Stop();
 		void Pause();
 		void Resume();
-		void UpdateLayerStatistics(LayerInformation^ info, size_t layerIndex, bool updateUI);
-		LayerInformation^ GetLayerInfo(size_t layerIndex, bool updateUI);
-		void UpdateLayerInfo(size_t layerIndex, bool updateUI);
-		void SetCostIndex(size_t costIndex);
+		void UpdateLayerStatistics(LayerInformation^ info, UInt layerIndex, bool updateUI);
+		LayerInformation^ GetLayerInfo(UInt layerIndex, bool updateUI);
+		void UpdateLayerInfo(UInt layerIndex, bool updateUI);
+		void SetCostIndex(UInt costIndex);
 		void SetOptimizer(DNNOptimizers optimizer);
 		void ResetOptimizer();
 		void SetLocked(bool locked);
-		void SetLayerLocked(size_t layerIndex, bool locked);
+		void SetLayerLocked(UInt layerIndex, bool locked);
 		void GetConfusionMatrix();
-		void UpdateCostInfo(size_t costIndex);
+		void UpdateCostInfo(UInt costIndex);
 		bool BatchNormalizationUsed();
 		DNNCheckMsg^ CheckDefinition(String^ definition);
 		int LoadDefinition(String^ fileName);
 		int LoadWeights(String^ fileName, bool persistOptimizer);
 		int SaveWeights(String^ fileName, bool persistOptimizer);
-		int LoadLayerWeights(String^ fileName, size_t layerIndex);
-		int SaveLayerWeights(String^ fileName, size_t layerIndex);
+		int LoadLayerWeights(String^ fileName, UInt layerIndex);
+		int SaveLayerWeights(String^ fileName, UInt layerIndex);
 		static bool StochasticEnabled();
 
 	protected:

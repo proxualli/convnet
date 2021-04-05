@@ -172,13 +172,13 @@ enum class Interpolation
 
 struct TrainingRate
 {
-	size_t BatchSize;
-	size_t Cycles;
-	size_t Epochs;
-	size_t EpochMultiplier;
-	size_t DecayAfterEpochs;
-	size_t Interpolation;
-	size_t ColorAngle;
+	UInt BatchSize;
+	UInt Cycles;
+	UInt Epochs;
+	UInt EpochMultiplier;
+	UInt DecayAfterEpochs;
+	UInt Interpolation;
+	UInt ColorAngle;
 	Float ColorCast;
 	Float Distortion;
 	Float Dropout;
@@ -200,7 +200,7 @@ struct TrainingRate
 		Epochs(200),
 		EpochMultiplier(1),
 		DecayAfterEpochs(1),
-		Interpolation(size_t(Interpolation::Cubic)),
+		Interpolation(UInt(Interpolation::Cubic)),
 		ColorAngle(0),
 		ColorCast(Float(0)),
 		Distortion(Float(0)),
@@ -219,7 +219,7 @@ struct TrainingRate
 	{
 	}
 
-	TrainingRate::TrainingRate(const Float maximumRate, const size_t batchSize, const size_t cycles, const size_t epochs, const size_t epochMultiplier, const Float minimumRate, const Float L2penalty, const Float momentum, const Float decayFactor, const size_t decayAfterEpochs, const bool horizontalFlip, const bool verticalFlip, const Float dropout, const Float cutout, const Float autoAugment, const Float colorCast, const size_t colorAngle, const Float distortion, const size_t interpolation, const Float scaling, const Float rotation) :
+	TrainingRate::TrainingRate(const Float maximumRate, const UInt batchSize, const UInt cycles, const UInt epochs, const UInt epochMultiplier, const Float minimumRate, const Float L2penalty, const Float momentum, const Float decayFactor, const UInt decayAfterEpochs, const bool horizontalFlip, const bool verticalFlip, const Float dropout, const Float cutout, const Float autoAugment, const Float colorCast, const UInt colorAngle, const Float distortion, const UInt interpolation, const Float scaling, const Float rotation) :
 		MaximumRate(maximumRate),
 		BatchSize(batchSize),
 		Cycles(cycles),
@@ -271,12 +271,12 @@ struct Stats
 
 struct CheckMsg
 {
-	size_t Row;
-	size_t Column;
+	UInt Row;
+	UInt Column;
 	bool Error;
 	std::string Message;
 
-	CheckMsg(const size_t row = 0, const size_t column = 0, const std::string& message = "", const bool error = true) :
+	CheckMsg(const UInt row = 0, const UInt column = 0, const std::string& message = "", const bool error = true) :
 		Row(row),
 		Column(column),
 		Message(message),
@@ -289,45 +289,45 @@ struct CheckMsg
 
 DNN_API bool DNNStochasticEnabled();
 DNN_API void DNNSetLocked(const bool locked);
-DNN_API bool DNNSetLayerLocked(const size_t layerIndex, const bool locked);
+DNN_API bool DNNSetLayerLocked(const UInt layerIndex, const bool locked);
 DNN_API void DNNPersistOptimizer(const bool persist);
 DNN_API void DNNDisableLocking(const bool disable);
-DNN_API void DNNGetConfusionMatrix(const size_t costLayerIndex, std::vector<std::vector<size_t>>* confusionMatrix);
-DNN_API void DNNGetLayerInputs(const size_t layerIndex, std::vector<size_t>* inputs);
-DNN_API void DNNGetLayerInfo(const size_t layerIndex, size_t* inputsCount, LayerTypes* layerType, Activations* activationFunction, Costs* cost, std::string* name, std::string* description, size_t* neuronCount, size_t* weightCount, size_t* biasesCount, size_t* multiplier, size_t* groups, size_t* group, size_t* localSize, size_t* c, size_t* d, size_t* h, size_t* w, size_t* kernelH, size_t* kernelW, size_t* strideH, size_t* strideW, size_t* dilationH, size_t* dilationW, size_t* padD, size_t* padH, size_t* padW, Float* dropout, Float* labelTrue, Float* labelFalse, Float* weight, size_t* groupIndex, size_t* labelIndex, size_t* inputC, Float* alpha, Float* beta, Float* k, Algorithms* algorithm, Float* fH, Float* fW, bool* hasBias, bool* scaling, bool* acrossChannels, bool* locked, bool* lockable);
-DNN_API void DNNSetNewEpochDelegate(void(*newEpoch)(size_t, size_t, size_t, bool, bool, Float, Float, Float, Float, size_t, Float, size_t, Float, Float, Float, size_t, Float, Float, Float, Float, Float, size_t, Float, Float, Float, size_t));
+DNN_API void DNNGetConfusionMatrix(const UInt costLayerIndex, std::vector<std::vector<UInt>>* confusionMatrix);
+DNN_API void DNNGetLayerInputs(const UInt layerIndex, std::vector<UInt>* inputs);
+DNN_API void DNNGetLayerInfo(const UInt layerIndex, UInt* inputsCount, LayerTypes* layerType, Activations* activationFunction, Costs* cost, std::string* name, std::string* description, UInt* neuronCount, UInt* weightCount, UInt* biasesCount, UInt* multiplier, UInt* groups, UInt* group, UInt* localSize, UInt* c, UInt* d, UInt* h, UInt* w, UInt* kernelH, UInt* kernelW, UInt* strideH, UInt* strideW, UInt* dilationH, UInt* dilationW, UInt* padD, UInt* padH, UInt* padW, Float* dropout, Float* labelTrue, Float* labelFalse, Float* weight, UInt* groupIndex, UInt* labelIndex, UInt* inputC, Float* alpha, Float* beta, Float* k, Algorithms* algorithm, Float* fH, Float* fW, bool* hasBias, bool* scaling, bool* acrossChannels, bool* locked, bool* lockable);
+DNN_API void DNNSetNewEpochDelegate(void(*newEpoch)(UInt, UInt, UInt, bool, bool, Float, Float, Float, Float, UInt, Float, UInt, Float, Float, Float, UInt, Float, Float, Float, Float, Float, UInt, Float, Float, Float, UInt));
 DNN_API void DNNModelDispose();
 DNN_API bool DNNBatchNormalizationUsed();
 DNN_API void DNNSetOptimizersHyperParameters(const Float adaDeltaEps, const Float adaGradEps, const Float adamEps, const Float adamBeta2, const Float adamaxEps, const Float adamaxBeta2, const Float rmsPropEps, const Float radamEps, const Float radamBeta1, const Float radamBeta2);
 DNN_API void DNNResetWeights();
-DNN_API void DNNResetLayerWeights(const size_t layerIndex);
-DNN_API void DNNAddLearningRate(const bool clear, const size_t gotoEpoch, const Float maximumRate, const size_t bachSize, const size_t cycles, const size_t epochs, const size_t epochMultiplier, const Float minimumRate, const Float L2penalty, const Float momentum, const Float decayFactor, const size_t decayAfterEpochs, const bool horizontalFlip, const bool verticalFlip, const Float dropout, const Float cutout, const Float autoAugment, const Float colorCast, const size_t colorAngle, const Float distortion, const size_t interpolation, const Float scaling, const Float rotation);
-DNN_API void DNNAddLearningRateSGDR(const bool clear, const size_t gotoEpoch, const Float maximumRate, const size_t bachSize, const size_t cycles, const size_t epochs, const size_t epochMultiplier, const Float minimumRate, const Float L2penalty, const Float momentum, const Float decayFactor, const size_t decayAfterEpochs, const bool horizontalFlip, const bool verticalFlip, const Float dropout, const Float cutout, const Float autoAugment, const Float colorCast, const size_t colorAngle, const Float distortion, const size_t interpolation, const Float scaling, const Float rotation);
+DNN_API void DNNResetLayerWeights(const UInt layerIndex);
+DNN_API void DNNAddLearningRate(const bool clear, const UInt gotoEpoch, const Float maximumRate, const UInt bachSize, const UInt cycles, const UInt epochs, const UInt epochMultiplier, const Float minimumRate, const Float L2penalty, const Float momentum, const Float decayFactor, const UInt decayAfterEpochs, const bool horizontalFlip, const bool verticalFlip, const Float dropout, const Float cutout, const Float autoAugment, const Float colorCast, const UInt colorAngle, const Float distortion, const UInt interpolation, const Float scaling, const Float rotation);
+DNN_API void DNNAddLearningRateSGDR(const bool clear, const UInt gotoEpoch, const Float maximumRate, const UInt bachSize, const UInt cycles, const UInt epochs, const UInt epochMultiplier, const Float minimumRate, const Float L2penalty, const Float momentum, const Float decayFactor, const UInt decayAfterEpochs, const bool horizontalFlip, const bool verticalFlip, const Float dropout, const Float cutout, const Float autoAugment, const Float colorCast, const UInt colorAngle, const Float distortion, const UInt interpolation, const Float scaling, const Float rotation);
 DNN_API bool DNNLoadDataset();
 DNN_API void DNNTraining();
 DNN_API void DNNStop();
 DNN_API void DNNPause();
 DNN_API void DNNResume();
 DNN_API void DNNTesting();
-DNN_API void DNNGetTrainingInfo(size_t* currentCycle, size_t* totalCycles, size_t* currentEpoch, size_t* totalEpochs, bool* verticalMirror, bool* horizontalMirror, Float* dropout, Float* cutout, Float* autoAugment, Float* colorCast, size_t* colorAngle, Float* distortion, size_t* interpolation, Float* scaling, Float* rotation, size_t* sampleIndex, size_t* batchSize, Float* rate, Float* momentum, Float* l2Penalty, Float* avgTrainLoss, Float* trainErrorPercentage, size_t* trainErrors, Float* avgTestLoss, Float* testErrorPercentage, size_t* testErrors, Float* sampleSpeed, States* networkState, TaskStates* taskState);
-DNN_API void DNNGetTestingInfo(size_t* batchSize, size_t* sampleIndex, Float* avgTestLoss, Float* testErrorPercentage, size_t* testErrors, Float* sampleSpeed, States* networkState, TaskStates* taskState);
-DNN_API void DNNGetNetworkInfo(std::string* name, size_t* costIndex, size_t* costLayerCount, size_t* groupIndex, size_t* labelindex, size_t* hierarchies, bool* meanStdNormalization, Costs* lossFunction, Datasets* dataset, size_t* layerCount, size_t* trainingSamples, size_t* testingSamples, std::vector<Float>* meanTrainSet, std::vector<Float>* stdTrainSet);
+DNN_API void DNNGetTrainingInfo(UInt* currentCycle, UInt* totalCycles, UInt* currentEpoch, UInt* totalEpochs, bool* verticalMirror, bool* horizontalMirror, Float* dropout, Float* cutout, Float* autoAugment, Float* colorCast, UInt* colorAngle, Float* distortion, UInt* interpolation, Float* scaling, Float* rotation, UInt* sampleIndex, UInt* batchSize, Float* rate, Float* momentum, Float* l2Penalty, Float* avgTrainLoss, Float* trainErrorPercentage, UInt* trainErrors, Float* avgTestLoss, Float* testErrorPercentage, UInt* testErrors, Float* sampleSpeed, States* networkState, TaskStates* taskState);
+DNN_API void DNNGetTestingInfo(UInt* batchSize, UInt* sampleIndex, Float* avgTestLoss, Float* testErrorPercentage, UInt* testErrors, Float* sampleSpeed, States* networkState, TaskStates* taskState);
+DNN_API void DNNGetNetworkInfo(std::string* name, UInt* costIndex, UInt* costLayerCount, UInt* groupIndex, UInt* labelindex, UInt* hierarchies, bool* meanStdNormalization, Costs* lossFunction, Datasets* dataset, UInt* layerCount, UInt* trainingSamples, UInt* testingSamples, std::vector<Float>* meanTrainSet, std::vector<Float>* stdTrainSet);
 DNN_API void DNNSetOptimizer(const Optimizers strategy);
 DNN_API void DNNResetOptimizer();
-DNN_API void DNNRefreshStatistics(const size_t layerIndex, std::string* description, Stats* neuronsStats, Stats* weightsStats, Stats* biasesStats, Float* fpropLayerTime, Float* bpropLayerTime, Float* updateLayerTime, Float* fpropTime, Float* bpropTime, Float* updateTime, bool* locked);
-DNN_API bool DNNGetInputSnapShot(std::vector<Float>* snapshot, std::vector<size_t>* label);
+DNN_API void DNNRefreshStatistics(const UInt layerIndex, std::string* description, Stats* neuronsStats, Stats* weightsStats, Stats* biasesStats, Float* fpropLayerTime, Float* bpropLayerTime, Float* updateLayerTime, Float* fpropTime, Float* bpropTime, Float* updateTime, bool* locked);
+DNN_API bool DNNGetInputSnapShot(std::vector<Float>* snapshot, std::vector<UInt>* label);
 DNN_API bool DNNCheckDefinition(std::string& definition, CheckMsg& checkMsg);
 DNN_API int DNNLoadDefinition(const std::string& fileName, const Optimizers optimizer, CheckMsg& checkMsg);
 DNN_API int DNNReadDefinition(const std::string& definition, const Optimizers optimizer, CheckMsg& checkMsg);
 DNN_API void DNNDataprovider(const std::string& directory);
 DNN_API int DNNLoadNetworkWeights(const std::string& fileName, const bool persistOptimizer);
 DNN_API int DNNSaveNetworkWeights(const std::string& fileName, const bool persistOptimizer);
-DNN_API int DNNLoadLayerWeights(const std::string& fileName, const size_t layerIndex, const bool persistOptimizer);
-DNN_API int DNNSaveLayerWeights(const std::string& fileName, const size_t layerIndex, const bool persistOptimizer);
-DNN_API void DNNGetLayerWeights(const size_t layerIndex, std::vector<Float>* weights, std::vector<Float>* biases);
-DNN_API void DNNSetCostIndex(const size_t index);
-DNN_API void DNNGetCostInfo(const size_t costIndex, size_t* trainErrors, Float* trainLoss, Float* avgTrainLoss, Float* trainErrorPercentage, size_t* testErrors, Float* testLoss, Float* avgTestLoss, Float* testErrorPercentage);
-DNN_API void DNNGetImage(const size_t layer, const unsigned char fillColor, unsigned char* image);
+DNN_API int DNNLoadLayerWeights(const std::string& fileName, const UInt layerIndex, const bool persistOptimizer);
+DNN_API int DNNSaveLayerWeights(const std::string& fileName, const UInt layerIndex, const bool persistOptimizer);
+DNN_API void DNNGetLayerWeights(const UInt layerIndex, std::vector<Float>* weights, std::vector<Float>* biases);
+DNN_API void DNNSetCostIndex(const UInt index);
+DNN_API void DNNGetCostInfo(const UInt costIndex, UInt* trainErrors, Float* trainLoss, Float* avgTrainLoss, Float* trainErrorPercentage, UInt* testErrors, Float* testLoss, Float* avgTestLoss, Float* testErrorPercentage);
+DNN_API void DNNGetImage(const UInt layer, const unsigned char fillColor, unsigned char* image);
 DNN_API bool DNNSetFormat(const bool plain);
 
 namespace dnncore
@@ -408,16 +408,16 @@ namespace dnncore
 	{
 		const auto classCount = CostLayers[CostIndex]->ClassCount;
 
-		auto confusionMatrix = std::vector<std::vector<size_t>>(classCount);
-		for (size_t i = 0; i < classCount; i++)
-			confusionMatrix[i] = std::vector<size_t>(classCount);
+		auto confusionMatrix = std::vector<std::vector<UInt>>(classCount);
+		for (UInt i = 0; i < classCount; i++)
+			confusionMatrix[i] = std::vector<UInt>(classCount);
 
 		DNNGetConfusionMatrix(CostIndex, &confusionMatrix);
 
-		ConfusionMatrix = gcnew cli::array<cli::array<size_t>^>(int(classCount));
+		ConfusionMatrix = gcnew cli::array<cli::array<UInt>^>(int(classCount));
 		for (int i = 0; i < classCount; i++)
 		{
-			ConfusionMatrix[i] = gcnew cli::array<size_t>(int(classCount));
+			ConfusionMatrix[i] = gcnew cli::array<UInt>(int(classCount));
 			for (int j = 0; j < classCount; j++)
 				ConfusionMatrix[i][j] = confusionMatrix[i][j];
 		}
@@ -449,7 +449,7 @@ namespace dnncore
 		return DNNBatchNormalizationUsed();
 	}
 
-	void Model::UpdateLayerStatistics(LayerInformation^ info, size_t layerIndex, bool updateUI)
+	void Model::UpdateLayerStatistics(LayerInformation^ info, UInt layerIndex, bool updateUI)
 	{
 		auto description = new std::string();
 		auto neuronsStats = new Stats();
@@ -608,7 +608,7 @@ namespace dnncore
 		}
 	}
 
-	void Model::UpdateInputSnapshot(size_t C, size_t H, size_t W)
+	void Model::UpdateInputSnapshot(UInt C, UInt H, UInt W)
 	{
 		const auto totalSize = C * H * W;
 		auto snapshot = std::vector<Float>(totalSize);
@@ -623,12 +623,12 @@ namespace dnncore
 			const auto HW = H * W;
 
 			if (MeanStdNormalization)
-				for (size_t channel = 0; channel < C; channel++)
-					for (size_t hw = 0; hw < HW; hw++)
+				for (UInt channel = 0; channel < C; channel++)
+					for (UInt hw = 0; hw < HW; hw++)
 						img[int((hw * C) + channel)] = pictureLoaded ? FloatSaturate((snapshot[hw + channel * HW] * StdTrainSet[channel]) + MeanTrainSet[channel]) : FloatSaturate(MeanTrainSet[channel]);
 			else
-				for (size_t channel = 0; channel < C; channel++)
-					for (size_t hw = 0; hw < HW; hw++)
+				for (UInt channel = 0; channel < C; channel++)
+					for (UInt hw = 0; hw < HW; hw++)
 						img[int((hw * C) + channel)] = pictureLoaded ? FloatSaturate((snapshot[hw + channel * HW] + Float(2)) * 64) : FloatSaturate(128);
 
 			auto outputImage = System::Windows::Media::Imaging::BitmapSource::Create(int(W), int(H), 96.0, 96.0, pixelFormat, nullptr, img, int(W) * ((pixelFormat.BitsPerPixel + 7) / 8));
@@ -640,7 +640,7 @@ namespace dnncore
 		}
 	}
 
-	LayerInformation^ Model::GetLayerInfo(size_t layerIndex, bool updateUI)
+	LayerInformation^ Model::GetLayerInfo(UInt layerIndex, bool updateUI)
 	{
 		LayerInformation^ info = gcnew LayerInformation();
 
@@ -649,27 +649,27 @@ namespace dnncore
 		auto costFunction = new Costs();
 		auto aName = new std::string();
 		auto aDescription = new std::string();
-		auto inputsCount = new size_t();
-		auto neuronCount = new size_t();
-		auto weightCount = new size_t();
-		auto biasCount = new size_t();
-		auto multiplier = new size_t();
-		auto groups = new size_t();
-		auto group = new size_t();
-		auto localSize = new size_t();
-		auto c = new size_t();
-		auto d = new size_t();
-		auto h = new size_t();
-		auto w = new size_t();
-		auto kernelH = new size_t();
-		auto kernelW = new size_t();
-		auto strideH = new size_t();
-		auto strideW = new size_t();
-		auto dilationH = new size_t();
-		auto dilationW = new size_t();
-		auto padD = new size_t();
-		auto padH = new size_t();
-		auto padW = new size_t();
+		auto inputsCount = new UInt();
+		auto neuronCount = new UInt();
+		auto weightCount = new UInt();
+		auto biasCount = new UInt();
+		auto multiplier = new UInt();
+		auto groups = new UInt();
+		auto group = new UInt();
+		auto localSize = new UInt();
+		auto c = new UInt();
+		auto d = new UInt();
+		auto h = new UInt();
+		auto w = new UInt();
+		auto kernelH = new UInt();
+		auto kernelW = new UInt();
+		auto strideH = new UInt();
+		auto strideW = new UInt();
+		auto dilationH = new UInt();
+		auto dilationW = new UInt();
+		auto padD = new UInt();
+		auto padH = new UInt();
+		auto padW = new UInt();
 		auto algorithm = new Algorithms();
 		auto factorH = new Float();
 		auto factorW = new Float();
@@ -677,9 +677,9 @@ namespace dnncore
 		auto labelTrue = new Float();
 		auto labelFalse = new Float();
 		auto weight = new Float();
-		auto labelIndex = new size_t();
-		auto groupIndex = new size_t();
-		auto inputC = new size_t();
+		auto labelIndex = new UInt();
+		auto groupIndex = new UInt();
+		auto inputC = new UInt();
 		auto alpha = new Float();
 		auto beta = new Float();
 		auto k = new Float;
@@ -697,10 +697,10 @@ namespace dnncore
 		info->ActivationFunctionEnum = static_cast<DNNActivations>(*activationFunction);
 		info->CostFunction = static_cast<DNNCosts>(*costFunction);
 		info->InputCount = *inputsCount;
-		std::vector<size_t>* inputs = new std::vector<size_t>();
+		std::vector<UInt>* inputs = new std::vector<UInt>();
 		DNNGetLayerInputs(layerIndex, inputs);
-		info->Inputs = gcnew System::Collections::Generic::List<size_t>();
-		for each (size_t inputLayerIndex in *inputs)
+		info->Inputs = gcnew System::Collections::Generic::List<UInt>();
+		for each (UInt inputLayerIndex in *inputs)
 			info->Inputs->Add(inputLayerIndex);
 		info->Name = ToManagedString(*aName);
 		info->Description = ToManagedString(*aDescription);
@@ -794,7 +794,7 @@ namespace dnncore
 		return info;
 	}
 
-	void Model::UpdateLayerInfo(size_t layerIndex, bool updateUI)
+	void Model::UpdateLayerInfo(UInt layerIndex, bool updateUI)
 	{
 		UpdateLayerStatistics(Layers[layerIndex], layerIndex, updateUI);
 	}
@@ -815,32 +815,32 @@ namespace dnncore
 
 		if (IsTraining)
 		{
-			auto cycle = new size_t();
-			auto totalCycles = new size_t();
-			auto epoch = new size_t();
-			auto totalEpochs = new size_t();
+			auto cycle = new UInt();
+			auto totalCycles = new UInt();
+			auto epoch = new UInt();
+			auto totalEpochs = new UInt();
 			auto horizontalFlip = new bool();
 			auto verticalFlip = new bool();
 			auto dropout = new Float();
 			auto cutout = new Float();
 			auto autoAugment = new Float();
 			auto colorCast = new Float();
-			auto colorAngle = new size_t();
+			auto colorAngle = new UInt();
 			auto distortion = new Float();
-			auto interpolation = new size_t();
+			auto interpolation = new UInt();
 			auto scaling = new Float();
 			auto rotation = new Float;
-			auto sampleIndex = new size_t();
+			auto sampleIndex = new UInt();
 			auto rate = new Float();
 			auto momentum = new Float();
 			auto l2Penalty = new Float();
-			auto batchSize = new size_t();
+			auto batchSize = new UInt();
 			auto avgTrainLoss = new Float();
 			auto trainErrorPercentage = new Float();
-			auto trainErrors = new size_t();
+			auto trainErrors = new UInt();
 			auto avgTestLoss = new Float();
 			auto testErrorPercentage = new Float();
-			auto testErrors = new size_t();
+			auto testErrors = new UInt();
 			auto sampleSpeed = new Float();
 			auto aState = new States();
 			auto aTaskState = new TaskStates();
@@ -921,11 +921,11 @@ namespace dnncore
 		}
 		else
 		{
-			auto batchSize = new size_t();
-			auto sampleIndex = new size_t();
+			auto batchSize = new UInt();
+			auto sampleIndex = new UInt();
 			auto avgTestLoss = new Float();
 			auto testErrorPercentage = new Float();
-			auto testErrors = new size_t();
+			auto testErrors = new UInt();
 			auto sampleSpeed = new Float();
 			auto aState = new States();
 			auto aTaskState = new TaskStates();
@@ -967,7 +967,7 @@ namespace dnncore
 		DNNResetWeights();
 	}
 
-	void Model::ResetLayerWeights(size_t layerIndex)
+	void Model::ResetLayerWeights(UInt layerIndex)
 	{
 		DNNResetLayerWeights(layerIndex);
 	}
@@ -1041,7 +1041,7 @@ namespace dnncore
 
 	}
 
-	void Model::SetCostIndex(size_t index)
+	void Model::SetCostIndex(UInt index)
 	{
 		DNNSetCostIndex(index);
 		CostIndex = index;
@@ -1050,14 +1050,14 @@ namespace dnncore
 		ClassCount = CostLayers[CostIndex]->ClassCount;
 	}
 
-	void Model::UpdateCostInfo(size_t index)
+	void Model::UpdateCostInfo(UInt index)
 	{
-		auto trainErrors = new size_t();
+		auto trainErrors = new UInt();
 		auto trainLoss = new Float();
 		auto avgTrainLoss = new Float();
 		auto trainErrorPercentage = new Float();
 
-		auto testErrors = new size_t();
+		auto testErrors = new UInt();
 		auto testLoss = new Float();
 		auto avgTestLoss = new Float();
 		auto testErrorPercentage = new Float();
@@ -1093,14 +1093,14 @@ namespace dnncore
 		auto meanStdNormalization = new bool();
 		auto costFunction = new Costs();
 		auto dataset = new Datasets();
-		auto aCostIndex = new size_t();
-		auto costLayersCount = new size_t();
-		auto hierarchies = new size_t();
-		auto groupIndex = new size_t();
-		auto labelIndex = new size_t();
-		auto layerCount = new size_t();
-		auto trainingSamples = new size_t();
-		auto testingSamples = new size_t();
+		auto aCostIndex = new UInt();
+		auto costLayersCount = new UInt();
+		auto hierarchies = new UInt();
+		auto groupIndex = new UInt();
+		auto labelIndex = new UInt();
+		auto layerCount = new UInt();
+		auto trainingSamples = new UInt();
+		auto testingSamples = new UInt();
 		auto meanTrainSet = vector<Float>();
 		auto stdTrainSet = vector<Float>();
 
@@ -1203,11 +1203,11 @@ namespace dnncore
 		}
 
 		CostLayers = gcnew cli::array<DNNCostLayer^>(int(CostLayersCount));
-		size_t costLayersCounter = 0;
+		UInt costLayersCounter = 0;
 
 		Layers = gcnew System::Collections::ObjectModel::ObservableCollection<LayerInformation^>();
 
-		for (size_t layer = 0; layer < LayerCount; layer++)
+		for (UInt layer = 0; layer < LayerCount; layer++)
 		{
 			Layers->Add(GetLayerInfo(layer, false));
 
@@ -1220,12 +1220,12 @@ namespace dnncore
 		ClassCount = CostLayers[CostIndex]->ClassCount;
 	}
 
-	void Model::AddLearningRate(bool clear, size_t gotoEpoch, DNNTrainingRate^ rate)
+	void Model::AddLearningRate(bool clear, UInt gotoEpoch, DNNTrainingRate^ rate)
 	{
 		DNNAddLearningRate(clear, gotoEpoch, rate->MaximumRate, rate->BatchSize, rate->Cycles, rate->Epochs, rate->EpochMultiplier, rate->MinimumRate, rate->L2Penalty, rate->Momentum, rate->DecayFactor, rate->DecayAfterEpochs, rate->HorizontalFlip, rate->VerticalFlip, rate->Dropout, rate->Cutout, rate->AutoAugment, rate->ColorCast, rate->ColorAngle, rate->Distortion, rate->Interpolation, rate->Scaling, rate->Rotation);
 	}
 
-	void Model::AddLearningRateSGDR(bool clear, size_t gotoEpoch, DNNTrainingRate^ rate)
+	void Model::AddLearningRateSGDR(bool clear, UInt gotoEpoch, DNNTrainingRate^ rate)
 	{
 		DNNAddLearningRateSGDR(clear, gotoEpoch, rate->MaximumRate, rate->BatchSize, rate->Cycles, rate->Epochs, rate->EpochMultiplier, rate->MinimumRate, rate->L2Penalty, rate->Momentum, rate->DecayFactor, rate->DecayAfterEpochs, rate->HorizontalFlip, rate->VerticalFlip, rate->Dropout, rate->Cutout, rate->AutoAugment, rate->ColorCast, rate->ColorAngle, rate->Distortion, rate->Interpolation, rate->Scaling, rate->Rotation);
 	}
@@ -1234,7 +1234,7 @@ namespace dnncore
 	{
 		IsTraining = training;
 		if (NewEpoch != nullptr)
-			DNNSetNewEpochDelegate((void(*)(size_t, size_t, size_t, bool, bool, Float, Float, Float, Float, size_t, Float, size_t, Float, Float, Float, size_t, Float, Float, Float, Float, Float, size_t, Float, Float, Float, size_t))(Marshal::GetFunctionPointerForDelegate(NewEpoch).ToPointer()));
+			DNNSetNewEpochDelegate((void(*)(UInt, UInt, UInt, bool, bool, Float, Float, Float, Float, UInt, Float, UInt, Float, Float, Float, UInt, Float, Float, Float, Float, Float, UInt, Float, Float, Float, UInt))(Marshal::GetFunctionPointerForDelegate(NewEpoch).ToPointer()));
 		SampleRate = Float(0);
 		State = DNNStates::Idle;
 		if (training)
@@ -1321,7 +1321,7 @@ namespace dnncore
 				Layers[i]->LockUpdate = locked;
 	}
 
-	void Model::SetLayerLocked(size_t layerIndex, bool locked)
+	void Model::SetLayerLocked(UInt layerIndex, bool locked)
 	{
 		DNNSetLayerLocked(layerIndex, locked);
 	}
@@ -1330,7 +1330,7 @@ namespace dnncore
 	{
 		int ret = DNNLoadNetworkWeights(ToUnmanagedString(fileName), persist);
 
-		for (size_t layerIndex = 0; layerIndex < LayerCount; layerIndex++)
+		for (UInt layerIndex = 0; layerIndex < LayerCount; layerIndex++)
 			UpdateLayerStatistics(Layers[layerIndex], layerIndex, layerIndex == SelectedIndex);
 
 		return ret;
@@ -1341,7 +1341,7 @@ namespace dnncore
 		return DNNSaveNetworkWeights(ToUnmanagedString(fileName), persist);
 	}
 
-	int Model::LoadLayerWeights(String^ fileName, size_t layerIndex)
+	int Model::LoadLayerWeights(String^ fileName, UInt layerIndex)
 	{
 		int ret = DNNLoadLayerWeights(ToUnmanagedString(fileName).c_str(), layerIndex, false);
 
@@ -1351,7 +1351,7 @@ namespace dnncore
 		return ret;
 	}
 
-	int Model::SaveLayerWeights(String^ fileName, size_t layerIndex)
+	int Model::SaveLayerWeights(String^ fileName, UInt layerIndex)
 	{
 		return DNNSaveLayerWeights(ToUnmanagedString(fileName), layerIndex, false);
 	}

@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 
 using Float = System.Single;
-using size_t = System.UInt64;
+using UInt = System.UInt64;
 
 
 namespace ScriptsDialog
@@ -51,11 +51,11 @@ namespace ScriptsDialog
 
         private Scripts script = Scripts.shufflenetv2;
         private Datasets dataset = Datasets.cifar10;
-        private size_t c = 3;
-        private size_t h = 32;
-        private size_t w = 32;
-        private size_t padH = 0;
-        private size_t padW = 0;
+        private UInt c = 3;
+        private UInt h = 32;
+        private UInt w = 32;
+        private UInt padH = 0;
+        private UInt padW = 0;
         private bool mirrorPad = false;
         private bool meanStdNormalization = true;
 
@@ -76,10 +76,10 @@ namespace ScriptsDialog
         private Float alpha = 0;
         private Float beta = 0;
 
-        private size_t groups = 3;
-        private size_t iterations = 4;
-        private size_t width = 8;
-        private size_t growthRate = 12;
+        private UInt groups = 3;
+        private UInt iterations = 4;
+        private UInt width = 8;
+        private UInt growthRate = 12;
         private bool bottleneck = false;
         private Float dropout = 0;
         private Float compression = 0;
@@ -87,7 +87,7 @@ namespace ScriptsDialog
         private bool channelZeroPad = true;
         private bool relu = true;
 
-        public ScriptParameters(Scripts script = Scripts.shufflenetv2, Datasets dataset = Datasets.cifar10, size_t h = 32, size_t w = 32, size_t padH = 4, size_t padW = 4, bool mirrorPad = false, bool meanStdNorm = true, Fillers weightsFiller = Fillers.HeNormal, Float weightsScale = (Float)0.05, Float weightsLRM = 1, Float weightsWDM = 1, bool hasBias = false, Fillers biasesFiller = Fillers.Constant, Float biasesScale = 0, Float biasesLRM = 1, Float biasesWDM = 1, Float batchNormMomentum = (Float)0.995, Float batchNormEps = (Float)1E-04, bool batchNormScaling = false, Float alpha = (Float)0, Float beta = (Float)0, size_t groups = 3, size_t iterations = 4, size_t width = 8, size_t growthRate = 12, bool bottleneck = false, Float dropout = 0, Float compression = 0, bool squeezeExcitation = false, bool channelZeroPad = true, bool relu = true)
+        public ScriptParameters(Scripts script = Scripts.shufflenetv2, Datasets dataset = Datasets.cifar10, UInt h = 32, UInt w = 32, UInt padH = 4, UInt padW = 4, bool mirrorPad = false, bool meanStdNorm = true, Fillers weightsFiller = Fillers.HeNormal, Float weightsScale = (Float)0.05, Float weightsLRM = 1, Float weightsWDM = 1, bool hasBias = false, Fillers biasesFiller = Fillers.Constant, Float biasesScale = 0, Float biasesLRM = 1, Float biasesWDM = 1, Float batchNormMomentum = (Float)0.995, Float batchNormEps = (Float)1E-04, bool batchNormScaling = false, Float alpha = (Float)0, Float beta = (Float)0, UInt groups = 3, UInt iterations = 4, UInt width = 8, UInt growthRate = 12, bool bottleneck = false, Float dropout = 0, Float compression = 0, bool squeezeExcitation = false, bool channelZeroPad = true, bool relu = true)
         {
             Script = script;
             Dataset = dataset;
@@ -176,7 +176,7 @@ namespace ScriptsDialog
             }
         }
 
-        public size_t Classes
+        public UInt Classes
         {
             get
             {
@@ -206,7 +206,7 @@ namespace ScriptsDialog
             }
         }
 
-        public size_t C
+        public UInt C
         {
             get
             {
@@ -233,12 +233,12 @@ namespace ScriptsDialog
             }
         }
 
-        public size_t D
+        public UInt D
         {
             get { return 1; }
         }
 
-        public size_t H
+        public UInt H
         {
             get { return h; }
             set
@@ -251,7 +251,7 @@ namespace ScriptsDialog
             }
         }
 
-        public size_t W
+        public UInt W
         {
             get { return w; }
             set
@@ -264,12 +264,12 @@ namespace ScriptsDialog
             }
         }
 
-        public size_t PadD
+        public UInt PadD
         {
             get { return 0; }
         }
 
-        public size_t PadH
+        public UInt PadH
         {
             get { return padH; }
             set
@@ -283,7 +283,7 @@ namespace ScriptsDialog
             }
         }
 
-        public size_t PadW
+        public UInt PadW
         {
             get { return padW; }
             set
@@ -534,7 +534,7 @@ namespace ScriptsDialog
             }
         }
 
-        public size_t Groups
+        public UInt Groups
         {
             get { return groups; }
             set
@@ -547,7 +547,7 @@ namespace ScriptsDialog
                 }
             }
         }
-        public size_t Iterations
+        public UInt Iterations
         {
             get { return iterations; }
             set
@@ -561,7 +561,7 @@ namespace ScriptsDialog
             }
         }
 
-        public size_t Depth
+        public UInt Depth
         {
             get
             {
@@ -582,7 +582,7 @@ namespace ScriptsDialog
         }
 
 
-        public size_t Width
+        public UInt Width
         {
             get { return width; }
             set
@@ -595,7 +595,7 @@ namespace ScriptsDialog
             }
         }
 
-        public size_t GrowthRate
+        public UInt GrowthRate
         {
             get { return growthRate; }
             set
