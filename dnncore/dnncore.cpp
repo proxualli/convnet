@@ -76,29 +76,31 @@ enum class LayerTypes
 	BatchNormReluDropout = 11,
 	BatchNormSwish = 12,
 	BatchNormSwishDropout = 13,
-	ChannelMultiply = 14,
-	ChannelShuffle = 15,
-	ChannelSplit = 16,
-	ChannelZeroPad = 17,
-	Concat = 18,
-	Convolution = 19,
-	ConvolutionTranspose = 20,
-	Cost = 21,
-	Dense = 22,
-	DepthwiseConvolution = 23,
-	Divide = 24,
-	Dropout = 25,
-	GlobalAvgPooling = 26,
-	GlobalMaxPooling = 27,
-	Input = 28,
-	LocalResponseNormalization = 29,
-	Max = 30,
-	MaxPooling = 31,
-	Min = 32,
-	Multiply = 33,
-	PartialDepthwiseConvolution = 34,
-	Resampling = 35,
-	Substract = 36
+	BatchNormTanhExp = 14,
+	BatchNormTanhExpDropout = 15,
+	ChannelMultiply = 16,
+	ChannelShuffle = 17,
+	ChannelSplit = 18,
+	ChannelZeroPad = 19,
+	Concat = 20,
+	Convolution = 21,
+	ConvolutionTranspose = 22,
+	Cost = 23,
+	Dense = 24,
+	DepthwiseConvolution = 25,
+	Divide = 26,
+	Dropout = 27,
+	GlobalAvgPooling = 28,
+	GlobalMaxPooling = 29,
+	Input = 30,
+	LocalResponseNormalization = 31,
+	Max = 32,
+	MaxPooling = 33,
+	Min = 34,
+	Multiply = 35,
+	PartialDepthwiseConvolution = 36,
+	Resampling = 37,
+	Substract = 38
 };
 
 enum class Activations
@@ -129,7 +131,8 @@ enum class Activations
 	Sqrt = 23,
 	Square = 24,
 	Swish = 25,
-	Tanh = 26
+	Tanh = 26,
+	TanhExp = 27
 };
 
 enum class Algorithms
@@ -551,6 +554,8 @@ namespace dnncore
 			case DNNLayerTypes::BatchNormReluDropout:
 			case DNNLayerTypes::BatchNormSwish:
 			case DNNLayerTypes::BatchNormSwishDropout:
+			case DNNLayerTypes::BatchNormTanhExp:
+			case DNNLayerTypes::BatchNormTanhExpDropout:
 			case DNNLayerTypes::Dense:
 			{
 				const auto width = info->BiasCount;

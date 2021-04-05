@@ -56,6 +56,7 @@
 * Square
 * Swish
 * Tanh
+* TanhExp
 
 ### Costs
 * BinaryCrossEntropy
