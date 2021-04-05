@@ -44,6 +44,16 @@ namespace ScriptsDialog
     }
 
     [Serializable()]
+    public enum Activations
+    {
+        HardSwish = 10,
+        Mish = 16,
+        Relu = 19,
+        Swish = 25,
+        TanhExp = 27
+    }
+
+    [Serializable()]
     public class ScriptParameters : INotifyPropertyChanged
     {
         [field: NonSerializedAttribute()]
@@ -85,9 +95,9 @@ namespace ScriptsDialog
         private Float compression = 0;
         private bool squeezeExcitation = false;
         private bool channelZeroPad = true;
-        private bool relu = true;
+        private Activations activation = Activations.Relu;
 
-        public ScriptParameters(Scripts script = Scripts.shufflenetv2, Datasets dataset = Datasets.cifar10, UInt h = 32, UInt w = 32, UInt padH = 4, UInt padW = 4, bool mirrorPad = false, bool meanStdNorm = true, Fillers weightsFiller = Fillers.HeNormal, Float weightsScale = (Float)0.05, Float weightsLRM = 1, Float weightsWDM = 1, bool hasBias = false, Fillers biasesFiller = Fillers.Constant, Float biasesScale = 0, Float biasesLRM = 1, Float biasesWDM = 1, Float batchNormMomentum = (Float)0.995, Float batchNormEps = (Float)1E-04, bool batchNormScaling = false, Float alpha = (Float)0, Float beta = (Float)0, UInt groups = 3, UInt iterations = 4, UInt width = 8, UInt growthRate = 12, bool bottleneck = false, Float dropout = 0, Float compression = 0, bool squeezeExcitation = false, bool channelZeroPad = true, bool relu = true)
+        public ScriptParameters(Scripts script = Scripts.shufflenetv2, Datasets dataset = Datasets.cifar10, UInt h = 32, UInt w = 32, UInt padH = 4, UInt padW = 4, bool mirrorPad = false, bool meanStdNorm = true, Fillers weightsFiller = Fillers.HeNormal, Float weightsScale = (Float)0.05, Float weightsLRM = 1, Float weightsWDM = 1, bool hasBias = false, Fillers biasesFiller = Fillers.Constant, Float biasesScale = 0, Float biasesLRM = 1, Float biasesWDM = 1, Float batchNormMomentum = (Float)0.995, Float batchNormEps = (Float)1E-04, bool batchNormScaling = false, Float alpha = (Float)0, Float beta = (Float)0, UInt groups = 3, UInt iterations = 4, UInt width = 8, UInt growthRate = 12, bool bottleneck = false, Float dropout = 0, Float compression = 0, bool squeezeExcitation = false, bool channelZeroPad = true, Activations activation = Activations.Relu)
         {
             Script = script;
             Dataset = dataset;
@@ -124,12 +134,14 @@ namespace ScriptsDialog
             Compression = compression;
             SqueezeExcitation = squeezeExcitation;
             ChannelZeroPad = channelZeroPad;
-            Relu = relu;
+            Activation = activation;
         }
 
         public IEnumerable<Scripts> ScriptsList { get { return Enum.GetValues(typeof(Scripts)).Cast<Scripts>(); } }
 
         public IEnumerable<Datasets> DatasetsList { get { return Enum.GetValues(typeof(Datasets)).Cast<Datasets>(); } }
+
+        public IEnumerable<Activations> ActivationsList { get { return Enum.GetValues(typeof(Activations)).Cast<Activations>(); } }
 
         public IEnumerable<Fillers> FillersList { get { return Enum.GetValues(typeof(Fillers)).Cast<Fillers>(); } }
 
@@ -140,13 +152,13 @@ namespace ScriptsDialog
                 switch (Script)
                 {
                     case Scripts.densenet:
-                        return Script.ToString() + "-" + H.ToString() + "x" + W.ToString() + "-" + Groups.ToString() + "-" + Iterations.ToString() + "-" + GrowthRate.ToString() + (Dropout > 0 ? "-dropout" : "") + (Compression > 0 ? "-compression" : "") + (Bottleneck ? "-bottleneck" : "") + (Relu ? "" : "-hardswish");
+                        return Script.ToString() + "-" + H.ToString() + "x" + W.ToString() + "-" + Groups.ToString() + "-" + Iterations.ToString() + "-" + GrowthRate.ToString() + (Dropout > 0 ? "-dropout" : "") + (Compression > 0 ? "-compression" : "") + (Bottleneck ? "-bottleneck" : "") + "-" + Activation.ToString();
                     case Scripts.mobilenetv3:
-                        return Script.ToString() + "-" + H.ToString() + "x" + W.ToString() + "-" + Groups.ToString() + "-" + Iterations.ToString() + "-" + Width.ToString() + (Relu ? "" : "-hardswish") + (SqueezeExcitation ? "-se" : "");
+                        return Script.ToString() + "-" + H.ToString() + "x" + W.ToString() + "-" + Groups.ToString() + "-" + Iterations.ToString() + "-" + Width.ToString() + "-" + Activation.ToString() + (SqueezeExcitation ? " -se" : "");
                     case Scripts.resnet:
-                        return Script.ToString() + "-" + H.ToString() + "x" + W.ToString() + "-" + Groups.ToString() + "-" + Iterations.ToString() + "-" + Width.ToString() + (Dropout > 0 ? "-dropout" : "") + (Bottleneck ? "-bottleneck" : "") + (ChannelZeroPad ? "-channelzeropad" : "") + (Relu ? "" : "-hardswish");
+                        return Script.ToString() + "-" + H.ToString() + "x" + W.ToString() + "-" + Groups.ToString() + "-" + Iterations.ToString() + "-" + Width.ToString() + (Dropout > 0 ? "-dropout" : "") + (Bottleneck ? "-bottleneck" : "") + (ChannelZeroPad ? "-channelzeropad" : "") + "-" + Activation.ToString();
                     case Scripts.shufflenetv2:
-                        return Script.ToString() + "-" + H.ToString() + "x" + W.ToString() + "-" + Groups.ToString() + "-" + Iterations.ToString() + "-" + Width.ToString() + (Relu ? "" : "-hardswish") +  (SqueezeExcitation ? "-se" : "");
+                        return Script.ToString() + "-" + H.ToString() + "x" + W.ToString() + "-" + Groups.ToString() + "-" + Iterations.ToString() + "-" + Width.ToString() + "-" + Activation.ToString() +  (SqueezeExcitation ? "-se" : "");
                     default:
                         return Script.ToString() + "-" + H.ToString() + "x" + W.ToString() + "-" + Groups.ToString() + "-" + Iterations.ToString();
                 }
@@ -685,15 +697,15 @@ namespace ScriptsDialog
             }
         }
 
-        public bool Relu
+        public Activations Activation
         {
-            get { return relu; }
+            get { return activation; }
             set
             {
-                if (value != relu)
+                if (value != activation)
                 {
-                    relu = value;
-                    OnPropertyChanged("Relu");
+                    activation = value;
+                    OnPropertyChanged("Activation");
                 }
             }
         }
@@ -705,8 +717,7 @@ namespace ScriptsDialog
         public bool BottleneckVisible { get { return Script == Scripts.densenet || Script == Scripts.resnet; } }
         public bool SqueezeExcitationVisible { get { return Script == Scripts.mobilenetv3 || Script == Scripts.shufflenetv2; } }
         public bool ChannelZeroPadVisible { get { return Script == Scripts.resnet; } }
-        public bool ReluVisible { get { return true; } }
-
+       
         protected virtual void OnPropertyChanged(string propertyName)
         {
             if (PropertyChanged != null)

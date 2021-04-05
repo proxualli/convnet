@@ -28,7 +28,7 @@ namespace ScriptsDialog
 
             if (Settings.Default.Parameters == null)
             {
-                Settings.Default.Parameters = new ScriptParameters(Scripts.shufflenetv2, Datasets.cifar10, 32, 32, 4, 4, false, true, Fillers.HeNormal, 0.05f, 1f, 1f, false, Fillers.Constant, 0f, 1f, 1f, 0.995f, 0.0001f, false, 0f, 0f, 3, 4, 8, 12, false, 0.0f, 0.0f, false, true, true);
+                Settings.Default.Parameters = new ScriptParameters(Scripts.shufflenetv2, Datasets.cifar10, 32, 32, 4, 4, false, true, Fillers.HeNormal, 0.05f, 1f, 1f, false, Fillers.Constant, 0f, 1f, 1f, 0.995f, 0.0001f, false, 0f, 0f, 3, 4, 8, 12, false, 0.0f, 0.0f, false, true, Activations.Relu);
                 Settings.Default.Save();
             }
         }
