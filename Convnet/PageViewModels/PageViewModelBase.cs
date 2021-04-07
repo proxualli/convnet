@@ -26,7 +26,7 @@ namespace Convnet.PageViewModels
         public static string ScriptsDirectory { get; } = StorageDirectory + @"scripts\";
         public static string ScriptPath { get; } = ScriptsDirectory + @"ScriptsDialog\bin\" + Mode + Framework;
 
-       
+
         public event PropertyChangedEventHandler PropertyChanged;
         public event EventHandler Modelhanged;
 

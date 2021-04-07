@@ -47,7 +47,7 @@ namespace Convnet.PageViewModels
         private bool dirty = true;
         private static bool initAction = true;
         private DispatcherTimer clickWaitTimer;
-
+       
         public EditPageViewModel(Model model) : base(model)
         {
             initAction = true;
@@ -599,16 +599,17 @@ namespace Convnet.PageViewModels
                 {
                     try
                     {
-                        var ProcStartInfo = new ProcessStartInfo("dotnet", "build ScriptsDialog.csproj -p:Platform=AnyCPU -c Release")
+                        var ProcStartInfo = new ProcessStartInfo()
                         {
+                            FileName = "dotnet",
+                            Arguments = "build ScriptsDialog.csproj -p:Platform=AnyCPU -c Release",
                             WorkingDirectory = ScriptsDirectory + @"ScriptsDialog\",
-                            RedirectStandardOutput = false,
                             UseShellExecute = true,
                             Verb = "runas",
-                            CreateNoWindow = true,
-                            RedirectStandardError = false
+                            RedirectStandardOutput = false,
+                            RedirectStandardError = false,
+                            CreateNoWindow = false
                         };
-
                         var process = Process.Start(ProcStartInfo);
                         process.WaitForExit();
 
@@ -624,7 +625,7 @@ namespace Convnet.PageViewModels
                     {
                     }
                 }
-                File.Copy(ApplicationPath + @"ScriptsDialog.deps.json", ScriptPath + @"ScriptsDialog.deps.json", true);
+                //File.Copy(ApplicationPath + @"ScriptsDialog.deps.json", ScriptPath + @"ScriptsDialog.deps.json", true);
                 //File.Delete(ScriptPath + @"ScriptsDialog.deps.json");
             }
 
