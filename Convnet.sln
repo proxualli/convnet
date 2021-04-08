@@ -12,6 +12,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.gitmodules = .gitmodules
 		dnn\CMakeLists.txt = dnn\CMakeLists.txt
 		ScriptsDialog\ScriptsDialog\global.json = ScriptsDialog\ScriptsDialog\global.json
+		dnn\deps\vectorclass\add-on\random\ranvec1.h = dnn\deps\vectorclass\add-on\random\ranvec1.h
 		README.md = README.md
 	EndProjectSection
 EndProject
