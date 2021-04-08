@@ -132,7 +132,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\vectorclass\instrset.h" />
     <ClInclude Include="include\Activation.h" />
     <ClInclude Include="include\Add.h" />
     <ClInclude Include="include\AlignedAllocator.h" />
@@ -149,6 +148,7 @@
     <ClInclude Include="include\Cost.h" />
     <ClInclude Include="include\ConvolutionTranspose.h" />
     <ClInclude Include="include\Dataprovider.h" />
+    <ClInclude Include="include\instrset.h" />
     <ClInclude Include="include\Max.h" />
     <ClInclude Include="include\Min.h" />
     <ClInclude Include="include\PartialDepthwiseConvolution.h" />

@@ -95,9 +95,6 @@
     <ClInclude Include="include\BatchNormRelu.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\vectorclass\instrset.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\Layer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -138,6 +135,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\BatchNormActivationDropout.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\instrset.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
