@@ -20,6 +20,15 @@ namespace Convnet.Common
 
         public MsBuilder(string projectPath, string configuration, string platform = "AnyCPU")
         {
+            string version = "Community";
+            if (Directory.Exists(@"C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE"))
+                version = "Community";
+            else if (Directory.Exists(@"C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\Common7\IDE"))
+                version = "Professional";
+            else if (Directory.Exists(@"C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\Common7\IDE"))
+                version = "Enterprise";
+            MsBuildPath = @"C:\Program Files (x86)\Microsoft Visual Studio\2019\" + version + @"\Common7\IDE\devenv.exe";
+
             ProjectPath = !string.IsNullOrWhiteSpace(projectPath) ? projectPath : throw new ArgumentNullException(nameof(projectPath));
             if (!File.Exists(ProjectPath)) throw new FileNotFoundException(projectPath);
             Configuration = !string.IsNullOrWhiteSpace(configuration) ? configuration : throw new ArgumentNullException(nameof(configuration));

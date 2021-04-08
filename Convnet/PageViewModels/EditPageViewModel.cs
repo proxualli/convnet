@@ -499,7 +499,7 @@ namespace Convnet.PageViewModels
         
         private void VisualStudioButtonClick(object sender, RoutedEventArgs e)
         {
-            string version = "";
+            string version = "Community";
             if (Directory.Exists(@"C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE"))
                 version = "Community";
             else if (Directory.Exists(@"C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\Common7\IDE"))
@@ -602,7 +602,7 @@ namespace Convnet.PageViewModels
                         var ProcStartInfo = new ProcessStartInfo()
                         {
                             FileName = "dotnet",
-                            Arguments = "build ScriptsDialog.csproj -p:Platform=AnyCPU -c Release",
+                            Arguments = "build ScriptsDialog.csproj -p:Platform=AnyCPU -p:nugetinteractive=true -c Release",
                             WorkingDirectory = ScriptsDirectory + @"ScriptsDialog\",
                             UseShellExecute = true,
                             Verb = "runas",
