@@ -180,6 +180,16 @@ namespace ScriptsDialog
                "Inputs=" + inputs + nwl + nwl;
         }
 
+        public static string AvgPooling(UInt id, string input, string kernel = "3,3", string stride = "2,2", string pad = "1,1", string group = "", string prefix = "P")
+        {
+            return "[" + group + prefix + to_string(id) + "]" + nwl +
+                "Type=AvgPooling" + nwl +
+                "Inputs=" + input + nwl +
+                "Kernel=" + kernel + nwl +
+                "Stride=" + stride + nwl +
+                "Pad=" + pad + nwl + nwl;
+        }
+
         public static string GlobalAvgPooling(string input, string group = "", string prefix = "GAP")
         {
             return "[" + group + prefix + "]" + nwl +
@@ -296,11 +306,11 @@ namespace ScriptsDialog
                                     blocks.Add(
                                         Convolution(C, In("CC", CC), channels, 1, 1, 1, 1, 0, 0) +
                                         Dropout(C, In("C", C)) +
-                                        "[P" + to_string(g) + "]" + nwl + "Type=AvgPooling" + nwl + "Inputs=D" + to_string(C) + nwl + "Kernel=2,2" + nwl + "Stride=2,2" + nwl + nwl);
+                                        AvgPooling(g, In("D", C), "2,2", "2,2", "0,0"));
                                 else
                                     blocks.Add(
                                         Convolution(C, In("CC", CC), channels, 1, 1, 1, 1, 0, 0) +
-                                        "[P" + to_string(g) + "]" + nwl + "Type=AvgPooling" + nwl + "Inputs=C" + to_string(C) + nwl + "Kernel=2,2" + nwl + "Stride=2,2" + nwl + nwl);
+                                        AvgPooling(g, In("C", C), "2,2", "2,2", "0,0"));
                                 C++;
                                 CC++;
 
@@ -477,11 +487,11 @@ namespace ScriptsDialog
                                 W *= 2;
 
                                 var strChannelZeroPad = p.ChannelZeroPad ?
-                                    ("[AVG" + to_string(g) + "]" + nwl + "Type=AvgPooling" + nwl + "Inputs=A" + to_string(A) + nwl + "Kernel=3,3" + nwl + "Stride=2,2" + nwl + "Pad=1,1" + nwl + nwl +
-                                    "[CZP" + to_string(g) + "]" + nwl + "Type=ChannelZeroPad" + nwl + "Inputs=AVG" + to_string(g) + nwl + "Channels=" + to_string(W) + nwl + nwl +
+                                    (AvgPooling(g, In("A", A)) +
+                                    "[CZP" + to_string(g) + "]" + nwl + "Type=ChannelZeroPad" + nwl + "Inputs=P" + to_string(g) + nwl + "Channels=" + to_string(W) + nwl + nwl +
                                     Add(A + 1, In("C", C + 1 + bn) + "," + In("CZP", g))) :
-                                    "[AVG" + to_string(g) + "]" + nwl + "Type=AvgPooling" + nwl + "Inputs=B" + to_string(C) + nwl + "Kernel=2,2" + nwl + "Stride=2,2" + nwl + nwl +
-                                    (Convolution(C + 2 + bn, In("AVG", g), DIV8(W), 1, 1, 1, 1, 0, 0) +
+                                    AvgPooling(g, In("B", C)) +
+                                    (Convolution(C + 2 + bn, In("P", g), DIV8(W), 1, 1, 1, 1, 0, 0) +
                                     Add(A + 1, In("C", C + 1 + bn) + "," + In("C", C + 2 + bn)));
 
                                 if (p.Bottleneck)
