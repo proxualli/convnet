@@ -48,15 +48,19 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)dnn\deps\oneDNN\include;$(SolutionDir)dnn\deps\oneDNN\build\include;$(SolutionDir)dnn\deps\vectorclass;$(SolutionDir)dnn\deps\zlib-1.2.11;$(SolutionDir)dnn\deps\libpng;$(SolutionDir)dnn\deps\magic_enum\include;$(SolutionDir)dnn\deps\libjpeg-turbo;$(SolutionDir)dnn\deps\CImg;$(SolutionDir)dnn\deps\CImg\plugins;$(IncludePath)</IncludePath>
+    <LibraryPath>$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);$(NETFXKitsDir)Lib\um\x64;$(SolutionDir)libjpeg-turbo</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)dnn\deps\oneDNN\include;$(SolutionDir)dnn\deps\oneDNN\build\include;$(SolutionDir)dnn\deps\vectorclass;$(SolutionDir)dnn\deps\zlib-1.2.11;$(SolutionDir)dnn\deps\libpng;$(SolutionDir)dnn\deps\magic_enum\include;$(SolutionDir)dnn\deps\libjpeg-turbo;$(SolutionDir)dnn\deps\CImg;$(SolutionDir)dnn\deps\CImg\plugins;$(IncludePath)</IncludePath>
+    <LibraryPath>$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);$(NETFXKitsDir)Lib\um\x64;$(SolutionDir)libjpeg-turbo</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>DNN_DLL;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>DNN_DLL;_DEBUG;_CONSOLE;WIN32;DNN_OMP;DNN_CACHE_PRIMITIVES;DNN_AVX2;cimg_use_cpp11;cimg_use_openmp;cimg_use_jpeg;cimg_use_png;cimg_use_zlib;_CONSOLE;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>C:\Users\dhaen\source\repos\convnet\dnn\include;C:\Users\dhaen\source\repos\convnet\dnn\deps\vectorclass;C:\Users\dhaen\source\repos\convnet\dnn\deps\magic_enum\include;C:\Users\dhaen\source\repos\convnet\dnn\deps\libjpeg-turbo;C:\Users\dhaen\source\repos\convnet\dnn\deps\CImg;C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\build\include;C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\include;C:\Users\dhaen\source\repos\convnet\dnn\deps\libpng;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -77,7 +81,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>DNN_AVX2;DNN_DLL;NDEBUG;_CONSOLE;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;WIN32;DNN_OMP;DNN_CACHE_PRIMITIVES;DNN_AVX2;cimg_use_cpp11;cimg_use_openmp;cimg_use_jpeg;cimg_use_png;cimg_use_zlib;_CONSOLE;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>C:\Users\dhaen\source\repos\convnet\dnn\include;C:\Users\dhaen\source\repos\convnet\dnn\deps\vectorclass;C:\Users\dhaen\source\repos\convnet\dnn\deps\magic_enum\include;C:\Users\dhaen\source\repos\convnet\dnn\deps\libjpeg-turbo;C:\Users\dhaen\source\repos\convnet\dnn\deps\CImg;C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\build\include;C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\include;C:\Users\dhaen\source\repos\convnet\dnn\deps\libpng;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
