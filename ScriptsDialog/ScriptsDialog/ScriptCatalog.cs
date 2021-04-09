@@ -208,22 +208,6 @@ namespace ScriptsDialog
                "Inputs=" + inputs + nwl + nwl;
         }
         
-        public static string Logistic(UInt id, string inputs, string group = "", string prefix = "ACT")
-        {
-            return "[" + group + prefix + to_string(id) + "]" + nwl +
-               "Type=Activation" + nwl +
-               "Inputs=" + inputs + nwl + 
-               "Activation=Logistic" + nwl + nwl;
-        }
-
-        public static string HardLogistic(UInt id, string inputs, string group = "", string prefix = "ACT")
-        {
-            return "[" + group + prefix + to_string(id) + "]" + nwl +
-               "Type=Activation" + nwl +
-               "Inputs=" + inputs + nwl +
-               "Activation=HardLogistic" + nwl + nwl;
-        }
-
         internal static string Generate(ScriptParameters p)
         {
             var net =
@@ -315,7 +299,7 @@ namespace ScriptsDialog
                                         "[P" + to_string(g) + "]" + nwl + "Type=AvgPooling" + nwl + "Inputs=D" + to_string(C) + nwl + "Kernel=2,2" + nwl + "Stride=2,2" + nwl + nwl);
                                 else
                                     blocks.Add(
-                                        Convolution(C, "CC" + to_string(CC), channels, 1, 1, 1, 1, 0, 0) +
+                                        Convolution(C, In("CC", CC), channels, 1, 1, 1, 1, 0, 0) +
                                         "[P" + to_string(g) + "]" + nwl + "Type=AvgPooling" + nwl + "Inputs=C" + to_string(C) + nwl + "Kernel=2,2" + nwl + "Stride=2,2" + nwl + nwl);
                                 C++;
                                 CC++;
