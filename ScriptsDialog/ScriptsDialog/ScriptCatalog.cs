@@ -232,7 +232,7 @@ namespace ScriptsDialog
                "Type=Cost" + nwl +
                "Inputs=" + inputs + nwl +
                "Cost=" + cost + nwl +
-               "Channels=" + to_string(channels) +
+               "Channels=" + to_string(channels) + nwl +
                "Eps=" + to_string(eps) + nwl + nwl;
         }
 
