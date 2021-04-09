@@ -404,7 +404,7 @@ namespace ScriptsDialog
 
                             for (var i = 1ul; i < p.Iterations; i++)
                             {
-                                var strOutputLayer = (i == 1 && g > 1) ? In("B", C - 1) : (i == 1 && g == 1) ? "B4" : In("A", A);
+                                var strOutputLayer = (i == 1 && g > 1) ? In("B", C - 1) : (i == 1 && g == 1) ? In("B", 4) : In("A", A);
 
                                 var group = In("SE", C + 1);
 
