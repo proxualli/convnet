@@ -32,7 +32,7 @@ namespace ScriptsDialog
 
         public static string to_string(Fillers filler)
         {
-            return filler.ToString();
+            return filler.ToString(); ;
         }
 
         public static UInt DIV8(UInt channels)
@@ -65,7 +65,7 @@ namespace ScriptsDialog
         public static string BatchNormActivation(UInt id, string inputs, Activations activation = Activations.Relu, string group = "", string prefix = "B")
         {
             return "[" + group + prefix + to_string(id) + "]" + nwl +
-              "Type=BatchNorm" + activation.ToString() + nwl + 
+              "Type=BatchNorm" + activation.ToString() + nwl +
               "Inputs=" + inputs + nwl + nwl;
         }
 
@@ -217,7 +217,25 @@ namespace ScriptsDialog
                "Type=Dropout" + nwl +
                "Inputs=" + inputs + nwl + nwl;
         }
-        
+
+        public static string Activation(string inputs, string activation = "Relu", string group = "", string prefix = "ACT")
+        {
+            return "[" + group + prefix + "]" + nwl +
+               "Type=Activation" + nwl +
+               "Inputs=" + inputs + nwl +
+               "Activation=" + activation + nwl + nwl;
+        }
+
+        public static string Cost(string inputs, UInt channels, string cost = "CategoricalCrossEntropy", Float eps = 0.0f, string group = "", string prefix = "Cost")
+        {
+            return "[" + group + prefix + "]" + nwl +
+               "Type=Cost" + nwl +
+               "Inputs=" + inputs + nwl +
+               "Cost=" + cost + nwl +
+               "Channels=" + to_string(channels) +
+               "Eps=" + to_string(eps) + nwl + nwl;
+        }
+
         internal static string Generate(ScriptParameters p)
         {
             var net =
@@ -309,7 +327,7 @@ namespace ScriptsDialog
                                         AvgPooling(g, In("D", C), "2,2", "2,2", "0,0"));
                                 else
                                     blocks.Add(
-                                        Convolution(C, In("CC", CC), channels, 1, 1, 1, 1, 0, 0) +
+                                        Convolution(C, "CC" + to_string(CC), channels, 1, 1, 1, 1, 0, 0) +
                                         AvgPooling(g, In("C", C), "2,2", "2,2", "0,0"));
                                 C++;
                                 CC++;
@@ -346,8 +364,8 @@ namespace ScriptsDialog
                             Convolution(C, In("CC", CC), p.Classes, 1, 1, 1, 1, 0, 0) +
                             BatchNorm(C + 1, In("C", C)) +
                             GlobalAvgPooling(In("B", C + 1)) +
-                            "[ACT]" + nwl + "Type=Activation" + nwl + "Inputs=GAP" + nwl + "Activation=LogSoftmax" + nwl + nwl +
-                            "[Cost]" + nwl + "Type=Cost" + nwl + "Inputs=ACT" + nwl + "Cost=CategoricalCrossEntropy" + nwl + "Channels=" + to_string(p.Classes) + nwl + "Eps=0.125";
+                            Activation("GAP", "LogSoftmax") +
+                            Cost("ACT", p.Classes, "CategoricalCrossEntropy", 0.125f);
                     }
                     break;
 
@@ -393,7 +411,7 @@ namespace ScriptsDialog
 
                                 blocks.Add(
                                     Convolution(C, In("A", A), DIV8(6 * W), 1, 1, 1, 1, 0, 0) +
-                                    BatchNormActivation(C, In("C", C), p.Activation)  +
+                                    BatchNormActivation(C, In("C", C), p.Activation) +
                                     DepthwiseMixedConvolution(mix, C + 1, In("B", C), 2, 2, channelsplit) +
                                     BatchNormActivation(C + 1, In("DC", C + 1), p.Activation) +
                                     strSE +
@@ -440,15 +458,15 @@ namespace ScriptsDialog
                             Convolution(C, In("B", C), p.Classes, 1, 1, 1, 1, 0, 0) +
                             BatchNorm(C + 1, In("C", C)) +
                             GlobalAvgPooling(In("B", C + 1)) +
-                            "[ACT]" + nwl + "Type=Activation" + nwl + "Inputs=GAP" + nwl + "Activation=LogSoftmax" + nwl + nwl +
-                            "[Cost]" + nwl + "Type=Cost" + nwl + "Inputs=ACT" + nwl + "Cost=CategoricalCrossEntropy" + nwl + "Channels=" + to_string(p.Classes) + nwl + "Eps=0.125";
+                            Activation("GAP", "LogSoftmax") +
+                            Cost("ACT", p.Classes, "CategoricalCrossEntropy", 0.125f);
                     }
                     break;
 
                 case Scripts.resnet:
                     {
                         var bn = p.Bottleneck ? 1ul : 0ul;
-                        const Float K = 2;
+                        const Float K = 2.0f;
                         var W = p.Width * 16;
                         var A = 1ul;
                         var C = 5ul;
@@ -465,7 +483,7 @@ namespace ScriptsDialog
                                 (p.Dropout > 0 ? BatchNormActivationDropout(3, "C3", p.Activation) : BatchNormActivation(3, "C3", p.Activation)) +
                                 Convolution(4, "B3", DIV8(W), 1, 1, 1, 1, 0, 0) +
                                 Convolution(5, "B1", DIV8(W), 1, 1, 1, 1, 0, 0) +
-                                Add(1, "C4,C5")) ;
+                                Add(1, "C4,C5"));
 
                             C = 6;
                         }
@@ -487,12 +505,12 @@ namespace ScriptsDialog
                                 W *= 2;
 
                                 var strChannelZeroPad = p.ChannelZeroPad ?
-                                    (AvgPooling(g, In("A", A)) +
+                                    AvgPooling(g, In("A", A)) +
                                     "[CZP" + to_string(g) + "]" + nwl + "Type=ChannelZeroPad" + nwl + "Inputs=" + In("P", g) + nwl + "Channels=" + to_string(W) + nwl + nwl +
-                                    Add(A + 1, In("C", C + 1 + bn) + "," + In("CZP", g))) :
+                                    Add(A + 1, In("C", C + 1 + bn) + "," + In("CZP", g)) : 
                                     AvgPooling(g, In("B", C)) +
-                                    (Convolution(C + 2 + bn, In("P", g), DIV8(W), 1, 1, 1, 1, 0, 0) +
-                                    Add(A + 1, In("C", C + 1 + bn) + "," + In("C", C + 2 + bn)));
+                                    Convolution(C + 2 + bn, In("P", g), DIV8(W), 1, 1, 1, 1, 0, 0) +
+                                    Add(A + 1, In("C", C + 1 + bn) + "," + In("C", C + 2 + bn));
 
                                 if (p.Bottleneck)
                                 {
@@ -523,7 +541,7 @@ namespace ScriptsDialog
                                     C += 3 + bn;
                             }
 
-                            for (var i = 1u; i < p.Iterations; i++)
+                            for (var i = 1ul; i < p.Iterations; i++)
                             {
                                 if (p.Bottleneck)
                                 {
@@ -535,6 +553,8 @@ namespace ScriptsDialog
                                         (p.Dropout > 0 ? BatchNormActivationDropout(C + 2, In("C", C + 1), p.Activation) : BatchNormActivation(C + 2, In("C", C + 1), p.Activation)) +
                                         Convolution(C + 2, In("B", C + 2), DIV8(W), 1, 1, 1, 1, 0, 0) +
                                         Add(A + 1, In("C", C + 2) + "," + In("A", A)));
+
+                                    C += 3;
                                 }
                                 else
                                 {
@@ -544,9 +564,10 @@ namespace ScriptsDialog
                                         (p.Dropout > 0 ? BatchNormActivationDropout(C + 1, In("C", C), p.Activation) : BatchNormActivation(C + 1, In("C", C), p.Activation)) +
                                         Convolution(C + 1, In("B", C + 1), DIV8(W), 3, 3, 1, 1, 1, 1) +
                                         Add(A + 1, In("C", C + 1) + "," + In("A", A)));
-                                }
 
-                                A++; C += 2 + bn;
+                                    C += 2;
+                                }
+                                A++;
                             }
                         }
 
@@ -558,17 +579,17 @@ namespace ScriptsDialog
                             Convolution(C, In("B", C), p.Classes, 1, 1, 1, 1, 0, 0) +
                             BatchNorm(C + 1, In("C", C)) +
                             GlobalAvgPooling(In("B", C + 1)) +
-                            "[ACT]" + nwl + "Type=Activation" + nwl + "Inputs=GAP" + nwl + "Activation=LogSoftmax" + nwl + nwl +
-                            "[Cost]" + nwl + "Type=Cost" + nwl + "Inputs=ACT" + nwl + "Cost=CategoricalCrossEntropy" + nwl + "Channels=" + to_string(p.Classes) + nwl + "Eps=0.125";
+                            Activation("GAP", "LogSoftmax") +
+                            Cost("ACT", p.Classes, "CategoricalCrossEntropy", 0.125f);
                     }
                     break;
 
                 case Scripts.shufflenetv2:
                     {
                         var se = false;
-                        var W = p.Width * 16;
                         var kernel = 3ul;
                         var pad = 1ul;
+                        var W = p.Width * 16;
 
                         net += Convolution(1, "Input", DIV8(W), kernel, kernel, 1, 1, pad, pad);
 
@@ -591,7 +612,7 @@ namespace ScriptsDialog
                             if (g > 1)
                             {
                                 se = p.SqueezeExcitation;
-                                W *= 2;
+                                W = g * p.Width * 16;
 
                                 blocks.Add(
                                     Convolution(C, In("CC", A), DIV8(W), 1, 1, 1, 1, 0, 0) +
@@ -644,8 +665,8 @@ namespace ScriptsDialog
                             Convolution(C, In("CC", A), p.Classes, 1, 1, 1, 1, 0, 0) +
                             BatchNorm(C + 1, In("C", C)) +
                             GlobalAvgPooling(In("B", C + 1)) +
-                            "[ACT]" + nwl + "Type=Activation" + nwl + "Inputs=GAP" + nwl + "Activation=LogSoftmax" + nwl + nwl +
-                            "[Cost]" + nwl + "Type=Cost" + nwl + "Inputs=ACT" + nwl + "Cost=CategoricalCrossEntropy" + nwl + "Channels=" + to_string(p.Classes) + nwl + "Eps=0.125";
+                            Activation("GAP", "LogSoftmax") +
+                            Cost("ACT", p.Classes, "CategoricalCrossEntropy", 0.125f);
                     }
                     break;
             }
