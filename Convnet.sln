@@ -37,8 +37,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "dnncore", "dnncore\dnncore.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "dnncli", "dnncli\dnncli.csproj", "{3F706A88-F012-4F1C-BE08-8325822F312D}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "vectorclass", "dnn\deps\vectorclass\build\vectorclass.vcxproj", "{F19415D6-0631-363F-8E72-A5A79FE1B062}"
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "zlib", "dnn\deps\libpng\projects\vstudio\zlib\zlib.vcxproj", "{60F89955-91C6-3A36-8000-13C592FEC2DF}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "pnglibconf", "dnn\deps\libpng\projects\vstudio\pnglibconf\pnglibconf.vcxproj", "{EB33566E-DA7F-4D28-9077-88C0B7C77E35}"
@@ -46,6 +44,8 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libpng", "dnn\deps\libpng\projects\vstudio\libpng\libpng.vcxproj", "{D6973076-9317-4EF2-A0B8-B7A18AC0713E}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test", "test\test.vcxproj", "{42A112E4-E623-4F72-BDFA-1CE5AFE7DD9C}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "vectorclass", "dnn\deps\vectorclass\build\vectorclass.vcxproj", "{F19415D6-0631-363F-8E72-A5A79FE1B062}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -101,10 +101,6 @@ Global
 		{3F706A88-F012-4F1C-BE08-8325822F312D}.Debug|x64.Build.0 = Debug|x64
 		{3F706A88-F012-4F1C-BE08-8325822F312D}.Release|x64.ActiveCfg = Release|x64
 		{3F706A88-F012-4F1C-BE08-8325822F312D}.Release|x64.Build.0 = Release|x64
-		{F19415D6-0631-363F-8E72-A5A79FE1B062}.Debug|x64.ActiveCfg = Debug|x64
-		{F19415D6-0631-363F-8E72-A5A79FE1B062}.Debug|x64.Build.0 = Debug|x64
-		{F19415D6-0631-363F-8E72-A5A79FE1B062}.Release|x64.ActiveCfg = Release|x64
-		{F19415D6-0631-363F-8E72-A5A79FE1B062}.Release|x64.Build.0 = Release|x64
 		{60F89955-91C6-3A36-8000-13C592FEC2DF}.Debug|x64.ActiveCfg = Debug|x64
 		{60F89955-91C6-3A36-8000-13C592FEC2DF}.Debug|x64.Build.0 = Debug|x64
 		{60F89955-91C6-3A36-8000-13C592FEC2DF}.Release|x64.ActiveCfg = Release|x64
@@ -121,6 +117,10 @@ Global
 		{42A112E4-E623-4F72-BDFA-1CE5AFE7DD9C}.Debug|x64.Build.0 = Debug|x64
 		{42A112E4-E623-4F72-BDFA-1CE5AFE7DD9C}.Release|x64.ActiveCfg = Release|x64
 		{42A112E4-E623-4F72-BDFA-1CE5AFE7DD9C}.Release|x64.Build.0 = Release|x64
+		{F19415D6-0631-363F-8E72-A5A79FE1B062}.Debug|x64.ActiveCfg = Debug|x64
+		{F19415D6-0631-363F-8E72-A5A79FE1B062}.Debug|x64.Build.0 = Debug|x64
+		{F19415D6-0631-363F-8E72-A5A79FE1B062}.Release|x64.ActiveCfg = Release|x64
+		{F19415D6-0631-363F-8E72-A5A79FE1B062}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
