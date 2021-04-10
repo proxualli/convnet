@@ -28,7 +28,7 @@
   </PropertyGroup>
  
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-    <Exec Command="xcopy /Y $(SolutionDir)x64\$(ConfigurationName)\dnncore.dll $(TargetDir)" />
+    <Exec Command="xcopy /Y $(SolutionDir)$(PlatformName)\$(ConfigurationName)\dnncore.dll $(TargetDir)" />
     <Exec Command="xcopy /Y $(SolutionDir)x64\$(ConfigurationName)\dnn.dll $(TargetDir)" />
     <Exec Command="xcopy /Y $(SolutionDir)x64\$(ConfigurationName)\dnnl.dll $(TargetDir)" />
     <Exec Command="xcopy /Y $(SolutionDir)x64\$(ConfigurationName)\libpng16.dll $(TargetDir)" />

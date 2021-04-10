@@ -1,6 +1,4 @@
 ﻿using dnncore;
-
-
 using System.Collections.ObjectModel;
 
 namespace Convnet.Properties

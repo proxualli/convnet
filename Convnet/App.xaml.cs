@@ -1,9 +1,7 @@
 ﻿using Convnet.Properties;
-using dnncore;
 using Microsoft.Build.Locator;
 using System;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Markup;
@@ -18,7 +16,15 @@ namespace Convnet
         {
             MSBuildLocator.RegisterDefaults();
 
-            Process.GetCurrentProcess().PriorityClass = Settings.Default.Priority;
+            try
+            {
+                System.Diagnostics.Process.GetCurrentProcess().PriorityClass = Settings.Default.Priority;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+
             FrameworkElement.LanguageProperty.OverrideMetadata(typeof(FrameworkElement), new FrameworkPropertyMetadata(XmlLanguage.GetLanguage(CultureInfo.CurrentCulture.IetfLanguageTag)));
             FrameworkContentElement.LanguageProperty.OverrideMetadata(typeof(System.Windows.Documents.TextElement), new FrameworkPropertyMetadata(XmlLanguage.GetLanguage(CultureInfo.CurrentCulture.IetfLanguageTag)));
         }
@@ -32,16 +38,18 @@ namespace Convnet
 
         protected override void OnStartup(StartupEventArgs e)
         {
-            base.OnStartup(e);
-
             try
             {
+                base.OnStartup(e);
+
                 mainWindow = new MainWindow();
                 mainWindow.Closing += MainWindow_Closing;
                 mainWindow.Show();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                MessageBox.Show(ex.Message);
+                Dispose();
             }
         }
         private void MainWindow_Closing(object sender, CancelEventArgs e)
@@ -53,7 +61,7 @@ namespace Convnet
                     if (Xceed.Wpf.Toolkit.MessageBox.Show("Do you want to save the network state?", "Save Network State", MessageBoxButton.YesNo, MessageBoxImage.None, MessageBoxResult.Yes) == MessageBoxResult.Yes)
                         mainWindow.PageVM.Model.SaveWeights(global::Convnet.MainWindow.StateDirectory + mainWindow.PageVM.Model.Name + ".weights", (bool)global::Convnet.Properties.Settings.Default.PersistOptimizer);
                     
-                    if (mainWindow.PageVM.Model.TaskState != DNNTaskStates.Stopped)
+                    if (mainWindow.PageVM.Model.TaskState != dnncore.DNNTaskStates.Stopped)
                         mainWindow.PageVM.Model.Stop();
                         
                     Settings.Default.Save();
