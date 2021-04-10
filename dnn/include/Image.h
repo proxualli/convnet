@@ -1,6 +1,9 @@
 #pragma once
 #include "Utils.h"
 
+#include "zconf.h"
+#include "zlib.h"
+#include "pnglibconf.h"
 #include "jpeglib.h"
 #include "jerror.h"
 

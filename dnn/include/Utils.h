@@ -7,7 +7,6 @@
 #include <x86intrin.h>                 // Gcc or Clang compiler
 #endif
 
-
 #include <algorithm>
 #include <array>
 #include <atomic>
@@ -49,8 +48,6 @@
 #define MAX_VECTOR_SIZE 512
 #endif
 #endif
-
-#include <instrset.h>
 
 #include "vectorclass.h"
 #include "vectormath_common.h"
