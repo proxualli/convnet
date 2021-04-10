@@ -97,17 +97,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="dnncore.h" />
-    <ClInclude Include="Resource.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AssemblyInfo.cpp" />
     <ClCompile Include="dnncore.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="app.rc" />
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="app.ico" />
   </ItemGroup>
   <ItemGroup>
     <None Include="key.snk" />
