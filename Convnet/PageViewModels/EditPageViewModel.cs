@@ -608,7 +608,7 @@ namespace Convnet.PageViewModels
                             Verb = "runas",
                             RedirectStandardOutput = false,
                             RedirectStandardError = false,
-                            CreateNoWindow = false
+                            CreateNoWindow = true
                         };
                         var process = Process.Start(ProcStartInfo);
                         process.WaitForExit();
@@ -622,9 +622,13 @@ namespace Convnet.PageViewModels
 
                         fileInfo.Delete();
                     }
-                    catch (Exception)
+                    catch (Exception ex)
                     {
+                        Xceed.Wpf.Toolkit.MessageBox.Show(ex.Message, "Start dotnet build process failed", MessageBoxButton.OK);
                     }
+
+                    File.Copy(ApplicationPath + @"ScriptsDialog.deps.json", ScriptPath + @"ScriptsDialog.deps.json", true);
+                    //File.Delete(ScriptPath + @"ScriptsDialog.deps.json");
                 }
             }
 

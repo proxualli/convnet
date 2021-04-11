@@ -183,6 +183,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_CC493B0ADDDC4F65806F72BA83FAE3EE"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_CEB850B04ED145E4A72E2925140A9135"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -330,7 +336,7 @@
                 {
                 "Name" = "8:.NET Core"
                 "Message" = "8:[VSDNETCOREMSG]"
-                "FrameworkVersion" = "8:3.1                 "
+                "FrameworkVersion" = "8:3.1                  "
                 "AllowLaterVersions" = "11:FALSE"
                 "InstallUrl" = "8:https://dotnet.microsoft.com/download/dotnet-core/[NetCoreVerMajorDotMinor]"
                 "IsNETCore" = "11:TRUE"
@@ -861,6 +867,26 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_CC493B0ADDDC4F65806F72BA83FAE3EE"
+            {
+            "SourcePath" = "8:..\\Convnet\\ScriptsDialog.deps.json"
+            "TargetName" = "8:ScriptsDialog.deps.json"
+            "Tag" = "8:"
+            "Folder" = "8:_6AC6560B9ACC4F54A4DE534A0DB0B67E"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:TRUE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_CEB850B04ED145E4A72E2925140A9135"
             {
             "SourcePath" = "8:..\\Convnet\\App.ico"
@@ -1137,7 +1163,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Convnet"
         "ProductCode" = "8:{D4B4AC62-642E-467C-85CB-CD72DA196999}"
-        "PackageCode" = "8:{3ECD3023-9AD8-4114-B3EF-5968B2028E12}"
+        "PackageCode" = "8:{FC05EC45-F996-4856-8AB2-2EC8B514774F}"
         "UpgradeCode" = "8:{6AC0B11F-6D71-4203-ACC9-2E07A968F844}"
         "AspNetVersion" = "8:"
         "RestartWWWService" = "11:FALSE"
