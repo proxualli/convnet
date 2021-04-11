@@ -619,14 +619,13 @@ namespace Convnet.PageViewModels
                             dirty = false;
 
                         process.Close();
+
                         fileInfo.Delete();
                     }
                     catch (Exception)
                     {
                     }
                 }
-                //File.Copy(ApplicationPath + @"ScriptsDialog.deps.json", ScriptPath + @"ScriptsDialog.deps.json", true);
-                //File.Delete(ScriptPath + @"ScriptsDialog.deps.json");
             }
 
             try
