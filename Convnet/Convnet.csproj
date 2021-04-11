@@ -44,7 +44,6 @@
     <None Remove="Resources\PowerShell.xshd" />
     <None Remove="Resources\XML-Mode.xshd" />
     <None Remove="Resources\XmlDoc.xshd" />
-    <None Remove="ScriptsDialog.deps.json" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Key.png" />
@@ -81,9 +80,6 @@
     <Resource Include="Resources\Collection.png" />
     <Resource Include="Resources\Copy.png" />
     <Resource Include="Resources\Cut.png" />
-    <Resource Include="ScriptsDialog.deps.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
     <EmbeddedResource Update="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <SubType>Designer</SubType>
