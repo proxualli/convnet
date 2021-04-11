@@ -532,7 +532,9 @@ namespace Convnet.PageViewModels
         private async Task ScriptsDialogAsync()
         {
             await ProcessAsyncHelper.RunAsync(new ProcessStartInfo(ScriptPath + @"ScriptsDialog.exe"), null);
-            var fileInfo = new FileInfo(ScriptPath + @"script.txt");
+
+            var fileName = ScriptPath + @"script.txt";
+            var fileInfo = new FileInfo(fileName);
 
             if (fileInfo.Exists)
             {
@@ -543,7 +545,7 @@ namespace Convnet.PageViewModels
                 security.ModifyAccessRule(AccessControlModification.Add, new FileSystemAccessRule(owner, FileSystemRights.Modify, AccessControlType.Allow), out bool modified);
         #pragma warning restore CA1416 // Validate platform compatibility
 
-                Definition = File.ReadAllText(ScriptPath + @"script.txt");
+                Definition = File.ReadAllText(fileName);
                 ModelName = Definition.Split(new string[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries)[0].Replace("[", "").Replace("]", "");
 
                 fileInfo.Delete();
@@ -627,8 +629,8 @@ namespace Convnet.PageViewModels
                         Xceed.Wpf.Toolkit.MessageBox.Show(ex.Message, "Start dotnet build process failed", MessageBoxButton.OK);
                     }
 
-                    File.Copy(ApplicationPath + @"ScriptsDialog.deps.json", ScriptPath + @"ScriptsDialog.deps.json", true);
-                    //File.Delete(ScriptPath + @"ScriptsDialog.deps.json");
+                    //File.Copy(ApplicationPath + @"ScriptsDialog.deps.json", ScriptPath + @"ScriptsDialog.deps.json", true);
+                    File.Delete(ScriptPath + @"ScriptsDialog.deps.json");
                 }
             }
 

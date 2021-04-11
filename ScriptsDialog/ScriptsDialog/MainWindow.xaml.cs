@@ -12,15 +12,16 @@ namespace ScriptsDialog
     /// </summary>
     public partial class MainWindow : Window, IDisposable
     {
+        const string Framework = "netcoreapp3.1";
 #if DEBUG
         const string Mode = "Debug";
 #else
         const string Mode = "Release";
 #endif
-        const string Framework = @"\netcoreapp3.1\";
+        
         public static string StorageDirectory { get; } = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\convnet\";
         public static string ScriptsDirectory { get; } = StorageDirectory + @"scripts\";
-        public static string ScriptPath { get; } = ScriptsDirectory + @"ScriptsDialog\bin\" + Mode + Framework;
+        public static string ScriptPath { get; } = ScriptsDirectory + @"ScriptsDialog\bin\" + Mode + @"\" + Framework + @"\";
       
         public MainWindow()
         {
@@ -107,7 +108,6 @@ namespace ScriptsDialog
                 var streamWriter = fileInfo.CreateText();
                 streamWriter.AutoFlush = true;
                 streamWriter.Write(script);
-                streamWriter.Flush();
                 streamWriter.Close();
                 streamWriter.Dispose();
 

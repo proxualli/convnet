@@ -20,6 +20,7 @@ namespace Convnet
 {
     public partial class MainWindow : Window, IDisposable
     {
+        const string Framework = "netcoreapp3.1";
 #if DEBUG
         const string Mode = "Debug";
 #else
@@ -79,7 +80,7 @@ namespace Convnet
             if (!Directory.Exists(ScriptsDirectory))
             {
                 Directory.CreateDirectory(ScriptsDirectory);
-                Copy(ApplicationPath.Replace(@"Convnet\bin\x64\" + Mode + @"\netcoreapp3.1\", "") + @"ScriptsDialog\", ScriptsDirectory);
+                Copy(ApplicationPath.Replace(@"Convnet\bin\x64\" + Mode + @"\" + Framework + @"\", "") + @"ScriptsDialog\", ScriptsDirectory);
             }
 
             if (!File.Exists(Path.Combine(StateDirectory, Settings.Default.ModelNameActive + ".definition")))
