@@ -139,7 +139,7 @@ void GetTrainingProgress(int seconds = 5, UInt trainingSamples = 50000, UInt tes
   
     while (*state != States::Completed)
     {
-        std::this_thread::sleep_for(std::chrono::seconds((*state == States::Testing) ? 1 : seconds));
+        std::this_thread::sleep_for(std::chrono::seconds(*state == States::Testing ? 1 : seconds));
         
         DNNGetTrainingInfo(cycle, totalCycles, epoch, totalEpochs, horizontalMirror, verticalMirror, dropout, cutout, autoAugment, colorCast, colorAngle, distortion, interpolation, scaling, rotation, sampleIndex, batchSize, rate, momentum, l2Penalty, avgTrainLoss, trainErrorPercentage, trainErrors, avgTestLoss, testErrorPercentage, testErrors, sampleSpeed, state, taskState);
        
@@ -212,10 +212,10 @@ int main(int argc, char* argv[])
 {
     CheckMsg msg;
 
-    ScriptParameters p;
+    scripts::ScriptParameters p;
 
-    p.Script = Scripts::shufflenetv2;
-    p.Dataset = Datasets::cifar10;
+    p.Script = scripts::Scripts::shufflenetv2;
+    p.Dataset = scripts::Datasets::cifar10;
     p.C = 3;
     p.H = 32;
     p.W = 32;
@@ -225,7 +225,7 @@ int main(int argc, char* argv[])
     p.Groups = 3;
     p.Iterations = 6;
     p.Width = 10;
-    p.Activation = Activations::HardSwish;
+    p.Activation = scripts::Activations::HardSwish;
     p.Dropout = Float(0);
     p.Bottleneck = false;
     p.SqueezeExcitation = true;
@@ -233,10 +233,9 @@ int main(int argc, char* argv[])
 
     auto model = ScriptsCatalog::Generate(p);
 
-
     const auto optimizer = Optimizers::NAG;
     const auto persistOptimizer = true;
-
+   
     DNNDataprovider(path);
     
     if (DNNReadDefinition(model, optimizer, msg) == 1)
