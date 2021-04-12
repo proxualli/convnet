@@ -10,6 +10,7 @@
 #endif
 
 #include "Utils.h"
+#include "Model.h"
 #include "Scripts.h"
 
 #ifdef _WIN32
@@ -19,7 +20,6 @@ static std::string path = std::string(getenv("HOME")) + std::string("/convnet/")
 #endif
 
 using namespace dnn;
-
 
 DNN_API bool DNNStochasticEnabled();
 DNN_API void DNNSetLocked(const bool locked);
@@ -231,7 +231,7 @@ int main(int argc, char* argv[])
     p.SqueezeExcitation = true;
     p.ChannelZeroPad = false;
 
-    auto model = ScriptsCatalog::Generate(p);
+    auto model = scripts::ScriptsCatalog::Generate(p);
 
     const auto optimizer = Optimizers::NAG;
     const auto persistOptimizer = true;
