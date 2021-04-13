@@ -111,10 +111,20 @@ namespace ScriptsDialog
 
         public static string BatchNormActivationDropout(UInt id, string inputs, Activations activation = Activations.Relu, Float dropout = 0.0f, string group = "", string prefix = "B")
         {
-            return "[" + group + prefix + to_string(id) + "]" + nwl +
-               "Type=BatchNorm" + activation.ToString() + "Dropout" + nwl +
-              "Inputs=" + inputs + nwl +
-              (dropout > 0f ? "Dropout=" + to_string(dropout) + nwl + nwl : nwl);
+        	if (activation != Activations.FRelu)
+         	{
+            	return "[" + group + prefix + to_string(id) + "]" + nwl +
+            		"Type=BatchNorm" + activation.ToString() + "Dropout" + nwl +
+            		"Inputs=" + inputs + nwl +
+              		(dropout > 0f ? "Dropout=" + to_string(dropout) + nwl + nwl : nwl);
+         	}
+         	else
+         	{
+         		return "[" + group + prefix + to_string(id) + "]" + nwl +
+            		"Type=BatchNormHardSwishDropout" + nwl +
+            		"Inputs=" + inputs + nwl +
+              		(dropout > 0f ? "Dropout=" + to_string(dropout) + nwl + nwl : nwl);
+         	}
         }
 
         public static string Resampling(UInt id, string inputs, string group = "", string prefix = "R")
