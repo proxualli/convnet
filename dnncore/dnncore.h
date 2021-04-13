@@ -265,6 +265,11 @@ namespace dnncore
 			System::Array^ get() { return Enum::GetValues(DNNOptimizers::typeid); }
 		}
 		
+		property System::Array^ InterpolationList
+		{
+			System::Array^ get() { return Enum::GetValues(DNNInterpolation::typeid); }
+		}
+
 		property UInt Optimizer
 		{
 			UInt get() { return optimizer; }
