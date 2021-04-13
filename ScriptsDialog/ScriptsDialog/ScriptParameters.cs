@@ -46,6 +46,7 @@ namespace ScriptsDialog
     [Serializable()]
     public enum Activations
     {
+        FRelu = 1,
         HardSwish = 10,
         Mish = 16,
         Relu = 19,
