@@ -520,7 +520,7 @@ namespace ScriptsDialog
                                 Convolution(2, "B1", DIV8(W), 1, 1, 1, 1, 0, 0) +
                                 BatchNormActivation(2, "C2", p.Activation, DIV8(W)) +
                                 Convolution(3, "B2", DIV8((UInt)(K * W / 4)), 3, 3, 1, 1, 1, 1) +
-                                (p.Dropout > 0 ? BatchNormActivationDropout(3, "C3", p.Activation) : BatchNormActivation(3, "C3", p.Activation)) +
+                                (p.Dropout > 0 ? BatchNormActivationDropout(3, "C3", p.Activation) : BatchNormActivation(3, "C3", p.Activation, DIV8((UInt)(K * W / 4)))) +
                                 Convolution(4, "B3", DIV8(W), 1, 1, 1, 1, 0, 0) +
                                 Convolution(5, "B1", DIV8(W), 1, 1, 1, 1, 0, 0) +
                                 Add(1, "C4,C5"));
@@ -532,7 +532,7 @@ namespace ScriptsDialog
                             blocks.Add(
                                 BatchNormActivation(1, "C1", p.Activation, DIV8(W)) +
                                 Convolution(2, "B1", DIV8(W), 3, 3, 1, 1, 1, 1) +
-                                (p.Dropout > 0 ? BatchNormActivationDropout(2, "C2", p.Activation) : BatchNormActivation(2, "C2", p.Activation)) +
+                                (p.Dropout > 0 ? BatchNormActivationDropout(2, "C2", p.Activation) : BatchNormActivation(2, "C2", p.Activation, DIV8(W))) +
                                 Convolution(3, "B2", DIV8(W), 3, 3, 1, 1, 1, 1) +
                                 Convolution(4, "B1", DIV8(W), 1, 1, 1, 1, 0, 0) +
                                 Add(1, "C3,C4"));
@@ -560,7 +560,7 @@ namespace ScriptsDialog
                                         Convolution(C, In("B", C), DIV8(W), 1, 1, 1, 1, 0, 0) +
                                         BatchNormActivation(C + 1, In("C", C), p.Activation, DIV8(W)) +
                                         Convolution(C + 1, In("B", C + 1), DIV8(W), 3, 3, 2, 2, 1, 1) +
-                                        (p.Dropout > 0 ? BatchNormActivationDropout(C + 2, In("C", C + 1), p.Activation) : BatchNormActivation(C + 2, In("C", C + 1), p.Activation)) +
+                                        (p.Dropout > 0 ? BatchNormActivationDropout(C + 2, In("C", C + 1), p.Activation) : BatchNormActivation(C + 2, In("C", C + 1), p.Activation, DIV8(W))) +
                                         Convolution(C + 2, In("B", C + 2), DIV8(W), 1, 1, 1, 1, 0, 0) +
                                         strChannelZeroPad);
                                 }
@@ -569,7 +569,7 @@ namespace ScriptsDialog
                                     blocks.Add(
                                         BatchNormActivation(C, In("A", A), p.Activation, DIV8(W)) +
                                         Convolution(C, In("B", C), DIV8(W), 3, 3, 2, 2, 1, 1) +
-                                        (p.Dropout > 0 ? BatchNormActivationDropout(C + 1, In("C", C), p.Activation) : BatchNormActivation(C + 1, In("C", C), p.Activation)) +
+                                        (p.Dropout > 0 ? BatchNormActivationDropout(C + 1, In("C", C), p.Activation) : BatchNormActivation(C + 1, In("C", C), p.Activation, DIV8(W))) +
                                         Convolution(C + 1, In("B", C + 1), DIV8(W), 3, 3, 1, 1, 1, 1) +
                                         strChannelZeroPad);
                                 }
