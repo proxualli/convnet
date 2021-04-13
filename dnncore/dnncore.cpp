@@ -176,62 +176,71 @@ enum class Interpolation
 
 struct TrainingRate
 {
+	UInt Optimizer;
+	Float Momentum;
+	Float L2Penalty;
+	Float Beta1;
+	Float Beta2;
 	UInt BatchSize;
 	UInt Cycles;
 	UInt Epochs;
 	UInt EpochMultiplier;
-	UInt DecayAfterEpochs;
-	UInt Interpolation;
-	UInt ColorAngle;
-	Float ColorCast;
-	Float Distortion;
-	Float Dropout;
-	Float Cutout;
-	Float AutoAugment;
 	Float MaximumRate;
 	Float MinimumRate;
-	Float L2Penalty;
-	Float Momentum;
+	UInt DecayAfterEpochs;
 	Float DecayFactor;
-	Float Scaling;
-	Float Rotation;
 	bool HorizontalFlip;
 	bool VerticalFlip;
-
+	Float Dropout;
+	Float Cutout;
+	Float ColorCast;
+	UInt ColorAngle;
+	Float AutoAugment;
+	Float Distortion;
+	UInt Interpolation;
+	Float Scaling;
+	Float Rotation;
+	
 	TrainingRate::TrainingRate() :
+		Optimizer(0),
+		Momentum(Float(0.9)),
+		L2Penalty(Float(0.0005)),
+		Beta1(Float(0.9)),
+		Beta2(Float(0.999)),
 		BatchSize(1),
 		Cycles(1),
 		Epochs(200),
 		EpochMultiplier(1),
-		DecayAfterEpochs(1),
-		Interpolation(UInt(Interpolation::Cubic)),
-		ColorAngle(0),
-		ColorCast(Float(0)),
-		Distortion(Float(0)),
-		Dropout(Float(0)),
-		Cutout(Float(0)),
-		AutoAugment(Float(0)),
 		MaximumRate(Float(0.05)),
 		MinimumRate(Float(0.0001)),
-		L2Penalty(Float(0.0005)),
-		Momentum(Float(0.9)),
+		DecayAfterEpochs(1),
 		DecayFactor(Float(1)),
-		Scaling(Float(10.0)),
-		Rotation(Float(10.0)),
 		HorizontalFlip(false),
-		VerticalFlip(false)
+		VerticalFlip(false),
+		Dropout(Float(0)),
+		Cutout(Float(0)),
+		ColorCast(Float(0)),
+		ColorAngle(0),
+		AutoAugment(Float(0)),
+		Distortion(Float(0)),
+		Interpolation(UInt(Interpolation::Cubic)),
+		Scaling(Float(10.0)),
+		Rotation(Float(10.0))
 	{
 	}
 
-	TrainingRate::TrainingRate(const Float maximumRate, const UInt batchSize, const UInt cycles, const UInt epochs, const UInt epochMultiplier, const Float minimumRate, const Float L2penalty, const Float momentum, const Float decayFactor, const UInt decayAfterEpochs, const bool horizontalFlip, const bool verticalFlip, const Float dropout, const Float cutout, const Float autoAugment, const Float colorCast, const UInt colorAngle, const Float distortion, const UInt interpolation, const Float scaling, const Float rotation) :
-		MaximumRate(maximumRate),
+	TrainingRate::TrainingRate(const UInt optimizer, const Float momentum, const Float l2penalty, const Float beta1, const Float beta2, const UInt batchSize, const UInt cycles, const UInt epochs, const UInt epochMultiplier, const Float maximumRate, const Float minimumRate, const Float decayFactor, const UInt decayAfterEpochs, const bool horizontalFlip, const bool verticalFlip, const Float dropout, const Float cutout, const Float autoAugment, const Float colorCast, const UInt colorAngle, const Float distortion, const UInt interpolation, const Float scaling, const Float rotation) :
+		Optimizer(optimizer),
+		Momentum(momentum),
+		L2Penalty(l2penalty),
+		Beta1(beta1),
+		Beta2(beta2),
 		BatchSize(batchSize),
 		Cycles(cycles),
 		Epochs(epochs),
 		EpochMultiplier(epochMultiplier),
 		MinimumRate(minimumRate),
-		L2Penalty(L2penalty),
-		Momentum(momentum),
+		MaximumRate(maximumRate),
 		DecayFactor(decayFactor),
 		DecayAfterEpochs(decayAfterEpochs),
 		HorizontalFlip(horizontalFlip),

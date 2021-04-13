@@ -10,7 +10,7 @@
     <ApplicationIcon>Resources\App.ico</ApplicationIcon>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <Platforms>AnyCPU</Platforms>
+    <Platforms>x64;AnyCPU</Platforms>
     <RunAnalyzersDuringBuild>false</RunAnalyzersDuringBuild>
   </PropertyGroup>
 

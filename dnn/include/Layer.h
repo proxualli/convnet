@@ -33,6 +33,8 @@ namespace dnn
 		Float MinimumRate;
 		UInt DecayAfterEpochs;
 		Float DecayFactor;
+		bool HorizontalFlip;
+		bool VerticalFlip;
 		Float Dropout;
 		Float Cutout;
 		Float AutoAugment;
@@ -42,9 +44,7 @@ namespace dnn
 		UInt Interpolation;
 		Float Scaling;
 		Float Rotation;
-		bool HorizontalFlip;
-		bool VerticalFlip;
-
+	
 		TrainingRate() :
 			Optimizer(UInt(Optimizers::AdaDelta)),
 			Momentum(Float(0.9)),
@@ -59,6 +59,8 @@ namespace dnn
 			MinimumRate(Float(0.0001)),
 			DecayAfterEpochs(1),
 			DecayFactor(Float(1)),
+			HorizontalFlip(false),
+			VerticalFlip(false),
 			Dropout(Float(0)),
 			Cutout(Float(0)),
 			AutoAugment(Float(0)),
@@ -67,13 +69,11 @@ namespace dnn
 			Distortion(Float(0)),
 			Interpolation(UInt(Interpolation::Cubic)),
 			Scaling(Float(10.0)),
-			Rotation(Float(10.0)),
-			HorizontalFlip(false),
-			VerticalFlip(false)
+			Rotation(Float(10.0))			
 		{
 		}
 
-		TrainingRate(const UInt optimizer, Float momentum, Float l2Penalty, Float beta1, Float beta2, const UInt batchSize, const UInt cycles, const UInt epochs, const UInt epochMultiplier, const Float maximumRate, const Float minimumRate, const UInt decayAfterEpochs, const Float decayFactor, const Float dropout, const Float cutout, const Float autoAugment, const Float colorCast, const UInt colorAngle, const Float distortion, const UInt interpolation, const Float scaling, const Float rotation, const bool horizontalFlip, const bool verticalFlip) :
+		TrainingRate(const UInt optimizer, Float momentum, Float l2Penalty, Float beta1, Float beta2, const UInt batchSize, const UInt cycles, const UInt epochs, const UInt epochMultiplier, const Float maximumRate, const Float minimumRate, const UInt decayAfterEpochs, const Float decayFactor, const bool horizontalFlip, const bool verticalFlip, const Float dropout, const Float cutout, const Float autoAugment, const Float colorCast, const UInt colorAngle, const Float distortion, const UInt interpolation, const Float scaling, const Float rotation) :
 			Optimizer(optimizer),
 			Momentum(momentum),
 			L2Penalty(l2Penalty),
@@ -87,6 +87,8 @@ namespace dnn
 			MinimumRate(minimumRate),
 			DecayAfterEpochs(decayAfterEpochs),
 			DecayFactor(decayFactor),
+			HorizontalFlip(horizontalFlip),
+			VerticalFlip(verticalFlip),
 			Dropout(dropout),
 			Cutout(cutout),
 			AutoAugment(autoAugment),
@@ -95,9 +97,7 @@ namespace dnn
 			Distortion(distortion),
 			Interpolation(interpolation),
 			Scaling(scaling),
-			Rotation(rotation),
-			HorizontalFlip(horizontalFlip),
-			VerticalFlip(verticalFlip)
+			Rotation(rotation)			
 		{
 		}
 	};
