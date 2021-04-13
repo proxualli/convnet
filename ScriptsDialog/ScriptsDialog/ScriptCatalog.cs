@@ -550,47 +550,6 @@ namespace ScriptsDialog
 
                         for (var g = 0ul; g < p.Groups; g++)
                         {
-                            if (g > 0)
-                            {
-                                W *= 2;
-
-                                var strChannelZeroPad = p.ChannelZeroPad ?
-                                    AvgPooling(g, In("A", A)) +
-                                    "[CZP" + to_string(g) + "]" + nwl + "Type=ChannelZeroPad" + nwl + "Inputs=" + In("P", g) + nwl + "Channels=" + to_string(W) + nwl + nwl +
-                                    Add(A + 1, In("C", C + 1 + bn) + "," + In("CZP", g)) :
-                                    AvgPooling(g, In("B", C)) +
-                                    Convolution(C + 2 + bn, In("P", g), DIV8(W), 1, 1, 1, 1, 0, 0) +
-                                    Add(A + 1, In("C", C + 1 + bn) + "," + In("C", C + 2 + bn));
-
-                                if (p.Bottleneck)
-                                {
-
-                                    blocks.Add(
-                                        BatchNormActivation(C, In("A", A), p.Activation, DIV8(W/2)) +
-                                        Convolution(C, In("B", C), DIV8(W), 1, 1, 1, 1, 0, 0) +
-                                        BatchNormActivation(C + 1, In("C", C), p.Activation, DIV8(W)) +
-                                        Convolution(C + 1, In("B", C + 1), DIV8(W), 3, 3, 2, 2, 1, 1) +
-                                        (p.Dropout > 0 ? BatchNormActivationDropout(C + 2, In("C", C + 1), p.Activation) : BatchNormActivation(C + 2, In("C", C + 1), p.Activation, DIV8(W))) +
-                                        Convolution(C + 2, In("B", C + 2), DIV8(W), 1, 1, 1, 1, 0, 0) +
-                                        strChannelZeroPad);
-                                }
-                                else
-                                {
-                                    blocks.Add(
-                                        BatchNormActivation(C, In("A", A), p.Activation, DIV8(W/2)) +
-                                        Convolution(C, In("B", C), DIV8(W), 3, 3, 2, 2, 1, 1) +
-                                        (p.Dropout > 0 ? BatchNormActivationDropout(C + 1, In("C", C), p.Activation) : BatchNormActivation(C + 1, In("C", C), p.Activation, DIV8(W))) +
-                                        Convolution(C + 1, In("B", C + 1), DIV8(W), 3, 3, 1, 1, 1, 1) +
-                                        strChannelZeroPad);
-                                }
-
-                                A++;
-                                if (p.ChannelZeroPad)
-                                    C += 2 + bn;
-                                else
-                                    C += 3 + bn;
-                            }
-
                             for (var i = 1ul; i < p.Iterations; i++)
                             {
                                 if (p.Bottleneck)
@@ -619,6 +578,40 @@ namespace ScriptsDialog
                                 }
                                 A++;
                             }
+                            
+                            W *= 2;
+
+                            var strChannelZeroPad = p.ChannelZeroPad ?
+                                AvgPooling(g, In("A", A)) +
+                                "[CZP" + to_string(g) + "]" + nwl + "Type=ChannelZeroPad" + nwl + "Inputs=" + In("P", g) + nwl + "Channels=" + to_string(W) + nwl + nwl +
+                                Add(A + 1, In("C", C + 1 + bn) + "," + In("CZP", g)) : 
+                                AvgPooling(g, In("B", C)) +
+                                Convolution(C + 2 + bn, In("P", g), DIV8(W), 1, 1, 1, 1, 0, 0) +
+                                Add(A + 1, In("C", C + 1 + bn) + "," + In("C", C + 2 + bn));
+
+                            if (p.Bottleneck)
+                            {
+                                blocks.Add(
+                                    BatchNormActivation(C, In("A", A), p.Activation, DIV8(W/2)) +
+                                    Convolution(C, In("B", C), DIV8(W), 1, 1, 1, 1, 0, 0) +
+                                    BatchNormActivation(C + 1, In("C", C), p.Activation, DIV8(W)) +
+                                    Convolution(C + 1, In("B", C + 1), DIV8(W), 3, 3, 2, 2, 1, 1) +
+                                    (p.Dropout > 0 ? BatchNormActivationDropout(C + 2, In("C", C + 1), p.Activation) : BatchNormActivation(C + 2, In("C", C + 1), p.Activation, DIV8(W))) +
+                                    Convolution(C + 2, In("B", C + 2), DIV8(W), 1, 1, 1, 1, 0, 0) +
+                                    strChannelZeroPad);
+                            }
+                            else
+                            {
+                                blocks.Add(
+                                    BatchNormActivation(C, In("A", A), p.Activation, DIV8(W/2)) +
+                                    Convolution(C, In("B", C), DIV8(W), 3, 3, 2, 2, 1, 1) +
+                                    (p.Dropout > 0 ? BatchNormActivationDropout(C + 1, In("C", C), p.Activation) : BatchNormActivation(C + 1, In("C", C), p.Activation, DIV8(W))) +
+                                    Convolution(C + 1, In("B", C + 1), DIV8(W), 3, 3, 1, 1, 1, 1) +
+                                    strChannelZeroPad);
+                            }
+
+                            A++;
+                            C += p.ChannelZeroPad ? 2 + bn : 3 + bn;
                         }
 
                         foreach (var block in blocks)
