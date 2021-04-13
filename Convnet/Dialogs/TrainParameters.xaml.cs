@@ -37,55 +37,57 @@ namespace Convnet.Dialogs
             }
 
             DataContext = Rate;
-            textBoxBatchSize.Focus();
+
+            comboBoOptimizer.SelectedIndex = Properties.Settings.Default.Optimizer;
+            comboBoOptimizer.Focus();
             radioButtonCubic.IsChecked = Rate.Interpolation == (uint)DNNInterpolation.Cubic;
             radioButtonLinear.IsChecked = Rate.Interpolation == (uint)DNNInterpolation.Linear;
             radioButtonNearest.IsChecked = Rate.Interpolation == (uint)DNNInterpolation.Nearest;
             textBoxGoToEpoch.Text = Properties.Settings.Default.GoToEpoch.ToString();
             textBoxColorAngle.IsEnabled = Rate.ColorCast > 0;
 
-            switch (Model.Optimizer)
-            {
-                case DNNOptimizers.SGD:
-                    {
-                        textBlockL2penalty.Opacity = 1;
-                        textBoxL2penalty.IsEnabled = true;
-                        textBlockMomentum.Opacity = 0.5;
-                        textBoxMomentum.IsEnabled = false;
-                    }
-                    break;
+            //switch (Model.Optimizer)
+            //{
+            //    case DNNOptimizers.SGD:
+            //        {
+            //            textBlockL2penalty.Opacity = 1;
+            //            textBoxL2penalty.IsEnabled = true;
+            //            textBlockMomentum.Opacity = 0.5;
+            //            textBoxMomentum.IsEnabled = false;
+            //        }
+            //        break;
 
-                case DNNOptimizers.AdaDelta:
-                case DNNOptimizers.Adam:
-                case DNNOptimizers.Adamax:
-                case DNNOptimizers.RMSProp:
-                    {
-                        textBlockL2penalty.Opacity = 0.5;
-                        textBoxL2penalty.IsEnabled = false;
-                        textBlockMomentum.Opacity = 1;
-                        textBoxMomentum.IsEnabled = true;
-                    }
-                    break;
-                case DNNOptimizers.AdaGrad:
-                    {
-                        textBlockL2penalty.Opacity = 0.5;
-                        textBoxL2penalty.IsEnabled = false;
-                        textBlockMomentum.Opacity = 0.5;
-                        textBoxMomentum.IsEnabled = false;
-                    }
-                    break;
+            //    case DNNOptimizers.AdaDelta:
+            //    case DNNOptimizers.Adam:
+            //    case DNNOptimizers.Adamax:
+            //    case DNNOptimizers.RMSProp:
+            //        {
+            //            textBlockL2penalty.Opacity = 0.5;
+            //            textBoxL2penalty.IsEnabled = false;
+            //            textBlockMomentum.Opacity = 1;
+            //            textBoxMomentum.IsEnabled = true;
+            //        }
+            //        break;
+            //    case DNNOptimizers.AdaGrad:
+            //        {
+            //            textBlockL2penalty.Opacity = 0.5;
+            //            textBoxL2penalty.IsEnabled = false;
+            //            textBlockMomentum.Opacity = 0.5;
+            //            textBoxMomentum.IsEnabled = false;
+            //        }
+            //        break;
 
-                case DNNOptimizers.NAG:
-                case DNNOptimizers.SGDMomentum:
-                case DNNOptimizers.RAdam:
-                    {
-                        textBlockL2penalty.Opacity = 1;
-                        textBoxL2penalty.IsEnabled = true;
-                        textBlockMomentum.Opacity = 1;
-                        textBoxMomentum.IsEnabled = true;
-                    }
-                    break;
-            }
+            //    case DNNOptimizers.NAG:
+            //    case DNNOptimizers.SGDMomentum:
+            //    case DNNOptimizers.RAdam:
+            //        {
+            //            textBlockL2penalty.Opacity = 1;
+            //            textBoxL2penalty.IsEnabled = true;
+            //            textBlockMomentum.Opacity = 1;
+            //            textBoxMomentum.IsEnabled = true;
+            //        }
+            //        break;
+            //}
         }
 
         bool IsValid(DependencyObject node)
