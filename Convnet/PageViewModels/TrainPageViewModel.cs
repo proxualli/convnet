@@ -1093,7 +1093,7 @@ namespace Convnet.PageViewModels
             get
             {
                 if (Settings.Default.TrainRate == null)
-                    Settings.Default.TrainRate = new DNNTrainingRate(0.05f, 128, 1, 200, 1, 0.0001f, 0.0005f, 0.9f, 1, 1, false, false, 0, 0, 0, 0, 0, 0, 0, 10, 12);
+                    Settings.Default.TrainRate = new DNNTrainingRate(0, 0.9f, 0.0005f, 0.9f, 0.999f, 128, 1, 200, 1, 0.005f, 0.0001f, 1, 1, false, false, 0, 0, 0, 0, 0, 0, 0, 10, 12);
                 return Settings.Default.TrainRate;
             }
             private set
@@ -1238,9 +1238,7 @@ namespace Convnet.PageViewModels
 
                     if (dialog.ShowDialog() ?? false)
                     {
-                        // Network.AddLearningRate(true, new dnnclr.TrainingRate(dialog.Rate.Rate, dialog.Rate.BatchSize, dialog.Rate.Epochs, dialog.Rate.MinimumRate, dialog.Rate.L2Penalty, dialog.Rate.Momentum, dialog.Rate.DecayFactor, dialog.Rate.DecayAfterEpochs,  dialog.Rate.Mirror, dialog.Rate.Dropout, dialog.Rate.Cutout, dialog.Rate.ColorCast, dialog.Rate.ColorAngle, dialog.Rate.Distortion, dialog.Rate.Interpolation, dialog.Rate.Scaling, dialog.Rate.Rotation));
-
-                        Model.AddLearningRateSGDR(true, Properties.Settings.Default.GoToEpoch, new DNNTrainingRate(dialog.Rate.MaximumRate, dialog.Rate.BatchSize, dialog.Rate.Cycles, dialog.Rate.Epochs, dialog.Rate.EpochMultiplier, dialog.Rate.MinimumRate, dialog.Rate.L2Penalty, dialog.Rate.Momentum, dialog.Rate.DecayFactor, dialog.Rate.DecayAfterEpochs, dialog.Rate.HorizontalFlip, dialog.Rate.VerticalFlip, dialog.Rate.Dropout, dialog.Rate.Cutout, dialog.Rate.AutoAugment, dialog.Rate.ColorCast, dialog.Rate.ColorAngle, dialog.Rate.Distortion, dialog.Rate.Interpolation, dialog.Rate.Scaling, dialog.Rate.Rotation));
+                        Model.AddLearningRateSGDR(true, Properties.Settings.Default.GoToEpoch, new DNNTrainingRate(dialog.Rate.Optimizer, dialog.Rate.Momentum, dialog.Rate.L2Penalty, dialog.Rate.Beta1, dialog.Rate.Beta2, dialog.Rate.BatchSize, dialog.Rate.Cycles, dialog.Rate.Epochs, dialog.Rate.EpochMultiplier, dialog.Rate.MaximumRate, dialog.Rate.MinimumRate, dialog.Rate.DecayFactor, dialog.Rate.DecayAfterEpochs, dialog.Rate.HorizontalFlip, dialog.Rate.VerticalFlip, dialog.Rate.Dropout, dialog.Rate.Cutout, dialog.Rate.AutoAugment, dialog.Rate.ColorCast, dialog.Rate.ColorAngle, dialog.Rate.Distortion, dialog.Rate.Interpolation, dialog.Rate.Scaling, dialog.Rate.Rotation));
 
                         TrainRate = dialog.Rate;
                         Settings.Default.Save();
@@ -1425,7 +1423,7 @@ namespace Convnet.PageViewModels
                     bool first = true;
                     foreach (DNNTrainingRate rate in TrainRates)
                     {
-                        Model.AddLearningRate(first, Properties.Settings.Default.GoToEpoch, new DNNTrainingRate(rate.MaximumRate, rate.BatchSize, rate.Cycles, rate.Epochs, rate.EpochMultiplier, rate.MinimumRate, rate.L2Penalty, rate.Momentum, rate.DecayFactor, rate.DecayAfterEpochs, rate.HorizontalFlip, rate.VerticalFlip, rate.Dropout, rate.Cutout, rate.AutoAugment, rate.ColorCast, rate.ColorAngle, rate.Distortion, rate.Interpolation, rate.Scaling, rate.Rotation));
+                        Model.AddLearningRate(first, Properties.Settings.Default.GoToEpoch, new DNNTrainingRate(rate.Optimizer, rate.Momentum, rate.L2Penalty, rate.Beta1, rate.Beta2, rate.BatchSize, rate.Cycles, rate.Epochs, rate.EpochMultiplier, rate.MaximumRate, rate.MinimumRate, rate.DecayFactor, rate.DecayAfterEpochs, rate.HorizontalFlip, rate.VerticalFlip, rate.Dropout, rate.Cutout, rate.AutoAugment, rate.ColorCast, rate.ColorAngle, rate.Distortion, rate.Interpolation, rate.Scaling, rate.Rotation));
                         first = false;
                     }
 

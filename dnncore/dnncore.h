@@ -941,6 +941,66 @@ namespace dnncore
 	public ref struct DNNTrainingRate : public System::ComponentModel::INotifyPropertyChanged
 	{
 	public:
+		property UInt Optimizer
+		{
+			UInt get() { return optimizer; }
+			void set(UInt value)
+			{
+				if (value == optimizer && value == 0)
+					return;
+
+				optimizer = value;
+				OnPropertyChanged("Optimizer");
+			}
+		}
+		property Float Momentum
+		{
+			Float get() { return momentum; }
+			void set(Float value)
+			{
+				if (value == momentum || value < Float(0) || value > Float(1))
+					return;
+
+				momentum = value;
+				OnPropertyChanged("Momentum");
+			}
+		}
+		property Float L2Penalty
+		{
+			Float get() { return l2Penalty; }
+			void set(Float value)
+			{
+				if (value == l2Penalty || value < Float(0) || value > Float(1))
+					return;
+
+				l2Penalty = value;
+				OnPropertyChanged("L2Penalty");
+			}
+		}
+		property Float Beta1
+		{
+			Float get() { return beta1; }
+			void set(Float value)
+			{
+				if (value == beta1 || value < Float(0) || value > Float(1))
+					return;
+
+				beta1 = value;
+				OnPropertyChanged("Beta1");
+			}
+		}
+		property Float Beta2
+		{
+			Float get() { return beta2; }
+			void set(Float value)
+			{
+				if (value == beta2 || value < Float(0) || value > Float(1))
+					return;
+
+				beta2 = value;
+				OnPropertyChanged("Beta2");
+			}
+		}
 		property UInt BatchSize
 		{
 			UInt get() { return batchSize; }
@@ -1001,16 +1061,64 @@ namespace dnncore
 				OnPropertyChanged("DecayAfterEpochs");
 			}
 		}
-		property UInt Interpolation
+		property Float DecayFactor
 		{
-			UInt get() { return interpolation; }
-			void set(UInt value)
+			Float get() { return decayFactor; }
+			void set(Float value)
 			{
-				if (value == interpolation)
+				if (value == decayFactor || value < Float(0) || value > Float(1))
 					return;
 
-				interpolation = value;
-				OnPropertyChanged("Interpolation");
+				decayFactor = value;
+				OnPropertyChanged("DecayFactor");
+			}
+		}
+		property Float MaximumRate
+		{
+			Float get() { return maximumRate; }
+			void set(Float value)
+			{
+				if (value == maximumRate || value < Float(0) || value > Float(1))
+					return;
+
+				maximumRate = value;
+				OnPropertyChanged("MaximumRate");
+			}
+		}
+		property Float MinimumRate
+		{
+			Float get() { return minimumRate; }
+			void set(Float value)
+			{
+				if (value == minimumRate || value < Float(0) || value > Float(1))
+					return;
+
+				minimumRate = value;
+				OnPropertyChanged("MinimumRate");
+			}
+		}
+		property bool HorizontalFlip
+		{
+			bool get() { return horizontalFlip; }
+			void set(bool value)
+			{
+				if (value == horizontalFlip)
+					return;
+
+				horizontalFlip = value;
+				OnPropertyChanged("HorizontalFlip");
+			}
+		}
+		property bool VerticalFlip
+		{
+			bool get() { return verticalFlip; }
+			void set(bool value)
+			{
+				if (value == verticalFlip)
+					return;
+
+				verticalFlip = value;
+				OnPropertyChanged("VerticalFlip");
 			}
 		}
 		property UInt ColorAngle
@@ -1035,18 +1143,6 @@ namespace dnncore
 
 				colorCast = value;
 				OnPropertyChanged("ColorCast");
-			}
-		}
-		property Float Distortion
-		{
-			Float get() { return distortion; }
-			void set(Float value)
-			{
-				if (value == distortion || value < Float(0) || value > Float(1))
-					return;
-
-				distortion = value;
-				OnPropertyChanged("Distortion");
 			}
 		}
 		property Float Dropout
@@ -1085,64 +1181,28 @@ namespace dnncore
 				OnPropertyChanged("AutoAugment");
 			}
 		}
-		property Float MaximumRate
+		property Float Distortion
 		{
-			Float get() { return maximumRate; }
+			Float get() { return distortion; }
 			void set(Float value)
 			{
-				if (value == maximumRate || value < Float(0) || value > Float(1))
+				if (value == distortion || value < Float(0) || value > Float(1))
 					return;
 
-				maximumRate = value;
-				OnPropertyChanged("MaximumRate");
+				distortion = value;
+				OnPropertyChanged("Distortion");
 			}
 		}
-		property Float MinimumRate
+		property UInt Interpolation
 		{
-			Float get() { return minimumRate; }
-			void set(Float value)
+			UInt get() { return interpolation; }
+			void set(UInt value)
 			{
-				if (value == minimumRate || value < Float(0) || value > Float(1))
+				if (value == interpolation)
 					return;
 
-				minimumRate = value;
-				OnPropertyChanged("MinimumRate");
-			}
-		}
-		property Float L2Penalty
-		{
-			Float get() { return l2Penalty; }
-			void set(Float value)
-			{
-				if (value == l2Penalty || value < Float(0) || value > Float(1))
-					return;
-
-				l2Penalty = value;
-				OnPropertyChanged("L2Penalty");
-			}
-		}
-		property Float Momentum
-		{
-			Float get() { return momentum; }
-			void set(Float value)
-			{
-				if (value == momentum || value < Float(0) || value > Float(1))
-					return;
-
-				momentum = value;
-				OnPropertyChanged("Momentum");
-			}
-		}
-		property Float DecayFactor
-		{
-			Float get() { return decayFactor; }
-			void set(Float value)
-			{
-				if (value == decayFactor || value < Float(0) || value > Float(1))
-					return;
-
-				decayFactor = value;
-				OnPropertyChanged("DecayFactor");
+				interpolation = value;
+				OnPropertyChanged("Interpolation");
 			}
 		}
 		property Float Scaling
@@ -1169,41 +1229,20 @@ namespace dnncore
 				OnPropertyChanged("Rotation");
 			}
 		}
-		property bool HorizontalFlip
+		
+		DNNTrainingRate(UInt optimizer, Float momentum, Float l2penalty, Float beta1, Float beta2, UInt batchSize, UInt cycles, UInt epochs, UInt epochMultiplier, Float maximumRate, Float minimumRate, Float decayFactor, UInt decayAfterEpochs, bool horizontalFlip, bool verticalFlip, Float dropout, Float cutout, Float autoAugment, Float colorCast, UInt colorAngle, Float distortion, UInt interpolation, Float scaling, Float rotation)
 		{
-			bool get() { return horizontalFlip; }
-			void set(bool value)
-			{
-				if (value == horizontalFlip)
-					return;
-
-				horizontalFlip = value;
-				OnPropertyChanged("HorizontalFlip");
-			}
-		}
-		property bool VerticalFlip
-		{
-			bool get() { return verticalFlip; }
-			void set(bool value)
-			{
-				if (value == verticalFlip)
-					return;
-
-				verticalFlip = value;
-				OnPropertyChanged("VerticalFlip");
-			}
-		}
-
-		DNNTrainingRate(Float maximumRate, UInt batchSize, UInt cycles, UInt epochs, UInt epochMultiplier, Float minRate, Float l2Penalty, Float momentum, Float decayFactor, UInt decayAfterEpochs, bool horizontalFlip, bool verticalFlip, Float dropout, Float cutout, Float autoAugment, Float colorCast, UInt colorAngle, Float distortion, UInt interpolation, Float scaling, Float rotation)
-		{
+			Optimizer = optimizer;
+			Momentum = momentum;
+			L2Penalty = l2penalty;
+			Beta1 = beta1;
+			Beta2 = beta2;
 			BatchSize = batchSize;
 			Cycles = cycles;
-			MaximumRate = maximumRate;
 			Epochs = epochs;
 			EpochMultiplier = epochMultiplier;
-			MinimumRate = minRate;
-			L2Penalty = l2Penalty;
-			Momentum = momentum;
+			MaximumRate = maximumRate;
+			MinimumRate = minimumRate;
 			DecayFactor = decayFactor;
 			DecayAfterEpochs = decayAfterEpochs;
 			HorizontalFlip = horizontalFlip;
@@ -1225,11 +1264,20 @@ namespace dnncore
 		void OnPropertyChanged(String^ propertyName) { PropertyChanged(this, gcnew System::ComponentModel::PropertyChangedEventArgs(propertyName)); }
 
 	private:
+		UInt optimizer = 0;
+		Float momentum = Float(0.9);
+		Float l2Penalty = Float(0.0005);
+		Float beta1 = Float(0.9);
+		Float beta2 = Float(0.999);
 		UInt batchSize = 128;
 		UInt cycles = 1;
 		UInt epochs = 200;
 		UInt epochMultiplier = 1;
 		UInt decayAfterEpochs = 1;
+		Float maximumRate = Float(0.05);
+		Float minimumRate = Float(0.0001);
+		bool horizontalFlip = false;
+		bool verticalFlip = false;
 		UInt interpolation = 0;
 		UInt colorAngle = 0;
 		Float colorCast = Float(0);
@@ -1237,15 +1285,9 @@ namespace dnncore
 		Float dropout = Float(0);
 		Float cutout = Float(0);
 		Float autoAugment = Float(0);
-		Float maximumRate = Float(0.05);
-		Float minimumRate = Float(0.0001);
-		Float l2Penalty = Float(0.0005);
-		Float momentum = Float(0.9);
 		Float decayFactor = Float(1);
 		Float scaling = Float(10);
 		Float rotation = Float(12);
-		bool horizontalFlip = false;
-		bool verticalFlip = false;
 	};
 
 	[Serializable()]

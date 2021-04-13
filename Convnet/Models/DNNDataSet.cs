@@ -322,6 +322,11 @@ public partial class DNNDataSet : global::System.Data.DataSet
     [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
     public partial class TrainingRatesDataTable : global::System.Data.DataTable, global::System.Collections.IEnumerable
     {
+        private global::System.Data.DataColumn columnOptimizer;
+
+        private global::System.Data.DataColumn columnBeta1;
+
+        private global::System.Data.DataColumn columnBeta2;
 
         private global::System.Data.DataColumn columnMaximumRate;
 
@@ -402,6 +407,36 @@ public partial class DNNDataSet : global::System.Data.DataSet
                 base(info, context)
         {
             this.InitVars();
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+        public global::System.Data.DataColumn OptimizerColumn
+        {
+            get
+            {
+                return this.columnOptimizer;
+            }
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+        public global::System.Data.DataColumn Beta1Column
+        {
+            get
+            {
+                return this.columnBeta1;
+            }
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+        public global::System.Data.DataColumn Beta2Column
+        {
+            get
+            {
+                return this.columnBeta2;
+            }
         }
 
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -657,6 +692,9 @@ public partial class DNNDataSet : global::System.Data.DataSet
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         public TrainingRatesRow AddTrainingRatesRow(
+                    int Optimizer,
+                    double Beta1,
+                    double Beta2,
                     double MaximumRate,
                     int BatchSize,
                     int Cycles,
@@ -681,6 +719,9 @@ public partial class DNNDataSet : global::System.Data.DataSet
         {
             TrainingRatesRow rowTrainingRatesRow = ((TrainingRatesRow)(this.NewRow()));
             object[] columnValuesArray = new object[] {
+                    Optimizer,
+                    Beta1,
+                    Beta2,
                     MaximumRate,
                     BatchSize,
                     Cycles,
@@ -734,6 +775,9 @@ public partial class DNNDataSet : global::System.Data.DataSet
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         internal void InitVars()
         {
+            this.columnOptimizer = base.Columns["Optimizer"];
+            this.columnBeta1 = base.Columns["Beta1"];
+            this.columnBeta2 = base.Columns["Beta2"];
             this.columnMaximumRate = base.Columns["MaximumRate"];
             this.columnBatchSize = base.Columns["BatchSize"];
             this.columnCycles = base.Columns["Cycles"];
@@ -761,6 +805,12 @@ public partial class DNNDataSet : global::System.Data.DataSet
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         private void InitClass()
         {
+            this.columnOptimizer = new global::System.Data.DataColumn("Optimizer", typeof(int), null, global::System.Data.MappingType.Element);
+            base.Columns.Add(this.columnOptimizer);
+            this.columnBeta1 = new global::System.Data.DataColumn("Beta1", typeof(double), null, global::System.Data.MappingType.Element);
+            base.Columns.Add(this.columnBeta1);
+            this.columnBeta2 = new global::System.Data.DataColumn("Beta2", typeof(double), null, global::System.Data.MappingType.Element);
+            base.Columns.Add(this.columnBeta2);
             this.columnMaximumRate = new global::System.Data.DataColumn("MaximumRate", typeof(double), null, global::System.Data.MappingType.Element);
             base.Columns.Add(this.columnMaximumRate);
             this.columnBatchSize = new global::System.Data.DataColumn("BatchSize", typeof(int), null, global::System.Data.MappingType.Element);
@@ -803,6 +853,15 @@ public partial class DNNDataSet : global::System.Data.DataSet
             base.Columns.Add(this.columnScaling);
             this.columnRotation = new global::System.Data.DataColumn("Rotation", typeof(double), null, global::System.Data.MappingType.Element);
             base.Columns.Add(this.columnRotation);
+
+            this.columnOptimizer.AllowDBNull = false;
+            this.columnOptimizer.DefaultValue = ((int)(0));
+            this.columnBeta1.AllowDBNull = false;
+            this.columnBeta1.DefaultValue = ((double)(0.9));
+            this.columnBeta2.AllowDBNull = false;
+            this.columnBeta2.DefaultValue = ((double)(0.999));
+            this.columnBatchSize.AllowDBNull = false;
+            this.columnBatchSize.DefaultValue = ((int)(8));
             this.columnMaximumRate.AllowDBNull = false;
             this.columnBatchSize.AllowDBNull = false;
             this.columnBatchSize.DefaultValue = ((int)(8));
@@ -998,6 +1057,48 @@ public partial class DNNDataSet : global::System.Data.DataSet
                 base(rb)
         {
             this.tableTrainingRates = ((TrainingRatesDataTable)(this.Table));
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+        public int Optimizer
+        {
+            get
+            {
+                return ((int)(this[this.tableTrainingRates.OptimizerColumn]));
+            }
+            set
+            {
+                this[this.tableTrainingRates.OptimizerColumn] = value;
+            }
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+        public double Beta1
+        {
+            get
+            {
+                return ((double)(this[this.tableTrainingRates.Beta1Column]));
+            }
+            set
+            {
+                this[this.tableTrainingRates.Beta1Column] = value;
+            }
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+        public double Beta2
+        {
+            get
+            {
+                return ((double)(this[this.tableTrainingRates.Beta2Column]));
+            }
+            set
+            {
+                this[this.tableTrainingRates.Beta2Column] = value;
+            }
         }
 
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]

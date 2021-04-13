@@ -115,8 +115,8 @@
     <PackageReference Include="NuGet.ProjectModel" Version="5.9.0" />
     <PackageReference Include="NuGet.Protocol" Version="5.9.0" />
     <PackageReference Include="NuGet.Resolver" Version="5.9.0" />
-    <PackageReference Include="System.Text.Encodings.Web" Version="5.0.0" />
-    <PackageReference Include="System.Text.Json" Version="5.0.0" />
+    <PackageReference Include="System.Text.Encodings.Web" Version="5.0.1" />
+    <PackageReference Include="System.Text.Json" Version="5.0.2" />
     <PackageReference Include="Microsoft.NET.HostModel" Version="3.1.6" />
     <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="5.0.0" />
     <PackageReference Include="Microsoft.DotNet.PlatformAbstractions" Version="3.1.6" />
