@@ -20,7 +20,7 @@ namespace dnn
 
 	struct TrainingRate
 	{
-	    Optimizers Optimizer;
+		Optimizers Optimizer;
 		Float Momentum;
 		Float L2Penalty;
 		Float Beta1;

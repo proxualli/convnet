@@ -29,7 +29,7 @@ namespace dnn
 		BottomRight = 3,
 		Center = 4
 	};
-
+	
 	template<typename T>
 	struct Image
 	{
