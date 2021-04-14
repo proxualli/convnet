@@ -826,7 +826,7 @@ namespace dnncore
 	public ref class Model
 	{
 	public:
-		delegate void TrainProgressEventDelegate(UInt, UInt, UInt, UInt, UInt, bool, bool, Float, Float, Float, Float, UInt, Float, UInt, Float, Float, UInt, Float, Float, Float, Float, Float, Float, UInt, Float, Float, Float, UInt, DNNStates, DNNTaskStates);
+		delegate void TrainProgressEventDelegate(UInt, UInt, UInt, UInt, UInt, bool, bool, Float, Float, Float, Float, UInt, Float, DNNInterpolation, Float, Float, UInt, Float, Float, Float, Float, Float, Float, UInt, Float, Float, Float, UInt, DNNStates, DNNTaskStates);
 		delegate void TestProgressEventDelegate(UInt, UInt, Float, Float, Float, UInt, DNNStates, DNNTaskStates);
 		delegate void NewEpochEventDelegate(UInt, UInt, UInt, bool, bool, Float, Float, Float, Float, UInt, Float, UInt, Float, Float, Float, UInt, Float, Float, Float, Float, Float, UInt, Float, Float, Float, UInt);
 
@@ -878,7 +878,7 @@ namespace dnncore
 		property UInt TotalEpochs;
 		property Float ColorCast;
 		property UInt ColorAngle;
-		property UInt Interpolation;
+		property DNNInterpolation Interpolation;
 		property UInt SampleIndex;
 		property UInt TrainErrors;
 		property UInt TestErrors;

@@ -177,7 +177,7 @@ namespace Convnet.PageViewModels
             }, DispatcherPriority.Render);
         }
 
-        private void TrainProgress(UInt64 BatchSize, UInt64 Cycle, UInt64 TotalCycles, UInt64 Epoch, UInt64 TotalEpochs, bool HorizontalFlip, bool VerticalFlip, fp Dropout, fp Cutout, fp AutoAugment, fp ColorCast, UInt64 ColorRadius, fp Distortion, UInt64 Interpolation, fp Scaling, fp Rotation, UInt64 SampleIndex, fp Rate, fp Momentum, fp L2Penalty, fp AvgTrainLoss, fp TrainErrorPercentage, fp TrainAccuracy, UInt64 TrainErrors, fp AvgTestLoss, fp TestErrorPercentage, fp TestAccuracy, UInt64 TestErrors, DNNStates State, DNNTaskStates TaskState)
+        private void TrainProgress(UInt64 BatchSize, UInt64 Cycle, UInt64 TotalCycles, UInt64 Epoch, UInt64 TotalEpochs, bool HorizontalFlip, bool VerticalFlip, fp Dropout, fp Cutout, fp AutoAugment, fp ColorCast, UInt64 ColorRadius, fp Distortion, DNNInterpolation Interpolation, fp Scaling, fp Rotation, UInt64 SampleIndex, fp Rate, fp Momentum, fp L2Penalty, fp AvgTrainLoss, fp TrainErrorPercentage, fp TrainAccuracy, UInt64 TrainErrors, fp AvgTestLoss, fp TestErrorPercentage, fp TestAccuracy, UInt64 TestErrors, DNNStates State, DNNTaskStates TaskState)
         {
             DNNInterpolation interpolation = (DNNInterpolation)Interpolation;
 
