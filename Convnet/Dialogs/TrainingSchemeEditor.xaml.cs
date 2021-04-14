@@ -225,7 +225,7 @@ namespace Convnet.Dialogs
                                 trainingPageViewModel.TrainRates.Clear();
 
                                 foreach (DNNDataSet.TrainingRatesRow row in table)
-                                    trainingPageViewModel.TrainRates.Add(new DNNTrainingRate((uint)row.Optimizer, (float)row.Momentum, (float)row.L2Penalty, (float)row.Beta1, (float)row.Beta2, (uint)row.BatchSize, (uint)row.Cycles, (uint)row.Epochs, (uint)row.EpochMultiplier, (float)row.MaximumRate, (float)row.MinimumRate, (float)row.DecayFactor, (uint)row.DecayAfterEpochs, row.HorizontalFlip, row.VerticalFlip, (float)row.Dropout, (float)row.Cutout, (float)row.AutoAugment, (float)row.ColorCast, (uint)row.ColorAngle, (float)row.Distortion, (uint)row.Interpolation, (float)row.MaxScaling, (float)row.MaxRotation));
+                                    trainingPageViewModel.TrainRates.Add(new DNNTrainingRate((DNNOptimizers)row.Optimizer, (float)row.Momentum, (float)row.L2Penalty, (float)row.Beta1, (float)row.Beta2, (uint)row.BatchSize, (uint)row.Cycles, (uint)row.Epochs, (uint)row.EpochMultiplier, (float)row.MaximumRate, (float)row.MinimumRate, (float)row.DecayFactor, (uint)row.DecayAfterEpochs, row.HorizontalFlip, row.VerticalFlip, (float)row.Dropout, (float)row.Cutout, (float)row.AutoAugment, (float)row.ColorCast, (uint)row.ColorAngle, (float)row.Distortion, (DNNInterpolation)row.Interpolation, (float)row.MaxScaling, (float)row.MaxRotation));
                             }
 
                             Mouse.OverrideCursor = null;

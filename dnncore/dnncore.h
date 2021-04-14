@@ -264,18 +264,17 @@ namespace dnncore
 		{
 			System::Array^ get() { return Enum::GetValues(DNNOptimizers::typeid); }
 		}
-		
 		property System::Array^ InterpolationList
 		{
 			System::Array^ get() { return Enum::GetValues(DNNInterpolation::typeid); }
 		}
 
-		property UInt Optimizer
+		property DNNOptimizers Optimizer
 		{
-			UInt get() { return optimizer; }
-			void set(UInt value)
+			DNNOptimizers get() { return optimizer; }
+			void set(DNNOptimizers value)
 			{
-				if (value == optimizer && value == 0)
+				if (value == optimizer)
 					return;
 
 				optimizer = value;
@@ -522,10 +521,10 @@ namespace dnncore
 				OnPropertyChanged("Distortion");
 			}
 		}
-		property UInt Interpolation
+		property DNNInterpolation Interpolation
 		{
-			UInt get() { return interpolation; }
-			void set(UInt value)
+			DNNInterpolation get() { return interpolation; }
+			void set(DNNInterpolation value)
 			{
 				if (value == interpolation)
 					return;
@@ -559,7 +558,7 @@ namespace dnncore
 			}
 		}
 		
-		DNNTrainingRate(UInt optimizer, Float momentum, Float l2penalty, Float beta1, Float beta2, UInt batchSize, UInt cycles, UInt epochs, UInt epochMultiplier, Float maximumRate, Float minimumRate, Float decayFactor, UInt decayAfterEpochs, bool horizontalFlip, bool verticalFlip, Float dropout, Float cutout, Float autoAugment, Float colorCast, UInt colorAngle, Float distortion, UInt interpolation, Float scaling, Float rotation)
+		DNNTrainingRate(DNNOptimizers optimizer, Float momentum, Float l2penalty, Float beta1, Float beta2, UInt batchSize, UInt cycles, UInt epochs, UInt epochMultiplier, Float maximumRate, Float minimumRate, Float decayFactor, UInt decayAfterEpochs, bool horizontalFlip, bool verticalFlip, Float dropout, Float cutout, Float autoAugment, Float colorCast, UInt colorAngle, Float distortion, DNNInterpolation interpolation, Float scaling, Float rotation)
 		{
 			Optimizer = optimizer;
 			Momentum = momentum;
@@ -593,7 +592,7 @@ namespace dnncore
 		void OnPropertyChanged(String^ propertyName) { PropertyChanged(this, gcnew System::ComponentModel::PropertyChangedEventArgs(propertyName)); }
 
 	private:
-		UInt optimizer = 0;
+		DNNOptimizers optimizer = DNNOptimizers::NAG;
 		Float momentum = Float(0.9);
 		Float l2Penalty = Float(0.0005);
 		Float beta1 = Float(0.9);
@@ -607,7 +606,7 @@ namespace dnncore
 		Float minimumRate = Float(0.0001);
 		bool horizontalFlip = false;
 		bool verticalFlip = false;
-		UInt interpolation = 0;
+		DNNInterpolation interpolation = DNNInterpolation::Cubic;
 		UInt colorAngle = 0;
 		Float colorCast = Float(0);
 		Float distortion = Float(0);

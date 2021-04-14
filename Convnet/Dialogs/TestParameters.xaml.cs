@@ -43,9 +43,9 @@ namespace Convnet.Dialogs
             radioButtonTrainSet.IsChecked = false;
             radioButtonTrainSet.IsEnabled = false;
 
-            radioButtonCubic.IsChecked = Rate.Interpolation == (uint)DNNInterpolation.Cubic;
-            radioButtonLinear.IsChecked = Rate.Interpolation == (uint)DNNInterpolation.Linear;
-            radioButtonNearest.IsChecked = Rate.Interpolation == (uint)DNNInterpolation.Nearest;
+            radioButtonCubic.IsChecked = Rate.Interpolation == DNNInterpolation.Cubic;
+            radioButtonLinear.IsChecked = Rate.Interpolation == DNNInterpolation.Linear;
+            radioButtonNearest.IsChecked = Rate.Interpolation == DNNInterpolation.Nearest;
             textBoxColorAngle.IsEnabled = Rate.ColorCast > 0;
         }
 
@@ -114,13 +114,13 @@ namespace Convnet.Dialogs
         private void RadioButtonInterpolation_Checked(object sender, RoutedEventArgs e)
         {
             if (radioButtonLinear.IsChecked.HasValue && radioButtonLinear.IsChecked.Value)
-                Rate.Interpolation = (uint)DNNInterpolation.Linear;
+                Rate.Interpolation = DNNInterpolation.Linear;
 
             if (radioButtonNearest.IsChecked.HasValue && radioButtonNearest.IsChecked.Value)
-                Rate.Interpolation = (uint)DNNInterpolation.Nearest;
+                Rate.Interpolation = DNNInterpolation.Nearest;
 
             if (radioButtonCubic.IsChecked.HasValue && radioButtonCubic.IsChecked.Value)
-                Rate.Interpolation = (uint)DNNInterpolation.Cubic;
+                Rate.Interpolation = DNNInterpolation.Cubic;
         }
 
         private void TextBoxDistortions_TextChanged(object sender, TextChangedEventArgs e)

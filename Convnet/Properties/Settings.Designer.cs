@@ -57,7 +57,22 @@ namespace Convnet.Properties
                 this["Optimizer"] = value;
             }
         }
-        
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int Interpolation
+        {
+            get
+            {
+                return ((int)(this["Interpolation"]));
+            }
+            set
+            {
+                this["Interpolation"] = value;
+            }
+        }
+
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("0")]

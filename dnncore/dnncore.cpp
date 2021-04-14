@@ -1238,12 +1238,12 @@ namespace dnncore
 
 	void Model::AddLearningRate(bool clear, UInt gotoEpoch, DNNTrainingRate^ rate)
 	{
-		DNNAddLearningRate(clear, gotoEpoch, rate->Optimizer, rate->Momentum, rate->L2Penalty, rate->Beta1, rate->Beta2, rate->BatchSize, rate->Cycles, rate->Epochs, rate->EpochMultiplier, rate->MaximumRate, rate->MinimumRate, rate->DecayFactor, rate->DecayAfterEpochs, rate->HorizontalFlip, rate->VerticalFlip, rate->Dropout, rate->Cutout, rate->AutoAugment, rate->ColorCast, rate->ColorAngle, rate->Distortion, rate->Interpolation, rate->Scaling, rate->Rotation);
+		DNNAddLearningRate(clear, gotoEpoch, (UInt)rate->Optimizer, rate->Momentum, rate->L2Penalty, rate->Beta1, rate->Beta2, rate->BatchSize, rate->Cycles, rate->Epochs, rate->EpochMultiplier, rate->MaximumRate, rate->MinimumRate, rate->DecayFactor, rate->DecayAfterEpochs, rate->HorizontalFlip, rate->VerticalFlip, rate->Dropout, rate->Cutout, rate->AutoAugment, rate->ColorCast, rate->ColorAngle, rate->Distortion, (UInt)rate->Interpolation, rate->Scaling, rate->Rotation);
 	}
 
 	void Model::AddLearningRateSGDR(bool clear, UInt gotoEpoch, DNNTrainingRate^ rate)
 	{
-		DNNAddLearningRateSGDR(clear, gotoEpoch, rate->Optimizer, rate->Momentum, rate->L2Penalty, rate->Beta1, rate->Beta2, rate->BatchSize, rate->Cycles, rate->Epochs, rate->EpochMultiplier, rate->MaximumRate, rate->MinimumRate, rate->DecayFactor, rate->DecayAfterEpochs, rate->HorizontalFlip, rate->VerticalFlip, rate->Dropout, rate->Cutout, rate->AutoAugment, rate->ColorCast, rate->ColorAngle, rate->Distortion, rate->Interpolation, rate->Scaling, rate->Rotation);
+		DNNAddLearningRateSGDR(clear, gotoEpoch, (UInt)rate->Optimizer, rate->Momentum, rate->L2Penalty, rate->Beta1, rate->Beta2, rate->BatchSize, rate->Cycles, rate->Epochs, rate->EpochMultiplier, rate->MaximumRate, rate->MinimumRate, rate->DecayFactor, rate->DecayAfterEpochs, rate->HorizontalFlip, rate->VerticalFlip, rate->Dropout, rate->Cutout, rate->AutoAugment, rate->ColorCast, rate->ColorAngle, rate->Distortion, (UInt)rate->Interpolation, rate->Scaling, rate->Rotation);
 	}
 
 	void Model::Start(bool training)

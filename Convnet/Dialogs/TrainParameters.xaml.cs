@@ -38,56 +38,87 @@ namespace Convnet.Dialogs
 
             DataContext = Rate;
 
-            comboBoOptimizer.SelectedIndex = Properties.Settings.Default.Optimizer;
-            comboBoOptimizer.Focus();
-            radioButtonCubic.IsChecked = Rate.Interpolation == (uint)DNNInterpolation.Cubic;
-            radioButtonLinear.IsChecked = Rate.Interpolation == (uint)DNNInterpolation.Linear;
-            radioButtonNearest.IsChecked = Rate.Interpolation == (uint)DNNInterpolation.Nearest;
             textBoxGoToEpoch.Text = Properties.Settings.Default.GoToEpoch.ToString();
             textBoxColorAngle.IsEnabled = Rate.ColorCast > 0;
 
-            //switch (Model.Optimizer)
-            //{
-            //    case DNNOptimizers.SGD:
-            //        {
-            //            textBlockL2penalty.Opacity = 1;
-            //            textBoxL2penalty.IsEnabled = true;
-            //            textBlockMomentum.Opacity = 0.5;
-            //            textBoxMomentum.IsEnabled = false;
-            //        }
-            //        break;
+            /*
+            switch (comboBoOptimizer.SelectedIndex)
+            {
+                case 6: // DNNOptimizers.SGD:
+                    {
+                        textBlockL2penalty.Opacity = 1;
+                        textBoxL2penalty.IsEnabled = true;
+                        textBlockMomentum.Opacity = 0.5;
+                        textBoxMomentum.IsEnabled = false;
+                        textBoxBeta1.IsEnabled = false;
+                        textBoxBeta2.IsEnabled = false;
+                    }
+                    break;
 
-            //    case DNNOptimizers.AdaDelta:
-            //    case DNNOptimizers.Adam:
-            //    case DNNOptimizers.Adamax:
-            //    case DNNOptimizers.RMSProp:
-            //        {
-            //            textBlockL2penalty.Opacity = 0.5;
-            //            textBoxL2penalty.IsEnabled = false;
-            //            textBlockMomentum.Opacity = 1;
-            //            textBoxMomentum.IsEnabled = true;
-            //        }
-            //        break;
-            //    case DNNOptimizers.AdaGrad:
-            //        {
-            //            textBlockL2penalty.Opacity = 0.5;
-            //            textBoxL2penalty.IsEnabled = false;
-            //            textBlockMomentum.Opacity = 0.5;
-            //            textBoxMomentum.IsEnabled = false;
-            //        }
-            //        break;
+                case 0: // DNNOptimizers.AdaDelta:
+                case 2: // DNNOptimizers.Adam:
+                case 3: // DNNOptimizers.Adamax:
+                case 5: // DNNOptimizers.RMSProp:
+                    {
+                        textBlockL2penalty.Opacity = 0.5;
+                        textBoxL2penalty.IsEnabled = false;
+                        textBlockMomentum.Opacity = 1;
+                        textBoxMomentum.IsEnabled = true;
+                    }
+                    break;
+                case 1: // DNNOptimizers.AdaGrad:
+                    {
+                        textBlockL2penalty.Opacity = 0.5;
+                        textBoxL2penalty.IsEnabled = false;
+                        textBlockMomentum.Opacity = 0.5;
+                        textBoxMomentum.IsEnabled = false;
+                    }
+                    break;
 
-            //    case DNNOptimizers.NAG:
-            //    case DNNOptimizers.SGDMomentum:
-            //    case DNNOptimizers.RAdam:
-            //        {
-            //            textBlockL2penalty.Opacity = 1;
-            //            textBoxL2penalty.IsEnabled = true;
-            //            textBlockMomentum.Opacity = 1;
-            //            textBoxMomentum.IsEnabled = true;
-            //        }
-            //        break;
-            //}
+                case 4: // DNNOptimizers.NAG:
+                case 7: // DNNOptimizers.SGDMomentum:
+                case 8: // DNNOptimizers.RAdam:
+                    {
+                        textBlockL2penalty.Opacity = 1;
+                        textBoxL2penalty.IsEnabled = true;
+                        textBlockMomentum.Opacity = 1;
+                        textBoxMomentum.IsEnabled = true;
+                    }
+                    break;
+            }
+
+            switch (comboBoOptimizer.SelectedIndex)
+            {
+                case 0: // DNNOptimizers.AdaDelta:
+                case 1: // DNNOptimizers.AdaGrad:
+                case 4: // DNNOptimizers.NAG:
+                case 6: // DNNOptimizers.SGD:
+                case 7: // DNNOptimizers.SGDMomentum:
+                {
+                    textBoxBeta1.IsEnabled = false;
+                    textBoxBeta2.IsEnabled = false;
+                }
+                break;
+
+                
+                case 2: // DNNOptimizers.Adam:
+                case 3: // DNNOptimizers.Adamax:
+                case 5: // DNNOptimizers.RMSProp:
+                {
+                    textBoxBeta1.IsEnabled = false;
+                    textBoxBeta2.IsEnabled = true;
+                }
+                break;
+               
+                case 8: // DNNOptimizers.RAdam:
+                {
+                    textBoxBeta1.IsEnabled = true;
+                    textBoxBeta2.IsEnabled = true;
+                }
+                break;
+            }
+            */
+            comboBoOptimizer.Focus();
         }
 
         bool IsValid(DependencyObject node)
@@ -116,7 +147,6 @@ namespace Convnet.Dialogs
                     // otherwise keep checking
                     if (IsValid((DependencyObject)subnode) == false) return false;
                 }
-
             }
 
             // All dependency objects are valid
@@ -159,25 +189,11 @@ namespace Convnet.Dialogs
             buttonCancel.Focus();
         }
 
-        private void RadioButtonInterpolation_Checked(object sender, RoutedEventArgs e)
-        {
-            if (radioButtonCubic.IsChecked.HasValue && radioButtonCubic.IsChecked.Value)
-                Rate.Interpolation = (uint)DNNInterpolation.Cubic;
-
-            if (radioButtonLinear.IsChecked.HasValue && radioButtonLinear.IsChecked.Value)
-                Rate.Interpolation = (uint)DNNInterpolation.Linear;
-
-            if (radioButtonNearest.IsChecked.HasValue && radioButtonNearest.IsChecked.Value)
-                Rate.Interpolation = (uint)DNNInterpolation.Nearest;
-        }
-
         private void TextBoxDistortions_TextChanged(object sender, TextChangedEventArgs e)
         {
             var enabled = (float.TryParse(textBoxDistortions.Text, out float result) && result > 0.0f);
 
-            radioButtonCubic.IsEnabled = enabled;
-            radioButtonLinear.IsEnabled = enabled;
-            radioButtonNearest.IsEnabled = enabled;
+            comboBoInterpolation.IsEnabled = enabled;
             textBoxRotation.IsEnabled = enabled;
             textBoxScaling.IsEnabled = enabled;
         }
