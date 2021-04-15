@@ -328,6 +328,8 @@ public partial class DNNDataSet : global::System.Data.DataSet
 
         private global::System.Data.DataColumn columnBeta2;
 
+        private global::System.Data.DataColumn columnEps;
+
         private global::System.Data.DataColumn columnMaximumRate;
 
         private global::System.Data.DataColumn columnBatchSize;
@@ -436,6 +438,16 @@ public partial class DNNDataSet : global::System.Data.DataSet
             get
             {
                 return this.columnBeta2;
+            }
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+        public global::System.Data.DataColumn EpsColumn
+        {
+            get
+            {
+                return this.columnEps;
             }
         }
 
@@ -695,6 +707,7 @@ public partial class DNNDataSet : global::System.Data.DataSet
                     int Optimizer,
                     double Beta1,
                     double Beta2,
+                    double Eps,
                     double MaximumRate,
                     int BatchSize,
                     int Cycles,
@@ -722,6 +735,7 @@ public partial class DNNDataSet : global::System.Data.DataSet
                     Optimizer,
                     Beta1,
                     Beta2,
+                    Eps,
                     MaximumRate,
                     BatchSize,
                     Cycles,
@@ -778,6 +792,7 @@ public partial class DNNDataSet : global::System.Data.DataSet
             this.columnOptimizer = base.Columns["Optimizer"];
             this.columnBeta1 = base.Columns["Beta1"];
             this.columnBeta2 = base.Columns["Beta2"];
+            this.columnEps = base.Columns["Eps"];
             this.columnMaximumRate = base.Columns["MaximumRate"];
             this.columnBatchSize = base.Columns["BatchSize"];
             this.columnCycles = base.Columns["Cycles"];
@@ -811,6 +826,8 @@ public partial class DNNDataSet : global::System.Data.DataSet
             base.Columns.Add(this.columnBeta1);
             this.columnBeta2 = new global::System.Data.DataColumn("Beta2", typeof(double), null, global::System.Data.MappingType.Element);
             base.Columns.Add(this.columnBeta2);
+            this.columnEps = new global::System.Data.DataColumn("Eps", typeof(double), null, global::System.Data.MappingType.Element);
+            base.Columns.Add(this.columnEps);
             this.columnMaximumRate = new global::System.Data.DataColumn("MaximumRate", typeof(double), null, global::System.Data.MappingType.Element);
             base.Columns.Add(this.columnMaximumRate);
             this.columnBatchSize = new global::System.Data.DataColumn("BatchSize", typeof(int), null, global::System.Data.MappingType.Element);
@@ -860,6 +877,8 @@ public partial class DNNDataSet : global::System.Data.DataSet
             this.columnBeta1.DefaultValue = ((double)(0.9));
             this.columnBeta2.AllowDBNull = false;
             this.columnBeta2.DefaultValue = ((double)(0.999));
+            this.columnEps.AllowDBNull = false;
+            this.columnEps.DefaultValue = ((double)(0.00001));
             this.columnBatchSize.AllowDBNull = false;
             this.columnBatchSize.DefaultValue = ((int)(8));
             this.columnMaximumRate.AllowDBNull = false;
@@ -1098,6 +1117,20 @@ public partial class DNNDataSet : global::System.Data.DataSet
             set
             {
                 this[this.tableTrainingRates.Beta2Column] = value;
+            }
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+        public double Eps
+        {
+            get
+            {
+                return ((double)(this[this.tableTrainingRates.EpsColumn]));
+            }
+            set
+            {
+                this[this.tableTrainingRates.EpsColumn] = value;
             }
         }
 

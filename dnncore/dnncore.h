@@ -329,6 +329,18 @@ namespace dnncore
 				OnPropertyChanged("Beta2");
 			}
 		}
+		property Float Eps
+		{
+			Float get() { return eps; }
+			void set(Float value)
+			{
+				if (value == eps || value < Float(0) || value > Float(1))
+					return;
+
+				eps = value;
+				OnPropertyChanged("Eps");
+			}
+		}
 		property UInt BatchSize
 		{
 			UInt get() { return batchSize; }
@@ -449,30 +461,6 @@ namespace dnncore
 				OnPropertyChanged("VerticalFlip");
 			}
 		}
-		property UInt ColorAngle
-		{
-			UInt get() { return colorAngle; }
-			void set(UInt value)
-			{
-				if (value == colorAngle || value < Float(-360) || value > Float(360))
-					return;
-
-				colorAngle = value;
-				OnPropertyChanged("ColorAngle");
-			}
-		}
-		property Float ColorCast
-		{
-			Float get() { return colorCast; }
-			void set(Float value)
-			{
-				if (value == colorCast || value < Float(0) || value > Float(1))
-					return;
-
-				colorCast = value;
-				OnPropertyChanged("ColorCast");
-			}
-		}
 		property Float Dropout
 		{
 			Float get() { return dropout; }
@@ -507,6 +495,30 @@ namespace dnncore
 
 				autoAugment = value;
 				OnPropertyChanged("AutoAugment");
+			}
+		}
+		property Float ColorCast
+		{
+			Float get() { return colorCast; }
+			void set(Float value)
+			{
+				if (value == colorCast || value < Float(0) || value > Float(1))
+					return;
+
+				colorCast = value;
+				OnPropertyChanged("ColorCast");
+			}
+		}
+		property UInt ColorAngle
+		{
+			UInt get() { return colorAngle; }
+			void set(UInt value)
+			{
+				if (value == colorAngle || value < Float(-360) || value > Float(360))
+					return;
+
+				colorAngle = value;
+				OnPropertyChanged("ColorAngle");
 			}
 		}
 		property Float Distortion
@@ -558,13 +570,14 @@ namespace dnncore
 			}
 		}
 		
-		DNNTrainingRate(DNNOptimizers optimizer, Float momentum, Float l2penalty, Float beta1, Float beta2, UInt batchSize, UInt cycles, UInt epochs, UInt epochMultiplier, Float maximumRate, Float minimumRate, Float decayFactor, UInt decayAfterEpochs, bool horizontalFlip, bool verticalFlip, Float dropout, Float cutout, Float autoAugment, Float colorCast, UInt colorAngle, Float distortion, DNNInterpolation interpolation, Float scaling, Float rotation)
+		DNNTrainingRate(DNNOptimizers optimizer, Float momentum, Float l2penalty, Float beta1, Float beta2, Float eps, UInt batchSize, UInt cycles, UInt epochs, UInt epochMultiplier, Float maximumRate, Float minimumRate, Float decayFactor, UInt decayAfterEpochs, bool horizontalFlip, bool verticalFlip, Float dropout, Float cutout, Float autoAugment, Float colorCast, UInt colorAngle, Float distortion, DNNInterpolation interpolation, Float scaling, Float rotation)
 		{
 			Optimizer = optimizer;
 			Momentum = momentum;
 			L2Penalty = l2penalty;
 			Beta1 = beta1;
 			Beta2 = beta2;
+			Eps = eps;
 			BatchSize = batchSize;
 			Cycles = cycles;
 			Epochs = epochs;
@@ -597,23 +610,24 @@ namespace dnncore
 		Float l2Penalty = Float(0.0005);
 		Float beta1 = Float(0.9);
 		Float beta2 = Float(0.999);
+		Float eps = Float(0.00001);
 		UInt batchSize = 128;
 		UInt cycles = 1;
 		UInt epochs = 200;
 		UInt epochMultiplier = 1;
-		UInt decayAfterEpochs = 1;
 		Float maximumRate = Float(0.05);
 		Float minimumRate = Float(0.0001);
+		UInt decayAfterEpochs = 1;
+		Float decayFactor = Float(1);
 		bool horizontalFlip = false;
 		bool verticalFlip = false;
-		DNNInterpolation interpolation = DNNInterpolation::Cubic;
-		UInt colorAngle = 0;
-		Float colorCast = Float(0);
-		Float distortion = Float(0);
 		Float dropout = Float(0);
 		Float cutout = Float(0);
 		Float autoAugment = Float(0);
-		Float decayFactor = Float(1);
+		Float colorCast = Float(0);
+		UInt colorAngle = 0;
+		Float distortion = Float(0);
+		DNNInterpolation interpolation = DNNInterpolation::Cubic;
 		Float scaling = Float(10);
 		Float rotation = Float(12);
 	};
