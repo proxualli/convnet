@@ -75,7 +75,7 @@ namespace dnn
 		{
 		}
 
-		TrainingRate(const Optimizers optimizer, Float momentum, Float l2Penalty, Float beta1, Float beta2, const Float eps, const UInt batchSize, const UInt cycles, const UInt epochs, const UInt epochMultiplier, const Float maximumRate, const Float minimumRate, const UInt decayAfterEpochs, const Float decayFactor, const bool horizontalFlip, const bool verticalFlip, const Float dropout, const Float cutout, const Float autoAugment, const Float colorCast, const UInt colorAngle, const Float distortion, const dnn::Interpolation interpolation, const Float scaling, const Float rotation) :
+		TrainingRate(const Optimizers optimizer, const Float momentum, const Float l2Penalty, const Float beta1, const Float beta2, const Float eps, const UInt batchSize, const UInt cycles, const UInt epochs, const UInt epochMultiplier, const Float maximumRate, const Float minimumRate, const UInt decayAfterEpochs, const Float decayFactor, const bool horizontalFlip, const bool verticalFlip, const Float dropout, const Float cutout, const Float autoAugment, const Float colorCast, const UInt colorAngle, const Float distortion, const dnn::Interpolation interpolation, const Float scaling, const Float rotation) :
 			Optimizer(optimizer),
 			Momentum(momentum),
 			L2Penalty(l2Penalty),
