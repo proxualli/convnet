@@ -75,7 +75,6 @@
 * RMSProp
 * SGD
 * SGDMomentum
-* RAdam
 
 ### Fillers
 * Constant
