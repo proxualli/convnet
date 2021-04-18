@@ -432,12 +432,12 @@ namespace dnn
 			}
 		}		
 	
-		auto GetWeightsSize(const bool persistOptimizer) const
+		auto GetWeightsSize(const bool persistOptimizer, const Optimizers optimizer) const
 		{
 			std::streamsize weightsSize = 0;
 
 			for (auto &layer : Layers)
-				weightsSize += layer->GetWeightsSize(persistOptimizer, Optimizer);
+				weightsSize += layer->GetWeightsSize(persistOptimizer, optimizer);
 
 			return weightsSize;
 		}
@@ -1557,8 +1557,13 @@ namespace dnn
 
 		int LoadWeights(std::string fileName, const bool persistOptimizer = false)
 		{
-			if (GetFileSize(fileName) == GetWeightsSize(persistOptimizer))
+			const Optimizers optimizer = GetOptimizerFromString(fileName);
+
+			if (GetFileSize(fileName) == GetWeightsSize(persistOptimizer, optimizer))
 			{
+				if (optimizer != Optimizer)
+					SetOptimizer(optimizer);
+
 				auto is = std::ifstream(fileName, std::ios::in | std::ios::binary);
 
 				if (!is.bad() && is.is_open())
@@ -1608,6 +1613,35 @@ namespace dnn
 			}
 
 			return -1;
+		}
+
+		Optimizers GetOptimizerFromString(std::string fileName) const
+		{
+			if (fileName.find("-adadelta") != std::string::npos)
+				return Optimizers::AdaDelta;
+
+			if (fileName.find("-adagrad") != std::string::npos)
+				return Optimizers::AdaGrad;
+
+			if (fileName.find("-adam") != std::string::npos)
+				return Optimizers::Adam;
+
+			if (fileName.find("-adamax") != std::string::npos)
+				return Optimizers::Adamax;
+
+			if (fileName.find("-nag") != std::string::npos)
+				return Optimizers::NAG;
+
+			if (fileName.find("-rmsprop") != std::string::npos)
+				return Optimizers::RMSProp;
+
+			if (fileName.find("-sgd") != std::string::npos)
+				return Optimizers::SGD;
+
+			if (fileName.find("-sgdmomentum") != std::string::npos)
+				return Optimizers::SGDMomentum;
+
+			return Optimizers::SGD;
 		}
 	};
 }
