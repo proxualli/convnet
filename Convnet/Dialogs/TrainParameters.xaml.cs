@@ -144,10 +144,11 @@ namespace Convnet.Dialogs
                 case 3: // DNNOptimizers.Adamax:
                 case 5: // DNNOptimizers.RMSProp:
                     {
-                        textBlockL2penalty.Opacity = 0.5;
-                        textBoxL2penalty.IsEnabled = false;
                         textBlockMomentum.Opacity = 1;
                         textBoxMomentum.IsEnabled = true;
+                        textBlockL2penalty.Opacity = 0.5;
+                        textBoxL2penalty.IsEnabled = false;
+  
                     }
                     break;
                 case 1: // DNNOptimizers.AdaGrad:
@@ -161,7 +162,6 @@ namespace Convnet.Dialogs
 
                 case 4: // DNNOptimizers.NAG:
                 case 7: // DNNOptimizers.SGDMomentum:
-                case 8: // DNNOptimizers.RAdam:
                     {
                         textBlockL2penalty.Opacity = 1;
                         textBoxL2penalty.IsEnabled = true;
@@ -179,29 +179,21 @@ namespace Convnet.Dialogs
                 case 6: // DNNOptimizers.SGD:
                 case 7: // DNNOptimizers.SGDMomentum:
                     {
-                        textBlockBeta1.Opacity = 0.5;
-                        textBoxBeta1.IsEnabled = false;
                         textBlockBeta2.Opacity = 0.5;
                         textBoxBeta2.IsEnabled = false;
                     }
                     break;
 
-
                 case 2: // DNNOptimizers.Adam:
-                case 3: // DNNOptimizers.Adamax:
-                case 5: // DNNOptimizers.RMSProp:
                     {
-                        textBlockBeta1.Opacity = 0.5;
-                        textBoxBeta1.IsEnabled = false;
                         textBlockBeta2.Opacity = 1;
                         textBoxBeta2.IsEnabled = true;
                     }
                     break;
 
-                case 8: // DNNOptimizers.RAdam:
+                case 3: // DNNOptimizers.Adamax:
+                case 5: // DNNOptimizers.RMSProp:
                     {
-                        textBlockBeta1.Opacity = 1;
-                        textBoxBeta1.IsEnabled = true;
                         textBlockBeta2.Opacity = 1;
                         textBoxBeta2.IsEnabled = true;
                     }

@@ -30,10 +30,7 @@ namespace dnncore
 
 	constexpr Byte FloatSaturate(const Float value) { return value > Float(255) ? Byte(255) : value < Float(0) ? Byte(0) : Byte(value); }
 
-	inline static std::string ToUnmanagedString(String^ s)
-	{
-		return msclr::interop::marshal_as<std::string>(s);
-	}
+	inline static std::string ToUnmanagedString(String^ s) { return msclr::interop::marshal_as<std::string>(s); }
 
 	inline static String^ ToManagedString(const std::string& s) { return gcnew String(s.c_str()); }
 
@@ -62,8 +59,7 @@ namespace dnncore
 		NAG = 4,
 		RMSProp = 5,
 		SGD = 6,
-		SGDMomentum = 7,
-		RAdam = 8
+		SGDMomentum = 7
 	};
 
 	[Serializable()]
@@ -303,18 +299,6 @@ namespace dnncore
 
 				l2Penalty = value;
 				OnPropertyChanged("L2Penalty");
-			}
-		}
-		property Float Beta1
-		{
-			Float get() { return beta1; }
-			void set(Float value)
-			{
-				if (value == beta1 || value < Float(0) || value > Float(1))
-					return;
-
-				beta1 = value;
-				OnPropertyChanged("Beta1");
 			}
 		}
 		property Float Beta2
@@ -570,12 +554,11 @@ namespace dnncore
 			}
 		}
 		
-		DNNTrainingRate(DNNOptimizers optimizer, Float momentum, Float l2penalty, Float beta1, Float beta2, Float eps, UInt batchSize, UInt cycles, UInt epochs, UInt epochMultiplier, Float maximumRate, Float minimumRate, Float decayFactor, UInt decayAfterEpochs, bool horizontalFlip, bool verticalFlip, Float dropout, Float cutout, Float autoAugment, Float colorCast, UInt colorAngle, Float distortion, DNNInterpolation interpolation, Float scaling, Float rotation)
+		DNNTrainingRate(DNNOptimizers optimizer, Float momentum, Float l2penalty, Float beta2, Float eps, UInt batchSize, UInt cycles, UInt epochs, UInt epochMultiplier, Float maximumRate, Float minimumRate, Float decayFactor, UInt decayAfterEpochs, bool horizontalFlip, bool verticalFlip, Float dropout, Float cutout, Float autoAugment, Float colorCast, UInt colorAngle, Float distortion, DNNInterpolation interpolation, Float scaling, Float rotation)
 		{
 			Optimizer = optimizer;
 			Momentum = momentum;
 			L2Penalty = l2penalty;
-			Beta1 = beta1;
 			Beta2 = beta2;
 			Eps = eps;
 			BatchSize = batchSize;
@@ -608,9 +591,8 @@ namespace dnncore
 		DNNOptimizers optimizer = DNNOptimizers::NAG;
 		Float momentum = Float(0.9);
 		Float l2Penalty = Float(0.0005);
-		Float beta1 = Float(0.9);
 		Float beta2 = Float(0.999);
-		Float eps = Float(0.00001);
+		Float eps = Float(1E-08);
 		UInt batchSize = 128;
 		UInt cycles = 1;
 		UInt epochs = 200;
@@ -641,10 +623,13 @@ namespace dnncore
 		property UInt GroupIndex;
 		property UInt CostIndex;
 		property String^ CostName;
+		property UInt Optimizer;
+		property Float Momentum;
+		property Float Beta2;
+		property Float L2Penalty;
+		property Float Eps;
 		property Float Rate;
 		property UInt BatchSize;
-		property Float Momentum;
-		property Float L2Penalty;
 		property Float Dropout;
 		property Float Cutout;
 		property Float AutoAugment;
@@ -669,17 +654,19 @@ namespace dnncore
 
 		DNNTrainingResult::DNNTrainingResult() {}
 
-		DNNTrainingResult::DNNTrainingResult(UInt cycle, UInt epoch, UInt groupIndex, UInt costIndex, String^ costName, Float rate, UInt batchSize, Float momentum, Float l2Penalty, Float dropout, Float cutout, Float autoAugment, Float colorCast, UInt colorAngle, Float distortion, UInt interpolation, Float scaling, Float rotation, bool horizontalFlip, bool verticalFlip, Float avgTrainLoss, UInt trainErrors, Float trainErrorPercentage, Float trainAccuracy, Float avgTestLoss, UInt testErrors, Float testErrorPercentage, Float testAccuracy, long long elapsedTicks)
+		DNNTrainingResult::DNNTrainingResult(UInt cycle, UInt epoch, UInt groupIndex, UInt costIndex, String^ costName, UInt optimizer, Float momentum, Float beta2, Float l2Penalty, Float eps, Float rate, UInt batchSize, Float dropout, Float cutout, Float autoAugment, Float colorCast, UInt colorAngle, Float distortion, UInt interpolation, Float scaling, Float rotation, bool horizontalFlip, bool verticalFlip, Float avgTrainLoss, UInt trainErrors, Float trainErrorPercentage, Float trainAccuracy, Float avgTestLoss, UInt testErrors, Float testErrorPercentage, Float testAccuracy, long long elapsedTicks)
 		{
 			Cycle = cycle;
 			Epoch = epoch;
 			GroupIndex = groupIndex;
 			CostIndex = costIndex;
 			CostName = costName;
+			Optimizer = optimizer;
+			Momentum = momentum;
+			Beta2 = beta2;
+			L2Penalty = l2Penalty;
 			Rate = rate;
 			BatchSize = batchSize;
-			Momentum = momentum;
-			L2Penalty = l2Penalty;
 			Dropout = dropout;
 			Cutout = cutout;
 			AutoAugment = autoAugment;
@@ -842,7 +829,7 @@ namespace dnncore
 	public:
 		delegate void TrainProgressEventDelegate(UInt, UInt, UInt, UInt, UInt, bool, bool, Float, Float, Float, Float, UInt, Float, DNNInterpolation, Float, Float, UInt, Float, Float, Float, Float, Float, Float, UInt, Float, Float, Float, UInt, DNNStates, DNNTaskStates);
 		delegate void TestProgressEventDelegate(UInt, UInt, Float, Float, Float, UInt, DNNStates, DNNTaskStates);
-		delegate void NewEpochEventDelegate(UInt, UInt, UInt, bool, bool, Float, Float, Float, Float, UInt, Float, UInt, Float, Float, Float, UInt, Float, Float, Float, Float, Float, UInt, Float, Float, Float, UInt);
+		delegate void NewEpochEventDelegate(UInt, UInt, UInt, UInt, Float, Float, bool, bool, Float, Float, Float, Float, UInt, Float, UInt, Float, Float, Float, UInt, Float, Float, Float, Float, Float, UInt, Float, Float, Float, UInt);
 
 		property TrainProgressEventDelegate^ TrainProgress;
 		property TestProgressEventDelegate^ TestProgress;
@@ -903,16 +890,6 @@ namespace dnncore
 		property Float Distortion;
 		property Float Scaling;
 		property Float Rotation;
-		property Float AdaDeltaEps;
-		property Float AdaGradEps;
-		property Float AdamEps;
-		property Float AdamBeta2;
-		property Float AdamaxEps;
-		property Float AdamaxBeta2;
-		property Float RMSPropEps;
-		property Float RAdamEps;
-		property Float RAdamBeta1;
-		property Float RAdamBeta2;
 		property Float AvgTrainLoss;
 		property Float TrainErrorPercentage;
 		property Float AvgTestLoss;
@@ -930,7 +907,7 @@ namespace dnncore
 		property bool DisableLocking;
 		property bool PlainFormat;
 
-		Model(String^ name, String^ fileName, DNNOptimizers optimizer);
+		Model(String^ name, String^ fileName);
 		virtual ~Model();
 
 		bool LoadDataset();
@@ -939,7 +916,6 @@ namespace dnncore
 		void UpdateInputSnapshot(UInt C, UInt H, UInt W);
 		void SetPersistOptimizer(bool persist);
 		void SetDisableLocking(bool disable);
-		void SetOptimizersHyperParameters(Float adaDeltaEps, Float adaGradEps, Float adamEps, Float adamBeta2, Float adamaxEps, Float adamaxBeta2, Float rmsPropEps, Float radamEps, Float radamBeta1, Float radamBeta2);
 		void ApplyParameters();
 		bool SetFormat(bool plain);
 		void ResetLayerWeights(UInt layerIndex);

@@ -371,11 +371,12 @@ namespace Convnet.PageViewModels
                         try
                         {
                             Model.Dispose();
-                            Model = new Model(ModelName, pathDefinition, (DNNOptimizers)Settings.Default.Optimizer);
+                            Model = new Model(ModelName, pathDefinition);
+                            Model.SetOptimizer((DNNOptimizers)Settings.Default.Optimizer);
                             Model.SetFormat(Settings.Default.PlainFormat);
                             Model.SetPersistOptimizer(Settings.Default.PersistOptimizer);
                             Model.SetDisableLocking(Settings.Default.DisableLocking);
-                            Model.SetOptimizersHyperParameters(Settings.Default.AdaDeltaEps, Settings.Default.AdaGradEps, Settings.Default.AdamEps, Settings.Default.AdamBeta2, Settings.Default.AdamaxEps, Settings.Default.AdamaxBeta2, Settings.Default.RMSpropEps, Settings.Default.RAdamEps, Settings.Default.RAdamBeta1, Settings.Default.RAdamBeta2);
+                            
                             Settings.Default.Save();
                             Model.BlockSize = (UInt64)Settings.Default.PixelSize;
 
@@ -437,11 +438,11 @@ namespace Convnet.PageViewModels
                             try
                             {
                                 Model.Dispose();
-                                Model = new Model(ModelName, pathDefinition, (DNNOptimizers)Settings.Default.Optimizer);
+                                Model = new Model(ModelName, pathDefinition);
                                 Model.SetFormat(Settings.Default.PlainFormat);
+                                Model.SetOptimizer((DNNOptimizers)Settings.Default.Optimizer);
                                 Model.SetPersistOptimizer(Settings.Default.PersistOptimizer);
                                 Model.SetDisableLocking(Settings.Default.DisableLocking);
-                                Model.SetOptimizersHyperParameters(Settings.Default.AdaDeltaEps, Settings.Default.AdaGradEps, Settings.Default.AdamEps, Settings.Default.AdamBeta2, Settings.Default.AdamaxEps, Settings.Default.AdamaxBeta2, Settings.Default.RMSpropEps, Settings.Default.RAdamEps, Settings.Default.RAdamBeta1, Settings.Default.RAdamBeta2);
                                 Settings.Default.Save();
                                 Model.BlockSize = (UInt64)Settings.Default.PixelSize;
 

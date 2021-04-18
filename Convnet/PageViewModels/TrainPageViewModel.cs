@@ -41,7 +41,6 @@ namespace Convnet.PageViewModels
         private int selectedCostIndex = 0;
         private ComboBox costLayersComboBox;
         private ComboBox dataProviderComboBox;
-        private ComboBox optimizerComboBox;
         private ComboBox layersComboBox;
         private Button refreshButton;
         private ComboBox plotTypeComboBox;
@@ -57,8 +56,6 @@ namespace Convnet.PageViewModels
         private bool showWeights;
         private bool showWeightsSnapshot;
         private bool? showTrainingPlot;
-        private double momentumWidth;
-        private double l2PenaltyWidth;
         private ObservableCollection<DataPoint> pointsTrain;
         private ObservableCollection<DataPoint> pointsTest;
         private string pointsTrainLabel;
@@ -123,8 +120,6 @@ namespace Convnet.PageViewModels
             Model.NewEpoch += NewEpoch;
             Model.TrainProgress += TrainProgress;
 
-            optimizerComboBox.SelectedIndex = (int)Model.Optimizer;
-
             costLayersComboBox.Items.Clear();
             for (uint layer = 0u; layer < Model.CostLayersCount; layer++)
             {
@@ -146,6 +141,7 @@ namespace Convnet.PageViewModels
             Settings.Default.SelectedLayer = 0;
             Settings.Default.Save();
             dataProviderComboBox.SelectedIndex = (int)Dataset;
+           
 
             Application.Current.Dispatcher.Invoke(() => LayersComboBox_SelectionChanged(sender, null), DispatcherPriority.Render);
 
@@ -157,7 +153,7 @@ namespace Convnet.PageViewModels
             Application.Current.Dispatcher.Invoke(() => RefreshTrainingPlot(), DispatcherPriority.Render);
         }
 
-        private void NewEpoch(UInt64 Cycle, UInt64 Epoch, UInt64 TotalEpochs, bool HorizontalFlip, bool VerticalFlip, fp Dropout, fp Cutout, fp AutoAugment, fp ColorCast, UInt64 ColorAngle, fp Distortion, UInt64 Interpolation, fp Scaling, fp Rotation, fp Rate, UInt64 BatchSize, fp Momentum, fp L2Penalty, fp AvgTrainLoss, fp TrainErrorPercentage, fp TrainAccuracy, UInt64 TrainErrors, fp AvgTestLoss, fp TestErrorPercentage, fp TestAccuracy, UInt64 TestErrors)
+        private void NewEpoch(UInt64 Cycle, UInt64 Epoch, UInt64 TotalEpochs, UInt64 Optimizer, fp Beta2, fp Eps, bool HorizontalFlip, bool VerticalFlip, fp Dropout, fp Cutout, fp AutoAugment, fp ColorCast, UInt64 ColorAngle, fp Distortion, UInt64 Interpolation, fp Scaling, fp Rotation, fp Rate, UInt64 BatchSize, fp Momentum, fp L2Penalty, fp AvgTrainLoss, fp TrainErrorPercentage, fp TrainAccuracy, UInt64 TrainErrors, fp AvgTestLoss, fp TestErrorPercentage, fp TestAccuracy, UInt64 TestErrors)
         {
             Application.Current.Dispatcher.Invoke(() =>
             {
@@ -166,7 +162,7 @@ namespace Convnet.PageViewModels
                 for (uint c = 0; c < Model.CostLayersCount; c++)
                 {
                     Model.UpdateCostInfo(c);
-                    TrainingLog.Add(new DNNTrainingResult(Cycle, Epoch, c, Model.CostLayers[c].GroupIndex, Model.CostLayers[c].Name, Rate, BatchSize, Momentum, L2Penalty, Dropout, Cutout, AutoAugment, ColorCast, ColorAngle, Distortion, Interpolation, Scaling, Rotation, HorizontalFlip, VerticalFlip, Model.CostLayers[c].AvgTrainLoss, Model.CostLayers[c].TrainErrors, Model.CostLayers[c].TrainErrorPercentage, Model.CostLayers[c].TrainAccuracy, Model.CostLayers[c].AvgTestLoss, Model.CostLayers[c].TestErrors, Model.CostLayers[c].TestErrorPercentage, Model.CostLayers[c].TestAccuracy, span.Ticks));
+                    TrainingLog.Add(new DNNTrainingResult(Cycle, Epoch, c, Model.CostLayers[c].GroupIndex, Model.CostLayers[c].Name, Optimizer, Momentum, Beta2, L2Penalty, Eps, Rate, BatchSize, Dropout, Cutout, AutoAugment, ColorCast, ColorAngle, Distortion, Interpolation, Scaling, Rotation, HorizontalFlip, VerticalFlip, Model.CostLayers[c].AvgTrainLoss, Model.CostLayers[c].TrainErrors, Model.CostLayers[c].TrainErrorPercentage, Model.CostLayers[c].TrainAccuracy, Model.CostLayers[c].AvgTestLoss, Model.CostLayers[c].TestErrors, Model.CostLayers[c].TestErrorPercentage, Model.CostLayers[c].TestAccuracy, span.Ticks));
                 }
 
                 SelectedIndex = TrainingLog.Count - 1;
@@ -207,7 +203,6 @@ namespace Convnet.PageViewModels
 
                             case DNNOptimizers.NAG:
                             case DNNOptimizers.SGDMomentum:
-                            case DNNOptimizers.RAdam:
                                 sb.AppendFormat(" Sample:\t\t{0:G}\n Cycle:\t\t\t{1}/{2}\n Epoch:\t\t\t{3}/{4}\n Batch Size:\t\t{5:G}\n Rate:\t\t\t{6:0.#######}\n Momentum:\t\t{7:0.#######}\n L2 Penalty:\t\t{8:0.#######}\n Dropout:\t\t" + (Dropout > 0 ? Dropout.ToString() + "\n" : "No\n") + " Cutout:\t\t" + (Cutout > 0 ? Cutout.ToString() + "\n" : "No\n") + " Auto Augment:\t\t" + (AutoAugment > 0 ? AutoAugment.ToString() + "\n" : "No\n") + (HorizontalFlip ? " Horizontal Flip:\tYes\n" : " Horizontal Flip:\tNo\n") + (VerticalFlip ? " Vertical Flip:\tYes\n" : " Vertical Flip:\tNo\n") + " Color Cast:\t\t" + (ColorCast > 0u ? ColorCast.ToString() + "\n" : "No\n") + " Distortion:\t\t" + (Model.Distortion > 0 ? Distortion.ToString() + "\n" : "No\n") + " Loss:\t\t\t{9:N7}\n Errors:\t\t{10:G}\n Error:\t\t\t{11:N2} %\n Accuracy:\t\t{12:N2} %", SampleIndex, Cycle, TotalCycles, Epoch, TotalEpochs, Model.BatchSize, Rate, Momentum, L2Penalty, AvgTrainLoss, TrainErrors, TrainErrorPercentage, 100 - TrainErrorPercentage);
                                 break;
                         }
@@ -250,20 +245,19 @@ namespace Convnet.PageViewModels
 
                             if (Model.Layers[layersComboBox.SelectedIndex].HasWeights || Model.Layers[layersComboBox.SelectedIndex].IsNormalizationLayer)
                             {
-                                CommandToolBar[17].Visibility = !Settings.Default.DisableLocking ? Visibility.Visible : Visibility.Collapsed;
-                                CommandToolBar[18].Visibility = !Settings.Default.DisableLocking ? Visibility.Visible : Visibility.Collapsed;
-                                CommandToolBar[19].Visibility = Visibility.Visible;
-                                CommandToolBar[20].Visibility = Visibility.Visible;
+                                CommandToolBar[15].Visibility = !Settings.Default.DisableLocking ? Visibility.Visible : Visibility.Collapsed;
+                                CommandToolBar[16].Visibility = !Settings.Default.DisableLocking ? Visibility.Visible : Visibility.Collapsed;
+                                CommandToolBar[17].Visibility = Visibility.Visible;
+                                CommandToolBar[18].Visibility = Visibility.Visible;
                             }
                             else
                             {
+                                CommandToolBar[15].Visibility = Visibility.Collapsed;
+                                CommandToolBar[16].Visibility = Visibility.Collapsed;
                                 CommandToolBar[17].Visibility = Visibility.Collapsed;
                                 CommandToolBar[18].Visibility = Visibility.Collapsed;
-                                CommandToolBar[19].Visibility = Visibility.Collapsed;
-                                CommandToolBar[20].Visibility = Visibility.Collapsed;
                             }
 
-                            optimizerComboBox.IsEnabled = true;
                             ShowProgress = false;
 
                             Mouse.OverrideCursor = null;
@@ -358,24 +352,6 @@ namespace Convnet.PageViewModels
                 ToolTip = "Dataset",
                 IsEnabled = false
             };
-
-            optimizerComboBox = new ComboBox
-            {
-                Name = "ComboBoxOptimizers",
-                ItemsSource = Enum.GetValues(typeof(DNNOptimizers)).Cast<Enum>().ToList(),
-                ToolTip = "Optimizer"
-            };
-            optimizerComboBox.SelectionChanged += new SelectionChangedEventHandler(OptimizerChanged);
-            optimizerComboBox.SelectedIndex = Settings.Default.Optimizer;
-
-            Button optimizersHyperParametersButton = new Button
-            {
-                Name = "OptimizersHyperParameters",
-                ToolTip = "Optimizer Hyper-Parameters",
-                Content = new BitmapToImage(Resources.Property),
-                ClickMode = ClickMode.Release
-            };
-            optimizersHyperParametersButton.Click += SetOptimizersHyperParametersButton_Click;
 
             costLayersComboBox = new ComboBox
             {
@@ -577,24 +553,22 @@ namespace Convnet.PageViewModels
             CommandToolBar.Add(clearButton);                        // 8
             CommandToolBar.Add(new Separator());                    // 9
             CommandToolBar.Add(dataProviderComboBox);               // 10
-            CommandToolBar.Add(optimizerComboBox);                  // 11
-            CommandToolBar.Add(optimizersHyperParametersButton);    // 12
-            CommandToolBar.Add(new Separator());                    // 13
-            CommandToolBar.Add(costLayersComboBox);                 // 14
-            CommandToolBar.Add(layersComboBox);                     // 15
-            CommandToolBar.Add(disableLockingCheckBox);             // 16
-            CommandToolBar.Add(unlockAllButton);                    // 17
-            CommandToolBar.Add(lockAllButton);                      // 18
-            CommandToolBar.Add(openLayerWeightsButton);             // 19
-            CommandToolBar.Add(saveLayerWeightsButton);             // 20
-            CommandToolBar.Add(forgetLayerWeightsButton);           // 21
-            CommandToolBar.Add(new Separator());                    // 22
-            CommandToolBar.Add(trainingPlotCheckBox);               // 23
-            CommandToolBar.Add(plotTypeComboBox);                   // 24
-            CommandToolBar.Add(pixelSizeSlider);                    // 25
-            CommandToolBar.Add(new Separator());                    // 26
-            CommandToolBar.Add(refreshButton);                      // 27
-            CommandToolBar.Add(refreshRateIntegerUpDown);           // 28
+            CommandToolBar.Add(new Separator());                    // 11
+            CommandToolBar.Add(costLayersComboBox);                 // 12
+            CommandToolBar.Add(layersComboBox);                     // 13
+            CommandToolBar.Add(disableLockingCheckBox);             // 14
+            CommandToolBar.Add(unlockAllButton);                    // 15
+            CommandToolBar.Add(lockAllButton);                      // 16
+            CommandToolBar.Add(openLayerWeightsButton);             // 17
+            CommandToolBar.Add(saveLayerWeightsButton);             // 18
+            CommandToolBar.Add(forgetLayerWeightsButton);           // 19
+            CommandToolBar.Add(new Separator());                    // 20
+            CommandToolBar.Add(trainingPlotCheckBox);               // 21
+            CommandToolBar.Add(plotTypeComboBox);                   // 22
+            CommandToolBar.Add(pixelSizeSlider);                    // 23
+            CommandToolBar.Add(new Separator());                    // 24
+            CommandToolBar.Add(refreshButton);                      // 25
+            CommandToolBar.Add(refreshRateIntegerUpDown);           // 26
         }
 
         public void OnDisableLockingChanged(object sender, RoutedEventArgs e)
@@ -744,13 +718,6 @@ namespace Convnet.PageViewModels
                 SelectedCostIndex = costLayersComboBox.SelectedIndex;
                 Model.SetCostIndex((uint)SelectedCostIndex);
             }
-        }
-
-        private void SetOptimizersHyperParametersButton_Click(object sender, RoutedEventArgs e)
-        {
-            OptimizerHyperParameters dialog = new OptimizerHyperParameters { Owner = Application.Current.MainWindow };
-            if (dialog.ShowDialog() ?? false)
-                Model.SetOptimizersHyperParameters(Settings.Default.AdaDeltaEps, Settings.Default.AdaGradEps, Settings.Default.AdamEps, Settings.Default.AdamBeta2, Settings.Default.AdamaxEps, Settings.Default.AdamaxBeta2, Settings.Default.RMSpropEps, Settings.Default.RAdamEps, Settings.Default.RAdamBeta1, Settings.Default.RAdamBeta2);
         }
 
         public void RefreshTrainingPlot()
@@ -919,32 +886,6 @@ namespace Convnet.PageViewModels
             }
         }
 
-        public double MomentumWidth
-        {
-            get { return momentumWidth; }
-            set
-            {
-                if (value == momentumWidth)
-                    return;
-
-                momentumWidth = value;
-                OnPropertyChanged(nameof(MomentumWidth));
-            }
-        }
-
-        public double L2PenaltyWidth
-        {
-            get { return l2PenaltyWidth; }
-            set
-            {
-                if (value == l2PenaltyWidth)
-                    return;
-
-                l2PenaltyWidth = value;
-                OnPropertyChanged(nameof(L2PenaltyWidth));
-            }
-        }
-
         public string LayerInfo
         {
             get { return layerInfo; }
@@ -1093,7 +1034,7 @@ namespace Convnet.PageViewModels
             get
             {
                 if (Settings.Default.TrainRate == null)
-                    Settings.Default.TrainRate = new DNNTrainingRate(DNNOptimizers.NAG, 0.9f, 0.0005f, 0.9f, 0.999f, 0.00001f, 128, 1, 200, 1, 0.005f, 0.0001f, 1, 1, false, false, 0, 0, 0, 0, 0, 0, DNNInterpolation.Cubic, 10, 12);
+                    Settings.Default.TrainRate = new DNNTrainingRate(DNNOptimizers.NAG, 0.9f, 0.0005f, 0.999f, 1E-08f, 128, 1, 200, 1, 0.005f, 0.0001f, 1, 1, false, false, 0, 0, 0, 0, 0, 0, DNNInterpolation.Cubic, 10, 12);
                 return Settings.Default.TrainRate;
             }
             private set
@@ -1238,7 +1179,7 @@ namespace Convnet.PageViewModels
 
                     if (dialog.ShowDialog() ?? false)
                     {
-                        Model.AddLearningRateSGDR(true, Properties.Settings.Default.GoToEpoch, new DNNTrainingRate(dialog.Rate.Optimizer, dialog.Rate.Momentum, dialog.Rate.L2Penalty, dialog.Rate.Beta1, dialog.Rate.Beta2, dialog.Rate.Eps, dialog.Rate.BatchSize, dialog.Rate.Cycles, dialog.Rate.Epochs, dialog.Rate.EpochMultiplier, dialog.Rate.MaximumRate, dialog.Rate.MinimumRate, dialog.Rate.DecayFactor, dialog.Rate.DecayAfterEpochs, dialog.Rate.HorizontalFlip, dialog.Rate.VerticalFlip, dialog.Rate.Dropout, dialog.Rate.Cutout, dialog.Rate.AutoAugment, dialog.Rate.ColorCast, dialog.Rate.ColorAngle, dialog.Rate.Distortion, dialog.Rate.Interpolation, dialog.Rate.Scaling, dialog.Rate.Rotation));
+                        Model.AddLearningRateSGDR(true, Properties.Settings.Default.GoToEpoch, new DNNTrainingRate(dialog.Rate.Optimizer, dialog.Rate.Momentum, dialog.Rate.L2Penalty, dialog.Rate.Beta2, dialog.Rate.Eps, dialog.Rate.BatchSize, dialog.Rate.Cycles, dialog.Rate.Epochs, dialog.Rate.EpochMultiplier, dialog.Rate.MaximumRate, dialog.Rate.MinimumRate, dialog.Rate.DecayFactor, dialog.Rate.DecayAfterEpochs, dialog.Rate.HorizontalFlip, dialog.Rate.VerticalFlip, dialog.Rate.Dropout, dialog.Rate.Cutout, dialog.Rate.AutoAugment, dialog.Rate.ColorCast, dialog.Rate.ColorAngle, dialog.Rate.Distortion, dialog.Rate.Interpolation, dialog.Rate.Scaling, dialog.Rate.Rotation));
 
                         TrainRate = dialog.Rate;
                         Settings.Default.Save();
@@ -1286,23 +1227,22 @@ namespace Convnet.PageViewModels
                         CommandToolBar[7].Visibility = Visibility.Collapsed;
                         CommandToolBar[12].Visibility = Visibility.Collapsed;
 
+                        CommandToolBar[15].Visibility = Visibility.Collapsed;
+                        CommandToolBar[16].Visibility = Visibility.Collapsed;
                         CommandToolBar[17].Visibility = Visibility.Collapsed;
                         CommandToolBar[18].Visibility = Visibility.Collapsed;
                         CommandToolBar[19].Visibility = Visibility.Collapsed;
-                        CommandToolBar[20].Visibility = Visibility.Collapsed;
-                        CommandToolBar[21].Visibility = Visibility.Collapsed;
 
                         if (Model.Layers[layersComboBox.SelectedIndex].HasWeights)
                         {
                             if ((Model.Layers[layersComboBox.SelectedIndex].IsNormalizationLayer && Model.Layers[layersComboBox.SelectedIndex].Scaling) || !Model.Layers[layersComboBox.SelectedIndex].IsNormalizationLayer)
                             {
-                                CommandToolBar[17].Visibility = !Settings.Default.DisableLocking ? Visibility.Visible : Visibility.Collapsed;
-                                CommandToolBar[18].Visibility = !Settings.Default.DisableLocking ? Visibility.Visible : Visibility.Collapsed;
-                                CommandToolBar[20].Visibility = Visibility.Visible;
+                                CommandToolBar[15].Visibility = !Settings.Default.DisableLocking ? Visibility.Visible : Visibility.Collapsed;
+                                CommandToolBar[16].Visibility = !Settings.Default.DisableLocking ? Visibility.Visible : Visibility.Collapsed;
+                                CommandToolBar[17].Visibility = Visibility.Visible;
                             }
                         }
 
-                        optimizerComboBox.IsEnabled = false;
                         ShowProgress = true;
                     }
                 }
@@ -1347,25 +1287,24 @@ namespace Convnet.PageViewModels
                         CommandToolBar[7].Visibility = Visibility.Visible;
                         CommandToolBar[12].Visibility = Visibility.Visible;
 
+                        CommandToolBar[15].Visibility = Visibility.Collapsed;
+                        CommandToolBar[16].Visibility = Visibility.Collapsed;
                         CommandToolBar[17].Visibility = Visibility.Collapsed;
                         CommandToolBar[18].Visibility = Visibility.Collapsed;
                         CommandToolBar[19].Visibility = Visibility.Collapsed;
-                        CommandToolBar[20].Visibility = Visibility.Collapsed;
-                        CommandToolBar[21].Visibility = Visibility.Collapsed;
 
                         if (Model.Layers[layersComboBox.SelectedIndex].HasWeights)
                         {
                             if ((Model.Layers[layersComboBox.SelectedIndex].IsNormalizationLayer && Model.Layers[layersComboBox.SelectedIndex].Scaling) || !Model.Layers[layersComboBox.SelectedIndex].IsNormalizationLayer)
                             {
-                                CommandToolBar[17].Visibility = !Settings.Default.DisableLocking ? Visibility.Visible : Visibility.Collapsed;
-                                CommandToolBar[18].Visibility = !Settings.Default.DisableLocking ? Visibility.Visible : Visibility.Collapsed;
+                                CommandToolBar[15].Visibility = !Settings.Default.DisableLocking ? Visibility.Visible : Visibility.Collapsed;
+                                CommandToolBar[16].Visibility = !Settings.Default.DisableLocking ? Visibility.Visible : Visibility.Collapsed;
+                                CommandToolBar[17].Visibility = Visibility.Visible;
+                                CommandToolBar[18].Visibility = Visibility.Visible;
                                 CommandToolBar[19].Visibility = Visibility.Visible;
-                                CommandToolBar[20].Visibility = Visibility.Visible;
-                                CommandToolBar[21].Visibility = Visibility.Visible;
                             }
                         }
 
-                        optimizerComboBox.IsEnabled = true;
                         ShowProgress = false;
 
                         Mouse.OverrideCursor = null;
@@ -1423,7 +1362,7 @@ namespace Convnet.PageViewModels
                     bool first = true;
                     foreach (DNNTrainingRate rate in TrainRates)
                     {
-                        Model.AddLearningRate(first, Properties.Settings.Default.GoToEpoch, new DNNTrainingRate(rate.Optimizer, rate.Momentum, rate.L2Penalty, rate.Beta1, rate.Beta2, rate.Eps, rate.BatchSize, rate.Cycles, rate.Epochs, rate.EpochMultiplier, rate.MaximumRate, rate.MinimumRate, rate.DecayFactor, rate.DecayAfterEpochs, rate.HorizontalFlip, rate.VerticalFlip, rate.Dropout, rate.Cutout, rate.AutoAugment, rate.ColorCast, rate.ColorAngle, rate.Distortion, rate.Interpolation, rate.Scaling, rate.Rotation));
+                        Model.AddLearningRate(first, Properties.Settings.Default.GoToEpoch, new DNNTrainingRate(rate.Optimizer, rate.Momentum, rate.L2Penalty, rate.Beta2, rate.Eps, rate.BatchSize, rate.Cycles, rate.Epochs, rate.EpochMultiplier, rate.MaximumRate, rate.MinimumRate, rate.DecayFactor, rate.DecayAfterEpochs, rate.HorizontalFlip, rate.VerticalFlip, rate.Dropout, rate.Cutout, rate.AutoAugment, rate.ColorCast, rate.ColorAngle, rate.Distortion, rate.Interpolation, rate.Scaling, rate.Rotation));
                         first = false;
                     }
 
@@ -1441,8 +1380,7 @@ namespace Convnet.PageViewModels
                     CommandToolBar[5].Visibility = Visibility.Collapsed;
                     CommandToolBar[6].Visibility = Visibility.Visible;
                     CommandToolBar[7].Visibility = Visibility.Collapsed;
-                    CommandToolBar[12].Visibility = Visibility.Collapsed;
-
+                  
                     if (layersComboBox.SelectedIndex >= 0 && Model.Layers[layersComboBox.SelectedIndex].HasWeights)
                     {
                         LayerInformation info = Model.Layers[layersComboBox.SelectedIndex];
@@ -1450,53 +1388,46 @@ namespace Convnet.PageViewModels
                         {
                             if (info.Scaling)
                             {
-                                CommandToolBar[17].Visibility = !Settings.Default.DisableLocking ? Visibility.Visible : Visibility.Collapsed;
-                                CommandToolBar[18].Visibility = !Settings.Default.DisableLocking ? Visibility.Visible : Visibility.Collapsed;
-                                CommandToolBar[19].Visibility = Visibility.Collapsed;
-                                CommandToolBar[20].Visibility = Visibility.Visible;
-                                CommandToolBar[21].Visibility = Visibility.Visible;
+                                CommandToolBar[15].Visibility = !Settings.Default.DisableLocking ? Visibility.Visible : Visibility.Collapsed;
+                                CommandToolBar[16].Visibility = !Settings.Default.DisableLocking ? Visibility.Visible : Visibility.Collapsed;
+                                CommandToolBar[17].Visibility = Visibility.Collapsed;
+                                CommandToolBar[18].Visibility = Visibility.Visible;
+                                CommandToolBar[19].Visibility = Visibility.Visible;
                             }
                             else
                             {
+                                CommandToolBar[15].Visibility = Visibility.Collapsed;
+                                CommandToolBar[16].Visibility = Visibility.Collapsed;
                                 CommandToolBar[17].Visibility = Visibility.Collapsed;
                                 CommandToolBar[18].Visibility = Visibility.Collapsed;
-                                CommandToolBar[19].Visibility = Visibility.Collapsed;
-                                CommandToolBar[20].Visibility = Visibility.Collapsed;
-                                CommandToolBar[21].Visibility = Visibility.Visible;
+                                CommandToolBar[19].Visibility = Visibility.Visible;
                             }
                         }
                         else
                         {
-                            CommandToolBar[17].Visibility = !Settings.Default.DisableLocking ? Visibility.Visible : Visibility.Collapsed;
-                            CommandToolBar[18].Visibility = !Settings.Default.DisableLocking ? Visibility.Visible : Visibility.Collapsed;
+                            CommandToolBar[15].Visibility = !Settings.Default.DisableLocking ? Visibility.Visible : Visibility.Collapsed;
+                            CommandToolBar[16].Visibility = !Settings.Default.DisableLocking ? Visibility.Visible : Visibility.Collapsed;
+                            CommandToolBar[17].Visibility = Visibility.Collapsed;
+                            CommandToolBar[18].Visibility = Visibility.Visible;
                             CommandToolBar[19].Visibility = Visibility.Collapsed;
-                            CommandToolBar[20].Visibility = Visibility.Visible;
-                            CommandToolBar[21].Visibility = Visibility.Collapsed;
                         }
                     }
                     else
                     {
+                        CommandToolBar[15].Visibility = Visibility.Collapsed;
+                        CommandToolBar[16].Visibility = Visibility.Collapsed;
                         CommandToolBar[17].Visibility = Visibility.Collapsed;
                         CommandToolBar[18].Visibility = Visibility.Collapsed;
                         CommandToolBar[19].Visibility = Visibility.Collapsed;
-                        CommandToolBar[20].Visibility = Visibility.Collapsed;
-                        CommandToolBar[21].Visibility = Visibility.Collapsed;
                     }
 
-                    optimizerComboBox.IsEnabled = false;
                     ShowProgress = true;
                 }
             }
             else
             {
-                TrainingSchemeEditor dialog = new TrainingSchemeEditor
-                {
-                    Path = StorageDirectory
-                };
-                trainRates = new ObservableCollection<DNNTrainingRate>
-                {
-                    TrainRate
-                };
+                TrainingSchemeEditor dialog = new TrainingSchemeEditor { Path = StorageDirectory };
+                trainRates = new ObservableCollection<DNNTrainingRate> { TrainRate };
                 dialog.Model = Model;
                 dialog.trainingPageViewModel = this;
                 dialog.DataContext = this;
@@ -1640,50 +1571,6 @@ namespace Convnet.PageViewModels
             Application.Current.Dispatcher.Invoke(() => RefreshTrainingPlot(), DispatcherPriority.Render);
         }
 
-        void OptimizerChanged(object sender, SelectionChangedEventArgs e)
-        {
-            optimizer = (DNNOptimizers)(sender as ComboBox).SelectedIndex;
-
-            if (Model != null)
-            {
-                //Mouse.OverrideCursor = Cursors.Wait;
-
-                Model.SetOptimizer(optimizer);
-                Settings.Default.Optimizer = (int)optimizer;
-                Settings.Default.Save();
-
-                switch (optimizer)
-                {
-                    case DNNOptimizers.AdaGrad:
-                        MomentumWidth = 0;
-                        L2PenaltyWidth = 0;
-                        break;
-
-                    case DNNOptimizers.AdaDelta:
-                    case DNNOptimizers.Adam:
-                    case DNNOptimizers.Adamax:
-                    case DNNOptimizers.RMSProp:
-                        MomentumWidth = 74;
-                        L2PenaltyWidth = 0;
-                        break;
-
-                    case DNNOptimizers.SGD:
-                        MomentumWidth = 0;
-                        L2PenaltyWidth = 90;
-                        break;
-
-                    case DNNOptimizers.NAG:
-                    case DNNOptimizers.SGDMomentum:
-                    case DNNOptimizers.RAdam:
-                        MomentumWidth = 74;
-                        L2PenaltyWidth = 90;
-                        break;
-                }
-
-                //Mouse.OverrideCursor = null;
-            }
-        }
-
         public void LayersComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (Model != null && layersComboBox.SelectedIndex >= 0)
@@ -1708,11 +1595,11 @@ namespace Convnet.PageViewModels
                         Label = Model.Label;
                     }
 
-                    CommandToolBar[17].Visibility = !Settings.Default.DisableLocking ? Visibility.Visible : Visibility.Collapsed;
-                    CommandToolBar[19].Visibility = !Settings.Default.DisableLocking ? Visibility.Visible : Visibility.Collapsed;
+                    CommandToolBar[15].Visibility = !Settings.Default.DisableLocking ? Visibility.Visible : Visibility.Collapsed;
+                    CommandToolBar[16].Visibility = !Settings.Default.DisableLocking ? Visibility.Visible : Visibility.Collapsed;
+                    CommandToolBar[17].Visibility = Model.Layers[index].Lockable && Model.TaskState == DNNTaskStates.Stopped ? Visibility.Visible : Visibility.Collapsed;
+                    CommandToolBar[18].Visibility = Model.Layers[index].Lockable ? Visibility.Visible : Visibility.Collapsed;
                     CommandToolBar[19].Visibility = Model.Layers[index].Lockable && Model.TaskState == DNNTaskStates.Stopped ? Visibility.Visible : Visibility.Collapsed;
-                    CommandToolBar[20].Visibility = Model.Layers[index].Lockable ? Visibility.Visible : Visibility.Collapsed;
-                    CommandToolBar[21].Visibility = Model.Layers[index].Lockable && Model.TaskState == DNNTaskStates.Stopped ? Visibility.Visible : Visibility.Collapsed;
 
                     LayerInfo = "<Span><Bold>Layer</Bold></Span><LineBreak/>";
                     LayerInfo += "<Span>" + Model.Layers[index].Description + "</Span><LineBreak/>";

@@ -34,7 +34,7 @@ namespace Convnet.PageViewModels
             get
             {
                 if (Settings.Default.TestRate == null)
-                    Settings.Default.TestRate = new DNNTrainingRate(DNNOptimizers.NAG, 0.9f, 0.0005f, 0.9f, 0.999f, 0.00001f, 128, 1, 200, 1, 0.005f, 0.00001f, 1, 1, false, false, 0, 0, 0, 0, 0, 0, DNNInterpolation.Cubic, 10, 12);
+                    Settings.Default.TestRate = new DNNTrainingRate(DNNOptimizers.NAG, 0.9f, 0.0005f, 0.999f, 0.00001f, 128, 1, 200, 1, 0.005f, 0.00001f, 1, 1, false, false, 0, 0, 0, 0, 0, 0, DNNInterpolation.Cubic, 10, 12);
                
 
                 return Settings.Default.TestRate;
@@ -381,7 +381,7 @@ namespace Convnet.PageViewModels
                         TestRate = dialog.Rate;
                         Settings.Default.Save();
 
-                        Model.AddLearningRate(true, 1, new DNNTrainingRate(dialog.Rate.Optimizer, dialog.Rate.Momentum, dialog.Rate.L2Penalty, dialog.Rate.Beta1, dialog.Rate.Beta2,dialog.Rate.Eps, dialog.Rate.BatchSize, 1, 1, dialog.Rate.EpochMultiplier, dialog.Rate.MaximumRate, dialog.Rate.MinimumRate, dialog.Rate.DecayFactor, dialog.Rate.DecayAfterEpochs, dialog.Rate.HorizontalFlip, dialog.Rate.VerticalFlip, dialog.Rate.Dropout, dialog.Rate.Cutout, dialog.Rate.AutoAugment, dialog.Rate.ColorCast, dialog.Rate.ColorAngle, dialog.Rate.Distortion, dialog.Rate.Interpolation, dialog.Rate.Scaling, dialog.Rate.Rotation)); 
+                        Model.AddLearningRate(true, 1, new DNNTrainingRate(dialog.Rate.Optimizer, dialog.Rate.Momentum, dialog.Rate.L2Penalty, dialog.Rate.Beta2,dialog.Rate.Eps, dialog.Rate.BatchSize, 1, 1, dialog.Rate.EpochMultiplier, dialog.Rate.MaximumRate, dialog.Rate.MinimumRate, dialog.Rate.DecayFactor, dialog.Rate.DecayAfterEpochs, dialog.Rate.HorizontalFlip, dialog.Rate.VerticalFlip, dialog.Rate.Dropout, dialog.Rate.Cutout, dialog.Rate.AutoAugment, dialog.Rate.ColorCast, dialog.Rate.ColorAngle, dialog.Rate.Distortion, dialog.Rate.Interpolation, dialog.Rate.Scaling, dialog.Rate.Rotation)); 
                         Model.SetCostIndex((uint)costLayersComboBox.SelectedIndex);
                         Model.Start(false);
 

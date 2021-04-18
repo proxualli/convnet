@@ -324,8 +324,6 @@ public partial class DNNDataSet : global::System.Data.DataSet
     {
         private global::System.Data.DataColumn columnOptimizer;
 
-        private global::System.Data.DataColumn columnBeta1;
-
         private global::System.Data.DataColumn columnBeta2;
 
         private global::System.Data.DataColumn columnEps;
@@ -418,16 +416,6 @@ public partial class DNNDataSet : global::System.Data.DataSet
             get
             {
                 return this.columnOptimizer;
-            }
-        }
-
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        public global::System.Data.DataColumn Beta1Column
-        {
-            get
-            {
-                return this.columnBeta1;
             }
         }
 
@@ -705,7 +693,6 @@ public partial class DNNDataSet : global::System.Data.DataSet
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         public TrainingRatesRow AddTrainingRatesRow(
                     int Optimizer,
-                    double Beta1,
                     double Beta2,
                     double Eps,
                     double MaximumRate,
@@ -733,7 +720,6 @@ public partial class DNNDataSet : global::System.Data.DataSet
             TrainingRatesRow rowTrainingRatesRow = ((TrainingRatesRow)(this.NewRow()));
             object[] columnValuesArray = new object[] {
                     Optimizer,
-                    Beta1,
                     Beta2,
                     Eps,
                     MaximumRate,
@@ -790,7 +776,6 @@ public partial class DNNDataSet : global::System.Data.DataSet
         internal void InitVars()
         {
             this.columnOptimizer = base.Columns["Optimizer"];
-            this.columnBeta1 = base.Columns["Beta1"];
             this.columnBeta2 = base.Columns["Beta2"];
             this.columnEps = base.Columns["Eps"];
             this.columnMaximumRate = base.Columns["MaximumRate"];
@@ -822,8 +807,6 @@ public partial class DNNDataSet : global::System.Data.DataSet
         {
             this.columnOptimizer = new global::System.Data.DataColumn("Optimizer", typeof(int), null, global::System.Data.MappingType.Element);
             base.Columns.Add(this.columnOptimizer);
-            this.columnBeta1 = new global::System.Data.DataColumn("Beta1", typeof(double), null, global::System.Data.MappingType.Element);
-            base.Columns.Add(this.columnBeta1);
             this.columnBeta2 = new global::System.Data.DataColumn("Beta2", typeof(double), null, global::System.Data.MappingType.Element);
             base.Columns.Add(this.columnBeta2);
             this.columnEps = new global::System.Data.DataColumn("Eps", typeof(double), null, global::System.Data.MappingType.Element);
@@ -873,8 +856,6 @@ public partial class DNNDataSet : global::System.Data.DataSet
 
             this.columnOptimizer.AllowDBNull = false;
             this.columnOptimizer.DefaultValue = ((int)(0));
-            this.columnBeta1.AllowDBNull = false;
-            this.columnBeta1.DefaultValue = ((double)(0.9));
             this.columnBeta2.AllowDBNull = false;
             this.columnBeta2.DefaultValue = ((double)(0.999));
             this.columnEps.AllowDBNull = false;
@@ -1089,20 +1070,6 @@ public partial class DNNDataSet : global::System.Data.DataSet
             set
             {
                 this[this.tableTrainingRates.OptimizerColumn] = value;
-            }
-        }
-
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        public double Beta1
-        {
-            get
-            {
-                return ((double)(this[this.tableTrainingRates.Beta1Column]));
-            }
-            set
-            {
-                this[this.tableTrainingRates.Beta1Column] = value;
             }
         }
 

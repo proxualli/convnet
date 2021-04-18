@@ -14,47 +14,8 @@
     <Setting Name="CurrentPage" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">0</Value>
     </Setting>
-    <Setting Name="AdaGradEps" Type="System.Single" Scope="User">
-      <Value Profile="(Default)">1E-08</Value>
-    </Setting>
-    <Setting Name="AdamEps" Type="System.Single" Scope="User">
-      <Value Profile="(Default)">1E-08</Value>
-    </Setting>
-    <Setting Name="AdamBeta2" Type="System.Single" Scope="User">
-      <Value Profile="(Default)">0.999</Value>
-    </Setting>
-    <Setting Name="RMSpropEps" Type="System.Single" Scope="User">
-      <Value Profile="(Default)">1E-08</Value>
-    </Setting>
-    <Setting Name="DefaultLearningRateAdaGrad" Type="System.Single" Scope="User">
-      <Value Profile="(Default)">0.01</Value>
-    </Setting>
-    <Setting Name="DefaultLearningRateAdam" Type="System.Single" Scope="User">
-      <Value Profile="(Default)">0.001</Value>
-    </Setting>
-    <Setting Name="DefaultLearningRateRMSProp" Type="System.Single" Scope="User">
-      <Value Profile="(Default)">0.0001</Value>
-    </Setting>
-    <Setting Name="DefaultLearningRateSGD" Type="System.Single" Scope="User">
-      <Value Profile="(Default)">0.01</Value>
-    </Setting>
-    <Setting Name="DefaultLearningRateSGDMomentum" Type="System.Single" Scope="User">
-      <Value Profile="(Default)">0.01</Value>
-    </Setting>
-    <Setting Name="DefaultMomentumAdam" Type="System.Single" Scope="User">
-      <Value Profile="(Default)">0.9</Value>
-    </Setting>
-    <Setting Name="DefaultMomentumRMSProp" Type="System.Single" Scope="User">
-      <Value Profile="(Default)">0.99</Value>
-    </Setting>
     <Setting Name="Timings" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
-    </Setting>
-    <Setting Name="AdamaxEps" Type="System.Single" Scope="User">
-      <Value Profile="(Default)">1E-08</Value>
-    </Setting>
-    <Setting Name="AdamaxBeta2" Type="System.Single" Scope="User">
-      <Value Profile="(Default)">0.999</Value>
     </Setting>
     <Setting Name="PersistOptimizer" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
@@ -73,21 +34,6 @@
     </Setting>
     <Setting Name="PlotType" Type="System.UInt32" Scope="User">
       <Value Profile="(Default)">1</Value>
-    </Setting>
-    <Setting Name="AdaDeltaEps" Type="System.Single" Scope="User">
-      <Value Profile="(Default)">1E-08</Value>
-    </Setting>
-    <Setting Name="RAdamEps" Type="System.Single" Scope="User">
-      <Value Profile="(Default)">1E-08</Value>
-    </Setting>
-    <Setting Name="RAdamBeta1" Type="System.Single" Scope="User">
-      <Value Profile="(Default)">0.9</Value>
-    </Setting>
-    <Setting Name="RAdamBeta2" Type="System.Single" Scope="User">
-      <Value Profile="(Default)">0.999</Value>
-    </Setting>
-    <Setting Name="DefaultMomentumSGDMomentum" Type="System.Single" Scope="User">
-      <Value Profile="(Default)">0.9</Value>
     </Setting>
     <Setting Name="DefinitionEditing" Type="System.String" Scope="User">
       <Value Profile="(Default)">[resnet-32-4-3-2-6-dropout-channelzeropad]

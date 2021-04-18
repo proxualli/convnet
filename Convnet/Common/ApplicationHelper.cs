@@ -3,7 +3,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Runtime.InteropServices;
-using System.Security.Permissions;
 using System.Windows.Threading;
 
 namespace Convnet.Common

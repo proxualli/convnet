@@ -92,22 +92,12 @@ namespace Convnet
 
                 Settings.Default.ModelNameActive = "resnet-32-4-3-2-6-dropout-channelzeropad";
                 Settings.Default.Optimizer = (int)DNNOptimizers.NAG;
-                Settings.Default.AdaDeltaEps = (fp)1e-08;
-                Settings.Default.AdaGradEps = (fp)1e-08;
-                Settings.Default.AdamEps = (fp)1e-08;
-                Settings.Default.AdamBeta2 = (fp)0.999;
-                Settings.Default.AdamaxEps = (fp)1e-08;
-                Settings.Default.AdamaxBeta2 = (fp)0.999;
-                Settings.Default.RMSpropEps = (fp)1e-08;
-                Settings.Default.RAdamEps = (fp)1e-08;
-                Settings.Default.RAdamBeta1 = (fp)0.9;
-                Settings.Default.RAdamBeta2 = (fp)0.999;
                 Settings.Default.Save();
             }
 
             try
             {
-                var model = new Model(Settings.Default.ModelNameActive, Path.Combine(StateDirectory, Settings.Default.ModelNameActive + ".definition"), (DNNOptimizers)Settings.Default.Optimizer);
+                var model = new Model(Settings.Default.ModelNameActive, Path.Combine(StateDirectory, Settings.Default.ModelNameActive + ".definition"));
                 if (model != null)
                 {
                     PageVM = new PageViewModel(model);
@@ -118,8 +108,7 @@ namespace Convnet
                         PageVM.Model.SetPersistOptimizer(Settings.Default.PersistOptimizer);
                         PageVM.Model.SetDisableLocking(Settings.Default.DisableLocking);
                         PageVM.Model.BlockSize = (ulong)Settings.Default.PixelSize;
-                        PageVM.Model.SetOptimizersHyperParameters(Settings.Default.AdaDeltaEps, Settings.Default.AdaGradEps, Settings.Default.AdamEps, Settings.Default.AdamBeta2, Settings.Default.AdamaxEps, Settings.Default.AdamaxBeta2, Settings.Default.RMSpropEps, Settings.Default.RAdamEps, Settings.Default.RAdamBeta1, Settings.Default.RAdamBeta2);
-
+                       
                         if (File.Exists(Path.Combine(StateDirectory, Settings.Default.ModelNameActive + @".weights")))
                         {
                             if (PageVM.Model.LoadWeights(Path.Combine(StateDirectory, Settings.Default.ModelNameActive + @".weights"), Settings.Default.PersistOptimizer) != 0)
@@ -472,7 +461,7 @@ namespace Convnet
             Mouse.OverrideCursor = null;
         }
 
-        private void SaveWeights()
+        void SaveWeights()
         {
             Mouse.OverrideCursor = Cursors.Wait;
             PageVM.Model.SaveWeights(DefinitionsDirectory + PageVM.Model.Name + @"-weights\" + PageVM.Model.Name + ".weights", Settings.Default.PersistOptimizer);
@@ -791,6 +780,7 @@ namespace Convnet
                 }
             }
         }
+
         void PlainFormatCmdCanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = false;
@@ -798,7 +788,6 @@ namespace Convnet
             if (Plain != null && PageVM != null && PageVM.Model != null)
               e.CanExecute = PageVM.Model.TaskState == DNNTaskStates.Stopped;
         }
-
 
         private void PrioritySlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {

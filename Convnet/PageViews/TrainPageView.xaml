@@ -86,10 +86,13 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="{Binding ActualWidth, ElementName=cycle}" />
                     <ColumnDefinition Width="{Binding ActualWidth, ElementName=epoch}" />
+                    <ColumnDefinition Width="{Binding ActualWidth, ElementName=optimizer}" />
+                    <ColumnDefinition Width="{Binding ActualWidth, ElementName=momentum}" />
+                    <ColumnDefinition Width="{Binding ActualWidth, ElementName=beta2}" />
+                    <ColumnDefinition Width="{Binding ActualWidth, ElementName=l2Penalty}" />
+                    <ColumnDefinition Width="{Binding ActualWidth, ElementName=eps}" />
                     <ColumnDefinition Width="{Binding ActualWidth, ElementName=batchSize}" />
                     <ColumnDefinition Width="{Binding ActualWidth, ElementName=rate}" />
-                    <ColumnDefinition Width="{Binding ActualWidth, ElementName=momentum}" />
-                    <ColumnDefinition Width="{Binding ActualWidth, ElementName=l2Penalty}" />
                     <ColumnDefinition Width="{Binding ActualWidth, ElementName=dropout}" />
                     <ColumnDefinition Width="{Binding ActualWidth, ElementName=cutout}" />
                     <ColumnDefinition Width="{Binding ActualWidth, ElementName=autoaugment}" />
@@ -112,7 +115,7 @@
                     <ColumnDefinition Width="{Binding ActualWidth, ElementName=duration}" />
                 </Grid.ColumnDefinitions>
 
-                <Border Grid.Column="17" Grid.ColumnSpan="4" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  BorderThickness="1" BorderBrush="#FFE4E4E4" Margin="1,0,-1,0">
+                <Border Grid.Column="20" Grid.ColumnSpan="4" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  BorderThickness="1" BorderBrush="#FFE4E4E4" Margin="1,0,-1,0">
                     <Border.Background>
                         <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                             <GradientStop Color="#FFF7F8F9" Offset="0"/>
@@ -121,7 +124,7 @@
                     </Border.Background>
                     <TextBlock Text="Train" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextAlignment="Center" Foreground="Black" FontFamily="Consolas" FontSize="14" />
                 </Border>
-                <Border Grid.Column="21" Grid.ColumnSpan="4" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  BorderThickness="1" BorderBrush="#FFE4E4E4" Margin="1,0,-1,0">
+                <Border Grid.Column="24" Grid.ColumnSpan="4" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  BorderThickness="1" BorderBrush="#FFE4E4E4" Margin="1,0,-1,0">
                     <Border.Background>
                         <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                             <GradientStop Color="#FFF7F8F9" Offset="0"/>
@@ -167,7 +170,98 @@
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
+                  
+                    <GridViewColumn x:Name="optimizer" Header="Optimizer" Width="80">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextAlignment="Center" FontFamily="Consolas" FontSize="14">
+                                    <TextBlock.Style>
+                                        <Style TargetType="{x:Type TextBlock}">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Optimizer}" Value="0">
+                                                    <Setter Property="Text" Value="AdaDelta" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Optimizer}" Value="1">
+                                                    <Setter Property="Text" Value="AdaGrad" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Optimizer}" Value="2">
+                                                    <Setter Property="Text" Value="Adam" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Optimizer}" Value="3">
+                                                    <Setter Property="Text" Value="Adamax" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Optimizer}" Value="4">
+                                                    <Setter Property="Text" Value="NAG" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Optimizer}" Value="5">
+                                                    <Setter Property="Text" Value="RMSProp" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Optimizer}" Value="6">
+                                                    <Setter Property="Text" Value="SGD" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Optimizer}" Value="7">
+                                                    <Setter Property="Text" Value="SGDMomentum" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                   
+                    <GridViewColumn x:Name="momentum" Width="75" >
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Momentum, StringFormat=0.#######}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextAlignment="Center" FontFamily="Consolas" FontSize="14"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                        <GridViewColumnHeader>
+                            <StackPanel>
+                                <TextBlock Text="Momentum" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextAlignment="Center"/>
+                            </StackPanel>
+                        </GridViewColumnHeader>
+                    </GridViewColumn>
 
+                    <GridViewColumn x:Name="beta2" Width="85" >
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Beta2, StringFormat=0.#######}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextAlignment="Center" FontFamily="Consolas" FontSize="14"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                        <GridViewColumnHeader>
+                            <StackPanel>
+                                <TextBlock Text="Beta2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextAlignment="Center"/>
+                            </StackPanel>
+                        </GridViewColumnHeader>
+                    </GridViewColumn>
+                    
+                    <GridViewColumn x:Name="l2Penalty" Width="85">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding L2Penalty, StringFormat=0.#######}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextAlignment="Center" FontFamily="Consolas" FontSize="14"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                        <GridViewColumnHeader>
+                            <StackPanel>
+                                <TextBlock Text="L2 Penalty" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextAlignment="Center"/>
+                            </StackPanel>
+                        </GridViewColumnHeader>
+                    </GridViewColumn>
+
+                    <GridViewColumn x:Name="eps"  Width="85">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Eps, StringFormat=0.#######}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextAlignment="Center" FontFamily="Consolas" FontSize="14"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                        <GridViewColumnHeader>
+                            <StackPanel>
+                                <TextBlock Text="Eps" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextAlignment="Center"/>
+                            </StackPanel>
+                        </GridViewColumnHeader>
+                    </GridViewColumn>
+                    
                     <GridViewColumn x:Name="batchSize" Header="Batch Size" Width="84">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
@@ -182,32 +276,6 @@
                                 <TextBlock Text="{Binding Rate, StringFormat=#0.000000}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextAlignment="Center" FontFamily="Consolas" FontSize="14"/>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
-                    
-                    <GridViewColumn x:Name="momentum" Width="{Binding MomentumWidth}" >
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding Momentum, StringFormat=0.#######}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextAlignment="Center" FontFamily="Consolas" FontSize="14"/>
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                        <GridViewColumnHeader>
-                            <StackPanel>
-                                <TextBlock Text="Momentum" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextAlignment="Center"/>
-                            </StackPanel>
-                        </GridViewColumnHeader>
-                    </GridViewColumn>
-                    
-                    <GridViewColumn x:Name="l2Penalty" Width="{Binding L2PenaltyWidth}">
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding L2Penalty, StringFormat=0.#######}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextAlignment="Center" FontFamily="Consolas" FontSize="14"/>
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                        <GridViewColumnHeader>
-                            <StackPanel>
-                                <TextBlock Text="L2 Penalty" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextAlignment="Center"/>
-                            </StackPanel>
-                        </GridViewColumnHeader>
                     </GridViewColumn>
                     
                     <GridViewColumn x:Name="dropout" Header="Dropout" Width="68">

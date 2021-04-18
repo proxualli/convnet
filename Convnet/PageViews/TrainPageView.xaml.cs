@@ -35,9 +35,7 @@ namespace Convnet.PageViews
         private void ListViewTrainingResult_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Delete && listViewTrainingResult.SelectedIndex > -1)
-            {
                 Settings.Default.TrainingLog.RemoveAt(listViewTrainingResult.SelectedIndex);
-            }
         }
 
         private void ListViewTrainingResult_SelectionChanged(object sender, SelectionChangedEventArgs e)
