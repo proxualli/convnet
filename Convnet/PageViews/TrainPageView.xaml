@@ -413,7 +413,6 @@
                             <DataTemplate>
                                 <TextBlock Text="{Binding AvgTrainLoss, StringFormat=#0.000000}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextAlignment="Center" FontFamily="Consolas" FontSize="14"/>
                             </DataTemplate>
-
                         </GridViewColumn.CellTemplate>
                         <StackPanel>
                             <TextBlock Text="Loss" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextAlignment="Center"/>

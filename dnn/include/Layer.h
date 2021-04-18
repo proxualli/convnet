@@ -372,8 +372,6 @@ namespace dnn
 			if (visible)
 			{
 				description.append(nwl + std::string(" Weights:") + tab + std::to_string(WeightCount));
-				description.append(nwl + std::string(" Weights:") + tab + std::to_string(WeightsMemDesc->get_size()));
-				description.append(nwl + std::string(" Weights:") + tab + std::to_string(WeightsD1.size()));
 				description.append(nwl + std::string("  lr mult:") + tab + FloatToString(WeightsLRM));
 				description.append(nwl + std::string("  wd mult:") + tab + FloatToString(WeightsWDM));
 
