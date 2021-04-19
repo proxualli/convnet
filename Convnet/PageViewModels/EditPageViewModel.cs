@@ -333,10 +333,8 @@ namespace Convnet.PageViewModels
                 string pathDefinition = Path.Combine(DefinitionsDirectory, ModelName + ".definition");
                 string pathStateDefinition = Path.Combine(StateDirectory, ModelName + ".definition");
                 string pathWeightsDirectory = DefinitionsDirectory + ModelName + "-weights\\";
-                string pathWeights = Path.Combine(pathWeightsDirectory, ModelName + ".weights");
-                string pathStateWeights = Path.Combine(StateDirectory, ModelName + ".weights");
-
-
+                string pathWeights = Settings.Default.PersistOptimizer? Path.Combine(pathWeightsDirectory, ModelName + "-" +  Settings.Default.Optimizer.ToString().ToLower() + ".weights") : Path.Combine(pathWeightsDirectory, ModelName + ".weights");
+                
                 if (!sameDef || ModelName != Model.Name)
                 {
                     Mouse.OverrideCursor = Cursors.Wait;

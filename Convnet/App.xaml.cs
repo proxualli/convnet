@@ -3,6 +3,7 @@ using Microsoft.Build.Locator;
 using System;
 using System.ComponentModel;
 using System.Globalization;
+using System.IO;
 using System.Windows;
 using System.Windows.Markup;
 
@@ -63,10 +64,8 @@ namespace Convnet
 
                     if (Xceed.Wpf.Toolkit.MessageBox.Show("Do you want to save the network state?", "Save Network State", MessageBoxButton.YesNo, MessageBoxImage.None, MessageBoxResult.Yes) == MessageBoxResult.Yes)
                     {
-                        if (global::Convnet.Properties.Settings.Default.PersistOptimizer)
-                            mainWindow.PageVM.Model.SaveWeights(global::Convnet.MainWindow.StateDirectory + mainWindow.PageVM.Model.Name + "-" + mainWindow.PageVM.Model.Optimizer.ToString().ToLower() + ".weights", true);
-                        else
-                            mainWindow.PageVM.Model.SaveWeights(global::Convnet.MainWindow.StateDirectory + mainWindow.PageVM.Model.Name + ".weights", false);
+                        string pathWeights = Settings.Default.PersistOptimizer ? Path.Combine(global::Convnet.MainWindow.StateDirectory, mainWindow.PageVM.Model.Name + "-" + Settings.Default.Optimizer.ToString().ToLower() + ".weights") : Path.Combine(global::Convnet.MainWindow.StateDirectory, mainWindow.PageVM.Model.Name + ".weights");
+                        mainWindow.PageVM.Model.SaveWeights(pathWeights, global::Convnet.Properties.Settings.Default.PersistOptimizer);
                     }
 
                     Settings.Default.Save();
