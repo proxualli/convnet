@@ -167,7 +167,7 @@ namespace Convnet.PageViewModels
                 }
 
                 SelectedIndex = TrainingLog.Count - 1;
-
+                Settings.Default.Optimizer = (int)Optimizer;
                 Settings.Default.Save();
 
                 RefreshTrainingPlot();
