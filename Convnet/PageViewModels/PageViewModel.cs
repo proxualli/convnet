@@ -4,6 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
+using Float = System.Single;
+using UInt = System.UInt64;
 
 namespace Convnet.PageViewModels
 {
@@ -80,7 +82,7 @@ namespace Convnet.PageViewModels
                 ApplicationCommands.SaveAs.Execute(null, null);
         }
 
-        private void TrainProgress(UInt64 BatchSize, UInt64 Cycle, UInt64 TotalCycles, UInt64 Epoch, UInt64 TotalEpochs, bool HorizontalMirror, bool VerticalMirror, float inputDropOut, float inputCutout, float AutoAugment, float ColorCast, UInt64 ColorRadius, float Distortion, DNNInterpolation Interpolation, float Scaling, float Rotation, UInt64 SampleIndex, float Rate, float Momentum, float L2Penalty, float AvgTrainLoss, float TrainErrorPercentage, float TrainAccuracy, UInt64 TrainErrors, float AvgTestLoss, float TestErrorPercentage, float Accuracy, UInt64 TestErrors, DNNStates NetworkState, DNNTaskStates TaskState)
+        private void TrainProgress(UInt BatchSize, UInt Cycle, UInt TotalCycles, UInt Epoch, UInt TotalEpochs, bool HorizontalMirror, bool VerticalMirror, Float inputDropOut, Float inputCutout, Float AutoAugment, Float ColorCast, UInt ColorRadius, Float Distortion, DNNInterpolation Interpolation, Float Scaling, Float Rotation, UInt SampleIndex, Float Rate, Float Momentum, Float L2Penalty, Float AvgTrainLoss, Float TrainErrorPercentage, Float TrainAccuracy, UInt TrainErrors, Float AvgTestLoss, Float TestErrorPercentage, Float Accuracy, UInt64 TestErrors, DNNStates NetworkState, DNNTaskStates TaskState)
         {
             switch (NetworkState)
             {
@@ -105,7 +107,7 @@ namespace Convnet.PageViewModels
             SampleRate = Model.SampleRate.ToString("N1");
         }
 
-        private void TestProgress(UInt64 BatchSize, UInt64 SampleIndex, float AvgTestLoss, float TestErrorPercentage, float Accuracy, UInt64 TestErrors, DNNStates NetworkState, DNNTaskStates TaskState)
+        private void TestProgress(UInt BatchSize, UInt SampleIndex, Float AvgTestLoss, Float TestErrorPercentage, Float Accuracy, UInt TestErrors, DNNStates NetworkState, DNNTaskStates TaskState)
         {
             if (NetworkState == DNNStates.Testing)
             {

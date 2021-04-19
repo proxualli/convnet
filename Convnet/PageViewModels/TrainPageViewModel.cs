@@ -16,7 +16,8 @@ using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
-using fp = System.Single;
+using Float = System.Single;
+using UInt = System.UInt64;
 
 namespace Convnet.PageViewModels
 {
@@ -153,7 +154,7 @@ namespace Convnet.PageViewModels
             Application.Current.Dispatcher.Invoke(() => RefreshTrainingPlot(), DispatcherPriority.Render);
         }
 
-        private void NewEpoch(UInt64 Cycle, UInt64 Epoch, UInt64 TotalEpochs, UInt64 Optimizer, fp Beta2, fp Eps, bool HorizontalFlip, bool VerticalFlip, fp Dropout, fp Cutout, fp AutoAugment, fp ColorCast, UInt64 ColorAngle, fp Distortion, UInt64 Interpolation, fp Scaling, fp Rotation, fp Rate, UInt64 BatchSize, fp Momentum, fp L2Penalty, fp AvgTrainLoss, fp TrainErrorPercentage, fp TrainAccuracy, UInt64 TrainErrors, fp AvgTestLoss, fp TestErrorPercentage, fp TestAccuracy, UInt64 TestErrors)
+        private void NewEpoch(UInt Cycle, UInt Epoch, UInt TotalEpochs, UInt Optimizer, Float Beta2, Float Eps, bool HorizontalFlip, bool VerticalFlip, Float Dropout, Float Cutout, Float AutoAugment, Float ColorCast, UInt ColorAngle, Float Distortion, UInt Interpolation, Float Scaling, Float Rotation, Float Rate, UInt64 BatchSize, Float Momentum, Float L2Penalty, Float AvgTrainLoss, Float TrainErrorPercentage, Float TrainAccuracy, UInt TrainErrors, Float AvgTestLoss, Float TestErrorPercentage, Float TestAccuracy, UInt TestErrors)
         {
             Application.Current.Dispatcher.Invoke(() =>
             {
@@ -173,7 +174,7 @@ namespace Convnet.PageViewModels
             }, DispatcherPriority.Render);
         }
 
-        private void TrainProgress(UInt64 BatchSize, UInt64 Cycle, UInt64 TotalCycles, UInt64 Epoch, UInt64 TotalEpochs, bool HorizontalFlip, bool VerticalFlip, fp Dropout, fp Cutout, fp AutoAugment, fp ColorCast, UInt64 ColorRadius, fp Distortion, DNNInterpolation Interpolation, fp Scaling, fp Rotation, UInt64 SampleIndex, fp Rate, fp Momentum, fp L2Penalty, fp AvgTrainLoss, fp TrainErrorPercentage, fp TrainAccuracy, UInt64 TrainErrors, fp AvgTestLoss, fp TestErrorPercentage, fp TestAccuracy, UInt64 TestErrors, DNNStates State, DNNTaskStates TaskState)
+        private void TrainProgress(UInt BatchSize, UInt Cycle, UInt TotalCycles, UInt Epoch, UInt TotalEpochs, bool HorizontalFlip, bool VerticalFlip, Float Dropout, Float Cutout, Float AutoAugment, Float ColorCast, UInt ColorRadius, Float Distortion, DNNInterpolation Interpolation, Float Scaling, Float Rotation, UInt SampleIndex, Float Rate, Float Momentum, Float L2Penalty, Float AvgTrainLoss, Float TrainErrorPercentage, Float TrainAccuracy, UInt TrainErrors, Float AvgTestLoss, Float TestErrorPercentage, Float TestAccuracy, UInt TestErrors, DNNStates State, DNNTaskStates TaskState)
         {
             DNNInterpolation interpolation = (DNNInterpolation)Interpolation;
 
@@ -214,7 +215,7 @@ namespace Convnet.PageViewModels
                     {
                         sb.Append("<Span><Bold>Testing</Bold></Span><LineBreak/>");
                         sb.Append("<Span>");
-                        sb.AppendFormat(" Sample:\t\t{0:G}\n Loss:\t\t\t{1:N7}\n Errors:\t\t{2:G}\n Error:\t\t\t{3:N2} %\n Accuracy:\t\t{4:N2} %", SampleIndex, AvgTestLoss, TestErrors, TestErrorPercentage, (fp)100 - TestErrorPercentage);
+                        sb.AppendFormat(" Sample:\t\t{0:G}\n Loss:\t\t\t{1:N7}\n Errors:\t\t{2:G}\n Error:\t\t\t{3:N2} %\n Accuracy:\t\t{4:N2} %", SampleIndex, AvgTestLoss, TestErrors, TestErrorPercentage, (Float)100 - TestErrorPercentage);
                         sb.Append("</Span>");
                     }
                     break;
@@ -1034,7 +1035,8 @@ namespace Convnet.PageViewModels
             get
             {
                 if (Settings.Default.TrainRate == null)
-                    Settings.Default.TrainRate = new DNNTrainingRate(DNNOptimizers.NAG, 0.9f, 0.0005f, 0.999f, 1E-08f, 128, 1, 200, 1, 0.005f, 0.0001f, 1, 1, false, false, 0, 0, 0, 0, 0, 0, DNNInterpolation.Cubic, 10, 12);
+                    Settings.Default.TrainRate = new DNNTrainingRate(DNNOptimizers.NAG, 0.9f, 0.0005f, 0.999f, 1E-05f, 128, 1, 200, 1, 0.005f, 0.0001f, 1, 1, false, false, 0, 0, 0, 0, 0, 0, DNNInterpolation.Cubic, 10, 12);
+
                 return Settings.Default.TrainRate;
             }
             private set
@@ -1356,19 +1358,19 @@ namespace Convnet.PageViewModels
                 dialog.DataContext = this;
                 dialog.buttonTrain.IsEnabled = true;
                 dialog.Owner = Application.Current.MainWindow;
-                dialog.WindowStartupLocation = System.Windows.WindowStartupLocation.CenterOwner;
+                dialog.WindowStartupLocation = WindowStartupLocation.CenterOwner;
                 if (dialog.ShowDialog() ?? false)
                 {
                     bool first = true;
                     foreach (DNNTrainingRate rate in TrainRates)
                     {
-                        Model.AddLearningRate(first, Properties.Settings.Default.GoToEpoch, new DNNTrainingRate(rate.Optimizer, rate.Momentum, rate.L2Penalty, rate.Beta2, rate.Eps, rate.BatchSize, rate.Cycles, rate.Epochs, rate.EpochMultiplier, rate.MaximumRate, rate.MinimumRate, rate.DecayFactor, rate.DecayAfterEpochs, rate.HorizontalFlip, rate.VerticalFlip, rate.Dropout, rate.Cutout, rate.AutoAugment, rate.ColorCast, rate.ColorAngle, rate.Distortion, rate.Interpolation, rate.Scaling, rate.Rotation));
+                        Model.AddLearningRate(first, Settings.Default.GoToEpoch, new DNNTrainingRate(rate.Optimizer, rate.Momentum, rate.L2Penalty, rate.Beta2, rate.Eps, rate.BatchSize, rate.Cycles, rate.Epochs, rate.EpochMultiplier, rate.MaximumRate, rate.MinimumRate, rate.DecayFactor, rate.DecayAfterEpochs, rate.HorizontalFlip, rate.VerticalFlip, rate.Dropout, rate.Cutout, rate.AutoAugment, rate.ColorCast, rate.ColorAngle, rate.Distortion, rate.Interpolation, rate.Scaling, rate.Rotation));
                         first = false;
                     }
 
                     EpochDuration = TimeSpan.Zero;
 
-                    RefreshTimer = new System.Timers.Timer(1000 * Properties.Settings.Default.RefreshInterval.Value);
+                    RefreshTimer = new Timer(1000 * Settings.Default.RefreshInterval.Value);
                     RefreshTimer.Elapsed += new ElapsedEventHandler(RefreshTimer_Elapsed);
 
                     Model.Start(true);
@@ -1433,7 +1435,7 @@ namespace Convnet.PageViewModels
                 dialog.DataContext = this;
                 dialog.buttonTrain.IsEnabled = true;
                 dialog.Owner = Application.Current.MainWindow;
-                dialog.WindowStartupLocation = System.Windows.WindowStartupLocation.CenterOwner;
+                dialog.WindowStartupLocation = WindowStartupLocation.CenterOwner;
                 dialog.ShowDialog();
             }
         }

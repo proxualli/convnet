@@ -11,7 +11,8 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
-using fp = System.Single;
+using Float = System.Single;
+using UInt = System.UInt64;
 
 namespace Convnet.PageViewModels
 {
@@ -34,7 +35,7 @@ namespace Convnet.PageViewModels
             get
             {
                 if (Settings.Default.TestRate == null)
-                    Settings.Default.TestRate = new DNNTrainingRate(DNNOptimizers.NAG, 0.9f, 0.0005f, 0.999f, 0.00001f, 128, 1, 200, 1, 0.005f, 0.00001f, 1, 1, false, false, 0, 0, 0, 0, 0, 0, DNNInterpolation.Cubic, 10, 12);
+                    Settings.Default.TestRate = new DNNTrainingRate(DNNOptimizers.NAG, 0.9f, 0.0005f, 0.999f, 0.000001f, 128, 1, 200, 1, 0.005f, 0.00001f, 1, 1, false, false, 0, 0, 0, 0, 0, 0, DNNInterpolation.Cubic, 10, 12);
                
 
                 return Settings.Default.TestRate;
@@ -133,7 +134,7 @@ namespace Convnet.PageViewModels
                     ConfusionDataTable = GetConfusionDataTable();
                     Model.UpdateCostInfo(costIndex);
                     sb.Length = 0;
-                    sb.AppendFormat("Loss:\t\t{0:N7}\nErrors:\t{1:G}\nError:\t\t{2:N2} %\nAccuracy:\t{3:N2} %", Model.CostLayers[costIndex].AvgTestLoss, Model.CostLayers[costIndex].TestErrors, Model.CostLayers[costIndex].TestErrorPercentage, (fp)100 - Model.CostLayers[costIndex].TestErrorPercentage);
+                    sb.AppendFormat("Loss:\t\t{0:N7}\nErrors:\t{1:G}\nError:\t\t{2:N2} %\nAccuracy:\t{3:N2} %", Model.CostLayers[costIndex].AvgTestLoss, Model.CostLayers[costIndex].TestErrors, Model.CostLayers[costIndex].TestErrorPercentage, (Float)100 - Model.CostLayers[costIndex].TestErrorPercentage);
                     ProgressText = sb.ToString();
                 }
             }
@@ -163,7 +164,7 @@ namespace Convnet.PageViewModels
             Application.Current.Dispatcher.Invoke(() => LayerIndexChanged(this, null), DispatcherPriority.Render);
         }
 
-        private void TestProgress(UInt64 BatchSize, UInt64 SampleIndex, fp AvgTestLoss, fp TestErrorPercentage, fp TestAccuracy, UInt64 TestErrors, DNNStates State, DNNTaskStates TaskState)
+        private void TestProgress(UInt BatchSize, UInt SampleIndex, Float AvgTestLoss, Float TestErrorPercentage, Float TestAccuracy, UInt TestErrors, DNNStates State, DNNTaskStates TaskState)
         {
             Application.Current.Dispatcher.Invoke(() =>
             {
