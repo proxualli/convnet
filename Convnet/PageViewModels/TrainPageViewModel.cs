@@ -1185,6 +1185,7 @@ namespace Convnet.PageViewModels
 
                         TrainRate = dialog.Rate;
                         Model.Optimizer = TrainRate.Optimizer;
+                        Settings.Default.Optimizer = (int)TrainRate.Optimizer;
                         Settings.Default.Save();
                         // DNNDataSet.TrainingRatesDataTable table = new DNNDataSet.TrainingRatesDataTable();
                         // table.BeginLoadData();
