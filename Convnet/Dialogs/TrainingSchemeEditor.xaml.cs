@@ -11,7 +11,7 @@ namespace Convnet.Dialogs
     public partial class TrainingSchemeEditor : Window
     {
         public string Path { get; set; }
-        //public Model Model { get; set; }
+        
         public TrainPageViewModel trainingPageViewModel;
 
         private readonly Microsoft.Win32.OpenFileDialog openFileDialog = new Microsoft.Win32.OpenFileDialog();
@@ -24,9 +24,9 @@ namespace Convnet.Dialogs
 
         void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            DataGridRates.ItemsSource = trainingPageViewModel.TrainRates;
+            DataGridRates.ItemsSource = (this.DataContext as TrainPageViewModel).TrainRates;
         }
-
+        /*
         void DataGridRates_AutoGeneratingColumn(object sender, DataGridAutoGeneratingColumnEventArgs e)
         {
             if (e.Column.Header.ToString() == "OptimizerList")
@@ -83,7 +83,7 @@ namespace Convnet.Dialogs
             if (e.Column.Header.ToString() == "Rotation")
                 e.Column.DisplayIndex = 0;
         }
-        
+        */
         void ButtonInsert_Click(object sender, RoutedEventArgs e)
         {
             int selectedIndex = DataGridRates.SelectedIndex;
