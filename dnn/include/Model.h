@@ -497,7 +497,7 @@ namespace dnn
 				TrainingRates.clear();
 
 			TotalCycles = rate.Cycles;
-			GoToEpoch = gotoEpoch;
+			GoToEpoch = clear ? 1 : gotoEpoch;
 
 			auto maxRate = rate.MaximumRate;
 			auto minRate = rate.MinimumRate;

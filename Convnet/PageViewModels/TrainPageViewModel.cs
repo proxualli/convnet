@@ -1377,6 +1377,7 @@ namespace Convnet.PageViewModels
                 dialog.WindowStartupLocation = WindowStartupLocation.CenterOwner;
                 if (dialog.ShowDialog() ?? false)
                 {
+                    Settings.Default.GoToEpoch = 1;
                     bool first = true;
                     foreach (DNNTrainingRate rate in TrainRates)
                     {
@@ -1388,6 +1389,11 @@ namespace Convnet.PageViewModels
 
                     RefreshTimer = new Timer(1000 * Settings.Default.RefreshInterval.Value);
                     RefreshTimer.Elapsed += new ElapsedEventHandler(RefreshTimer_Elapsed);
+                    
+                    Model.Optimizer = TrainRates[0].Optimizer;
+                    Model.SetOptimizer(Model.Optimizer);
+                    Settings.Default.Optimizer = (int)Model.Optimizer;
+                    Settings.Default.Save();
 
                     Model.Start(true);
                     RefreshTimer.Start();
