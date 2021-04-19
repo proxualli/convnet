@@ -243,21 +243,21 @@ namespace Convnet.PageViewModels
                             CommandToolBar[5].Visibility = Visibility.Visible;
                             CommandToolBar[6].Visibility = Visibility.Visible;
                             CommandToolBar[7].Visibility = Visibility.Visible;
-                            CommandToolBar[12].Visibility = Visibility.Visible;
+                            CommandToolBar[13].Visibility = Visibility.Visible;
 
                             if (Model.Layers[layersComboBox.SelectedIndex].HasWeights || Model.Layers[layersComboBox.SelectedIndex].IsNormalizationLayer)
                             {
-                                CommandToolBar[15].Visibility = !Settings.Default.DisableLocking ? Visibility.Visible : Visibility.Collapsed;
                                 CommandToolBar[16].Visibility = !Settings.Default.DisableLocking ? Visibility.Visible : Visibility.Collapsed;
-                                CommandToolBar[17].Visibility = Visibility.Visible;
+                                CommandToolBar[17].Visibility = !Settings.Default.DisableLocking ? Visibility.Visible : Visibility.Collapsed;
                                 CommandToolBar[18].Visibility = Visibility.Visible;
+                                CommandToolBar[19].Visibility = Visibility.Visible;
                             }
                             else
                             {
-                                CommandToolBar[15].Visibility = Visibility.Collapsed;
                                 CommandToolBar[16].Visibility = Visibility.Collapsed;
                                 CommandToolBar[17].Visibility = Visibility.Collapsed;
                                 CommandToolBar[18].Visibility = Visibility.Collapsed;
+                                CommandToolBar[19].Visibility = Visibility.Collapsed;
                             }
 
                             ShowProgress = false;
@@ -1194,7 +1194,7 @@ namespace Convnet.PageViewModels
 
                     if (dialog.ShowDialog() ?? false)
                     {
-                        Model.AddLearningRateSGDR(true, Properties.Settings.Default.GoToEpoch, new DNNTrainingRate(dialog.Rate.Optimizer, dialog.Rate.Momentum, dialog.Rate.L2Penalty, dialog.Rate.Beta2, dialog.Rate.Eps, dialog.Rate.BatchSize, dialog.Rate.Cycles, dialog.Rate.Epochs, dialog.Rate.EpochMultiplier, dialog.Rate.MaximumRate, dialog.Rate.MinimumRate, dialog.Rate.DecayFactor, dialog.Rate.DecayAfterEpochs, dialog.Rate.HorizontalFlip, dialog.Rate.VerticalFlip, dialog.Rate.Dropout, dialog.Rate.Cutout, dialog.Rate.AutoAugment, dialog.Rate.ColorCast, dialog.Rate.ColorAngle, dialog.Rate.Distortion, dialog.Rate.Interpolation, dialog.Rate.Scaling, dialog.Rate.Rotation));
+                        Model.AddLearningRateSGDR(true, Settings.Default.GoToEpoch, new DNNTrainingRate(dialog.Rate.Optimizer, dialog.Rate.Momentum, dialog.Rate.L2Penalty, dialog.Rate.Beta2, dialog.Rate.Eps, dialog.Rate.BatchSize, dialog.Rate.Cycles, dialog.Rate.Epochs, dialog.Rate.EpochMultiplier, dialog.Rate.MaximumRate, dialog.Rate.MinimumRate, dialog.Rate.DecayFactor, dialog.Rate.DecayAfterEpochs, dialog.Rate.HorizontalFlip, dialog.Rate.VerticalFlip, dialog.Rate.Dropout, dialog.Rate.Cutout, dialog.Rate.AutoAugment, dialog.Rate.ColorCast, dialog.Rate.ColorAngle, dialog.Rate.Distortion, dialog.Rate.Interpolation, dialog.Rate.Scaling, dialog.Rate.Rotation));
 
                         TrainRate = dialog.Rate;
                         Model.Optimizer = TrainRate.Optimizer;
@@ -1230,7 +1230,7 @@ namespace Convnet.PageViewModels
 
                         EpochDuration = TimeSpan.Zero;
 
-                        RefreshTimer = new System.Timers.Timer(1000 * Properties.Settings.Default.RefreshInterval.Value);
+                        RefreshTimer = new Timer(1000 * Settings.Default.RefreshInterval.Value);
                         RefreshTimer.Elapsed += new ElapsedEventHandler(RefreshTimer_Elapsed);
                         Model.SetOptimizer(TrainRate.Optimizer);
                         Model.SetCostIndex((uint)SelectedCostIndex);
