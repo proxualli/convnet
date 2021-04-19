@@ -108,20 +108,27 @@ namespace Convnet
                         PageVM.Model.SetPersistOptimizer(Settings.Default.PersistOptimizer);
                         PageVM.Model.SetDisableLocking(Settings.Default.DisableLocking);
                         PageVM.Model.BlockSize = (ulong)Settings.Default.PixelSize;
-                       
-                        if (File.Exists(Path.Combine(StateDirectory, Settings.Default.ModelNameActive + @".weights")))
+
+
+                        if (Settings.Default.PersistOptimizer)
                         {
-                            if (PageVM.Model.LoadWeights(Path.Combine(StateDirectory, Settings.Default.ModelNameActive + @".weights"), Settings.Default.PersistOptimizer) != 0)
+                            if (File.Exists(Path.Combine(StateDirectory, Settings.Default.ModelNameActive + "-" + PageVM.Model.Optimizer.ToString().ToLower() + @".weights")))
                             {
-                                if (PageVM.Model.LoadWeights(Path.Combine(StateDirectory, Settings.Default.ModelNameActive + @".weights"), !Settings.Default.PersistOptimizer) == 0)
+                                if (PageVM.Model.LoadWeights(Path.Combine(StateDirectory, Settings.Default.ModelNameActive + "-" + PageVM.Model.Optimizer.ToString().ToLower() + @".weights"), true) != 0)
                                 {
-                                    Settings.Default.PersistOptimizer = !Settings.Default.PersistOptimizer;
-                                    Settings.Default.Save();
-                                    PageVM.Model.SetPersistOptimizer(Settings.Default.PersistOptimizer);
+                                    if (PageVM.Model.LoadWeights(Path.Combine(StateDirectory, Settings.Default.ModelNameActive + @".weights"), false) == 0)
+                                    {
+                                        Settings.Default.PersistOptimizer = !Settings.Default.PersistOptimizer;
+                                        Settings.Default.Save();
+                                        PageVM.Model.SetPersistOptimizer(Settings.Default.PersistOptimizer);
+                                    }
                                 }
                             }
                         }
-
+                        else
+                            if (File.Exists(Path.Combine(StateDirectory, Settings.Default.ModelNameActive + @".weights")))
+                                PageVM.Model.LoadWeights(Path.Combine(StateDirectory, Settings.Default.ModelNameActive + @".weights"), false);
+                        
                         Settings.Default.DefinitionActive = File.ReadAllText(Path.Combine(StateDirectory, Settings.Default.ModelNameActive + ".definition"));
                         Settings.Default.Save();
 

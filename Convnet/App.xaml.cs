@@ -58,12 +58,17 @@ namespace Convnet
             {
                 if (Xceed.Wpf.Toolkit.MessageBox.Show("Do you really want to exit?", "Exit Application", MessageBoxButton.YesNo, MessageBoxImage.None, MessageBoxResult.No) == MessageBoxResult.Yes)
                 {
-                    if (Xceed.Wpf.Toolkit.MessageBox.Show("Do you want to save the network state?", "Save Network State", MessageBoxButton.YesNo, MessageBoxImage.None, MessageBoxResult.Yes) == MessageBoxResult.Yes)
-                        mainWindow.PageVM.Model.SaveWeights(global::Convnet.MainWindow.StateDirectory + mainWindow.PageVM.Model.Name + ".weights", (bool)global::Convnet.Properties.Settings.Default.PersistOptimizer);
-                    
                     if (mainWindow.PageVM.Model.TaskState != dnncore.DNNTaskStates.Stopped)
                         mainWindow.PageVM.Model.Stop();
-                        
+
+                    if (Xceed.Wpf.Toolkit.MessageBox.Show("Do you want to save the network state?", "Save Network State", MessageBoxButton.YesNo, MessageBoxImage.None, MessageBoxResult.Yes) == MessageBoxResult.Yes)
+                    {
+                        if (global::Convnet.Properties.Settings.Default.PersistOptimizer)
+                            mainWindow.PageVM.Model.SaveWeights(global::Convnet.MainWindow.StateDirectory + mainWindow.PageVM.Model.Name + "-" + mainWindow.PageVM.Model.Optimizer.ToString().ToLower() + ".weights", true);
+                        else
+                            mainWindow.PageVM.Model.SaveWeights(global::Convnet.MainWindow.StateDirectory + mainWindow.PageVM.Model.Name + ".weights", false);
+                    }
+
                     Settings.Default.Save();
 
                     e.Cancel = false;
