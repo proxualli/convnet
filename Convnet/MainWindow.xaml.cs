@@ -471,15 +471,30 @@ namespace Convnet
         void SaveWeights()
         {
             Mouse.OverrideCursor = Cursors.Wait;
-            PageVM.Model.SaveWeights(DefinitionsDirectory + PageVM.Model.Name + @"-weights\" + PageVM.Model.Name + ".weights", Settings.Default.PersistOptimizer);
-            if (File.Exists(DefinitionsDirectory + PageVM.Model.Name + @"-weights\" + PageVM.Model.Name + ".weights"))
+            if (Settings.Default.PersistOptimizer)
             {
-                File.Copy(DefinitionsDirectory + PageVM.Model.Name + @"-weights\" + PageVM.Model.Name + ".weights", StateDirectory + PageVM.Model.Name + ".weights", true);
-                Mouse.OverrideCursor = null;
-                Xceed.Wpf.Toolkit.MessageBox.Show("Weights are saved", "Information", MessageBoxButton.OK);
+                PageVM.Model.SaveWeights(DefinitionsDirectory + PageVM.Model.Name + @"-weights\" + PageVM.Model.Name + "-" + PageVM.Model.Optimizer.ToString().ToLower() + ".weights", true);
+                if (File.Exists(DefinitionsDirectory + PageVM.Model.Name + @"-weights\" + PageVM.Model.Name + "-" + PageVM.Model.Optimizer.ToString().ToLower() + ".weights"))
+                {
+                    File.Copy(DefinitionsDirectory + PageVM.Model.Name + @"-weights\" + PageVM.Model.Name + "-" + PageVM.Model.Optimizer.ToString().ToLower() + ".weights", StateDirectory + PageVM.Model.Name + ".weights", true);
+                    Mouse.OverrideCursor = null;
+                    Xceed.Wpf.Toolkit.MessageBox.Show("Weights are saved", "Information", MessageBoxButton.OK);
+                }
+                else
+                    Mouse.OverrideCursor = null;
             }
             else
-                Mouse.OverrideCursor = null;
+            {
+                PageVM.Model.SaveWeights(DefinitionsDirectory + PageVM.Model.Name + @"-weights\" + PageVM.Model.Name + ".weights", false);
+                if (File.Exists(DefinitionsDirectory + PageVM.Model.Name + @"-weights\" + PageVM.Model.Name + ".weights"))
+                {
+                    File.Copy(DefinitionsDirectory + PageVM.Model.Name + @"-weights\" + PageVM.Model.Name + ".weights", StateDirectory + PageVM.Model.Name + ".weights", true);
+                    Mouse.OverrideCursor = null;
+                    Xceed.Wpf.Toolkit.MessageBox.Show("Weights are saved", "Information", MessageBoxButton.OK);
+                }
+                else
+                    Mouse.OverrideCursor = null;
+            }
         }
 
         void SaveAsCmdExecuted(object target, ExecutedRoutedEventArgs e)
@@ -544,10 +559,13 @@ namespace Convnet
                                             "GroupIndex" + delim +
                                             "CostIndex" + delim +
                                             "CostName" + delim +
-                                            "BatchSize" + delim +
-                                            "Rate" + delim +
+                                            "Optimizer" + delim +
                                             "Momentum" + delim +
+                                            "Beta2" + delim +
                                             "L2Penalty" + delim +
+                                            "Eps" + delim +
+                                            "Rate" + delim +
+                                            "BatchSize" + delim +
                                             "Dropout" + delim +
                                             "Cutout" + delim +
                                             "AutoAugment" + delim +
@@ -576,10 +594,13 @@ namespace Convnet
                                             row.GroupIndex.ToString() + delim +
                                             row.CostIndex.ToString() + delim +
                                             row.CostName.ToString() + delim +
-                                            row.BatchSize.ToString() + delim +
-                                            row.Rate.ToString() + delim +
+                                            row.Optimizer.ToString() + delim +
                                             row.Momentum.ToString() + delim +
+                                            row.Beta2.ToString() + delim +
                                             row.L2Penalty.ToString() + delim +
+                                            row.Eps.ToString() + delim +
+                                            row.Rate.ToString() + delim +
+                                            row.BatchSize.ToString() + delim +
                                             row.Dropout.ToString() + delim +
                                             row.Cutout.ToString() + delim +
                                             row.AutoAugment.ToString() + delim +
