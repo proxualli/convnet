@@ -71,6 +71,8 @@ namespace Convnet.Dialogs
                 return;
             }
 
+            trainingPageViewModel.Model.SetOptimizer(trainingPageViewModel.TrainRates[0].Optimizer);
+            Model.Optimizer = trainingPageViewModel.TrainRates[0].Optimizer;
             Settings.Default.Optimizer = (int)trainingPageViewModel.TrainRates[0].Optimizer;
             Settings.Default.Save();
 

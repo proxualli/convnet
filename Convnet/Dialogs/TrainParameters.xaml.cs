@@ -97,6 +97,7 @@ namespace Convnet.Dialogs
                 Properties.Settings.Default.TrainRate = Rate;
                 Properties.Settings.Default.Optimizer = (int)Rate.Optimizer;
                 Properties.Settings.Default.Save();
+               
                 DialogResult = true;
                 Close();
             }

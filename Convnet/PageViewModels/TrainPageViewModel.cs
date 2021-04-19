@@ -1184,6 +1184,7 @@ namespace Convnet.PageViewModels
                         Model.AddLearningRateSGDR(true, Properties.Settings.Default.GoToEpoch, new DNNTrainingRate(dialog.Rate.Optimizer, dialog.Rate.Momentum, dialog.Rate.L2Penalty, dialog.Rate.Beta2, dialog.Rate.Eps, dialog.Rate.BatchSize, dialog.Rate.Cycles, dialog.Rate.Epochs, dialog.Rate.EpochMultiplier, dialog.Rate.MaximumRate, dialog.Rate.MinimumRate, dialog.Rate.DecayFactor, dialog.Rate.DecayAfterEpochs, dialog.Rate.HorizontalFlip, dialog.Rate.VerticalFlip, dialog.Rate.Dropout, dialog.Rate.Cutout, dialog.Rate.AutoAugment, dialog.Rate.ColorCast, dialog.Rate.ColorAngle, dialog.Rate.Distortion, dialog.Rate.Interpolation, dialog.Rate.Scaling, dialog.Rate.Rotation));
 
                         TrainRate = dialog.Rate;
+                        Model.Optimizer = TrainRate.Optimizer;
                         Settings.Default.Save();
                         // DNNDataSet.TrainingRatesDataTable table = new DNNDataSet.TrainingRatesDataTable();
                         // table.BeginLoadData();
@@ -1217,6 +1218,7 @@ namespace Convnet.PageViewModels
 
                         RefreshTimer = new System.Timers.Timer(1000 * Properties.Settings.Default.RefreshInterval.Value);
                         RefreshTimer.Elapsed += new ElapsedEventHandler(RefreshTimer_Elapsed);
+                        Model.SetOptimizer(TrainRate.Optimizer);
                         Model.SetCostIndex((uint)SelectedCostIndex);
                         Model.Start(true);
                         RefreshTimer.Start();

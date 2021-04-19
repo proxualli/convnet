@@ -1230,7 +1230,10 @@ namespace dnncore
 		SampleRate = Float(0);
 		State = DNNStates::Idle;
 		if (training)
+		{
+
 			DNNTraining();
+		}
 		else 
 			DNNTesting();
 		TaskState = DNNTaskStates::Running;
