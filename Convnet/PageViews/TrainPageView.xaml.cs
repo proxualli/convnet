@@ -17,7 +17,7 @@ namespace Convnet.PageViews
             InitializeComponent();
         }
 
-        private void ListViewTrainingResult_LayoutUpdated(object sender, System.EventArgs e)
+        void ListViewTrainingResult_LayoutUpdated(object sender, System.EventArgs e)
         {
             if (ScrollViewerListViewTrainingResult == null)
                 ScrollViewerListViewTrainingResult = (VisualTreeHelper.GetChild(listViewTrainingResult, 0) as Decorator).Child as ScrollViewer;
@@ -26,19 +26,19 @@ namespace Convnet.PageViews
                 ScrollViewerHeader.VerticalScrollBarVisibility = ScrollViewerListViewTrainingResult.ComputedVerticalScrollBarVisibility == Visibility.Visible ? ScrollBarVisibility.Visible : ScrollBarVisibility.Hidden;
         }
         
-        private void ListViewTrainingResult_ScrollChanged(object sender, ScrollChangedEventArgs e)
+        void ListViewTrainingResult_ScrollChanged(object sender, ScrollChangedEventArgs e)
         {
             if (e.VerticalOffset == 0)
                  ScrollViewerHeader.ScrollToHorizontalOffset(e.HorizontalOffset);
         }
 
-        private void ListViewTrainingResult_KeyDown(object sender, KeyEventArgs e)
+        void ListViewTrainingResult_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Delete && listViewTrainingResult.SelectedIndex > -1)
                 Settings.Default.TrainingLog.RemoveAt(listViewTrainingResult.SelectedIndex);
         }
 
-        private void ListViewTrainingResult_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        void ListViewTrainingResult_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (listViewTrainingResult.SelectedIndex == (listViewTrainingResult.Items.Count - 1) && listViewTrainingResult.Items.Count > 0)
             {
@@ -53,7 +53,7 @@ namespace Convnet.PageViews
             }
         }
 
-        private void SnapShot_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        void SnapShot_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             if (e.ClickCount == 2)
             {
@@ -107,7 +107,7 @@ namespace Convnet.PageViews
             }
         }
 
-        private void TrainingPlot_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        void TrainingPlot_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             if (e.ClickCount == 2)
             {

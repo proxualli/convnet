@@ -56,7 +56,7 @@ namespace Convnet.PageViewModels
             AddCommandButtons();
         }
 
-        private void AddCommandButtons()
+        void AddCommandButtons()
         {
             Button openButton = new Button
             {
@@ -479,7 +479,7 @@ namespace Convnet.PageViewModels
             }
         }
 
-        private void mouseWaitTimer_Tick(object sender, EventArgs e)
+        void mouseWaitTimer_Tick(object sender, EventArgs e)
         {
             clickWaitTimer.Stop();
 
@@ -487,18 +487,18 @@ namespace Convnet.PageViewModels
                 ScriptDialog();
         }
         
-        private void ScriptsButtonClick(object sender, RoutedEventArgs e)
+        void ScriptsButtonClick(object sender, RoutedEventArgs e)
         {
             initAction = false;
             clickWaitTimer.Start();
         }
 
-        private void ScriptsButtonMouseDoubleClick(object sender, MouseButtonEventArgs e)
+        void ScriptsButtonMouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             e.Handled = true;
         }
         
-        private void VisualStudioButtonClick(object sender, RoutedEventArgs e)
+        void VisualStudioButtonClick(object sender, RoutedEventArgs e)
         {
             string version = "Community";
             if (Directory.Exists(@"C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE"))
@@ -530,7 +530,7 @@ namespace Convnet.PageViewModels
             }
         }
 
-        private async Task ScriptsDialogAsync()
+        async Task ScriptsDialogAsync()
         {
             await ProcessAsyncHelper.RunAsync(new ProcessStartInfo(ScriptPath + @"ScriptsDialog.exe"), null);
 
@@ -553,7 +553,7 @@ namespace Convnet.PageViewModels
             }
         }
 
-        private void ScriptDialog()
+        void ScriptDialog()
         {
             if (dirty)
             {

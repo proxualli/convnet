@@ -53,7 +53,7 @@ namespace Convnet.PageViewModels
             commandToolBar.CollectionChanged += new NotifyCollectionChangedEventHandler(CommandToolBarCollectionChanged);
         }
 
-        private void CommandToolBarCollectionChanged(Object sender, NotifyCollectionChangedEventArgs e)
+        void CommandToolBarCollectionChanged(Object sender, NotifyCollectionChangedEventArgs e)
         {
             if (CommandToolBar.Count > 0)
                 CommandToolBarVisibility = Visibility.Visible;
@@ -61,7 +61,7 @@ namespace Convnet.PageViewModels
                 CommandToolBarVisibility = Visibility.Collapsed;
         }
 
-        private void OnModelChanged()
+        void OnModelChanged()
         {
             Modelhanged?.Invoke(this, EventArgs.Empty);
         }

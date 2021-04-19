@@ -16,7 +16,7 @@ namespace Convnet.Dialogs
             InitializeComponent();
         }
 
-        private void Window_Loaded(object sender, RoutedEventArgs e)
+        void Window_Loaded(object sender, RoutedEventArgs e)
         {
             switch (Model.Dataset)
             {
@@ -76,7 +76,7 @@ namespace Convnet.Dialogs
             return true;
         }
 
-        private void ButtonTrain_Click(object sender, RoutedEventArgs e)
+        void ButtonTrain_Click(object sender, RoutedEventArgs e)
         {
             if (IsValid(this))
             {
@@ -102,17 +102,17 @@ namespace Convnet.Dialogs
             }
         }
 
-        private void ButtonCancel_Click(object sender, RoutedEventArgs e)
+        void ButtonCancel_Click(object sender, RoutedEventArgs e)
         {
             DialogResult = false;
         }
 
-        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             buttonCancel.Focus();
         }
 
-        private void TextBoxDistortions_TextChanged(object sender, TextChangedEventArgs e)
+        void TextBoxDistortions_TextChanged(object sender, TextChangedEventArgs e)
         {
             var enabled = (float.TryParse(textBoxDistortions.Text, out float result) && result > 0.0f);
 
@@ -121,12 +121,12 @@ namespace Convnet.Dialogs
             textBoxScaling.IsEnabled = enabled;
         }
 
-        private void TextBoxColorCast_TextChanged(object sender, TextChangedEventArgs e)
+        void TextBoxColorCast_TextChanged(object sender, TextChangedEventArgs e)
         {
             textBoxColorAngle.IsEnabled = (float.TryParse(textBoxColorCast.Text, out float result) && result > 0.0f);
         }
 
-        private void comboBoOptimizer_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        void comboBoOptimizer_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             switch (comboBoOptimizer.SelectedIndex)
             {

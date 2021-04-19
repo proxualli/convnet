@@ -102,7 +102,7 @@ namespace Convnet.PageViewModels
             (UIElementAutomationPeer.CreatePeerForElement(refreshButton).GetPattern(PatternInterface.Invoke) as IInvokeProvider).Invoke();
         }
 
-        private void TrainPageViewModel_RefreshRateChanged(object sender, int? e)
+        void TrainPageViewModel_RefreshRateChanged(object sender, int? e)
         {
             if (RefreshTimer != null && e.HasValue)
                RefreshTimer.Interval = 1000 * e.Value;
@@ -154,7 +154,7 @@ namespace Convnet.PageViewModels
             Application.Current.Dispatcher.Invoke(() => RefreshTrainingPlot(), DispatcherPriority.Render);
         }
 
-        private void NewEpoch(UInt Cycle, UInt Epoch, UInt TotalEpochs, UInt Optimizer, Float Beta2, Float Eps, bool HorizontalFlip, bool VerticalFlip, Float Dropout, Float Cutout, Float AutoAugment, Float ColorCast, UInt ColorAngle, Float Distortion, UInt Interpolation, Float Scaling, Float Rotation, Float Rate, UInt64 BatchSize, Float Momentum, Float L2Penalty, Float AvgTrainLoss, Float TrainErrorPercentage, Float TrainAccuracy, UInt TrainErrors, Float AvgTestLoss, Float TestErrorPercentage, Float TestAccuracy, UInt TestErrors)
+        void NewEpoch(UInt Cycle, UInt Epoch, UInt TotalEpochs, UInt Optimizer, Float Beta2, Float Eps, bool HorizontalFlip, bool VerticalFlip, Float Dropout, Float Cutout, Float AutoAugment, Float ColorCast, UInt ColorAngle, Float Distortion, UInt Interpolation, Float Scaling, Float Rotation, Float Rate, UInt64 BatchSize, Float Momentum, Float L2Penalty, Float AvgTrainLoss, Float TrainErrorPercentage, Float TrainAccuracy, UInt TrainErrors, Float AvgTestLoss, Float TestErrorPercentage, Float TestAccuracy, UInt TestErrors)
         {
             Application.Current.Dispatcher.Invoke(() =>
             {
@@ -174,7 +174,7 @@ namespace Convnet.PageViewModels
             }, DispatcherPriority.Render);
         }
 
-        private void TrainProgress(UInt BatchSize, UInt Cycle, UInt TotalCycles, UInt Epoch, UInt TotalEpochs, bool HorizontalFlip, bool VerticalFlip, Float Dropout, Float Cutout, Float AutoAugment, Float ColorCast, UInt ColorRadius, Float Distortion, DNNInterpolation Interpolation, Float Scaling, Float Rotation, UInt SampleIndex, Float Rate, Float Momentum, Float L2Penalty, Float AvgTrainLoss, Float TrainErrorPercentage, Float TrainAccuracy, UInt TrainErrors, Float AvgTestLoss, Float TestErrorPercentage, Float TestAccuracy, UInt TestErrors, DNNStates State, DNNTaskStates TaskState)
+        void TrainProgress(UInt BatchSize, UInt Cycle, UInt TotalCycles, UInt Epoch, UInt TotalEpochs, bool HorizontalFlip, bool VerticalFlip, Float Dropout, Float Cutout, Float AutoAugment, Float ColorCast, UInt ColorRadius, Float Distortion, DNNInterpolation Interpolation, Float Scaling, Float Rotation, UInt SampleIndex, Float Rate, Float Momentum, Float L2Penalty, Float AvgTrainLoss, Float TrainErrorPercentage, Float TrainAccuracy, UInt TrainErrors, Float AvgTestLoss, Float TestErrorPercentage, Float TestAccuracy, UInt TestErrors, DNNStates State, DNNTaskStates TaskState)
         {
             DNNInterpolation interpolation = (DNNInterpolation)Interpolation;
 
@@ -269,7 +269,7 @@ namespace Convnet.PageViewModels
             ProgressText = sb.ToString();
         }
         
-        private void AddCommandButtons()
+        void AddCommandButtons()
         {
             Button startButton = new Button
             {
@@ -577,7 +577,7 @@ namespace Convnet.PageViewModels
             disableLockingCheckBox.IsChecked = Settings.Default.DisableLocking;
         }
 
-        private void DisableLockingCheckBox_Unchecked(object sender, RoutedEventArgs e)
+        void DisableLockingCheckBox_Unchecked(object sender, RoutedEventArgs e)
         {
             if (disableLockingCheckBox.IsChecked.HasValue)
             {
@@ -608,17 +608,17 @@ namespace Convnet.PageViewModels
             }
         }
 
-        private void UnlockAll_Click(object sender, RoutedEventArgs e)
+        void UnlockAll_Click(object sender, RoutedEventArgs e)
         {
             Model.SetLocked(false);
         }
 
-        private void LockAll_Click(object sender, RoutedEventArgs e)
+        void LockAll_Click(object sender, RoutedEventArgs e)
         {
             Model.SetLocked(true);
         }
 
-        private static DataTemplate GetLockTemplate()
+        static DataTemplate GetLockTemplate()
         {
             DataTemplate checkBoxLayout = new DataTemplate
             {
@@ -668,7 +668,7 @@ namespace Convnet.PageViewModels
             return checkBoxLayout;
         }
 
-        private void LayersComboBox_SourceUpdated(object sender, DataTransferEventArgs e)
+        void LayersComboBox_SourceUpdated(object sender, DataTransferEventArgs e)
         {
             if (e.OriginalSource is CheckBox cb)
             {
@@ -683,7 +683,7 @@ namespace Convnet.PageViewModels
             }
         }
 
-        private void PixelSizeSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        void PixelSizeSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             int temp = (int)Math.Round(e.NewValue);
             if (temp == 1)
@@ -698,13 +698,13 @@ namespace Convnet.PageViewModels
             LayersComboBox_SelectionChanged(this, null);
         }
 
-        private void TrainingPlotCheckBox_Unchecked(object sender, RoutedEventArgs e)
+        void TrainingPlotCheckBox_Unchecked(object sender, RoutedEventArgs e)
         {
             Settings.Default.ShowTrainingPlot = trainingPlotCheckBox.IsChecked ?? false;
             Settings.Default.Save();
         }
 
-        private void PlotTypeChanged(object sender, SelectionChangedEventArgs e)
+        void PlotTypeChanged(object sender, SelectionChangedEventArgs e)
         {
             CurrentPlotType = (PlotType)plotTypeComboBox.SelectedIndex;
             Settings.Default.PlotType = (uint)plotTypeComboBox.SelectedIndex;

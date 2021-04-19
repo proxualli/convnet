@@ -48,7 +48,7 @@ namespace Convnet.PageViews
             EditorParameters.SyntaxHighlighting = HighlightingManager.Instance.GetDefinitionByExtension(".cs");
         }
 
-        private void GridSplitter_DragCompleted(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)
+        void GridSplitter_DragCompleted(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)
         {
             if (!e.Canceled)
                 Settings.Default.Save();

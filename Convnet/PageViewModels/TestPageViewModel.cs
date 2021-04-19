@@ -64,7 +64,7 @@ namespace Convnet.PageViewModels
             Application.Current.Dispatcher.Invoke(() => LayerIndexChanged(this, null), DispatcherPriority.Render);
         }
 
-        private void AddCommandButtons()
+        void AddCommandButtons()
         {
             Button startButton = new Button
             {
@@ -164,7 +164,7 @@ namespace Convnet.PageViewModels
             Application.Current.Dispatcher.Invoke(() => LayerIndexChanged(this, null), DispatcherPriority.Render);
         }
 
-        private void TestProgress(UInt BatchSize, UInt SampleIndex, Float AvgTestLoss, Float TestErrorPercentage, Float TestAccuracy, UInt TestErrors, DNNStates State, DNNTaskStates TaskState)
+        void TestProgress(UInt BatchSize, UInt SampleIndex, Float AvgTestLoss, Float TestErrorPercentage, Float TestAccuracy, UInt TestErrors, DNNStates State, DNNTaskStates TaskState)
         {
             Application.Current.Dispatcher.Invoke(() =>
             {
@@ -221,7 +221,7 @@ namespace Convnet.PageViewModels
             }
         }
 
-        private DataTable GetConfusionDataTable()
+        DataTable GetConfusionDataTable()
         {
             DataTable table = null;
 
@@ -334,7 +334,7 @@ namespace Convnet.PageViewModels
 
         public override string DisplayName => "Test";
 
-        private void RefreshTimer_Elapsed(object sender, ElapsedEventArgs e)
+        void RefreshTimer_Elapsed(object sender, ElapsedEventArgs e)
         {
             Application.Current.Dispatcher.Invoke(() => LayerIndexChanged(sender, null), DispatcherPriority.Render);
         }

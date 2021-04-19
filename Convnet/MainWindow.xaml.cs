@@ -231,7 +231,7 @@ namespace Convnet
         {
             (e.Source as TextBox).SelectAll();
         }
-
+        
         void SelectAllCmdCanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             if (e.Source.GetType() == typeof(TextBox))
@@ -789,7 +789,7 @@ namespace Convnet
               e.CanExecute = PageVM.Model.TaskState == DNNTaskStates.Stopped;
         }
 
-        private void PrioritySlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        void PrioritySlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             if (PageVM != null && PageVM.Model != null)
             {

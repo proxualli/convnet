@@ -16,7 +16,7 @@ namespace Convnet.Dialogs
             InitializeComponent();
         }
 
-        private void Window_Loaded(object sender, RoutedEventArgs e)
+        void Window_Loaded(object sender, RoutedEventArgs e)
         {
             switch (Model.Dataset)
             {
@@ -82,7 +82,7 @@ namespace Convnet.Dialogs
             return true;
         }
 
-        private void ButtonTest_Click(object sender, RoutedEventArgs e)
+        void ButtonTest_Click(object sender, RoutedEventArgs e)
         {
             if (IsValid(this))
             {
@@ -101,17 +101,17 @@ namespace Convnet.Dialogs
             }
         }
 
-        private void ButtonCancel_Click(object sender, RoutedEventArgs e)
+        void ButtonCancel_Click(object sender, RoutedEventArgs e)
         {
             DialogResult = false;
         }
 
-        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             buttonCancel.Focus();
         }
 
-        private void RadioButtonInterpolation_Checked(object sender, RoutedEventArgs e)
+        void RadioButtonInterpolation_Checked(object sender, RoutedEventArgs e)
         {
             if (radioButtonLinear.IsChecked.HasValue && radioButtonLinear.IsChecked.Value)
                 Rate.Interpolation = DNNInterpolation.Linear;
@@ -123,7 +123,7 @@ namespace Convnet.Dialogs
                 Rate.Interpolation = DNNInterpolation.Cubic;
         }
 
-        private void TextBoxDistortions_TextChanged(object sender, TextChangedEventArgs e)
+        void TextBoxDistortions_TextChanged(object sender, TextChangedEventArgs e)
         {
             var enabled = (float.TryParse(textBoxDistortions.Text, out float result) && result > 0.0f);
 
@@ -134,7 +134,7 @@ namespace Convnet.Dialogs
             textBoxScaling.IsEnabled = enabled;
         }
 
-        private void TextBoxColorCast_TextChanged(object sender, TextChangedEventArgs e)
+        void TextBoxColorCast_TextChanged(object sender, TextChangedEventArgs e)
         {
             textBoxColorAngle.IsEnabled = (float.TryParse(textBoxColorCast.Text, out float result) && result > 0.0f);
         }
