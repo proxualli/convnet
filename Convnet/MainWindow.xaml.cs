@@ -537,6 +537,7 @@ namespace Convnet
                     break;
 
                 case ViewModels.Train:
+                    saveFileDialog.FileName = Settings.Default.PersistOptimizer ? (PageVM.CurrentPage as TrainPageViewModel).Model.Name + @"-" + (PageVM.CurrentPage as TrainPageViewModel).Optimizer.ToString().ToLower() : (PageVM.CurrentPage as TrainPageViewModel).Model.Name;
                     saveFileDialog.Filter = "Weights|*.weights|Log|*.csv";
                     saveFileDialog.Title = "Save";
                     saveFileDialog.DefaultExt = ".weights";
