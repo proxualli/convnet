@@ -1257,7 +1257,7 @@ namespace Convnet.PageViewModels
                             {
                                 CommandToolBar[16].Visibility = !Settings.Default.DisableLocking ? Visibility.Visible : Visibility.Collapsed;
                                 CommandToolBar[17].Visibility = !Settings.Default.DisableLocking ? Visibility.Visible : Visibility.Collapsed;
-                                CommandToolBar[18].Visibility = Visibility.Visible;
+                                CommandToolBar[19].Visibility = Visibility.Visible;
                             }
                         }
 
