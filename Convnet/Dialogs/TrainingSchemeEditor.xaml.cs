@@ -11,7 +11,7 @@ namespace Convnet.Dialogs
     public partial class TrainingSchemeEditor : Window
     {
         public string Path { get; set; }
-        public Model Model { get; set; }
+        //public Model Model { get; set; }
         public TrainPageViewModel trainingPageViewModel;
 
         private readonly Microsoft.Win32.OpenFileDialog openFileDialog = new Microsoft.Win32.OpenFileDialog();
@@ -29,7 +29,11 @@ namespace Convnet.Dialogs
 
         void DataGridRates_AutoGeneratingColumn(object sender, DataGridAutoGeneratingColumnEventArgs e)
         {
-          
+            if (e.Column.Header.ToString() == "OptimizerList")
+                e.Cancel = true;
+            if (e.Column.Header.ToString() == "InterpolationList")
+                e.Cancel = true;
+
             if (e.Column.Header.ToString() == "Optimizer")
                 e.Column.DisplayIndex = 0;
             if (e.Column.Header.ToString() == "Momentum")
@@ -78,11 +82,6 @@ namespace Convnet.Dialogs
                 e.Column.DisplayIndex = 0;
             if (e.Column.Header.ToString() == "Rotation")
                 e.Column.DisplayIndex = 0;
-
-            if (e.Column.Header.ToString() == "OptimizerList")
-                e.Cancel = true;
-            if (e.Column.Header.ToString() == "InterpolationList")
-                e.Cancel = true;
         }
         
         void ButtonInsert_Click(object sender, RoutedEventArgs e)
@@ -109,7 +108,7 @@ namespace Convnet.Dialogs
                 }
             }
 
-            if (Model.BatchNormalizationUsed() && stochastic)
+            if (trainingPageViewModel.Model.BatchNormalizationUsed() && stochastic)
             {
                 Xceed.Wpf.Toolkit.MessageBox.Show("Your model uses batch normalization.\r\nThe batch size cannot be equal to 1 in this case.", "Warning", MessageBoxButton.OK);
 

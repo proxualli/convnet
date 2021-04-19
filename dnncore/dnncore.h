@@ -256,15 +256,6 @@ namespace dnncore
 	public ref struct DNNTrainingRate : public System::ComponentModel::INotifyPropertyChanged
 	{
 	public:
-		property System::Array^ OptimizerList
-		{
-			System::Array^ get() { return Enum::GetValues(DNNOptimizers::typeid); }
-		}
-		property System::Array^ InterpolationList
-		{
-			System::Array^ get() { return Enum::GetValues(DNNInterpolation::typeid); }
-		}
-
 		property DNNOptimizers Optimizer
 		{
 			DNNOptimizers get() { return optimizer; }
@@ -553,6 +544,14 @@ namespace dnncore
 				OnPropertyChanged("Rotation");
 			}
 		}
+		property System::Array^ OptimizerList
+		{
+			System::Array^ get() { return Enum::GetValues(DNNOptimizers::typeid); }
+		}
+		property System::Array^ InterpolationList
+		{
+			System::Array^ get() { return Enum::GetValues(DNNInterpolation::typeid); }
+		}
 		
 		DNNTrainingRate(DNNOptimizers optimizer, Float momentum, Float l2penalty, Float beta2, Float eps, UInt batchSize, UInt cycles, UInt epochs, UInt epochMultiplier, Float maximumRate, Float minimumRate, Float decayFactor, UInt decayAfterEpochs, bool horizontalFlip, bool verticalFlip, Float dropout, Float cutout, Float autoAugment, Float colorCast, UInt colorAngle, Float distortion, DNNInterpolation interpolation, Float scaling, Float rotation)
 		{
@@ -592,7 +591,7 @@ namespace dnncore
 		Float momentum = Float(0.9);
 		Float l2Penalty = Float(0.0005);
 		Float beta2 = Float(0.999);
-		Float eps = Float(1E-08);
+		Float eps = Float(1E-05);
 		UInt batchSize = 128;
 		UInt cycles = 1;
 		UInt epochs = 200;

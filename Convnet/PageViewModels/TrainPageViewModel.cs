@@ -1198,8 +1198,8 @@ namespace Convnet.PageViewModels
 
                         TrainRate = dialog.Rate;
                         Model.Optimizer = TrainRate.Optimizer;
-                        Settings.Default.Optimizer = (int)TrainRate.Optimizer;
-                        Settings.Default.Save();
+                        Optimizer = TrainRate.Optimizer;
+                        
                         // DNNDataSet.TrainingRatesDataTable table = new DNNDataSet.TrainingRatesDataTable();
                         // table.BeginLoadData();
                         // foreach (TrainingRate rate in Model.TrainingRates)
@@ -1368,8 +1368,7 @@ namespace Convnet.PageViewModels
                 {
                     Path = StorageDirectory
                 };
-                trainRates = new ObservableCollection<DNNTrainingRate> { Settings.Default.TrainRate };
-                dialog.Model = Model;
+                TrainRates = new ObservableCollection<DNNTrainingRate> { Settings.Default.TrainRate };
                 dialog.trainingPageViewModel = this;
                 dialog.DataContext = this;
                 dialog.buttonTrain.IsEnabled = true;
@@ -1381,7 +1380,8 @@ namespace Convnet.PageViewModels
                     bool first = true;
                     foreach (DNNTrainingRate rate in TrainRates)
                     {
-                        Model.AddLearningRate(first, Settings.Default.GoToEpoch, new DNNTrainingRate(rate.Optimizer, rate.Momentum, rate.L2Penalty, rate.Beta2, rate.Eps, rate.BatchSize, rate.Cycles, rate.Epochs, rate.EpochMultiplier, rate.MaximumRate, rate.MinimumRate, rate.DecayFactor, rate.DecayAfterEpochs, rate.HorizontalFlip, rate.VerticalFlip, rate.Dropout, rate.Cutout, rate.AutoAugment, rate.ColorCast, rate.ColorAngle, rate.Distortion, rate.Interpolation, rate.Scaling, rate.Rotation));
+                        Model.AddLearningRate(first, Settings.Default.GoToEpoch, rate);
+                       // Model.AddLearningRate(first, Settings.Default.GoToEpoch, new DNNTrainingRate(rate.Optimizer, rate.Momentum, rate.L2Penalty, rate.Beta2, rate.Eps, rate.BatchSize, rate.Cycles, rate.Epochs, rate.EpochMultiplier, rate.MaximumRate, rate.MinimumRate, rate.DecayFactor, rate.DecayAfterEpochs, rate.HorizontalFlip, rate.VerticalFlip, rate.Dropout, rate.Cutout, rate.AutoAugment, rate.ColorCast, rate.ColorAngle, rate.Distortion, rate.Interpolation, rate.Scaling, rate.Rotation));
                         first = false;
                     }
 
@@ -1390,11 +1390,9 @@ namespace Convnet.PageViewModels
                     RefreshTimer = new Timer(1000 * Settings.Default.RefreshInterval.Value);
                     RefreshTimer.Elapsed += new ElapsedEventHandler(RefreshTimer_Elapsed);
                     
-                    Model.Optimizer = TrainRates[0].Optimizer;
-                    Model.SetOptimizer(Model.Optimizer);
-                    Settings.Default.Optimizer = (int)Model.Optimizer;
-                    Settings.Default.Save();
-
+                    Model.SetOptimizer(TrainRates[0].Optimizer);
+                    Optimizer = TrainRates[0].Optimizer;
+                    
                     Model.Start(true);
                     RefreshTimer.Start();
                     CommandToolBar[0].Visibility = Visibility.Collapsed;
@@ -1452,7 +1450,6 @@ namespace Convnet.PageViewModels
             {
                 TrainingSchemeEditor dialog = new TrainingSchemeEditor { Path = StorageDirectory };
                 trainRates = new ObservableCollection<DNNTrainingRate> { TrainRate };
-                dialog.Model = Model;
                 dialog.trainingPageViewModel = this;
                 dialog.DataContext = this;
                 dialog.buttonTrain.IsEnabled = true;
