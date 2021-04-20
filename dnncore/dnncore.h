@@ -280,18 +280,6 @@ namespace dnncore
 				OnPropertyChanged("Momentum");
 			}
 		}
-		property Float L2Penalty
-		{
-			Float get() { return l2Penalty; }
-			void set(Float value)
-			{
-				if (value == l2Penalty || value < Float(0) || value > Float(1))
-					return;
-
-				l2Penalty = value;
-				OnPropertyChanged("L2Penalty");
-			}
-		}
 		property Float Beta2
 		{
 			Float get() { return beta2; }
@@ -302,6 +290,18 @@ namespace dnncore
 
 				beta2 = value;
 				OnPropertyChanged("Beta2");
+			}
+		}
+		property Float L2Penalty
+		{
+			Float get() { return l2Penalty; }
+			void set(Float value)
+			{
+				if (value == l2Penalty || value < Float(0) || value > Float(1))
+					return;
+
+				l2Penalty = value;
+				OnPropertyChanged("L2Penalty");
 			}
 		}
 		property Float Eps
@@ -553,12 +553,12 @@ namespace dnncore
 			System::Array^ get() { return Enum::GetValues(DNNInterpolation::typeid); }
 		}
 		
-		DNNTrainingRate(DNNOptimizers optimizer, Float momentum, Float l2penalty, Float beta2, Float eps, UInt batchSize, UInt cycles, UInt epochs, UInt epochMultiplier, Float maximumRate, Float minimumRate, Float decayFactor, UInt decayAfterEpochs, bool horizontalFlip, bool verticalFlip, Float dropout, Float cutout, Float autoAugment, Float colorCast, UInt colorAngle, Float distortion, DNNInterpolation interpolation, Float scaling, Float rotation)
+		DNNTrainingRate(DNNOptimizers optimizer, Float momentum, Float beta2, Float l2penalty,  Float eps, UInt batchSize, UInt cycles, UInt epochs, UInt epochMultiplier, Float maximumRate, Float minimumRate, Float decayFactor, UInt decayAfterEpochs, bool horizontalFlip, bool verticalFlip, Float dropout, Float cutout, Float autoAugment, Float colorCast, UInt colorAngle, Float distortion, DNNInterpolation interpolation, Float scaling, Float rotation)
 		{
 			Optimizer = optimizer;
 			Momentum = momentum;
-			L2Penalty = l2penalty;
 			Beta2 = beta2;
+			L2Penalty = l2penalty;
 			Eps = eps;
 			BatchSize = batchSize;
 			Cycles = cycles;
@@ -589,9 +589,9 @@ namespace dnncore
 	private:
 		DNNOptimizers optimizer = DNNOptimizers::NAG;
 		Float momentum = Float(0.9);
-		Float l2Penalty = Float(0.0005);
 		Float beta2 = Float(0.999);
-		Float eps = Float(1E-05);
+		Float l2Penalty = Float(0.0005);
+		Float eps = Float(1E-08);
 		UInt batchSize = 128;
 		UInt cycles = 1;
 		UInt epochs = 200;
