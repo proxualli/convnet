@@ -63,9 +63,9 @@
                 <DataGridTextColumn Header="L2Penalty" Binding="{Binding Path=L2Penalty, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 <DataGridTextColumn Header="Eps" Binding="{Binding Path=Eps, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 <DataGridTextColumn Header="BatchSize" Binding="{Binding Path=BatchSize, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                <DataGridTextColumn Header="Cycles" Binding="{Binding Path=Cycles, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <!--<DataGridTextColumn Header="Cycles" Binding="{Binding Path=Cycles, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>-->
                 <DataGridTextColumn Header="Epochs" Binding="{Binding Path=Epochs, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                <DataGridTextColumn Header="EpochMultiplier" Binding="{Binding Path=EpochMultiplier, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <!--<DataGridTextColumn Header="EpochMultiplier" Binding="{Binding Path=EpochMultiplier, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>-->
                 <DataGridTextColumn Header="MaximumRate" Binding="{Binding Path=MaximumRate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 <DataGridTextColumn Header="MinimumRate" Binding="{Binding Path=MinimumRate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 <DataGridTextColumn Header="DecayAfterEpochs" Binding="{Binding Path=DecayAfterEpochs, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
