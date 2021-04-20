@@ -148,9 +148,11 @@ namespace Convnet.Dialogs
 
         void comboBoOptimizer_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            switch (comboBoOptimizer.SelectedIndex)
+            DNNOptimizers optimizer = (DNNOptimizers)comboBoOptimizer.SelectedIndex;
+
+            switch (optimizer)
             {
-                case 6: // DNNOptimizers.SGD:
+                case DNNOptimizers.SGD:
                     {
                         textBlockL2penalty.Opacity = 1;
                         textBoxL2penalty.IsEnabled = true;
@@ -159,10 +161,10 @@ namespace Convnet.Dialogs
                     }
                     break;
 
-                case 0: // DNNOptimizers.AdaDelta:
-                case 2: // DNNOptimizers.Adam:
-                case 3: // DNNOptimizers.Adamax:
-                case 5: // DNNOptimizers.RMSProp:
+                case DNNOptimizers.AdaDelta:
+                case DNNOptimizers.Adam:  
+                case DNNOptimizers.Adamax:
+                case DNNOptimizers.RMSProp:
                     {
                         textBlockMomentum.Opacity = 1;
                         textBoxMomentum.IsEnabled = true;
@@ -171,7 +173,7 @@ namespace Convnet.Dialogs
   
                     }
                     break;
-                case 1: // DNNOptimizers.AdaGrad:
+                case DNNOptimizers.AdaGrad:
                     {
                         textBlockL2penalty.Opacity = 0.5;
                         textBoxL2penalty.IsEnabled = false;
@@ -180,8 +182,8 @@ namespace Convnet.Dialogs
                     }
                     break;
 
-                case 4: // DNNOptimizers.NAG:
-                case 7: // DNNOptimizers.SGDMomentum:
+                case DNNOptimizers.NAG:
+                case DNNOptimizers.SGDMomentum:
                     {
                         textBlockL2penalty.Opacity = 1;
                         textBoxL2penalty.IsEnabled = true;
@@ -191,28 +193,28 @@ namespace Convnet.Dialogs
                     break;
             }
 
-            switch (comboBoOptimizer.SelectedIndex)
+            switch (optimizer)
             {
-                case 0: // DNNOptimizers.AdaDelta:
-                case 1: // DNNOptimizers.AdaGrad:
-                case 4: // DNNOptimizers.NAG:
-                case 6: // DNNOptimizers.SGD:
-                case 7: // DNNOptimizers.SGDMomentum:
+                case DNNOptimizers.AdaDelta:
+                case DNNOptimizers.AdaGrad:
+                case DNNOptimizers.NAG:
+                case DNNOptimizers.SGD:
+                case DNNOptimizers.SGDMomentum:
                     {
                         textBlockBeta2.Opacity = 0.5;
                         textBoxBeta2.IsEnabled = false;
                     }
                     break;
 
-                case 2: // DNNOptimizers.Adam:
+                case DNNOptimizers.Adam:
                     {
                         textBlockBeta2.Opacity = 1;
                         textBoxBeta2.IsEnabled = true;
                     }
                     break;
 
-                case 3: // DNNOptimizers.Adamax:
-                case 5: // DNNOptimizers.RMSProp:
+                case DNNOptimizers.Adamax:
+                case DNNOptimizers.RMSProp:
                     {
                         textBlockBeta2.Opacity = 1;
                         textBoxBeta2.IsEnabled = true;
