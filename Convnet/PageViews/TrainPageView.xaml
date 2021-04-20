@@ -171,7 +171,7 @@
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
                   
-                    <GridViewColumn x:Name="optimizer" Header="Optimizer" Width="80">
+                    <GridViewColumn x:Name="optimizer" Header="Optimizer" Width="100">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextAlignment="Center" FontFamily="Consolas" FontSize="14">
@@ -210,7 +210,7 @@
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
                    
-                    <GridViewColumn x:Name="momentum" Width="75" >
+                    <GridViewColumn x:Name="momentum" Width="80" >
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding Momentum, StringFormat=0.#######}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextAlignment="Center" FontFamily="Consolas" FontSize="14"/>
@@ -223,7 +223,7 @@
                         </GridViewColumnHeader>
                     </GridViewColumn>
 
-                    <GridViewColumn x:Name="beta2" Width="85" >
+                    <GridViewColumn x:Name="beta2" Width="80" >
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding Beta2, StringFormat=0.#######}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextAlignment="Center" FontFamily="Consolas" FontSize="14"/>
@@ -235,8 +235,8 @@
                             </StackPanel>
                         </GridViewColumnHeader>
                     </GridViewColumn>
-                    
-                    <GridViewColumn x:Name="l2Penalty" Width="85">
+
+                    <GridViewColumn x:Name="l2Penalty" Width="80">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding L2Penalty, StringFormat=0.#########}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextAlignment="Center" FontFamily="Consolas" FontSize="14"/>
@@ -278,7 +278,7 @@
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
                     
-                    <GridViewColumn x:Name="dropout" Header="Dropout" Width="68">
+                    <GridViewColumn x:Name="dropout" Header="Dropout" Width="80">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding Dropout, StringFormat=0.#######}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextAlignment="Center" FontFamily="Consolas" FontSize="14"/>
@@ -286,7 +286,7 @@
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
                     
-                    <GridViewColumn x:Name="cutout" Header="Cutout" Width="72">
+                    <GridViewColumn x:Name="cutout" Header="Cutout" Width="80">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding Cutout, StringFormat=0.#####}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextAlignment="Center" FontFamily="Consolas" FontSize="14"/>
@@ -305,20 +305,7 @@
                     <GridViewColumn x:Name="hflip" Header="Horz.Flip" Width="80">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextAlignment="Center" FontFamily="Consolas" FontSize="14">
-                                    <TextBlock.Style>
-                                        <Style TargetType="{x:Type TextBlock}">
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding HorizontalFlip}" Value="True">
-                                                    <Setter Property="Text" Value="Yes" />
-                                                </DataTrigger>
-                                                <DataTrigger Binding="{Binding HorizontalFlip}" Value="False">
-                                                    <Setter Property="Text" Value="No" />
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </TextBlock.Style>
-                                </TextBlock>
+                                <CheckBox HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="Consolas" HorizontalContentAlignment="Center" FontSize="14" IsChecked="{Binding HorizontalFlip}" IsThreeState="False" IsHitTestVisible="False"/>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
@@ -326,20 +313,7 @@
                     <GridViewColumn x:Name="vflip" Header="Vert.Flip" Width="80">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextAlignment="Center" FontFamily="Consolas" FontSize="14">
-                                    <TextBlock.Style>
-                                        <Style TargetType="{x:Type TextBlock}">
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding VerticalFlip}" Value="True">
-                                                    <Setter Property="Text" Value="Yes" />
-                                                </DataTrigger>
-                                                <DataTrigger Binding="{Binding VerticalFlip}" Value="False">
-                                                    <Setter Property="Text" Value="No" />
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </TextBlock.Style>
-                                </TextBlock>
+                                <CheckBox HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="Consolas" HorizontalContentAlignment="Center" FontSize="14" IsChecked="{Binding VerticalFlip}" IsThreeState="False" IsHitTestVisible="False"/>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
