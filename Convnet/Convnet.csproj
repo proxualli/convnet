@@ -47,7 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Key.png" />
-    <Content Include="Resources\state\resnet-32-4-3-2-6-dropout-channelzeropad.definition">
+    <Content Include="Resources\state\resnet-32-3-2-6-dropout-channelzeropad-relu.definition">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Resource Include="App.ico" />

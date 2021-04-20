@@ -85,12 +85,12 @@ namespace Convnet
 
             if (!File.Exists(Path.Combine(StateDirectory, Settings.Default.ModelNameActive + ".definition")))
             {
-                Directory.CreateDirectory(DefinitionsDirectory + @"resnet-32-4-3-2-6-dropout-channelzeropad-weights\");
+                Directory.CreateDirectory(DefinitionsDirectory + @"resnet-32-3-2-6-dropout-channelzeropad-relu-weights\");
                 Directory.CreateDirectory(DefinitionsDirectory + Settings.Default.ModelNameActive + @"-weights\");
-                File.Copy(ApplicationPath + @"Resources\state\resnet-32-4-3-2-6-dropout-channelzeropad.definition", StateDirectory + "resnet-32-4-3-2-6-dropout-channelzeropad.definition", true);
-                File.Copy(ApplicationPath + @"Resources\state\resnet-32-4-3-2-6-dropout-channelzeropad.definition", DefinitionsDirectory + "resnet-32-4-3-2-6-dropout-channelzeropad.definition", true);
+                File.Copy(ApplicationPath + @"Resources\state\resnet-32-3-2-6-dropout-channelzeropad-relu.definition", StateDirectory + "resnet-32-3-2-6-dropout-channelzeropad-relu.definition", true);
+                File.Copy(ApplicationPath + @"Resources\state\resnet-32-3-2-6-dropout-channelzeropad-relu.definition", DefinitionsDirectory + "resnet-32-3-2-6-dropout-channelzeropad-relu.definition", true);
 
-                Settings.Default.ModelNameActive = "resnet-32-4-3-2-6-dropout-channelzeropad";
+                Settings.Default.ModelNameActive = "resnet-32-3-2-6-dropout-channelzeropad-relu";
                 Settings.Default.Optimizer = (int)DNNOptimizers.NAG;
                 Settings.Default.Save();
             }

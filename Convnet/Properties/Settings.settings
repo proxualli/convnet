@@ -36,15 +36,17 @@
       <Value Profile="(Default)">1</Value>
     </Setting>
     <Setting Name="DefinitionEditing" Type="System.String" Scope="User">
-      <Value Profile="(Default)">[resnet-32-4-3-2-6-dropout-channelzeropad]
-Dataset=CIFAR10
+      <Value Profile="(Default)">[resnet-32x32-3-2-6-dropout-channelzeropad-relu]
+Dataset=cifar10
 Dim=3,32,32
 ZeroPad=4,4
 RandomCrop=Yes
 WeightsFiller=HeNormal
 Biases=No
-Momentum=0.995
+Dropout=0.333333
 Scaling=No
+Momentum=0.995
+Eps=0.0001
 
 [C1]
 Type=Convolution
@@ -67,7 +69,6 @@ Pad=1,1
 [B2]
 Type=BatchNormReluDropout
 Inputs=C2
-Dropout=0.3
 
 [C3]
 Type=Convolution
@@ -100,7 +101,6 @@ Pad=1,1
 [B6]
 Type=BatchNormReluDropout
 Inputs=C5
-Dropout=0.3
 
 [C6]
 Type=Convolution
@@ -128,7 +128,6 @@ Pad=1,1
 [B8]
 Type=BatchNormReluDropout
 Inputs=C7
-Dropout=0.3
 
 [C8]
 Type=Convolution
@@ -137,7 +136,7 @@ Channels=192
 Kernel=3,3
 Pad=1,1
 
-[AVG1]
+[P1]
 Type=AvgPooling
 Inputs=A2
 Kernel=3,3
@@ -146,7 +145,7 @@ Pad=1,1
 
 [CZP1]
 Type=ChannelZeroPad
-Inputs=AVG1
+Inputs=P1
 Channels=192
 
 [A3]
@@ -167,7 +166,6 @@ Pad=1,1
 [B10]
 Type=BatchNormReluDropout
 Inputs=C9
-Dropout=0.3
 
 [C10]
 Type=Convolution
@@ -195,7 +193,6 @@ Pad=1,1
 [B12]
 Type=BatchNormReluDropout
 Inputs=C11
-Dropout=0.3
 
 [C12]
 Type=Convolution
@@ -204,7 +201,7 @@ Channels=384
 Kernel=3,3
 Pad=1,1
 
-[AVG2]
+[P2]
 Type=AvgPooling
 Inputs=A4
 Kernel=3,3
@@ -213,7 +210,7 @@ Pad=1,1
 
 [CZP2]
 Type=ChannelZeroPad
-Inputs=AVG2
+Inputs=P2
 Channels=384
 
 [A5]
@@ -234,7 +231,6 @@ Pad=1,1
 [B14]
 Type=BatchNormReluDropout
 Inputs=C13
-Dropout=0.3
 
 [C14]
 Type=Convolution
@@ -268,24 +264,27 @@ Inputs=B16
 [ACT]
 Type=Activation
 Inputs=GAP
-Activation=Softmax
+Activation=LogSoftmax
 
 [Cost]
 Type=Cost
 Inputs=ACT
 Cost=CategoricalCrossEntropy
-Channels=10</Value>
+Channels=10
+Eps=0.125</Value>
     </Setting>
     <Setting Name="DefinitionActive" Type="System.String" Scope="User">
-      <Value Profile="(Default)">[resnet-32-4-3-2-6-dropout-channelzeropad]
-Dataset=CIFAR10
+      <Value Profile="(Default)">[resnet-32x32-3-2-6-dropout-channelzeropad-relu]
+Dataset=cifar10
 Dim=3,32,32
 ZeroPad=4,4
 RandomCrop=Yes
 WeightsFiller=HeNormal
 Biases=No
-Momentum=0.995
+Dropout=0.333333
 Scaling=No
+Momentum=0.995
+Eps=0.0001
 
 [C1]
 Type=Convolution
@@ -308,7 +307,6 @@ Pad=1,1
 [B2]
 Type=BatchNormReluDropout
 Inputs=C2
-Dropout=0.3
 
 [C3]
 Type=Convolution
@@ -341,7 +339,6 @@ Pad=1,1
 [B6]
 Type=BatchNormReluDropout
 Inputs=C5
-Dropout=0.3
 
 [C6]
 Type=Convolution
@@ -369,7 +366,6 @@ Pad=1,1
 [B8]
 Type=BatchNormReluDropout
 Inputs=C7
-Dropout=0.3
 
 [C8]
 Type=Convolution
@@ -378,7 +374,7 @@ Channels=192
 Kernel=3,3
 Pad=1,1
 
-[AVG1]
+[P1]
 Type=AvgPooling
 Inputs=A2
 Kernel=3,3
@@ -387,7 +383,7 @@ Pad=1,1
 
 [CZP1]
 Type=ChannelZeroPad
-Inputs=AVG1
+Inputs=P1
 Channels=192
 
 [A3]
@@ -408,7 +404,6 @@ Pad=1,1
 [B10]
 Type=BatchNormReluDropout
 Inputs=C9
-Dropout=0.3
 
 [C10]
 Type=Convolution
@@ -436,7 +431,6 @@ Pad=1,1
 [B12]
 Type=BatchNormReluDropout
 Inputs=C11
-Dropout=0.3
 
 [C12]
 Type=Convolution
@@ -445,7 +439,7 @@ Channels=384
 Kernel=3,3
 Pad=1,1
 
-[AVG2]
+[P2]
 Type=AvgPooling
 Inputs=A4
 Kernel=3,3
@@ -454,7 +448,7 @@ Pad=1,1
 
 [CZP2]
 Type=ChannelZeroPad
-Inputs=AVG2
+Inputs=P2
 Channels=384
 
 [A5]
@@ -475,7 +469,6 @@ Pad=1,1
 [B14]
 Type=BatchNormReluDropout
 Inputs=C13
-Dropout=0.3
 
 [C14]
 Type=Convolution
@@ -509,16 +502,17 @@ Inputs=B16
 [ACT]
 Type=Activation
 Inputs=GAP
-Activation=Softmax
+Activation=LogSoftmax
 
 [Cost]
 Type=Cost
 Inputs=ACT
 Cost=CategoricalCrossEntropy
-Channels=10</Value>
+Channels=10
+Eps=0.125</Value>
     </Setting>
     <Setting Name="ModelNameActive" Type="System.String" Scope="User">
-      <Value Profile="(Default)">resnet-32-4-3-2-6-dropout-channelzeropad</Value>
+      <Value Profile="(Default)">resnet-32x32-3-2-6-dropout-channelzeropad-relu</Value>
     </Setting>
     <Setting Name="EditSplitPositionA" Type="System.Windows.GridLength" Scope="User">
       <Value Profile="(Default)">420</Value>
