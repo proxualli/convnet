@@ -31,64 +31,7 @@ namespace Convnet.Dialogs
         {
             DataGridRates.ItemsSource = (this.DataContext as TrainPageViewModel).TrainRates;
         }
-        /*
-        void DataGridRates_AutoGeneratingColumn(object sender, DataGridAutoGeneratingColumnEventArgs e)
-        {
-            if (e.Column.Header.ToString() == "OptimizerList")
-                e.Cancel = true;
-            if (e.Column.Header.ToString() == "InterpolationList")
-                e.Cancel = true;
-
-            if (e.Column.Header.ToString() == "Optimizer")
-                e.Column.DisplayIndex = 0;
-            if (e.Column.Header.ToString() == "Momentum")
-                e.Column.DisplayIndex = 0;
-            if (e.Column.Header.ToString() == "Beta2")
-                e.Column.DisplayIndex = 0;
-            if (e.Column.Header.ToString() == "L2Penalty")
-                e.Column.DisplayIndex = 0;
-            if (e.Column.Header.ToString() == "Eps")
-                e.Column.DisplayIndex = 0;
-            if (e.Column.Header.ToString() == "BatchSize")
-                e.Column.DisplayIndex = 0;
-            if (e.Column.Header.ToString() == "Cycles")
-                e.Column.DisplayIndex = 0;
-            if (e.Column.Header.ToString() == "Epochs")
-                e.Column.DisplayIndex = 0;
-            if (e.Column.Header.ToString() == "EpochMultiplier")
-                e.Column.DisplayIndex = 0;
-            if (e.Column.Header.ToString() == "MaximumRate")
-                e.Column.DisplayIndex = 0;
-            if (e.Column.Header.ToString() == "MinimumRate")
-                e.Column.DisplayIndex = 0;
-            if (e.Column.Header.ToString() == "DecayAfterEpochs")
-                e.Column.DisplayIndex = 0;
-            if (e.Column.Header.ToString() == "DecayFactor")
-                e.Column.DisplayIndex = 0;
-            if (e.Column.Header.ToString() == "HorizontalFlip")
-                e.Column.DisplayIndex = 0;
-            if (e.Column.Header.ToString() == "VerticalFlip")
-                e.Column.DisplayIndex = 0;
-            if (e.Column.Header.ToString() == "Dropout")
-                e.Column.DisplayIndex = 0;
-            if (e.Column.Header.ToString() == "Cutout")
-                e.Column.DisplayIndex = 0;
-            if (e.Column.Header.ToString() == "AutoAugment")
-                e.Column.DisplayIndex = 0;
-            if (e.Column.Header.ToString() == "ColorCast")
-                e.Column.DisplayIndex = 0;
-            if (e.Column.Header.ToString() == "ColorAngle")
-                e.Column.DisplayIndex = 0;
-            if (e.Column.Header.ToString() == "Distortion")
-                e.Column.DisplayIndex = 0;
-            if (e.Column.Header.ToString() == "Interpolation")
-                e.Column.DisplayIndex = 0;
-            if (e.Column.Header.ToString() == "Scaling")
-                e.Column.DisplayIndex = 0;
-            if (e.Column.Header.ToString() == "Rotation")
-                e.Column.DisplayIndex = 0;
-        }
-        */
+       
         void ButtonInsert_Click(object sender, RoutedEventArgs e)
         {
             DataGridRates.CommitEdit();

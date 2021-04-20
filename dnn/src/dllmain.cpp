@@ -382,7 +382,7 @@ extern "C" DNN_API void DNNGetNetworkInfo(std::string* name, UInt* costIndex, UI
 	}
 }
 
-extern "C" DNN_API void DNNGetTrainingInfo(UInt* currentCycle, UInt* totalCycles, UInt* currentEpoch, UInt* totalEpochs, bool* horizontalFlip, bool* verticalFlip, Float* inputDropOut, Float* inputCutout, Float* autoAugment, Float* colorCast, UInt* colorAngle, Float* distortion, Interpolation * interpolation, Float* scaling, Float* rotation, UInt* sampleIndex, UInt* batchSize, Float* maximumRate, Float* momentum, Float* l2Penalty, Float* avgTrainLoss, Float* trainErrorPercentage, UInt* trainErrors, Float* avgTestLoss, Float* testErrorPercentage, UInt* testErrors, Float* sampleSpeed, States* networkState, TaskStates* taskState)
+extern "C" DNN_API void DNNGetTrainingInfo(UInt* currentCycle, UInt* totalCycles, UInt* currentEpoch, UInt* totalEpochs, bool* horizontalFlip, bool* verticalFlip, Float* inputDropOut, Float* inputCutout, Float* autoAugment, Float* colorCast, UInt* colorAngle, Float* distortion, Interpolation* interpolation, Float* scaling, Float* rotation, UInt* sampleIndex, UInt* batchSize, Float* maximumRate, Float* momentum, Float* l2Penalty, Float* avgTrainLoss, Float* trainErrorPercentage, UInt* trainErrors, Float* avgTestLoss, Float* testErrorPercentage, UInt* testErrors, Float* sampleSpeed, States* networkState, TaskStates* taskState)
 {
 	if (model)
 	{

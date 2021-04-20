@@ -553,7 +553,7 @@ namespace dnncore
 			System::Array^ get() { return Enum::GetValues(DNNInterpolation::typeid); }
 		}
 		
-		DNNTrainingRate(DNNOptimizers optimizer, Float momentum, Float beta2, Float l2penalty,  Float eps, UInt batchSize, UInt cycles, UInt epochs, UInt epochMultiplier, Float maximumRate, Float minimumRate, Float decayFactor, UInt decayAfterEpochs, bool horizontalFlip, bool verticalFlip, Float dropout, Float cutout, Float autoAugment, Float colorCast, UInt colorAngle, Float distortion, DNNInterpolation interpolation, Float scaling, Float rotation)
+		DNNTrainingRate(DNNOptimizers optimizer, Float momentum, Float beta2, Float l2penalty, Float eps, UInt batchSize, UInt cycles, UInt epochs, UInt epochMultiplier, Float maximumRate, Float minimumRate, Float decayFactor, UInt decayAfterEpochs, bool horizontalFlip, bool verticalFlip, Float dropout, Float cutout, Float autoAugment, Float colorCast, UInt colorAngle, Float distortion, DNNInterpolation interpolation, Float scaling, Float rotation)
 		{
 			Optimizer = optimizer;
 			Momentum = momentum;
