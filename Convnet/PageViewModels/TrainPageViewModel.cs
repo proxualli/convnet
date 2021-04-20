@@ -4,6 +4,7 @@ using Convnet.Properties;
 using dnncore;
 using OxyPlot;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
@@ -73,7 +74,7 @@ namespace Convnet.PageViewModels
         public event EventHandler Open;
         public event EventHandler Save;
         public event EventHandler<int?> RefreshRateChanged;
-
+       
         public TrainPageViewModel(dnncore.Model model) : base(model)
         {
             sb = new StringBuilder();

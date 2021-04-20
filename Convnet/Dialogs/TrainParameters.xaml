@@ -196,7 +196,7 @@
             <TextBox.Text>
                 <Binding Path="Eps" Mode="TwoWay" >
                     <Binding.ValidationRules>
-                       <c:FloatRangeRule Min="0" Max="1"/>
+                       <c:FloatRangeRule Min="0" Max="0.001"/>
                     </Binding.ValidationRules>
                 </Binding>
             </TextBox.Text>

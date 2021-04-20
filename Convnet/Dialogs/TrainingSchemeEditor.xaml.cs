@@ -2,6 +2,8 @@
 using Convnet.Properties;
 using dnncore;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -10,9 +12,12 @@ namespace Convnet.Dialogs
 {
     public partial class TrainingSchemeEditor : Window
     {
+        public static IEnumerable<DNNOptimizers> GetOptimizers => Enum.GetValues(typeof(DNNOptimizers)).Cast<DNNOptimizers>();
+        public static IEnumerable<DNNInterpolation> GetInterpolations => Enum.GetValues(typeof(DNNInterpolation)).Cast<DNNInterpolation>();
         public string Path { get; set; }
         
         public TrainPageViewModel trainingPageViewModel;
+       
 
         private readonly Microsoft.Win32.OpenFileDialog openFileDialog = new Microsoft.Win32.OpenFileDialog();
         private readonly Microsoft.Win32.SaveFileDialog saveFileDialog = new Microsoft.Win32.SaveFileDialog();
@@ -86,6 +91,8 @@ namespace Convnet.Dialogs
         */
         void ButtonInsert_Click(object sender, RoutedEventArgs e)
         {
+            DataGridRates.CommitEdit();
+            
             int selectedIndex = DataGridRates.SelectedIndex;
             if (selectedIndex != -1)
             {

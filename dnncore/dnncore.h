@@ -664,6 +664,7 @@ namespace dnncore
 			Momentum = momentum;
 			Beta2 = beta2;
 			L2Penalty = l2Penalty;
+			Eps = eps;
 			Rate = rate;
 			BatchSize = batchSize;
 			Dropout = dropout;

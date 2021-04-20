@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"  
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:pageviewmodels="clr-namespace:Convnet.PageViewModels" d:DataContext="{d:DesignInstance Type=pageviewmodels:TrainPageViewModel}"
+        xmlns:ext="clr-namespace:Convnet.Dialogs"
         mc:Ignorable="d"
         Title="Training Scheme Editor" 
         UseLayoutRounding="True" 
@@ -21,7 +22,7 @@
             <RowDefinition />
             <RowDefinition Height="40" />
         </Grid.RowDefinitions>
-        <DataGrid AutoGenerateColumns="False" Height="Auto" HorizontalAlignment="Stretch" Margin="6" x:Name="DataGridRates" VerticalAlignment="Stretch" Width="Auto" TabIndex="4" CanUserSortColumns="False" GridLinesVisibility="Horizontal" HorizontalGridLinesBrush="#FFAAE4F5" VerticalContentAlignment="Center" HorizontalContentAlignment="Stretch" SelectionMode="Extended" MinHeight="0" MinWidth="0" CanUserResizeColumns="False" FontFamily="Consolas" FontSize="14" CanUserResizeRows="False" BorderThickness="0" Foreground="{DynamicResource {x:Static SystemColors.DesktopBrushKey}}" CanUserReorderColumns="False" CanUserAddRows="True" CanUserDeleteRows="True" IsSynchronizedWithCurrentItem="True">
+        <DataGrid AutoGenerateColumns="False" Height="Auto" HorizontalAlignment="Stretch" Margin="6" x:Name="DataGridRates" VerticalAlignment="Stretch" Width="Auto" TabIndex="4" CanUserSortColumns="False" GridLinesVisibility="Horizontal" HorizontalGridLinesBrush="#FFAAE4F5" VerticalContentAlignment="Center" HorizontalContentAlignment="Stretch" SelectionMode="Single" MinHeight="0" MinWidth="0" CanUserResizeColumns="False" FontFamily="Consolas" FontSize="14" CanUserResizeRows="False" BorderThickness="0" Foreground="{DynamicResource {x:Static SystemColors.DesktopBrushKey}}" CanUserReorderColumns="False" CanUserAddRows="True" CanUserDeleteRows="True" IsSynchronizedWithCurrentItem="True">
             <DataGrid.ContextMenu >
                 <ContextMenu DataContext="{Binding}">
                     <MenuItem Header="_Cut" Command="ApplicationCommands.Cut">
@@ -55,7 +56,7 @@
                 </ContextMenu>
             </DataGrid.ContextMenu>
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Optimizer" Binding="{Binding Optimizer, Mode=TwoWay}"/>
+                <DataGridComboBoxColumn Header="Optimizer" ItemsSource="{x:Static ext:TrainingSchemeEditor.GetOptimizers}" SelectedItemBinding="{Binding Path=Optimizer, Mode=TwoWay}"/>
                 <DataGridTextColumn Header="Momentum" Binding="{Binding Momentum, Mode=TwoWay}"/>
                 <DataGridTextColumn Header="Beta2" Binding="{Binding Beta2, Mode=TwoWay}"/>
                 <DataGridTextColumn Header="L2Penalty" Binding="{Binding L2Penalty, Mode=TwoWay}"/>
@@ -76,7 +77,7 @@
                 <DataGridTextColumn Header="ColorCast" Binding="{Binding ColorCast, Mode=TwoWay}"/>
                 <DataGridTextColumn Header="ColorAngle" Binding="{Binding ColorAngle, Mode=TwoWay}"/>
                 <DataGridTextColumn Header="Distortion" Binding="{Binding Distortion, Mode=TwoWay}"/>
-                <DataGridTextColumn Header="Interpolation" Binding="{Binding Interpolation, Mode=TwoWay}" />
+                <DataGridComboBoxColumn Header="Interpolation" ItemsSource="{x:Static ext:TrainingSchemeEditor.GetInterpolations}" SelectedItemBinding="{Binding Path=Interpolation, Mode=TwoWay}" />
                 <DataGridTextColumn Header="Scaling" Binding="{Binding Scaling, Mode=TwoWay}"/>
                 <DataGridTextColumn Header="Rotation" Binding="{Binding Rotation, Mode=TwoWay}"/>
             </DataGrid.Columns>
