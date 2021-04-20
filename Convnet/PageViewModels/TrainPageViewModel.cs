@@ -1368,12 +1368,14 @@ namespace Convnet.PageViewModels
         {
             if (Model.TaskState == DNNTaskStates.Stopped)
             {
+                TrainRates = new ObservableCollection<DNNTrainingRate> { Settings.Default.TrainRate };
+
                 TrainingSchemeEditor dialog = new TrainingSchemeEditor
                 {
                     Path = StorageDirectory
                 };
-                TrainRates = new ObservableCollection<DNNTrainingRate> { Settings.Default.TrainRate };
-                dialog.trainingPageViewModel = this;
+                
+                dialog.tpvm = this;
                 dialog.DataContext = this;
                 dialog.buttonTrain.IsEnabled = true;
                 dialog.Owner = Application.Current.MainWindow;
@@ -1452,9 +1454,9 @@ namespace Convnet.PageViewModels
             }
             else
             {
+                TrainRates = new ObservableCollection<DNNTrainingRate> { TrainRate };
                 TrainingSchemeEditor dialog = new TrainingSchemeEditor { Path = StorageDirectory };
-                trainRates = new ObservableCollection<DNNTrainingRate> { TrainRate };
-                dialog.trainingPageViewModel = this;
+                dialog.tpvm = this;
                 dialog.DataContext = this;
                 dialog.buttonTrain.IsEnabled = true;
                 dialog.Owner = Application.Current.MainWindow;

@@ -2,13 +2,14 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"  
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:pageviewmodels="clr-namespace:Convnet.PageViewModels" d:DataContext="{d:DesignInstance Type=pageviewmodels:TrainPageViewModel}"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+        xmlns:pvm="clr-namespace:Convnet.PageViewModels" 
         xmlns:ext="clr-namespace:Convnet.Dialogs"
+        d:DataContext="{d:DesignInstance Type=pvm:TrainPageViewModel}"
         mc:Ignorable="d"
         Title="Training Scheme Editor" 
         UseLayoutRounding="True" 
         SnapsToDevicePixels="True" 
-        Loaded="Window_Loaded" 
         d:DesignHeight="290" 
         d:DesignWidth="460" 
         SizeToContent="WidthAndHeight" 
@@ -22,7 +23,7 @@
             <RowDefinition />
             <RowDefinition Height="40" />
         </Grid.RowDefinitions>
-        <DataGrid AutoGenerateColumns="False" Height="Auto" HorizontalAlignment="Stretch" Margin="6" x:Name="DataGridRates" VerticalAlignment="Stretch" Width="Auto" TabIndex="4" CanUserSortColumns="False" GridLinesVisibility="Horizontal" HorizontalGridLinesBrush="#FFAAE4F5" VerticalContentAlignment="Center" HorizontalContentAlignment="Stretch" SelectionMode="Single" MinHeight="0" MinWidth="0" CanUserResizeColumns="False" FontFamily="Consolas" FontSize="14" CanUserResizeRows="False" BorderThickness="0" Foreground="{DynamicResource {x:Static SystemColors.DesktopBrushKey}}" CanUserReorderColumns="False" CanUserAddRows="True" CanUserDeleteRows="True" IsSynchronizedWithCurrentItem="True">
+        <DataGrid ItemsSource="{Binding TrainRates}" CanUserAddRows="True" CanUserDeleteRows="True" AutoGenerateColumns="False" HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible" Height="Auto" HorizontalAlignment="Stretch" Margin="6" x:Name="DataGridRates" VerticalAlignment="Stretch" Width="Auto" TabIndex="4" CanUserSortColumns="False" GridLinesVisibility="Horizontal" HorizontalGridLinesBrush="#FFAAE4F5" VerticalContentAlignment="Center" HorizontalContentAlignment="Stretch" SelectionMode="Single" MinHeight="0" MinWidth="0" CanUserResizeColumns="False" FontFamily="Consolas" FontSize="14" CanUserResizeRows="False" BorderThickness="0" Foreground="{DynamicResource {x:Static SystemColors.DesktopBrushKey}}" CanUserReorderColumns="False" IsSynchronizedWithCurrentItem="True" SelectionUnit="FullRow">
             <DataGrid.ContextMenu >
                 <ContextMenu DataContext="{Binding}">
                     <MenuItem Header="_Cut" Command="ApplicationCommands.Cut">
@@ -56,30 +57,30 @@
                 </ContextMenu>
             </DataGrid.ContextMenu>
             <DataGrid.Columns>
-                <DataGridComboBoxColumn Header="Optimizer" ItemsSource="{x:Static ext:TrainingSchemeEditor.GetOptimizers}" SelectedItemBinding="{Binding Path=Optimizer, Mode=TwoWay}"/>
-                <DataGridTextColumn Header="Momentum" Binding="{Binding Momentum, Mode=TwoWay}"/>
-                <DataGridTextColumn Header="Beta2" Binding="{Binding Beta2, Mode=TwoWay}"/>
-                <DataGridTextColumn Header="L2Penalty" Binding="{Binding L2Penalty, Mode=TwoWay}"/>
-                <DataGridTextColumn Header="Eps" Binding="{Binding Eps, Mode=TwoWay}"/>
-                <DataGridTextColumn Header="BatchSize" Binding="{Binding BatchSize, Mode=TwoWay}"/>
-                <DataGridTextColumn Header="Cycles" Binding="{Binding Cycles, Mode=TwoWay}"/>
-                <DataGridTextColumn Header="Epochs" Binding="{Binding Epochs, Mode=TwoWay}"/>
-                <DataGridTextColumn Header="EpochMultiplier" Binding="{Binding EpochMultiplier, Mode=TwoWay}"/>
-                <DataGridTextColumn Header="MaximumRate" Binding="{Binding MaximumRate, Mode=TwoWay}"/>
-                <DataGridTextColumn Header="MinimumRate" Binding="{Binding MinimumRate, Mode=TwoWay}"/>
-                <DataGridTextColumn Header="DecayAfterEpochs" Binding="{Binding DecayAfterEpochs, Mode=TwoWay}"/>
-                <DataGridTextColumn Header="DecayFactor" Binding="{Binding DecayFactor, Mode=TwoWay}"/>
-                <DataGridTextColumn Header="HorizontalFlip" Binding="{Binding HorizontalFlip, Mode=TwoWay}"/>
-                <DataGridTextColumn Header="VerticalFlip" Binding="{Binding VerticalFlip, Mode=TwoWay}"/>
-                <DataGridTextColumn Header="Dropout" Binding="{Binding Dropout, Mode=TwoWay}"/>
-                <DataGridTextColumn Header="Cutout" Binding="{Binding Cutout, Mode=TwoWay}"/>
-                <DataGridTextColumn Header="AutoAugment" Binding="{Binding AutoAugment, Mode=TwoWay}"/>
-                <DataGridTextColumn Header="ColorCast" Binding="{Binding ColorCast, Mode=TwoWay}"/>
-                <DataGridTextColumn Header="ColorAngle" Binding="{Binding ColorAngle, Mode=TwoWay}"/>
-                <DataGridTextColumn Header="Distortion" Binding="{Binding Distortion, Mode=TwoWay}"/>
-                <DataGridComboBoxColumn Header="Interpolation" ItemsSource="{x:Static ext:TrainingSchemeEditor.GetInterpolations}" SelectedItemBinding="{Binding Path=Interpolation, Mode=TwoWay}" />
-                <DataGridTextColumn Header="Scaling" Binding="{Binding Scaling, Mode=TwoWay}"/>
-                <DataGridTextColumn Header="Rotation" Binding="{Binding Rotation, Mode=TwoWay}"/>
+                <DataGridComboBoxColumn Header="Optimizer" ItemsSource="{x:Static ext:TrainingSchemeEditor.GetOptimizers}" SelectedItemBinding="{Binding Path=Optimizer, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <DataGridTextColumn Header="Momentum" Binding="{Binding Path=Momentum, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <DataGridTextColumn Header="Beta2" Binding="{Binding Path=Beta2, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <DataGridTextColumn Header="L2Penalty" Binding="{Binding Path=L2Penalty, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <DataGridTextColumn Header="Eps" Binding="{Binding Path=Eps, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <DataGridTextColumn Header="BatchSize" Binding="{Binding Path=BatchSize, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <DataGridTextColumn Header="Cycles" Binding="{Binding Path=Cycles, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <DataGridTextColumn Header="Epochs" Binding="{Binding Path=Epochs, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <DataGridTextColumn Header="EpochMultiplier" Binding="{Binding Path=EpochMultiplier, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <DataGridTextColumn Header="MaximumRate" Binding="{Binding Path=MaximumRate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <DataGridTextColumn Header="MinimumRate" Binding="{Binding Path=MinimumRate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <DataGridTextColumn Header="DecayAfterEpochs" Binding="{Binding Path=DecayAfterEpochs, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <DataGridTextColumn Header="DecayFactor" Binding="{Binding Path=DecayFactor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <DataGridCheckBoxColumn Header="HorizontalFlip" Binding="{Binding Path=HorizontalFlip, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                <DataGridCheckBoxColumn Header="VerticalFlip" Binding="{Binding Path=VerticalFlip, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <DataGridTextColumn Header="Dropout" Binding="{Binding Path=Dropout, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <DataGridTextColumn Header="Cutout" Binding="{Binding Path=Cutout, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <DataGridTextColumn Header="AutoAugment" Binding="{Binding Path=AutoAugment, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <DataGridTextColumn Header="ColorCast" Binding="{Binding Path=ColorCast, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <DataGridTextColumn Header="ColorAngle" Binding="{Binding Path=ColorAngle, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <DataGridTextColumn Header="Distortion" Binding="{Binding Path=Distortion, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <DataGridComboBoxColumn Header="Interpolation" ItemsSource="{x:Static ext:TrainingSchemeEditor.GetInterpolations}" SelectedItemBinding="{Binding Path=Interpolation, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                <DataGridTextColumn Header="Scaling" Binding="{Binding Path=Scaling, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <DataGridTextColumn Header="Rotation" Binding="{Binding Path=Rotation, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             </DataGrid.Columns>
         </DataGrid>
 
@@ -87,6 +88,6 @@
         <Button Content="Save" Height="24" HorizontalAlignment="Left" Margin="86,4,4,4" Name="buttonSave" Width="75" TabIndex="1" Click="ButtonSave_Click" Grid.Row="1" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" ClickMode="Release"/>
         <Button Content="Train" Height="24" HorizontalAlignment="Right" Margin="4,4,86,4" Name="buttonTrain" VerticalAlignment="Center" Width="75" IsDefault="True" TabIndex="2" Click="ButtonTrain_Click" Grid.Row="1" VerticalContentAlignment="Center" ClickMode="Release"/>
         <Button Content="Cancel" Height="24" HorizontalAlignment="Right" Margin="4" Name="buttonCancel" VerticalAlignment="Center" Width="75" IsCancel="True" TabIndex="3" Grid.Row="1" VerticalContentAlignment="Center" ClickMode="Release"/>
-        <Button Content="Insert" Height="24" Margin="4" x:Name="buttonInsert" Width="75" TabIndex="1" Click="ButtonInsert_Click" Grid.Row="1" HorizontalAlignment="Center" VerticalContentAlignment="Center" ClickMode="Release"/>
+        <Button Content="Insert" Height="24" Margin="4" x:Name="buttonInsert" Width="75" TabIndex="1" Click="ButtonInsert_Click" Grid.Row="1" HorizontalAlignment="Center" VerticalContentAlignment="Center" ClickMode="Release" IsEnabled="False"/>
     </Grid>
 </Window>

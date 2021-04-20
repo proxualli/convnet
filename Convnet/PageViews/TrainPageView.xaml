@@ -4,6 +4,8 @@
              xmlns:converters="clr-namespace:Convnet.Converters"
              xmlns:props="clr-namespace:Convnet.Properties"
              xmlns:oxy="clr-namespace:OxyPlot.Wpf;assembly=OxyPlot.Wpf"
+             xmlns:pvm="clr-namespace:Convnet.PageViewModels"
+             xmlns:ext="clr-namespace:Convnet.Dialogs"
              x:Class="Convnet.PageViews.TrainPageView"
              Foreground="White">
            

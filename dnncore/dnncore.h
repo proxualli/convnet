@@ -22,7 +22,7 @@ using namespace System::Threading::Tasks;
 using namespace System::Windows::Media;
 using namespace msclr::interop;
 
-namespace dnncore 
+namespace dnncore
 {
 	typedef float Float;
 	typedef size_t UInt;
@@ -253,7 +253,7 @@ namespace dnncore
 	};
 
 	[Serializable()]
-	public ref struct DNNTrainingRate : public System::ComponentModel::INotifyPropertyChanged
+	public ref class DNNTrainingRate : public INotifyPropertyChanged
 	{
 	public:
 		property DNNOptimizers Optimizer
@@ -544,15 +544,35 @@ namespace dnncore
 				OnPropertyChanged("Rotation");
 			}
 		}
-		property System::Array^ OptimizerList
+
+		DNNTrainingRate()
 		{
-			System::Array^ get() { return Enum::GetValues(DNNOptimizers::typeid); }
+			optimizer = DNNOptimizers::NAG;
+			momentum = 0.9f;
+			beta2 = 0.999f;
+			l2Penalty = 0.0005f;
+			eps = 1E-08f;
+			batchSize = 128;
+			cycles = 1;
+			epochs = 200;
+			epochMultiplier = 1;
+			maximumRate = 0.05f;
+			minimumRate = 0.0001f;
+			decayFactor = 1.0f;
+			decayAfterEpochs = 1;
+			horizontalFlip = true;
+			verticalFlip = false;
+			dropout = 0.0f;
+			cutout = 0.0f;
+			autoAugment = 0.0f;
+			colorCast = 0.0f;
+			colorAngle = 16;
+			distortion = 0.0f;
+			interpolation = DNNInterpolation::Cubic;
+			scaling = 10.0f;
+			rotation = 12.0f;
 		}
-		property System::Array^ InterpolationList
-		{
-			System::Array^ get() { return Enum::GetValues(DNNInterpolation::typeid); }
-		}
-		
+
 		DNNTrainingRate(DNNOptimizers optimizer, Float momentum, Float beta2, Float l2penalty, Float eps, UInt batchSize, UInt cycles, UInt epochs, UInt epochMultiplier, Float maximumRate, Float minimumRate, Float decayFactor, UInt decayAfterEpochs, bool horizontalFlip, bool verticalFlip, Float dropout, Float cutout, Float autoAugment, Float colorCast, UInt colorAngle, Float distortion, DNNInterpolation interpolation, Float scaling, Float rotation)
 		{
 			Optimizer = optimizer;
@@ -585,32 +605,32 @@ namespace dnncore
 		virtual event System::ComponentModel::PropertyChangedEventHandler^ PropertyChanged;
 
 		void OnPropertyChanged(String^ propertyName) { PropertyChanged(this, gcnew System::ComponentModel::PropertyChangedEventArgs(propertyName)); }
-
-	private:
-		DNNOptimizers optimizer = DNNOptimizers::NAG;
-		Float momentum = Float(0.9);
-		Float beta2 = Float(0.999);
-		Float l2Penalty = Float(0.0005);
-		Float eps = Float(1E-08);
-		UInt batchSize = 128;
-		UInt cycles = 1;
-		UInt epochs = 200;
-		UInt epochMultiplier = 1;
-		Float maximumRate = Float(0.05);
-		Float minimumRate = Float(0.0001);
-		UInt decayAfterEpochs = 1;
-		Float decayFactor = Float(1);
-		bool horizontalFlip = false;
-		bool verticalFlip = false;
-		Float dropout = Float(0);
-		Float cutout = Float(0);
-		Float autoAugment = Float(0);
-		Float colorCast = Float(0);
-		UInt colorAngle = 0;
-		Float distortion = Float(0);
-		DNNInterpolation interpolation = DNNInterpolation::Cubic;
-		Float scaling = Float(10);
-		Float rotation = Float(12);
+		
+		private:
+			DNNOptimizers optimizer = DNNOptimizers::NAG;
+			Float momentum = Float(0.9);
+			Float beta2 = Float(0.999);
+			Float l2Penalty = Float(0.0005);
+			Float eps = Float(1E-08);
+			UInt batchSize = 128;
+			UInt cycles = 1;
+			UInt epochs = 200;
+			UInt epochMultiplier = 1;
+			Float maximumRate = Float(0.05);
+			Float minimumRate = Float(0.0001);
+			UInt decayAfterEpochs = 1;
+			Float decayFactor = Float(1);
+			bool horizontalFlip = false;
+			bool verticalFlip = false;
+			Float dropout = Float(0);
+			Float cutout = Float(0);
+			Float autoAugment = Float(0);
+			Float colorCast = Float(0);
+			UInt colorAngle = 0;
+			Float distortion = Float(0);
+			DNNInterpolation interpolation = DNNInterpolation::Cubic;
+			Float scaling = Float(10);
+			Float rotation = Float(12);
 	};
 
 	[Serializable()]

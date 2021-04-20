@@ -5,7 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace Convnet.Dialogs
@@ -16,9 +15,8 @@ namespace Convnet.Dialogs
         public static IEnumerable<DNNInterpolation> GetInterpolations => Enum.GetValues(typeof(DNNInterpolation)).Cast<DNNInterpolation>();
         public string Path { get; set; }
         
-        public TrainPageViewModel trainingPageViewModel;
+        public TrainPageViewModel tpvm;
        
-
         private readonly Microsoft.Win32.OpenFileDialog openFileDialog = new Microsoft.Win32.OpenFileDialog();
         private readonly Microsoft.Win32.SaveFileDialog saveFileDialog = new Microsoft.Win32.SaveFileDialog();
 
@@ -27,11 +25,6 @@ namespace Convnet.Dialogs
             InitializeComponent();
         }
 
-        void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            DataGridRates.ItemsSource = (this.DataContext as TrainPageViewModel).TrainRates;
-        }
-       
         void ButtonInsert_Click(object sender, RoutedEventArgs e)
         {
             DataGridRates.CommitEdit();
@@ -39,7 +32,7 @@ namespace Convnet.Dialogs
             int selectedIndex = DataGridRates.SelectedIndex;
             if (selectedIndex != -1)
             {
-                trainingPageViewModel.TrainRates.Insert(selectedIndex, Settings.Default.TrainRate);
+                tpvm.TrainRates.Insert(selectedIndex, Settings.Default.TrainRate);
                 DataGridRates.SelectedIndex = selectedIndex;
                 DataGridRates.Focus();
             }
@@ -49,7 +42,7 @@ namespace Convnet.Dialogs
         {
             bool stochastic = false;
 
-            foreach (DNNTrainingRate rate in trainingPageViewModel.TrainRates)
+            foreach (DNNTrainingRate rate in tpvm.TrainRates)
             {
                 if (rate.BatchSize == 1)
                 {
@@ -58,7 +51,7 @@ namespace Convnet.Dialogs
                 }
             }
 
-            if (trainingPageViewModel.Model.BatchNormalizationUsed() && stochastic)
+            if (tpvm.Model.BatchNormalizationUsed() && stochastic)
             {
                 Xceed.Wpf.Toolkit.MessageBox.Show("Your model uses batch normalization.\r\nThe batch size cannot be equal to 1 in this case.", "Warning", MessageBoxButton.OK);
 
@@ -90,7 +83,7 @@ namespace Convnet.Dialogs
                     using (DNNDataSet.TrainingRatesDataTable table = new DNNDataSet.TrainingRatesDataTable())
                     {
                         table.BeginLoadData();
-                        foreach (DNNTrainingRate rate in trainingPageViewModel.TrainRates)
+                        foreach (DNNTrainingRate rate in tpvm.TrainRates)
                             table.AddTrainingRatesRow((int)rate.Optimizer, (double)rate.Beta2, (double)rate.Eps, (double)rate.MaximumRate, (int)rate.BatchSize, (int)rate.Cycles, (int)rate.Epochs, (int)rate.EpochMultiplier, (double)rate.MinimumRate, (double)rate.L2Penalty, (double)rate.Momentum, (double)rate.DecayFactor, (int)rate.DecayAfterEpochs, rate.HorizontalFlip, rate.VerticalFlip, (double)rate.Dropout, (double)rate.Cutout, (double)rate.AutoAugment, (double)rate.ColorCast, (int)rate.ColorAngle, (double)rate.Distortion, (int)rate.Interpolation, (double)rate.Scaling, (double)rate.Rotation);
                         table.EndLoadData();
                         table.WriteXml(fileName, System.Data.XmlWriteMode.WriteSchema);
@@ -130,10 +123,10 @@ namespace Convnet.Dialogs
                             {
                                 table.ReadXml(fileName);
 
-                                trainingPageViewModel.TrainRates.Clear();
+                                tpvm.TrainRates.Clear();
 
                                 foreach (DNNDataSet.TrainingRatesRow row in table)
-                                    trainingPageViewModel.TrainRates.Add(new DNNTrainingRate((DNNOptimizers)row.Optimizer, (float)row.Momentum, (float)row.Beta2, (float)row.L2Penalty,  (float)row.Eps, (uint)row.BatchSize, (uint)row.Cycles, (uint)row.Epochs, (uint)row.EpochMultiplier, (float)row.MaximumRate, (float)row.MinimumRate, (float)row.DecayFactor, (uint)row.DecayAfterEpochs, row.HorizontalFlip, row.VerticalFlip, (float)row.Dropout, (float)row.Cutout, (float)row.AutoAugment, (float)row.ColorCast, (uint)row.ColorAngle, (float)row.Distortion, (DNNInterpolation)row.Interpolation, (float)row.MaxScaling, (float)row.MaxRotation));
+                                    tpvm.TrainRates.Add(new DNNTrainingRate((DNNOptimizers)row.Optimizer, (float)row.Momentum, (float)row.Beta2, (float)row.L2Penalty,  (float)row.Eps, (uint)row.BatchSize, (uint)row.Cycles, (uint)row.Epochs, (uint)row.EpochMultiplier, (float)row.MaximumRate, (float)row.MinimumRate, (float)row.DecayFactor, (uint)row.DecayAfterEpochs, row.HorizontalFlip, row.VerticalFlip, (float)row.Dropout, (float)row.Cutout, (float)row.AutoAugment, (float)row.ColorCast, (uint)row.ColorAngle, (float)row.Distortion, (DNNInterpolation)row.Interpolation, (float)row.MaxScaling, (float)row.MaxRotation));
                             }
 
                             Mouse.OverrideCursor = null;
