@@ -571,7 +571,7 @@ public partial class DNNDataSet : global::System.Data.DataSet
 
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        public global::System.Data.DataColumn InputCutoutColumn
+        public global::System.Data.DataColumn CutoutColumn
         {
             get
             {
@@ -707,8 +707,8 @@ public partial class DNNDataSet : global::System.Data.DataSet
                     int DecayAfterEpochs,
                     bool HorizontalFlip,
                     bool VerticalFlip,
-                    double InputDropout,
-                    double InputCutout,
+                    double Dropout,
+                    double Cutout,
                     double AutoAugment,
                     double ColorCast,
                     int ColorAngle,
@@ -734,8 +734,8 @@ public partial class DNNDataSet : global::System.Data.DataSet
                     DecayAfterEpochs,
                     HorizontalFlip,
                     VerticalFlip,
-                    InputDropout,
-                    InputCutout,
+                    Dropout,
+                    Cutout,
                     AutoAugment,
                     ColorCast,
                     ColorAngle,
@@ -1289,11 +1289,11 @@ public partial class DNNDataSet : global::System.Data.DataSet
         {
             get
             {
-                return ((double)(this[this.tableTrainingRates.InputCutoutColumn]));
+                return ((double)(this[this.tableTrainingRates.CutoutColumn]));
             }
             set
             {
-                this[this.tableTrainingRates.InputCutoutColumn] = value;
+                this[this.tableTrainingRates.CutoutColumn] = value;
             }
         }
 

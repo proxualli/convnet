@@ -4,7 +4,6 @@ using Convnet.Properties;
 using dnncore;
 using OxyPlot;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
@@ -1047,7 +1046,7 @@ namespace Convnet.PageViewModels
             get
             {
                 if (Settings.Default.TrainRate == null)
-                    Settings.Default.TrainRate = new DNNTrainingRate(DNNOptimizers.NAG, 0.9f, 0.0005f, 0.999f, 1E-05f, 128, 1, 200, 1, 0.005f, 0.0001f, 1, 1, false, false, 0, 0, 0, 0, 0, 0, DNNInterpolation.Cubic, 10, 12);
+                    Settings.Default.TrainRate = new DNNTrainingRate(DNNOptimizers.NAG, 0.9f, 0.0005f, 0.999f, 1E-08f, 128, 1, 200, 1, 0.005f, 0.0001f, 1, 1, false, false, 0, 0, 0, 0, 0, 0, DNNInterpolation.Cubic, 10, 12);
 
                 return Settings.Default.TrainRate;
             }
@@ -1199,34 +1198,39 @@ namespace Convnet.PageViewModels
                         Model.AddLearningRateSGDR(true, Settings.Default.GoToEpoch, TrainRate);
                         Model.Optimizer = TrainRate.Optimizer;
                         Optimizer = TrainRate.Optimizer;
-                        
-                        // DNNDataSet.TrainingRatesDataTable table = new DNNDataSet.TrainingRatesDataTable();
-                        // table.BeginLoadData();
-                        // foreach (TrainingRate rate in Model.TrainingRates)
-                        //     table.AddTrainingRatesRow(
-                        //     (double)rate.Rate, 
-                        //     (int)rate.BatchSize,
-                        //     (int)rate.Cycles,
-                        //     (int)rate.Epochs,
-                        //     (int)rate.EpochMultiplier,
-                        //     (int)rate.SWAStart,
-                        //     (double)rate.MinimumRate,
-                        //     (double)rate.L2Penalty,
-                        //     (double)rate.Momentum,
-                        //     (double)rate.DecayFactor,
-                        //     (int)rate.DecayAfterEpochs,
-                        //     rate.HorizontalMirror,
-                        //     rate.VerticalMirror,
-                        //     (double)rate.Dropout,
-                        //     (double)rate.Cutout,
-                        //     (double)rate.ColorCast,
-                        //     (int)rate.ColorAngle,
-                        //     (double)rate.Distortion,
-                        //     (int)rate.Interpolation,
-                        //     (double)rate.Scaling,
-                        //     (double)rate.Rotation);
-                        // table.EndLoadData();
-                        // table.WriteXml("C:\\Users\\dhaen\\Documents\\rates.scheme-xml", System.Data.XmlWriteMode.WriteSchema);
+
+                        /*
+                        DNNDataSet.TrainingRatesDataTable table = new DNNDataSet.TrainingRatesDataTable();
+                        table.BeginLoadData();
+                        foreach (DNNTrainingRate rate in Model.TrainingRates)
+                            table.AddTrainingRatesRow(
+                                (int)rate.Optimizer,
+                                (double)rate.Beta2,
+                                (double)rate.Eps,
+                                (double)rate.MaximumRate,
+                                (int)rate.BatchSize,
+                                (int)rate.Cycles,
+                                (int)rate.Epochs,
+                                (int)rate.EpochMultiplier,
+                                (double)rate.MinimumRate,
+                                (double)rate.L2Penalty,
+                                (double)rate.Momentum,
+                                (double)rate.DecayFactor,
+                                (int)rate.DecayAfterEpochs,
+                                rate.HorizontalFlip,
+                                rate.VerticalFlip,
+                                (double)rate.Dropout,
+                                (double)rate.Cutout,
+                                (double)rate.AutoAugment,
+                                (double)rate.ColorCast,
+                                (int)rate.ColorAngle,
+                                (double)rate.Distortion,
+                                (int)rate.Interpolation,
+                                (double)rate.Scaling,
+                                (double)rate.Rotation);
+                        table.EndLoadData();
+                        table.WriteXml(StorageDirectory + @"rates.scheme-xml", System.Data.XmlWriteMode.WriteSchema);
+                        */
 
                         EpochDuration = TimeSpan.Zero;
 
@@ -1381,7 +1385,7 @@ namespace Convnet.PageViewModels
                     foreach (DNNTrainingRate rate in TrainRates)
                     {
                         Model.AddLearningRate(first, Settings.Default.GoToEpoch, rate);
-                       // Model.AddLearningRate(first, Settings.Default.GoToEpoch, new DNNTrainingRate(rate.Optimizer, rate.Momentum, rate.L2Penalty, rate.Beta2, rate.Eps, rate.BatchSize, rate.Cycles, rate.Epochs, rate.EpochMultiplier, rate.MaximumRate, rate.MinimumRate, rate.DecayFactor, rate.DecayAfterEpochs, rate.HorizontalFlip, rate.VerticalFlip, rate.Dropout, rate.Cutout, rate.AutoAugment, rate.ColorCast, rate.ColorAngle, rate.Distortion, rate.Interpolation, rate.Scaling, rate.Rotation));
+                        //Model.AddLearningRate(first, Settings.Default.GoToEpoch, new DNNTrainingRate(rate.Optimizer, rate.Momentum, rate.Beta2, rate.L2Penalty, rate.Eps, rate.BatchSize, rate.Cycles, rate.Epochs, rate.EpochMultiplier, rate.MaximumRate, rate.MinimumRate, rate.DecayFactor, rate.DecayAfterEpochs, rate.HorizontalFlip, rate.VerticalFlip, rate.Dropout, rate.Cutout, rate.AutoAugment, rate.ColorCast, rate.ColorAngle, rate.Distortion, rate.Interpolation, rate.Scaling, rate.Rotation));
                         first = false;
                     }
 
