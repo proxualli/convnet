@@ -88,6 +88,6 @@
         <Button Content="Save" Height="24" HorizontalAlignment="Left" Margin="86,4,4,4" Name="buttonSave" Width="75" TabIndex="1" Click="ButtonSave_Click" Grid.Row="1" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" ClickMode="Release"/>
         <Button Content="Train" Height="24" HorizontalAlignment="Right" Margin="4,4,86,4" Name="buttonTrain" VerticalAlignment="Center" Width="75" IsDefault="True" TabIndex="2" Click="ButtonTrain_Click" Grid.Row="1" VerticalContentAlignment="Center" ClickMode="Release"/>
         <Button Content="Cancel" Height="24" HorizontalAlignment="Right" Margin="4" Name="buttonCancel" VerticalAlignment="Center" Width="75" IsCancel="True" TabIndex="3" Grid.Row="1" VerticalContentAlignment="Center" ClickMode="Release"/>
-        <Button Content="Insert" Height="24" Margin="4" x:Name="buttonInsert" Width="75" TabIndex="1" Click="ButtonInsert_Click" Grid.Row="1" HorizontalAlignment="Center" VerticalContentAlignment="Center" ClickMode="Release" IsEnabled="False"/>
+        <!--<Button Content="Insert" Height="24" Margin="4" x:Name="buttonInsert" Width="75" TabIndex="1" Click="ButtonInsert_Click" Grid.Row="1" HorizontalAlignment="Center" VerticalContentAlignment="Center" ClickMode="Release" IsEnabled="False"/>-->
     </Grid>
 </Window>

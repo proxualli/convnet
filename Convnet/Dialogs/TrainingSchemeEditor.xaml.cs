@@ -25,18 +25,18 @@ namespace Convnet.Dialogs
             InitializeComponent();
         }
 
-        void ButtonInsert_Click(object sender, RoutedEventArgs e)
-        {
-            DataGridRates.CommitEdit();
+        //void ButtonInsert_Click(object sender, RoutedEventArgs e)
+        //{
+        //    DataGridRates.CommitEdit();
             
-            int selectedIndex = DataGridRates.SelectedIndex;
-            if (selectedIndex != -1)
-            {
-                tpvm.TrainRates.Insert(selectedIndex, Settings.Default.TrainRate);
-                DataGridRates.SelectedIndex = selectedIndex;
-                DataGridRates.Focus();
-            }
-        }
+        //    int selectedIndex = DataGridRates.SelectedIndex;
+        //    if (selectedIndex != -1)
+        //    {
+        //        tpvm.TrainRates.Insert(selectedIndex, Settings.Default.TrainRate);
+        //        DataGridRates.SelectedIndex = selectedIndex;
+        //        DataGridRates.Focus();
+        //    }
+        //}
 
         void ButtonTrain_Click(object sender, RoutedEventArgs e)
         {
