@@ -89,7 +89,6 @@ namespace Convnet.PageViewModels
                 case DNNStates.Training:
                     ProgressValue = (double)(SampleIndex + 1ul) / Model.AdjustedTrainingSamplesCount;
                     ProgressBarMaximum = Model.AdjustedTrainingSamplesCount;
-                    Model.Optimizer = Optimizer;
                     break;
 
                 case DNNStates.Testing:

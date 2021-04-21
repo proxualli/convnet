@@ -186,10 +186,13 @@ namespace Convnet.PageViewModels
             {
                 case DNNStates.Training:
                     {
-                        Optimizer = Optim;
-                        Model.Optimizer = Optim;
-                        Settings.Default.Optimizer = (int)Optim;
-                        Settings.Default.Save();
+                        if (Optimizer != Optim)
+                        {
+                            Optimizer = Optim;
+                            Model.Optimizer = Optim;
+                            Settings.Default.Optimizer = (int)Optim;
+                            Settings.Default.Save();
+                        }
 
                         sb.Append("<Span><Bold>Training</Bold></Span><LineBreak/>");
                         sb.Append("<Span>");
