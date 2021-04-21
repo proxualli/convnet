@@ -20,8 +20,7 @@
         MinWidth="300" 
         MinHeight="200"
         WindowStartupLocation="CenterScreen" 
-        ResizeMode="CanResize" Background="{DynamicResource DisabledBorderBrush}"
-        Loaded="Window_Loaded">
+        ResizeMode="CanResize" Background="{DynamicResource DisabledBorderBrush}">
 
     <Window.Resources>
         <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
@@ -168,15 +167,13 @@
                 </Binding>
             </TextBox.Text>
         </xctk:AutoSelectTextBox>
-        <xctk:AutoSelectTextBox ContextMenu="{StaticResource MyContextMenu}" HorizontalAlignment="Left" Width="70" Margin="444,-1,0,1" Grid.Row="1" x:Name="textBoxGotoEpoch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Validation.ErrorTemplate="{StaticResource validationTemplate}" Style="{StaticResource textBoxInError}" AllowDrop="False" MaxLines="1" AutoWordSelection="True" BorderThickness="1" SnapsToDevicePixels="True" BorderBrush="DarkGray" AutoSelectBehavior="OnFocus" AutoMoveFocus="True" FontSize="14" TabIndex="0" Background="{DynamicResource NormalBrush}">
+        <xctk:AutoSelectTextBox ContextMenu="{StaticResource MyContextMenu}" HorizontalAlignment="Left" Width="70" Margin="444,0,0,0" Grid.Row="1" x:Name="textBoxGotoEpoch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Validation.ErrorTemplate="{StaticResource validationTemplate}" Style="{StaticResource textBoxInError}" AllowDrop="False" MaxLines="1" AutoWordSelection="True" BorderThickness="1" SnapsToDevicePixels="True" BorderBrush="DarkGray" AutoSelectBehavior="OnFocus" AutoMoveFocus="True" FontSize="14" TabIndex="0" Background="{DynamicResource NormalBrush}">
             <Binding Path="GotoEpoch" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
                 <Binding.ValidationRules>
                     <c:UIntRangeRule Min="1" Max="10000"/>
                 </Binding.ValidationRules>
             </Binding>
         </xctk:AutoSelectTextBox>
-        <ComboBox HorizontalAlignment="Left" Margin="525,0,0,0" Grid.Row="1" VerticalAlignment="Center" Width="100"/>
-
-        <!--<Button Content="Insert" Height="24" Margin="4" x:Name="buttonInsert" Width="75" TabIndex="1" Click="ButtonInsert_Click" Grid.Row="1" HorizontalAlignment="Center" VerticalContentAlignment="Center" ClickMode="Release" IsEnabled="False"/>-->
+        <CheckBox x:Name="CheckBoxSGDR" Content="SGDR" HorizontalAlignment="Center"  Grid.Row="1" VerticalAlignment="Center" Width="100" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" FontSize="14" Checked="CheckBoxSGDR_Checked" ToolTip="Stochastic Gradient Descent with Warm Restarts"/>
     </Grid>
 </Window>

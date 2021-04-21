@@ -25,11 +25,6 @@ namespace Convnet.Dialogs
             InitializeComponent();
         }
 
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            //textBoxGotoEpoch.Text = Properties.Settings.Default.GoToEpoch.ToString();
-        }
-
         bool IsValid(DependencyObject node)
         {
             // Check if dependency object was passed
@@ -61,19 +56,6 @@ namespace Convnet.Dialogs
             // All dependency objects are valid
             return true;
         }
-
-        //void ButtonInsert_Click(object sender, RoutedEventArgs e)
-        //{
-        //    DataGridRates.CommitEdit();
-
-        //    int selectedIndex = DataGridRates.SelectedIndex;
-        //    if (selectedIndex != -1)
-        //    {
-        //        tpvm.TrainRates.Insert(selectedIndex, Settings.Default.TrainRate);
-        //        DataGridRates.SelectedIndex = selectedIndex;
-        //        DataGridRates.Focus();
-        //    }
-        //}
 
         private void ButtonCancel_Click(object sender, RoutedEventArgs e)
         {
@@ -116,8 +98,7 @@ namespace Convnet.Dialogs
 
                     Properties.Settings.Default.GotoEpoch = gotoEpoch;
                     Properties.Settings.Default.Save();
-                    //tpvm.GotoEpoch = gotoEpoch;
-
+                    
                     DialogResult = true;
                     this.Close();
                 }
@@ -210,6 +191,11 @@ namespace Convnet.Dialogs
                     stop = true;
             }
             Mouse.OverrideCursor = null;
+        }
+
+        private void CheckBoxSGDR_Checked(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }
