@@ -6,7 +6,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Forms;
 using System.Windows.Input;
+using Cursors = System.Windows.Input.Cursors;
 
 namespace Convnet.Dialogs
 {
@@ -24,6 +26,13 @@ namespace Convnet.Dialogs
         public TrainingSchemeEditor()
         {
             InitializeComponent();
+        }
+
+        public static void PostitionWindowOnScreen(Window window, double horizontalShift = 0, double verticalShift = 0)
+        {
+            Screen screen = Screen.FromHandle(new System.Windows.Interop.WindowInteropHelper(window).Handle);
+            window.Left = screen.Bounds.X + ((screen.Bounds.Width - window.ActualWidth) / 2) + horizontalShift;
+            window.Top = screen.Bounds.Y + ((screen.Bounds.Height - window.ActualHeight) / 2) + verticalShift;
         }
 
         bool IsValid(DependencyObject node)
@@ -201,24 +210,27 @@ namespace Convnet.Dialogs
 
         private void CheckBoxSGDR_Checked(object sender, RoutedEventArgs e)
         {
-            DataGridRates.Columns[6].Visibility = tpvm.SGDR ? Visibility.Visible : Visibility.Collapsed;
-            DataGridRates.Columns[8].Visibility = tpvm.SGDR ? Visibility.Visible : Visibility.Collapsed;
-            textBoxGotoCycle.Visibility = tpvm.SGDR ? Visibility.Visible : Visibility.Collapsed;
-            LabelGotoCycle.Visibility = tpvm.SGDR ? Visibility.Visible : Visibility.Collapsed;
+            ChangeSGDR();
         }
 
         private void CheckBoxSGDR_Unchecked(object sender, RoutedEventArgs e)
         {
-            DataGridRates.Columns[6].Visibility = tpvm.SGDR ? Visibility.Visible : Visibility.Collapsed;
-            DataGridRates.Columns[8].Visibility = tpvm.SGDR ? Visibility.Visible : Visibility.Collapsed;
-            textBoxGotoCycle.Visibility = tpvm.SGDR? Visibility.Visible: Visibility.Collapsed;
-            LabelGotoCycle.Visibility = tpvm.SGDR ? Visibility.Visible : Visibility.Collapsed;
+            ChangeSGDR();
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            ChangeSGDR();
+        }
+
+        private void ChangeSGDR()
+        {
             DataGridRates.Columns[6].Visibility = tpvm.SGDR ? Visibility.Visible : Visibility.Collapsed;
             DataGridRates.Columns[8].Visibility = tpvm.SGDR ? Visibility.Visible : Visibility.Collapsed;
+            
+            //var width = tpvm.SGDR ? DataGridRates.Columns[6].ActualWidth + DataGridRates.Columns[8].ActualWidth : 0;
+            //PostitionWindowOnScreen(this, -width, 0);
+
             textBoxGotoCycle.Visibility = tpvm.SGDR ? Visibility.Visible : Visibility.Collapsed;
             LabelGotoCycle.Visibility = tpvm.SGDR ? Visibility.Visible : Visibility.Collapsed;
         }

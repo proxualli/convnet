@@ -17,11 +17,9 @@
         d:DesignWidth="800" 
         SizeToContent="WidthAndHeight" 
         ShowInTaskbar="False" 
-        MinWidth="300" 
-        MinHeight="200"
         WindowStartupLocation="CenterScreen" 
-        ResizeMode="CanResize" Background="{DynamicResource DisabledBorderBrush}"
-        Loaded="Window_Loaded">
+        ResizeMode="CanResizeWithGrip" Background="{DynamicResource DisabledBorderBrush}"
+        Loaded="Window_Loaded" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch">
 
     <Window.Resources>
         <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
