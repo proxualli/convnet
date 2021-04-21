@@ -20,7 +20,8 @@
         MinWidth="300" 
         MinHeight="200"
         WindowStartupLocation="CenterScreen" 
-        ResizeMode="CanResize" Background="{DynamicResource DisabledBorderBrush}">
+        ResizeMode="CanResize" Background="{DynamicResource DisabledBorderBrush}"
+        Loaded="Window_Loaded">
 
     <Window.Resources>
         <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
@@ -130,9 +131,9 @@
                 <DataGridTextColumn Header="L2Penalty" Binding="{Binding Path=L2Penalty, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 <DataGridTextColumn Header="Eps" Binding="{Binding Path=Eps, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 <DataGridTextColumn Header="BatchSize" Binding="{Binding Path=BatchSize, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                <DataGridTextColumn Header="Cycles" Binding="{Binding Path=Cycles, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Visibility="{Binding ElementName=CheckBoxSGDR, Mode=OneWayToSource, NotifyOnSourceUpdated=True, UpdateSourceTrigger=PropertyChanged, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                <DataGridTextColumn Header="Cycles" Binding="{Binding Path=Cycles, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 <DataGridTextColumn Header="Epochs" Binding="{Binding Path=Epochs, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                <DataGridTextColumn Header="EpochMultiplier" Binding="{Binding Path=EpochMultiplier, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Visibility="{Binding ElementName=CheckBoxSGDR, Mode=OneWayToSource, NotifyOnSourceUpdated=True, UpdateSourceTrigger=PropertyChanged, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                <DataGridTextColumn Header="EpochMultiplier" Binding="{Binding Path=EpochMultiplier, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 <DataGridTextColumn Header="Max.Rate" Binding="{Binding Path=MaximumRate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 <DataGridTextColumn Header="Min.Rate" Binding="{Binding Path=MinimumRate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 <DataGridTextColumn Header="DecayAfterEpochs" Binding="{Binding Path=DecayAfterEpochs, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
@@ -151,7 +152,7 @@
             </DataGrid.Columns>
         </DataGrid>
 
-        <Label Content="Goto Cycle:" FontFamily="Consolas" FontSize="14" HorizontalAlignment="Left" Margin="168,0,0,0" Grid.Row="1" VerticalAlignment="Center"/>
+        <Label x:Name="LabelGotoCycle" Content="Goto Cycle:" FontFamily="Consolas" FontSize="14" HorizontalAlignment="Left" Margin="168,0,0,0" Grid.Row="1" VerticalAlignment="Center"/>
         <Label Content="Goto Epoch:" FontFamily="Consolas" FontSize="14" HorizontalAlignment="Left" Margin="344,0,0,0" Grid.Row="1" VerticalAlignment="Center"/>
 
         <Button Content="Load" Height="24" HorizontalAlignment="Left" Margin="4" Name="buttonLoad" VerticalAlignment="Center" Width="75" TabIndex="2" Click="ButtonLoad_Click" Grid.Row="1" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" ClickMode="Release"/>
@@ -162,7 +163,7 @@
             <TextBox.Text>
                 <Binding Path="GotoCycle" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
                     <Binding.ValidationRules>
-                        <c:UIntRangeRule Min="1" Max="10000"/>
+                        <c:UIntRangeRule Min="1" Max="1000000"/>
                     </Binding.ValidationRules>
                 </Binding>
             </TextBox.Text>
@@ -170,7 +171,7 @@
         <xctk:AutoSelectTextBox ContextMenu="{StaticResource MyContextMenu}" HorizontalAlignment="Left" Width="70" Margin="444,0,0,0" Grid.Row="1" x:Name="textBoxGotoEpoch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Validation.ErrorTemplate="{StaticResource validationTemplate}" Style="{StaticResource textBoxInError}" AllowDrop="False" MaxLines="1" AutoWordSelection="True" BorderThickness="1" SnapsToDevicePixels="True" BorderBrush="DarkGray" AutoSelectBehavior="OnFocus" AutoMoveFocus="True" FontSize="14" TabIndex="0" Background="{DynamicResource NormalBrush}">
             <Binding Path="GotoEpoch" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
                 <Binding.ValidationRules>
-                    <c:UIntRangeRule Min="1" Max="10000"/>
+                    <c:UIntRangeRule Min="1" Max="1000000"/>
                 </Binding.ValidationRules>
             </Binding>
         </xctk:AutoSelectTextBox>

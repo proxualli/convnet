@@ -201,12 +201,26 @@ namespace Convnet.Dialogs
 
         private void CheckBoxSGDR_Checked(object sender, RoutedEventArgs e)
         {
-           //MessageBox.Show(tpvm.SGDR.ToString());
+            DataGridRates.Columns[6].Visibility = tpvm.SGDR ? Visibility.Visible : Visibility.Collapsed;
+            DataGridRates.Columns[8].Visibility = tpvm.SGDR ? Visibility.Visible : Visibility.Collapsed;
+            textBoxGotoCycle.Visibility = tpvm.SGDR ? Visibility.Visible : Visibility.Collapsed;
+            LabelGotoCycle.Visibility = tpvm.SGDR ? Visibility.Visible : Visibility.Collapsed;
         }
 
         private void CheckBoxSGDR_Unchecked(object sender, RoutedEventArgs e)
         {
-            //MessageBox.Show(tpvm.SGDR.ToString());
+            DataGridRates.Columns[6].Visibility = tpvm.SGDR ? Visibility.Visible : Visibility.Collapsed;
+            DataGridRates.Columns[8].Visibility = tpvm.SGDR ? Visibility.Visible : Visibility.Collapsed;
+            textBoxGotoCycle.Visibility = tpvm.SGDR? Visibility.Visible: Visibility.Collapsed;
+            LabelGotoCycle.Visibility = tpvm.SGDR ? Visibility.Visible : Visibility.Collapsed;
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            DataGridRates.Columns[6].Visibility = tpvm.SGDR ? Visibility.Visible : Visibility.Collapsed;
+            DataGridRates.Columns[8].Visibility = tpvm.SGDR ? Visibility.Visible : Visibility.Collapsed;
+            textBoxGotoCycle.Visibility = tpvm.SGDR ? Visibility.Visible : Visibility.Collapsed;
+            LabelGotoCycle.Visibility = tpvm.SGDR ? Visibility.Visible : Visibility.Collapsed;
         }
     }
 }
