@@ -583,10 +583,13 @@ namespace dnn
 
 		void SetOptimizer(const Optimizers optimizer)
 		{
-			for (auto &layer : Layers)
-				layer->SetOptimizer(optimizer);
+			if (optimizer != Optimizer)
+			{
+				for (auto& layer : Layers)
+					layer->SetOptimizer(optimizer);
 
-			Optimizer = optimizer;
+				Optimizer = optimizer;
+			}
 		}
 
 		void ResetOptimizer()

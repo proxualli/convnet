@@ -980,8 +980,11 @@ namespace dnncore
 
 	void Model::SetOptimizer(DNNOptimizers strategy)
 	{
-		DNNSetOptimizer(static_cast<dnn::Optimizers>(strategy));
-		Optimizer = strategy;
+		if (strategy != Optimizer)
+		{
+			DNNSetOptimizer(static_cast<dnn::Optimizers>(strategy));
+			Optimizer = strategy;
+		}
 	}
 
 	void Model::ResetOptimizer()
