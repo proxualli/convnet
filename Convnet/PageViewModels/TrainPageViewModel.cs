@@ -190,8 +190,7 @@ namespace Convnet.PageViewModels
                         {
                             Optimizer = Optim;
                             Model.Optimizer = Optim;
-                            Settings.Default.Optimizer = (int)Optim;
-                            Settings.Default.Save();
+                            
                         }
 
                         sb.Append("<Span><Bold>Training</Bold></Span><LineBreak/>");
@@ -1229,10 +1228,10 @@ namespace Convnet.PageViewModels
                         TrainRate = dialog.Rate;
                         Model.AddLearningRateSGDR(true, GotoEpoch, TrainRate);
                         
+                        Model.SetOptimizer(TrainRate.Optimizer);
                         Model.Optimizer = TrainRate.Optimizer;
                         Optimizer = TrainRate.Optimizer;
-                        Model.SetOptimizer(TrainRate.Optimizer);
-                        
+
                         /*
                         DNNDataSet.TrainingRatesDataTable table = new DNNDataSet.TrainingRatesDataTable();
                         table.BeginLoadData();
@@ -1427,10 +1426,11 @@ namespace Convnet.PageViewModels
 
                     RefreshTimer = new Timer(1000 * Settings.Default.RefreshInterval.Value);
                     RefreshTimer.Elapsed += new ElapsedEventHandler(RefreshTimer_Elapsed);
-                    
+
                     Model.SetOptimizer(TrainRates[0].Optimizer);
+                    Model.Optimizer = TrainRates[0].Optimizer;
                     Optimizer = TrainRates[0].Optimizer;
-                    
+
                     Model.Start(true);
                     RefreshTimer.Start();
                     CommandToolBar[0].Visibility = Visibility.Collapsed;
