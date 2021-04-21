@@ -174,14 +174,12 @@ namespace Convnet.PageViewModels
                 }
 
                 SelectedIndex = TrainingLog.Count - 1;
-                Settings.Default.Optimizer = (int)Optimizer;
-                Settings.Default.Save();
-
+              
                 RefreshTrainingPlot();
             }, DispatcherPriority.Render);
         }
 
-        void TrainProgress(UInt BatchSize, UInt Cycle, UInt TotalCycles, UInt Epoch, UInt TotalEpochs, bool HorizontalFlip, bool VerticalFlip, Float Dropout, Float Cutout, Float AutoAugment, Float ColorCast, UInt ColorAngle, Float Distortion, DNNInterpolation Interpolation, Float Scaling, Float Rotation, UInt SampleIndex, Float Rate, Float Momentum, Float L2Penalty, Float AvgTrainLoss, Float TrainErrorPercentage, Float TrainAccuracy, UInt TrainErrors, Float AvgTestLoss, Float TestErrorPercentage, Float TestAccuracy, UInt TestErrors, DNNStates State, DNNTaskStates TaskState)
+        void TrainProgress(DNNOptimizers Optim, UInt BatchSize, UInt Cycle, UInt TotalCycles, UInt Epoch, UInt TotalEpochs, bool HorizontalFlip, bool VerticalFlip, Float Dropout, Float Cutout, Float AutoAugment, Float ColorCast, UInt ColorAngle, Float Distortion, DNNInterpolation Interpolation, Float Scaling, Float Rotation, UInt SampleIndex, Float Rate, Float Momentum, Float L2Penalty, Float AvgTrainLoss, Float TrainErrorPercentage, Float TrainAccuracy, UInt TrainErrors, Float AvgTestLoss, Float TestErrorPercentage, Float TestAccuracy, UInt TestErrors, DNNStates State, DNNTaskStates TaskState)
         {
             DNNInterpolation interpolation = (DNNInterpolation)Interpolation;
 
@@ -190,6 +188,11 @@ namespace Convnet.PageViewModels
             {
                 case DNNStates.Training:
                     {
+                        Optimizer = Optim;
+                        Model.Optimizer = Optim;
+                        Settings.Default.Optimizer = (int)Optimizer;
+                        Settings.Default.Save();
+
                         sb.Append("<Span><Bold>Training</Bold></Span><LineBreak/>");
                         sb.Append("<Span>");
                         switch (Model.Optimizer)

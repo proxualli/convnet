@@ -82,13 +82,14 @@ namespace Convnet.PageViewModels
                 ApplicationCommands.SaveAs.Execute(null, null);
         }
 
-        void TrainProgress(UInt BatchSize, UInt Cycle, UInt TotalCycles, UInt Epoch, UInt TotalEpochs, bool HorizontalMirror, bool VerticalMirror, Float inputDropOut, Float inputCutout, Float AutoAugment, Float ColorCast, UInt ColorRadius, Float Distortion, DNNInterpolation Interpolation, Float Scaling, Float Rotation, UInt SampleIndex, Float Rate, Float Momentum, Float L2Penalty, Float AvgTrainLoss, Float TrainErrorPercentage, Float TrainAccuracy, UInt TrainErrors, Float AvgTestLoss, Float TestErrorPercentage, Float Accuracy, UInt64 TestErrors, DNNStates NetworkState, DNNTaskStates TaskState)
+        void TrainProgress(DNNOptimizers Optimizer, UInt BatchSize, UInt Cycle, UInt TotalCycles, UInt Epoch, UInt TotalEpochs, bool HorizontalMirror, bool VerticalMirror, Float inputDropOut, Float inputCutout, Float AutoAugment, Float ColorCast, UInt ColorRadius, Float Distortion, DNNInterpolation Interpolation, Float Scaling, Float Rotation, UInt SampleIndex, Float Rate, Float Momentum, Float L2Penalty, Float AvgTrainLoss, Float TrainErrorPercentage, Float TrainAccuracy, UInt TrainErrors, Float AvgTestLoss, Float TestErrorPercentage, Float Accuracy, UInt64 TestErrors, DNNStates NetworkState, DNNTaskStates TaskState)
         {
             switch (NetworkState)
             {
                 case DNNStates.Training:
                     ProgressValue = (double)(SampleIndex + 1ul) / Model.AdjustedTrainingSamplesCount;
                     ProgressBarMaximum = Model.AdjustedTrainingSamplesCount;
+                    Model.Optimizer = Optimizer;
                     break;
 
                 case DNNStates.Testing:
@@ -101,7 +102,7 @@ namespace Convnet.PageViewModels
                     SampleIndex = 0ul;
                     break;
             }
-
+           
             ProgressBarValue = SampleIndex;
             Duration = Model.DurationString;
             SampleRate = Model.SampleRate.ToString("N1");
