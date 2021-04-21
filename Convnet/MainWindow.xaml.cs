@@ -277,7 +277,7 @@ namespace Convnet
         {
             ApplicationHelper.OpenBrowser("https://github.com/zamir1001/convnet.git");
         }
-
+        
         void HelpCmdCanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = true;

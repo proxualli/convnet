@@ -40,6 +40,7 @@ namespace Convnet.PageViewModels
         private bool showSample;
         private ObservableCollection<DNNTrainingRate> trainRates;
         private int selectedIndex = -1;
+        private bool sgdr;
         private uint gotoCycle = 1;
         private uint gotoEpoch = 1;
         private int selectedCostIndex = 0;
@@ -95,6 +96,8 @@ namespace Convnet.PageViewModels
             showWeights = false;
             showWeightsSnapshot = false;
 
+            sgdr = Settings.Default.SGDR;
+            gotoCycle = Settings.Default.GotoEpoch;
             gotoEpoch = Settings.Default.GotoEpoch;
             showTrainingPlot = Settings.Default.ShowTrainingPlot;
             currentPlotType = (PlotType)Settings.Default.PlotType;
@@ -801,6 +804,23 @@ namespace Convnet.PageViewModels
             OnPropertyChanged(nameof(PointsTest));
         }
 
+        public bool SGDR
+        {
+            get { return sgdr; }
+            set
+            {
+                if (sgdr == value)
+                    return;
+
+                sgdr = value;
+
+                Settings.Default.SGDR = sgdr;
+                Settings.Default.Save();
+
+                OnPropertyChanged(nameof(SGDR));
+            }
+        }
+
         public uint GotoCycle
         {
             get { return gotoCycle; }
@@ -810,6 +830,10 @@ namespace Convnet.PageViewModels
                     return;
 
                 gotoCycle = value;
+
+                Settings.Default.GotoCycle = gotoCycle;
+                Settings.Default.Save();
+
                 OnPropertyChanged(nameof(GotoCycle));
             }
         }
@@ -823,6 +847,10 @@ namespace Convnet.PageViewModels
                     return;
 
                 gotoEpoch = value;
+
+                Settings.Default.GotoEpoch = gotoEpoch;
+                Settings.Default.Save();
+
                 OnPropertyChanged(nameof(GotoEpoch));
             }
         }

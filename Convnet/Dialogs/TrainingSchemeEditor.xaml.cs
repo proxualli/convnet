@@ -1,4 +1,5 @@
-﻿using Convnet.PageViewModels;
+﻿using Convnet.Common;
+using Convnet.PageViewModels;
 using dnncore;
 using System;
 using System.Collections.Generic;
@@ -193,9 +194,19 @@ namespace Convnet.Dialogs
             Mouse.OverrideCursor = null;
         }
 
+        private void ButtonSGDRHelp_Click(object sender, RoutedEventArgs e)
+        {
+            ApplicationHelper.OpenBrowser("https://arxiv.org/abs/1608.03983");
+        }
+
         private void CheckBoxSGDR_Checked(object sender, RoutedEventArgs e)
         {
+           //MessageBox.Show(tpvm.SGDR.ToString());
+        }
 
+        private void CheckBoxSGDR_Unchecked(object sender, RoutedEventArgs e)
+        {
+            //MessageBox.Show(tpvm.SGDR.ToString());
         }
     }
 }

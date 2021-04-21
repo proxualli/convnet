@@ -111,6 +111,21 @@ namespace Convnet.Properties
 
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool SGDR
+        {
+            get
+            {
+                return ((bool)(this["SGDR"]));
+            }
+            set
+            {
+                this["SGDR"] = value;
+            }
+        }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("1")]
         public uint GotoCycle
         {
