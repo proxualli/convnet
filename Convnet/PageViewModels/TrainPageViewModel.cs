@@ -190,7 +190,6 @@ namespace Convnet.PageViewModels
                         {
                             Optimizer = Optim;
                             Model.Optimizer = Optim;
-                            
                         }
 
                         sb.Append("<Span><Bold>Training</Bold></Span><LineBreak/>");
