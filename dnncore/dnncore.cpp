@@ -852,12 +852,13 @@ namespace dnncore
 			ColorCast = *colorCast;
 			ColorAngle = *colorAngle;
 			Distortion = *distortion;
-			Interpolation = static_cast<DNNInterpolation>(*interpolation);
+			Interpolation = static_cast<dnncore::DNNInterpolation>(*interpolation);
 			Scaling = *scaling;
 			Rotation = *rotation;
 			SampleIndex = *sampleIndex;
 			Rate = *rate;
-			Optimizer = static_cast<DNNOptimizers>(*optimizer);
+			if (Optimizer != static_cast<dnncore::DNNOptimizers>(*optimizer))
+				Optimizer = static_cast<dnncore::DNNOptimizers>(*optimizer);
 			Momentum = *momentum;
 			L2Penalty = *l2Penalty;
 			BatchSize = *batchSize;
