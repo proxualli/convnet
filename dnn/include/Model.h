@@ -164,7 +164,7 @@ namespace dnn
 			Format(dnnl::memory::format_tag::any),
 			PersistOptimizer(false),
 			DisableLocking(true),
-			Optimizer(Optimizers::AdaDelta),
+			Optimizer(Optimizers::SGD),
 			TaskState(TaskStates::Stopped),
 			State(States::Idle),
 			Dataset(Datasets::cifar10),			// Dataset
@@ -1564,8 +1564,7 @@ namespace dnn
 
 			if (GetFileSize(fileName) == GetWeightsSize(persistOptimizer, optimizer))
 			{
-				if (optimizer != Optimizer)
-					SetOptimizer(optimizer);
+				SetOptimizer(optimizer);
 
 				auto is = std::ifstream(fileName, std::ios::in | std::ios::binary);
 
