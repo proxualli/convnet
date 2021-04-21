@@ -123,39 +123,7 @@
             <RowDefinition Height="40" />
         </Grid.RowDefinitions>
 
-        <DataGrid ItemsSource="{Binding TrainRates}" CanUserAddRows="True" CanUserDeleteRows="True" AutoGenerateColumns="False" HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible" Height="Auto" HorizontalAlignment="Stretch" Margin="6" x:Name="DataGridRates" VerticalAlignment="Stretch" Width="Auto" TabIndex="4" CanUserSortColumns="False" GridLinesVisibility="Horizontal" HorizontalGridLinesBrush="#FFAAE4F5" VerticalContentAlignment="Center" HorizontalContentAlignment="Stretch" SelectionMode="Single" MinHeight="0" MinWidth="0" CanUserResizeColumns="False" FontFamily="Consolas" FontSize="14" CanUserResizeRows="False" BorderThickness="0" Foreground="{DynamicResource {x:Static SystemColors.DesktopBrushKey}}" CanUserReorderColumns="False" IsSynchronizedWithCurrentItem="True" SelectionUnit="FullRow">
-            <DataGrid.ContextMenu >
-                <ContextMenu DataContext="{Binding}">
-                    <MenuItem Header="_Cut" Command="ApplicationCommands.Cut">
-                        <MenuItem.Icon>
-                            <Image Source="/Convnet;component/Resources/Cut.png" />
-                        </MenuItem.Icon>
-                    </MenuItem>
-                    <MenuItem Header="Co_py" Command="ApplicationCommands.Copy">
-                        <MenuItem.Icon>
-                            <Image Source="/Convnet;component/Resources/Copy.png" />
-                        </MenuItem.Icon>
-                    </MenuItem>
-                    <MenuItem Header="_Paste" Command="ApplicationCommands.Paste">
-                        <MenuItem.Icon>
-                            <Image Source="/Convnet;component/Resources/Paste.png" />
-                        </MenuItem.Icon>
-                    </MenuItem>
-                    <Separator />
-                    <MenuItem Header="Select _All" Command="ApplicationCommands.SelectAll"/>
-                    <Separator />
-                    <MenuItem Header="_Undo" Command="ApplicationCommands.Undo">
-                        <MenuItem.Icon>
-                            <Image Source="/Convnet;component/Resources/Undo.png" />
-                        </MenuItem.Icon>
-                    </MenuItem>
-                    <MenuItem Header="_Redo" Command="ApplicationCommands.Redo">
-                        <MenuItem.Icon>
-                            <Image Source="/Convnet;component/Resources/Redo.png" />
-                        </MenuItem.Icon>
-                    </MenuItem>
-                </ContextMenu>
-            </DataGrid.ContextMenu>
+        <DataGrid ItemsSource="{Binding TrainRates}" CanUserAddRows="True" CanUserDeleteRows="True" ContextMenu="{StaticResource MyContextMenu}" AutoGenerateColumns="False" HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible" Height="Auto" HorizontalAlignment="Stretch" Margin="6" x:Name="DataGridRates" VerticalAlignment="Stretch" Width="Auto" TabIndex="4" CanUserSortColumns="False" GridLinesVisibility="Horizontal" HorizontalGridLinesBrush="#FFAAE4F5" VerticalContentAlignment="Center" HorizontalContentAlignment="Stretch" SelectionMode="Single" MinHeight="0" MinWidth="0" CanUserResizeColumns="False" FontFamily="Consolas" FontSize="14" CanUserResizeRows="False" BorderThickness="0" Foreground="{DynamicResource {x:Static SystemColors.DesktopBrushKey}}" CanUserReorderColumns="False" IsSynchronizedWithCurrentItem="True" SelectionUnit="FullRow">
             <DataGrid.Columns>
                 <DataGridComboBoxColumn Header="Optimizer" ItemsSource="{x:Static ext:TrainingSchemeEditor.GetOptimizers}" SelectedItemBinding="{Binding Path=Optimizer, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 <DataGridTextColumn Header="Momentum" Binding="{Binding Path=Momentum, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
@@ -166,12 +134,12 @@
                 <!--<DataGridTextColumn Header="Cycles" Binding="{Binding Path=Cycles, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>-->
                 <DataGridTextColumn Header="Epochs" Binding="{Binding Path=Epochs, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 <!--<DataGridTextColumn Header="EpochMultiplier" Binding="{Binding Path=EpochMultiplier, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>-->
-                <DataGridTextColumn Header="MaximumRate" Binding="{Binding Path=MaximumRate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                <DataGridTextColumn Header="MinimumRate" Binding="{Binding Path=MinimumRate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <DataGridTextColumn Header="Max.Rate" Binding="{Binding Path=MaximumRate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <DataGridTextColumn Header="Min.Rate" Binding="{Binding Path=MinimumRate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 <DataGridTextColumn Header="DecayAfterEpochs" Binding="{Binding Path=DecayAfterEpochs, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 <DataGridTextColumn Header="DecayFactor" Binding="{Binding Path=DecayFactor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                <DataGridCheckBoxColumn Header="HorizontalFlip" Binding="{Binding Path=HorizontalFlip, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                <DataGridCheckBoxColumn Header="VerticalFlip" Binding="{Binding Path=VerticalFlip, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <DataGridCheckBoxColumn Header="Horz.Flip" Binding="{Binding Path=HorizontalFlip, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                <DataGridCheckBoxColumn Header="Vert.Flip" Binding="{Binding Path=VerticalFlip, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 <DataGridTextColumn Header="Dropout" Binding="{Binding Path=Dropout, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 <DataGridTextColumn Header="Cutout" Binding="{Binding Path=Cutout, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 <DataGridTextColumn Header="AutoAugment" Binding="{Binding Path=AutoAugment, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
