@@ -369,10 +369,19 @@ namespace Convnet.PageViewModels
             {
                 Name = "ComboBoxOptimizers",
                 ItemsSource = Enum.GetValues(typeof(DNNOptimizers)).Cast<Enum>().ToList(),
-                ToolTip = "Optimizer"
+                ToolTip = "Optimizer",
+                IsEnabled = false
             };
-            optimizerComboBox.SelectedIndex = Settings.Default.Optimizer;
-            optimizerComboBox.IsEnabled = false;
+            Binding optBinding = new Binding
+            {
+                Source = this,
+                Path = new PropertyPath("Optimizer"),
+                Mode = BindingMode.TwoWay,
+                UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged,
+                Converter = new Converters.EnumConverter(),
+                ConverterParameter = typeof(DNNOptimizers)
+            };
+            BindingOperations.SetBinding(optimizerComboBox, ComboBox.SelectedValueProperty, optBinding);
 
             costLayersComboBox = new ComboBox
             {
@@ -1218,8 +1227,12 @@ namespace Convnet.PageViewModels
                     if (dialog.ShowDialog() ?? false)
                     {
                         TrainRate = dialog.Rate;
-                        Model.AddLearningRateSGDR(true, Settings.Default.GoToEpoch, TrainRate);
-                       
+                        Model.AddLearningRateSGDR(true, GotoEpoch, TrainRate);
+                        
+                        Model.Optimizer = TrainRate.Optimizer;
+                        Optimizer = TrainRate.Optimizer;
+                        Model.SetOptimizer(TrainRate.Optimizer);
+                        
                         /*
                         DNNDataSet.TrainingRatesDataTable table = new DNNDataSet.TrainingRatesDataTable();
                         table.BeginLoadData();
@@ -1257,7 +1270,7 @@ namespace Convnet.PageViewModels
 
                         RefreshTimer = new Timer(1000 * Settings.Default.RefreshInterval.Value);
                         RefreshTimer.Elapsed += new ElapsedEventHandler(RefreshTimer_Elapsed);
-                       
+                        
                         Model.SetCostIndex((uint)SelectedCostIndex);
                         Model.Start(true);
                         RefreshTimer.Start();
@@ -1414,6 +1427,9 @@ namespace Convnet.PageViewModels
 
                     RefreshTimer = new Timer(1000 * Settings.Default.RefreshInterval.Value);
                     RefreshTimer.Elapsed += new ElapsedEventHandler(RefreshTimer_Elapsed);
+                    
+                    Model.SetOptimizer(TrainRates[0].Optimizer);
+                    Optimizer = TrainRates[0].Optimizer;
                     
                     Model.Start(true);
                     RefreshTimer.Start();
