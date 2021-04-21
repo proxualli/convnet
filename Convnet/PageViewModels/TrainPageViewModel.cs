@@ -1161,8 +1161,7 @@ namespace Convnet.PageViewModels
                 optimizer = value;
                 Settings.Default.Optimizer = (int)optimizer;
                 Settings.Default.Save();
-                optimizerComboBox.SelectedIndex = Settings.Default.Optimizer;
-                                
+                                               
                 OnPropertyChanged(nameof(Optimizer));
             }
         }
