@@ -181,8 +181,6 @@ namespace Convnet.PageViewModels
 
         void TrainProgress(DNNOptimizers Optim, UInt BatchSize, UInt Cycle, UInt TotalCycles, UInt Epoch, UInt TotalEpochs, bool HorizontalFlip, bool VerticalFlip, Float Dropout, Float Cutout, Float AutoAugment, Float ColorCast, UInt ColorAngle, Float Distortion, DNNInterpolation Interpolation, Float Scaling, Float Rotation, UInt SampleIndex, Float Rate, Float Momentum, Float L2Penalty, Float AvgTrainLoss, Float TrainErrorPercentage, Float TrainAccuracy, UInt TrainErrors, Float AvgTestLoss, Float TestErrorPercentage, Float TestAccuracy, UInt TestErrors, DNNStates State, DNNTaskStates TaskState)
         {
-            DNNInterpolation interpolation = (DNNInterpolation)Interpolation;
-
             sb.Length = 0;
             switch (State)
             {
@@ -190,7 +188,7 @@ namespace Convnet.PageViewModels
                     {
                         Optimizer = Optim;
                         Model.Optimizer = Optim;
-                        Settings.Default.Optimizer = (int)Optimizer;
+                        Settings.Default.Optimizer = (int)Optim;
                         Settings.Default.Save();
 
                         sb.Append("<Span><Bold>Training</Bold></Span><LineBreak/>");
