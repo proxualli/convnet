@@ -1401,12 +1401,10 @@ namespace Convnet.PageViewModels
                 dialog.WindowStartupLocation = WindowStartupLocation.CenterOwner;
                 if (dialog.ShowDialog() ?? false)
                 {
-                    Settings.Default.GoToEpoch = 1;
                     bool first = true;
                     foreach (DNNTrainingRate rate in TrainRates)
                     {
-                        Model.AddLearningRate(first, Settings.Default.GoToEpoch, rate);
-                        //Model.AddLearningRate(first, Settings.Default.GoToEpoch, new DNNTrainingRate(rate.Optimizer, rate.Momentum, rate.Beta2, rate.L2Penalty, rate.Eps, rate.BatchSize, rate.Cycles, rate.Epochs, rate.EpochMultiplier, rate.MaximumRate, rate.MinimumRate, rate.DecayFactor, rate.DecayAfterEpochs, rate.HorizontalFlip, rate.VerticalFlip, rate.Dropout, rate.Cutout, rate.AutoAugment, rate.ColorCast, rate.ColorAngle, rate.Distortion, rate.Interpolation, rate.Scaling, rate.Rotation));
+                        Model.AddLearningRate(first, GotoEpoch, rate);
                         first = false;
                     }
 
@@ -1477,7 +1475,7 @@ namespace Convnet.PageViewModels
                 TrainingSchemeEditor dialog = new TrainingSchemeEditor { Path = StorageDirectory };
                 dialog.tpvm = this;
                 dialog.DataContext = this;
-                dialog.buttonTrain.IsEnabled = true;
+                dialog.buttonTrain.IsEnabled = false;
                 dialog.Owner = Application.Current.MainWindow;
                 dialog.WindowStartupLocation = WindowStartupLocation.CenterOwner;
                 dialog.ShowDialog();
