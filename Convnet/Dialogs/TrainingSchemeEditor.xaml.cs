@@ -1,10 +1,10 @@
 ﻿using Convnet.PageViewModels;
-using Convnet.Properties;
 using dnncore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace Convnet.Dialogs
@@ -14,7 +14,7 @@ namespace Convnet.Dialogs
         public static IEnumerable<DNNOptimizers> GetOptimizers => Enum.GetValues(typeof(DNNOptimizers)).Cast<DNNOptimizers>();
         public static IEnumerable<DNNInterpolation> GetInterpolations => Enum.GetValues(typeof(DNNInterpolation)).Cast<DNNInterpolation>();
         public string Path { get; set; }
-        
+
         public TrainPageViewModel tpvm;
        
         private readonly Microsoft.Win32.OpenFileDialog openFileDialog = new Microsoft.Win32.OpenFileDialog();
@@ -25,10 +25,47 @@ namespace Convnet.Dialogs
             InitializeComponent();
         }
 
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            //textBoxGotoEpoch.Text = Properties.Settings.Default.GoToEpoch.ToString();
+        }
+
+        bool IsValid(DependencyObject node)
+        {
+            // Check if dependency object was passed
+            if (node != null)
+            {
+                // Check if dependency object is valid.
+                // NOTE: Validation.GetHasError works for controls that have validation rules attached 
+                bool isValid = !Validation.GetHasError(node);
+                if (!isValid)
+                {
+                    // If the dependency object is invalid, and it can receive the focus,
+                    // set the focus
+                    if (node is IInputElement) Keyboard.Focus((IInputElement)node);
+                    return false;
+                }
+            }
+
+            // If this dependency object is valid, check all child dependency objects
+            foreach (object subnode in LogicalTreeHelper.GetChildren(node))
+            {
+                if (subnode is DependencyObject)
+                {
+                    // If a child dependency object is invalid, return false immediately,
+                    // otherwise keep checking
+                    if (IsValid((DependencyObject)subnode) == false) return false;
+                }
+            }
+
+            // All dependency objects are valid
+            return true;
+        }
+
         //void ButtonInsert_Click(object sender, RoutedEventArgs e)
         //{
         //    DataGridRates.CommitEdit();
-            
+
         //    int selectedIndex = DataGridRates.SelectedIndex;
         //    if (selectedIndex != -1)
         //    {
@@ -38,29 +75,53 @@ namespace Convnet.Dialogs
         //    }
         //}
 
+        private void ButtonCancel_Click(object sender, RoutedEventArgs e)
+        {
+            DialogResult = false;
+        }
+
         void ButtonTrain_Click(object sender, RoutedEventArgs e)
         {
-            bool stochastic = false;
-
-            foreach (DNNTrainingRate rate in tpvm.TrainRates)
+            if (IsValid(this))
             {
-                if (rate.BatchSize == 1)
+                bool stochastic = false;
+
+                foreach (DNNTrainingRate rate in tpvm.TrainRates)
                 {
-                    stochastic = true;
-                    break;
+                    if (rate.BatchSize == 1)
+                    {
+                        stochastic = true;
+                        break;
+                    }
+                }
+
+                if (tpvm.Model.BatchNormalizationUsed() && stochastic)
+                {
+                    Xceed.Wpf.Toolkit.MessageBox.Show("Your model uses batch normalization.\r\nThe batch size cannot be equal to 1 in this case.", "Warning", MessageBoxButton.OK);
+                    return;
+                }
+
+                ulong totalEpochs = 0;
+                foreach (DNNTrainingRate rate in tpvm.TrainRates)
+                    totalEpochs += rate.Epochs;
+  
+                if (uint.TryParse(textBoxGotoEpoch.Text, out uint gotoEpoch))
+                {
+
+                    if (gotoEpoch > totalEpochs)
+                    {
+                        Xceed.Wpf.Toolkit.MessageBox.Show("Value Goto Epoch is to large", "Warning", MessageBoxButton.OK);
+                        return;
+                    }
+
+                    Properties.Settings.Default.GoToEpoch = gotoEpoch;
+                    Properties.Settings.Default.Save();
+                    //tpvm.GotoEpoch = gotoEpoch;
+
+                    DialogResult = true;
+                    this.Close();
                 }
             }
-
-            if (tpvm.Model.BatchNormalizationUsed() && stochastic)
-            {
-                Xceed.Wpf.Toolkit.MessageBox.Show("Your model uses batch normalization.\r\nThe batch size cannot be equal to 1 in this case.", "Warning", MessageBoxButton.OK);
-
-                return;
-            }
-
-
-            DialogResult = true;
-            this.Close();
         }
 
         void ButtonSave_Click(object sender, RoutedEventArgs e)

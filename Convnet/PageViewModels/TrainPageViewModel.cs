@@ -4,6 +4,7 @@ using Convnet.Properties;
 using dnncore;
 using OxyPlot;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
@@ -39,6 +40,7 @@ namespace Convnet.PageViewModels
         private bool showSample;
         private ObservableCollection<DNNTrainingRate> trainRates;
         private int selectedIndex = -1;
+        private uint gotoEpoch = 1;
         private int selectedCostIndex = 0;
         private ComboBox optimizerComboBox;
         private ComboBox costLayersComboBox;
@@ -73,7 +75,9 @@ namespace Convnet.PageViewModels
         public event EventHandler Open;
         public event EventHandler Save;
         public event EventHandler<int?> RefreshRateChanged;
-       
+        public static IEnumerable<DNNOptimizers> GetOptimizers => Enum.GetValues(typeof(DNNOptimizers)).Cast<DNNOptimizers>();
+        public static IEnumerable<DNNInterpolation> GetInterpolations => Enum.GetValues(typeof(DNNInterpolation)).Cast<DNNInterpolation>();
+
         public TrainPageViewModel(dnncore.Model model) : base(model)
         {
             sb = new StringBuilder();
@@ -90,6 +94,7 @@ namespace Convnet.PageViewModels
             showWeights = false;
             showWeightsSnapshot = false;
 
+            gotoEpoch = Settings.Default.GoToEpoch;
             showTrainingPlot = Settings.Default.ShowTrainingPlot;
             currentPlotType = (PlotType)Settings.Default.PlotType;
             currentLegendPosition = currentPlotType == PlotType.Accuracy ? LegendPosition.BottomRight : LegendPosition.TopRight;
@@ -115,6 +120,7 @@ namespace Convnet.PageViewModels
             showSample = false;
             showWeights = false;
             showWeightsSnapshot = false;
+            gotoEpoch = Settings.Default.GoToEpoch;
             showTrainingPlot = Settings.Default.ShowTrainingPlot;
             currentPlotType = (PlotType)Settings.Default.PlotType;
             currentLegendPosition = currentPlotType == PlotType.Accuracy ? LegendPosition.BottomRight : LegendPosition.TopRight;
@@ -164,7 +170,7 @@ namespace Convnet.PageViewModels
                 for (uint c = 0; c < Model.CostLayersCount; c++)
                 {
                     Model.UpdateCostInfo(c);
-                    TrainingLog.Add(new DNNTrainingResult(Cycle, Epoch, c, Model.CostLayers[c].GroupIndex, Model.CostLayers[c].Name, Optimizer, Momentum, Beta2, L2Penalty, Eps, Rate, BatchSize, Dropout, Cutout, AutoAugment, ColorCast, ColorAngle, Distortion, Interpolation, Scaling, Rotation, HorizontalFlip, VerticalFlip, Model.CostLayers[c].AvgTrainLoss, Model.CostLayers[c].TrainErrors, Model.CostLayers[c].TrainErrorPercentage, Model.CostLayers[c].TrainAccuracy, Model.CostLayers[c].AvgTestLoss, Model.CostLayers[c].TestErrors, Model.CostLayers[c].TestErrorPercentage, Model.CostLayers[c].TestAccuracy, span.Ticks));
+                    TrainingLog.Add(new DNNTrainingResult(Cycle, Epoch, c, Model.CostLayers[c].GroupIndex, Model.CostLayers[c].Name, (DNNOptimizers)Optimizer, Momentum, Beta2, L2Penalty, Eps, Rate, BatchSize, Dropout, Cutout, AutoAugment, ColorCast, ColorAngle, Distortion, (DNNInterpolation)Interpolation, Scaling, Rotation, HorizontalFlip, VerticalFlip, Model.CostLayers[c].AvgTrainLoss, Model.CostLayers[c].TrainErrors, Model.CostLayers[c].TrainErrorPercentage, Model.CostLayers[c].TrainAccuracy, Model.CostLayers[c].AvgTestLoss, Model.CostLayers[c].TestErrors, Model.CostLayers[c].TestErrorPercentage, Model.CostLayers[c].TestAccuracy, span.Ticks));
                 }
 
                 SelectedIndex = TrainingLog.Count - 1;
@@ -781,6 +787,19 @@ namespace Convnet.PageViewModels
 
             OnPropertyChanged(nameof(PointsTrain));
             OnPropertyChanged(nameof(PointsTest));
+        }
+
+        public uint GotoEpoch
+        {
+            get { return gotoEpoch; }
+            set
+            {
+                if (gotoEpoch == value)
+                    return;
+
+                gotoEpoch = value;
+                OnPropertyChanged(nameof(GotoEpoch));
+            }
         }
 
         public LegendPosition CurrentLegendPosition

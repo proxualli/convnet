@@ -642,7 +642,7 @@ namespace dnncore
 		property UInt GroupIndex;
 		property UInt CostIndex;
 		property String^ CostName;
-		property UInt Optimizer;
+		property DNNOptimizers Optimizer;
 		property Float Momentum;
 		property Float Beta2;
 		property Float L2Penalty;
@@ -655,7 +655,7 @@ namespace dnncore
 		property Float ColorCast;
 		property UInt ColorAngle;
 		property Float Distortion;
-		property UInt Interpolation;
+		property DNNInterpolation Interpolation;
 		property Float Scaling;
 		property Float Rotation;
 		property bool HorizontalFlip;
@@ -671,9 +671,7 @@ namespace dnncore
 		property long long ElapsedTicks;
 		property TimeSpan ElapsedTime;
 
-		DNNTrainingResult::DNNTrainingResult() {}
-
-		DNNTrainingResult::DNNTrainingResult(UInt cycle, UInt epoch, UInt groupIndex, UInt costIndex, String^ costName, UInt optimizer, Float momentum, Float beta2, Float l2Penalty, Float eps, Float rate, UInt batchSize, Float dropout, Float cutout, Float autoAugment, Float colorCast, UInt colorAngle, Float distortion, UInt interpolation, Float scaling, Float rotation, bool horizontalFlip, bool verticalFlip, Float avgTrainLoss, UInt trainErrors, Float trainErrorPercentage, Float trainAccuracy, Float avgTestLoss, UInt testErrors, Float testErrorPercentage, Float testAccuracy, long long elapsedTicks)
+		DNNTrainingResult::DNNTrainingResult(UInt cycle, UInt epoch, UInt groupIndex, UInt costIndex, String^ costName, DNNOptimizers optimizer, Float momentum, Float beta2, Float l2Penalty, Float eps, Float rate, UInt batchSize, Float dropout, Float cutout, Float autoAugment, Float colorCast, UInt colorAngle, Float distortion, DNNInterpolation interpolation, Float scaling, Float rotation, bool horizontalFlip, bool verticalFlip, Float avgTrainLoss, UInt trainErrors, Float trainErrorPercentage, Float trainAccuracy, Float avgTestLoss, UInt testErrors, Float testErrorPercentage, Float testAccuracy, long long elapsedTicks)
 		{
 			Cycle = cycle;
 			Epoch = epoch;
