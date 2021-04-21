@@ -40,6 +40,7 @@ namespace Convnet.PageViewModels
         private bool showSample;
         private ObservableCollection<DNNTrainingRate> trainRates;
         private int selectedIndex = -1;
+        private uint gotoCycle = 1;
         private uint gotoEpoch = 1;
         private int selectedCostIndex = 0;
         private ComboBox optimizerComboBox;
@@ -94,7 +95,7 @@ namespace Convnet.PageViewModels
             showWeights = false;
             showWeightsSnapshot = false;
 
-            gotoEpoch = Settings.Default.GoToEpoch;
+            gotoEpoch = Settings.Default.GotoEpoch;
             showTrainingPlot = Settings.Default.ShowTrainingPlot;
             currentPlotType = (PlotType)Settings.Default.PlotType;
             currentLegendPosition = currentPlotType == PlotType.Accuracy ? LegendPosition.BottomRight : LegendPosition.TopRight;
@@ -120,7 +121,7 @@ namespace Convnet.PageViewModels
             showSample = false;
             showWeights = false;
             showWeightsSnapshot = false;
-            gotoEpoch = Settings.Default.GoToEpoch;
+            gotoEpoch = Settings.Default.GotoEpoch;
             showTrainingPlot = Settings.Default.ShowTrainingPlot;
             currentPlotType = (PlotType)Settings.Default.PlotType;
             currentLegendPosition = currentPlotType == PlotType.Accuracy ? LegendPosition.BottomRight : LegendPosition.TopRight;
@@ -798,6 +799,19 @@ namespace Convnet.PageViewModels
 
             OnPropertyChanged(nameof(PointsTrain));
             OnPropertyChanged(nameof(PointsTest));
+        }
+
+        public uint GotoCycle
+        {
+            get { return gotoCycle; }
+            set
+            {
+                if (gotoCycle == value)
+                    return;
+
+                gotoCycle = value;
+                OnPropertyChanged(nameof(GotoCycle));
+            }
         }
 
         public uint GotoEpoch

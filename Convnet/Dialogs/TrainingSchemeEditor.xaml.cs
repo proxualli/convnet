@@ -114,7 +114,7 @@ namespace Convnet.Dialogs
                         return;
                     }
 
-                    Properties.Settings.Default.GoToEpoch = gotoEpoch;
+                    Properties.Settings.Default.GotoEpoch = gotoEpoch;
                     Properties.Settings.Default.Save();
                     //tpvm.GotoEpoch = gotoEpoch;
 

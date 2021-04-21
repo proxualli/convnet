@@ -43,7 +43,7 @@ namespace Convnet.Dialogs
 
             DataContext = Rate;
 
-            textBoxGoToEpoch.Text = Properties.Settings.Default.GoToEpoch.ToString();
+            textBoxGoToEpoch.Text = Properties.Settings.Default.GotoEpoch.ToString();
             textBoxColorAngle.IsEnabled = Rate.ColorCast > 0;
 
             comboBoOptimizer.Focus();
@@ -98,7 +98,7 @@ namespace Convnet.Dialogs
                     return;
                 }
 
-                Properties.Settings.Default.GoToEpoch = gotoEpoch;
+                Properties.Settings.Default.GotoEpoch = gotoEpoch;
                 Properties.Settings.Default.TrainRate = Rate;
                 Properties.Settings.Default.Optimizer = (int)Rate.Optimizer;
                 Properties.Settings.Default.Save();
