@@ -5,7 +5,7 @@
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:converters="clr-namespace:Convnet.Converters"
         xmlns:ext="clr-namespace:Convnet.Dialogs"
-        Title="Train Parameters" Height="560" Width="600" WindowStartupLocation="CenterOwner" ShowInTaskbar="False" ResizeMode="NoResize" Closing="Window_Closing" Loaded="Window_Loaded" UseLayoutRounding="True" SnapsToDevicePixels="True" Background="Gray">
+        Title="Train Parameters" Height="560" Width="560" WindowStartupLocation="CenterOwner" ShowInTaskbar="False" ResizeMode="NoResize" Closing="Window_Closing" Loaded="Window_Loaded" UseLayoutRounding="True" SnapsToDevicePixels="True" Background="Gray">
 
     <Window.Resources>
         <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
@@ -128,7 +128,7 @@
             <ColumnDefinition Width="2*" />
             <ColumnDefinition Width="1*" />
             <ColumnDefinition Width="14" />
-            <ColumnDefinition Width="2*" />
+            <ColumnDefinition Width="1*" />
             <ColumnDefinition Width="1*" />
             <ColumnDefinition Width="4" />
         </Grid.ColumnDefinitions>

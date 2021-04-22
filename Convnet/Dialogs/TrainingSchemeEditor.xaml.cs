@@ -28,11 +28,46 @@ namespace Convnet.Dialogs
             InitializeComponent();
         }
 
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            ChangeSGDR();
+        }
+
         public static void PostitionWindowOnScreen(Window window, double horizontalShift = 0) //, double verticalShift = 0)
         {
             Screen screen = Screen.FromHandle(new System.Windows.Interop.WindowInteropHelper(window).Handle);
             window.Left = screen.Bounds.X + ((screen.Bounds.Width - window.ActualWidth) / 2) + horizontalShift;
             //window.Top = screen.Bounds.Y + ((screen.Bounds.Height - window.ActualHeight) / 2) + verticalShift;
+        }
+
+        private void ButtonSGDRHelp_Click(object sender, RoutedEventArgs e)
+        {
+            ApplicationHelper.OpenBrowser("https://arxiv.org/abs/1608.03983");
+        }
+
+        private void CheckBoxSGDR_Checked(object sender, RoutedEventArgs e)
+        {
+            ChangeSGDR();
+        }
+
+        private void CheckBoxSGDR_Unchecked(object sender, RoutedEventArgs e)
+        {
+            ChangeSGDR();
+        }
+
+        private void ChangeSGDR()
+        {
+            PostitionWindowOnScreen(this, 0);
+
+            DataGridRates.Columns[6].Visibility = tpvm.SGDR ? Visibility.Visible : Visibility.Collapsed;
+            DataGridRates.Columns[8].Visibility = tpvm.SGDR ? Visibility.Visible : Visibility.Collapsed;
+
+            var width = tpvm.SGDR ? DataGridRates.Columns[6].ActualWidth + DataGridRates.Columns[8].ActualWidth : 0;
+
+            PostitionWindowOnScreen(this, -width);
+
+            textBoxGotoCycle.Visibility = tpvm.SGDR ? Visibility.Visible : Visibility.Collapsed;
+            LabelGotoCycle.Visibility = tpvm.SGDR ? Visibility.Visible : Visibility.Collapsed;
         }
 
         bool IsValid(DependencyObject node)
@@ -115,7 +150,7 @@ namespace Convnet.Dialogs
             }
         }
 
-        void ButtonSave_Click(object sender, RoutedEventArgs e)
+        private void ButtonSave_Click(object sender, RoutedEventArgs e)
         {
             saveFileDialog.InitialDirectory = Path;
             saveFileDialog.Filter = "Xml Training Scheme|*.scheme-xml";
@@ -148,7 +183,7 @@ namespace Convnet.Dialogs
             Mouse.OverrideCursor = null;
         }
 
-        void ButtonLoad_Click(object sender, RoutedEventArgs e)
+        private void ButtonLoad_Click(object sender, RoutedEventArgs e)
         {
             openFileDialog.InitialDirectory = Path;
             openFileDialog.Filter = "Xml Training Scheme|*.scheme-xml";
@@ -201,41 +236,6 @@ namespace Convnet.Dialogs
                     stop = true;
             }
             Mouse.OverrideCursor = null;
-        }
-
-        private void ButtonSGDRHelp_Click(object sender, RoutedEventArgs e)
-        {
-            ApplicationHelper.OpenBrowser("https://arxiv.org/abs/1608.03983");
-        }
-
-        private void CheckBoxSGDR_Checked(object sender, RoutedEventArgs e)
-        {
-            ChangeSGDR();
-        }
-
-        private void CheckBoxSGDR_Unchecked(object sender, RoutedEventArgs e)
-        {
-            ChangeSGDR();
-        }
-
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            ChangeSGDR();
-        }
-
-        private void ChangeSGDR()
-        {
-            PostitionWindowOnScreen(this, 0);
-           
-            DataGridRates.Columns[6].Visibility = tpvm.SGDR ? Visibility.Visible : Visibility.Collapsed;
-            DataGridRates.Columns[8].Visibility = tpvm.SGDR ? Visibility.Visible : Visibility.Collapsed;
-            
-            var width = tpvm.SGDR ? DataGridRates.Columns[6].ActualWidth + DataGridRates.Columns[8].ActualWidth : 0;
-
-            PostitionWindowOnScreen(this, -width);
-
-            textBoxGotoCycle.Visibility = tpvm.SGDR ? Visibility.Visible : Visibility.Collapsed;
-            LabelGotoCycle.Visibility = tpvm.SGDR ? Visibility.Visible : Visibility.Collapsed;
         }
     }
 }
