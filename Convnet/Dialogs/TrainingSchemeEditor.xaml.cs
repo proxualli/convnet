@@ -123,7 +123,7 @@ namespace Convnet.Dialogs
 
                 ulong totalEpochs = 0;
                 foreach (DNNTrainingRate rate in tpvm.TrainRates)
-                    totalEpochs += tpvm.SGDR ? rate.Epochs * rate.Cycles : rate.Epochs;
+                    totalEpochs += tpvm.SGDR ? rate.Epochs * rate.Cycles * rate.EpochMultiplier : rate.Epochs;
   
                 if (uint.TryParse(textBoxGotoEpoch.Text, out uint gotoEpoch))
                 {
