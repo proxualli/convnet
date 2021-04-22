@@ -28,11 +28,11 @@ namespace Convnet.Dialogs
             InitializeComponent();
         }
 
-        public static void PostitionWindowOnScreen(Window window, double horizontalShift = 0, double verticalShift = 0)
+        public static void PostitionWindowOnScreen(Window window, double horizontalShift = 0) //, double verticalShift = 0)
         {
             Screen screen = Screen.FromHandle(new System.Windows.Interop.WindowInteropHelper(window).Handle);
             window.Left = screen.Bounds.X + ((screen.Bounds.Width - window.ActualWidth) / 2) + horizontalShift;
-            window.Top = screen.Bounds.Y + ((screen.Bounds.Height - window.ActualHeight) / 2) + verticalShift;
+            //window.Top = screen.Bounds.Y + ((screen.Bounds.Height - window.ActualHeight) / 2) + verticalShift;
         }
 
         bool IsValid(DependencyObject node)
@@ -225,11 +225,14 @@ namespace Convnet.Dialogs
 
         private void ChangeSGDR()
         {
+            PostitionWindowOnScreen(this, 0);
+           
             DataGridRates.Columns[6].Visibility = tpvm.SGDR ? Visibility.Visible : Visibility.Collapsed;
             DataGridRates.Columns[8].Visibility = tpvm.SGDR ? Visibility.Visible : Visibility.Collapsed;
             
-            //var width = tpvm.SGDR ? DataGridRates.Columns[6].ActualWidth + DataGridRates.Columns[8].ActualWidth : 0;
-            //PostitionWindowOnScreen(this, -width, 0);
+            var width = tpvm.SGDR ? DataGridRates.Columns[6].ActualWidth + DataGridRates.Columns[8].ActualWidth : 0;
+
+            PostitionWindowOnScreen(this, -width);
 
             textBoxGotoCycle.Visibility = tpvm.SGDR ? Visibility.Visible : Visibility.Collapsed;
             LabelGotoCycle.Visibility = tpvm.SGDR ? Visibility.Visible : Visibility.Collapsed;
