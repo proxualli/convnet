@@ -64,10 +64,7 @@ namespace Convnet.Dialogs
 
             var width = tpvm.SGDR ? DataGridRates.Columns[6].ActualWidth + DataGridRates.Columns[8].ActualWidth : 0;
 
-            PostitionWindowOnScreen(this, -width);
-
-            textBoxGotoCycle.Visibility = tpvm.SGDR ? Visibility.Visible : Visibility.Collapsed;
-            LabelGotoCycle.Visibility = tpvm.SGDR ? Visibility.Visible : Visibility.Collapsed;
+            PostitionWindowOnScreen(this, -width); 
         }
 
         bool IsValid(DependencyObject node)

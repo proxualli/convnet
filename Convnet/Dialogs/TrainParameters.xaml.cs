@@ -46,7 +46,7 @@ namespace Convnet.Dialogs
             }
 
             DataContext = Rate;
-            textBoxGotoCycle.Text = tpvm.GotoCycle.ToString();
+           
             textBoxGotoEpoch.Text = tpvm.GotoEpoch.ToString();
             CheckBoxSGDR.IsChecked = tpvm.SGDR;
             ChangeSGDR();
@@ -98,19 +98,8 @@ namespace Convnet.Dialogs
                     return;
                 }
                 
-                if (Properties.Settings.Default.SGDR)
-                {
-                    uint.TryParse(textBoxGotoCycle.Text, out uint gotoCycle);
-                    if (gotoCycle > Rate.Cycles || gotoCycle < 1)
-                    {
-                        Xceed.Wpf.Toolkit.MessageBox.Show("Your value for goto Cycle is to big.", "Warning", MessageBoxButton.OK);
-                        return;
-                    }
-                    tpvm.GotoCycle = gotoCycle;
-                }
-
                 uint.TryParse(textBoxGotoEpoch.Text, out uint gotoEpoch);
-                if (gotoEpoch > Rate.Epochs || gotoEpoch < 1)
+                if ((gotoEpoch > Rate.Epochs * Rate.Cycles) || (gotoEpoch < 1))
                 {
                     Xceed.Wpf.Toolkit.MessageBox.Show("Your value for goto Epoch is to big.", "Warning", MessageBoxButton.OK);
                     return;
@@ -166,7 +155,6 @@ namespace Convnet.Dialogs
             bool check = CheckBoxSGDR.IsChecked.HasValue ? CheckBoxSGDR.IsChecked.Value : false;
             tpvm.SGDR = check;
             textBoxCycles.IsEnabled = check;
-            textBoxGotoCycle.IsEnabled = check;
             textBoxEpochMultiplier.IsEnabled = check;
         }
 

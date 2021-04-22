@@ -150,22 +150,13 @@
             </DataGrid.Columns>
         </DataGrid>
 
-        <Label x:Name="LabelGotoCycle" Content="Goto Cycle:" FontFamily="Consolas" FontSize="14" HorizontalAlignment="Left" Margin="168,0,0,0" Grid.Row="1" VerticalAlignment="Center"/>
         <Label Content="Goto Epoch:" FontFamily="Consolas" FontSize="14" HorizontalAlignment="Left" Margin="344,0,0,0" Grid.Row="1" VerticalAlignment="Center"/>
 
         <Button Content="Load" Height="24" HorizontalAlignment="Left" Margin="4" Name="buttonLoad" VerticalAlignment="Center" Width="75" TabIndex="2" Click="ButtonLoad_Click" Grid.Row="1" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" ClickMode="Release"/>
         <Button Content="Save" Height="24" HorizontalAlignment="Left" Margin="86,4,4,4" Name="buttonSave" Width="75" TabIndex="3" Click="ButtonSave_Click" Grid.Row="1" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" ClickMode="Release"/>
         <Button Content="Train" Height="24" HorizontalAlignment="Right" Margin="4,4,86,4" Name="buttonTrain" VerticalAlignment="Center" Width="75" TabIndex="1" Click="ButtonTrain_Click" Grid.Row="1" VerticalContentAlignment="Center" ClickMode="Release" />
         <Button Content="Cancel" Height="24" HorizontalAlignment="Right" Margin="4" Name="buttonCancel" VerticalAlignment="Center" Width="75" IsCancel="True" IsDefault="True" TabIndex="4" Grid.Row="1" VerticalContentAlignment="Center" ClickMode="Release" Click="ButtonCancel_Click"/>
-        <xctk:AutoSelectTextBox ContextMenu="{StaticResource MyContextMenu}" HorizontalAlignment="Left" Width="70" Margin="268,0,0,0" Grid.Row="1" x:Name="textBoxGotoCycle" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Validation.ErrorTemplate="{StaticResource validationTemplate}" Style="{StaticResource textBoxInError}" AllowDrop="False" MaxLines="1" AutoWordSelection="True" BorderThickness="1" SnapsToDevicePixels="True" BorderBrush="DarkGray" AutoSelectBehavior="OnFocus" AutoMoveFocus="True" FontSize="14" TabIndex="0" Background="{DynamicResource NormalBrush}">
-            <TextBox.Text>
-                <Binding Path="GotoCycle" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
-                    <Binding.ValidationRules>
-                        <c:UIntRangeRule Min="1" Max="1000000"/>
-                    </Binding.ValidationRules>
-                </Binding>
-            </TextBox.Text>
-        </xctk:AutoSelectTextBox>
+       
         <xctk:AutoSelectTextBox ContextMenu="{StaticResource MyContextMenu}" HorizontalAlignment="Left" Width="70" Margin="444,0,0,0" Grid.Row="1" x:Name="textBoxGotoEpoch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Validation.ErrorTemplate="{StaticResource validationTemplate}" Style="{StaticResource textBoxInError}" AllowDrop="False" MaxLines="1" AutoWordSelection="True" BorderThickness="1" SnapsToDevicePixels="True" BorderBrush="DarkGray" AutoSelectBehavior="OnFocus" AutoMoveFocus="True" FontSize="14" TabIndex="0" Background="{DynamicResource NormalBrush}">
             <Binding Path="GotoEpoch" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
                 <Binding.ValidationRules>

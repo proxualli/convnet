@@ -41,7 +41,6 @@ namespace Convnet.PageViewModels
         private ObservableCollection<DNNTrainingRate> trainRates;
         private int selectedIndex = -1;
         private bool sgdr;
-        private uint gotoCycle = 1;
         private uint gotoEpoch = 1;
         private int selectedCostIndex = 0;
         private ComboBox optimizerComboBox;
@@ -96,7 +95,6 @@ namespace Convnet.PageViewModels
             showWeightsSnapshot = false;
 
             sgdr = Settings.Default.SGDR;
-            gotoCycle = Settings.Default.GotoCycle;
             gotoEpoch = Settings.Default.GotoEpoch;
             showTrainingPlot = Settings.Default.ShowTrainingPlot;
             currentPlotType = (PlotType)Settings.Default.PlotType;
@@ -123,7 +121,7 @@ namespace Convnet.PageViewModels
             showSample = false;
             showWeights = false;
             showWeightsSnapshot = false;
-            gotoCycle = Settings.Default.GotoCycle;
+            
             gotoEpoch = Settings.Default.GotoEpoch;
             showTrainingPlot = Settings.Default.ShowTrainingPlot;
             currentPlotType = (PlotType)Settings.Default.PlotType;
@@ -821,23 +819,6 @@ namespace Convnet.PageViewModels
             }
         }
 
-        public uint GotoCycle
-        {
-            get { return gotoCycle; }
-            set
-            {
-                if (gotoCycle == value)
-                    return;
-
-                gotoCycle = value;
-
-                Settings.Default.GotoCycle = gotoCycle;
-                Settings.Default.Save();
-
-                OnPropertyChanged(nameof(GotoCycle));
-            }
-        }
-
         public uint GotoEpoch
         {
             get { return gotoEpoch; }
@@ -1269,7 +1250,7 @@ namespace Convnet.PageViewModels
                         TrainRate = dialog.Rate;
 
                         if (SGDR)
-                            Model.AddLearningRateSGDR(true, GotoCycle, GotoEpoch, TrainRate);
+                            Model.AddLearningRateSGDR(true, GotoEpoch, TrainRate);
                         else
                             Model.AddLearningRate(true, GotoEpoch, TrainRate);
 
@@ -1464,7 +1445,7 @@ namespace Convnet.PageViewModels
                     foreach (DNNTrainingRate rate in TrainRates)
                     {
                         if (SGDR)
-                            Model.AddLearningRateSGDR(first, GotoCycle, GotoEpoch, rate);
+                            Model.AddLearningRateSGDR(first, GotoEpoch, rate);
                         else
                             Model.AddLearningRate(first, GotoEpoch, rate);
 

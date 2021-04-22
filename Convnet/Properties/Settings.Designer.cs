@@ -127,21 +127,6 @@ namespace Convnet.Properties
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("1")]
-        public uint GotoCycle
-        {
-            get
-            {
-                return ((uint)(this["GotoCycle"]));
-            }
-            set
-            {
-                this["GotoCycle"] = value;
-            }
-        }
-
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("1")]
         public uint GotoEpoch {
             get {
                 return ((uint)(this["GotoEpoch"]));
