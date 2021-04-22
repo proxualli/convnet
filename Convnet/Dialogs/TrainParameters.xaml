@@ -5,7 +5,7 @@
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:converters="clr-namespace:Convnet.Converters"
         xmlns:ext="clr-namespace:Convnet.Dialogs"
-        Title="Train Parameters" Height="560" Width="560" WindowStartupLocation="CenterOwner" ShowInTaskbar="False" ResizeMode="NoResize" Closing="Window_Closing" Loaded="Window_Loaded" UseLayoutRounding="True" SnapsToDevicePixels="True" Background="Gray">
+        Title="Train Parameters" Height="560" Width="500" WindowStartupLocation="CenterOwner" ShowInTaskbar="False" ResizeMode="NoResize" Closing="Window_Closing" Loaded="Window_Loaded" UseLayoutRounding="True" SnapsToDevicePixels="True" Background="Gray">
 
     <Window.Resources>
         <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
@@ -125,7 +125,7 @@
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="4" />
-            <ColumnDefinition Width="2*" />
+            <ColumnDefinition Width="1*" />
             <ColumnDefinition Width="1*" />
             <ColumnDefinition Width="14" />
             <ColumnDefinition Width="1*" />
@@ -144,10 +144,10 @@
         <TextBlock Foreground="White" Grid.Column="1" Grid.Row="9" Height="Auto" HorizontalAlignment="Stretch" Margin="2" Name="textBlockGotoEpoch" Text="Goto epoch:" VerticalAlignment="Center" Width="Auto" FontSize="14"/>
         
         <TextBlock Foreground="White" Grid.Column="1" Grid.Row="10" Grid.RowSpan="1" Height="Auto" HorizontalAlignment="Stretch" Margin="2" Name="textEpochMultiplier" Text="Epoch multiplier:" VerticalAlignment="Center" FontSize="14"/>
-        <TextBlock Foreground="White" Grid.Column="1" Grid.Row="11" Height="Auto" HorizontalAlignment="Stretch" Margin="2" Name="textBlockMaxLR" Text="Maximum learning rate:" VerticalAlignment="Center" Width="Auto" FontSize="14"/>
-        <TextBlock Foreground="White" Grid.Column="1" Grid.Row="12" Height="Auto" HorizontalAlignment="Stretch" Margin="2" Name="textBlockMinLR" Text="Minimum learning rate:" VerticalAlignment="Center" Width="Auto" FontSize="14"/>
-        <TextBlock Foreground="White" Grid.Column="1" Grid.Row="13" Height="Auto" HorizontalAlignment="Stretch" Margin="2" Name="textBlock4" Text="Learning rate decay factor:" VerticalAlignment="Center" Width="Auto" FontSize="14"/>
-        <TextBlock Foreground="White" Grid.Column="1" Grid.Row="14" Height="Auto" HorizontalAlignment="Stretch" Margin="15,2,2,2" Name="textBlock5" Text=" after N epochs:" VerticalAlignment="Center" Width="Auto" FontSize="14"/>
+        <TextBlock Foreground="White" Grid.Column="1" Grid.Row="11" Height="Auto" HorizontalAlignment="Stretch" Margin="2" Name="textBlockMaxLR" Text="Max. rate:" VerticalAlignment="Center" Width="Auto" FontSize="14"/>
+        <TextBlock Foreground="White" Grid.Column="1" Grid.Row="12" Height="Auto" HorizontalAlignment="Stretch" Margin="2" Name="textBlockMinLR" Text="Min. rate:" VerticalAlignment="Center" Width="Auto" FontSize="14"/>
+        <TextBlock Foreground="White" Grid.Column="1" Grid.Row="13" Height="Auto" HorizontalAlignment="Stretch" Margin="2" Name="textBlock4" Text="Decay factor:" VerticalAlignment="Center" Width="Auto" FontSize="14"/>
+        <TextBlock Foreground="White" Grid.Column="1" Grid.Row="14" Height="Auto" HorizontalAlignment="Stretch" Margin="2" Name="textBlock5" Text="After N epochs:" VerticalAlignment="Center" Width="Auto" FontSize="14"/>
         
         
         <TextBlock Foreground="White" Grid.Column="4" Grid.Row="2" Height="Auto" HorizontalAlignment="Stretch" Margin="2" Name="textBlockColorCast" Text="Color Cast:" VerticalAlignment="Center" Width="Auto" FontSize="14"/>
