@@ -1260,14 +1260,19 @@ namespace Convnet.PageViewModels
                         Model = this.Model,
                         Path = DefinitionsDirectory,
                         IsEnabled = true,
-                        Rate = TrainRate
+                        Rate = TrainRate,
+                        tpvm = this
                     };
-
+                  
                     if (dialog.ShowDialog() ?? false)
                     {
                         TrainRate = dialog.Rate;
-                        Model.AddLearningRateSGDR(true, GotoEpoch, TrainRate);
-                        
+
+                        if (SGDR)
+                            Model.AddLearningRateSGDR(true, GotoEpoch, TrainRate);
+                        else
+                            Model.AddLearningRate(true, GotoEpoch, TrainRate);
+
                         Model.SetOptimizer(TrainRate.Optimizer);
                         Model.Optimizer = TrainRate.Optimizer;
                         Optimizer = TrainRate.Optimizer;

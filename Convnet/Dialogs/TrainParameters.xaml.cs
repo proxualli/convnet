@@ -1,4 +1,6 @@
-﻿using dnncore;
+﻿using Convnet.Common;
+using Convnet.PageViewModels;
+using dnncore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +17,8 @@ namespace Convnet.Dialogs
         public DNNTrainingRate Rate { get; set; }
         public Model Model { get; set; }
         public string Path { get; set; }
+
+        public TrainPageViewModel tpvm;
 
         public TrainParameters()
         {
@@ -42,8 +46,11 @@ namespace Convnet.Dialogs
             }
 
             DataContext = Rate;
+            textBoxGotoCycle.Text = tpvm.GotoCycle.ToString();
+            textBoxGotoEpoch.Text = tpvm.GotoEpoch.ToString();
+            CheckBoxSGDR.IsChecked = tpvm.SGDR;
+            ChangeSGDR();
 
-            textBoxGoToEpoch.Text = Properties.Settings.Default.GotoEpoch.ToString();
             textBoxColorAngle.IsEnabled = Rate.ColorCast > 0;
 
             comboBoOptimizer.Focus();
@@ -90,17 +97,29 @@ namespace Convnet.Dialogs
                     Xceed.Wpf.Toolkit.MessageBox.Show("Your model uses batch normalization.\r\nThe batch size cannot be equal to 1 in this case.", "Warning", MessageBoxButton.OK);
                     return;
                 }
-
-                uint.TryParse(textBoxGoToEpoch.Text, out uint gotoEpoch);
-                if (gotoEpoch > Rate.Epochs || gotoEpoch < 1)
+                
+                if (Properties.Settings.Default.SGDR)
                 {
-                    Xceed.Wpf.Toolkit.MessageBox.Show("Your value for go to Epochs is incorrect.", "Warning", MessageBoxButton.OK);
-                    return;
+                    uint.TryParse(textBoxGotoEpoch.Text, out uint gotoCycle);
+                    if (gotoCycle > Rate.Cycles || gotoCycle < 1)
+                    {
+                        Xceed.Wpf.Toolkit.MessageBox.Show("Your value for goto Cycle is to big.", "Warning", MessageBoxButton.OK);
+                        return;
+                    }
+                    Properties.Settings.Default.GotoCycle = gotoCycle;
                 }
 
+                uint.TryParse(textBoxGotoEpoch.Text, out uint gotoEpoch);
+                if (gotoEpoch > Rate.Epochs || gotoEpoch < 1)
+                {
+                    Xceed.Wpf.Toolkit.MessageBox.Show("Your value for goto Epoch is to big.", "Warning", MessageBoxButton.OK);
+                    return;
+                }
                 Properties.Settings.Default.GotoEpoch = gotoEpoch;
+
                 Properties.Settings.Default.TrainRate = Rate;
                 Properties.Settings.Default.Optimizer = (int)Rate.Optimizer;
+                
                 Properties.Settings.Default.Save();
                
                 DialogResult = true;
@@ -144,6 +163,25 @@ namespace Convnet.Dialogs
         void TextBoxColorCast_TextChanged(object sender, TextChangedEventArgs e)
         {
             textBoxColorAngle.IsEnabled = (float.TryParse(textBoxColorCast.Text, out float result) && result > 0.0f);
+        }
+
+        private void CheckBoxSGDR_Checked(object sender, RoutedEventArgs e)
+        {
+            ChangeSGDR();
+        }
+
+        private void CheckBoxSGDR_Unchecked(object sender, RoutedEventArgs e)
+        {
+            ChangeSGDR();
+        }
+
+        private void ChangeSGDR()
+        {
+            bool check = CheckBoxSGDR.IsChecked.HasValue ? CheckBoxSGDR.IsChecked.Value : false;
+            tpvm.SGDR = check;
+            textBoxCycles.IsEnabled = check;
+            textBoxGotoCycle.IsEnabled = check;
+            textBoxEpochMultiplier.IsEnabled = check;
         }
 
         void comboBoOptimizer_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -221,6 +259,11 @@ namespace Convnet.Dialogs
                     }
                     break;
             }
+        }
+
+        private void ButtonSGDRHelp_Click(object sender, RoutedEventArgs e)
+        {
+            ApplicationHelper.OpenBrowser("https://arxiv.org/abs/1608.03983");
         }
     }
 }
