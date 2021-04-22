@@ -1218,6 +1218,8 @@ namespace dnncore
 		GroupIndex = CostLayers[CostIndex]->GroupIndex;
 		LabelIndex = CostLayers[CostIndex]->LabelIndex;
 		ClassCount = CostLayers[CostIndex]->ClassCount;
+
+		Optimizer = static_cast<DNNOptimizers>(GetOptimizer());
 	}
 
 	void Model::AddLearningRate(bool clear, UInt gotoEpoch, DNNTrainingRate^ rate)
