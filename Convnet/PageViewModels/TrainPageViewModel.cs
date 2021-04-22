@@ -1458,7 +1458,11 @@ namespace Convnet.PageViewModels
                     bool first = true;
                     foreach (DNNTrainingRate rate in TrainRates)
                     {
-                        Model.AddLearningRate(first, GotoEpoch, rate);
+                        if (SGDR)
+                            Model.AddLearningRateSGDR(first, GotoEpoch, rate);
+                        else
+                            Model.AddLearningRate(first, GotoEpoch, rate);
+
                         first = false;
                     }
 
