@@ -96,7 +96,7 @@ namespace Convnet.Dialogs
                 uint.TryParse(textBoxGotoEpoch.Text, out uint gotoEpoch);
                 if ((gotoEpoch > (tpvm.SGDR ? Rate.Epochs * Rate.Cycles : Rate.Epochs)) || (gotoEpoch < 1))
                 {
-                    Xceed.Wpf.Toolkit.MessageBox.Show("Your value for goto Epoch is to big.", "Warning", MessageBoxButton.OK);
+                    Xceed.Wpf.Toolkit.MessageBox.Show("Goto epoch is to large", "Warning", MessageBoxButton.OK);
                     return;
                 }
                 tpvm.GotoEpoch = gotoEpoch;

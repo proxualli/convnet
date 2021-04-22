@@ -123,14 +123,13 @@ namespace Convnet.Dialogs
 
                 ulong totalEpochs = 0;
                 foreach (DNNTrainingRate rate in tpvm.TrainRates)
-                    totalEpochs += rate.Epochs;
+                    totalEpochs += tpvm.SGDR ? rate.Epochs * rate.Cycles : rate.Epochs;
   
                 if (uint.TryParse(textBoxGotoEpoch.Text, out uint gotoEpoch))
                 {
-
                     if (gotoEpoch > totalEpochs)
                     {
-                        Xceed.Wpf.Toolkit.MessageBox.Show("Value Goto Epoch is to large", "Warning", MessageBoxButton.OK);
+                        Xceed.Wpf.Toolkit.MessageBox.Show("Goto epoch is to large", "Warning", MessageBoxButton.OK);
                         return;
                     }
 
