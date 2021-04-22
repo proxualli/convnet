@@ -2,8 +2,6 @@
 using Convnet.PageViewModels;
 using dnncore;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
@@ -14,8 +12,6 @@ namespace Convnet.Dialogs
 {
     public partial class TrainingSchemeEditor : Window
     {
-        public static IEnumerable<DNNOptimizers> GetOptimizers => Enum.GetValues(typeof(DNNOptimizers)).Cast<DNNOptimizers>();
-        public static IEnumerable<DNNInterpolation> GetInterpolations => Enum.GetValues(typeof(DNNInterpolation)).Cast<DNNInterpolation>();
         public string Path { get; set; }
 
         public TrainPageViewModel tpvm;

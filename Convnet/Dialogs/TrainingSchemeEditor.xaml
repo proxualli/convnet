@@ -4,7 +4,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"  
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
         xmlns:pvm="clr-namespace:Convnet.PageViewModels" 
-        xmlns:ext="clr-namespace:Convnet.Dialogs"
+        xmlns:ext="clr-namespace:Convnet.PageViewModels"
         xmlns:c="clr-namespace:Convnet.Common"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:converters="clr-namespace:Convnet.Converters"
@@ -123,7 +123,7 @@
 
         <DataGrid ItemsSource="{Binding TrainRates}" CanUserAddRows="True" CanUserDeleteRows="True" ContextMenu="{StaticResource MyContextMenu}" AutoGenerateColumns="False" Height="Auto" HorizontalAlignment="Stretch" Margin="6" x:Name="DataGridRates" VerticalAlignment="Stretch" Width="Auto" TabIndex="4" CanUserSortColumns="False" GridLinesVisibility="Horizontal" HorizontalGridLinesBrush="#FFAAE4F5" VerticalContentAlignment="Center" HorizontalContentAlignment="Stretch" SelectionMode="Single" MinHeight="0" MinWidth="0" CanUserResizeColumns="False" FontFamily="Consolas" FontSize="14" CanUserResizeRows="False" BorderThickness="0" Foreground="{DynamicResource {x:Static SystemColors.DesktopBrushKey}}" CanUserReorderColumns="False" IsSynchronizedWithCurrentItem="True" SelectionUnit="FullRow" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
             <DataGrid.Columns>
-                <DataGridComboBoxColumn Header="Optimizer" ItemsSource="{x:Static ext:TrainingSchemeEditor.GetOptimizers}" SelectedItemBinding="{Binding Path=Optimizer, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <DataGridComboBoxColumn Header="Optimizer" ItemsSource="{x:Static ext:TrainPageViewModel.GetOptimizers}" SelectedItemBinding="{Binding Path=Optimizer, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 <DataGridTextColumn Header="Momentum" Binding="{Binding Path=Momentum, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 <DataGridTextColumn Header="Beta2" Binding="{Binding Path=Beta2, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 <DataGridTextColumn Header="L2Penalty" Binding="{Binding Path=L2Penalty, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
@@ -144,7 +144,7 @@
                 <DataGridTextColumn Header="ColorCast" Binding="{Binding Path=ColorCast, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 <DataGridTextColumn Header="ColorAngle" Binding="{Binding Path=ColorAngle, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 <DataGridTextColumn Header="Distortion" Binding="{Binding Path=Distortion, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                <DataGridComboBoxColumn Header="Interpolation" ItemsSource="{x:Static ext:TrainingSchemeEditor.GetInterpolations}" SelectedItemBinding="{Binding Path=Interpolation, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                <DataGridComboBoxColumn Header="Interpolation" ItemsSource="{x:Static ext:TrainPageViewModel.GetInterpolations}" SelectedItemBinding="{Binding Path=Interpolation, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 <DataGridTextColumn Header="Scaling" Binding="{Binding Path=Scaling, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 <DataGridTextColumn Header="Rotation" Binding="{Binding Path=Rotation, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             </DataGrid.Columns>
