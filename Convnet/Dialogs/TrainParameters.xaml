@@ -5,7 +5,7 @@
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:converters="clr-namespace:Convnet.Converters"
         xmlns:ext="clr-namespace:Convnet.Dialogs"
-        Title="Train Parameters" Height="560" Width="500" WindowStartupLocation="CenterOwner" ShowInTaskbar="False" ResizeMode="NoResize" Closing="Window_Closing" Loaded="Window_Loaded" UseLayoutRounding="True" SnapsToDevicePixels="True" Background="Gray">
+        Title="Train Parameters" Height="566" Width="580" WindowStartupLocation="CenterOwner" ShowInTaskbar="False" ResizeMode="NoResize" Closing="Window_Closing" Loaded="Window_Loaded" UseLayoutRounding="True" SnapsToDevicePixels="True" Background="Gray">
 
     <Window.Resources>
         <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
@@ -120,7 +120,7 @@
             <RowDefinition Height="30" MaxHeight="30"/>
             <RowDefinition Height="30" MaxHeight="30"/>
             <RowDefinition Height="30" MaxHeight="30"/>
-            <RowDefinition Height="16" MaxHeight="16"/>
+            <RowDefinition Height="10" MaxHeight="10"/>
             <RowDefinition Height="30" MaxHeight="30"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
@@ -378,8 +378,8 @@
             </TextBox.Text>
         </xctk:AutoSelectTextBox>
 
-        <CheckBox x:Name="CheckBoxSGDR" Content="SGDR" IsThreeState="False" HorizontalAlignment="Center" Grid.Column="4" Grid.Row="14" VerticalAlignment="Center" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" FontSize="14"  ToolTip="Stochastic Gradient Descent with Warm Restarts" Checked="CheckBoxSGDR_Checked" Unchecked="CheckBoxSGDR_Unchecked" Foreground="{DynamicResource NormalBrush}"/>
-        <Button x:Name="ButtonSGDRHelp" Content=" ? " HorizontalAlignment="Center" Margin="86,0,0,0" Grid.Column="4" Grid.Row="14" VerticalAlignment="Center" FontSize="12" Cursor="Help" ClickMode="Release" Click="ButtonSGDRHelp_Click" />
+        <CheckBox x:Name="CheckBoxSGDR" Content="SGDR" IsThreeState="False" HorizontalAlignment="Left" Grid.Column="4" Grid.Row="14" VerticalAlignment="Center" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" FontSize="14"  ToolTip="Stochastic Gradient Descent with Warm Restarts" Checked="CheckBoxSGDR_Checked" Unchecked="CheckBoxSGDR_Unchecked" Foreground="{DynamicResource NormalBrush}"/>
+        <Button x:Name="ButtonSGDRHelp" Content=" ? " HorizontalAlignment="Left" Margin="66,0,0,0" Grid.Column="4" Grid.Row="14" VerticalAlignment="Center" FontSize="12" Cursor="Help" ClickMode="Release" Click="ButtonSGDRHelp_Click" />
 
         <Button Content="Train" Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="16" Margin="2" Name="buttonTrain" Click="ButtonTrain_Click" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TabIndex="29" ClickMode="Release"/>
         <Button Content="Cancel" Grid.Column="4" Grid.ColumnSpan="2" Grid.Row="16" Margin="2" Name="buttonCancel" Click="ButtonCancel_Click" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TabIndex="30" ClickMode="Release" IsCancel="True" IsDefault="True" />
