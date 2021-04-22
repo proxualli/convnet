@@ -77,8 +77,7 @@ namespace Convnet.PageViewModels
         public event EventHandler Open;
         public event EventHandler Save;
         public event EventHandler<int?> RefreshRateChanged;
-        public static IEnumerable<DNNOptimizers> GetOptimizers => Enum.GetValues(typeof(DNNOptimizers)).Cast<DNNOptimizers>();
-        public static IEnumerable<DNNInterpolation> GetInterpolations => Enum.GetValues(typeof(DNNInterpolation)).Cast<DNNInterpolation>();
+       
 
         public TrainPageViewModel(dnncore.Model model) : base(model)
         {
@@ -112,13 +111,13 @@ namespace Convnet.PageViewModels
             (UIElementAutomationPeer.CreatePeerForElement(refreshButton).GetPattern(PatternInterface.Invoke) as IInvokeProvider).Invoke();
         }
 
-        void TrainPageViewModel_RefreshRateChanged(object sender, int? e)
+        private void TrainPageViewModel_RefreshRateChanged(object sender, int? e)
         {
             if (RefreshTimer != null && e.HasValue)
                RefreshTimer.Interval = 1000 * e.Value;
         }
 
-        public void TrainPageViewModel_ModelChanged(object sender, EventArgs e)
+        private void TrainPageViewModel_ModelChanged(object sender, EventArgs e)
         {
             showProgress = false;
             showSample = false;
@@ -166,7 +165,7 @@ namespace Convnet.PageViewModels
             Application.Current.Dispatcher.Invoke(() => RefreshTrainingPlot(), DispatcherPriority.Render);
         }
 
-        void NewEpoch(UInt Cycle, UInt Epoch, UInt TotalEpochs, UInt Optimizer, Float Beta2, Float Eps, bool HorizontalFlip, bool VerticalFlip, Float Dropout, Float Cutout, Float AutoAugment, Float ColorCast, UInt ColorAngle, Float Distortion, UInt Interpolation, Float Scaling, Float Rotation, Float Rate, UInt64 BatchSize, Float Momentum, Float L2Penalty, Float AvgTrainLoss, Float TrainErrorPercentage, Float TrainAccuracy, UInt TrainErrors, Float AvgTestLoss, Float TestErrorPercentage, Float TestAccuracy, UInt TestErrors)
+        private void NewEpoch(UInt Cycle, UInt Epoch, UInt TotalEpochs, UInt Optimizer, Float Beta2, Float Eps, bool HorizontalFlip, bool VerticalFlip, Float Dropout, Float Cutout, Float AutoAugment, Float ColorCast, UInt ColorAngle, Float Distortion, UInt Interpolation, Float Scaling, Float Rotation, Float Rate, UInt64 BatchSize, Float Momentum, Float L2Penalty, Float AvgTrainLoss, Float TrainErrorPercentage, Float TrainAccuracy, UInt TrainErrors, Float AvgTestLoss, Float TestErrorPercentage, Float TestAccuracy, UInt TestErrors)
         {
             Application.Current.Dispatcher.Invoke(() =>
             {
@@ -184,7 +183,7 @@ namespace Convnet.PageViewModels
             }, DispatcherPriority.Render);
         }
 
-        void TrainProgress(DNNOptimizers Optim, UInt BatchSize, UInt Cycle, UInt TotalCycles, UInt Epoch, UInt TotalEpochs, bool HorizontalFlip, bool VerticalFlip, Float Dropout, Float Cutout, Float AutoAugment, Float ColorCast, UInt ColorAngle, Float Distortion, DNNInterpolation Interpolation, Float Scaling, Float Rotation, UInt SampleIndex, Float Rate, Float Momentum, Float L2Penalty, Float AvgTrainLoss, Float TrainErrorPercentage, Float TrainAccuracy, UInt TrainErrors, Float AvgTestLoss, Float TestErrorPercentage, Float TestAccuracy, UInt TestErrors, DNNStates State, DNNTaskStates TaskState)
+        private void TrainProgress(DNNOptimizers Optim, UInt BatchSize, UInt Cycle, UInt TotalCycles, UInt Epoch, UInt TotalEpochs, bool HorizontalFlip, bool VerticalFlip, Float Dropout, Float Cutout, Float AutoAugment, Float ColorCast, UInt ColorAngle, Float Distortion, DNNInterpolation Interpolation, Float Scaling, Float Rotation, UInt SampleIndex, Float Rate, Float Momentum, Float L2Penalty, Float AvgTrainLoss, Float TrainErrorPercentage, Float TrainAccuracy, UInt TrainErrors, Float AvgTestLoss, Float TestErrorPercentage, Float TestAccuracy, UInt TestErrors, DNNStates State, DNNTaskStates TaskState)
         {
             sb.Length = 0;
             switch (State)
@@ -282,8 +281,8 @@ namespace Convnet.PageViewModels
             }
             ProgressText = sb.ToString();
         }
-        
-        void AddCommandButtons()
+
+        private void AddCommandButtons()
         {
             Button startButton = new Button
             {
@@ -610,7 +609,7 @@ namespace Convnet.PageViewModels
             disableLockingCheckBox.IsChecked = Settings.Default.DisableLocking;
         }
 
-        void DisableLockingCheckBox_Unchecked(object sender, RoutedEventArgs e)
+        private void DisableLockingCheckBox_Unchecked(object sender, RoutedEventArgs e)
         {
             if (disableLockingCheckBox.IsChecked.HasValue)
             {
@@ -641,12 +640,12 @@ namespace Convnet.PageViewModels
             }
         }
 
-        void UnlockAll_Click(object sender, RoutedEventArgs e)
+        private void UnlockAll_Click(object sender, RoutedEventArgs e)
         {
             Model.SetLocked(false);
         }
 
-        void LockAll_Click(object sender, RoutedEventArgs e)
+        private void LockAll_Click(object sender, RoutedEventArgs e)
         {
             Model.SetLocked(true);
         }
@@ -701,7 +700,7 @@ namespace Convnet.PageViewModels
             return checkBoxLayout;
         }
 
-        void LayersComboBox_SourceUpdated(object sender, DataTransferEventArgs e)
+        private void LayersComboBox_SourceUpdated(object sender, DataTransferEventArgs e)
         {
             if (e.OriginalSource is CheckBox cb)
             {
@@ -716,7 +715,7 @@ namespace Convnet.PageViewModels
             }
         }
 
-        void PixelSizeSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        private void PixelSizeSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             int temp = (int)Math.Round(e.NewValue);
             if (temp == 1)
@@ -731,13 +730,13 @@ namespace Convnet.PageViewModels
             LayersComboBox_SelectionChanged(this, null);
         }
 
-        void TrainingPlotCheckBox_Unchecked(object sender, RoutedEventArgs e)
+        private void TrainingPlotCheckBox_Unchecked(object sender, RoutedEventArgs e)
         {
             Settings.Default.ShowTrainingPlot = trainingPlotCheckBox.IsChecked ?? false;
             Settings.Default.Save();
         }
 
-        void PlotTypeChanged(object sender, SelectionChangedEventArgs e)
+        private void PlotTypeChanged(object sender, SelectionChangedEventArgs e)
         {
             CurrentPlotType = (PlotType)plotTypeComboBox.SelectedIndex;
             Settings.Default.PlotType = (uint)plotTypeComboBox.SelectedIndex;
@@ -1237,12 +1236,12 @@ namespace Convnet.PageViewModels
             RefreshTrainingPlot();
         }
 
-        public void RefreshTimer_Elapsed(object sender, ElapsedEventArgs e)
+        private void RefreshTimer_Elapsed(object sender, ElapsedEventArgs e)
         {
             Application.Current.Dispatcher.Invoke(() => LayersComboBox_SelectionChanged(sender, null), DispatcherPriority.Render);
         }
 
-        void StartButtonClick(object sender, RoutedEventArgs e)
+        private void StartButtonClick(object sender, RoutedEventArgs e)
         {
             Application.Current.Dispatcher.Invoke(() =>
             {
@@ -1364,7 +1363,7 @@ namespace Convnet.PageViewModels
             }, DispatcherPriority.Normal);
         }
 
-        void StopButtonClick(object sender, RoutedEventArgs e)
+        private void StopButtonClick(object sender, RoutedEventArgs e)
         {
             Application.Current.Dispatcher.Invoke(() =>
             {
@@ -1414,7 +1413,7 @@ namespace Convnet.PageViewModels
             }, DispatcherPriority.Normal);
         }
 
-        void PauseButtonClick(object sender, RoutedEventArgs e)
+        private void PauseButtonClick(object sender, RoutedEventArgs e)
         {
             Application.Current.Dispatcher.Invoke(() =>
             {
@@ -1433,17 +1432,17 @@ namespace Convnet.PageViewModels
             }, DispatcherPriority.Normal);
         }
 
-        void OpenButtonClick(object sender, RoutedEventArgs e)
+        private void OpenButtonClick(object sender, RoutedEventArgs e)
         {
             this.Open?.Invoke(this, EventArgs.Empty);
         }
 
-        void SaveButtonClick(object sender, RoutedEventArgs e)
+        private void SaveButtonClick(object sender, RoutedEventArgs e)
         {
             this.Save?.Invoke(this, EventArgs.Empty);
         }
 
-        void EditorButtonClick(object sender, RoutedEventArgs e)
+        private void EditorButtonClick(object sender, RoutedEventArgs e)
         {
             if (Model.TaskState == DNNTaskStates.Stopped)
             {
@@ -1547,7 +1546,7 @@ namespace Convnet.PageViewModels
             }
         }
 
-        void ForgetButtonClick(object sender, RoutedEventArgs e)
+        private void ForgetButtonClick(object sender, RoutedEventArgs e)
         {
             if (Xceed.Wpf.Toolkit.MessageBox.Show("Do you really want to forget all weights?", "Forget Model Weights", MessageBoxButton.YesNo, MessageBoxImage.None, MessageBoxResult.No) == MessageBoxResult.Yes)
             {
@@ -1561,7 +1560,7 @@ namespace Convnet.PageViewModels
             }
         }
 
-        void ClearButtonClick(object sender, RoutedEventArgs e)
+        private void ClearButtonClick(object sender, RoutedEventArgs e)
         {
             if (TrainingLog.Count > 0)
             {
@@ -1578,7 +1577,7 @@ namespace Convnet.PageViewModels
             }
         }
 
-        void OpenLayerWeightsButtonClick(object sender, RoutedEventArgs e)
+        private void OpenLayerWeightsButtonClick(object sender, RoutedEventArgs e)
         {
             Microsoft.Win32.OpenFileDialog openFileDialog = new Microsoft.Win32.OpenFileDialog
             {
@@ -1625,7 +1624,7 @@ namespace Convnet.PageViewModels
             Mouse.OverrideCursor = null;
         }
 
-        void SaveLayerWeightsButtonClick(object sender, RoutedEventArgs e)
+        private void SaveLayerWeightsButtonClick(object sender, RoutedEventArgs e)
         {
             int layerIndex = layersComboBox.SelectedIndex;
 
@@ -1662,7 +1661,7 @@ namespace Convnet.PageViewModels
             }
         }
 
-        void ForgetLayerWeightsButtonClick(object sender, RoutedEventArgs e)
+        private void ForgetLayerWeightsButtonClick(object sender, RoutedEventArgs e)
         {
             if (Xceed.Wpf.Toolkit.MessageBox.Show("Do you really want to forget layer weights?", "Forget Layer Weights", MessageBoxButton.YesNo, MessageBoxImage.None, MessageBoxResult.No) == MessageBoxResult.Yes)
             {

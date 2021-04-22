@@ -1,10 +1,12 @@
 ﻿using dnncore;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
@@ -26,6 +28,8 @@ namespace Convnet.PageViewModels
         public static string ScriptsDirectory { get; } = StorageDirectory + @"scripts\";
         public static string ScriptPath { get; } = ScriptsDirectory + @"ScriptsDialog\bin\" + Mode + Framework;
 
+        public static IEnumerable<DNNOptimizers> GetOptimizers => Enum.GetValues(typeof(DNNOptimizers)).Cast<DNNOptimizers>();
+        public static IEnumerable<DNNInterpolation> GetInterpolations => Enum.GetValues(typeof(DNNInterpolation)).Cast<DNNInterpolation>();
 
         public event PropertyChangedEventHandler PropertyChanged;
         public event EventHandler Modelhanged;

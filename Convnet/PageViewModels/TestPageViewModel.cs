@@ -64,7 +64,7 @@ namespace Convnet.PageViewModels
             Application.Current.Dispatcher.Invoke(() => LayerIndexChanged(this, null), DispatcherPriority.Render);
         }
 
-        void AddCommandButtons()
+        private void AddCommandButtons()
         {
             Button startButton = new Button
             {
@@ -140,7 +140,7 @@ namespace Convnet.PageViewModels
             }
         }
 
-        public void TestPageViewModel_ModelChanged(object sender, EventArgs e)
+        private void TestPageViewModel_ModelChanged(object sender, EventArgs e)
         {
             Model.TestProgress += TestProgress;
             ShowProgress = false;
@@ -334,12 +334,12 @@ namespace Convnet.PageViewModels
 
         public override string DisplayName => "Test";
 
-        void RefreshTimer_Elapsed(object sender, ElapsedEventArgs e)
+        private void RefreshTimer_Elapsed(object sender, ElapsedEventArgs e)
         {
             Application.Current.Dispatcher.Invoke(() => LayerIndexChanged(sender, null), DispatcherPriority.Render);
         }
 
-        public void LayerIndexChanged(object sender, SelectionChangedEventArgs e)
+        private void LayerIndexChanged(object sender, SelectionChangedEventArgs e)
         {
             if (Model != null)
             {
@@ -354,7 +354,7 @@ namespace Convnet.PageViewModels
             }
         }
 
-        void StartButtonClick(object sender, RoutedEventArgs e)
+        private void StartButtonClick(object sender, RoutedEventArgs e)
         {
             Application.Current.Dispatcher.Invoke(() =>
             {
@@ -410,7 +410,7 @@ namespace Convnet.PageViewModels
                 }
             }, DispatcherPriority.Normal);
         }
-        void StopButtonClick(object sender, RoutedEventArgs e)
+        private void StopButtonClick(object sender, RoutedEventArgs e)
         {
             Application.Current.Dispatcher.Invoke(() =>
             {
@@ -441,7 +441,7 @@ namespace Convnet.PageViewModels
             }, DispatcherPriority.Normal);
         }
 
-        void PauseButtonClick(object sender, RoutedEventArgs e)
+        private void PauseButtonClick(object sender, RoutedEventArgs e)
         {
             Application.Current.Dispatcher.Invoke(() =>
             {
@@ -457,7 +457,7 @@ namespace Convnet.PageViewModels
             }, DispatcherPriority.Normal);
         }
 
-        void OpenButtonClick(object sender, RoutedEventArgs e)
+        private void OpenButtonClick(object sender, RoutedEventArgs e)
         {
             Open?.Invoke(this, EventArgs.Empty);
         }

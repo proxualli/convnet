@@ -59,30 +59,30 @@ namespace Convnet.PageViewModels
             CurrentPage = Pages[Settings.Default.CurrentPage];
         }
 
-        void Default_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        private void Default_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             Settings.Default.Save();
         }
 
-        void PageVM_Open(object sender, EventArgs e)
+        private void PageVM_Open(object sender, EventArgs e)
         {
             if (ApplicationCommands.Open.CanExecute(null, null))
                 ApplicationCommands.Open.Execute(null, null);
         }
 
-        void PageVM_Save(object sender, EventArgs e)
+        private void PageVM_Save(object sender, EventArgs e)
         {
             if (ApplicationCommands.Save.CanExecute(null, null))
                 ApplicationCommands.Save.Execute(null, null);
         }
 
-        void PageVM_SaveAs(object sender, EventArgs e)
+        private void PageVM_SaveAs(object sender, EventArgs e)
         {
             if (ApplicationCommands.SaveAs.CanExecute(null, null))
                 ApplicationCommands.SaveAs.Execute(null, null);
         }
 
-        void TrainProgress(DNNOptimizers Optimizer, UInt BatchSize, UInt Cycle, UInt TotalCycles, UInt Epoch, UInt TotalEpochs, bool HorizontalMirror, bool VerticalMirror, Float inputDropOut, Float inputCutout, Float AutoAugment, Float ColorCast, UInt ColorRadius, Float Distortion, DNNInterpolation Interpolation, Float Scaling, Float Rotation, UInt SampleIndex, Float Rate, Float Momentum, Float L2Penalty, Float AvgTrainLoss, Float TrainErrorPercentage, Float TrainAccuracy, UInt TrainErrors, Float AvgTestLoss, Float TestErrorPercentage, Float Accuracy, UInt64 TestErrors, DNNStates NetworkState, DNNTaskStates TaskState)
+        private void TrainProgress(DNNOptimizers Optimizer, UInt BatchSize, UInt Cycle, UInt TotalCycles, UInt Epoch, UInt TotalEpochs, bool HorizontalMirror, bool VerticalMirror, Float inputDropOut, Float inputCutout, Float AutoAugment, Float ColorCast, UInt ColorRadius, Float Distortion, DNNInterpolation Interpolation, Float Scaling, Float Rotation, UInt SampleIndex, Float Rate, Float Momentum, Float L2Penalty, Float AvgTrainLoss, Float TrainErrorPercentage, Float TrainAccuracy, UInt TrainErrors, Float AvgTestLoss, Float TestErrorPercentage, Float Accuracy, UInt64 TestErrors, DNNStates NetworkState, DNNTaskStates TaskState)
         {
             switch (NetworkState)
             {
@@ -107,7 +107,7 @@ namespace Convnet.PageViewModels
             SampleRate = Model.SampleRate.ToString("N1");
         }
 
-        void TestProgress(UInt BatchSize, UInt SampleIndex, Float AvgTestLoss, Float TestErrorPercentage, Float Accuracy, UInt TestErrors, DNNStates NetworkState, DNNTaskStates TaskState)
+        private void TestProgress(UInt BatchSize, UInt SampleIndex, Float AvgTestLoss, Float TestErrorPercentage, Float Accuracy, UInt TestErrors, DNNStates NetworkState, DNNTaskStates TaskState)
         {
             if (NetworkState == DNNStates.Testing)
             {
@@ -125,7 +125,7 @@ namespace Convnet.PageViewModels
             SampleRate = Model.SampleRate.ToString("N1");
         }
 
-        void EditPageVM_ModelChanged(object sender, EventArgs e)
+        private void EditPageVM_ModelChanged(object sender, EventArgs e)
         {
             if (Model != null)
             {

@@ -308,12 +308,12 @@ namespace Convnet.PageViewModels
             }
         }
 
-        void OpenButtonClick(object sender, RoutedEventArgs e)
+        private void OpenButtonClick(object sender, RoutedEventArgs e)
         {
             Open?.Invoke(this, EventArgs.Empty);
         }
 
-        void SaveButtonClick(object sender, RoutedEventArgs e)
+        private void SaveButtonClick(object sender, RoutedEventArgs e)
         {
             Save?.Invoke(this, EventArgs.Empty);
         }
@@ -323,7 +323,7 @@ namespace Convnet.PageViewModels
             DefinitionStatus = CheckDefinition();
         }
 
-        public void SynchronizeButtonClick(object sender, RoutedEventArgs e)
+        private void SynchronizeButtonClick(object sender, RoutedEventArgs e)
         {
             Mouse.OverrideCursor = null;
             try
@@ -477,26 +477,26 @@ namespace Convnet.PageViewModels
             }
         }
 
-        void mouseWaitTimer_Tick(object sender, EventArgs e)
+        private void mouseWaitTimer_Tick(object sender, EventArgs e)
         {
             clickWaitTimer.Stop();
 
             if (!initAction)
                 ScriptDialog();
         }
-        
-        void ScriptsButtonClick(object sender, RoutedEventArgs e)
+
+        private void ScriptsButtonClick(object sender, RoutedEventArgs e)
         {
             initAction = false;
             clickWaitTimer.Start();
         }
 
-        void ScriptsButtonMouseDoubleClick(object sender, MouseButtonEventArgs e)
+        private void ScriptsButtonMouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             e.Handled = true;
         }
         
-        void VisualStudioButtonClick(object sender, RoutedEventArgs e)
+        private void VisualStudioButtonClick(object sender, RoutedEventArgs e)
         {
             string version = "Community";
             if (Directory.Exists(@"C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE"))
@@ -551,7 +551,7 @@ namespace Convnet.PageViewModels
             }
         }
 
-        void ScriptDialog()
+        private void ScriptDialog()
         {
             if (dirty)
             {
@@ -645,7 +645,7 @@ namespace Convnet.PageViewModels
             }
         }
 
-        bool CheckDefinition()
+        private bool CheckDefinition()
         {
             DNNCheckMsg msg = Model.CheckDefinition(Definition);
 
