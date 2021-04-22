@@ -129,20 +129,6 @@ namespace Convnet.Dialogs
 
         void ButtonCancel_Click(object sender, RoutedEventArgs e)
         {
-            /*
-            uint.TryParse(textBoxGoToEpoch.Text, out uint gotoEpoch);
-            if (gotoEpoch > Rate.Epochs || gotoEpoch < 1)
-            {
-                Xceed.Wpf.Toolkit.MessageBox.Show("Your value for go to Epochs is incorrect.", "Warning", MessageBoxButton.OK);
-                return;
-            }
-           
-            Properties.Settings.Default.GoToEpoch = gotoEpoch;
-            Properties.Settings.Default.TrainRate = Rate;
-            Properties.Settings.Default.Optimizer = (int)Rate.Optimizer;
-            Properties.Settings.Default.Save();
-            */
-
             DialogResult = false;
         }
 
