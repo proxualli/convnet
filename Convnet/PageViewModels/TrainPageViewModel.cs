@@ -97,7 +97,7 @@ namespace Convnet.PageViewModels
             showWeightsSnapshot = false;
 
             sgdr = Settings.Default.SGDR;
-            gotoCycle = Settings.Default.GotoEpoch;
+            gotoCycle = Settings.Default.GotoCycle;
             gotoEpoch = Settings.Default.GotoEpoch;
             showTrainingPlot = Settings.Default.ShowTrainingPlot;
             currentPlotType = (PlotType)Settings.Default.PlotType;
@@ -124,6 +124,7 @@ namespace Convnet.PageViewModels
             showSample = false;
             showWeights = false;
             showWeightsSnapshot = false;
+            gotoCycle = Settings.Default.GotoCycle;
             gotoEpoch = Settings.Default.GotoEpoch;
             showTrainingPlot = Settings.Default.ShowTrainingPlot;
             currentPlotType = (PlotType)Settings.Default.PlotType;

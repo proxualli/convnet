@@ -100,13 +100,13 @@ namespace Convnet.Dialogs
                 
                 if (Properties.Settings.Default.SGDR)
                 {
-                    uint.TryParse(textBoxGotoEpoch.Text, out uint gotoCycle);
+                    uint.TryParse(textBoxGotoCycle.Text, out uint gotoCycle);
                     if (gotoCycle > Rate.Cycles || gotoCycle < 1)
                     {
                         Xceed.Wpf.Toolkit.MessageBox.Show("Your value for goto Cycle is to big.", "Warning", MessageBoxButton.OK);
                         return;
                     }
-                    Properties.Settings.Default.GotoCycle = gotoCycle;
+                    tpvm.GotoCycle = gotoCycle;
                 }
 
                 uint.TryParse(textBoxGotoEpoch.Text, out uint gotoEpoch);
@@ -115,7 +115,7 @@ namespace Convnet.Dialogs
                     Xceed.Wpf.Toolkit.MessageBox.Show("Your value for goto Epoch is to big.", "Warning", MessageBoxButton.OK);
                     return;
                 }
-                Properties.Settings.Default.GotoEpoch = gotoEpoch;
+                tpvm.GotoEpoch = gotoEpoch;
 
                 Properties.Settings.Default.TrainRate = Rate;
                 Properties.Settings.Default.Optimizer = (int)Rate.Optimizer;
