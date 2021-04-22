@@ -337,8 +337,8 @@ DNN_API bool DNNCheckDefinition(std::string& definition, dnn::CheckMsg& checkMsg
 DNN_API int DNNLoadDefinition(const std::string& fileName,dnn::CheckMsg& checkMsg);
 DNN_API int DNNReadDefinition(const std::string& definition, dnn::CheckMsg& checkMsg);
 DNN_API void DNNDataprovider(const std::string& directory);
-DNN_API int DNNLoadNetworkWeights(const std::string& fileName, const bool persistOptimizer);
-DNN_API int DNNSaveNetworkWeights(const std::string& fileName, const bool persistOptimizer);
+DNN_API int DNNLoadWeights(const std::string& fileName, const bool persistOptimizer);
+DNN_API int DNNSaveWeights(const std::string& fileName, const bool persistOptimizer);
 DNN_API int DNNLoadLayerWeights(const std::string& fileName, const UInt layerIndex, const bool persistOptimizer);
 DNN_API int DNNSaveLayerWeights(const std::string& fileName, const UInt layerIndex, const bool persistOptimizer);
 DNN_API void DNNGetLayerWeights(const UInt layerIndex, std::vector<Float>* weights, std::vector<Float>* biases);
@@ -346,6 +346,7 @@ DNN_API void DNNSetCostIndex(const UInt index);
 DNN_API void DNNGetCostInfo(const UInt costIndex, UInt* trainErrors, Float* trainLoss, Float* avgTrainLoss, Float* trainErrorPercentage, UInt* testErrors, Float* testLoss, Float* avgTestLoss, Float* testErrorPercentage);
 DNN_API void DNNGetImage(const UInt layer, const dnn::Byte fillColor, dnn::Byte* image);
 DNN_API bool DNNSetFormat(const bool plain);
+DNN_API dnn::Optimizers GetOptimizer();
 
 namespace dnncore
 {
@@ -1327,7 +1328,9 @@ namespace dnncore
 
 	int Model::LoadWeights(String^ fileName, bool persist)
 	{
-		int ret = DNNLoadNetworkWeights(ToUnmanagedString(fileName), persist);
+		int ret = DNNLoadWeights(ToUnmanagedString(fileName), persist);
+
+		Optimizer = static_cast<DNNOptimizers>(GetOptimizer());
 
 		for (UInt layerIndex = 0; layerIndex < LayerCount; layerIndex++)
 			UpdateLayerStatistics(Layers[layerIndex], layerIndex, layerIndex == SelectedIndex);
@@ -1337,7 +1340,7 @@ namespace dnncore
 
 	int Model::SaveWeights(String^ fileName, bool persist)
 	{
-		return DNNSaveNetworkWeights(ToUnmanagedString(fileName), persist);
+		return DNNSaveWeights(ToUnmanagedString(fileName), persist);
 	}
 
 	int Model::LoadLayerWeights(String^ fileName, UInt layerIndex)

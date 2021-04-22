@@ -366,7 +366,10 @@ namespace Convnet
                             {
                                 if (PageVM.Model.LoadWeights(openFileDialog.FileName, Settings.Default.PersistOptimizer) == 0)
                                 {
-                                    (PageVM.Pages[(int)ViewModels.Train] as TrainPageViewModel).RefreshButtonClick(this, null);
+                                    var tpvm = PageVM.Pages[(int)ViewModels.Train] as TrainPageViewModel;
+                                    tpvm.Optimizer = tpvm.Model.Optimizer;
+                                    tpvm.RefreshButtonClick(this, null);
+
                                     Mouse.OverrideCursor = null;
                                     Xceed.Wpf.Toolkit.MessageBox.Show(openFileDialog.SafeFileName + " is loaded", "Information", MessageBoxButton.OK);
                                 }
@@ -405,7 +408,10 @@ namespace Convnet
                         {
                             if (PageVM.Model.LoadWeights(openFileDialog.FileName, Settings.Default.PersistOptimizer) == 0)
                             {
-                                (PageVM.Pages[(int)ViewModels.Train] as TrainPageViewModel).RefreshButtonClick(this, null);
+                                var tpvm = PageVM.Pages[(int)ViewModels.Train] as TrainPageViewModel;
+                                tpvm.Optimizer = tpvm.Model.Optimizer;
+                                tpvm.RefreshButtonClick(this, null);
+                                                                
                                 Mouse.OverrideCursor = null;
                                 Xceed.Wpf.Toolkit.MessageBox.Show(openFileDialog.SafeFileName + " is loaded", "Information", MessageBoxButton.OK);
                             }
