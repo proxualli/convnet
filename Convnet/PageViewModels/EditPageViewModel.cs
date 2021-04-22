@@ -598,11 +598,10 @@ namespace Convnet.PageViewModels
                     dirty = false;
                 else
                 {
-                    Xceed.Wpf.Toolkit.MessageBox.Show(File.ReadAllText(fileInfo.FullName), "Compiler Result", MessageBoxButton.OK);
+                    // Xceed.Wpf.Toolkit.MessageBox.Show(File.ReadAllText(fileInfo.FullName), "Compiler Result", MessageBoxButton.OK);
 
                     try
                     {
-                        /*
                         var ProcStartInfo = new ProcessStartInfo()
                         {
                             FileName = "dotnet",
@@ -623,13 +622,12 @@ namespace Convnet.PageViewModels
                             dirty = false;
 
                         process.Close();
-                        */
-
+                       
                         fileInfo.Delete();
                     }
-                    catch (Exception/* ex*/)
+                    catch (Exception ex)
                     {
-                        // Xceed.Wpf.Toolkit.MessageBox.Show(ex.Message, "Start dotnet build process failed", MessageBoxButton.OK);
+                        Xceed.Wpf.Toolkit.MessageBox.Show(ex.Message, "Start dotnet build process failed", MessageBoxButton.OK);
                     }
 
                     File.Delete(ScriptPath + @"ScriptsDialog.deps.json");
