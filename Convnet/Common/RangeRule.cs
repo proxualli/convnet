@@ -59,7 +59,7 @@ namespace Convnet.Common
             }
             else
             {
-                if (intValue < 2u)
+                if (intValue < 8u)
                     return new ValidationResult(false, "Please enter a multiple of eight.");
 
                 if (intValue % 8u != 0)

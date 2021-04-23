@@ -150,21 +150,21 @@
             </DataGrid.Columns>
         </DataGrid>
 
-        <Label Content="Goto Epoch:" FontFamily="Consolas" FontSize="14" HorizontalAlignment="Left" Margin="344,0,0,0" Grid.Row="1" VerticalAlignment="Center"/>
-
         <Button Content="Load" Height="24" HorizontalAlignment="Left" Margin="4" Name="buttonLoad" VerticalAlignment="Center" Width="75" TabIndex="2" Click="ButtonLoad_Click" Grid.Row="1" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" ClickMode="Release"/>
         <Button Content="Save" Height="24" HorizontalAlignment="Left" Margin="86,4,4,4" Name="buttonSave" Width="75" TabIndex="3" Click="ButtonSave_Click" Grid.Row="1" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" ClickMode="Release"/>
         <Button Content="Train" Height="24" HorizontalAlignment="Right" Margin="4,4,86,4" Name="buttonTrain" VerticalAlignment="Center" Width="75" TabIndex="1" Click="ButtonTrain_Click" Grid.Row="1" VerticalContentAlignment="Center" ClickMode="Release" />
         <Button Content="Cancel" Height="24" HorizontalAlignment="Right" Margin="4" Name="buttonCancel" VerticalAlignment="Center" Width="75" IsCancel="True" IsDefault="True" TabIndex="4" Grid.Row="1" VerticalContentAlignment="Center" ClickMode="Release" Click="ButtonCancel_Click"/>
-       
-        <xctk:AutoSelectTextBox ContextMenu="{StaticResource MyContextMenu}" HorizontalAlignment="Left" Width="70" Margin="444,0,0,0" Grid.Row="1" x:Name="textBoxGotoEpoch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Validation.ErrorTemplate="{StaticResource validationTemplate}" Style="{StaticResource textBoxInError}" AllowDrop="False" MaxLines="1" AutoWordSelection="True" BorderThickness="1" SnapsToDevicePixels="True" BorderBrush="DarkGray" AutoSelectBehavior="OnFocus" AutoMoveFocus="True" FontSize="14" TabIndex="0" Background="{DynamicResource NormalBrush}">
+
+        <Label Content="Goto Epoch:" FontFamily="Consolas" FontSize="14" HorizontalAlignment="Left" Margin="200,0,0,0" Grid.Row="1" VerticalAlignment="Center"/>
+        
+        <xctk:AutoSelectTextBox ContextMenu="{StaticResource MyContextMenu}" HorizontalAlignment="Left" Width="70" Margin="300,0,0,0" Grid.Row="1" x:Name="textBoxGotoEpoch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Validation.ErrorTemplate="{StaticResource validationTemplate}" Style="{StaticResource textBoxInError}" AllowDrop="False" MaxLines="1" AutoWordSelection="True" BorderThickness="1" SnapsToDevicePixels="True" BorderBrush="DarkGray" AutoSelectBehavior="OnFocus" AutoMoveFocus="True" FontSize="14" TabIndex="0" Background="{DynamicResource NormalBrush}">
             <Binding Path="GotoEpoch" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
                 <Binding.ValidationRules>
                     <c:UIntRangeRule Min="1" Max="1000000"/>
                 </Binding.ValidationRules>
             </Binding>
         </xctk:AutoSelectTextBox>
-        <CheckBox x:Name="CheckBoxSGDR" Content="SGDR" IsThreeState="False" HorizontalAlignment="Left"  Grid.Row="1" VerticalAlignment="Center" Width="100" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" FontSize="14"  IsChecked="{Binding Path=SGDR, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ToolTip="Stochastic Gradient Descent with Warm Restarts" Checked="CheckBoxSGDR_Checked" Unchecked="CheckBoxSGDR_Unchecked" Margin="790,0,0,0"/>
-        <Button x:Name="ButtonSGDRHelp" Content=" ? " HorizontalAlignment="Left" Margin="860,0,0,0" Grid.Row="1" VerticalAlignment="Center" FontSize="12" Cursor="Help" ClickMode="Release" Click="ButtonSGDRHelp_Click" />
+        <CheckBox x:Name="CheckBoxSGDR" Content="SGDR" IsThreeState="False" HorizontalAlignment="Left"  Grid.Row="1" VerticalAlignment="Center" Width="100" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" FontSize="14"  IsChecked="{Binding Path=SGDR, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ToolTip="Stochastic Gradient Descent with Warm Restarts" Checked="CheckBoxSGDR_Checked" Unchecked="CheckBoxSGDR_Unchecked" Margin="400,0,0,0"/>
+        <Button x:Name="ButtonSGDRHelp" Content=" ? " HorizontalAlignment="Left" Margin="460,0,0,0" Grid.Row="1" VerticalAlignment="Center" FontSize="12" Cursor="Help" ClickMode="Release" Click="ButtonSGDRHelp_Click" />
     </Grid>
 </Window>
