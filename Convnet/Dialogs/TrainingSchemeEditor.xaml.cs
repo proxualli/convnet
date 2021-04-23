@@ -29,13 +29,6 @@ namespace Convnet.Dialogs
             ChangeSGDR();
         }
 
-        public static void PostitionWindowOnScreen(Window window, double horizontalShift = 0) //, double verticalShift = 0)
-        {
-            Screen screen = Screen.FromHandle(new System.Windows.Interop.WindowInteropHelper(window).Handle);
-            window.Left = screen.Bounds.X + ((screen.Bounds.Width - window.ActualWidth) / 2) + horizontalShift;
-            //window.Top = screen.Bounds.Y + ((screen.Bounds.Height - window.ActualHeight) / 2) + verticalShift;
-        }
-
         private void ButtonSGDRHelp_Click(object sender, RoutedEventArgs e)
         {
             ApplicationHelper.OpenBrowser("https://arxiv.org/abs/1608.03983");
@@ -53,14 +46,11 @@ namespace Convnet.Dialogs
 
         private void ChangeSGDR()
         {
-            PostitionWindowOnScreen(this, 0);
-
             DataGridRates.Columns[6].Visibility = tpvm.SGDR ? Visibility.Visible : Visibility.Collapsed;
             DataGridRates.Columns[8].Visibility = tpvm.SGDR ? Visibility.Visible : Visibility.Collapsed;
 
-            var width = tpvm.SGDR ? DataGridRates.Columns[6].ActualWidth + DataGridRates.Columns[8].ActualWidth : 0;
-
-            PostitionWindowOnScreen(this, -width); 
+            //DataGridRates.Columns[11].Visibility = tpvm.SGDR ? Visibility.Collapsed : Visibility.Visible;
+            DataGridRates.Columns[12].Visibility = tpvm.SGDR ? Visibility.Collapsed: Visibility.Visible;
         }
 
         bool IsValid(DependencyObject node)

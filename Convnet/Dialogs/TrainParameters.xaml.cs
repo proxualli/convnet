@@ -147,10 +147,13 @@ namespace Convnet.Dialogs
 
         private void ChangeSGDR()
         {
-            bool check = CheckBoxSGDR.IsChecked.HasValue ? CheckBoxSGDR.IsChecked.Value : false;
-            tpvm.SGDR = check;
-            textBoxCycles.IsEnabled = check;
-            textBoxEpochMultiplier.IsEnabled = check;
+            tpvm.SGDR = CheckBoxSGDR.IsChecked.HasValue ? CheckBoxSGDR.IsChecked.Value : false;
+            
+            textBoxCycles.IsEnabled = tpvm.SGDR;
+            textBoxEpochMultiplier.IsEnabled = tpvm.SGDR;
+
+            //textBoxDecayFactor.IsEnabled = !tpvm.SGDR;
+            textBoxDecayAfterEpochs.IsEnabled = !tpvm.SGDR;
         }
 
         void comboBoOptimizer_SelectionChanged(object sender, SelectionChangedEventArgs e)
