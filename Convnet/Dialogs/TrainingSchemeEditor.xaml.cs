@@ -134,8 +134,8 @@ namespace Convnet.Dialogs
         private void ButtonSave_Click(object sender, RoutedEventArgs e)
         {
             saveFileDialog.InitialDirectory = Path;
-            saveFileDialog.Filter = "Xml Training Scheme|*.scheme-xml";
-            saveFileDialog.DefaultExt = ".scheme-xml";
+            saveFileDialog.Filter = "Xml Training Scheme|*.xml";
+            saveFileDialog.DefaultExt = ".xml";
             saveFileDialog.AddExtension = true;
             saveFileDialog.CreatePrompt = false;
             saveFileDialog.OverwritePrompt = true;
@@ -146,7 +146,7 @@ namespace Convnet.Dialogs
                 string fileName = saveFileDialog.FileName;
 
                 Mouse.OverrideCursor = Cursors.Wait;
-                if (fileName.Contains("scheme-xml"))
+                if (fileName.Contains("xml"))
                 {
                     using (DNNDataSet.TrainingRatesDataTable table = new DNNDataSet.TrainingRatesDataTable())
                     {
@@ -157,7 +157,7 @@ namespace Convnet.Dialogs
                         table.WriteXml(fileName, System.Data.XmlWriteMode.WriteSchema);
                     }
                     Mouse.OverrideCursor = null;
-                    Title = "Training Scheme Editor - " + saveFileDialog.SafeFileName.Replace(".scheme-xml", "");
+                    Title = "Training Scheme Editor - " + saveFileDialog.SafeFileName.Replace(".xml", "");
                     Xceed.Wpf.Toolkit.MessageBox.Show("Training scheme is saved", "Information", MessageBoxButton.OK);
                 }
             }
@@ -167,9 +167,9 @@ namespace Convnet.Dialogs
         private void ButtonLoad_Click(object sender, RoutedEventArgs e)
         {
             openFileDialog.InitialDirectory = Path;
-            openFileDialog.Filter = "Xml Training Scheme|*.scheme-xml";
+            openFileDialog.Filter = "Xml Training Scheme|*.xml";
             openFileDialog.Title = "Load Training Scheme";
-            openFileDialog.DefaultExt = ".scheme-xml";
+            openFileDialog.DefaultExt = ".xml";
             openFileDialog.CheckFileExists = true;
             openFileDialog.CheckPathExists = true;
             openFileDialog.Multiselect = false;
@@ -183,7 +183,7 @@ namespace Convnet.Dialogs
                     Mouse.OverrideCursor = Cursors.Wait;
                     string fileName = openFileDialog.FileName;
 
-                    if (fileName.Contains(".scheme-xml"))
+                    if (fileName.Contains(".xml"))
                     {
                         try
                         {
@@ -198,7 +198,7 @@ namespace Convnet.Dialogs
                             }
 
                             Mouse.OverrideCursor = null;
-                            this.Title = "Training Scheme Editor - " + openFileDialog.SafeFileName.Replace(".scheme-xml", "");
+                            this.Title = "Training Scheme Editor - " + openFileDialog.SafeFileName.Replace(".xml", "");
                             stop = true;
                         }
                         catch (Exception)
