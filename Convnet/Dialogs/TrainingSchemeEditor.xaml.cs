@@ -49,8 +49,8 @@ namespace Convnet.Dialogs
             DataGridRates.Columns[6].Visibility = tpvm.SGDR ? Visibility.Visible : Visibility.Collapsed;
             DataGridRates.Columns[8].Visibility = tpvm.SGDR ? Visibility.Visible : Visibility.Collapsed;
 
-            //DataGridRates.Columns[11].Visibility = tpvm.SGDR ? Visibility.Collapsed : Visibility.Visible;
-            DataGridRates.Columns[12].Visibility = tpvm.SGDR ? Visibility.Collapsed: Visibility.Visible;
+            DataGridRates.Columns[11].Visibility = tpvm.SGDR ? Visibility.Collapsed : Visibility.Visible;
+            //DataGridRates.Columns[12].Visibility = tpvm.SGDR ? Visibility.Collapsed: Visibility.Visible;
         }
 
         bool IsValid(DependencyObject node)
