@@ -134,7 +134,7 @@
                 <DataGridTextColumn Header="EpochMultiplier" Binding="{Binding Path=EpochMultiplier, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 <DataGridTextColumn Header="Max.Rate" Binding="{Binding Path=MaximumRate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 <DataGridTextColumn Header="Min.Rate" Binding="{Binding Path=MinimumRate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                <DataGridTextColumn Header="DecayAfterEpochs" Binding="{Binding Path=DecayAfterEpochs, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <DataGridTextColumn Header="DecayAfterEpochs" Binding="{Binding Path=DecayAfterEpochs, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 <DataGridTextColumn Header="DecayFactor" Binding="{Binding Path=DecayFactor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 <DataGridCheckBoxColumn Header="Horz.Flip" Binding="{Binding Path=HorizontalFlip, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 <DataGridCheckBoxColumn Header="Vert.Flip" Binding="{Binding Path=VerticalFlip, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
@@ -164,7 +164,7 @@
                 </Binding.ValidationRules>
             </Binding>
         </xctk:AutoSelectTextBox>
-        <CheckBox x:Name="CheckBoxSGDR" Content="SGDR" IsThreeState="False" HorizontalAlignment="Center"  Grid.Row="1" VerticalAlignment="Center" Width="100" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" FontSize="14"  IsChecked="{Binding Path=SGDR, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ToolTip="Stochastic Gradient Descent with Warm Restarts" Checked="CheckBoxSGDR_Checked" Unchecked="CheckBoxSGDR_Unchecked"/>
-        <Button x:Name="ButtonSGDRHelp" Content=" ? " HorizontalAlignment="Center" Margin="50,0,0,0" Grid.Row="1" VerticalAlignment="Center" FontSize="12" Cursor="Help" ClickMode="Release" Click="ButtonSGDRHelp_Click" />
+        <CheckBox x:Name="CheckBoxSGDR" Content="SGDR" IsThreeState="False" HorizontalAlignment="Left"  Grid.Row="1" VerticalAlignment="Center" Width="100" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" FontSize="14"  IsChecked="{Binding Path=SGDR, Mode=TwoWay,  NotifyOnSourceUpdated=True, UpdateSourceTrigger=PropertyChanged}" ToolTip="Stochastic Gradient Descent with Warm Restarts" Checked="CheckBoxSGDR_Checked" Unchecked="CheckBoxSGDR_Unchecked" Margin="770,0,0,0"/>
+        <Button x:Name="ButtonSGDRHelp" Content=" ? " HorizontalAlignment="Left" Margin="840,0,0,0" Grid.Row="1" VerticalAlignment="Center" FontSize="12" Cursor="Help" ClickMode="Release" Click="ButtonSGDRHelp_Click" />
     </Grid>
 </Window>
