@@ -535,7 +535,6 @@ namespace Convnet.PageViewModels
                 Mode = BindingMode.TwoWay,
                 Converter = new Converters.InverseNullableBoolToVisibilityConverter(),
                 UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged
-
             };
             BindingOperations.SetBinding(pixelSizeSlider, ComboBox.VisibilityProperty, binding);
             pixelSizeSlider.ValueChanged += PixelSizeSlider_ValueChanged;
@@ -627,13 +626,11 @@ namespace Convnet.PageViewModels
                     layersComboBox.SelectedIndex = index;
                 }
                 else
-                {
                     if (Model.LayerCount > (ulong)(index + 1))
                     {
                         layersComboBox.SelectedIndex = index + 1;
                         layersComboBox.SelectedIndex = index;
                     }
-                }
             }
         }
 

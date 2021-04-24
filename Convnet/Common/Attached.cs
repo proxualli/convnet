@@ -10,11 +10,7 @@ namespace Convnet.Common
 {
     public class Attached
     {
-        public static readonly DependencyProperty FormattedTextProperty = DependencyProperty.RegisterAttached(
-            "FormattedText",
-            typeof(string),
-            typeof(Attached),
-            new FrameworkPropertyMetadata(string.Empty, FrameworkPropertyMetadataOptions.AffectsMeasure, FormattedTextPropertyChanged));
+        public static readonly DependencyProperty FormattedTextProperty = DependencyProperty.RegisterAttached("FormattedText", typeof(string), typeof(Attached), new FrameworkPropertyMetadata(string.Empty, FrameworkPropertyMetadataOptions.AffectsMeasure, FormattedTextPropertyChanged));
 
         public static void SetFormattedText(DependencyObject textBlock, string value)
         {
