@@ -23,7 +23,7 @@ namespace Convnet.PageViews
                 }
             }
 
-            HighlightingManager.Instance.RegisterHighlighting("Definition", new string[] { ".definition" }, DefinitionHighlighting);
+            HighlightingManager.Instance.RegisterHighlighting("Definition", new string[] { ".txt" }, DefinitionHighlighting);
 
             
             IHighlightingDefinition CSharpHighlighting;
@@ -43,7 +43,7 @@ namespace Convnet.PageViews
 
             InitializeComponent();
 
-            EditorDefinition.SyntaxHighlighting = HighlightingManager.Instance.GetDefinitionByExtension(".definition");
+            EditorDefinition.SyntaxHighlighting = HighlightingManager.Instance.GetDefinitionByExtension(".txt");
             EditorScript.SyntaxHighlighting = HighlightingManager.Instance.GetDefinitionByExtension(".cs");
             EditorParameters.SyntaxHighlighting = HighlightingManager.Instance.GetDefinitionByExtension(".cs");
         }
