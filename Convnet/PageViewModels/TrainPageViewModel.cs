@@ -4,7 +4,6 @@ using Convnet.Properties;
 using dnncore;
 using OxyPlot;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
@@ -1567,9 +1566,9 @@ namespace Convnet.PageViewModels
                 Multiselect = false,
                 AddExtension = true,
                 ValidateNames = true,
-                Filter = "Layer Weights|*.layer-weights",
+                Filter = "Layer Weights|*.bin",
                 Title = "Load layer weights",
-                DefaultExt = ".layer-weights",
+                DefaultExt = ".bin",
                 FilterIndex = 1,
                 InitialDirectory = DefinitionsDirectory + Model.Name + "-weights" + @"\"
             };
@@ -1581,7 +1580,7 @@ namespace Convnet.PageViewModels
                 {
 
                     string fileName = openFileDialog.FileName;
-                    if (fileName.Contains(".layer-weights"))
+                    if (fileName.Contains(".bin"))
                     {
                         Mouse.OverrideCursor = Cursors.Wait;
 
@@ -1616,16 +1615,16 @@ namespace Convnet.PageViewModels
                 CreatePrompt = false,
                 OverwritePrompt = true,
                 ValidateNames = true,
-                Filter = "Layer Weights|*.layer-weights",
+                Filter = "Layer Weights|*.bin",
                 Title = "Save layer weights",
-                DefaultExt = ".layer-weights",
+                DefaultExt = ".bin",
                 FilterIndex = 1,
                 InitialDirectory = DefinitionsDirectory + Model.Name + "-weights" + @"\"
             };
 
             if (saveFileDialog.ShowDialog(Application.Current.MainWindow) == true)
             {
-                if (saveFileDialog.FileName.Contains(".layer-weights"))
+                if (saveFileDialog.FileName.Contains(".bin"))
                 {
                     Mouse.OverrideCursor = Cursors.Wait;
                     if (Model.SaveLayerWeights(saveFileDialog.FileName, (ulong)layerIndex) == 0)

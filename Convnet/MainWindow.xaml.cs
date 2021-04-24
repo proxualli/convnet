@@ -83,12 +83,12 @@ namespace Convnet
                 Copy(ApplicationPath.Replace(@"Convnet\bin\x64\" + Mode + @"\" + Framework + @"\", "") + @"ScriptsDialog\", ScriptsDirectory);
             }
 
-            if (!File.Exists(Path.Combine(StateDirectory, Settings.Default.ModelNameActive + ".definition")))
+            if (!File.Exists(Path.Combine(StateDirectory, Settings.Default.ModelNameActive + ".txt")))
             {
                 Directory.CreateDirectory(DefinitionsDirectory + @"resnet-32-3-2-6-dropout-channelzeropad-relu-weights\");
                 Directory.CreateDirectory(DefinitionsDirectory + Settings.Default.ModelNameActive + @"-weights\");
-                File.Copy(ApplicationPath + @"Resources\state\resnet-32-3-2-6-dropout-channelzeropad-relu.definition", StateDirectory + "resnet-32-3-2-6-dropout-channelzeropad-relu.definition", true);
-                File.Copy(ApplicationPath + @"Resources\state\resnet-32-3-2-6-dropout-channelzeropad-relu.definition", DefinitionsDirectory + "resnet-32-3-2-6-dropout-channelzeropad-relu.definition", true);
+                File.Copy(ApplicationPath + @"Resources\state\resnet-32-3-2-6-dropout-channelzeropad-relu.txt", StateDirectory + "resnet-32-3-2-6-dropout-channelzeropad-relu.txt", true);
+                File.Copy(ApplicationPath + @"Resources\state\resnet-32-3-2-6-dropout-channelzeropad-relu.txt", DefinitionsDirectory + "resnet-32-3-2-6-dropout-channelzeropad-relu.txt", true);
 
                 Settings.Default.ModelNameActive = "resnet-32-3-2-6-dropout-channelzeropad-relu";
                 Settings.Default.Optimizer = (int)DNNOptimizers.NAG;
@@ -97,7 +97,7 @@ namespace Convnet
 
             try
             {
-                var model = new Model(Settings.Default.ModelNameActive, Path.Combine(StateDirectory, Settings.Default.ModelNameActive + ".definition"));
+                var model = new Model(Settings.Default.ModelNameActive, Path.Combine(StateDirectory, Settings.Default.ModelNameActive + ".txt"));
                 if (model != null)
                 {
                     PageVM = new PageViewModel(model);
@@ -112,11 +112,11 @@ namespace Convnet
 
                         if (Settings.Default.PersistOptimizer)
                         {
-                            if (File.Exists(Path.Combine(StateDirectory, Settings.Default.ModelNameActive + "-" + PageVM.Model.Optimizer.ToString().ToLower() + @".weights")))
+                            if (File.Exists(Path.Combine(StateDirectory, Settings.Default.ModelNameActive + "-" + PageVM.Model.Optimizer.ToString().ToLower() + @".bin")))
                             {
-                                if (PageVM.Model.LoadWeights(Path.Combine(StateDirectory, Settings.Default.ModelNameActive + "-" + PageVM.Model.Optimizer.ToString().ToLower() + @".weights"), true) != 0)
+                                if (PageVM.Model.LoadWeights(Path.Combine(StateDirectory, Settings.Default.ModelNameActive + "-" + PageVM.Model.Optimizer.ToString().ToLower() + @".bin"), true) != 0)
                                 {
-                                    if (PageVM.Model.LoadWeights(Path.Combine(StateDirectory, Settings.Default.ModelNameActive + @".weights"), false) == 0)
+                                    if (PageVM.Model.LoadWeights(Path.Combine(StateDirectory, Settings.Default.ModelNameActive + @".bin"), false) == 0)
                                     {
                                         Settings.Default.PersistOptimizer = !Settings.Default.PersistOptimizer;
                                         Settings.Default.Save();
@@ -126,10 +126,10 @@ namespace Convnet
                             }
                         }
                         else
-                            if (File.Exists(Path.Combine(StateDirectory, Settings.Default.ModelNameActive + @".weights")))
-                                PageVM.Model.LoadWeights(Path.Combine(StateDirectory, Settings.Default.ModelNameActive + @".weights"), false);
+                            if (File.Exists(Path.Combine(StateDirectory, Settings.Default.ModelNameActive + @".bin")))
+                                PageVM.Model.LoadWeights(Path.Combine(StateDirectory, Settings.Default.ModelNameActive + @".bin"), false);
                         
-                        Settings.Default.DefinitionActive = File.ReadAllText(Path.Combine(StateDirectory, Settings.Default.ModelNameActive + ".definition"));
+                        Settings.Default.DefinitionActive = File.ReadAllText(Path.Combine(StateDirectory, Settings.Default.ModelNameActive + ".txt"));
                         Settings.Default.Save();
 
                         for (int i = 0; i < Settings.Default.TrainingLog.Count; i++)
@@ -326,9 +326,9 @@ namespace Convnet
             switch (PageVM.CurrentModel)
             {
                 case ViewModels.Edit:
-                    openFileDialog.Filter = "Definition|*.definition";
+                    openFileDialog.Filter = "Definition|*.txt";
                     openFileDialog.Title = "Load Definition";
-                    openFileDialog.DefaultExt = ".definition";
+                    openFileDialog.DefaultExt = ".txt";
                     openFileDialog.FilterIndex = 1;
                     openFileDialog.InitialDirectory = DefinitionsDirectory;
                     ret = openFileDialog.ShowDialog(Application.Current.MainWindow);
@@ -336,7 +336,7 @@ namespace Convnet
                     {
                         Mouse.OverrideCursor = Cursors.Wait;
                         StreamReader reader = new StreamReader(openFileDialog.FileName, true);
-                        if (openFileDialog.FileName.Contains(".definition"))
+                        if (openFileDialog.FileName.Contains(".txt"))
                         {
                             string definition = reader.ReadToEnd().Trim();
                             (PageVM.CurrentPage as EditPageViewModel).Definition = definition;
@@ -353,16 +353,16 @@ namespace Convnet
 
                 case ViewModels.Test:
                     {
-                        openFileDialog.Filter = "Weights|*.weights";
+                        openFileDialog.Filter = "Weights|*.bin";
                         openFileDialog.Title = "Load Weights";
-                        openFileDialog.DefaultExt = ".weights";
+                        openFileDialog.DefaultExt = ".bin";
                         openFileDialog.FilterIndex = 1;
                         openFileDialog.InitialDirectory = DefinitionsDirectory + PageVM.Model.Name + @"-weights\";
                         ret = openFileDialog.ShowDialog(Application.Current.MainWindow);
                         if (ret.HasValue && ret.Value)
                         {
                             Mouse.OverrideCursor = Cursors.Wait;
-                            if (openFileDialog.FileName.EndsWith(".weights"))
+                            if (openFileDialog.FileName.EndsWith(".bin"))
                             {
                                 if (PageVM.Model.LoadWeights(openFileDialog.FileName, Settings.Default.PersistOptimizer) == 0)
                                 {
@@ -387,9 +387,9 @@ namespace Convnet
                 case ViewModels.Train:
                     if (PageVM.CurrentPage.Model.TaskState == DNNTaskStates.Stopped)
                     {
-                        openFileDialog.Filter = "Weights|*.weights|Log|*.csv";
+                        openFileDialog.Filter = "Weights|*.bin|Log|*.csv";
                         openFileDialog.Title = "Load Weights";
-                        openFileDialog.DefaultExt = ".weights";
+                        openFileDialog.DefaultExt = ".bin";
                     }
                     else
                     {
@@ -404,7 +404,7 @@ namespace Convnet
                     if (ret.HasValue && ret.Value)
                     {
                         Mouse.OverrideCursor = Cursors.Wait;
-                        if (openFileDialog.FileName.EndsWith(".weights"))
+                        if (openFileDialog.FileName.EndsWith(".bin"))
                         {
                             if (PageVM.Model.LoadWeights(openFileDialog.FileName, Settings.Default.PersistOptimizer) == 0)
                             {
@@ -458,7 +458,7 @@ namespace Convnet
 
         void SaveCmdExecuted(object target, ExecutedRoutedEventArgs e)
         {
-            if (File.Exists(DefinitionsDirectory + PageVM.Model.Name + @"-weights\" + PageVM.Model.Name + ".weights"))
+            if (File.Exists(DefinitionsDirectory + PageVM.Model.Name + @"-weights\" + PageVM.Model.Name + ".bin"))
             {
                 if (Xceed.Wpf.Toolkit.MessageBox.Show("Do you want to overwrite the existing file?", "File already exists", MessageBoxButton.YesNo, MessageBoxImage.None, MessageBoxResult.No) == MessageBoxResult.Yes)
                 {
@@ -479,10 +479,10 @@ namespace Convnet
             Mouse.OverrideCursor = Cursors.Wait;
             if (Settings.Default.PersistOptimizer)
             {
-                PageVM.Model.SaveWeights(DefinitionsDirectory + PageVM.Model.Name + @"-weights\" + PageVM.Model.Name + "-" + PageVM.Model.Optimizer.ToString().ToLower() + ".weights", true);
-                if (File.Exists(DefinitionsDirectory + PageVM.Model.Name + @"-weights\" + PageVM.Model.Name + "-" + PageVM.Model.Optimizer.ToString().ToLower() + ".weights"))
+                PageVM.Model.SaveWeights(DefinitionsDirectory + PageVM.Model.Name + @"-weights\" + PageVM.Model.Name + "-" + PageVM.Model.Optimizer.ToString().ToLower() + ".bin", true);
+                if (File.Exists(DefinitionsDirectory + PageVM.Model.Name + @"-weights\" + PageVM.Model.Name + "-" + PageVM.Model.Optimizer.ToString().ToLower() + ".bin"))
                 {
-                    File.Copy(DefinitionsDirectory + PageVM.Model.Name + @"-weights\" + PageVM.Model.Name + "-" + PageVM.Model.Optimizer.ToString().ToLower() + ".weights", StateDirectory + PageVM.Model.Name + ".weights", true);
+                    File.Copy(DefinitionsDirectory + PageVM.Model.Name + @"-weights\" + PageVM.Model.Name + "-" + PageVM.Model.Optimizer.ToString().ToLower() + ".bin", StateDirectory + PageVM.Model.Name + ".bin", true);
                     Mouse.OverrideCursor = null;
                     Xceed.Wpf.Toolkit.MessageBox.Show("Weights are saved", "Information", MessageBoxButton.OK);
                 }
@@ -491,10 +491,10 @@ namespace Convnet
             }
             else
             {
-                PageVM.Model.SaveWeights(DefinitionsDirectory + PageVM.Model.Name + @"-weights\" + PageVM.Model.Name + ".weights", false);
-                if (File.Exists(DefinitionsDirectory + PageVM.Model.Name + @"-weights\" + PageVM.Model.Name + ".weights"))
+                PageVM.Model.SaveWeights(DefinitionsDirectory + PageVM.Model.Name + @"-weights\" + PageVM.Model.Name + ".bin", false);
+                if (File.Exists(DefinitionsDirectory + PageVM.Model.Name + @"-weights\" + PageVM.Model.Name + ".bin"))
                 {
-                    File.Copy(DefinitionsDirectory + PageVM.Model.Name + @"-weights\" + PageVM.Model.Name + ".weights", StateDirectory + PageVM.Model.Name + ".weights", true);
+                    File.Copy(DefinitionsDirectory + PageVM.Model.Name + @"-weights\" + PageVM.Model.Name + ".bin", StateDirectory + PageVM.Model.Name + ".bin", true);
                     Mouse.OverrideCursor = null;
                     Xceed.Wpf.Toolkit.MessageBox.Show("Weights are saved", "Information", MessageBoxButton.OK);
                 }
@@ -522,9 +522,9 @@ namespace Convnet
             {
                 case ViewModels.Edit:
                     saveFileDialog.FileName = (PageVM.CurrentPage as EditPageViewModel).ModelName;
-                    saveFileDialog.Filter = "Definition|*.definition";
+                    saveFileDialog.Filter = "Definition|*.txt";
                     saveFileDialog.Title = "Save Model";
-                    saveFileDialog.DefaultExt = ".definition";
+                    saveFileDialog.DefaultExt = ".txt";
                     saveFileDialog.FilterIndex = 1;
                     saveFileDialog.InitialDirectory = DefinitionsDirectory;
                     ret = saveFileDialog.ShowDialog(Application.Current.MainWindow);
@@ -532,7 +532,7 @@ namespace Convnet
                     {
                         Mouse.OverrideCursor = Cursors.Wait;
                         TextWriter writer = new StreamWriter(saveFileDialog.FileName, false);
-                        if (saveFileDialog.FileName.Contains(".definition"))
+                        if (saveFileDialog.FileName.Contains(".txt"))
                             writer.Write(Settings.Default.DefinitionEditing);
                         writer.Flush();
                         writer.Close();
@@ -544,9 +544,9 @@ namespace Convnet
 
                 case ViewModels.Train:
                     saveFileDialog.FileName = Settings.Default.PersistOptimizer ? (PageVM.CurrentPage as TrainPageViewModel).Model.Name + @"-" + (PageVM.CurrentPage as TrainPageViewModel).Optimizer.ToString().ToLower() : (PageVM.CurrentPage as TrainPageViewModel).Model.Name;
-                    saveFileDialog.Filter = "Weights|*.weights|Log|*.csv";
+                    saveFileDialog.Filter = "Weights|*.bin|Log|*.csv";
                     saveFileDialog.Title = "Save";
-                    saveFileDialog.DefaultExt = ".weights";
+                    saveFileDialog.DefaultExt = ".bin";
                     saveFileDialog.FilterIndex = 1;
                     saveFileDialog.InitialDirectory = DefinitionsDirectory + PageVM.Model.Name + @"-weights\";
                     ret = saveFileDialog.ShowDialog(Application.Current.MainWindow);
@@ -646,7 +646,7 @@ namespace Convnet
                         }
                         else
                         {
-                            if (saveFileDialog.FileName.EndsWith(".weights"))
+                            if (saveFileDialog.FileName.EndsWith(".bin"))
                             {
                                 PageVM.Model.SaveWeights(saveFileDialog.FileName, Settings.Default.PersistOptimizer);
                                 Mouse.OverrideCursor = null;
@@ -833,30 +833,24 @@ namespace Convnet
                 {
                     case 1:
                         Settings.Default.Priority = System.Diagnostics.ProcessPriorityClass.Idle;
-                        PrioritySlider.ToolTip = "Low";
                         break;
                     case 2:
                         Settings.Default.Priority = System.Diagnostics.ProcessPriorityClass.BelowNormal;
-                        PrioritySlider.ToolTip = "Below Normal";
                         break;
                     case 3:
                         Settings.Default.Priority = System.Diagnostics.ProcessPriorityClass.Normal;
-                        PrioritySlider.ToolTip = "Normal";
                         break;
                     case 4:
                         Settings.Default.Priority = System.Diagnostics.ProcessPriorityClass.AboveNormal;
-                        PrioritySlider.ToolTip = "Above Normal";
                         break;
                     case 5:
                         Settings.Default.Priority = System.Diagnostics.ProcessPriorityClass.High;
-                        PrioritySlider.ToolTip = "High";
                         break;
                     case 6:
                         Settings.Default.Priority = System.Diagnostics.ProcessPriorityClass.RealTime;
-                        PrioritySlider.ToolTip = "Realtime";
                         break;
                 }
-
+                PrioritySlider.ToolTip = Settings.Default.Priority.ToString();
                 Process.GetCurrentProcess().PriorityClass = Settings.Default.Priority;
                 Settings.Default.Save();
             }

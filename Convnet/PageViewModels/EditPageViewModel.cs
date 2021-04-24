@@ -330,20 +330,20 @@ namespace Convnet.PageViewModels
             {
                 bool sameDef = Definition.ToLower().Equals(Settings.Default.DefinitionActive.ToLower());
 
-                string pathDefinition = Path.Combine(DefinitionsDirectory, ModelName + ".definition");
-                string pathStateDefinition = Path.Combine(StateDirectory, ModelName + ".definition");
+                string pathDefinition = Path.Combine(DefinitionsDirectory, ModelName + ".txt");
+                string pathStateDefinition = Path.Combine(StateDirectory, ModelName + ".txt");
                 string pathWeightsDirectory = DefinitionsDirectory + ModelName + "-weights\\";
-                string pathWeights = Settings.Default.PersistOptimizer? Path.Combine(pathWeightsDirectory, ModelName + "-" +  Settings.Default.Optimizer.ToString().ToLower() + ".weights") : Path.Combine(pathWeightsDirectory, ModelName + ".weights");
+                string pathWeights = Settings.Default.PersistOptimizer? Path.Combine(pathWeightsDirectory, ModelName + "-" +  Settings.Default.Optimizer.ToString().ToLower() + ".bin") : Path.Combine(pathWeightsDirectory, ModelName + ".bin");
                 
                 if (!sameDef || ModelName != Model.Name)
                 {
                     Mouse.OverrideCursor = Cursors.Wait;
 
                     MessageBoxResult overwrite = MessageBoxResult.Yes;
-                    if (File.Exists(Path.Combine(DefinitionsDirectory, ModelName + ".definition")))
+                    if (File.Exists(Path.Combine(DefinitionsDirectory, ModelName + ".txt")))
                     {
                         Mouse.OverrideCursor = null;
-                        overwrite = Xceed.Wpf.Toolkit.MessageBox.Show("Definition already exists! Overwrite?", "File already exists", MessageBoxButton.YesNo, MessageBoxImage.None, MessageBoxResult.No);
+                        overwrite = Xceed.Wpf.Toolkit.MessageBox.Show("File already exists! Overwrite?", "File already exists", MessageBoxButton.YesNo, MessageBoxImage.None, MessageBoxResult.No);
                     }
 
                     if (overwrite == MessageBoxResult.Yes)
@@ -409,10 +409,10 @@ namespace Convnet.PageViewModels
                         Mouse.OverrideCursor = Cursors.Wait;
 
                         MessageBoxResult overwrite = MessageBoxResult.Yes;
-                        if (File.Exists(Path.Combine(DefinitionsDirectory, ModelName + ".definition")))
+                        if (File.Exists(Path.Combine(DefinitionsDirectory, ModelName + ".txt")))
                         {
                             Mouse.OverrideCursor = null;
-                            overwrite = Xceed.Wpf.Toolkit.MessageBox.Show("Definition already exists! Overwrite?", "File already exists", MessageBoxButton.YesNo, MessageBoxImage.None, MessageBoxResult.No);
+                            overwrite = Xceed.Wpf.Toolkit.MessageBox.Show("File already exists! Overwrite?", "File already exists", MessageBoxButton.YesNo, MessageBoxImage.None, MessageBoxResult.No);
                         }
 
                         if (overwrite == MessageBoxResult.Yes)

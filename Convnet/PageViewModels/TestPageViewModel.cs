@@ -386,7 +386,7 @@ namespace Convnet.PageViewModels
                         Model.SetCostIndex((uint)costLayersComboBox.SelectedIndex);
                         Model.Start(false);
 
-                        RefreshTimer = new System.Timers.Timer(1000.0);
+                        RefreshTimer = new Timer(1000.0);
                         RefreshTimer.Elapsed += RefreshTimer_Elapsed;
 
                         CommandToolBar[0].Visibility = Visibility.Collapsed;
