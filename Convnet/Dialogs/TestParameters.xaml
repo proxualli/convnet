@@ -4,7 +4,8 @@
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:c="clr-namespace:Convnet.Common"
         xmlns:converters="clr-namespace:Convnet.Converters"
-        Title="Test Parameters" Height="490" Width="470" WindowStartupLocation="CenterOwner" ShowInTaskbar="False" ResizeMode="NoResize" Closing="Window_Closing" Loaded="Window_Loaded" UseLayoutRounding="True" SnapsToDevicePixels="True" Background="Gray">
+        xmlns:ext="clr-namespace:Convnet.PageViewModels"
+        Title="Test Parameters" Height="490" Width="300" WindowStartupLocation="CenterOwner" ShowInTaskbar="False" ResizeMode="NoResize" Closing="Window_Closing" Loaded="Window_Loaded" UseLayoutRounding="True" SnapsToDevicePixels="True" Background="Gray">
 
     <Window.Resources>
         <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
@@ -240,10 +241,8 @@
         <RadioButton x:Name="radioButtonVerticalFlipYes" GroupName="VFlip" Foreground="White" Content="Yes" Grid.Column="2" HorizontalAlignment="Left" Margin="3" Grid.Row="3" VerticalAlignment="Center" IsChecked="{Binding Path=VerticalFlip, Mode=TwoWay}" Height="15" Width="Auto" TabIndex="5" FontSize="14"/>
         <RadioButton x:Name="radioButtonVerticalFlipNo" GroupName="VFlip" Foreground="White" Content="No" Grid.Column="2" HorizontalAlignment="Left" Margin="50,3,3,3" Grid.Row="3" VerticalAlignment="Center" IsChecked="{Binding Path=VerticalFlip, Converter={StaticResource Inverter}, Mode=OneWay}" Height="15" Width="Auto" TabIndex="6" FontSize="14"/>
 
-        <RadioButton x:Name="radioButtonCubic" GroupName="Interpolation" Foreground="White" Content="Cubic" Grid.Column="2" HorizontalAlignment="Left" Margin="3,3,3,3" Grid.Row="10" VerticalAlignment="Center" Checked="RadioButtonInterpolation_Checked" FontSize="14" TabIndex="13"/>
-        <RadioButton x:Name="radioButtonLinear" GroupName="Interpolation" Foreground="White" Content="Linear" Grid.Column="2" HorizontalAlignment="Left" Margin="74,3,3,3" Grid.Row="10" VerticalAlignment="Center" Checked="RadioButtonInterpolation_Checked" FontSize="14" TabIndex="14"/>
-        <RadioButton x:Name="radioButtonNearest" GroupName="Interpolation" Foreground="White" Content="Nearest" Grid.Column="2" HorizontalAlignment="Left" Margin="148,3,3,3" Grid.Row="10" VerticalAlignment="Center" Checked="RadioButtonInterpolation_Checked" FontSize="14" TabIndex="15"/>
-       
+        <ComboBox Name="comboBoInterpolation" Grid.Column="2" Grid.Row="10" HorizontalAlignment="Stretch" Margin="2" VerticalAlignment="Stretch" Width="Auto" FontSize="14" TabIndex="26" ItemsSource="{x:Static ext:TestPageViewModel.GetInterpolations}" SelectedItem="{Binding Path=Interpolation, Mode=TwoWay}"/>
+        
         <Button Content="Test" Grid.Column="1" Grid.Row="16" Margin="2" Name="buttonTest" Click="ButtonTest_Click" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TabIndex="18" ClickMode="Release" FontSize="14"/>
         <Button Content="Cancel" Grid.Column="2" Grid.Row="16" Margin="2" Name="buttonCancel" Click="ButtonCancel_Click" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TabIndex="19" ClickMode="Release" IsCancel="True" IsDefault="True" FontSize="14"/>
     </Grid>

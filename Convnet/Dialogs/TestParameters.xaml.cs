@@ -1,4 +1,5 @@
-﻿using dnncore;
+﻿using Convnet.PageViewModels;
+using dnncore;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -10,6 +11,8 @@ namespace Convnet.Dialogs
         public DNNTrainingRate Rate { get; set; }
         public Model Model { get; set; }
         public string Path { get; set; }
+
+        public TestPageViewModel tpvm;
 
         public TestParameters()
         {
@@ -37,16 +40,15 @@ namespace Convnet.Dialogs
             }
 
             DataContext = Rate;
+
             textBoxBatchSize.Focus();
+            
+            textBoxColorAngle.IsEnabled = Rate.ColorCast > 0;
+
             radioButtonTestSet.IsChecked = true;
             radioButtonTestSet.IsEnabled = false;
             radioButtonTrainSet.IsChecked = false;
             radioButtonTrainSet.IsEnabled = false;
-
-            radioButtonCubic.IsChecked = Rate.Interpolation == DNNInterpolation.Cubic;
-            radioButtonLinear.IsChecked = Rate.Interpolation == DNNInterpolation.Linear;
-            radioButtonNearest.IsChecked = Rate.Interpolation == DNNInterpolation.Nearest;
-            textBoxColorAngle.IsEnabled = Rate.ColorCast > 0;
         }
 
         bool IsValid(DependencyObject node)
@@ -111,25 +113,11 @@ namespace Convnet.Dialogs
             buttonCancel.Focus();
         }
 
-        void RadioButtonInterpolation_Checked(object sender, RoutedEventArgs e)
-        {
-            if (radioButtonLinear.IsChecked.HasValue && radioButtonLinear.IsChecked.Value)
-                Rate.Interpolation = DNNInterpolation.Linear;
-
-            if (radioButtonNearest.IsChecked.HasValue && radioButtonNearest.IsChecked.Value)
-                Rate.Interpolation = DNNInterpolation.Nearest;
-
-            if (radioButtonCubic.IsChecked.HasValue && radioButtonCubic.IsChecked.Value)
-                Rate.Interpolation = DNNInterpolation.Cubic;
-        }
-
         void TextBoxDistortions_TextChanged(object sender, TextChangedEventArgs e)
         {
             var enabled = (float.TryParse(textBoxDistortions.Text, out float result) && result > 0.0f);
 
-            radioButtonCubic.IsEnabled = enabled;
-            radioButtonLinear.IsEnabled = enabled;
-            radioButtonNearest.IsEnabled = enabled;
+            comboBoInterpolation.IsEnabled = enabled;
             textBoxRotation.IsEnabled = enabled;
             textBoxScaling.IsEnabled = enabled;
         }
