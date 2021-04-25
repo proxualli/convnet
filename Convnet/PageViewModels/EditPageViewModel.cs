@@ -565,31 +565,41 @@ namespace Convnet.PageViewModels
                     { "Configuration", Mode },
                     { "Platform", "AnyCPU" },
                 };
-                ProjectCollection pc = new ProjectCollection(GlobalProperty, null, ToolsetDefinitionLocations.Default);
-                BuildParameters bp = new(pc)
+
+                int repeat = 0;
+                FileInfo fileInfo;
+                BuildResult buildResult;
+                do
                 {
-                    OnlyLogCriticalEvents = true,
-                    DetailedSummary = true,
-                    MaxNodeCount = 1
-                };
+                    ProjectCollection pc = new ProjectCollection(GlobalProperty, null, ToolsetDefinitionLocations.Default);
+                    BuildParameters bp = new(pc)
+                    {
+                        OnlyLogCriticalEvents = true,
+                        DetailedSummary = true,
+                        MaxNodeCount = 1
+                    };
 
-                var tempFilePath = Path.GetTempFileName();
-                var fileInfo = new FileInfo(tempFilePath)
-                {
-                    Attributes = FileAttributes.Temporary
-                };
-                bp.Loggers = new List<ILogger>() { new BasicFileLogger() { Parameters = fileInfo.FullName } };
-                bp.Loggers.FirstOrDefault().Verbosity = LoggerVerbosity.Diagnostic;
+                    var tempFilePath = Path.GetTempFileName();
+                    fileInfo = new FileInfo(tempFilePath)
+                    {
+                        Attributes = FileAttributes.Temporary
+                    };
+                    bp.Loggers = new List<ILogger>() { new BasicFileLogger() { Parameters = fileInfo.FullName } };
+                    bp.Loggers.FirstOrDefault().Verbosity = LoggerVerbosity.Diagnostic;
 
-                BuildRequestData buildRequest = new BuildRequestData(projectFilePath, GlobalProperty, null, new string[] { "Build" }, null);
-                BuildResult buildResult = BuildManager.DefaultBuildManager.Build(bp, buildRequest);
-                BuildManager.DefaultBuildManager.ResetCaches();
-                BuildManager.DefaultBuildManager.ShutdownAllNodes();
+                    BuildRequestData buildRequest = new BuildRequestData(projectFilePath, GlobalProperty, null, new string[] { "Build" }, null);
+                    buildResult = BuildManager.DefaultBuildManager.Build(bp, buildRequest);
+                    BuildManager.DefaultBuildManager.ResetCaches();
+                    BuildManager.DefaultBuildManager.ShutdownAllNodes();
 
-                pc.UnloadAllProjects();
-                pc.UnregisterAllLoggers();
-                pc.Dispose();
-                BuildManager.DefaultBuildManager.Dispose();
+                    pc.UnloadAllProjects();
+                    pc.UnregisterAllLoggers();
+                    pc.Dispose();
+                    BuildManager.DefaultBuildManager.Dispose();
+
+                    repeat++;
+                }
+                while (buildResult.OverallResult != BuildResultCode.Success && repeat <= 1);
 
                 Mouse.OverrideCursor = null;
                 IsValid = true;
@@ -598,8 +608,9 @@ namespace Convnet.PageViewModels
                     dirty = false;
                 else
                 {
-                    // Xceed.Wpf.Toolkit.MessageBox.Show(File.ReadAllText(fileInfo.FullName), "Compiler Result", MessageBoxButton.OK);
-
+                    Xceed.Wpf.Toolkit.MessageBox.Show(File.ReadAllText(fileInfo.FullName), "Compiler Result", MessageBoxButton.OK);
+                    fileInfo.Delete();
+                    /*
                     try
                     {
                         var ProcStartInfo = new ProcessStartInfo()
@@ -629,8 +640,8 @@ namespace Convnet.PageViewModels
                     {
                         Xceed.Wpf.Toolkit.MessageBox.Show(ex.Message, "Start dotnet build process failed", MessageBoxButton.OK);
                     }
+                    */
 
-                    File.Delete(ScriptPath + @"ScriptsDialog.deps.json");
                 }
             }
 
@@ -638,6 +649,7 @@ namespace Convnet.PageViewModels
             {
                 if (!dirty)
                 {
+                    File.Delete(ScriptPath + @"ScriptsDialog.deps.json");
                     var task = ScriptsDialogAsync();
                 }
             }
