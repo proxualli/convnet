@@ -12,8 +12,6 @@ namespace Convnet.Dialogs
         public Model Model { get; set; }
         public string Path { get; set; }
 
-        public TestPageViewModel tpvm;
-
         public TestParameters()
         {
             InitializeComponent();
