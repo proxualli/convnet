@@ -22,6 +22,7 @@
 * Dropout
 * GlobalAvgPooling
 * GlobalMaxPooling
+* LayerNorm
 * LocalResponseNormalization
 * Max
 * MaxPooling
