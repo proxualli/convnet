@@ -295,21 +295,22 @@ namespace Convnet.PageViewModels
                 Name = "ButtonStop",
                 ToolTip = "Stop Training",
                 Content = new BitmapToImage(Resources.Stop),
-                ClickMode = ClickMode.Release
+                ClickMode = ClickMode.Release,
+                Visibility = Visibility.Collapsed
             };
             stopButton.Click += new RoutedEventHandler(StopButtonClick);
-            stopButton.Visibility = Visibility.Collapsed;
-
+         
             Button pauseButton = new Button
             {
                 Name = "ButtonPause",
                 ToolTip = "Pause Training",
                 Content = new BitmapToImage(Resources.Pause),
                 ClickMode = ClickMode.Release
+                ,
+                Visibility = Visibility.Collapsed
             };
             pauseButton.Click += new RoutedEventHandler(PauseButtonClick);
-            pauseButton.Visibility = Visibility.Collapsed;
-
+         
             Button editorButton = new Button
             {
                 Name = "ButtonEditor",
@@ -1224,7 +1225,7 @@ namespace Convnet.PageViewModels
             {
                 if (Model.TaskState == DNNTaskStates.Running)
                 {
-                    Xceed.Wpf.Toolkit.MessageBox.Show("You must stop testing first!", "Information", MessageBoxButton.OK);
+                    Xceed.Wpf.Toolkit.MessageBox.Show("You must stop testing first.", "Information", MessageBoxButton.OK);
 
                     return;
                 }

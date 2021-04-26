@@ -4,6 +4,7 @@ using Convnet.Properties;
 using dnncore;
 using System;
 using System.Data;
+using System.Linq;
 using System.Text;
 using System.Timers;
 using System.Windows;
@@ -25,6 +26,7 @@ namespace Convnet.PageViewModels
         private DataTable confusionDataTable;
         private BitmapSource inputSnapShot;
         private readonly StringBuilder sb;
+        private ComboBox dataProviderComboBox;
         private ComboBox costLayersComboBox;
 
         public Timer RefreshTimer;
@@ -53,6 +55,7 @@ namespace Convnet.PageViewModels
         public TestPageViewModel(Model model) : base(model)
         {
             AddCommandButtons();
+
             sb = new StringBuilder();
 
             showProgress = false;
@@ -80,20 +83,29 @@ namespace Convnet.PageViewModels
                 Name = "ButtonStop",
                 ToolTip = "Stop Testing",
                 Content = new BitmapToImage(Resources.Stop),
-                ClickMode = ClickMode.Release
+                ClickMode = ClickMode.Release,
+                Visibility = Visibility.Collapsed
             };
             stopButton.Click += new RoutedEventHandler(StopButtonClick);
-            stopButton.Visibility = Visibility.Collapsed;
-
+           
             Button pauseButton = new Button
             {
                 Name = "ButtonPause",
                 ToolTip = "Pause Testing",
                 Content = new BitmapToImage(Resources.Pause),
-                ClickMode = ClickMode.Release
+                ClickMode = ClickMode.Release,
+                Visibility = Visibility.Collapsed
             };
             pauseButton.Click += new RoutedEventHandler(PauseButtonClick);
-            pauseButton.Visibility = Visibility.Collapsed;
+          
+            dataProviderComboBox = new ComboBox
+            {
+                Name = "ComboBoxDataSet",
+                ItemsSource = Enum.GetValues(typeof(DNNDatasets)).Cast<Enum>().ToList(),
+                SelectedIndex = (int)Dataset,
+                ToolTip = "Dataset",
+                IsEnabled = false
+            };
 
             costLayersComboBox = new ComboBox
             {
@@ -119,6 +131,7 @@ namespace Convnet.PageViewModels
             CommandToolBar.Add(stopButton);
             CommandToolBar.Add(pauseButton);
             CommandToolBar.Add(new Separator());
+            CommandToolBar.Add(dataProviderComboBox);
             CommandToolBar.Add(costLayersComboBox);
         }
 
@@ -160,6 +173,8 @@ namespace Convnet.PageViewModels
             }
             costLayersComboBox.SelectedIndex = (int)Model.CostIndex;
             costLayersComboBox.IsEnabled = Model.CostLayersCount > 1;
+
+            dataProviderComboBox.SelectedIndex = (int)Dataset;
 
             Application.Current.Dispatcher.Invoke(() => LayerIndexChanged(this, null), DispatcherPriority.Render);
         }
@@ -360,7 +375,7 @@ namespace Convnet.PageViewModels
             {
                 if (Model.TaskState == DNNTaskStates.Running)
                 {
-                    Xceed.Wpf.Toolkit.MessageBox.Show("You must stop training first!", "Information", MessageBoxButton.OK);
+                    Xceed.Wpf.Toolkit.MessageBox.Show("You must stop training first.", "Information", MessageBoxButton.OK);
                     return;
                 }
 
@@ -410,6 +425,7 @@ namespace Convnet.PageViewModels
                 }
             }, DispatcherPriority.Normal);
         }
+
         private void StopButtonClick(object sender, RoutedEventArgs e)
         {
             Application.Current.Dispatcher.Invoke(() =>
