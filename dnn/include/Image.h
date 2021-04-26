@@ -847,7 +847,7 @@ namespace dnn
 				for (auto d = 0ull; d < dstImage.Depth; d++)
 					for (auto h = 0ull; h < dstImage.Height; h++)
 						for (auto w = 0ull; w < dstImage.Width; w++)
-							dstImage(c, d, h, w) = maximum - image(c, d, h, w);
+							dstImage(c, d, h, w) = maximum - image(c, d, h, w);;
 
 			return dstImage;
 		}
