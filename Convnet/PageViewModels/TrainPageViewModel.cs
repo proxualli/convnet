@@ -253,8 +253,7 @@ namespace Convnet.PageViewModels
                             CommandToolBar[5].Visibility = Visibility.Visible;
                             CommandToolBar[6].Visibility = Visibility.Visible;
                             CommandToolBar[7].Visibility = Visibility.Visible;
-                            CommandToolBar[13].IsEnabled = Model.CostLayersCount > 1;
-                            
+                                                        
                             if (Model.Layers[layersComboBox.SelectedIndex].HasWeights || Model.Layers[layersComboBox.SelectedIndex].IsNormalizationLayer)
                             {
                                 CommandToolBar[16].Visibility = !Settings.Default.DisableLocking ? Visibility.Visible : Visibility.Collapsed;
@@ -402,8 +401,8 @@ namespace Convnet.PageViewModels
             costLayersComboBox.SelectedIndex = (int)Model.CostIndex;
             selectedCostIndex = costLayersComboBox.SelectedIndex;
             costLayersComboBox.SelectionChanged += CostLayersComboBox_SelectionChanged;
-            costLayersComboBox.IsEnabled = Model.CostLayersCount > 1;
             costLayersComboBox.Visibility = Model.CostLayersCount > 1 ? Visibility.Visible : Visibility.Collapsed;
+
             layersComboBox = new ComboBox { Name = "ComboBoxLayers" };
             layersComboBox.DataContext = Model;
             layersComboBox.ItemsSource = Model.Layers;
@@ -1303,8 +1302,7 @@ namespace Convnet.PageViewModels
                         CommandToolBar[5].Visibility = Visibility.Collapsed;
                         CommandToolBar[6].Visibility = Visibility.Visible;
                         CommandToolBar[7].Visibility = Visibility.Collapsed;
-                        CommandToolBar[13].IsEnabled = false; // Model.CostLayersCount > 1;
-                        
+                                               
                         CommandToolBar[16].Visibility = Visibility.Collapsed;
                         CommandToolBar[17].Visibility = Visibility.Collapsed;
                         CommandToolBar[18].Visibility = Visibility.Collapsed;
@@ -1363,8 +1361,7 @@ namespace Convnet.PageViewModels
                         CommandToolBar[5].Visibility = Visibility.Visible;
                         CommandToolBar[6].Visibility = Visibility.Visible;
                         CommandToolBar[7].Visibility = Visibility.Visible;
-                        CommandToolBar[13].IsEnabled = Model.CostLayersCount > 1;
-
+                       
                         CommandToolBar[16].Visibility = Visibility.Collapsed;
                         CommandToolBar[17].Visibility = Visibility.Collapsed;
                         CommandToolBar[18].Visibility = Visibility.Collapsed;
