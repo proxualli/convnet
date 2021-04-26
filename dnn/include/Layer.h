@@ -40,7 +40,7 @@ namespace dnn
 		Float ColorCast;
 		UInt ColorAngle;
 		Float Distortion;
-		Interpolation Interpolation;
+		dnn::Interpolation Interpolation;
 		Float Scaling;
 		Float Rotation;
 	
@@ -226,7 +226,6 @@ namespace dnn
 		const bool Scaling;
 		const bool HasBias;
 		const bool HasWeights;
-		//const bool InplaceBwd;
 		bool UseDefaultParameters;
 		Fillers WeightsFiller;
 		Float WeightsScale;
@@ -292,7 +291,6 @@ namespace dnn
 			PaddedC(DivUp(c)),
 			PaddedCDHW(layerType != LayerTypes::Input ? (DivUp(c) * d * h * w) : c * d * h * w),
 			HasPadding(padD > 0 || padH > 0 || padW > 0),
-			//InplaceBwd(layerType == LayerTypes::BatchNorm && (inputs[0]->LayerType == LayerTypes::Convolution || inputs[0]->LayerType == LayerTypes::DepthwiseConvolution || inputs[0]->LayerType == LayerTypes::PartialDepthwiseConvolution || inputs[0]->LayerType == LayerTypes::ConvolutionTranspose)),
 			InputLayer(inputs.size() > 0 ? inputs[0] : nullptr),
 			RandomEngine(std::mt19937(Seed<unsigned>())),
 			Neurons(FloatVector()),
