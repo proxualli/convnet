@@ -143,6 +143,7 @@ namespace Convnet.PageViewModels
             costLayersComboBox.SelectedIndex = (int)Model.CostIndex;
             selectedCostIndex = costLayersComboBox.SelectedIndex;
             costLayersComboBox.IsEnabled = Model.CostLayersCount > 1;
+            costLayersComboBox.Visibility = Model.CostLayersCount > 1 ? Visibility.Visible : Visibility.Collapsed;
 
             layersComboBox.ItemsSource = Model.Layers;
             layersComboBox.SelectedIndex = 0;
@@ -402,7 +403,7 @@ namespace Convnet.PageViewModels
             selectedCostIndex = costLayersComboBox.SelectedIndex;
             costLayersComboBox.SelectionChanged += CostLayersComboBox_SelectionChanged;
             costLayersComboBox.IsEnabled = Model.CostLayersCount > 1;
-
+            costLayersComboBox.Visibility = Model.CostLayersCount > 1 ? Visibility.Visible : Visibility.Collapsed;
             layersComboBox = new ComboBox { Name = "ComboBoxLayers" };
             layersComboBox.DataContext = Model;
             layersComboBox.ItemsSource = Model.Layers;
@@ -1303,7 +1304,7 @@ namespace Convnet.PageViewModels
                         CommandToolBar[6].Visibility = Visibility.Visible;
                         CommandToolBar[7].Visibility = Visibility.Collapsed;
                         CommandToolBar[13].IsEnabled = false; // Model.CostLayersCount > 1;
-
+                        
                         CommandToolBar[16].Visibility = Visibility.Collapsed;
                         CommandToolBar[17].Visibility = Visibility.Collapsed;
                         CommandToolBar[18].Visibility = Visibility.Collapsed;
