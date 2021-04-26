@@ -305,8 +305,7 @@ namespace Convnet.PageViewModels
                 Name = "ButtonPause",
                 ToolTip = "Pause Training",
                 Content = new BitmapToImage(Resources.Pause),
-                ClickMode = ClickMode.Release
-                ,
+                ClickMode = ClickMode.Release,
                 Visibility = Visibility.Collapsed
             };
             pauseButton.Click += new RoutedEventHandler(PauseButtonClick);

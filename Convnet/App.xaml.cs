@@ -6,6 +6,7 @@ using System.Globalization;
 using System.IO;
 using System.Windows;
 using System.Windows.Markup;
+using dnncore;
 
 namespace Convnet
 {
@@ -64,7 +65,7 @@ namespace Convnet
 
                     if (Xceed.Wpf.Toolkit.MessageBox.Show("Do you want to save the network state?", "Save Network State", MessageBoxButton.YesNo, MessageBoxImage.None, MessageBoxResult.Yes) == MessageBoxResult.Yes)
                     {
-                        string pathWeights = Settings.Default.PersistOptimizer ? Path.Combine(global::Convnet.MainWindow.StateDirectory, mainWindow.PageVM.Model.Name + "-" + Settings.Default.Optimizer.ToString().ToLower() + ".bin") : Path.Combine(global::Convnet.MainWindow.StateDirectory, mainWindow.PageVM.Model.Name + ".bin");
+                        string pathWeights = Settings.Default.PersistOptimizer ? Path.Combine(global::Convnet.MainWindow.StateDirectory, mainWindow.PageVM.Model.Name + "-" + ((DNNOptimizers)Settings.Default.Optimizer).ToString().ToLower() + ".bin") : Path.Combine(global::Convnet.MainWindow.StateDirectory, mainWindow.PageVM.Model.Name + ".bin");
                         mainWindow.PageVM.Model.SaveWeights(pathWeights, global::Convnet.Properties.Settings.Default.PersistOptimizer);
                     }
 

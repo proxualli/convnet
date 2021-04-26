@@ -101,7 +101,7 @@
         </ContextMenu>
     </Window.Resources>
 
-    <Grid Margin="6">
+    <Grid Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="30" MaxHeight="30"/>
             <RowDefinition Height="30" MaxHeight="30"/>
