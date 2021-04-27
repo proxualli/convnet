@@ -133,12 +133,6 @@
 #include "AlignedAllocator.h"
 #include "ParallelFor.h"
 
-#include "jpeglib.h"
-#include "jerror.h"
-
-#undef cimg_display
-#define cimg_display 0
-#include "CImg.h"
 
 namespace dnn
 {
