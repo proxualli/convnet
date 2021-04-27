@@ -54,7 +54,7 @@ namespace Convnet
                 Dispose();
             }
         }
-        void MainWindow_Closing(object sender, CancelEventArgs e)
+        private void MainWindow_Closing(object sender, CancelEventArgs e)
         {
             if (mainWindow.ShowCloseApplicationDialog)
             {

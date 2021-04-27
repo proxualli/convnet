@@ -17,7 +17,7 @@ namespace Convnet.Dialogs
             InitializeComponent();
         }
 
-        void Window_Loaded(object sender, RoutedEventArgs e)
+        private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             switch (Model.Dataset)
             {
@@ -49,7 +49,7 @@ namespace Convnet.Dialogs
             radioButtonTrainSet.IsEnabled = false;
         }
 
-        bool IsValid(DependencyObject node)
+        private bool IsValid(DependencyObject node)
         {
             // Check if dependency object was passed
             if (node != null)
@@ -82,7 +82,7 @@ namespace Convnet.Dialogs
             return true;
         }
 
-        void ButtonTest_Click(object sender, RoutedEventArgs e)
+        private void ButtonTest_Click(object sender, RoutedEventArgs e)
         {
             if (IsValid(this))
             {
@@ -101,17 +101,17 @@ namespace Convnet.Dialogs
             }
         }
 
-        void ButtonCancel_Click(object sender, RoutedEventArgs e)
+        private void ButtonCancel_Click(object sender, RoutedEventArgs e)
         {
             DialogResult = false;
         }
 
-        void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             buttonCancel.Focus();
         }
 
-        void TextBoxDistortions_TextChanged(object sender, TextChangedEventArgs e)
+        private void TextBoxDistortions_TextChanged(object sender, TextChangedEventArgs e)
         {
             var enabled = (float.TryParse(textBoxDistortions.Text, out float result) && result > 0.0f);
 
@@ -120,7 +120,7 @@ namespace Convnet.Dialogs
             textBoxScaling.IsEnabled = enabled;
         }
 
-        void TextBoxColorCast_TextChanged(object sender, TextChangedEventArgs e)
+        private void TextBoxColorCast_TextChanged(object sender, TextChangedEventArgs e)
         {
             textBoxColorAngle.IsEnabled = (float.TryParse(textBoxColorCast.Text, out float result) && result > 0.0f);
         }

@@ -198,12 +198,12 @@ namespace Convnet
             GC.SuppressFinalize(this);
         }
 
-        void CutCmdExecuted(object target, ExecutedRoutedEventArgs e)
+        private void CutCmdExecuted(object target, ExecutedRoutedEventArgs e)
         {
             (e.Source as TextBox).Cut();
         }
 
-        void CutCmdCanExecute(object sender, CanExecuteRoutedEventArgs e)
+        private void CutCmdCanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             if (e.Source.GetType() == typeof(TextBox))
                 e.CanExecute = (e.Source as TextBox).SelectionLength > 0;
@@ -211,12 +211,12 @@ namespace Convnet
                 e.CanExecute = false;
         }
 
-        void CopyCmdExecuted(object target, ExecutedRoutedEventArgs e)
+        private void CopyCmdExecuted(object target, ExecutedRoutedEventArgs e)
         {
             (e.Source as TextBox).Copy();
         }
 
-        void CopyCmdCanExecute(object sender, CanExecuteRoutedEventArgs e)
+        private void CopyCmdCanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             if (e.Source.GetType() == typeof(TextBox))
                 e.CanExecute = (e.Source as TextBox).SelectionLength > 0;
@@ -224,22 +224,22 @@ namespace Convnet
                 e.CanExecute = false;
         }
 
-        void PasteCmdExecuted(object target, ExecutedRoutedEventArgs e)
+        private void PasteCmdExecuted(object target, ExecutedRoutedEventArgs e)
         {
             (e.Source as TextBox).Paste();
         }
 
-        void PasteCmdCanExecute(object sender, CanExecuteRoutedEventArgs e)
+        private void PasteCmdCanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = false;
         }
 
-        void SelectAllCmdExecuted(object target, ExecutedRoutedEventArgs e)
+        private void SelectAllCmdExecuted(object target, ExecutedRoutedEventArgs e)
         {
             (e.Source as TextBox).SelectAll();
         }
-        
-        void SelectAllCmdCanExecute(object sender, CanExecuteRoutedEventArgs e)
+
+        private void SelectAllCmdCanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             if (e.Source.GetType() == typeof(TextBox))
                 e.CanExecute = true;
@@ -247,12 +247,12 @@ namespace Convnet
                 e.CanExecute = false;
         }
 
-        void UndoCmdExecuted(object target, ExecutedRoutedEventArgs e)
+        private void UndoCmdExecuted(object target, ExecutedRoutedEventArgs e)
         {
             e.Handled = (e.Source as TextBox).Undo();
         }
 
-        void UndoCmdCanExecute(object sender, CanExecuteRoutedEventArgs e)
+        private void UndoCmdCanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             if (e.Source.GetType() == typeof(TextBox))
                 e.CanExecute = (e.Source as TextBox).CanUndo;
@@ -260,12 +260,12 @@ namespace Convnet
                 e.CanExecute = false;
         }
 
-        void RedoCmdExecuted(object target, ExecutedRoutedEventArgs e)
+        private void RedoCmdExecuted(object target, ExecutedRoutedEventArgs e)
         {
             e.Handled = (e.Source as TextBox).Redo();
         }
 
-        void RedoCmdCanExecute(object sender, CanExecuteRoutedEventArgs e)
+        private void RedoCmdCanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             if (e.Source.GetType() == typeof(TextBox))
                 e.CanExecute = (e.Source as TextBox).CanRedo;
@@ -273,17 +273,17 @@ namespace Convnet
                 e.CanExecute = false;
         }
 
-        void HelpCmdExecuted(object target, ExecutedRoutedEventArgs e)
+        private void HelpCmdExecuted(object target, ExecutedRoutedEventArgs e)
         {
             ApplicationHelper.OpenBrowser("https://github.com/zamir1001/convnet.git");
         }
-        
-        void HelpCmdCanExecute(object sender, CanExecuteRoutedEventArgs e)
+
+        private void HelpCmdCanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = true;
         }
 
-        void AboutCmdExecuted(object target, ExecutedRoutedEventArgs e)
+        private void AboutCmdExecuted(object target, ExecutedRoutedEventArgs e)
         {
             Window aboutDialog = new About
             {
@@ -293,22 +293,22 @@ namespace Convnet
             aboutDialog.ShowDialog();
         }
 
-        void AboutCmdCanExecute(object sender, CanExecuteRoutedEventArgs e)
+        private void AboutCmdCanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = true;
         }
 
-        void CloseCmdExecuted(object target, ExecutedRoutedEventArgs e)
+        private void CloseCmdExecuted(object target, ExecutedRoutedEventArgs e)
         {
             Close();
         }
 
-        void CloseCmdCanExecute(object sender, CanExecuteRoutedEventArgs e)
+        private void CloseCmdCanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = true;
         }
 
-        void OpenCmdExecuted(object target, ExecutedRoutedEventArgs e)
+        private void OpenCmdExecuted(object target, ExecutedRoutedEventArgs e)
         {
             Microsoft.Win32.OpenFileDialog openFileDialog = new Microsoft.Win32.OpenFileDialog
             {
@@ -456,7 +456,7 @@ namespace Convnet
             }
         }
 
-        void SaveCmdExecuted(object target, ExecutedRoutedEventArgs e)
+        private void SaveCmdExecuted(object target, ExecutedRoutedEventArgs e)
         {
             if (File.Exists(DefinitionsDirectory + PageVM.Model.Name + @"-weights\" + PageVM.Model.Name + ".bin"))
             {
@@ -474,7 +474,7 @@ namespace Convnet
             Mouse.OverrideCursor = null;
         }
 
-        void SaveWeights()
+        private void SaveWeights()
         {
             Mouse.OverrideCursor = Cursors.Wait;
             if (Settings.Default.PersistOptimizer)
@@ -503,7 +503,7 @@ namespace Convnet
             }
         }
 
-        void SaveAsCmdExecuted(object target, ExecutedRoutedEventArgs e)
+        private void SaveAsCmdExecuted(object target, ExecutedRoutedEventArgs e)
         {
             Microsoft.Win32.SaveFileDialog saveFileDialog = new Microsoft.Win32.SaveFileDialog
             {
@@ -662,7 +662,7 @@ namespace Convnet
             }
         }
 
-        void OpenCmdCanExecute(object sender, CanExecuteRoutedEventArgs e)
+        private void OpenCmdCanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             if (PageVM != null)
             {
@@ -685,7 +685,7 @@ namespace Convnet
                 e.CanExecute = false;
         }
 
-        void SaveCmdCanExecute(object sender, CanExecuteRoutedEventArgs e)
+        private void SaveCmdCanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             if (PageVM != null)
                 e.CanExecute = PageVM.CurrentModel != ViewModels.Test && PageVM.CurrentModel != ViewModels.Edit;
@@ -693,7 +693,7 @@ namespace Convnet
                 e.CanExecute = false;
         }
 
-        void SaveAsCmdCanExecute(object sender, CanExecuteRoutedEventArgs e)
+        private void SaveAsCmdCanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             if (PageVM != null)
                 e.CanExecute = PageVM.CurrentModel != ViewModels.Test;
@@ -701,7 +701,7 @@ namespace Convnet
                 e.CanExecute = false;
         }
 
-        void LockAllCmdExecuted(object target, ExecutedRoutedEventArgs e)
+        private void LockAllCmdExecuted(object target, ExecutedRoutedEventArgs e)
         {
             if (PageVM != null && PageVM.Model != null)
             {
@@ -717,7 +717,7 @@ namespace Convnet
             }
         }
 
-        void LockAllCmdCanExecute(object sender, CanExecuteRoutedEventArgs e)
+        private void LockAllCmdCanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = false;
             if (PageVM != null && PageVM.Model != null)
@@ -728,7 +728,7 @@ namespace Convnet
                 }
         }
 
-        void UnlockAllCmdExecuted(object target, ExecutedRoutedEventArgs e)
+        private void UnlockAllCmdExecuted(object target, ExecutedRoutedEventArgs e)
         {
             if (PageVM != null && PageVM.Model != null)
             {
@@ -743,7 +743,7 @@ namespace Convnet
             }
         }
 
-        void UnlockAllCmdCanExecute(object sender, CanExecuteRoutedEventArgs e)
+        private void UnlockAllCmdCanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = false;
             if (PageVM != null && PageVM.Model != null)
@@ -754,7 +754,7 @@ namespace Convnet
                 }
         }
 
-        void PersistOptimizerCmdExecuted(object target, ExecutedRoutedEventArgs e)
+        private void PersistOptimizerCmdExecuted(object target, ExecutedRoutedEventArgs e)
         {
             if (PersistOptimizer != null && PageVM != null && PageVM.Model != null)
             {
@@ -765,7 +765,7 @@ namespace Convnet
             }
         }
 
-        void PersistOptimizerCmdCanExecute(object sender, CanExecuteRoutedEventArgs e)
+        private void PersistOptimizerCmdCanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = false;
 
@@ -773,7 +773,7 @@ namespace Convnet
                 e.CanExecute = true;
         }
 
-        void DisableLockingCmdExecuted(object target, ExecutedRoutedEventArgs e)
+        private void DisableLockingCmdExecuted(object target, ExecutedRoutedEventArgs e)
         {
             if (DisableLocking != null)
             {
@@ -790,7 +790,7 @@ namespace Convnet
             }
         }
 
-        void DisableLockingCmdCanExecute(object sender, CanExecuteRoutedEventArgs e)
+        private void DisableLockingCmdCanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = false;
 
@@ -798,7 +798,7 @@ namespace Convnet
                 e.CanExecute = true;
         }
 
-        void PlainFormatCmdExecuted(object target, ExecutedRoutedEventArgs e)
+        private void PlainFormatCmdExecuted(object target, ExecutedRoutedEventArgs e)
         {
             if (Plain != null && PageVM != null && PageVM.Model != null)
             {
@@ -816,7 +816,7 @@ namespace Convnet
             }
         }
 
-        void PlainFormatCmdCanExecute(object sender, CanExecuteRoutedEventArgs e)
+        private void PlainFormatCmdCanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = false;
 
@@ -824,7 +824,7 @@ namespace Convnet
               e.CanExecute = PageVM.Model.TaskState == DNNTaskStates.Stopped;
         }
 
-        void PrioritySlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        private void PrioritySlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             if (PageVM != null && PageVM.Model != null)
             {

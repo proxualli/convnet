@@ -52,7 +52,7 @@ namespace Convnet.Dialogs
             //DataGridRates.Columns[12].Visibility = tpvm.SGDR ? Visibility.Collapsed: Visibility.Visible;
         }
 
-        bool IsValid(DependencyObject node)
+        private bool IsValid(DependencyObject node)
         {
             // Check if dependency object was passed
             if (node != null)
@@ -89,7 +89,7 @@ namespace Convnet.Dialogs
             DialogResult = false;
         }
 
-        void ButtonTrain_Click(object sender, RoutedEventArgs e)
+        private void ButtonTrain_Click(object sender, RoutedEventArgs e)
         {
             if (IsValid(this))
             {

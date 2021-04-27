@@ -11,7 +11,7 @@ namespace Convnet.Dialogs
             InitializeComponent();
         }
 
-        void Window_Loaded(object sender, RoutedEventArgs e)
+        private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             TextBlockApplication.Text = ((AssemblyDescriptionAttribute)Attribute.GetCustomAttribute(System.Reflection.Assembly.GetExecutingAssembly(), typeof(AssemblyDescriptionAttribute))).Description;
         }

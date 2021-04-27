@@ -56,7 +56,7 @@ namespace Convnet.PageViewModels
             AddCommandButtons();
         }
 
-        void AddCommandButtons()
+        private void AddCommandButtons()
         {
             Button openButton = new Button
             {
