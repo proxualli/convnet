@@ -13,9 +13,6 @@ namespace Convnet.PageViews
 {
     public partial class TrainPageView : UserControl
     {
-        public static IEnumerable<DNNOptimizers> GetOptimizers => Enum.GetValues(typeof(DNNOptimizers)).Cast<DNNOptimizers>();
-        public static IEnumerable<DNNInterpolation> GetInterpolations => Enum.GetValues(typeof(DNNInterpolation)).Cast<DNNInterpolation>();
-
         private bool Zoomout = false;
         private ScrollViewer ScrollViewerListViewTrainingResult = null;
 

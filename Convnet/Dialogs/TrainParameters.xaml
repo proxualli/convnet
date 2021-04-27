@@ -4,7 +4,7 @@
         xmlns:c="clr-namespace:Convnet.Common"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:converters="clr-namespace:Convnet.Converters"
-        xmlns:pvm="clr-namespace:Convnet.PageViewModels" 
+        xmlns:pvm="clr-namespace:Convnet.PageViewModels"
         Title="Train Parameters" Height="536" Width="580" WindowStartupLocation="CenterOwner" ShowInTaskbar="False" ResizeMode="NoResize" Closing="Window_Closing" Loaded="Window_Loaded" UseLayoutRounding="True" SnapsToDevicePixels="True" Background="Gray">
 
     <Window.Resources>
