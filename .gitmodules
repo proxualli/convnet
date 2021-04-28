@@ -16,3 +16,6 @@
 [submodule "dnn/deps/magic_enum"]
 	path = dnn/deps/magic_enum
 	url = https://github.com/Neargye/magic_enum
+[submodule "dnn/deps/CImg"]
+	path = dnn/deps/CImg
+	url = https://github.com/dtschump/CImg.git
