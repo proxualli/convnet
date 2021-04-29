@@ -118,9 +118,9 @@
       <LanguageStandard>stdcpp17</LanguageStandard>
       <InterproceduralOptimization>NoIPO</InterproceduralOptimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
-      <AdditionalOptions>/openmp:experimental /Qvec-report:1 %(AdditionalOptions)</AdditionalOptions>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <AdditionalOptions>/openmp:experimental %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <InterproceduralOptimization>true</InterproceduralOptimization>
