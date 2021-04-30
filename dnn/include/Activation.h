@@ -516,7 +516,7 @@ namespace dnn
 #ifdef DNN_CACHE_PRIMITIVES
 				fwdLogSoftmax->execute(Device.stream, std::unordered_map<int, dnnl::memory>{ {DNNL_ARG_SRC, srcMem}, { DNNL_ARG_DST,  dstMem } });
 #else
-				dnnl::logsoftmax_forward(*fwdDescLogSoftmax).execute(Device.stream, std::unordered_map<int, dnnl::memory>{ {DNNL_ARG_SRC, srcMem}, { DNNL_ARG_DST,  dstMem } });
+				dnnl::logsoftmax_forward(*fwdDescLogSoftmax).execute(Device.stream, std::unordered_map<int, dnnl::memory>{ {DNNL_ARG_SRC, srcMem}, { DNNL_ARG_DST, dstMem } });
 #endif
 				Device.stream.wait();
 
