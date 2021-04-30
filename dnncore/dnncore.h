@@ -143,7 +143,7 @@ namespace dnncore
 		GlobalMaxPooling = 29,
 		Input = 30,
 		LayerNorm = 31,
-		LocalResponseNormalization = 32,
+		LocalResponseNorm = 32,
 		Max = 33,
 		MaxPooling = 34,
 		Min = 35,

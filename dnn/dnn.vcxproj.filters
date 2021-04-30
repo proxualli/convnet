@@ -98,7 +98,7 @@
     <ClInclude Include="include\Layer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\LocalResponseNormalization.h">
+    <ClInclude Include="include\LocalResponseNorm.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\ChannelShuffle.h">

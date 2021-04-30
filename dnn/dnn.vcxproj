@@ -164,7 +164,7 @@
     <ClInclude Include="include\Image.h" />
     <ClInclude Include="include\Input.h" />
     <ClInclude Include="include\Layer.h" />
-    <ClInclude Include="include\LocalResponseNormalization.h" />
+    <ClInclude Include="include\LocalResponseNorm.h" />
     <ClInclude Include="include\MaxPooling.h" />
     <ClInclude Include="include\Multiply.h" />
     <ClInclude Include="include\ChannelMultiply.h" />
