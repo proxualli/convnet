@@ -89,7 +89,7 @@ namespace dnn
 
 #ifndef DNN_LEAN
 			if (training)
-				ZeroMemory(NeuronsD1.data(), batchSize * PaddedCDHW);
+				ZeroArray(NeuronsD1.data(), batchSize * PaddedCDHW);
 #else
 			DNN_UNREF_PAR(batchSize);
 #endif
