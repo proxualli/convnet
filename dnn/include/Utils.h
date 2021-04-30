@@ -142,8 +142,11 @@ namespace dnn
 #endif
 	#define DNN_SIMD_ALIGN DNN_ALIGN(64)
 
-	template <typename T, std::size_t alignment, typename Allocator = AlignedAllocator<T, alignment>> class AlignedVector {
-	protected:
+	template <typename T, std::size_t alignment, typename Allocator = AlignedAllocator<T, alignment>> class AlignedVector
+	{
+	static_assert(std::is_same_v<T, typename Allocator::value_type>, "vector<T, Allocator>");
+	
+	private:
 		std::vector<T, Allocator> Data;
 		typedef typename std::vector<T, Allocator>::iterator iterator;
 		typedef typename std::vector<T, Allocator>::const_iterator const_iterator;
@@ -192,7 +195,6 @@ namespace dnn
 #endif
 	static const auto tab = std::string("\t");
 	static const auto dtab = std::string("\t\t");
-	
 	
 #if defined(DNN_AVX512BW) || defined(DNN_AVX512)
 	typedef Vec16f VecFloat;
