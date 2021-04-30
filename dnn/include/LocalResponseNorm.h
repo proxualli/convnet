@@ -125,7 +125,7 @@ namespace dnn
 
 #ifndef DNN_LEAN
 			if (training)
-				ZeroFloatVector(NeuronsD1.data(), batchSize * PaddedCDHW);
+				ZeroMemory(NeuronsD1.data(), batchSize * PaddedCDHW);
 #endif
 		}
 
