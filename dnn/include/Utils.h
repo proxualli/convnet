@@ -142,6 +142,10 @@ namespace dnn
 #endif
 	#define DNN_SIMD_ALIGN DNN_ALIGN(64)
 
+	template<class T, std::size_t alignment, typename Allocator = AlignedAllocator<T, alignment>> using unique_ptr_aligned = std::unique_ptr<T,	decltype(&Allocator::AlignedFree)>;
+	template<class T, std::size_t alignment, typename Allocator = AlignedAllocator<T, alignment>> unique_ptr_aligned<T, alignment, Allocator> aligned_unique_ptr(size_t align, size_t size) { return unique_ptr_aligned<T>(static_cast<T*>(Allocator::AlignedAlloc(align, size)), &Allocator::AlignedFree); }
+	template<class T, std::size_t alignment, typename Allocator = AlignedAllocator<T, alignment>> std::shared_ptr<T> aligned_shared_ptr(size_t align, size_t size) { return std::shared_ptr<T>(static_cast<T*>(Allocator::AlignedAlloc(align, size)), &Allocator::AlignedFree); }
+
 	template <typename T, std::size_t alignment, typename Allocator = AlignedAllocator<T, alignment>> class AlignedArray
 	{
 	static_assert(std::is_same_v<T, typename Allocator::value_type>, "array<T, Allocator>");
@@ -184,10 +188,10 @@ namespace dnn
 		inline const_iterator cbegin() const noexcept { return vec.cbegin(); }
 		inline iterator end() noexcept { return vec.end(); }
 		inline const_iterator cend() const noexcept { return vec.cend(); }
-		inline bool empty() const noexcept { return vec.empty(); }
-		inline void clear() noexcept { vec.clear(); }
-		inline void shrink_to_fit() noexcept { vec.shrink_to_fit(); }
-		inline void swap(AlignedVector& other) noexcept { std::vector<T, Allocator>().swap(other.vec); }
+		//inline bool empty() const noexcept { return vec.empty(); }
+		//inline void clear() noexcept { vec.clear(); }
+		//inline void shrink_to_fit() noexcept { vec.shrink_to_fit(); }
+		//inline void swap(AlignedVector& other) noexcept { std::vector<T, Allocator>().swap(other.vec); }
 	};
 
 	typedef float Float;
