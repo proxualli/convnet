@@ -6,6 +6,7 @@ using CsvHelper;
 using dnncore;
 using System;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Reflection;
 using System.Text;
@@ -429,19 +430,35 @@ namespace Convnet
                                 {
                                     HasHeaderRecord = true
                                 };
-                                                              
-                                TextReader reader = new StreamReader(openFileDialog.FileName);
-                                var csvReader = new CsvReader(reader, config);
-                                var log = csvReader.GetRecords<DNNTrainingResult>();
-
-                                if (Settings.Default.TrainingLog.Count > 0)
+                                
+                                try
                                 {
-                                    Mouse.OverrideCursor = null;
-                                    if (Xceed.Wpf.Toolkit.MessageBox.Show("Do you want to clear the existing log?", "Clear Log", MessageBoxButton.YesNo, MessageBoxImage.None, MessageBoxResult.No) == MessageBoxResult.Yes)
-                                        Settings.Default.TrainingLog.Clear();
+                                    using (var reader = new StreamReader(openFileDialog.FileName))
+                                    {
+                                        using (var csv = new CsvReader(reader, config))
+                                        {
+                                            //var classMap = csv.Context.AutoMap<DNNTrainingResult>();
+                                            //csv.Context.UnregisterClassMap();
+                                            //csv.Context.RegisterClassMap(classMap);
+                                            var records = csv.GetRecords<DNNTrainingResult>();
+                                          
+                                            if (Settings.Default.TrainingLog.Count > 0)
+                                            {
+                                                Mouse.OverrideCursor = null;
+                                                if (Xceed.Wpf.Toolkit.MessageBox.Show("Do you want to clear the existing log?", "Clear Log", MessageBoxButton.YesNo, MessageBoxImage.None, MessageBoxResult.No) == MessageBoxResult.Yes)
+                                                    Settings.Default.TrainingLog.Clear();
+                                            }
+                                            foreach (var result in records)
+                                                Settings.Default.TrainingLog.Add(result);
+
+                                        }
+                                    }
                                 }
-                                foreach (var result in log)
-                                    Settings.Default.TrainingLog.Add(result);
+                                catch (Exception ex)
+                                {
+                                    Xceed.Wpf.Toolkit.MessageBox.Show(ex.Message);
+                                }
+
                                 Settings.Default.Save();
 
                                 tpvm.RefreshTrainingPlot();
@@ -633,6 +650,13 @@ namespace Convnet
                                     var csv = sb.ToString();
                                     //Clipboard.SetText(csv);
                                     File.WriteAllText(saveFileDialog.FileName, csv);
+
+                                    //using (var writer = new StreamWriter(saveFileDialog.FileName))
+                                    //using (var csvw = new CsvWriter(writer, CultureInfo.CurrentCulture))
+                                    //{
+                                    //    csvw.WriteRecords(tpvm.TrainingLog);
+                                    //}
+
                                     Mouse.OverrideCursor = null;
                                     Xceed.Wpf.Toolkit.MessageBox.Show(saveFileDialog.SafeFileName + " log saved", "Information", MessageBoxButton.OK);
                                 }
