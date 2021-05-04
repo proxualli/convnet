@@ -442,8 +442,9 @@ namespace Convnet
                                             //var classMap = csv.Context.AutoMap<DNNTrainingResult>();
                                             //csv.Context.UnregisterClassMap();
                                             //csv.Context.RegisterClassMap(classMap);
+                                            //csv.ReadHeader();
                                             var records = csv.GetRecords<DNNTrainingResult>();
-                                          
+                                            
                                             if (Settings.Default.TrainingLog.Count > 0)
                                             {
                                                 Mouse.OverrideCursor = null;
@@ -451,15 +452,14 @@ namespace Convnet
                                                     Settings.Default.TrainingLog.Clear();
                                             }
 
-                                            foreach (var result in records)
-                                                Settings.Default.TrainingLog.Add(result);
-
+                                            
+                                            foreach (var record in records)
+                                                Settings.Default.TrainingLog.Add(record);
                                         }
                                     }
                                 }
                                 catch (Exception ex)
                                 {
-                                    Settings.Default.TrainingLog.Clear();
                                     Settings.Default.TrainingLog = backup;
                                     Mouse.OverrideCursor = null;
                                     Xceed.Wpf.Toolkit.MessageBox.Show(ex.Message);
