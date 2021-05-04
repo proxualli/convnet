@@ -437,9 +437,9 @@ namespace Convnet
                                     {
                                         using (var csv = new CsvReader(reader, config))
                                         {
-                                            //var classMap = csv.Context.AutoMap<DNNTrainingResult>();
-                                            //csv.Context.UnregisterClassMap();
-                                            //csv.Context.RegisterClassMap(classMap);
+                                            var classMap = csv.Context.AutoMap<DNNTrainingResult>();
+                                            csv.Context.UnregisterClassMap();
+                                            csv.Context.RegisterClassMap(classMap);
                                             var records = csv.GetRecords<DNNTrainingResult>();
                                           
                                             if (Settings.Default.TrainingLog.Count > 0)
