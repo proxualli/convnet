@@ -121,7 +121,7 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
       <FloatingPointModel>Fast</FloatingPointModel>
-      <AdditionalOptions>/openmp:experimental %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>/openmp:experimental /Qvec-report:1 %(AdditionalOptions)</AdditionalOptions>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
     </ClCompile>
     <Link>
