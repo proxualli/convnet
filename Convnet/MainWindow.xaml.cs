@@ -5,6 +5,7 @@ using Convnet.Properties;
 using CsvHelper;
 using dnncore;
 using System;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
@@ -428,18 +429,19 @@ namespace Convnet
                             {
                                 CsvHelper.Configuration.CsvConfiguration config = new CsvHelper.Configuration.CsvConfiguration(System.Globalization.CultureInfo.CurrentCulture)
                                 {
-                                    HasHeaderRecord = true
+                                    HasHeaderRecord = true,
                                 };
-                                
+
+                                ObservableCollection<DNNTrainingResult> backup = new ObservableCollection<DNNTrainingResult>(Settings.Default.TrainingLog);
                                 try
                                 {
                                     using (var reader = new StreamReader(openFileDialog.FileName))
                                     {
                                         using (var csv = new CsvReader(reader, config))
                                         {
-                                            var classMap = csv.Context.AutoMap<DNNTrainingResult>();
-                                            csv.Context.UnregisterClassMap();
-                                            csv.Context.RegisterClassMap(classMap);
+                                            //var classMap = csv.Context.AutoMap<DNNTrainingResult>();
+                                            //csv.Context.UnregisterClassMap();
+                                            //csv.Context.RegisterClassMap(classMap);
                                             var records = csv.GetRecords<DNNTrainingResult>();
                                           
                                             if (Settings.Default.TrainingLog.Count > 0)
@@ -448,6 +450,7 @@ namespace Convnet
                                                 if (Xceed.Wpf.Toolkit.MessageBox.Show("Do you want to clear the existing log?", "Clear Log", MessageBoxButton.YesNo, MessageBoxImage.None, MessageBoxResult.No) == MessageBoxResult.Yes)
                                                     Settings.Default.TrainingLog.Clear();
                                             }
+
                                             foreach (var result in records)
                                                 Settings.Default.TrainingLog.Add(result);
 
@@ -456,9 +459,12 @@ namespace Convnet
                                 }
                                 catch (Exception ex)
                                 {
+                                    Settings.Default.TrainingLog.Clear();
+                                    Settings.Default.TrainingLog = backup;
+                                    Mouse.OverrideCursor = null;
                                     Xceed.Wpf.Toolkit.MessageBox.Show(ex.Message);
                                 }
-
+                               
                                 Settings.Default.Save();
 
                                 tpvm.RefreshTrainingPlot();
