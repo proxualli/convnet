@@ -172,7 +172,7 @@ namespace Convnet.PageViewModels
                 for (uint c = 0; c < Model.CostLayersCount; c++)
                 {
                     Model.UpdateCostInfo(c);
-                    TrainingLog.Add(new DNNTrainingResult(Cycle, Epoch, c, Model.CostLayers[c].GroupIndex, Model.CostLayers[c].Name, (DNNOptimizers)Optimizer, Momentum, Beta2, L2Penalty, Eps, Rate, BatchSize, Dropout, Cutout, AutoAugment, ColorCast, ColorAngle, Distortion, (DNNInterpolations)Interpolation, Scaling, Rotation, HorizontalFlip, VerticalFlip, Model.CostLayers[c].AvgTrainLoss, Model.CostLayers[c].TrainErrors, Model.CostLayers[c].TrainErrorPercentage, Model.CostLayers[c].TrainAccuracy, Model.CostLayers[c].AvgTestLoss, Model.CostLayers[c].TestErrors, Model.CostLayers[c].TestErrorPercentage, Model.CostLayers[c].TestAccuracy, span.Ticks));
+                    TrainingLog.Add(new DNNTrainingResult(Cycle, Epoch, c, Model.CostLayers[c].GroupIndex, Model.CostLayers[c].Name, (DNNOptimizers)Optimizer, Momentum, Beta2, L2Penalty, Eps, Rate, BatchSize, Dropout, Cutout, AutoAugment, HorizontalFlip, VerticalFlip, ColorCast, ColorAngle, Distortion, (DNNInterpolations)Interpolation, Scaling, Rotation, Model.CostLayers[c].AvgTrainLoss, Model.CostLayers[c].TrainErrors, Model.CostLayers[c].TrainErrorPercentage, Model.CostLayers[c].TrainAccuracy, Model.CostLayers[c].AvgTestLoss, Model.CostLayers[c].TestErrors, Model.CostLayers[c].TestErrorPercentage, Model.CostLayers[c].TestAccuracy, span.Ticks));
                 }
 
                 SelectedIndex = TrainingLog.Count - 1;
