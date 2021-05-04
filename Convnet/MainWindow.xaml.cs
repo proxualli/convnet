@@ -427,11 +427,11 @@ namespace Convnet
                         {
                             if (PageVM.CurrentPage is TrainPageViewModel tpvm)
                             {
-                                CsvHelper.Configuration.CsvConfiguration config = new CsvHelper.Configuration.CsvConfiguration(System.Globalization.CultureInfo.CurrentCulture)
+                                CsvHelper.Configuration.CsvConfiguration config = new CsvHelper.Configuration.CsvConfiguration(CultureInfo.CurrentCulture)
                                 {
                                     HasHeaderRecord = true,
                                 };
-
+                               
                                 ObservableCollection<DNNTrainingResult> backup = new ObservableCollection<DNNTrainingResult>(Settings.Default.TrainingLog);
                                 try
                                 {

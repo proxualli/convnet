@@ -511,7 +511,7 @@ namespace dnncore
 				const auto totalSize = (!depthwise && info->InputC == 3) ? 3 * width * height : width * height;
 				auto pixelFormat = (!depthwise && info->InputC == 3) ? PixelFormats::Rgb24 : PixelFormats::Gray8;
 
-				if (totalSize <= INT_MAX)
+				if (totalSize > 0 && totalSize <= INT_MAX)
 				{
 					auto img = gcnew cli::array<Byte>(int(totalSize));
 					pin_ptr<Byte> p = &img[0];
@@ -551,7 +551,7 @@ namespace dnncore
 				const auto totalSize = width * height;
 				auto pixelFormat = PixelFormats::Gray8;
 
-				if (totalSize <= INT_MAX)
+				if (totalSize > 0 && totalSize <= INT_MAX)
 				{
 					auto img = gcnew cli::array<Byte>(int(totalSize));
 					pin_ptr<Byte> p = &img[0];
