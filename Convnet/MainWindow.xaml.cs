@@ -15,6 +15,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Threading;
+using System.Xml.Serialization;
 using Float = System.Single;
 
 
@@ -427,35 +428,33 @@ namespace Convnet
                         {
                             if (PageVM.CurrentPage is TrainPageViewModel tpvm)
                             {
-                                CsvHelper.Configuration.CsvConfiguration config = new CsvHelper.Configuration.CsvConfiguration(CultureInfo.CurrentCulture)
-                                {
-                                    HasHeaderRecord = true,
-                                };
-                               
                                 ObservableCollection<DNNTrainingResult> backup = new ObservableCollection<DNNTrainingResult>(Settings.Default.TrainingLog);
+                               
                                 try
                                 {
-                                    using (var reader = new StreamReader(openFileDialog.FileName))
+                                    CsvHelper.Configuration.CsvConfiguration config = new CsvHelper.Configuration.CsvConfiguration(CultureInfo.CurrentCulture)
                                     {
-                                        using (var csv = new CsvReader(reader, config))
-                                        {
-                                            //var classMap = csv.Context.AutoMap<DNNTrainingResult>();
-                                            //csv.Context.UnregisterClassMap();
-                                            //csv.Context.RegisterClassMap(classMap);
-                                            //csv.ReadHeader();
-                                            var records = csv.GetRecords<DNNTrainingResult>();
-                                            
-                                            if (Settings.Default.TrainingLog.Count > 0)
-                                            {
-                                                Mouse.OverrideCursor = null;
-                                                if (Xceed.Wpf.Toolkit.MessageBox.Show("Do you want to clear the existing log?", "Clear Log", MessageBoxButton.YesNo, MessageBoxImage.None, MessageBoxResult.No) == MessageBoxResult.Yes)
-                                                    Settings.Default.TrainingLog.Clear();
-                                            }
+                                        HasHeaderRecord = true,
+                                        DetectDelimiter = true,
+                                        DetectDelimiterValues = new string[] { ";" },
+                                        Delimiter = ";"
+                                    };
 
-                                            
-                                            foreach (var record in records)
-                                                Settings.Default.TrainingLog.Add(record);
+                                    using (var reader = new StreamReader(openFileDialog.FileName, true))
+                                    using (var csv = new CsvReader(reader, config))
+                                    {
+                                        var records = csv.GetRecords<DNNTrainingResult>();
+
+                                        if (Settings.Default.TrainingLog.Count > 0)
+                                        {
+                                            Mouse.OverrideCursor = null;
+                                            if (Xceed.Wpf.Toolkit.MessageBox.Show("Do you want to clear the existing log?", "Clear Log", MessageBoxButton.YesNo, MessageBoxImage.None, MessageBoxResult.No) == MessageBoxResult.Yes)
+                                                Settings.Default.TrainingLog.Clear();
                                         }
+
+                                        foreach (var record in records)
+                                            Settings.Default.TrainingLog.Add(record);
+                                        
                                     }
                                 }
                                 catch (Exception ex)
@@ -653,14 +652,21 @@ namespace Convnet
                                             row.ElapsedTicks.ToString() + delim +
                                             row.ElapsedTime.ToString());
 
-                                    var csv = sb.ToString();
-                                    //Clipboard.SetText(csv);
-                                    File.WriteAllText(saveFileDialog.FileName, csv);
+                                    //Clipboard.SetText(sb.ToString());
+                                    File.WriteAllText(saveFileDialog.FileName, sb.ToString());
+                                   
+                                    //CsvHelper.Configuration.CsvConfiguration config = new CsvHelper.Configuration.CsvConfiguration(CultureInfo.CurrentCulture)
+                                    //{
+                                    //    HasHeaderRecord = true,
+                                    //    DetectDelimiter = true,
+                                    //    DetectDelimiterValues = new string[] { ";" },
+                                    //    Delimiter = ";"
+                                    //};
 
                                     //using (var writer = new StreamWriter(saveFileDialog.FileName))
-                                    //using (var csvw = new CsvWriter(writer, CultureInfo.CurrentCulture))
+                                    //using (var csv = new CsvWriter(writer, config))
                                     //{
-                                    //    csvw.WriteRecords(tpvm.TrainingLog);
+                                    //    csv.WriteRecords(tpvm.TrainingLog);
                                     //}
 
                                     Mouse.OverrideCursor = null;

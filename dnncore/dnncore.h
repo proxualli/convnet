@@ -672,6 +672,9 @@ namespace dnncore
 		property long long ElapsedTicks;
 		property TimeSpan ElapsedTime;
 
+		DNNTrainingResult::DNNTrainingResult()
+		{
+		}
 		DNNTrainingResult::DNNTrainingResult(UInt cycle, UInt epoch, UInt groupIndex, UInt costIndex, String^ costName, DNNOptimizers optimizer, Float momentum, Float beta2, Float l2Penalty, Float eps, Float rate, UInt batchSize, Float dropout, Float cutout, Float autoAugment, bool horizontalFlip, bool verticalFlip, Float colorCast, UInt colorAngle, Float distortion, DNNInterpolations interpolation, Float scaling, Float rotation, Float avgTrainLoss, UInt trainErrors, Float trainErrorPercentage, Float trainAccuracy, Float avgTestLoss, UInt testErrors, Float testErrorPercentage, Float testAccuracy, long long elapsedTicks)
 		{
 			Cycle = cycle;

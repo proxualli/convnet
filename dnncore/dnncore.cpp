@@ -9,6 +9,8 @@ using namespace dnncore;
 
 namespace dnn
 {
+	typedef float Float;
+	typedef size_t UInt;
 	typedef unsigned char Byte;
 
 	enum class TaskStates
