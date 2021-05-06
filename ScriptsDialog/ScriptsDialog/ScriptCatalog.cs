@@ -309,7 +309,7 @@ namespace ScriptsDialog
 
             switch (p.Script)
             {
-                case Scripts.densenet:
+                case Scripts.densenet:  // modet not compatible with FRelu in this script
                     {
                         var channels = DIV8(p.GrowthRate);
 
