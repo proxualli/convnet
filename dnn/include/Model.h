@@ -702,8 +702,8 @@ namespace dnn
 
 			for (auto& layer : Layers)
 				if (layer->Name != parentLayer->Name)
-					for (auto inputs : layer->Inputs)
-						if (inputs->Name == parentLayer->Name)
+					for (auto input : layer->Inputs)
+						if (input->Name == parentLayer->Name)
 							outputs.push_back(layer.get());
 
 			return outputs;
@@ -732,17 +732,17 @@ namespace dnn
 						if (l->Name == layer->Name)
 							continue;
 
-						for (auto inputs : l->Inputs)
+						for (auto input : l->Inputs)
 						{
-							if (inputs->Name == layer->Name)
+							if (input->Name == layer->Name)
 							{
 								l->SharesInput = l->InplaceBwd ? false : true;
-								l->SharesInputOriginal = l->SharesInput;
+								l->SharesInputOriginal = l->InplaceBwd ? false : true;
 								outputsCount--;
 								break;
 							}
 						}
-
+						
 						if (outputsCount == 1)
 							break;
 					}
@@ -763,16 +763,16 @@ namespace dnn
 			for (auto& layer : Layers)
 			{
 				layer->SharesInput = false;
-
+				
 				if (layer->InplaceBwd)
 					for (auto output : layer->Outputs)
 					{
-						auto inp = std::vector<Layer*>();
-						for (auto in : output->InputsOriginal)
-							inp.push_back(in->InplaceBwd || in->Name == layer->Name ? in->InputLayer : in);
+						auto inputs = std::vector<Layer*>();
+						for (auto input : output->Inputs)
+							inputs.push_back(input->InplaceBwd || input->Name == layer->Name ? input->InputLayer : input);
 
-						output->Inputs = std::vector<Layer*>(inp);
-						output->InputsInplace = std::vector<Layer*>(inp);
+						output->Inputs = std::vector<Layer*>(inputs);
+						output->InputsInplace = std::vector<Layer*>(inputs);
 						output->InputLayer = layer->InputLayer;
 						output->InputLayerInplace = layer->InputLayer;
 					}
@@ -790,9 +790,9 @@ namespace dnn
 						if (l->Name == layer->Name)
 							continue;
 
-						for (auto inputs : l->Inputs)
+						for (auto input : l->Inputs)
 						{
-							if (inputs->Name == layer->Name)
+							if (input->Name == layer->Name)
 							{
 								l->SharesInput = true;
 								l->SharesInputInplace = true;
@@ -807,6 +807,7 @@ namespace dnn
 				}
 			}
 			
+			// Find non-Inplace inputs
 			for (auto& layer : Layers)
 			{
 				layer->SharesInput = false;
