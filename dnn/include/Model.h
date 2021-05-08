@@ -716,15 +716,13 @@ namespace dnn
 
 			// determine SharesInputOriginal (and SharesInput)
 			for (auto& layer : Layers)
-			{
 				layer->SharesInput = false;
-				layer->Outputs = GetLayerOutputs(layer.get());
-			}
-
+			
 			auto unreferencedLayers = std::vector<Layer*>();
 
 			for (auto& layer : Layers)
 			{
+				layer->Outputs = GetLayerOutputs(layer.get());
 				auto outputsCount = layer->Outputs.size();
 
 				if (outputsCount > 1)
@@ -758,14 +756,11 @@ namespace dnn
 
 			// determine SharesInputInplace
 			for (auto& layer : Layers)
-			{
 				layer->SharesInput = false;
-				layer->Outputs = GetLayerOutputs(layer.get(), true);
-			}
 
 			for (auto& layer : Layers)
 			{
-				auto outputsCount = layer->Outputs.size();
+				auto outputsCount = GetLayerOutputs(layer.get(), true).size();
 
 				if (outputsCount > 1)
 				{
