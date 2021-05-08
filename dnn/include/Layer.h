@@ -333,6 +333,16 @@ namespace dnn
 			bpropTime(std::chrono::duration<Float>(Float(0))),
 			updateTime(std::chrono::duration<Float>(Float(0)))
 		{
+			if (!InplaceBwd)
+			{
+				if (InputsOriginal.size() > 0)
+				{
+					InputsInplace = std::vector<Layer*>();
+					for (auto input : InputsOriginal)
+						InputsInplace.push_back(input->InplaceBwd ? input->InputLayerOriginal : input);
+					InputLayerInplace = InputsInplace[0];
+				}
+			}
 		}
 
 		virtual ~Layer() = default;
