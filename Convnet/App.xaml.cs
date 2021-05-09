@@ -22,20 +22,19 @@ namespace Convnet
         {
             sim = new SingleInstanceMutex();
 
-            MSBuildLocator.RegisterDefaults();
-
-          
             try
             {
+                MSBuildLocator.RegisterDefaults();
+
                 System.Diagnostics.Process.GetCurrentProcess().PriorityClass = Settings.Default.Priority;
+
+                FrameworkElement.LanguageProperty.OverrideMetadata(typeof(FrameworkElement), new FrameworkPropertyMetadata(XmlLanguage.GetLanguage(CultureInfo.CurrentCulture.IetfLanguageTag)));
+                FrameworkContentElement.LanguageProperty.OverrideMetadata(typeof(System.Windows.Documents.TextElement), new FrameworkPropertyMetadata(XmlLanguage.GetLanguage(CultureInfo.CurrentCulture.IetfLanguageTag)));
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
-
-            FrameworkElement.LanguageProperty.OverrideMetadata(typeof(FrameworkElement), new FrameworkPropertyMetadata(XmlLanguage.GetLanguage(CultureInfo.CurrentCulture.IetfLanguageTag)));
-            FrameworkContentElement.LanguageProperty.OverrideMetadata(typeof(System.Windows.Documents.TextElement), new FrameworkPropertyMetadata(XmlLanguage.GetLanguage(CultureInfo.CurrentCulture.IetfLanguageTag)));
         }
 
         ~App()
