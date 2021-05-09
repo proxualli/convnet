@@ -39,9 +39,7 @@ namespace ScriptsDialog
                 Application.Current.Shutdown();
                 return;
             }
-
-            base.OnStartup(e);
-
+            
             try
             {
                 base.OnStartup(e);
