@@ -119,13 +119,13 @@
       <DebugInformationFormat>None</DebugInformationFormat>
       <Optimization>MaxSpeed</Optimization>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <InterproceduralOptimization>NoIPO</InterproceduralOptimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
       <FloatingPointModel>Fast</FloatingPointModel>
       <AdditionalOptions>/openmp:experimental /Qvec-report:1 %(AdditionalOptions)</AdditionalOptions>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <CCppSupport>Cpp17Support</CCppSupport>
     </ClCompile>
     <Link>
       <InterproceduralOptimization>true</InterproceduralOptimization>
