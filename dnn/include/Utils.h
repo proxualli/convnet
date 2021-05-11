@@ -284,7 +284,7 @@ namespace dnn
 					Data[i] = value;
 			}
 			else
-				for (size_type i = 0; i < count; ++i) 
+				for (size_type i = 0; i < count; ++i)
 					Data[i] = value;
 		}
 		inline void release() noexcept
