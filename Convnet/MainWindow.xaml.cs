@@ -94,7 +94,7 @@ namespace Convnet
                 File.Copy(ApplicationPath + @"Resources\state\resnet-32-3-2-6-dropout-channelzeropad-relu.txt", DefinitionsDirectory + "resnet-32-3-2-6-dropout-channelzeropad-relu.txt", true);
 
                 Settings.Default.ModelNameActive = "resnet-32-3-2-6-dropout-channelzeropad-relu";
-                Settings.Default.Optimizer = (int)DNNOptimizers.NAG;
+                Settings.Default.Optimizer = DNNOptimizers.NAG;
                 Settings.Default.Save();
             }
 

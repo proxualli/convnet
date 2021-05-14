@@ -548,6 +548,7 @@ namespace dnncore
 			case DNNLayerTypes::BatchNormTanhExpDropout:
 			case DNNLayerTypes::Dense:
 			case DNNLayerTypes::LayerNorm:
+			case DNNLayerTypes::LayerNormRelu:
 			{
 				const auto width = info->BiasCount;
 				const auto height = (info->WeightCount / info->BiasCount) + 3;
@@ -691,7 +692,7 @@ namespace dnncore
 
 		info->LayerIndex = layerIndex;
 		info->LayerType = static_cast<DNNLayerTypes>(*layerType);
-		info->IsNormalizationLayer = info->LayerType == DNNLayerTypes::BatchNorm || info->LayerType == DNNLayerTypes::BatchNormHardLogistic || info->LayerType == DNNLayerTypes::BatchNormHardSwish || info->LayerType == DNNLayerTypes::BatchNormHardSwishDropout || info->LayerType == DNNLayerTypes::BatchNormMish || info->LayerType == DNNLayerTypes::BatchNormMishDropout || info->LayerType == DNNLayerTypes::BatchNormRelu || info->LayerType == DNNLayerTypes::BatchNormReluDropout || info->LayerType == DNNLayerTypes::BatchNormSwish || info->LayerType == DNNLayerTypes::BatchNormSwishDropout || info->LayerType == DNNLayerTypes::BatchNormTanhExp || info->LayerType == DNNLayerTypes::BatchNormTanhExpDropout || info->LayerType == DNNLayerTypes::LayerNorm;
+		info->IsNormalizationLayer = info->LayerType == DNNLayerTypes::BatchNorm || info->LayerType == DNNLayerTypes::BatchNormHardLogistic || info->LayerType == DNNLayerTypes::BatchNormHardSwish || info->LayerType == DNNLayerTypes::BatchNormHardSwishDropout || info->LayerType == DNNLayerTypes::BatchNormMish || info->LayerType == DNNLayerTypes::BatchNormMishDropout || info->LayerType == DNNLayerTypes::BatchNormRelu || info->LayerType == DNNLayerTypes::BatchNormReluDropout || info->LayerType == DNNLayerTypes::BatchNormSwish || info->LayerType == DNNLayerTypes::BatchNormSwishDropout || info->LayerType == DNNLayerTypes::BatchNormTanhExp || info->LayerType == DNNLayerTypes::BatchNormTanhExpDropout || info->LayerType == DNNLayerTypes::LayerNorm || info->LayerType == DNNLayerTypes::LayerNormRelu;
 		info->ActivationFunctionEnum = static_cast<DNNActivations>(*activationFunction);
 		info->CostFunction = static_cast<DNNCosts>(*costFunction);
 		info->InputCount = *inputsCount;

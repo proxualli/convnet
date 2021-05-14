@@ -1177,7 +1177,7 @@ namespace Convnet.PageViewModels
                     return;
 
                 optimizer = value;
-                Settings.Default.Optimizer = (int)optimizer;
+                Settings.Default.Optimizer = optimizer;
                 Settings.Default.Save();
                                                
                 OnPropertyChanged(nameof(Optimizer));

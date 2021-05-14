@@ -102,8 +102,7 @@ namespace Convnet.Dialogs
                 tpvm.GotoEpoch = gotoEpoch;
 
                 Properties.Settings.Default.TrainRate = Rate;
-                Properties.Settings.Default.Optimizer = (int)Rate.Optimizer;
-                
+                Properties.Settings.Default.Optimizer = Rate.Optimizer;
                 Properties.Settings.Default.Save();
                
                 DialogResult = true;

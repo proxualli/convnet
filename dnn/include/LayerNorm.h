@@ -164,7 +164,6 @@ namespace dnn
 				auto memMean = dnnl::memory(fwdDesc->mean_desc(), Device.engine, Mean.data());
 				auto memVariance = dnnl::memory(fwdDesc->variance_desc(), Device.engine, Variance.data());
 				auto dstMem = dnnl::memory(*DstMemDesc, Device.engine, Neurons.data());
-
 				if (Scaling)
 				{
 					for (auto c = 0ull; c < C; c++)
@@ -206,7 +205,7 @@ namespace dnn
 				auto memMean = dnnl::memory(fwdDesc->mean_desc(), Device.engine, Mean.data());
 				auto memVariance = dnnl::memory(fwdDesc->variance_desc(), Device.engine, Variance.data());
 				auto dstMem = dnnl::memory(*DstMemDesc, Device.engine, Neurons.data());
-
+				
 				if (Scaling)
 				{
 					for (auto c = 0ull; c < C; c++)

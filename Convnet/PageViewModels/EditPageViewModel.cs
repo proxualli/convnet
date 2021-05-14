@@ -370,7 +370,7 @@ namespace Convnet.PageViewModels
                         {
                             Model.Dispose();
                             Model = new Model(ModelName, pathDefinition);
-                            Model.SetOptimizer((DNNOptimizers)Settings.Default.Optimizer);
+                            Model.SetOptimizer(Settings.Default.Optimizer);
                             Model.SetFormat(Settings.Default.PlainFormat);
                             Model.SetPersistOptimizer(Settings.Default.PersistOptimizer);
                             Model.SetDisableLocking(Settings.Default.DisableLocking);
