@@ -23,7 +23,6 @@
 * GlobalAvgPooling
 * GlobalMaxPooling
 * LayerNorm
-* LayerNormRelu
 * LocalResponseNorm
 * Max
 * MaxPooling

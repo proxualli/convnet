@@ -15,8 +15,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Threading;
-using System.Xml.Serialization;
-using Float = System.Single;
 
 
 namespace Convnet

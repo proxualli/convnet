@@ -155,7 +155,6 @@
     <ClInclude Include="include\ConvolutionTranspose.h" />
     <ClInclude Include="include\Dataprovider.h" />
     <ClInclude Include="include\LayerNorm.h" />
-    <ClInclude Include="include\LayerNormRelu.h" />
     <ClInclude Include="include\Max.h" />
     <ClInclude Include="include\Min.h" />
     <ClInclude Include="include\PartialDepthwiseConvolution.h" />
