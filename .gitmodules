@@ -19,3 +19,6 @@
 [submodule "dnn/deps/CImg"]
 	path = dnn/deps/CImg
 	url = https://github.com/dtschump/CImg.git
+[submodule "dnn/deps/googletest"]
+	path = dnn/deps/googletest
+	url = https://github.com/google/googletest.git
