@@ -93,19 +93,9 @@ namespace ScriptsDialog
                     "Type=BatchNorm" + nwl +
                     "Inputs=" + group + "DC" + to_string(id) + "DC" + nwl + nwl +
                     
-                    "[" + group + "C" + to_string(id) + "C]" + nwl +
-                    "Type=Convolution" + nwl +
-                    "Inputs=" + group + "B" + to_string(id) + "B2" + nwl +
-                    "Channels=" + channels.ToString() + nwl +
-					"Kernel=1,1" + nwl + nwl +
-
-                    "[" + group + "B" + to_string(id) + "B3]" + nwl +
-                    "Type=BatchNorm" + nwl +
-                    "Inputs=" + group + "C" + to_string(id) + "C" + nwl + nwl +
-
                     "[" + group + prefix + to_string(id) + "]" + nwl +
                     "Type=Max" + nwl +
-                    "Inputs=" + group + "B" + to_string(id) + "B3," + group + "B" + to_string(id) + "B1" + nwl + nwl;
+                    "Inputs=" + group + "B" + to_string(id) + "B2," + group + "B" + to_string(id) + "B1" + nwl + nwl;
             }
         }
         
