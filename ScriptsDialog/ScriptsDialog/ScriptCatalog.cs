@@ -32,7 +32,7 @@ namespace ScriptsDialog
 
         public static string to_string(Fillers filler)
         {
-            return filler.ToString(); ;
+            return filler.ToString();
         }
 
         public static UInt DIV8(UInt channels)
