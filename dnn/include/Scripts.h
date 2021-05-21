@@ -448,8 +448,8 @@ namespace scripts
                 (p.WeightsLRM != 1 ? "WeightsLRM=" + std::to_string(p.WeightsLRM) + nwl : "") +
                 (p.WeightsWDM != 1 ? "WeightsWDM=" + std::to_string(p.WeightsWDM) + nwl : "") +
                 (p.HasBias ? "BiasesFiller=" + to_string(p.BiasesFiller) + (ScaleVisible(p.BiasesFiller) ? "(" + std::to_string(p.BiasesScale) + ")" : "") + nwl +
-                (p.BiasesLRM != 1 ? "BiasesLRM=" + std::to_string(p.BiasesLRM) + nwl : "") +
-                (p.BiasesWDM != 1 ? "BiasesWDM=" + std::to_string(p.BiasesWDM) + nwl : "") : "Biases=No" + nwl) +
+                    (p.BiasesLRM != 1 ? "BiasesLRM=" + std::to_string(p.BiasesLRM) + nwl : "") +
+                    (p.BiasesWDM != 1 ? "BiasesWDM=" + std::to_string(p.BiasesWDM) + nwl : "") : "Biases=No" + nwl) +
                 (p.DropoutVisible() ? "Dropout=" + std::to_string(p.Dropout) + nwl : "") +
                 "Scaling=" + to_string(p.BatchNormScaling) + nwl +
                 "Momentum=" + std::to_string(p.BatchNormMomentum) + nwl +
@@ -463,7 +463,7 @@ namespace scripts
             {
                 auto channels = DIV8(p.GrowthRate);
 
-                net += Convolution(1, "Input", channels, 3, 3, 1, 1, 1, 1);
+                net += Convolution(1, "Input", DIV8(p.GrowthRate), 3, 3, 1, 1, 1, 1);
 
                 if (p.Bottleneck)
                 {
@@ -485,7 +485,7 @@ namespace scripts
                 auto CC = 1ull;
                 auto C = p.Bottleneck ? 4ull : 3ull;
 
-                channels += p.GrowthRate;
+                channels += DIV8(p.GrowthRate);
 
                 for (auto g = 1ull; g <= p.Groups; g++)
                 {
@@ -513,7 +513,7 @@ namespace scripts
                         }
 
                         CC++;
-                        channels += p.GrowthRate;
+                        channels += DIV8(p.GrowthRate);
                     }
 
                     if (g < p.Groups)
@@ -553,7 +553,7 @@ namespace scripts
                             C++;
                         }
 
-                        channels += p.GrowthRate;
+                        channels += DIV8(p.GrowthRate);
                     }
                 }
 
@@ -604,7 +604,6 @@ namespace scripts
                             Convolution(1, group + "GAP", DIV8((6 * W) / 4), 1, 1, 1, 1, 0, 0, group) +
                             BatchNormActivation(1, group + "C1", p.Activation == Activations::FRelu ? Activations::HardSwish : p.Activation, group) +
                             Convolution(2, group + "B1", DIV8(6 * W), 1, 1, 1, 1, 0, 0, group) +
-                            //Activation(group + "C2", "HardLogistic", group) +
                             BatchNormActivation(2, group + "C2", "HardLogistic", group) +
                             ChannelMultiply(In("B", C + 1) + "," + group + "B2", group) +
                             Convolution(C + 2, group + "CM", DIV8(W), 1, 1, 1, 1, 0, 0) :
@@ -632,7 +631,6 @@ namespace scripts
                             Convolution(1, group + "GAP", DIV8((6 * W) / 4), 1, 1, 1, 1, 0, 0, group) +
                             BatchNormActivation(1, group + "C1", p.Activation == Activations::FRelu ? Activations::HardSwish : p.Activation, group) +
                             Convolution(2, group + "B1", DIV8(6 * W), 1, 1, 1, 1, 0, 0, group) +
-                            //Activation(group + "C2", "HardLogistic", group) +
                             BatchNormActivation(2, group + "C2", "HardLogistic", group) +
                             ChannelMultiply(In("B", C + 1) + "," + group + "B2", group) +
                             Convolution(C + 2, group + "CM", DIV8(W), 1, 1, 1, 1, 0, 0) :
@@ -762,7 +760,7 @@ namespace scripts
                                 Add(A + 1, In("C", C + 1) + "," + In("A", A)));
                         }
 
-                        A++; 
+                        A++;
                         C += 2 + bn;
                     }
                 }
@@ -834,7 +832,6 @@ namespace scripts
                             Convolution(1, group + "GAP", DIV8(W / 4), 1, 1, 1, 1, 0, 0, group) +
                             BatchNormActivation(1, group + "C1", p.Activation == Activations::FRelu ? Activations::HardSwish : p.Activation, group) +
                             Convolution(2, group + "B1", DIV8(W), 1, 1, 1, 1, 0, 0, group) +
-                            //Activation(group + "C2", "HardLogistic", group) +
                             BatchNormActivation(2, group + "C2", "HardLogistic", group) +
                             ChannelMultiply(In("B", C + 3) + "," + group + "B2", group) +
                             Concat(A + 1, In("LCS", A) + "," + group + "CM") :

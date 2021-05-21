@@ -61,7 +61,7 @@ namespace ScriptsDialog
               "Type=BatchNorm" + activation + nwl +
               "Inputs=" + inputs + nwl + nwl;
         }
-
+      
         public static string BatchNormActivation(UInt id, string inputs, Activations activation = Activations.Relu, string group = "", string prefix = "B")
         {
             if (activation != Activations.FRelu)
@@ -292,7 +292,7 @@ namespace ScriptsDialog
 
             switch (p.Script)
             {
-                case Scripts.densenet:
+                case Scripts.densenet:  // modet not compatible with FRelu in this script
                     {
                         var channels = DIV8(p.GrowthRate);
 
@@ -318,7 +318,7 @@ namespace ScriptsDialog
                         var CC = 1ul;
                         var C = p.Bottleneck ? 4ul : 3ul;
 
-                        channels += p.GrowthRate;
+                        channels += DIV8(p.GrowthRate);
 
                         for (var g = 1ul; g <= p.Groups; g++)
                         {
@@ -346,7 +346,7 @@ namespace ScriptsDialog
                                 }
 
                                 CC++;
-                                channels += p.GrowthRate;
+                                channels += DIV8(p.GrowthRate);
                             }
 
                             if (g < p.Groups)
@@ -667,7 +667,6 @@ namespace ScriptsDialog
                                     Convolution(1, group + "GAP", DIV8(W / 4), 1, 1, 1, 1, 0, 0, group) +
                                     BatchNormActivation(1, group + "C1", p.Activation == Activations.FRelu ? Activations.HardSwish : p.Activation, group) +
                                     Convolution(2, group + "B1", DIV8(W), 1, 1, 1, 1, 0, 0, group) +
-                                    // Activation(group + "C2", "HardLogistic", group) +
                                     BatchNormActivation(2, group + "C2", "HardLogistic", group) +
                                     ChannelMultiply(In("B", C + 3) + "," + group + "B2", group) +
                                     Concat(A + 1, In("LCS", A) + "," + group + "CM") :
@@ -686,6 +685,8 @@ namespace ScriptsDialog
 
                                 A++; C += 3;
                             }
+
+
                         }
 
                         foreach (var block in blocks)
