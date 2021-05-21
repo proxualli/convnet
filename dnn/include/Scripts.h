@@ -448,8 +448,8 @@ namespace scripts
                 (p.WeightsLRM != 1 ? "WeightsLRM=" + std::to_string(p.WeightsLRM) + nwl : "") +
                 (p.WeightsWDM != 1 ? "WeightsWDM=" + std::to_string(p.WeightsWDM) + nwl : "") +
                 (p.HasBias ? "BiasesFiller=" + to_string(p.BiasesFiller) + (ScaleVisible(p.BiasesFiller) ? "(" + std::to_string(p.BiasesScale) + ")" : "") + nwl +
-                    (p.BiasesLRM != 1 ? "BiasesLRM=" + std::to_string(p.BiasesLRM) + nwl : "") +
-                    (p.BiasesWDM != 1 ? "BiasesWDM=" + std::to_string(p.BiasesWDM) + nwl : "") : "Biases=No" + nwl) +
+                (p.BiasesLRM != 1 ? "BiasesLRM=" + std::to_string(p.BiasesLRM) + nwl : "") +
+                (p.BiasesWDM != 1 ? "BiasesWDM=" + std::to_string(p.BiasesWDM) + nwl : "") : "Biases=No" + nwl) +
                 (p.DropoutVisible() ? "Dropout=" + std::to_string(p.Dropout) + nwl : "") +
                 "Scaling=" + to_string(p.BatchNormScaling) + nwl +
                 "Momentum=" + std::to_string(p.BatchNormMomentum) + nwl +
@@ -463,7 +463,7 @@ namespace scripts
             {
                 auto channels = DIV8(p.GrowthRate);
 
-                net += Convolution(1, "Input", DIV8(p.GrowthRate), 3, 3, 1, 1, 1, 1);
+                net += Convolution(1, "Input", channels, 3, 3, 1, 1, 1, 1);
 
                 if (p.Bottleneck)
                 {

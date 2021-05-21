@@ -292,7 +292,7 @@ namespace ScriptsDialog
 
             switch (p.Script)
             {
-                case Scripts.densenet:  // modet not compatible with FRelu in this script
+                case Scripts.densenet:
                     {
                         var channels = DIV8(p.GrowthRate);
 
@@ -386,7 +386,7 @@ namespace ScriptsDialog
                                     C++;
                                 }
 
-                                channels += p.GrowthRate;
+                                channels += DIV8(p.GrowthRate);
                             }
                         }
 
