@@ -72,6 +72,7 @@
 * AdaGrad
 * Adam
 * Adamax
+* AdamW
 * NAG
 * RMSProp
 * SGD
