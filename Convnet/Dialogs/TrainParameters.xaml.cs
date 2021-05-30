@@ -193,6 +193,7 @@ namespace Convnet.Dialogs
                 case DNNOptimizers.AdamW:
                 case DNNOptimizers.NAG:
                 case DNNOptimizers.SGDMomentum:
+                case DNNOptimizers.SGDW:
                     {
                         textBlockMomentum.Opacity = 1;
                         textBoxMomentum.IsEnabled = true;
@@ -209,6 +210,7 @@ namespace Convnet.Dialogs
                 case DNNOptimizers.NAG:
                 case DNNOptimizers.SGD:
                 case DNNOptimizers.SGDMomentum:
+                case DNNOptimizers.SGDW:
                     {
                         textBlockBeta2.Opacity = 0.5;
                         textBoxBeta2.IsEnabled = false;

@@ -60,7 +60,8 @@ namespace dnncore
 		NAG = 5,
 		RMSProp = 6,
 		SGD = 7,
-		SGDMomentum = 8
+		SGDMomentum = 8,
+		SGDW = 9
 	};
 
 	[Serializable()]

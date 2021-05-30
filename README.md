@@ -77,6 +77,7 @@
 * RMSProp
 * SGD
 * SGDMomentum
+* SGDW
 
 ### Fillers
 * Constant
