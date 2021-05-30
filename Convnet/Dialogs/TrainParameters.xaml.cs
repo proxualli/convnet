@@ -163,10 +163,10 @@ namespace Convnet.Dialogs
             {
                 case DNNOptimizers.SGD:
                     {
-                        textBlockL2penalty.Opacity = 1;
-                        textBoxL2penalty.IsEnabled = true;
                         textBlockMomentum.Opacity = 0.5;
                         textBoxMomentum.IsEnabled = false;
+                        textBlockL2penalty.Opacity = 1;
+                        textBoxL2penalty.IsEnabled = true;
                     }
                     break;
 
@@ -179,25 +179,25 @@ namespace Convnet.Dialogs
                         textBoxMomentum.IsEnabled = true;
                         textBlockL2penalty.Opacity = 0.5;
                         textBoxL2penalty.IsEnabled = false;
-  
                     }
                     break;
                 case DNNOptimizers.AdaGrad:
                     {
-                        textBlockL2penalty.Opacity = 0.5;
-                        textBoxL2penalty.IsEnabled = false;
                         textBlockMomentum.Opacity = 0.5;
                         textBoxMomentum.IsEnabled = false;
+                        textBlockL2penalty.Opacity = 0.5;
+                        textBoxL2penalty.IsEnabled = false;
                     }
                     break;
 
+                case DNNOptimizers.AdamW:
                 case DNNOptimizers.NAG:
                 case DNNOptimizers.SGDMomentum:
                     {
-                        textBlockL2penalty.Opacity = 1;
-                        textBoxL2penalty.IsEnabled = true;
                         textBlockMomentum.Opacity = 1;
                         textBoxMomentum.IsEnabled = true;
+                        textBlockL2penalty.Opacity = 1;
+                        textBoxL2penalty.IsEnabled = true;
                     }
                     break;
             }
@@ -216,12 +216,7 @@ namespace Convnet.Dialogs
                     break;
 
                 case DNNOptimizers.Adam:
-                    {
-                        textBlockBeta2.Opacity = 1;
-                        textBoxBeta2.IsEnabled = true;
-                    }
-                    break;
-
+                case DNNOptimizers.AdamW:
                 case DNNOptimizers.Adamax:
                 case DNNOptimizers.RMSProp:
                     {

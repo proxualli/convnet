@@ -330,7 +330,7 @@ DNN_API void DNNStop();
 DNN_API void DNNPause();
 DNN_API void DNNResume();
 DNN_API void DNNTesting();
-DNN_API void DNNGetTrainingInfo(UInt* currentCycle, UInt* totalCycles, UInt* currentEpoch, UInt* totalEpochs, bool* verticalMirror, bool* horizontalMirror, Float* dropout, Float* cutout, Float* autoAugment, Float* colorCast, UInt* colorAngle, Float* distortion, dnn::Interpolations* interpolation, Float* scaling, Float* rotation, UInt* sampleIndex, UInt* batchSize, Float* rate, dnn::Optimizers* optimizer, Float* momentum, Float* l2Penalty, Float* avgTrainLoss, Float* trainErrorPercentage, UInt* trainErrors, Float* avgTestLoss, Float* testErrorPercentage, UInt* testErrors, Float* sampleSpeed, dnn::States* networkState, dnn::TaskStates* taskState);
+DNN_API void DNNGetTrainingInfo(UInt* currentCycle, UInt* totalCycles, UInt* currentEpoch, UInt* totalEpochs, bool* verticalMirror, bool* horizontalMirror, Float* dropout, Float* cutout, Float* autoAugment, Float* colorCast, UInt* colorAngle, Float* distortion, dnn::Interpolations* interpolation, Float* scaling, Float* rotation, UInt* sampleIndex, UInt* batchSize, Float* rate, dnn::Optimizers* optimizer, Float* momentum, Float* beta2, Float* l2Penalty, Float* avgTrainLoss, Float* trainErrorPercentage, UInt* trainErrors, Float* avgTestLoss, Float* testErrorPercentage, UInt* testErrors, Float* sampleSpeed, dnn::States* networkState, dnn::TaskStates* taskState);
 DNN_API void DNNGetTestingInfo(UInt* batchSize, UInt* sampleIndex, Float* avgTestLoss, Float* testErrorPercentage, UInt* testErrors, Float* sampleSpeed, dnn::States* networkState, dnn::TaskStates* taskState);
 DNN_API void DNNGetModelInfo(std::string* name, UInt* costIndex, UInt* costLayerCount, UInt* groupIndex, UInt* labelindex, UInt* hierarchies, bool* meanStdNormalization, dnn::Costs* lossFunction, dnn::Datasets* dataset, UInt* layerCount, UInt* trainingSamples, UInt* testingSamples, std::vector<Float>* meanTrainSet, std::vector<Float>* stdTrainSet);
 DNN_API void DNNSetOptimizer(const dnn::Optimizers strategy);
@@ -831,6 +831,7 @@ namespace dnncore
 			auto sampleIndex = new UInt();
 			auto rate = new Float();
 			auto momentum = new Float();
+			auto beta2 = new Float();
 			auto optimizer = new dnn::Optimizers();
 			auto l2Penalty = new Float();
 			auto batchSize = new UInt();
@@ -844,7 +845,7 @@ namespace dnncore
 			auto aState = new dnn::States();
 			auto aTaskState = new dnn::TaskStates();
 
-			DNNGetTrainingInfo(cycle, totalCycles, epoch, totalEpochs, horizontalFlip, verticalFlip, dropout, cutout, autoAugment, colorCast, colorAngle, distortion, interpolation, scaling, rotation, sampleIndex, batchSize, rate, optimizer, momentum, l2Penalty, avgTrainLoss, trainErrorPercentage, trainErrors, avgTestLoss, testErrorPercentage, testErrors, sampleSpeed, aState, aTaskState);
+			DNNGetTrainingInfo(cycle, totalCycles, epoch, totalEpochs, horizontalFlip, verticalFlip, dropout, cutout, autoAugment, colorCast, colorAngle, distortion, interpolation, scaling, rotation, sampleIndex, batchSize, rate, optimizer, momentum, beta2, l2Penalty, avgTrainLoss, trainErrorPercentage, trainErrors, avgTestLoss, testErrorPercentage, testErrors, sampleSpeed, aState, aTaskState);
 
 			Cycle = *cycle;
 			TotalCycles = *totalCycles;
@@ -866,6 +867,7 @@ namespace dnncore
 			if (Optimizer != static_cast<dnncore::DNNOptimizers>(*optimizer))
 				Optimizer = static_cast<dnncore::DNNOptimizers>(*optimizer);
 			Momentum = *momentum;
+			Beta2 = *beta2;
 			L2Penalty = *l2Penalty;
 			BatchSize = *batchSize;
 			AvgTrainLoss = *avgTrainLoss;
@@ -882,7 +884,7 @@ namespace dnncore
 			AdjustedTrainingSamplesCount = TrainingSamples % BatchSize == 0 ? TrainingSamples : ((TrainingSamples / BatchSize) + 1) * BatchSize;
 			AdjustedTestingSamplesCount = TestingSamples % BatchSize == 0 ? TestingSamples : ((TestingSamples / BatchSize) + 1) * BatchSize;
 
-			TrainProgress(Optimizer, BatchSize, Cycle, TotalCycles, Epoch, TotalEpochs, HorizontalFlip, VerticalFlip, Dropout, Cutout, AutoAugment, ColorCast, ColorAngle, Distortion, Interpolation, Scaling, Rotation, SampleIndex, Rate, Momentum, L2Penalty, AvgTrainLoss, TrainErrorPercentage, Float(100) - TrainErrorPercentage, TrainErrors, AvgTestLoss, TestErrorPercentage, Float(100) - TestErrorPercentage, TestErrors, State, TaskState);
+			TrainProgress(Optimizer, BatchSize, Cycle, TotalCycles, Epoch, TotalEpochs, HorizontalFlip, VerticalFlip, Dropout, Cutout, AutoAugment, ColorCast, ColorAngle, Distortion, Interpolation, Scaling, Rotation, SampleIndex, Rate, Momentum, Beta2, L2Penalty, AvgTrainLoss, TrainErrorPercentage, Float(100) - TrainErrorPercentage, TrainErrors, AvgTestLoss, TestErrorPercentage, Float(100) - TestErrorPercentage, TestErrors, State, TaskState);
 
 			if (State != OldState)
 			{
@@ -909,6 +911,7 @@ namespace dnncore
 			delete rate;
 			delete optimizer;
 			delete momentum;
+			delete beta2;
 			delete l2Penalty;
 			delete batchSize;
 			delete avgTrainLoss;

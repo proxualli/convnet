@@ -82,7 +82,7 @@ namespace Convnet.PageViewModels
                 ApplicationCommands.SaveAs.Execute(null, null);
         }
 
-        private void TrainProgress(DNNOptimizers Optimizer, UInt BatchSize, UInt Cycle, UInt TotalCycles, UInt Epoch, UInt TotalEpochs, bool HorizontalMirror, bool VerticalMirror, Float inputDropOut, Float inputCutout, Float AutoAugment, Float ColorCast, UInt ColorRadius, Float Distortion, DNNInterpolations Interpolation, Float Scaling, Float Rotation, UInt SampleIndex, Float Rate, Float Momentum, Float L2Penalty, Float AvgTrainLoss, Float TrainErrorPercentage, Float TrainAccuracy, UInt TrainErrors, Float AvgTestLoss, Float TestErrorPercentage, Float Accuracy, UInt64 TestErrors, DNNStates NetworkState, DNNTaskStates TaskState)
+        private void TrainProgress(DNNOptimizers Optimizer, UInt BatchSize, UInt Cycle, UInt TotalCycles, UInt Epoch, UInt TotalEpochs, bool HorizontalMirror, bool VerticalMirror, Float inputDropOut, Float inputCutout, Float AutoAugment, Float ColorCast, UInt ColorRadius, Float Distortion, DNNInterpolations Interpolation, Float Scaling, Float Rotation, UInt SampleIndex, Float Rate, Float Momentum, Float Beta2, Float L2Penalty, Float AvgTrainLoss, Float TrainErrorPercentage, Float TrainAccuracy, UInt TrainErrors, Float AvgTestLoss, Float TestErrorPercentage, Float Accuracy, UInt64 TestErrors, DNNStates NetworkState, DNNTaskStates TaskState)
         {
             switch (NetworkState)
             {
