@@ -206,7 +206,7 @@
                         </GridViewColumnHeader>
                     </GridViewColumn>
 
-                    <GridViewColumn x:Name="l2Penalty" Width="80">
+                    <GridViewColumn x:Name="l2Penalty" Width="100">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding L2Penalty, StringFormat=0.#########}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextAlignment="Center" FontFamily="Consolas" FontSize="14"/>
@@ -240,10 +240,10 @@
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
                     
-                    <GridViewColumn x:Name="rate" Header="Rate" Width="80">
+                    <GridViewColumn x:Name="rate" Header="Rate" Width="100">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding Rate, StringFormat=#0.000000}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextAlignment="Center" FontFamily="Consolas" FontSize="14"/>
+                                <TextBlock Text="{Binding Rate, StringFormat=#0.00000000}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextAlignment="Center" FontFamily="Consolas" FontSize="14"/>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
