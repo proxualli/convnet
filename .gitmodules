@@ -1,24 +1,24 @@
 [submodule "dnn/deps/vectorclass"]
 	path = dnn/deps/vectorclass
-	url = https://github.com/zamir1001/vectorclass.git
+	url = https://github.com/zamir1001/vectorclass
 [submodule "dnn/deps/oneDNN"]
 	path = dnn/deps/oneDNN
 	url = https://github.com/oneapi-src/oneDNN
 [submodule "dnn/deps/libjpeg-turbo"]
 	path = dnn/deps/libjpeg-turbo
-	url = https://github.com/libjpeg-turbo/libjpeg-turbo.git
+	url = https://github.com/libjpeg-turbo/libjpeg-turbo
 [submodule "dnn/deps/libpng"]
 	path = dnn/deps/libpng
-	url = https://github.com/glennrp/libpng.git
+	url = https://github.com/glennrp/libpng
 [submodule "dnn/deps/zlib-1.2.11"]
 	path = dnn/deps/zlib-1.2.11
-	url = https://github.com/madler/zlib.git
+	url = https://github.com/madler/zlib
 [submodule "dnn/deps/magic_enum"]
 	path = dnn/deps/magic_enum
 	url = https://github.com/Neargye/magic_enum
 [submodule "dnn/deps/CImg"]
 	path = dnn/deps/CImg
-	url = https://github.com/dtschump/CImg.git
+	url = https://github.com/dtschump/CImg
 [submodule "dnn/deps/googletest"]
 	path = dnn/deps/googletest
-	url = https://github.com/google/googletest.git
+	url = https://github.com/google/googletest
