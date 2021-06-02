@@ -135,12 +135,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_9973E40B9FD041DBAB37696E61B840BF"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_9A8F0BB807EF42658C603CC75496E88F"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -335,7 +329,7 @@
                 {
                 "Name" = "8:.NET Core"
                 "Message" = "8:[VSDNETCOREMSG]"
-                "FrameworkVersion" = "8:3.1                    "
+                "FrameworkVersion" = "8:3.1                     "
                 "AllowLaterVersions" = "11:FALSE"
                 "InstallUrl" = "8:https://dotnet.microsoft.com/download/dotnet-core/[NetCoreVerMajorDotMinor]"
                 "IsNETCore" = "11:TRUE"
@@ -1691,7 +1685,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_82317365C6004F649D77A08876914C2E"
             {
-            "SourcePath" = "8:..\\x64\\Release\\dnnl.dll"
+            "SourcePath" = "8:..\\dnn\\deps\\oneDNN\\build\\src\\Release\\dnnl.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_6AC6560B9ACC4F54A4DE534A0DB0B67E"
@@ -1712,34 +1706,6 @@
             "OutputConfiguration" = "8:"
             "OutputGroupCanonicalName" = "8:Built"
             "OutputProjectGuid" = "8:{2F09A747-18CB-3043-85BF-83BBA99C5137}"
-            "ShowKeyOutput" = "11:TRUE"
-                "ExcludeFilters"
-                {
-                }
-            }
-            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_9973E40B9FD041DBAB37696E61B840BF"
-            {
-            "SourcePath" = "8:..\\x64\\Release\\libpng16.dll"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_6AC6560B9ACC4F54A4DE534A0DB0B67E"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            "ProjectOutputGroupRegister" = "3:1"
-            "OutputConfiguration" = "8:"
-            "OutputGroupCanonicalName" = "8:Built"
-            "OutputProjectGuid" = "8:{D6973076-9317-4EF2-A0B8-B7A18AC0713E}"
             "ShowKeyOutput" = "11:TRUE"
                 "ExcludeFilters"
                 {

@@ -19,3 +19,6 @@
 [submodule "dnn/deps/googletest"]
 	path = dnn/deps/googletest
 	url = https://github.com/google/googletest
+[submodule "dnn/deps/zlib-1.2.11"]
+	path = dnn/deps/zlib-1.2.11
+	url = https://github.com/madler/zlib
