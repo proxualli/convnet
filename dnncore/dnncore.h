@@ -52,16 +52,18 @@ namespace dnncore
 	[Serializable()]
 	public enum class DNNOptimizers
 	{
-		AdaDelta = 0,
-		AdaGrad = 1,
-		Adam = 2,
-		Adamax = 3,
-		AdamW = 4,
-		NAG = 5,
-		RMSProp = 6,
-		SGD = 7,
-		SGDMomentum = 8,
-		SGDW = 9
+		AdaBound = 0,
+		AdaBoundW = 1,
+		AdaDelta = 2,
+		AdaGrad = 3,
+		Adam = 4,
+		Adamax = 5,
+		AdamW = 6,
+		NAG = 7,
+		RMSProp = 8,
+		SGD = 9,
+		SGDMomentum = 10,
+		SGDW = 11
 	};
 
 	[Serializable()]

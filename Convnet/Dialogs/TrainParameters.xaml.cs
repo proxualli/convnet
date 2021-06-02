@@ -170,6 +170,7 @@ namespace Convnet.Dialogs
                     }
                     break;
 
+                case DNNOptimizers.AdaBound:
                 case DNNOptimizers.AdaDelta:
                 case DNNOptimizers.Adam:  
                 case DNNOptimizers.Adamax:
@@ -181,6 +182,7 @@ namespace Convnet.Dialogs
                         textBoxL2penalty.IsEnabled = false;
                     }
                     break;
+
                 case DNNOptimizers.AdaGrad:
                     {
                         textBlockMomentum.Opacity = 0.5;
@@ -190,6 +192,7 @@ namespace Convnet.Dialogs
                     }
                     break;
 
+                case DNNOptimizers.AdaBoundW:
                 case DNNOptimizers.AdamW:
                 case DNNOptimizers.NAG:
                 case DNNOptimizers.SGDMomentum:
@@ -217,6 +220,8 @@ namespace Convnet.Dialogs
                     }
                     break;
 
+                case DNNOptimizers.AdaBound:
+                case DNNOptimizers.AdaBoundW:
                 case DNNOptimizers.Adam:
                 case DNNOptimizers.AdamW:
                 case DNNOptimizers.Adamax:
