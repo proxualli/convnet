@@ -413,7 +413,7 @@ namespace dnncore
 				if (value == gamma || value < Float(0) || value > Float(1))
 					return;
 
-				finalRate = value;
+				gamma = value;
 				OnPropertyChanged("Gamma");
 			}
 		}

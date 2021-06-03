@@ -76,7 +76,6 @@ namespace Convnet.PageViewModels
         public event EventHandler Save;
         public event EventHandler<int?> RefreshRateChanged;
        
-
         public TrainPageViewModel(dnncore.Model model) : base(model)
         {
             sb = new StringBuilder();
