@@ -576,16 +576,16 @@ namespace dnncore
 
 		DNNTrainingRate()
 		{
-			optimizer = DNNOptimizers::NAG;
+			optimizer = DNNOptimizers::AdaBoundW;
 			momentum = 0.9f;
 			beta2 = 0.999f;
-			l2Penalty = 0.0005f;
+			l2Penalty = 0.05f;
 			eps = 1E-08f;
 			batchSize = 128;
 			cycles = 1;
 			epochs = 200;
 			epochMultiplier = 1;
-			maximumRate = 0.05f;
+			maximumRate = 0.001f;
 			minimumRate = 0.0001f;
 			finalRate = 0.1f;
 			gamma = 0.003f;
@@ -599,7 +599,7 @@ namespace dnncore
 			colorCast = 0.0f;
 			colorAngle = 16;
 			distortion = 0.0f;
-			interpolation = DNNInterpolations::Cubic;
+			interpolation = DNNInterpolations::Linear;
 			scaling = 10.0f;
 			rotation = 12.0f;
 		}
