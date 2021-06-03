@@ -68,6 +68,8 @@
 * SmoothHinge
 
 ### Optimizers
+* AdaBound
+* AdaBoundW
 * AdaDelta
 * AdaGrad
 * Adam
