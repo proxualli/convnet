@@ -68,18 +68,18 @@
 * SmoothHinge
 
 ### Optimizers
-* AdaBound
-* AdaBoundW
-* AdaDelta
-* AdaGrad
-* Adam
+* AdaBound (https://arxiv.org/abs/1902.09843)
+* AdaBoundW (https://arxiv.org/abs/1902.09843)
+* AdaDelta (https://arxiv.org/pdf/1609.04747.pdf)
+* AdaGrad (https://arxiv.org/pdf/1609.04747.pdf)
+* Adam (https://arxiv.org/abs/1412.6980)
 * Adamax
-* AdamW
-* NAG
-* RMSProp
+* AdamW (https://arxiv.org/abs/1711.05101)
+* NAG (https://arxiv.org/abs/1607.01981)
+* RMSProp (https://arxiv.org/pdf/1609.04747.pdf)
 * SGD
 * SGDMomentum
-* SGDW
+* SGDW (https://arxiv.org/abs/1711.05101)
 
 ### Fillers
 * Constant
