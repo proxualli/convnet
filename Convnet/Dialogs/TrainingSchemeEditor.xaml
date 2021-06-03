@@ -135,6 +135,7 @@
                 <DataGridTextColumn Header="EpochMultiplier" Binding="{Binding Path=EpochMultiplier, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 <DataGridTextColumn Header="Max.Rate" Binding="{Binding Path=MaximumRate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 <DataGridTextColumn Header="Min.Rate" Binding="{Binding Path=MinimumRate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <DataGridTextColumn Header="Final Rate" Binding="{Binding Path=FinalRate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 <DataGridTextColumn Header="DecayAfterEpochs" Binding="{Binding Path=DecayAfterEpochs, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 <DataGridTextColumn Header="DecayFactor" Binding="{Binding Path=DecayFactor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 <DataGridCheckBoxColumn Header="Horz.Flip" Binding="{Binding Path=HorizontalFlip, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />

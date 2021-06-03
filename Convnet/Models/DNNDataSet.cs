@@ -340,6 +340,8 @@ public partial class DNNDataSet : global::System.Data.DataSet
 
         private global::System.Data.DataColumn columnMinimumRate;
 
+        private global::System.Data.DataColumn columnFinalRate;
+
         private global::System.Data.DataColumn columnL2Penalty;
 
         private global::System.Data.DataColumn columnMomentum;
@@ -496,6 +498,16 @@ public partial class DNNDataSet : global::System.Data.DataSet
             get
             {
                 return this.columnMinimumRate;
+            }
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+        public global::System.Data.DataColumn FinalRateColumn
+        {
+            get
+            {
+                return this.columnFinalRate;
             }
         }
 
@@ -701,6 +713,7 @@ public partial class DNNDataSet : global::System.Data.DataSet
                     int Epochs,
                     int EpochMultiplier,
                     double MinimumRate,
+                    double FinalRate,
                     double L2Penalty,
                     double Momentum,
                     double DecayFactor,
@@ -728,6 +741,7 @@ public partial class DNNDataSet : global::System.Data.DataSet
                     Epochs,
                     EpochMultiplier,
                     MinimumRate,
+                    FinalRate,
                     L2Penalty,
                     Momentum,
                     DecayFactor,
@@ -784,6 +798,7 @@ public partial class DNNDataSet : global::System.Data.DataSet
             this.columnEpochs = base.Columns["Epochs"];
             this.columnEpochMultiplier = base.Columns["EpochMultiplier"];
             this.columnMinimumRate = base.Columns["MinimumRate"];
+            this.columnFinalRate = base.Columns["FinalRate"];
             this.columnL2Penalty = base.Columns["L2Penalty"];
             this.columnMomentum = base.Columns["Momentum"];
             this.columnDecayFactor = base.Columns["DecayFactor"];
@@ -823,6 +838,8 @@ public partial class DNNDataSet : global::System.Data.DataSet
             base.Columns.Add(this.columnEpochMultiplier);
             this.columnMinimumRate = new global::System.Data.DataColumn("MinimumRate", typeof(double), null, global::System.Data.MappingType.Element);
             base.Columns.Add(this.columnMinimumRate);
+            this.columnFinalRate = new global::System.Data.DataColumn("FinalRate", typeof(double), null, global::System.Data.MappingType.Element);
+            base.Columns.Add(this.columnFinalRate);
             this.columnL2Penalty = new global::System.Data.DataColumn("L2Penalty", typeof(double), null, global::System.Data.MappingType.Element);
             base.Columns.Add(this.columnL2Penalty);
             this.columnMomentum = new global::System.Data.DataColumn("Momentum", typeof(double), null, global::System.Data.MappingType.Element);
@@ -871,6 +888,7 @@ public partial class DNNDataSet : global::System.Data.DataSet
             this.columnEpochMultiplier.AllowDBNull = false;
             this.columnEpochMultiplier.DefaultValue = ((int)(1));
             this.columnMinimumRate.AllowDBNull = false;
+            this.columnFinalRate.AllowDBNull = false;
             this.columnL2Penalty.AllowDBNull = false;
             this.columnMomentum.AllowDBNull = false;
             this.columnDecayFactor.AllowDBNull = false;
@@ -1182,6 +1200,20 @@ public partial class DNNDataSet : global::System.Data.DataSet
             set
             {
                 this[this.tableTrainingRates.MinimumRateColumn] = value;
+            }
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+        public double FinalRate
+        {
+            get
+            {
+                return ((double)(this[this.tableTrainingRates.FinalRateColumn]));
+            }
+            set
+            {
+                this[this.tableTrainingRates.FinalRateColumn] = value;
             }
         }
 

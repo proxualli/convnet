@@ -1102,7 +1102,7 @@ namespace Convnet.PageViewModels
             get
             {
                 if (Settings.Default.TrainRate == null)
-                    Settings.Default.TrainRate = new DNNTrainingRate(DNNOptimizers.NAG, 0.9f, 0.0005f, 0.999f, 1E-08f, 128, 1, 200, 1, 0.005f, 0.0001f, 1, 1, false, false, 0, 0, 0, 0, 0, 0, DNNInterpolations.Cubic, 10, 12);
+                    Settings.Default.TrainRate = new DNNTrainingRate(DNNOptimizers.NAG, 0.9f, 0.0005f, 0.999f, 1E-08f, 128, 1, 200, 1, 0.005f, 0.0001f, 0.1f, 1, 1, false, false, 0, 0, 0, 0, 0, 0, DNNInterpolations.Cubic, 10, 12);
 
                 return Settings.Default.TrainRate;
             }

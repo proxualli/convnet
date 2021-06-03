@@ -232,6 +232,33 @@ namespace Convnet.Dialogs
                     }
                     break;
             }
+
+            switch (optimizer)
+            {
+                case DNNOptimizers.AdaDelta:
+                case DNNOptimizers.AdaGrad:
+                case DNNOptimizers.Adam:
+                case DNNOptimizers.AdamW:
+                case DNNOptimizers.Adamax:
+                case DNNOptimizers.RMSProp:
+                case DNNOptimizers.NAG:
+                case DNNOptimizers.SGD:
+                case DNNOptimizers.SGDMomentum:
+                case DNNOptimizers.SGDW:
+                    {
+                        textBlockFinalLR.Opacity = 0.5;
+                        textBoxFinalRate.IsEnabled = false;
+                    }
+                    break;
+
+                case DNNOptimizers.AdaBound:
+                case DNNOptimizers.AdaBoundW:
+                    {
+                        textBlockFinalLR.Opacity = 1;
+                        textBoxFinalRate.IsEnabled = true;
+                    }
+                    break;
+            }
         }
 
         private void ButtonSGDRHelp_Click(object sender, RoutedEventArgs e)
