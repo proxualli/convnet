@@ -906,7 +906,9 @@ public partial class DNNDataSet : global::System.Data.DataSet
             this.columnEpochMultiplier.DefaultValue = ((int)(1));
             this.columnMinimumRate.AllowDBNull = false;
             this.columnFinalRate.AllowDBNull = false;
+            this.columnFinalRate.DefaultValue = ((double)(0.1));
             this.columnGamma.AllowDBNull = false;
+            this.columnGamma.DefaultValue = ((double)(0.003));
             this.columnL2Penalty.AllowDBNull = false;
             this.columnMomentum.AllowDBNull = false;
             this.columnDecayFactor.AllowDBNull = false;

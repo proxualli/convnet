@@ -1275,6 +1275,8 @@ namespace Convnet.PageViewModels
                                 (int)rate.Epochs,
                                 (int)rate.EpochMultiplier,
                                 (double)rate.MinimumRate,
+                                (double)rate.FinalRate,
+                                (double)rate.Gamma,
                                 (double)rate.L2Penalty,
                                 (double)rate.Momentum,
                                 (double)rate.DecayFactor,
