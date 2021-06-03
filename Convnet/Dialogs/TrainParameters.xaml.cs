@@ -248,6 +248,8 @@ namespace Convnet.Dialogs
                     {
                         textBlockFinalLR.Opacity = 0.5;
                         textBoxFinalRate.IsEnabled = false;
+                        textBlockGamma.Opacity = 0.5;
+                        textBoxGamma.IsEnabled = false;
                     }
                     break;
 
@@ -256,6 +258,8 @@ namespace Convnet.Dialogs
                     {
                         textBlockFinalLR.Opacity = 1;
                         textBoxFinalRate.IsEnabled = true;
+                        textBlockGamma.Opacity = 1;
+                        textBoxGamma.IsEnabled = true;
                     }
                     break;
             }

@@ -405,6 +405,18 @@ namespace dnncore
 				OnPropertyChanged("FinalRate");
 			}
 		}
+		property Float Gamma
+		{
+			Float get() { return gamma; }
+			void set(Float value)
+			{
+				if (value == gamma || value < Float(0) || value > Float(1))
+					return;
+
+				finalRate = value;
+				OnPropertyChanged("Gamma");
+			}
+		}
 		property UInt DecayAfterEpochs
 		{
 			UInt get() { return decayAfterEpochs; }
@@ -576,6 +588,7 @@ namespace dnncore
 			maximumRate = 0.05f;
 			minimumRate = 0.0001f;
 			finalRate = 0.1f;
+			gamma = 0.003f;
 			decayFactor = 1.0f;
 			decayAfterEpochs = 1;
 			horizontalFlip = true;
@@ -591,7 +604,7 @@ namespace dnncore
 			rotation = 12.0f;
 		}
 
-		DNNTrainingRate(DNNOptimizers optimizer, Float momentum, Float beta2, Float l2penalty, Float eps, UInt batchSize, UInt cycles, UInt epochs, UInt epochMultiplier, Float maximumRate, Float minimumRate, Float finalRate, Float decayFactor, UInt decayAfterEpochs, bool horizontalFlip, bool verticalFlip, Float dropout, Float cutout, Float autoAugment, Float colorCast, UInt colorAngle, Float distortion, DNNInterpolations interpolation, Float scaling, Float rotation)
+		DNNTrainingRate(DNNOptimizers optimizer, Float momentum, Float beta2, Float l2penalty, Float eps, UInt batchSize, UInt cycles, UInt epochs, UInt epochMultiplier, Float maximumRate, Float minimumRate, Float finalRate, Float gamma,  Float decayFactor, UInt decayAfterEpochs, bool horizontalFlip, bool verticalFlip, Float dropout, Float cutout, Float autoAugment, Float colorCast, UInt colorAngle, Float distortion, DNNInterpolations interpolation, Float scaling, Float rotation)
 		{
 			Optimizer = optimizer;
 			Momentum = momentum;
@@ -604,6 +617,7 @@ namespace dnncore
 			EpochMultiplier = epochMultiplier;
 			MaximumRate = maximumRate;
 			MinimumRate = minimumRate;
+			Gamma = gamma;
 			FinalRate = finalRate;
 			DecayFactor = decayFactor;
 			DecayAfterEpochs = decayAfterEpochs;
@@ -638,6 +652,7 @@ namespace dnncore
 			Float maximumRate = Float(0.05);
 			Float minimumRate = Float(0.0001);
 			Float finalRate = Float(0.1);
+			Float gamma = Float(0.003);
 			UInt decayAfterEpochs = 1;
 			Float decayFactor = Float(1);
 			bool horizontalFlip = false;

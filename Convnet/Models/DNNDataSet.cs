@@ -342,6 +342,8 @@ public partial class DNNDataSet : global::System.Data.DataSet
 
         private global::System.Data.DataColumn columnFinalRate;
 
+        private global::System.Data.DataColumn columnGamma;
+
         private global::System.Data.DataColumn columnL2Penalty;
 
         private global::System.Data.DataColumn columnMomentum;
@@ -508,6 +510,16 @@ public partial class DNNDataSet : global::System.Data.DataSet
             get
             {
                 return this.columnFinalRate;
+            }
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+        public global::System.Data.DataColumn GammaColumn
+        {
+            get
+            {
+                return this.columnGamma;
             }
         }
 
@@ -714,6 +726,7 @@ public partial class DNNDataSet : global::System.Data.DataSet
                     int EpochMultiplier,
                     double MinimumRate,
                     double FinalRate,
+                    double Gamma,
                     double L2Penalty,
                     double Momentum,
                     double DecayFactor,
@@ -742,6 +755,7 @@ public partial class DNNDataSet : global::System.Data.DataSet
                     EpochMultiplier,
                     MinimumRate,
                     FinalRate,
+                    Gamma,
                     L2Penalty,
                     Momentum,
                     DecayFactor,
@@ -799,6 +813,7 @@ public partial class DNNDataSet : global::System.Data.DataSet
             this.columnEpochMultiplier = base.Columns["EpochMultiplier"];
             this.columnMinimumRate = base.Columns["MinimumRate"];
             this.columnFinalRate = base.Columns["FinalRate"];
+            this.columnGamma = base.Columns["Gamma"];
             this.columnL2Penalty = base.Columns["L2Penalty"];
             this.columnMomentum = base.Columns["Momentum"];
             this.columnDecayFactor = base.Columns["DecayFactor"];
@@ -840,6 +855,8 @@ public partial class DNNDataSet : global::System.Data.DataSet
             base.Columns.Add(this.columnMinimumRate);
             this.columnFinalRate = new global::System.Data.DataColumn("FinalRate", typeof(double), null, global::System.Data.MappingType.Element);
             base.Columns.Add(this.columnFinalRate);
+            this.columnGamma = new global::System.Data.DataColumn("Gamma", typeof(double), null, global::System.Data.MappingType.Element);
+            base.Columns.Add(this.columnGamma);
             this.columnL2Penalty = new global::System.Data.DataColumn("L2Penalty", typeof(double), null, global::System.Data.MappingType.Element);
             base.Columns.Add(this.columnL2Penalty);
             this.columnMomentum = new global::System.Data.DataColumn("Momentum", typeof(double), null, global::System.Data.MappingType.Element);
@@ -889,6 +906,7 @@ public partial class DNNDataSet : global::System.Data.DataSet
             this.columnEpochMultiplier.DefaultValue = ((int)(1));
             this.columnMinimumRate.AllowDBNull = false;
             this.columnFinalRate.AllowDBNull = false;
+            this.columnGamma.AllowDBNull = false;
             this.columnL2Penalty.AllowDBNull = false;
             this.columnMomentum.AllowDBNull = false;
             this.columnDecayFactor.AllowDBNull = false;
@@ -1214,6 +1232,20 @@ public partial class DNNDataSet : global::System.Data.DataSet
             set
             {
                 this[this.tableTrainingRates.FinalRateColumn] = value;
+            }
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+        public double Gamma
+        {
+            get
+            {
+                return ((double)(this[this.tableTrainingRates.GammaColumn]));
+            }
+            set
+            {
+                this[this.tableTrainingRates.GammaColumn] = value;
             }
         }
 
