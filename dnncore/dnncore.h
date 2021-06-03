@@ -617,8 +617,8 @@ namespace dnncore
 			EpochMultiplier = epochMultiplier;
 			MaximumRate = maximumRate;
 			MinimumRate = minimumRate;
-			Gamma = gamma;
 			FinalRate = finalRate;
+			Gamma = gamma;
 			DecayFactor = decayFactor;
 			DecayAfterEpochs = decayAfterEpochs;
 			HorizontalFlip = horizontalFlip;
