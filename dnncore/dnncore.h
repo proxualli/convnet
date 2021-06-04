@@ -589,8 +589,8 @@ namespace dnncore
 			minimumRate = 0.0001f;
 			finalRate = 0.1f;
 			gamma = 0.003f;
-			decayFactor = 1.0f;
 			decayAfterEpochs = 1;
+			decayFactor = 1.0f;
 			horizontalFlip = true;
 			verticalFlip = false;
 			dropout = 0.0f;
@@ -604,7 +604,7 @@ namespace dnncore
 			rotation = 12.0f;
 		}
 
-		DNNTrainingRate(DNNOptimizers optimizer, Float momentum, Float beta2, Float l2penalty, Float eps, UInt batchSize, UInt cycles, UInt epochs, UInt epochMultiplier, Float maximumRate, Float minimumRate, Float finalRate, Float gamma, Float decayFactor, UInt decayAfterEpochs, bool horizontalFlip, bool verticalFlip, Float dropout, Float cutout, Float autoAugment, Float colorCast, UInt colorAngle, Float distortion, DNNInterpolations interpolation, Float scaling, Float rotation)
+		DNNTrainingRate(DNNOptimizers optimizer, Float momentum, Float beta2, Float l2penalty, Float eps, UInt batchSize, UInt cycles, UInt epochs, UInt epochMultiplier, Float maximumRate, Float minimumRate, Float finalRate, Float gamma, UInt decayAfterEpochs, Float decayFactor, bool horizontalFlip, bool verticalFlip, Float dropout, Float cutout, Float autoAugment, Float colorCast, UInt colorAngle, Float distortion, DNNInterpolations interpolation, Float scaling, Float rotation)
 		{
 			Optimizer = optimizer;
 			Momentum = momentum;
@@ -619,8 +619,8 @@ namespace dnncore
 			MinimumRate = minimumRate;
 			FinalRate = finalRate;
 			Gamma = gamma;
-			DecayFactor = decayFactor;
 			DecayAfterEpochs = decayAfterEpochs;
+			DecayFactor = decayFactor;
 			HorizontalFlip = horizontalFlip;
 			VerticalFlip = verticalFlip;
 			Dropout = dropout;
