@@ -174,6 +174,7 @@ namespace Convnet.Dialogs
                 case DNNOptimizers.AdaDelta:
                 case DNNOptimizers.Adam:  
                 case DNNOptimizers.Adamax:
+                case DNNOptimizers.AmsBound:
                 case DNNOptimizers.RMSProp:
                     {
                         textBlockMomentum.Opacity = 1;
@@ -194,6 +195,7 @@ namespace Convnet.Dialogs
 
                 case DNNOptimizers.AdaBoundW:
                 case DNNOptimizers.AdamW:
+                case DNNOptimizers.AmsBoundW:
                 case DNNOptimizers.NAG:
                 case DNNOptimizers.SGDMomentum:
                 case DNNOptimizers.SGDW:
@@ -225,6 +227,8 @@ namespace Convnet.Dialogs
                 case DNNOptimizers.Adam:
                 case DNNOptimizers.AdamW:
                 case DNNOptimizers.Adamax:
+                case DNNOptimizers.AmsBound:
+                case DNNOptimizers.AmsBoundW:
                 case DNNOptimizers.RMSProp:
                     {
                         textBlockBeta2.Opacity = 1;
@@ -255,6 +259,8 @@ namespace Convnet.Dialogs
 
                 case DNNOptimizers.AdaBound:
                 case DNNOptimizers.AdaBoundW:
+                case DNNOptimizers.AmsBound:
+                case DNNOptimizers.AmsBoundW:
                     {
                         textBlockFinalLR.Opacity = 1;
                         textBoxFinalRate.IsEnabled = true;

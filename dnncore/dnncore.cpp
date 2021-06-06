@@ -39,11 +39,13 @@ namespace dnn
 		Adam = 4,
 		Adamax = 5,
 		AdamW = 6,
-		NAG = 7,
-		RMSProp = 8,
-		SGD = 9,
-		SGDMomentum = 10,
-		SGDW = 11
+		AmsBound = 7,
+		AmsBoundW = 8,
+		NAG = 9,
+		RMSProp = 10,
+		SGD = 11,
+		SGDMomentum = 12,
+		SGDW = 13
 	};
 
 	enum class Costs

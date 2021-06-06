@@ -73,12 +73,14 @@
 * AdaDelta (https://arxiv.org/pdf/1609.04747.pdf)
 * AdaGrad (https://arxiv.org/pdf/1609.04747.pdf)
 * Adam (https://arxiv.org/abs/1412.6980)
-* Adamax
+* Adamax (https://arxiv.org/pdf/1609.04747.pdf)
 * AdamW (https://arxiv.org/abs/1711.05101)
+* AmsBound  (https://arxiv.org/abs/1902.09843)
+* AmsBoundW  (https://arxiv.org/abs/1902.09843)
 * NAG (https://arxiv.org/abs/1607.01981)
 * RMSProp (https://arxiv.org/pdf/1609.04747.pdf)
-* SGD
-* SGDMomentum
+* SGD (https://arxiv.org/pdf/1609.04747.pdf)
+* SGDMomentum (https://arxiv.org/pdf/1609.04747.pdf)
 * SGDW (https://arxiv.org/abs/1711.05101)
 
 ### Fillers
