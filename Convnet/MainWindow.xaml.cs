@@ -478,7 +478,9 @@ namespace Convnet
 
         private void SaveCmdExecuted(object target, ExecutedRoutedEventArgs e)
         {
-            if (File.Exists(DefinitionsDirectory + PageVM.Model.Name + @"-weights\" + PageVM.Model.Name + ".bin"))
+            var fileName = PageVM.Model.Name + (Settings.Default.PersistOptimizer ? "-(" + PageVM.Model.Optimizer.ToString().ToLower() + ").bin" : ".bin");
+            var directory = DefinitionsDirectory + PageVM.Model.Name + @"-weights\";
+            if (File.Exists(directory + fileName))
             {
                 if (Xceed.Wpf.Toolkit.MessageBox.Show("Do you want to overwrite the existing file?", "File already exists", MessageBoxButton.YesNo, MessageBoxImage.None, MessageBoxResult.No) == MessageBoxResult.Yes)
                 {
@@ -499,10 +501,12 @@ namespace Convnet
             Mouse.OverrideCursor = Cursors.Wait;
             if (Settings.Default.PersistOptimizer)
             {
-                PageVM.Model.SaveWeights(DefinitionsDirectory + PageVM.Model.Name + @"-weights\" + PageVM.Model.Name + "-" + PageVM.Model.Optimizer.ToString().ToLower() + ".bin", true);
-                if (File.Exists(DefinitionsDirectory + PageVM.Model.Name + @"-weights\" + PageVM.Model.Name + "-" + PageVM.Model.Optimizer.ToString().ToLower() + ".bin"))
+                var fileName = PageVM.Model.Name + "-(" + PageVM.Model.Optimizer.ToString().ToLower() + ").bin";
+                var directory = DefinitionsDirectory + PageVM.Model.Name + @"-weights\";
+                PageVM.Model.SaveWeights(directory + fileName, true);
+                if (File.Exists(directory + fileName))
                 {
-                    File.Copy(DefinitionsDirectory + PageVM.Model.Name + @"-weights\" + PageVM.Model.Name + "-" + PageVM.Model.Optimizer.ToString().ToLower() + ".bin", StateDirectory + PageVM.Model.Name + ".bin", true);
+                    File.Copy(directory + fileName, StateDirectory + fileName, true);
                     Mouse.OverrideCursor = null;
                     Xceed.Wpf.Toolkit.MessageBox.Show("Weights are saved", "Information", MessageBoxButton.OK);
                 }
@@ -511,10 +515,12 @@ namespace Convnet
             }
             else
             {
-                PageVM.Model.SaveWeights(DefinitionsDirectory + PageVM.Model.Name + @"-weights\" + PageVM.Model.Name + ".bin", false);
-                if (File.Exists(DefinitionsDirectory + PageVM.Model.Name + @"-weights\" + PageVM.Model.Name + ".bin"))
+                var fileName = PageVM.Model.Name + ".bin";
+                var directory = DefinitionsDirectory + PageVM.Model.Name + @"-weights\";
+                PageVM.Model.SaveWeights(directory + fileName, false);
+                if (File.Exists(directory + fileName))
                 {
-                    File.Copy(DefinitionsDirectory + PageVM.Model.Name + @"-weights\" + PageVM.Model.Name + ".bin", StateDirectory + PageVM.Model.Name + ".bin", true);
+                    File.Copy(directory + fileName, StateDirectory + fileName, true);
                     Mouse.OverrideCursor = null;
                     Xceed.Wpf.Toolkit.MessageBox.Show("Weights are saved", "Information", MessageBoxButton.OK);
                 }
@@ -563,7 +569,7 @@ namespace Convnet
                     break;
 
                 case ViewModels.Train:
-                    saveFileDialog.FileName = Settings.Default.PersistOptimizer ? (PageVM.CurrentPage as TrainPageViewModel).Model.Name + @"-" + (PageVM.CurrentPage as TrainPageViewModel).Optimizer.ToString().ToLower() : (PageVM.CurrentPage as TrainPageViewModel).Model.Name;
+                    saveFileDialog.FileName = Settings.Default.PersistOptimizer ? (PageVM.CurrentPage as TrainPageViewModel).Model.Name + @"-(" + (PageVM.CurrentPage as TrainPageViewModel).Optimizer.ToString().ToLower() + @")": (PageVM.CurrentPage as TrainPageViewModel).Model.Name;
                     saveFileDialog.Filter = "Weights|*.bin|Log|*.csv";
                     saveFileDialog.Title = "Save";
                     saveFileDialog.DefaultExt = ".bin";
