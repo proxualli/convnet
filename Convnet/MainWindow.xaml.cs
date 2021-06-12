@@ -113,9 +113,9 @@ namespace Convnet
 
                         if (Settings.Default.PersistOptimizer)
                         {
-                            if (File.Exists(Path.Combine(StateDirectory, Settings.Default.ModelNameActive + "-" + PageVM.Model.Optimizer.ToString().ToLower() + @".bin")))
+                            if (File.Exists(Path.Combine(StateDirectory, Settings.Default.ModelNameActive + "-(" + PageVM.Model.Optimizer.ToString().ToLower() + @").bin")))
                             {
-                                if (PageVM.Model.LoadWeights(Path.Combine(StateDirectory, Settings.Default.ModelNameActive + "-" + PageVM.Model.Optimizer.ToString().ToLower() + @".bin"), true) != 0)
+                                if (PageVM.Model.LoadWeights(Path.Combine(StateDirectory, Settings.Default.ModelNameActive + "-(" + PageVM.Model.Optimizer.ToString().ToLower() + @").bin"), true) != 0)
                                 {
                                     if (PageVM.Model.LoadWeights(Path.Combine(StateDirectory, Settings.Default.ModelNameActive + @".bin"), false) == 0)
                                     {
