@@ -333,7 +333,7 @@ namespace Convnet.PageViewModels
                 string pathDefinition = Path.Combine(DefinitionsDirectory, ModelName + ".txt");
                 string pathStateDefinition = Path.Combine(StateDirectory, ModelName + ".txt");
                 string pathWeightsDirectory = DefinitionsDirectory + ModelName + "-weights\\";
-                string pathWeights = Settings.Default.PersistOptimizer? Path.Combine(pathWeightsDirectory, ModelName + "-" +  Settings.Default.Optimizer.ToString().ToLower() + ".bin") : Path.Combine(pathWeightsDirectory, ModelName + ".bin");
+                string pathWeights = Settings.Default.PersistOptimizer? Path.Combine(pathWeightsDirectory, ModelName + "-(" +  Settings.Default.Optimizer.ToString().ToLower() + ").bin") : Path.Combine(pathWeightsDirectory, ModelName + ".bin");
                 
                 if (!sameDef || ModelName != Model.Name)
                 {
