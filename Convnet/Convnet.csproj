@@ -120,7 +120,7 @@
     <PackageReference Include="NuGet.Protocol" Version="5.9.1" />
     <PackageReference Include="NuGet.Resolver" Version="5.9.1" />
     <PackageReference Include="System.Text.Json" Version="5.0.2" />
-    <PackageReference Include="Microsoft.NET.HostModel" Version="3.1.6" />
+    <PackageReference Include="Microsoft.NET.HostModel" Version="3.1.16" />
     <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="5.0.0" />
     <PackageReference Include="Microsoft.DotNet.PlatformAbstractions" Version="3.1.6" />
     <PackageReference Include="AvalonEdit" Version="6.1.2.30" />
