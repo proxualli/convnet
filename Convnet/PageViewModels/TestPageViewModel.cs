@@ -37,7 +37,7 @@ namespace Convnet.PageViewModels
             get
             {
                 if (Settings.Default.TestRate == null)
-                    Settings.Default.TestRate = new DNNTrainingRate(DNNOptimizers.NAG, 0.9f, 0.0005f, 0.999f, 0.000001f, 128, 1, 200, 1, 0.005f, 0.00001f, 0.1f, 0.003f, 1, 1, false, false, 0, 0, 0, 0, 0, 0, DNNInterpolations.Cubic, 10, 12);
+                    Settings.Default.TestRate = new DNNTrainingRate(DNNOptimizers.NAG, 0.9f, 0.0005f, 0.999f, 0.000001f, 128, 1, 200, 1, 0.05f, 0.0001f, 0.1f, 0.003f, 1, 1, false, false, 0, 0, 0, 0, 0, 0, DNNInterpolations.Linear, 10, 12);
                
 
                 return Settings.Default.TestRate;
