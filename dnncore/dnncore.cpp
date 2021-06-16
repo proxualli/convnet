@@ -240,7 +240,7 @@ namespace dnn
 			ColorCast(Float(0)),
 			ColorAngle(0),
 			Distortion(Float(0)),
-			Interpolation(Interpolations::Linear),
+			Interpolation(Interpolations::Cubic),
 			Scaling(Float(10.0)),
 			Rotation(Float(10.0))
 		{
