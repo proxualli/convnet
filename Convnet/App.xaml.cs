@@ -14,9 +14,9 @@ namespace Convnet
 {
     public partial class App : Application, IDisposable
     {
-        static readonly SingleInstanceMutex sim;
+        private static readonly SingleInstanceMutex sim;
 
-        public MainWindow mainWindow;
+        private MainWindow mainWindow;
        
         static App()
         {
@@ -48,7 +48,7 @@ namespace Convnet
         {
             if (sim.IsOtherInstanceRunning)
             {
-                Application.Current.Shutdown();
+                Current.Shutdown();
                 return;
             }
 
@@ -73,13 +73,13 @@ namespace Convnet
             {
                 if (Xceed.Wpf.Toolkit.MessageBox.Show("Do you really want to exit?", "Exit Application", MessageBoxButton.YesNo, MessageBoxImage.None, MessageBoxResult.No) == MessageBoxResult.Yes)
                 {
-                    if (mainWindow.PageVM.Model.TaskState != dnncore.DNNTaskStates.Stopped)
+                    if (mainWindow.PageVM.Model.TaskState != DNNTaskStates.Stopped)
                         mainWindow.PageVM.Model.Stop();
 
                     if (Xceed.Wpf.Toolkit.MessageBox.Show("Do you want to save the network state?", "Save Network State", MessageBoxButton.YesNo, MessageBoxImage.None, MessageBoxResult.Yes) == MessageBoxResult.Yes)
                     {
-                        string pathWeights = Settings.Default.PersistOptimizer ? Path.Combine(global::Convnet.MainWindow.StateDirectory, mainWindow.PageVM.Model.Name + "-" + ((DNNOptimizers)Settings.Default.Optimizer).ToString().ToLower() + ".bin") : Path.Combine(global::Convnet.MainWindow.StateDirectory, mainWindow.PageVM.Model.Name + ".bin");
-                        mainWindow.PageVM.Model.SaveWeights(pathWeights, global::Convnet.Properties.Settings.Default.PersistOptimizer);
+                        string pathWeights = Settings.Default.PersistOptimizer ? Path.Combine(Convnet.MainWindow.StateDirectory, mainWindow.PageVM.Model.Name + "-(" + Settings.Default.Optimizer.ToString().ToLower(CultureInfo.CurrentCulture) + ").bin") : Path.Combine(Convnet.MainWindow.StateDirectory, mainWindow.PageVM.Model.Name + ".bin");
+                        mainWindow.PageVM.Model.SaveWeights(pathWeights, Settings.Default.PersistOptimizer);
                     }
 
                     Settings.Default.Save();
@@ -125,7 +125,7 @@ namespace Convnet
         /// <summary>
         /// Indicator whether another instance of this application is running or not.
         /// </summary>
-        private bool isNoOtherInstanceRunning;
+        private readonly bool isNoOtherInstanceRunning;
 
         /// <summary>
         /// The <see cref="Mutex"/> used to ask for other instances of this application.
@@ -146,7 +146,7 @@ namespace Convnet
         /// </summary>
         public SingleInstanceMutex()
         {
-            this.singleInstanceMutex = new Mutex(true, Assembly.GetCallingAssembly().FullName, out this.isNoOtherInstanceRunning);
+            singleInstanceMutex = new Mutex(true, Assembly.GetCallingAssembly().FullName, out isNoOtherInstanceRunning);
         }
 
         #endregion
@@ -160,7 +160,7 @@ namespace Convnet
         {
             get
             {
-                return !this.isNoOtherInstanceRunning;
+                return !isNoOtherInstanceRunning;
             }
         }
 
@@ -173,29 +173,29 @@ namespace Convnet
         /// </summary>
         public void Close()
         {
-            this.ThrowIfDisposed();
-            this.singleInstanceMutex.Close();
+            ThrowIfDisposed();
+            singleInstanceMutex.Close();
         }
 
         public void Dispose()
         {
-            this.Dispose(true);
+            Dispose(true);
             GC.SuppressFinalize(this);
         }
 
         private void Dispose(bool disposing)
         {
-            if (!this.disposed)
+            if (!disposed)
             {
                 /* Release unmanaged ressources */
 
                 if (disposing)
                 {
                     /* Release managed ressources */
-                    this.Close();
+                    Close();
                 }
 
-                this.disposed = true;
+                disposed = true;
             }
         }
 
@@ -207,9 +207,9 @@ namespace Convnet
         /// </remarks>
         public void ThrowIfDisposed()
         {
-            if (this.disposed)
+            if (disposed)
             {
-                throw new ObjectDisposedException(this.GetType().Name);
+                throw new ObjectDisposedException(GetType().Name);
             }
         }
 

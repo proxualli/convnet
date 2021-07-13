@@ -1422,12 +1422,12 @@ namespace Convnet.PageViewModels
 
         private void OpenButtonClick(object sender, RoutedEventArgs e)
         {
-            this.Open?.Invoke(this, EventArgs.Empty);
+            Open?.Invoke(this, EventArgs.Empty);
         }
 
         private void SaveButtonClick(object sender, RoutedEventArgs e)
         {
-            this.Save?.Invoke(this, EventArgs.Empty);
+            Save?.Invoke(this, EventArgs.Empty);
         }
 
         private void EditorButtonClick(object sender, RoutedEventArgs e)

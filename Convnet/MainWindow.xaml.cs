@@ -98,22 +98,21 @@ namespace Convnet
 
             try
             {
-                var model = new Model(Settings.Default.ModelNameActive, Path.Combine(StateDirectory, Settings.Default.ModelNameActive + ".txt"));
+                Model model = new Model(Settings.Default.ModelNameActive, Path.Combine(StateDirectory, Settings.Default.ModelNameActive + ".txt"));
                 if (model != null)
                 {
                     PageVM = new PageViewModel(model);
                     if (PageVM != null)
                     {
                         PageVM.Model.SetFormat(Settings.Default.PlainFormat);
-                        PageVM.Model.SetOptimizer((DNNOptimizers)Settings.Default.Optimizer);
+                        PageVM.Model.SetOptimizer(Settings.Default.Optimizer);
                         PageVM.Model.SetPersistOptimizer(Settings.Default.PersistOptimizer);
                         PageVM.Model.SetDisableLocking(Settings.Default.DisableLocking);
                         PageVM.Model.BlockSize = (ulong)Settings.Default.PixelSize;
 
-
                         if (Settings.Default.PersistOptimizer)
                         {
-                            if (File.Exists(Path.Combine(StateDirectory, Settings.Default.ModelNameActive + "-(" + PageVM.Model.Optimizer.ToString().ToLower() + @").bin")))
+                            if (File.Exists(Path.Combine(StateDirectory, Settings.Default.ModelNameActive + "-(" + PageVM.Model.Optimizer.ToString().ToLower(CultureInfo.CurrentCulture) + @").bin")))
                             {
                                 if (PageVM.Model.LoadWeights(Path.Combine(StateDirectory, Settings.Default.ModelNameActive + "-(" + PageVM.Model.Optimizer.ToString().ToLower() + @").bin"), true) != 0)
                                 {
@@ -127,9 +126,10 @@ namespace Convnet
                             }
                         }
                         else
+                        {
                             if (File.Exists(Path.Combine(StateDirectory, Settings.Default.ModelNameActive + @".bin")))
                                 PageVM.Model.LoadWeights(Path.Combine(StateDirectory, Settings.Default.ModelNameActive + @".bin"), false);
-                        
+                        }
                         Settings.Default.DefinitionActive = File.ReadAllText(Path.Combine(StateDirectory, Settings.Default.ModelNameActive + ".txt"));
                         Settings.Default.Save();
 

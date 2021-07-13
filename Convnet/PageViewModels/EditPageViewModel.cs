@@ -8,6 +8,7 @@ using Microsoft.Build.Framework;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Security.AccessControl;
@@ -328,12 +329,12 @@ namespace Convnet.PageViewModels
             Mouse.OverrideCursor = null;
             try
             {
-                bool sameDef = Definition.ToLower().Equals(Settings.Default.DefinitionActive.ToLower());
+                bool sameDef = Definition.ToLower(CultureInfo.CurrentCulture).Equals(Settings.Default.DefinitionActive.ToLower(CultureInfo.CurrentCulture));
 
                 string pathDefinition = Path.Combine(DefinitionsDirectory, ModelName + ".txt");
                 string pathStateDefinition = Path.Combine(StateDirectory, ModelName + ".txt");
                 string pathWeightsDirectory = DefinitionsDirectory + ModelName + "-weights\\";
-                string pathWeights = Settings.Default.PersistOptimizer? Path.Combine(pathWeightsDirectory, ModelName + "-(" +  Settings.Default.Optimizer.ToString().ToLower() + ").bin") : Path.Combine(pathWeightsDirectory, ModelName + ".bin");
+                string pathWeights = Settings.Default.PersistOptimizer ? Path.Combine(pathWeightsDirectory, ModelName + "-(" + Settings.Default.Optimizer.ToString().ToLower(CultureInfo.CurrentCulture) + ").bin") : Path.Combine(pathWeightsDirectory, ModelName + ".bin");
                 
                 if (!sameDef || ModelName != Model.Name)
                 {
@@ -438,7 +439,7 @@ namespace Convnet.PageViewModels
                                 Model.Dispose();
                                 Model = new Model(ModelName, pathDefinition);
                                 Model.SetFormat(Settings.Default.PlainFormat);
-                                Model.SetOptimizer((DNNOptimizers)Settings.Default.Optimizer);
+                                Model.SetOptimizer(Settings.Default.Optimizer);
                                 Model.SetPersistOptimizer(Settings.Default.PersistOptimizer);
                                 Model.SetDisableLocking(Settings.Default.DisableLocking);
                                 Settings.Default.Save();
