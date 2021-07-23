@@ -250,25 +250,25 @@ namespace Convnet.Converters
     public class FirstDegreeFunctionConverter : IValueConverter
     {
         public double A { get; set; }
-
+      
         #region IValueConverter Members
 
-        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             double a = GetDoubleValue(parameter, A);
 
             double x = GetDoubleValue(value, 0.0);
 
-            return x - a;
+            return Math.Abs(x - a);
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             double a = GetDoubleValue(parameter, A);
 
             double y = GetDoubleValue(value, 0.0);
 
-            return y + a;
+            return Math.Abs(y + a);
         }
 
         #endregion
@@ -279,6 +279,7 @@ namespace Convnet.Converters
             double a;
 
             if (parameter != null)
+            {
                 try
                 {
                     a = System.Convert.ToDouble(parameter);
@@ -287,8 +288,11 @@ namespace Convnet.Converters
                 {
                     a = defaultValue;
                 }
+            }
             else
+            {
                 a = defaultValue;
+            }
 
             return a;
         }
