@@ -265,7 +265,7 @@ namespace ScriptsDialog
                "Type=Cost" + nwl +
                "Inputs=" + inputs + nwl +
                "Cost=" + cost + nwl +
-               "LabelIndex=" + (dataset == Datasets.cifar100 ? "1" : "0") + nwl +
+               "LabelIndex=" + ((dataset == Datasets.cifar100 && channels == 100) ? "1" : "0") + nwl +
                "Channels=" + to_string(channels) + nwl +
                "Eps=" + to_string(eps);
         }
