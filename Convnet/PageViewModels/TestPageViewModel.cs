@@ -180,48 +180,49 @@ namespace Convnet.PageViewModels
 
         private void TestProgress(UInt BatchSize, UInt SampleIndex, Float AvgTestLoss, Float TestErrorPercentage, Float TestAccuracy, UInt TestErrors, DNNStates State, DNNTaskStates TaskState)
         {
-            if (flag == 0)
+            if (flag == 0 && State != DNNStates.Completed)
             {
                 Application.Current.Dispatcher.Invoke(() =>
                 {
-                    if (State != DNNStates.Completed)
-                    {
-                        sb.Length = 0;
-                        sb.AppendFormat("Sample:\t\t{0:G}\nLoss:\t\t{1:N7}\nErrors:\t\t{2:G}\nError:\t\t{3:N2} %\nAccuracy:\t{4:N2} %", SampleIndex, AvgTestLoss, TestErrors, TestErrorPercentage, TestAccuracy);
-                        ProgressText = sb.ToString();
+                    sb.Length = 0;
+                    sb.AppendFormat("Sample:\t\t{0:G}\nLoss:\t\t{1:N7}\nErrors:\t\t{2:G}\nError:\t\t{3:N2} %\nAccuracy:\t{4:N2} %", SampleIndex, AvgTestLoss, TestErrors, TestErrorPercentage, TestAccuracy);
+                    ProgressText = sb.ToString();
 
-                        Model.UpdateLayerInfo(0ul, true);
-                        InputSnapShot = Model.InputSnapshot;
-                        Label = Model.Label;
-                    }
-                    else
-                    {
-                        sb.Length = 0;
-                        sb.AppendFormat("Loss:\t\t{0:N7}\nErrors:\t\t{1:G}\nError:\t\t{2:N2} %\nAccuracy:\t{3:N2} %", AvgTestLoss, TestErrors, TestErrorPercentage, TestAccuracy);
-                        ProgressText = sb.ToString();
-                                              
-                        Mouse.OverrideCursor = Cursors.Wait;
-
-                        flag = 1;
-                        RefreshTimer.Stop();
-                        RefreshTimer.Elapsed -= new ElapsedEventHandler(RefreshTimer_Elapsed);
-                        RefreshTimer.Dispose();
-
-                        Model.Stop();
-                        Model.SetCostIndex((uint)costLayersComboBox.SelectedIndex);
-                        Model.GetConfusionMatrix();
-                        ConfusionDataTable = GetConfusionDataTable();
-
-                        CommandToolBar[0].ToolTip = "Start Testing";
-                        CommandToolBar[0].Visibility = Visibility.Visible;
-                        CommandToolBar[1].Visibility = Visibility.Collapsed;
-                        CommandToolBar[2].Visibility = Visibility.Collapsed;
-
-                        IsValid = true;
-                        ShowSample = false;
-                        Mouse.OverrideCursor = null;
-                    }
+                    Model.UpdateLayerInfo(0ul, true);
+                    InputSnapShot = Model.InputSnapshot;
+                    Label = Model.Label;
                 }, DispatcherPriority.Render);
+            }
+            else
+            {
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    sb.Length = 0;
+                    sb.AppendFormat("Loss:\t\t{0:N7}\nErrors:\t\t{1:G}\nError:\t\t{2:N2} %\nAccuracy:\t{3:N2} %", AvgTestLoss, TestErrors, TestErrorPercentage, TestAccuracy);
+                    ProgressText = sb.ToString();
+
+                    Mouse.OverrideCursor = Cursors.Wait;
+
+                    flag = 1;
+                    RefreshTimer.Stop();
+                    RefreshTimer.Elapsed -= new ElapsedEventHandler(RefreshTimer_Elapsed);
+                    RefreshTimer.Dispose();
+
+                    Model.Stop();
+                    Model.SetCostIndex((uint)costLayersComboBox.SelectedIndex);
+                    Model.GetConfusionMatrix();
+                    ConfusionDataTable = GetConfusionDataTable();
+
+                    CommandToolBar[0].ToolTip = "Start Testing";
+                    CommandToolBar[0].Visibility = Visibility.Visible;
+                    CommandToolBar[1].Visibility = Visibility.Collapsed;
+                    CommandToolBar[2].Visibility = Visibility.Collapsed;
+
+                    IsValid = true;
+                    ShowSample = false;
+                    Mouse.OverrideCursor = null;
+                   
+                }, DispatcherPriority.Normal);
             }
         }
 

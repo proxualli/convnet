@@ -259,12 +259,13 @@ namespace ScriptsDialog
                "Activation=" + activation + nwl + nwl;
         }
 
-        public static string Cost(string inputs, UInt channels, string cost = "CategoricalCrossEntropy", Float eps = 0.0f, string group = "", string prefix = "Cost")
+        public static string Cost(string inputs, Datasets dataset, UInt channels, string cost = "CategoricalCrossEntropy", Float eps = 0.0f, string group = "", string prefix = "Cost")
         {
             return "[" + group + prefix + "]" + nwl +
                "Type=Cost" + nwl +
                "Inputs=" + inputs + nwl +
                "Cost=" + cost + nwl +
+               "LabelIndex=" + (dataset == Datasets.cifar100 ? "1" : "0") + nwl +
                "Channels=" + to_string(channels) + nwl +
                "Eps=" + to_string(eps);
         }
@@ -398,7 +399,7 @@ namespace ScriptsDialog
                             BatchNorm(C + 1, In("C", C)) +
                             GlobalAvgPooling(In("B", C + 1)) +
                             Activation("GAP", "LogSoftmax") +
-                            Cost("ACT", p.Classes, "CategoricalCrossEntropy", 0.125f);
+                            Cost("ACT", p.Dataset, p.Classes, "CategoricalCrossEntropy", 0.125f);
                     }
                     break;
 
@@ -492,7 +493,7 @@ namespace ScriptsDialog
                             BatchNorm(C + 1, In("C", C)) +
                             GlobalAvgPooling(In("B", C + 1)) +
                             Activation("GAP", "LogSoftmax") +
-                            Cost("ACT", p.Classes, "CategoricalCrossEntropy", 0.125f);
+                            Cost("ACT", p.Dataset, p.Classes, "CategoricalCrossEntropy", 0.125f);
                     }
                     break;
 
@@ -609,7 +610,7 @@ namespace ScriptsDialog
                             BatchNorm(C + 1, In("C", C)) +
                             GlobalAvgPooling(In("B", C + 1)) +
                             Activation("GAP", "LogSoftmax") +
-                            Cost("ACT", p.Classes, "CategoricalCrossEntropy", 0.125f);
+                            Cost("ACT", p.Dataset, p.Classes, "CategoricalCrossEntropy", 0.125f);
                     }
                     break;
 
@@ -697,7 +698,7 @@ namespace ScriptsDialog
                             BatchNorm(C + 1, In("C", C)) +
                             GlobalAvgPooling(In("B", C + 1)) +
                             Activation("GAP", "LogSoftmax") +
-                            Cost("ACT", p.Classes, "CategoricalCrossEntropy", 0.125f);
+                            Cost("ACT", p.Dataset, p.Classes, "CategoricalCrossEntropy", 0.125f);
                     }
                     break;
             }

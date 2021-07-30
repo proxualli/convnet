@@ -126,5 +126,3 @@
 <p align="center"><img src="https://github.com/zamir1001/convnet/blob/main/train_parameters.png" alt="Test" title="Parameters"/></p>
 <p align="center"><img src="https://github.com/zamir1001/convnet/blob/main/convnet_train.png" alt="Train" title="Train"/></p>
 <p align="center"><img src="https://github.com/zamir1001/convnet/blob/main/convnet_test.png" alt="Test" title="Test"/></p>
-<p align="center"><img src="https://github.com/zamir1001/convnet/blob/main/convnet_train_cifar100.png" alt="TrainCifar100" title="TrainCifar100"/></p>
-
