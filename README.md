@@ -126,3 +126,4 @@
 <p align="center"><img src="https://github.com/zamir1001/convnet/blob/main/train_parameters.png" alt="Test" title="Parameters"/></p>
 <p align="center"><img src="https://github.com/zamir1001/convnet/blob/main/convnet_train.png" alt="Train" title="Train"/></p>
 <p align="center"><img src="https://github.com/zamir1001/convnet/blob/main/convnet_test.png" alt="Test" title="Test"/></p>
+cifar-10 sota: https://paperswithcode.com/sota/image-classification-on-cifar-10
