@@ -127,7 +127,7 @@
 <p align="center"><img src="https://github.com/zamir1001/convnet/blob/main/convnet_train.png" alt="Train" title="Train"/></p>
 <p align="center"><img src="https://github.com/zamir1001/convnet/blob/main/convnet_test.png" alt="Test" title="Test"/></p>
 
-### SOTA Datasets
+### Datasets SOTA
 * [cifar-10](https://paperswithcode.com/sota/image-classification-on-cifar-10)
 * [cifar-100](https://paperswithcode.com/sota/image-classification-on-cifar-100)
 * [fashion-mnist](https://paperswithcode.com/sota/image-classification-on-fashion-mnist)
