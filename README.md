@@ -96,11 +96,11 @@
 * XavierUniform
 
 ### Datasets
-* cifar10
-* cifar100
-* fashionmnist
-* mnist
-* tinyimagenet
+* cifar10 (https://www.cs.toronto.edu/~kriz/cifar.html)
+* cifar100 (https://www.cs.toronto.edu/~kriz/cifar.html)
+* fashionmnist (https://github.com/zalandoresearch/fashion-mnist)
+* mnist (http://yann.lecun.com/exdb/mnist)
+* tinyimagenet (http://cs231n.stanford.edu/reports/2017/pdfs/930.pdf)
 
 ### Scripts
 * densenet (https://arxiv.org/abs/1608.06993)
