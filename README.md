@@ -103,10 +103,10 @@
 * tinyimagenet
 
 ### Scripts
-* densenet
-* mobilenetv3
-* resnet
-* shufflenetv2
+* densenet (https://arxiv.org/abs/1608.06993)
+* mobilenetv3 (https://arxiv.org/abs/1905.02244)
+* resnet (https://arxiv.org/abs/1605.07146)
+* shufflenetv2 (https://arxiv.org/abs/1807.11164)
 
 ### Dependencies & Licenses
 * AvalonEdit WPF Text Editor - MIT License (https://github.com/icsharpcode/AvalonEdit)
