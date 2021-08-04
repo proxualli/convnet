@@ -115,7 +115,7 @@
 * [CsvHelper - Apache License 2.0](https://github.com/joshclose/csvhelper)
 * [WpfExToolkit - Xceed Software Community License](https://github.com/dotnetprojects/WpfExtendedToolkit)
 * [Intel(R) oneDNN Deep Neural Network Library - Apache License 2.0](https://github.com/oneapi-src/oneDNN)
-* [libjpeg-tubo - BSD Licenses](https://github.com/libjpeg-turbo/libjpeg-turbo)
+* [libjpeg-turbo - BSD Licenses](https://github.com/libjpeg-turbo/libjpeg-turbo)
 * [libpng - PNG Reference Library License version 2](https://github.com/glennrp/libpng)
 * [Magic Enum C++ - MIT License](https://github.com/Neargye/magic_enum)
 * [OxyPlot .NET Plotting Library - MIT License](https://github.com/oxyplot/oxyplot/tree/master)
