@@ -123,9 +123,13 @@
 ### Screenshots
 <p align="center"><img src="https://github.com/zamir1001/convnet/blob/main/model_parameters.png" alt="Model Parameters" title="Model Parameters"/></p>
 <p align="center"><img src="https://github.com/zamir1001/convnet/blob/main/convnet_edit.png" alt="Edit" title="Edit"/></p>
-<p align="center"><img src="https://github.com/zamir1001/convnet/blob/main/train_parameters.png" alt="Test" title="Parameters"/></p>
+<p align="center"><img src="https://github.com/zamir1001/convnet/blob/main/train_parameters.png" alt="Test" title="Train Parameters"/></p>
 <p align="center"><img src="https://github.com/zamir1001/convnet/blob/main/convnet_train.png" alt="Train" title="Train"/></p>
+<p align="center"><img src="https://github.com/zamir1001/convnet/blob/main/test_parameters.png" alt="Test" title="Test Parameters"/></p>
 <p align="center"><img src="https://github.com/zamir1001/convnet/blob/main/convnet_test.png" alt="Test" title="Test"/></p>
+<p align="center"><img src="https://github.com/zamir1001/convnet/blob/main/convnet_train_cifar100.png" alt="Train" title="Train"/></p>
+<p align="center"><img src="https://github.com/zamir1001/convnet/blob/main/convnet_test_cifar100.png" alt="Test" title="Test"/></p>
+
 
 ### Datasets SOTA
 * [cifar-10](https://paperswithcode.com/sota/image-classification-on-cifar-10)
