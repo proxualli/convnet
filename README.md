@@ -121,16 +121,16 @@
 * [OxyPlot .NET Plotting Library - MIT License](https://github.com/oxyplot/oxyplot/tree/master)
 
 ### Screenshots
-<p align="center"><img src="https://github.com/zamir1001/convnet/blob/main/model_parameters_cifar10.png" alt="Model Parameters" title="Model Parameters"/></p>
-<p align="center"><img src="https://github.com/zamir1001/convnet/blob/main/convnet_edit_cifar10.png" alt="Edit" title="Edit"/></p>
-<p align="center"><img src="https://github.com/zamir1001/convnet/blob/main/train_parameters_cifar10.png" alt="Test" title="Train Parameters"/></p>
-<p align="center"><img src="https://github.com/zamir1001/convnet/blob/main/convnet_train_cifar10.png" alt="Train" title="Train"/></p>
-<p align="center"><img src="https://github.com/zamir1001/convnet/blob/main/test_parameters_cifar10.png" alt="Test" title="Test Parameters"/></p>
-<p align="center"><img src="https://github.com/zamir1001/convnet/blob/main/convnet_test_cifar10.png" alt="Test" title="Test"/></p>
-<p align="center"><img src="https://github.com/zamir1001/convnet/blob/main/convnet_train_cifar100.png" alt="Train" title="Train"/></p>
-<p align="center"><img src="https://github.com/zamir1001/convnet/blob/main/convnet_test_cifar100.png" alt="Test" title="Test"/></p>
-<p align="center"><img src="https://github.com/zamir1001/convnet/blob/main/convnet_train_fashionmnist.png" alt="Train" title="Train"/></p>
-<p align="center"><img src="https://github.com/zamir1001/convnet/blob/main/convnet_test_fashionmnist.png" alt="Test" title="Test"/></p>
+<p align="center"><img src="https://github.com/zamir1001/convnet/blob/main/doc/model_parameters_cifar10.png" alt="Model Parameters" title="Model Parameters"/></p>
+<p align="center"><img src="https://github.com/zamir1001/convnet/blob/main/doc/convnet_edit_cifar10.png" alt="Edit" title="Edit"/></p>
+<p align="center"><img src="https://github.com/zamir1001/convnet/blob/main/doc/train_parameters_cifar10.png" alt="Test" title="Train Parameters"/></p>
+<p align="center"><img src="https://github.com/zamir1001/convnet/blob/main/doc/convnet_train_cifar10.png" alt="Train" title="Train"/></p>
+<p align="center"><img src="https://github.com/zamir1001/convnet/blob/main/doc/test_parameters_cifar10.png" alt="Test" title="Test Parameters"/></p>
+<p align="center"><img src="https://github.com/zamir1001/convnet/blob/main/doc/convnet_test_cifar10.png" alt="Test" title="Test"/></p>
+<p align="center"><img src="https://github.com/zamir1001/convnet/blob/main/doc/convnet_train_cifar100.png" alt="Train" title="Train"/></p>
+<p align="center"><img src="https://github.com/zamir1001/convnet/blob/main/doc/convnet_test_cifar100.png" alt="Test" title="Test"/></p>
+<p align="center"><img src="https://github.com/zamir1001/convnet/blob/main/doc/convnet_train_fashionmnist.png" alt="Train" title="Train"/></p>
+<p align="center"><img src="https://github.com/zamir1001/convnet/blob/main/doc/convnet_test_fashionmnist.png" alt="Test" title="Test"/></p>
 
 ### Datasets SOTA
 * [cifar-10](https://paperswithcode.com/sota/image-classification-on-cifar-10)
