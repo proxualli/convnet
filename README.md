@@ -140,4 +140,4 @@
 * [tiny-imagenet](https://paperswithcode.com/sota/image-classification-on-tiny-imagenet-1)
 
 ### Dream
-* [GPU](https://www.alternate.be/PNY/NVIDIA-RTX-A5000-grafische-kaart/html/product/1753810)
+* [GPU](https://www.alternate.be/MSI/GeForce-RTX-3090-Suprim-X-24G-grafische-kaart/html/product/1689857)
