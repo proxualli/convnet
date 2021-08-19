@@ -138,3 +138,6 @@
 * [fashion-mnist](https://paperswithcode.com/sota/image-classification-on-fashion-mnist)
 * [mnist](https://paperswithcode.com/sota/image-classification-on-mnist)
 * [tiny-imagenet](https://paperswithcode.com/sota/image-classification-on-tiny-imagenet-1)
+
+### Dream
+* [GPU](https://www.alternate.be/PNY/NVIDIA-RTX-A5000-grafische-kaart/html/product/1753810)
