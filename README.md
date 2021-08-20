@@ -138,6 +138,3 @@
 * [fashion-mnist](https://paperswithcode.com/sota/image-classification-on-fashion-mnist)
 * [mnist](https://paperswithcode.com/sota/image-classification-on-mnist)
 * [tiny-imagenet](https://paperswithcode.com/sota/image-classification-on-tiny-imagenet-1)
-
-### Dream
-* [GPU](https://www.alternate.be/MSI/GeForce-RTX-3090-Suprim-X-24G-grafische-kaart/html/product/1689857)
