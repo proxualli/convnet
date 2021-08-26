@@ -86,7 +86,7 @@ namespace Convnet.Common
         {
             try
             {
-                Process.Start(new ProcessStartInfo(url) { UseShellExecute=true });
+                Process.Start(new ProcessStartInfo(url) { UseShellExecute = true });
             }
             catch
             {
