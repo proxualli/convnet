@@ -26,7 +26,9 @@ public:
 		width_(1),
 		activation_(dnn::Activations::HardSwish),
 		layerType_(dnn::LayerTypes::BatchNormHardSwish),
-		device_(dnn::Device(dnnl::engine(dnnl::engine::kind::cpu, 0), dnnl::stream(dnnl::engine(dnnl::engine::kind::cpu, 0), dnnl::stream::flags::default_flags)))
+		engine_(dnnl::engine(dnnl::engine::kind::cpu, 0)),
+		stream_(dnnl::stream(dnnl::engine(dnnl::engine::kind::cpu, 0), dnnl::stream::flags::default_flags)),
+		device_(dnn::Device(engine_, stream_)
 	{
 	}
 
@@ -41,6 +43,8 @@ public:
 		height_(tester.height_),
 		activation_(tester.activation_),
 		layerType_(tester.layerType_),
+		engine_(tester.engine_),
+		stream_(tester.stream_),
 		device_(tester.device_)
 	{
 	}
@@ -137,6 +141,28 @@ public:
 	inline dnn::Activations activation() const
 	{
 		return this->activation_;
+	}
+
+	inline BatchNormActivationTester& engine(dnnl::engine engine)
+	{
+		this->engine_ = engine;
+		return *this;
+	}
+
+	inline dnnl::engine engine() const
+	{
+		return this->engine_;
+	}
+
+	inline BatchNormActivationTester& stream(dnnl::stream stream)
+	{
+		this->stream_ = stream;
+		return *this;
+	}
+
+	inline dnnl::stream stream() const
+	{
+		return this->stream_;
 	}
 
 	/*inline BatchNormActivationTester& device(dnn::Device device)
@@ -337,5 +363,7 @@ private:
     size_t height_;
 	dnn::Activations activation_;
 	dnn::LayerTypes layerType_;
+	dnnl::engine engine_;
+	dnnl::stream stream_;
 	dnn::Device device_;
 };
