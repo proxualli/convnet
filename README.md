@@ -131,6 +131,7 @@
 <p align="center"><img src="https://github.com/zamir1001/convnet/blob/main/doc/convnet_test_cifar100.png" alt="Test" title="Test"/></p>
 <p align="center"><img src="https://github.com/zamir1001/convnet/blob/main/doc/convnet_train_fashionmnist.png" alt="Train" title="Train"/></p>
 <p align="center"><img src="https://github.com/zamir1001/convnet/blob/main/doc/convnet_test_fashionmnist.png" alt="Test" title="Test"/></p>
+<p align="center"><img src="https://github.com/zamir1001/convnet/blob/main/doc/convnet_train_tinyimagenet.png" alt="Train" title="Train"/></p>
 
 ### Datasets SOTA
 * [cifar-10](https://paperswithcode.com/sota/image-classification-on-cifar-10)
