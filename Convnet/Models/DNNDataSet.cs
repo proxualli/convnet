@@ -360,6 +360,8 @@ public partial class DNNDataSet : global::System.Data.DataSet
 
         private global::System.Data.DataColumn columnCutout;
 
+        private global::System.Data.DataColumn columnCutMix;
+
         private global::System.Data.DataColumn columnAutoAugment;
 
         private global::System.Data.DataColumn columnColorCast;
@@ -605,6 +607,16 @@ public partial class DNNDataSet : global::System.Data.DataSet
 
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+        public global::System.Data.DataColumn CutMixColumn
+        {
+            get
+            {
+                return this.columnCutMix;
+            }
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         public global::System.Data.DataColumn AutoAugmentColumn
         {
             get
@@ -735,6 +747,7 @@ public partial class DNNDataSet : global::System.Data.DataSet
                     bool VerticalFlip,
                     double Dropout,
                     double Cutout,
+                    bool CutMix,
                     double AutoAugment,
                     double ColorCast,
                     int ColorAngle,
@@ -764,6 +777,7 @@ public partial class DNNDataSet : global::System.Data.DataSet
                     VerticalFlip,
                     Dropout,
                     Cutout,
+                    CutMix,
                     AutoAugment,
                     ColorCast,
                     ColorAngle,
@@ -822,6 +836,7 @@ public partial class DNNDataSet : global::System.Data.DataSet
             this.columnVerticalFlip = base.Columns["VerticalFlip"];
             this.columnDropout = base.Columns["Dropout"];
             this.columnCutout = base.Columns["Cutout"];
+            this.columnCutout = base.Columns["CutMix"];
             this.columnAutoAugment = base.Columns["AutoAugment"];
             this.columnColorCast = base.Columns["ColorCast"];
             this.columnColorAngle = base.Columns["ColorAngle"];
@@ -873,6 +888,8 @@ public partial class DNNDataSet : global::System.Data.DataSet
             base.Columns.Add(this.columnDropout);
             this.columnCutout = new global::System.Data.DataColumn("Cutout", typeof(double), null, global::System.Data.MappingType.Element);
             base.Columns.Add(this.columnCutout);
+            this.columnCutMix = new global::System.Data.DataColumn("CutMix", typeof(bool), null, global::System.Data.MappingType.Element);
+            base.Columns.Add(this.columnCutMix);
             this.columnAutoAugment = new global::System.Data.DataColumn("AutoAugment", typeof(double), null, global::System.Data.MappingType.Element);
             base.Columns.Add(this.columnAutoAugment);
             this.columnColorCast = new global::System.Data.DataColumn("ColorCast", typeof(double), null, global::System.Data.MappingType.Element);
@@ -921,6 +938,8 @@ public partial class DNNDataSet : global::System.Data.DataSet
             this.columnDropout.DefaultValue = ((double)(0D));
             this.columnCutout.AllowDBNull = false;
             this.columnCutout.DefaultValue = ((double)(0D));
+            this.columnCutMix.AllowDBNull = false;
+            this.columnCutMix.DefaultValue = ((bool)(false));
             this.columnAutoAugment.AllowDBNull = false;
             this.columnAutoAugment.DefaultValue = ((double)(0D));
             this.columnColorCast.AllowDBNull = false;
@@ -1360,6 +1379,20 @@ public partial class DNNDataSet : global::System.Data.DataSet
             set
             {
                 this[this.tableTrainingRates.CutoutColumn] = value;
+            }
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+        public bool CutMix
+        {
+            get
+            {
+                return ((bool)(this[this.tableTrainingRates.CutMixColumn]));
+            }
+            set
+            {
+                this[this.tableTrainingRates.CutMixColumn] = value;
             }
         }
 

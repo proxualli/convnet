@@ -44,6 +44,7 @@ namespace dnn
 		bool VerticalFlip;
 		Float Dropout;
 		Float Cutout;
+		bool CutMix;
 		Float AutoAugment;
 		Float ColorCast;
 		UInt ColorAngle;
@@ -72,6 +73,7 @@ namespace dnn
 			VerticalFlip(false),
 			Dropout(Float(0)),
 			Cutout(Float(0)),
+			CutMix(false),
 			AutoAugment(Float(0)),
 			ColorCast(Float(0)),
 			ColorAngle(0),
@@ -82,7 +84,7 @@ namespace dnn
 		{
 		}
 
-		TrainingRate(const Optimizers optimizer, const Float momentum, const Float beta2, const Float l2Penalty, const Float eps, const UInt batchSize, const UInt cycles, const UInt epochs, const UInt epochMultiplier, const Float maximumRate, const Float minimumRate, const Float finalRate, const Float gamma, const UInt decayAfterEpochs, const Float decayFactor, const bool horizontalFlip, const bool verticalFlip, const Float dropout, const Float cutout, const Float autoAugment, const Float colorCast, const UInt colorAngle, const Float distortion, const Interpolations interpolation, const Float scaling, const Float rotation) :
+		TrainingRate(const Optimizers optimizer, const Float momentum, const Float beta2, const Float l2Penalty, const Float eps, const UInt batchSize, const UInt cycles, const UInt epochs, const UInt epochMultiplier, const Float maximumRate, const Float minimumRate, const Float finalRate, const Float gamma, const UInt decayAfterEpochs, const Float decayFactor, const bool horizontalFlip, const bool verticalFlip, const Float dropout, const Float cutout, const bool cutMix, const Float autoAugment, const Float colorCast, const UInt colorAngle, const Float distortion, const Interpolations interpolation, const Float scaling, const Float rotation) :
 			Optimizer(optimizer),
 			Momentum(momentum),
 			Beta2(beta2),
@@ -102,6 +104,7 @@ namespace dnn
 			VerticalFlip(verticalFlip),
 			Dropout(dropout),
 			Cutout(cutout),
+			CutMix(cutMix),
 			AutoAugment(autoAugment),
 			ColorCast(colorCast),
 			ColorAngle(colorAngle),
