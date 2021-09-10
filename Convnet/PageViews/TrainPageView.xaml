@@ -96,6 +96,7 @@
                     <ColumnDefinition Width="{Binding ActualWidth, ElementName=rate}" />
                     <ColumnDefinition Width="{Binding ActualWidth, ElementName=dropout}" />
                     <ColumnDefinition Width="{Binding ActualWidth, ElementName=cutout}" />
+                    <ColumnDefinition Width="{Binding ActualWidth, ElementName=cutMix}" />
                     <ColumnDefinition Width="{Binding ActualWidth, ElementName=autoaugment}" />
                     <ColumnDefinition Width="{Binding ActualWidth, ElementName=hflip}" />
                     <ColumnDefinition Width="{Binding ActualWidth, ElementName=vflip}" />
@@ -260,6 +261,14 @@
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding Cutout, StringFormat=0.#####}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextAlignment="Center" FontFamily="Consolas" FontSize="14"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+
+                    <GridViewColumn x:Name="cutMix" Header="CutMix" Width="80">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <CheckBox HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="Consolas" HorizontalContentAlignment="Center" FontSize="14" IsChecked="{Binding CutMix}" IsThreeState="False" IsHitTestVisible="False"/>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
