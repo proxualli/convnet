@@ -354,7 +354,7 @@
         </xctk:AutoSelectTextBox>
 
         <RadioButton Name="radioButtonCutMixYes" GroupName="CutMix" Foreground="White" Content="Yes" Grid.Column="5" HorizontalAlignment="Left" Margin="0,3,0,0" Grid.Row="6"  VerticalAlignment="Center" IsChecked="{Binding Path=CutMix, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" TabIndex="26" FontSize="14"/>
-        <RadioButton Name="radioButtonCutMixNo" GroupName="CutMix" Foreground="White" Content="No" Grid.Column="5" HorizontalAlignment="Left" Margin="50,3,0,0" Grid.Row="6"  VerticalAlignment="Center" IsChecked="{Binding Path=CutMixp, Converter={StaticResource Inverter}, Mode=OneWay}" TabIndex="27" FontSize="14"/>
+        <RadioButton Name="radioButtonCutMixNo" GroupName="CutMix" Foreground="White" Content="No" Grid.Column="5" HorizontalAlignment="Left" Margin="50,3,0,0" Grid.Row="6"  VerticalAlignment="Center" IsChecked="{Binding Path=CutMix, Converter={StaticResource Inverter}, Mode=OneWay}" TabIndex="27" FontSize="14"/>
 
         
         <xctk:AutoSelectTextBox ContextMenu="{StaticResource MyContextMenu}" Grid.Column="5" Grid.Row="7" x:Name="textBoxAutoAugment" VerticalAlignment="Stretch" Width="Auto" VerticalContentAlignment="Center" HorizontalContentAlignment="Stretch" Margin="2" TabIndex="28" Validation.ErrorTemplate="{StaticResource validationTemplate}" Style="{StaticResource textBoxInError}" AllowDrop="False" AutoWordSelection="True" IsTabStop="True" MaxLines="1" BorderThickness="1" SnapsToDevicePixels="True" AutoMoveFocus="True" AutoSelectBehavior="OnFocus" FontSize="14">
