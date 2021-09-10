@@ -143,6 +143,7 @@
                 <DataGridCheckBoxColumn Header="Vert.Flip" Binding="{Binding Path=VerticalFlip, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 <DataGridTextColumn Header="Dropout" Binding="{Binding Path=Dropout, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 <DataGridTextColumn Header="Cutout" Binding="{Binding Path=Cutout, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <DataGridCheckBoxColumn Header="CutMix" Binding="{Binding Path=CutMix, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 <DataGridTextColumn Header="AutoAugment" Binding="{Binding Path=AutoAugment, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 <DataGridTextColumn Header="ColorCast" Binding="{Binding Path=ColorCast, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 <DataGridTextColumn Header="ColorAngle" Binding="{Binding Path=ColorAngle, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
