@@ -99,6 +99,14 @@ namespace dnn
 	typedef size_t UInt;
 	typedef unsigned char Byte;
 
+	struct LabelInfo
+	{
+		UInt LabelA;
+		Float WeightA;
+		UInt LabelB;
+		Float WeightB;
+	};
+
 #if defined(DNN_AVX512BW) || defined(DNN_AVX512)
 	typedef Vec16f VecFloat;
 	typedef Vec16fb VecFloatBool;

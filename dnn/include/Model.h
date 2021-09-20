@@ -575,7 +575,7 @@ namespace dnn
 			}
 		}
 
-		void Recognized(const States state, const std::vector<UInt>& sampleLabel)
+		void Recognized(const States state, const std::vector<LabelInfo>& sampleLabel)
 		{
 			for (auto cost : CostLayers)
 			{
@@ -593,7 +593,7 @@ namespace dnn
 					}
 				}
 
-				if (hotIndex != sampleLabel[labelIndex])
+				if (hotIndex != sampleLabel[labelIndex].LabelA)
 				{
 					if (state == States::Training)
 						cost->TrainErrors++;
@@ -602,7 +602,7 @@ namespace dnn
 				}
 
 				if (state == States::Testing)
-					cost->ConfusionMatrix[hotIndex][sampleLabel[labelIndex]]++;
+					cost->ConfusionMatrix[hotIndex][sampleLabel[labelIndex].LabelA]++;
 			}
 		}
 #endif
@@ -630,7 +630,7 @@ namespace dnn
 			}
 		}
 
-		void RecognizedBatch(const States state, const UInt batchSize, const bool overflow, const UInt skipCount, const std::vector<std::vector<UInt>>& sampleLabels)
+		void RecognizedBatch(const States state, const UInt batchSize, const bool overflow, const UInt skipCount, const std::vector<std::vector<LabelInfo>>& sampleLabels)
 		{
 			for (auto cost : CostLayers)
 			{
@@ -655,7 +655,7 @@ namespace dnn
 						}
 					}
 
-					if (hotIndex != sampleLabels[b][labelIndex])
+					if (hotIndex != sampleLabels[b][labelIndex].LabelA)
 					{
 						if (state == States::Training)
 							cost->TrainErrors++;
@@ -664,7 +664,7 @@ namespace dnn
 					}
 
 					if (state == States::Testing)
-						cost->ConfusionMatrix[hotIndex][sampleLabels[b][labelIndex]]++;
+						cost->ConfusionMatrix[hotIndex][sampleLabels[b][labelIndex].LabelA]++;
 				}
 			}
 		}
@@ -1333,12 +1333,29 @@ namespace dnn
 			return false;
 		}
 
+		std::vector<LabelInfo> GetLabelInfo(std::vector<UInt> labels)
+		{
+			const auto hiearchies = DataProv->Hierarchies;
+			auto SampleLabels = std::vector<LabelInfo>(hiearchies);
+
+			for (auto hierarchie = 0ull; hierarchie < hiearchies; hierarchie++)
+			{
+				SampleLabels[hierarchie].LabelA = labels[hierarchie];
+				SampleLabels[hierarchie].WeightA = Float(1);
+				SampleLabels[hierarchie].LabelB = labels[hierarchie];
+				SampleLabels[hierarchie].WeightB = Float(1);
+			}
+
+			return SampleLabels;
+		}
+
 #ifdef DNN_STOCHASTIC
-		std::vector<UInt> TrainSample(const UInt index)
+		std::vector<LabelInfo> TrainSample(const UInt index)
 		{
 			const auto randomIndex = RandomTrainingSamples[index];
 
-			auto SampleLabel = DataProv->TrainingLabels[randomIndex];
+			auto label = DataProv->TrainingLabels[randomIndex];
+			auto SampleLabel = GetLabelInfo(label);
 
 			auto dstImageByte = DataProv->TrainingSamples[randomIndex];
 
@@ -1385,9 +1402,10 @@ namespace dnn
 			return SampleLabel;
 		}
 
-		std::vector<UInt> TestSample(const UInt index)
+		std::vector<LabelInfo> TestSample(const UInt index)
 		{
-			auto SampleLabel = DataProv->TestingLabels[index];
+			auto label = DataProv->TestingLabels[index];
+			auto SampleLabel = GetLabelInfo(label);
 
 			auto dstImageByte = DataProv->TestingSamples[index];
 
@@ -1413,9 +1431,10 @@ namespace dnn
 			return SampleLabel;
 		}
 
-		std::vector<UInt> TestAugmentedSample(const UInt index)
+		std::vector<LabelInfo> TestAugmentedSample(const UInt index)
 		{
-			auto SampleLabel = DataProv->TestingLabels[index];
+			auto label = DataProv->TestingLabels[index];
+			auto SampleLabel = GetLabelInfo(label);
 
 			auto dstImageByte = DataProv->TestingSamples[index];
 
@@ -1463,9 +1482,9 @@ namespace dnn
 		}
 #endif
 
-		std::vector<std::vector<UInt>> TrainBatch(const UInt index, const UInt batchSize)
+		std::vector<std::vector<LabelInfo>> TrainBatch(const UInt index, const UInt batchSize)
 		{
-			auto SampleLabels = std::vector<std::vector<UInt>>(batchSize, std::vector<UInt>(DataProv->Hierarchies));
+			auto SampleLabels = std::vector<std::vector<LabelInfo>>(batchSize, std::vector<LabelInfo>(DataProv->Hierarchies));
 			const auto resize = DataProv->TrainingSamples[0].Depth != SampleD || DataProv->TrainingSamples[0].Height != SampleH || DataProv->TrainingSamples[0].Width != SampleW;
 
 			static thread_local auto generator = std::mt19937(Seed<unsigned>());
@@ -1475,8 +1494,9 @@ namespace dnn
 			{
 				const auto randomIndex = (index + batchIndex >= DataProv->TrainingSamplesCount) ? RandomTrainingSamples[batchIndex] : RandomTrainingSamples[index + batchIndex];
 				
-				SampleLabels[batchIndex] = DataProv->TrainingLabels[randomIndex];
-
+				auto labels = DataProv->TrainingLabels[randomIndex];
+				SampleLabels[batchIndex] = GetLabelInfo(labels);
+				
 				auto dstImageByte = Image<Byte>(DataProv->TrainingSamples[randomIndex]);
 				
 				if (CurrentTrainingRate.HorizontalFlip && TrainingSamplesHFlip[randomIndex])
@@ -1532,9 +1552,9 @@ namespace dnn
 			return SampleLabels;
 		}
 
-		std::vector<std::vector<UInt>> TestBatch(const UInt index, const UInt batchSize)
+		std::vector<std::vector<LabelInfo>> TestBatch(const UInt index, const UInt batchSize)
 		{
-			auto SampleLabels = std::vector<std::vector<UInt>>(batchSize, std::vector<UInt>(DataProv->Hierarchies));
+			auto SampleLabels = std::vector<std::vector<LabelInfo>>(batchSize, std::vector<LabelInfo>(DataProv->Hierarchies));
 
 			const auto resize = DataProv->TestingSamples[0].Depth != SampleD || DataProv->TestingSamples[0].Height != SampleH || DataProv->TestingSamples[0].Width != SampleW;
 
@@ -1542,7 +1562,8 @@ namespace dnn
 			{
 				const auto sampleIndex = ((index + batchIndex) >= DataProv->TestingSamplesCount) ? batchIndex : index + batchIndex;
 
-				SampleLabels[batchIndex] = DataProv->TestingLabels[sampleIndex];
+				auto labels = DataProv->TestingLabels[sampleIndex];
+				SampleLabels[batchIndex] = GetLabelInfo(labels);
 
 				auto dstImageByte = DataProv->TestingSamples[sampleIndex];
 
@@ -1568,9 +1589,9 @@ namespace dnn
 			return SampleLabels;
 		}
 
-		std::vector<std::vector<UInt>> TestAugmentedBatch(const UInt index, const UInt batchSize)
+		std::vector<std::vector<LabelInfo>> TestAugmentedBatch(const UInt index, const UInt batchSize)
 		{
-			auto SampleLabels = std::vector<std::vector<UInt>>(batchSize, std::vector<UInt>(DataProv->Hierarchies));
+			auto SampleLabels = std::vector<std::vector<LabelInfo>>(batchSize, std::vector<LabelInfo>(DataProv->Hierarchies));
 
 			const auto resize = DataProv->TestingSamples[0].Depth != SampleD || DataProv->TestingSamples[0].Height != SampleH || DataProv->TestingSamples[0].Width != SampleW;
 
@@ -1581,7 +1602,8 @@ namespace dnn
 			{
 				const auto sampleIndex = ((index + batchIndex) >= DataProv->TestingSamplesCount) ? batchIndex : index + batchIndex;
 
-				SampleLabels[batchIndex] = DataProv->TestingLabels[sampleIndex];
+				auto labels = DataProv->TestingLabels[sampleIndex];
+				SampleLabels[batchIndex] = GetLabelInfo(labels);
 
 				auto dstImageByte = DataProv->TestingSamples[sampleIndex];
 
