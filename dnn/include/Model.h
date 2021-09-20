@@ -1335,10 +1335,10 @@ namespace dnn
 
 		std::vector<LabelInfo> GetLabelInfo(std::vector<UInt> labels)
 		{
-			const auto hiearchies = DataProv->Hierarchies;
-			auto SampleLabels = std::vector<LabelInfo>(hiearchies);
+			const auto hierarchies = DataProv->Hierarchies;
+			auto SampleLabels = std::vector<LabelInfo>(hierarchies);
 
-			for (auto hierarchie = 0ull; hierarchie < hiearchies; hierarchie++)
+			for (auto hierarchie = 0ull; hierarchie < hierarchies; hierarchie++)
 			{
 				SampleLabels[hierarchie].LabelA = labels[hierarchie];
 				SampleLabels[hierarchie].WeightA = Float(1);
@@ -1484,7 +1484,8 @@ namespace dnn
 
 		std::vector<std::vector<LabelInfo>> TrainBatch(const UInt index, const UInt batchSize)
 		{
-			auto SampleLabels = std::vector<std::vector<LabelInfo>>(batchSize, std::vector<LabelInfo>(DataProv->Hierarchies));
+			const auto hierarchies = DataProv->Hierarchies;
+			auto SampleLabels = std::vector<std::vector<LabelInfo>>(batchSize, std::vector<LabelInfo>(hierarchies));
 			const auto resize = DataProv->TrainingSamples[0].Depth != SampleD || DataProv->TrainingSamples[0].Height != SampleH || DataProv->TrainingSamples[0].Width != SampleW;
 
 			static thread_local auto generator = std::mt19937(Seed<unsigned>());
@@ -1527,7 +1528,14 @@ namespace dnn
 					{
 						const auto randomIndexMix = (index + batchIndex + 1 >= DataProv->TrainingSamplesCount) ? RandomTrainingSamples[batchIndex + 1] : RandomTrainingSamples[index + batchIndex + 1];
 						auto dstImageByteMix = Image<Byte>(DataProv->TrainingSamples[randomIndexMix]);
-						dstImageByte = Image<Byte>::RandomCutMix(dstImageByte, dstImageByteMix, beta(generator));
+						auto lambda = beta(generator);
+						dstImageByte = Image<Byte>::RandomCutMix(dstImageByte, dstImageByteMix, lambda);
+						for (UInt hierarchie = 0ull; hierarchie < hierarchies; hierarchie++)
+						{
+							SampleLabels[hierarchie][batchIndex].WeightA = lambda;
+							SampleLabels[hierarchie][batchIndex].LabelB = DataProv->TrainingLabels[hierarchie][randomIndexMix];
+							SampleLabels[hierarchie][batchIndex].WeightB = Float(1) - lambda;
+						}
 					}
 				}
 
@@ -1555,7 +1563,6 @@ namespace dnn
 		std::vector<std::vector<LabelInfo>> TestBatch(const UInt index, const UInt batchSize)
 		{
 			auto SampleLabels = std::vector<std::vector<LabelInfo>>(batchSize, std::vector<LabelInfo>(DataProv->Hierarchies));
-
 			const auto resize = DataProv->TestingSamples[0].Depth != SampleD || DataProv->TestingSamples[0].Height != SampleH || DataProv->TestingSamples[0].Width != SampleW;
 
 			for_i(batchSize, MEDIUM_COMPUTE, [=, &SampleLabels](const UInt batchIndex)
@@ -1592,13 +1599,9 @@ namespace dnn
 		std::vector<std::vector<LabelInfo>> TestAugmentedBatch(const UInt index, const UInt batchSize)
 		{
 			auto SampleLabels = std::vector<std::vector<LabelInfo>>(batchSize, std::vector<LabelInfo>(DataProv->Hierarchies));
-
 			const auto resize = DataProv->TestingSamples[0].Depth != SampleD || DataProv->TestingSamples[0].Height != SampleH || DataProv->TestingSamples[0].Width != SampleW;
 
-			static thread_local auto generator = std::mt19937(Seed<unsigned>());
-			beta_distribution<Float> beta(1, 1);
-
-			for_i(batchSize, [=, &SampleLabels, &beta](const UInt batchIndex)
+			for_i(batchSize, [=, &SampleLabels](const UInt batchIndex)
 			{
 				const auto sampleIndex = ((index + batchIndex) >= DataProv->TestingSamplesCount) ? batchIndex : index + batchIndex;
 
@@ -1627,18 +1630,9 @@ namespace dnn
 				if (Bernoulli<bool>(CurrentTrainingRate.Distortion))
 					dstImageByte = Image<Byte>::Distorted(dstImageByte, CurrentTrainingRate.Scaling, CurrentTrainingRate.Rotation, Interpolations(CurrentTrainingRate.Interpolation), DataProv->Mean);
 
-				if (Bernoulli<bool>(CurrentTrainingRate.Cutout))
-				{
-					if (!CurrentTrainingRate.CutMix)
-						dstImageByte = Image<Byte>::RandomCutout(dstImageByte, DataProv->Mean);
-					else
-					{
-						const auto randomIndexMix = (index + batchIndex + 1 >= DataProv->TrainingSamplesCount) ? RandomTrainingSamples[batchIndex + 1] : RandomTrainingSamples[index + batchIndex + 1];
-						auto dstImageByteMix = Image<Byte>(DataProv->TrainingSamples[randomIndexMix]);
-						dstImageByte = Image<Byte>::RandomCutMix(dstImageByte, dstImageByteMix, beta(generator));
-					}
-				}
-
+				if (Bernoulli<bool>(CurrentTrainingRate.Cutout) && !CurrentTrainingRate.CutMix)
+					dstImageByte = Image<Byte>::RandomCutout(dstImageByte, DataProv->Mean);
+				
 				if (RandomCrop)
 					dstImageByte = Image<Byte>::Crop(dstImageByte, Positions::Center, SampleD, SampleH, SampleW, DataProv->Mean);
 
