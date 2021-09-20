@@ -598,6 +598,13 @@ namespace dnn
 		}
 	};
 
+	template<typename T>
+	static auto BetaDistribution(const T min, const T max) noexcept
+	{
+		static thread_local auto generator = std::mt19937(Seed<unsigned>());
+		return beta_distribution<T>(min, max)(generator);
+	}
+
 	static auto FloatToString(const Float value, const std::streamsize precision = 8)
 	{
 		std::stringstream stream; 

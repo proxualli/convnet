@@ -1349,6 +1349,22 @@ namespace dnn
 			return SampleLabels;
 		}
 
+		std::vector<LabelInfo> GetCutMixLabelInfo(std::vector<UInt> labels, std::vector<UInt> mixLabels, Float lambda)
+		{
+			const auto hierarchies = DataProv->Hierarchies;
+			auto SampleLabels = std::vector<LabelInfo>(hierarchies);
+
+			for (auto hierarchie = 0ull; hierarchie < hierarchies; hierarchie++)
+			{
+				SampleLabels[hierarchie].LabelA = labels[hierarchie];
+				SampleLabels[hierarchie].WeightA = lambda;
+				SampleLabels[hierarchie].LabelB = mixLabels[hierarchie];
+				SampleLabels[hierarchie].WeightB = Float(1) - lambda;
+			}
+
+			return SampleLabels;
+		}
+
 #ifdef DNN_STOCHASTIC
 		std::vector<LabelInfo> TrainSample(const UInt index)
 		{
@@ -1459,7 +1475,19 @@ namespace dnn
 				dstImageByte = Image<Byte>::Distorted(dstImageByte, CurrentTrainingRate.Scaling, CurrentTrainingRate.Rotation, Interpolations(CurrentTrainingRate.Interpolation), DataProv->Mean);
 
 			if (Bernoulli<bool>(CurrentTrainingRate.Cutout))
-				dstImageByte = Image<Byte>::RandomCutout(dstImageByte, DataProv->Mean);
+			{
+				if (!CurrentTrainingRate.CutMix)
+					dstImageByte = Image<Byte>::RandomCutout(dstImageByte, DataProv->Mean);
+				else
+				{
+					const auto randomIndexMix = (index + 1 >= DataProv->TrainingSamplesCount) ? RandomTrainingSamples[1] : RandomTrainingSamples[index + 1];
+					auto mixLabel = DataProv->TrainingLabels[randomIndexMix];
+					auto dstImageByteMix = Image<Byte>::Padding(DataProv->TrainingSamples[randomIndexMix], PadD, PadH, PadW, DataProv->Mean, MirrorPad);
+					auto lambda = BetaDistribution<Float>(1, 1);
+					dstImageByte = Image<Byte>::RandomCutMix(dstImageByte, dstImageByteMix, lambda);
+					SampleLabel = GetCutMixLabelInfo(label, mixLabel, lambda);
+				}
+			}
 
 			if (RandomCrop)
 				dstImageByte = Image<Byte>::Crop(dstImageByte, Positions::Center, SampleD, SampleH, SampleW, DataProv->Mean);
@@ -1488,10 +1516,7 @@ namespace dnn
 			auto SampleLabels = std::vector<std::vector<LabelInfo>>(batchSize, std::vector<LabelInfo>(hierarchies));
 			const auto resize = DataProv->TrainingSamples[0].Depth != SampleD || DataProv->TrainingSamples[0].Height != SampleH || DataProv->TrainingSamples[0].Width != SampleW;
 
-			static thread_local auto generator = std::mt19937(Seed<unsigned>());
-			beta_distribution<Float> beta(1, 1);
-
-			for_i(batchSize, [=, &SampleLabels, &beta](const UInt batchIndex)
+			for_i(batchSize, [=, &SampleLabels](const UInt batchIndex)
 			{
 				const auto randomIndex = (index + batchIndex >= DataProv->TrainingSamplesCount) ? RandomTrainingSamples[batchIndex] : RandomTrainingSamples[index + batchIndex];
 				
@@ -1527,15 +1552,11 @@ namespace dnn
 					else
 					{
 						const auto randomIndexMix = (index + batchIndex + 1 >= DataProv->TrainingSamplesCount) ? RandomTrainingSamples[batchIndex + 1] : RandomTrainingSamples[index + batchIndex + 1];
-						auto dstImageByteMix = Image<Byte>(DataProv->TrainingSamples[randomIndexMix]);
-						auto lambda = beta(generator);
+						auto mixLabel = DataProv->TrainingLabels[randomIndexMix];
+						auto dstImageByteMix = Image<Byte>::Padding(DataProv->TrainingSamples[randomIndexMix], PadD, PadH, PadW, DataProv->Mean, MirrorPad);
+						auto lambda = BetaDistribution<Float>(1, 1);
 						dstImageByte = Image<Byte>::RandomCutMix(dstImageByte, dstImageByteMix, lambda);
-						for (UInt hierarchie = 0ull; hierarchie < hierarchies; hierarchie++)
-						{
-							SampleLabels[hierarchie][batchIndex].WeightA = lambda;
-							SampleLabels[hierarchie][batchIndex].LabelB = DataProv->TrainingLabels[hierarchie][randomIndexMix];
-							SampleLabels[hierarchie][batchIndex].WeightB = Float(1) - lambda;
-						}
+						SampleLabels[batchIndex] = GetCutMixLabelInfo(labels, mixLabel, lambda);
 					}
 				}
 

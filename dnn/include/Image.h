@@ -1090,16 +1090,16 @@ namespace dnn
 		{
 			Image dstImage(image);
 			Image mixImage(imageMix);
-			
+
 			const auto cutH = int(mixImage.Height * std::sqrt(Float(1) - lambda));
 			const auto cutW = int(mixImage.Width * std::sqrt(Float(1) - lambda));
 			const auto cy = UniformInt<UInt>(0, dstImage.Height);
 			const auto cx = UniformInt<UInt>(0, dstImage.Width);
 			const auto bby1 = Clamp<UInt>(cy - cutH / 2, 0, dstImage.Height);
-			const auto bbx1 = Clamp<UInt>(cx - cutW / 2, 0, dstImage.Width);
 			const auto bby2 = Clamp<UInt>(cy + cutH / 2, 0, dstImage.Height);
+			const auto bbx1 = Clamp<UInt>(cx - cutW / 2, 0, dstImage.Width);
 			const auto bbx2 = Clamp<UInt>(cx + cutW / 2, 0, dstImage.Width);
-			lambda = Float(1) - ((bbx2 - bbx1) * (bby2 - bby1)) / imageMix.Area();
+			lambda = Float(1) - (Float(bbx2 - bbx1) * Float(bby2 - bby1) / Float(dstImage.Area()));
 			for (auto c = 0ull; c < dstImage.Channels; c++)
 				for (auto d = 0ull; d < dstImage.Depth; d++)
 					for (auto h = bby1; h < bby2; h++)
