@@ -1099,7 +1099,7 @@ namespace dnn
 			const auto bbx1 = Clamp<UInt>(cx - cutW / 2, 0, dstImage.Width);
 			const auto bby2 = Clamp<UInt>(cy + cutH / 2, 0, dstImage.Height);
 			const auto bbx2 = Clamp<UInt>(cx + cutW / 2, 0, dstImage.Width);
-			lamda = Float(1) - ((bbx2 - bbx1) * (bby2 - bby1) / imageMix.Area;
+			lambda = Float(1) - ((bbx2 - bbx1) * (bby2 - bby1)) / imageMix.Area();
 			for (auto c = 0ull; c < dstImage.Channels; c++)
 				for (auto d = 0ull; d < dstImage.Depth; d++)
 					for (auto h = bby1; h < bby2; h++)
