@@ -102,9 +102,8 @@ namespace dnn
 	struct LabelInfo
 	{
 		UInt LabelA;
-		Float WeightA;
 		UInt LabelB;
-		Float WeightB;
+		Float Lambda;	
 	};
 
 #if defined(DNN_AVX512BW) || defined(DNN_AVX512)
@@ -508,7 +507,7 @@ namespace dnn
 		static thread_local auto generator = std::mt19937(Seed<unsigned>());
 		return std::uniform_real_distribution<T>(min, max)(generator);
 	}
- 
+
 	// from Stack Overflow https://stackoverflow.com/questions/15165202/random-number-generator-with-beta-distribution
 	template <typename RealType = double>
 	class beta_distribution

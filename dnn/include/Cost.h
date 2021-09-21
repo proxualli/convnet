@@ -420,9 +420,9 @@ namespace dnn
 							InputLayer->NeuronsD1[c] = std::exp(InputLayerOriginal->Neurons[c]) - (Eps / (C - 1));
 
 						const auto labelA = SampleLabel[LabelIndex].LabelA;
-						const auto weightA = SampleLabel[LabelIndex].WeightA;
+						const auto weightA = SampleLabel[LabelIndex].Lambda;
 						const auto labelB = SampleLabel[LabelIndex].LabelB;
-						const auto weightB = SampleLabel[LabelIndex].WeightB;
+						const auto weightB = Float(1) - weightA;
 						InputLayer->NeuronsD1[labelA] = std::exp(InputLayerOriginal->Neurons[labelA] * weightA) - ((Float(1) - Eps) + (Eps / C));
 						InputLayer->NeuronsD1[labelB] = std::exp(InputLayerOriginal->Neurons[labelB] * weightB) - ((Float(1) - Eps) + (Eps / C));
 					}
@@ -435,9 +435,9 @@ namespace dnn
 						for (auto n = 0ull; n < batchSize; n++)
 						{
 							const auto labelA = SampleLabels[n][LabelIndex].LabelA + (n * C);
-							const auto weightA = SampleLabels[n][LabelIndex].WeightA;
+							const auto weightA = SampleLabels[n][LabelIndex].Lambda;
 							const auto labelB = SampleLabels[n][LabelIndex].LabelB + (n * C);
-							const auto weightB = SampleLabels[n][LabelIndex].WeightB;
+							const auto weightB = Float(1) - weightA;
 							InputLayer->NeuronsD1[labelA] = std::exp(InputLayerOriginal->Neurons[labelA] * weightA) - ((Float(1) - Eps) + (Eps / C));
 							InputLayer->NeuronsD1[labelB] = std::exp(InputLayerOriginal->Neurons[labelB] * weightB) - ((Float(1) - Eps) + (Eps / C));
 						}
@@ -454,9 +454,9 @@ namespace dnn
 							InputLayer->NeuronsD1[c] = InputLayerOriginal->Neurons[c] - (Eps / C);
 
 						const auto labelA = SampleLabel[LabelIndex].LabelA;
-						const auto weightA = SampleLabel[LabelIndex].WeightA;
+						const auto weightA = SampleLabel[LabelIndex].Lambda;
 						const auto labelB = SampleLabel[LabelIndex].LabelB;
-						const auto weightB = SampleLabel[LabelIndex].WeightB;
+						const auto weightB = Float(1) - weightA;
 						InputLayer->NeuronsD1[labelA] = (InputLayerOriginal->Neurons[labelA] * weightA) - ((Float(1) - Eps) + (Eps / C));
 						InputLayer->NeuronsD1[labelB] = (InputLayerOriginal->Neurons[labelB] * weightB) - ((Float(1) - Eps) + (Eps / C));
 					}
@@ -469,9 +469,9 @@ namespace dnn
 						for (auto n = 0ull; n < batchSize; n++)
 						{
 							const auto labelA = SampleLabels[n][LabelIndex].LabelA + (n * C);
-							const auto weightA = SampleLabels[n][LabelIndex].WeightA;
+							const auto weightA = SampleLabels[n][LabelIndex].Lambda;
 							const auto labelB = SampleLabels[n][LabelIndex].LabelB + (n * C);
-							const auto weightB = SampleLabels[n][LabelIndex].WeightB;
+							const auto weightB = Float(1) - weightA;
 							InputLayer->NeuronsD1[labelA] = (InputLayerOriginal->Neurons[labelA] * weightA) - ((Float(1) - Eps) + (Eps / C));
 							InputLayer->NeuronsD1[labelB] = (InputLayerOriginal->Neurons[labelB] * weightB) - ((Float(1) - Eps) + (Eps / C));
 						}
