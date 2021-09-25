@@ -15,7 +15,7 @@
     <ProjectGuid>{773B7924-852A-470B-9091-735E10BC67ED}</ProjectGuid>
     <Keyword>NetCoreCProj</Keyword>
     <RootNamespace>dnncore</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.19041.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />

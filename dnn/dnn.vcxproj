@@ -14,7 +14,7 @@
     <ProjectGuid>{78F1BB71-C716-48F5-9429-4537F1AE6319}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>dnn</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.19041.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
     <ProjectName>dnn</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
