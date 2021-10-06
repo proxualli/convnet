@@ -3,6 +3,8 @@ using Convnet.Dialogs;
 using Convnet.Properties;
 using dnncore;
 using OxyPlot;
+using OxyPlot.Axes;
+using OxyPlot.Legends;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -66,6 +68,7 @@ namespace Convnet.PageViewModels
         private string pointsTestLabel;
         private PlotType currentPlotType;
         private LegendPosition currentLegendPosition;
+        private PlotModel plotModel;
         private BitmapSource weightsSnapshot;
         private BitmapSource inputSnapshot;
         private readonly StringBuilder sb;
@@ -75,11 +78,60 @@ namespace Convnet.PageViewModels
         public event EventHandler Open;
         public event EventHandler Save;
         public event EventHandler<int?> RefreshRateChanged;
-       
+
         public TrainPageViewModel(dnncore.Model model) : base(model)
         {
             sb = new StringBuilder();
             refreshRate = Settings.Default.RefreshInterval;
+            plotModel = new PlotModel();
+            var laLeft = new LinearAxis
+            {
+                Title = "",
+                Position = AxisPosition.Left,
+                MajorGridlineStyle = LineStyle.Solid,
+                MinorGridlineStyle = LineStyle.Dot,
+                IsAxisVisible = true,
+                IsPanEnabled = false,
+                IsZoomEnabled = false
+            };
+            var laBottomn = new LinearAxis
+            {
+                Title = "Epochs",
+                TitleFontSize = 14,
+                Position = AxisPosition.Bottom,
+                MajorGridlineStyle = LineStyle.Solid,
+                MinorGridlineStyle = LineStyle.Dot,
+                IsAxisVisible = true,
+                IsPanEnabled = false,
+                IsZoomEnabled = false
+            };
+            plotModel.Axes.Add(laLeft);
+            plotModel.Axes.Add(laBottomn);
+            pointsTrain = new ObservableCollection<DataPoint>();
+            pointsTest = new ObservableCollection<DataPoint>();
+            var lsTrain = new OxyPlot.Series.LineSeries
+            {
+                ItemsSource = PointsTrain,
+                Title = PointsTrainLabel,
+                Color = OxyColor.FromRgb(237, 125, 49)
+            };
+            var lsTest = new OxyPlot.Series.LineSeries
+            {
+                ItemsSource = PointsTest,
+                Title = PointsTestLabel,
+                Color = OxyColor.FromRgb(91, 155, 213)
+            };
+            plotModel.Series.Add(lsTrain);
+            plotModel.Series.Add(lsTest);
+            var legend = new Legend();
+            legend.LegendFont = "Consolas";
+            legend.LegendPosition = CurrentLegendPosition;
+            legend.LegendTitleFontSize = 16;
+            legend.LegendFontSize = 16;
+            legend.LegendPosition = LegendPosition.RightBottom;
+            plotModel.Legends.Add(legend);
+            plotModel.TextColor = OxyColor.FromRgb(255, 255, 255);
+            plotModel.Background = OxyColor.FromRgb(100, 100, 100);
 
             if (Model != null)
             {
@@ -98,13 +150,26 @@ namespace Convnet.PageViewModels
             currentPlotType = (PlotType)Settings.Default.PlotType;
             currentLegendPosition = currentPlotType == PlotType.Accuracy ? LegendPosition.BottomRight : LegendPosition.TopRight;
             optimizer = (DNNOptimizers)Settings.Default.Optimizer;
-
+            
             AddCommandButtons();
 
             Modelhanged += TrainPageViewModel_ModelChanged;
             RefreshRateChanged += TrainPageViewModel_RefreshRateChanged;
 
             (UIElementAutomationPeer.CreatePeerForElement(refreshButton).GetPattern(PatternInterface.Invoke) as IInvokeProvider).Invoke();
+        }
+
+        public PlotModel PlotModel
+        {
+            get { return plotModel; }
+            set
+            {
+                if (plotModel == value)
+                    return;
+                    
+                plotModel = value;
+                OnPropertyChanged(nameof(PlotModel));
+            }
         }
 
         private void TrainPageViewModel_RefreshRateChanged(object sender, int? e)
@@ -760,8 +825,8 @@ namespace Convnet.PageViewModels
 
         public void RefreshTrainingPlot()
         {
-            pointsTrain = new ObservableCollection<DataPoint>();
-            pointsTest = new ObservableCollection<DataPoint>();
+            PointsTrain.Clear();
+            PointsTest.Clear();
 
             switch (CurrentPlotType)
             {
@@ -804,9 +869,13 @@ namespace Convnet.PageViewModels
                     PointsTestLabel = "Avg Test Loss";
                     break;
             }
+            plotModel.Series[0].Title = PointsTrainLabel;
+            plotModel.Series[1].Title = PointsTestLabel;
 
             OnPropertyChanged(nameof(PointsTrain));
             OnPropertyChanged(nameof(PointsTest));
+           
+            plotModel.InvalidatePlot(true);
         }
 
         public bool SGDR

@@ -4,6 +4,7 @@
              xmlns:converters="clr-namespace:Convnet.Converters"
              xmlns:props="clr-namespace:Convnet.Properties"
              xmlns:oxy="clr-namespace:OxyPlot.Wpf;assembly=OxyPlot.Wpf"
+             xmlns:oxyshared="clr-namespace:OxyPlot.Wpf;assembly=OxyPlot.Wpf.Shared" 
              x:Class="Convnet.PageViews.TrainPageView"
              Foreground="White">
            
@@ -55,30 +56,22 @@
                 </ScrollViewer>
             </Border>
             <Border x:Name="BorderTrainingPlot" BorderThickness="1" CornerRadius="3" Margin="1,1,1,1" Padding="2" Visibility="{Binding ShowTrainingPlot, Converter={StaticResource BooleanToVisibilityConverter}}" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="1" Grid.RowSpan="1" MaxHeight="{Binding ActualHeight, ElementName=BorderWeightsMinMax}" Background="#FF646464">
-                <oxy:Plot x:Name="TrainingPlot" MouseLeftButtonDown="TrainingPlot_MouseLeftButtonDown" Background="#FF646464" LegendTitleFontSize="16" LegendFont="Consolas" LegendFontSize="16" TextColor="White" LegendPosition="{Binding CurrentLegendPosition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" DisconnectCanvasWhileUpdating="True" >
-                    <oxy:Plot.DefaultTrackerTemplate>
+                <oxy:PlotView x:Name="TrainingPlot" Model="{Binding PlotModel, Mode=TwoWay}" MouseLeftButtonDown="TrainingPlot_MouseLeftButtonDown" Background="#FF646464">
+                    <oxy:PlotView.DefaultTrackerTemplate>
                         <ControlTemplate>
-                            <oxy:TrackerControl Position="{Binding Position}" LineExtents="{Binding PlotModel.PlotArea}" Background="Transparent" BorderBrush="Transparent">
-                                <oxy:TrackerControl.Content>
+                            <oxyshared:TrackerControl Position="{Binding Position}" LineExtents="{Binding PlotModel.PlotArea}" Background="Transparent" BorderBrush="Transparent">
+                                <oxyshared:TrackerControl.Content>
                                     <UniformGrid Columns="2" Canvas.Left="{Binding Position.X}" Canvas.Top="{Binding Position.Y}" Margin="3">
                                         <TextBlock Text="{Binding DataPoint.X, StringFormat='{}{0:0}'}"/>
                                         <TextBlock Text="Epochs" FontWeight="DemiBold" />
                                         <TextBlock Text="{Binding DataPoint.Y, StringFormat='{}{0:0.000}'}"/>
                                         <TextBlock Text="{Binding Series.Title}" FontWeight="DemiBold"/>
                                     </UniformGrid>
-                                </oxy:TrackerControl.Content>
-                            </oxy:TrackerControl>
+                                </oxyshared:TrackerControl.Content>
+                            </oxyshared:TrackerControl>
                         </ControlTemplate>
-                    </oxy:Plot.DefaultTrackerTemplate>
-                    <oxy:Plot.Axes>
-                        <oxy:LinearAxis Title="" Position="Left" MajorGridlineStyle="Solid" MinorGridlineStyle="Dot" IsAxisVisible="True" IsPanEnabled="False" IsZoomEnabled="False" />
-                        <oxy:LinearAxis Title="Epochs" Position="Bottom" MajorGridlineStyle="Solid" MinorGridlineStyle="Dot" IsAxisVisible="True" IsPanEnabled="False" IsZoomEnabled="False"  />
-                    </oxy:Plot.Axes>
-                    <oxy:Plot.Series>
-                        <oxy:LineSeries ItemsSource="{Binding PointsTrain, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Title="{Binding PointsTrainLabel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Color="#FFED7D31"/>
-                        <oxy:LineSeries ItemsSource="{Binding PointsTest, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Title="{Binding PointsTestLabel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Color="#FF5B9BD5"/>
-                    </oxy:Plot.Series>
-                </oxy:Plot>
+                    </oxy:PlotView.DefaultTrackerTemplate>
+                </oxy:PlotView>
             </Border>
         </Grid>
 
