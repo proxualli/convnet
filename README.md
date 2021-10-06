@@ -118,7 +118,7 @@
 * [libjpeg-turbo - BSD Licenses](https://github.com/libjpeg-turbo/libjpeg-turbo)
 * [libpng - PNG Reference Library License version 2](https://github.com/glennrp/libpng)
 * [Magic Enum C++ - MIT License](https://github.com/Neargye/magic_enum)
-* [OxyPlot .NET Plotting Library - MIT License](https://github.com/oxyplot/oxyplot/tree/master)
+* [OxyPlot .NET Plotting Library - MIT License](https://github.com/oxyplot/oxyplot)
 
 ### Screenshots
 <p align="center"><img src="https://github.com/zamir1001/convnet/blob/main/doc/model_parameters_cifar10.png" alt="Model Parameters" title="Model Parameters"/></p>
