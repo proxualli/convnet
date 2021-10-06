@@ -158,7 +158,7 @@ namespace Convnet.PageViewModels
 
             (UIElementAutomationPeer.CreatePeerForElement(refreshButton).GetPattern(PatternInterface.Invoke) as IInvokeProvider).Invoke();
         }
-
+        
         public PlotModel PlotModel
         {
             get { return plotModel; }
@@ -166,7 +166,7 @@ namespace Convnet.PageViewModels
             {
                 if (plotModel == value)
                     return;
-                    
+
                 plotModel = value;
                 OnPropertyChanged(nameof(PlotModel));
             }

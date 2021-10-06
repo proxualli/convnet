@@ -642,7 +642,6 @@ namespace Convnet.PageViewModels
                         Xceed.Wpf.Toolkit.MessageBox.Show(ex.Message, "Start dotnet build process failed", MessageBoxButton.OK);
                     }
                     */
-
                 }
             }
 
