@@ -83,55 +83,8 @@ namespace Convnet.PageViewModels
         {
             sb = new StringBuilder();
             refreshRate = Settings.Default.RefreshInterval;
-            plotModel = new PlotModel();
-            var laLeft = new LinearAxis
-            {
-                Title = "",
-                Position = AxisPosition.Left,
-                MajorGridlineStyle = LineStyle.Solid,
-                MinorGridlineStyle = LineStyle.Dot,
-                IsAxisVisible = true,
-                IsPanEnabled = false,
-                IsZoomEnabled = false
-            };
-            var laBottomn = new LinearAxis
-            {
-                Title = "Epochs",
-                TitleFontSize = 14,
-                Position = AxisPosition.Bottom,
-                MajorGridlineStyle = LineStyle.Solid,
-                MinorGridlineStyle = LineStyle.Dot,
-                IsAxisVisible = true,
-                IsPanEnabled = false,
-                IsZoomEnabled = false
-            };
-            plotModel.Axes.Add(laLeft);
-            plotModel.Axes.Add(laBottomn);
-            pointsTrain = new ObservableCollection<DataPoint>();
-            pointsTest = new ObservableCollection<DataPoint>();
-            var lsTrain = new OxyPlot.Series.LineSeries
-            {
-                ItemsSource = PointsTrain,
-                Title = PointsTrainLabel,
-                Color = OxyColor.FromRgb(237, 125, 49)
-            };
-            var lsTest = new OxyPlot.Series.LineSeries
-            {
-                ItemsSource = PointsTest,
-                Title = PointsTestLabel,
-                Color = OxyColor.FromRgb(91, 155, 213)
-            };
-            plotModel.Series.Add(lsTrain);
-            plotModel.Series.Add(lsTest);
-            var legend = new Legend();
-            legend.LegendFont = "Consolas";
-            legend.LegendPosition = CurrentLegendPosition;
-            legend.LegendTitleFontSize = 16;
-            legend.LegendFontSize = 16;
-            legend.LegendPosition = LegendPosition.RightBottom;
-            plotModel.Legends.Add(legend);
-            plotModel.TextColor = OxyColor.FromRgb(255, 255, 255);
-            plotModel.Background = OxyColor.FromRgb(100, 100, 100);
+
+            InitializeTrainingPlot();
 
             if (Model != null)
             {
@@ -159,19 +112,6 @@ namespace Convnet.PageViewModels
             (UIElementAutomationPeer.CreatePeerForElement(refreshButton).GetPattern(PatternInterface.Invoke) as IInvokeProvider).Invoke();
         }
         
-        public PlotModel PlotModel
-        {
-            get { return plotModel; }
-            set
-            {
-                if (plotModel == value)
-                    return;
-
-                plotModel = value;
-                OnPropertyChanged(nameof(PlotModel));
-            }
-        }
-
         private void TrainPageViewModel_RefreshRateChanged(object sender, int? e)
         {
             if (RefreshTimer != null && e.HasValue)
@@ -876,6 +816,72 @@ namespace Convnet.PageViewModels
             OnPropertyChanged(nameof(PointsTest));
            
             plotModel.InvalidatePlot(true);
+        }
+
+        private void InitializeTrainingPlot()
+        {
+            plotModel = new PlotModel();
+            var laLeft = new LinearAxis
+            {
+                Title = "",
+                Position = AxisPosition.Left,
+                MajorGridlineStyle = LineStyle.Solid,
+                MinorGridlineStyle = LineStyle.Dot,
+                IsAxisVisible = true,
+                IsPanEnabled = false,
+                IsZoomEnabled = false
+            };
+            var laBottomn = new LinearAxis
+            {
+                Title = "Epochs",
+                TitleFontSize = 14,
+                Position = AxisPosition.Bottom,
+                MajorGridlineStyle = LineStyle.Solid,
+                MinorGridlineStyle = LineStyle.Dot,
+                IsAxisVisible = true,
+                IsPanEnabled = false,
+                IsZoomEnabled = false
+            };
+            plotModel.Axes.Add(laLeft);
+            plotModel.Axes.Add(laBottomn);
+            pointsTrain = new ObservableCollection<DataPoint>();
+            pointsTest = new ObservableCollection<DataPoint>();
+            var lsTrain = new OxyPlot.Series.LineSeries
+            {
+                ItemsSource = PointsTrain,
+                Title = PointsTrainLabel,
+                Color = OxyColor.FromRgb(237, 125, 49)
+            };
+            var lsTest = new OxyPlot.Series.LineSeries
+            {
+                ItemsSource = PointsTest,
+                Title = PointsTestLabel,
+                Color = OxyColor.FromRgb(91, 155, 213)
+            };
+            plotModel.Series.Add(lsTrain);
+            plotModel.Series.Add(lsTest);
+            var legend = new Legend();
+            legend.LegendFont = "Consolas";
+            legend.LegendPosition = CurrentLegendPosition;
+            legend.LegendTitleFontSize = 16;
+            legend.LegendFontSize = 16;
+            legend.LegendPosition = LegendPosition.RightBottom;
+            plotModel.Legends.Add(legend);
+            plotModel.TextColor = OxyColor.FromRgb(255, 255, 255);
+            plotModel.Background = OxyColor.FromRgb(100, 100, 100);
+        }
+
+        public PlotModel PlotModel
+        {
+            get { return plotModel; }
+            set
+            {
+                if (plotModel == value)
+                    return;
+
+                plotModel = value;
+                OnPropertyChanged(nameof(PlotModel));
+            }
         }
 
         public bool SGDR
