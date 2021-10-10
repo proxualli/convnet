@@ -570,7 +570,7 @@ namespace Convnet
 
                 case ViewModels.Train:
                     saveFileDialog.FileName = Settings.Default.PersistOptimizer ? (PageVM.CurrentPage as TrainPageViewModel).Model.Name + @"-(" + (PageVM.CurrentPage as TrainPageViewModel).Dataset.ToString().ToLower() + @")(" + (PageVM.CurrentPage as TrainPageViewModel).Optimizer.ToString().ToLower() + @")": (PageVM.CurrentPage as TrainPageViewModel).Model.Name + @"-(" + (PageVM.CurrentPage as TrainPageViewModel).Dataset.ToString().ToLower() + @")";
-                    saveFileDialog.Filter = "Weights |*.bin|Log|*.csv";
+                    saveFileDialog.Filter = "Weights|*.bin|Log|*.csv";
                     saveFileDialog.Title = "Save";
                     saveFileDialog.DefaultExt = ".bin";
                     saveFileDialog.FilterIndex = 1;
