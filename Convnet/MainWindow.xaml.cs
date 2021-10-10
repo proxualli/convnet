@@ -112,11 +112,11 @@ namespace Convnet
 
                         if (Settings.Default.PersistOptimizer)
                         {
-                            if (File.Exists(Path.Combine(StateDirectory, Settings.Default.ModelNameActive + "-(" + PageVM.Model.Optimizer.ToString().ToLower(CultureInfo.CurrentCulture) + @").bin")))
+                            if (File.Exists(Path.Combine(StateDirectory, Settings.Default.ModelNameActive + "-(" + PageVM.Model.Dataset.ToString().ToLower(CultureInfo.CurrentCulture) + ")(" + PageVM.Model.Optimizer.ToString().ToLower(CultureInfo.CurrentCulture) + @").bin")))
                             {
-                                if (PageVM.Model.LoadWeights(Path.Combine(StateDirectory, Settings.Default.ModelNameActive + "-(" + PageVM.Model.Optimizer.ToString().ToLower() + @").bin"), true) != 0)
+                                if (PageVM.Model.LoadWeights(Path.Combine(StateDirectory, Settings.Default.ModelNameActive + "-(" + PageVM.Model.Dataset.ToString().ToLower(CultureInfo.CurrentCulture) + ")(" + PageVM.Model.Optimizer.ToString().ToLower() + @").bin"), true) != 0)
                                 {
-                                    if (PageVM.Model.LoadWeights(Path.Combine(StateDirectory, Settings.Default.ModelNameActive + @".bin"), false) == 0)
+                                    if (PageVM.Model.LoadWeights(Path.Combine(StateDirectory, Settings.Default.ModelNameActive + "-(" + PageVM.Model.Dataset.ToString().ToLower(CultureInfo.CurrentCulture) + @").bin"), false) == 0)
                                     {
                                         Settings.Default.PersistOptimizer = !Settings.Default.PersistOptimizer;
                                         Settings.Default.Save();
@@ -127,8 +127,8 @@ namespace Convnet
                         }
                         else
                         {
-                            if (File.Exists(Path.Combine(StateDirectory, Settings.Default.ModelNameActive + @".bin")))
-                                PageVM.Model.LoadWeights(Path.Combine(StateDirectory, Settings.Default.ModelNameActive + @".bin"), false);
+                            if (File.Exists(Path.Combine(StateDirectory, Settings.Default.ModelNameActive + "-(" + PageVM.Model.Dataset.ToString().ToLower(CultureInfo.CurrentCulture) + @").bin")))
+                                PageVM.Model.LoadWeights(Path.Combine(StateDirectory, Settings.Default.ModelNameActive + "-(" + PageVM.Model.Dataset.ToString().ToLower(CultureInfo.CurrentCulture) + @").bin"), false);
                         }
                         Settings.Default.DefinitionActive = File.ReadAllText(Path.Combine(StateDirectory, Settings.Default.ModelNameActive + ".txt"));
                         Settings.Default.Save();
@@ -501,7 +501,7 @@ namespace Convnet
             Mouse.OverrideCursor = Cursors.Wait;
             if (Settings.Default.PersistOptimizer)
             {
-                var fileName = PageVM.Model.Name + "-(" + PageVM.Model.Optimizer.ToString().ToLower() + ").bin";
+                var fileName = PageVM.Model.Name + "-(" + PageVM.Model.Dataset.ToString().ToLower() + ")(" + PageVM.Model.Optimizer.ToString().ToLower() + ").bin";
                 var directory = DefinitionsDirectory + PageVM.Model.Name + @"-weights\";
                 PageVM.Model.SaveWeights(directory + fileName, true);
                 if (File.Exists(directory + fileName))
@@ -515,7 +515,7 @@ namespace Convnet
             }
             else
             {
-                var fileName = PageVM.Model.Name + ".bin";
+                var fileName = PageVM.Model.Name + "-(" + PageVM.Model.Dataset.ToString().ToLower() + ").bin";
                 var directory = DefinitionsDirectory + PageVM.Model.Name + @"-weights\";
                 PageVM.Model.SaveWeights(directory + fileName, false);
                 if (File.Exists(directory + fileName))
@@ -569,8 +569,8 @@ namespace Convnet
                     break;
 
                 case ViewModels.Train:
-                    saveFileDialog.FileName = Settings.Default.PersistOptimizer ? (PageVM.CurrentPage as TrainPageViewModel).Model.Name + @"-(" + (PageVM.CurrentPage as TrainPageViewModel).Optimizer.ToString().ToLower() + @")": (PageVM.CurrentPage as TrainPageViewModel).Model.Name;
-                    saveFileDialog.Filter = "Weights|*.bin|Log|*.csv";
+                    saveFileDialog.FileName = Settings.Default.PersistOptimizer ? (PageVM.CurrentPage as TrainPageViewModel).Model.Name + @"-(" + (PageVM.CurrentPage as TrainPageViewModel).Dataset.ToString().ToLower() + @")(" + (PageVM.CurrentPage as TrainPageViewModel).Optimizer.ToString().ToLower() + @")": (PageVM.CurrentPage as TrainPageViewModel).Model.Name + @"-(" + (PageVM.CurrentPage as TrainPageViewModel).Dataset.ToString().ToLower() + @")";
+                    saveFileDialog.Filter = "Weights |*.bin|Log|*.csv";
                     saveFileDialog.Title = "Save";
                     saveFileDialog.DefaultExt = ".bin";
                     saveFileDialog.FilterIndex = 1;
