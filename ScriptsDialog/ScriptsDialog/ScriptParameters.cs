@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 
@@ -13,9 +14,10 @@ namespace ScriptsDialog
     public enum Scripts
     {
         densenet = 0,
-        mobilenetv3 = 1,
-        resnet = 2,
-        shufflenetv2 = 3
+        efficientnetv2 = 1,
+        mobilenetv3 = 2,
+        resnet = 3,
+        shufflenetv2 = 4
     }
 
     [Serializable()]
@@ -52,6 +54,64 @@ namespace ScriptsDialog
         Relu = 19,
         Swish = 25,
         TanhExp = 27
+    }
+
+    [Serializable()]
+    public class EffNetRecord : INotifyPropertyChanged
+    {
+        private UInt expandRatio;
+        private UInt channels;
+        private UInt iterations;
+        private UInt stride;
+        private bool se;
+
+        [field: NonSerializedAttribute()]
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public EffNetRecord(UInt expandRatio, UInt channels, UInt iterations, UInt stride, bool se)
+        {
+            this.expandRatio = expandRatio;
+            this.channels = channels;
+            this.iterations = iterations;
+            this.stride = stride;
+            this.se = se;
+        }
+
+        public UInt ExpandRatio
+        {
+            get { return expandRatio; }
+            set { expandRatio = value; OnPropertyChanged("ExpandRatio"); }
+        }
+
+        public UInt Channels
+        {
+            get { return channels; }
+            set { channels = value; OnPropertyChanged("Channels"); }
+        }
+
+        public UInt Iterations
+        {
+            get { return iterations; }
+            set { iterations = value; OnPropertyChanged("Iterations"); }
+        }
+
+        public UInt Stride
+        {
+            get { return stride; }
+            set { stride = value; OnPropertyChanged("Stride"); }
+        }
+
+        public bool SE
+        {
+            get { return se; }
+            set { se = value; OnPropertyChanged("SE"); }
+        }
+
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            if (PropertyChanged != null)
+                PropertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
     }
 
     [Serializable()]
@@ -97,6 +157,7 @@ namespace ScriptsDialog
         private bool squeezeExcitation = false;
         private bool channelZeroPad = true;
         private Activations activation = Activations.Relu;
+        private ObservableCollection<EffNetRecord> effnet;
 
         public ScriptParameters(Scripts script = Scripts.shufflenetv2, Datasets dataset = Datasets.cifar10, UInt h = 32, UInt w = 32, UInt padH = 4, UInt padW = 4, bool mirrorPad = false, bool meanStdNorm = true, Fillers weightsFiller = Fillers.HeNormal, Float weightsScale = (Float)0.05, Float weightsLRM = 1, Float weightsWDM = 1, bool hasBias = false, Fillers biasesFiller = Fillers.Constant, Float biasesScale = 0, Float biasesLRM = 1, Float biasesWDM = 1, Float batchNormMomentum = (Float)0.995, Float batchNormEps = (Float)1E-04, bool batchNormScaling = false, Float alpha = (Float)0, Float beta = (Float)0, UInt groups = 3, UInt iterations = 4, UInt width = 8, UInt growthRate = 12, bool bottleneck = false, Float dropout = 0, Float compression = 0, bool squeezeExcitation = false, bool channelZeroPad = true, Activations activation = Activations.Relu)
         {
@@ -136,6 +197,15 @@ namespace ScriptsDialog
             SqueezeExcitation = squeezeExcitation;
             ChannelZeroPad = channelZeroPad;
             Activation = activation;
+
+            var efficientnetv2 = new ObservableCollection<EffNetRecord>();
+            efficientnetv2.Add(new EffNetRecord(1, 24, 2, 1, false));
+            efficientnetv2.Add(new EffNetRecord(4, 48, 4, 2, false));
+            efficientnetv2.Add(new EffNetRecord(4, 64, 4, 2, false));
+            efficientnetv2.Add(new EffNetRecord(4, 128, 6, 2, true));
+            efficientnetv2.Add(new EffNetRecord(6, 160, 9, 1, true));
+            efficientnetv2.Add(new EffNetRecord(6, 256, 15, 2, true));
+            EffNet = efficientnetv2;
         }
 
         public IEnumerable<Scripts> ScriptsList { get { return Enum.GetValues(typeof(Scripts)).Cast<Scripts>(); } }
@@ -159,7 +229,7 @@ namespace ScriptsDialog
                     case Scripts.resnet:
                         return Script.ToString() + "-" + H.ToString() + "x" + W.ToString() + "-" + Groups.ToString() + "-" + Iterations.ToString() + "-" + Width.ToString() + (Dropout > 0 ? "-dropout" : "") + (Bottleneck ? "-bottleneck" : "") + (ChannelZeroPad ? "-channelzeropad" : "") + "-" + Activation.ToString().ToLower();
                     case Scripts.shufflenetv2:
-                        return Script.ToString() + "-" + H.ToString() + "x" + W.ToString() + "-" + Groups.ToString() + "-" + Iterations.ToString() + "-" + Width.ToString() + "-" + Activation.ToString().ToLower() +  (SqueezeExcitation ? "-se" : "");
+                        return Script.ToString() + "-" + H.ToString() + "x" + W.ToString() + "-" + Groups.ToString() + "-" + Iterations.ToString() + "-" + Width.ToString() + "-" + Activation.ToString().ToLower() + (SqueezeExcitation ? "-se" : "");
                     default:
                         return Script.ToString() + "-" + H.ToString() + "x" + W.ToString() + "-" + Groups.ToString() + "-" + Iterations.ToString();
                 }
@@ -185,6 +255,7 @@ namespace ScriptsDialog
                     OnPropertyChanged("ChannelZeroPadVisible");
                     OnPropertyChanged("SqueezeExcitationVisible");
                     OnPropertyChanged("BottleneckVisible");
+                    OnPropertyChanged("EffNetVisible");
                 }
             }
         }
@@ -582,6 +653,8 @@ namespace ScriptsDialog
                 {
                     case Scripts.densenet:
                         return (Groups * Iterations * (Bottleneck ? 2u : 1u)) + ((Groups - 1) * 2);
+                    case Scripts.efficientnetv2:
+                        return (Groups * Iterations * 3) + ((Groups - 1) * 2);
                     case Scripts.mobilenetv3:
                         return (Groups * Iterations * 3) + ((Groups - 1) * 2);
                     case Scripts.resnet:
@@ -667,6 +740,19 @@ namespace ScriptsDialog
             }
         }
 
+        public ObservableCollection<EffNetRecord> EffNet
+        {
+            get { return effnet; }
+            set
+            {
+                if (value != effnet)
+                {
+                    effnet = value;
+                    OnPropertyChanged("EffNet");
+                }
+            }
+        }
+
         public bool DropoutUsed
         {
             get { return (dropout > 0 && dropout < 1); }
@@ -718,12 +804,12 @@ namespace ScriptsDialog
         public bool BottleneckVisible { get { return Script == Scripts.densenet || Script == Scripts.resnet; } }
         public bool SqueezeExcitationVisible { get { return Script == Scripts.mobilenetv3 || Script == Scripts.shufflenetv2; } }
         public bool ChannelZeroPadVisible { get { return Script == Scripts.resnet; } }
-       
+        public bool EffNetVisible { get { return Script == Scripts.efficientnetv2; } }
+
         protected virtual void OnPropertyChanged(string propertyName)
         {
             if (PropertyChanged != null)
                 PropertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
-
 }

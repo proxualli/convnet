@@ -161,17 +161,19 @@ namespace ScriptsDialog
 
         private void Calc()
         {
+            Grid.RowDefinitions[16].Height = Settings.Default.Parameters.EffNetVisible ? new GridLength(120, GridUnitType.Pixel) : new GridLength(0, GridUnitType.Pixel);
+
             comboBoxBiasesFiller.IsEnabled = CheckBoxHasBias.IsChecked.Value;
 
-            Grid.RowDefinitions[21].Height = CheckBoxHasBias.IsChecked.Value && Settings.Default.Parameters.BiasesScaleVisible ? new GridLength(30, GridUnitType.Pixel) : new GridLength(0, GridUnitType.Pixel);
+            Grid.RowDefinitions[22].Height = CheckBoxHasBias.IsChecked.Value && Settings.Default.Parameters.BiasesScaleVisible ? new GridLength(30, GridUnitType.Pixel) : new GridLength(0, GridUnitType.Pixel);
             textBoxBiasesScale.IsEnabled = CheckBoxHasBias.IsChecked.Value && Settings.Default.Parameters.BiasesScaleVisible;
             textBlockBiasesScale.Visibility = CheckBoxHasBias.IsChecked.Value && Settings.Default.Parameters.BiasesScaleVisible ? Visibility.Visible : Visibility.Collapsed;
 
-            Grid.RowDefinitions[22].Height = CheckBoxHasBias.IsChecked.Value ? new GridLength(30, GridUnitType.Pixel) : new GridLength(0, GridUnitType.Pixel);
+            Grid.RowDefinitions[23].Height = CheckBoxHasBias.IsChecked.Value ? new GridLength(30, GridUnitType.Pixel) : new GridLength(0, GridUnitType.Pixel);
             textBoxBiasesLRM.IsEnabled = CheckBoxHasBias.IsChecked.Value;
             textBlockBiasesLRM.Visibility = CheckBoxHasBias.IsChecked.Value ? Visibility.Visible : Visibility.Collapsed;
 
-            Grid.RowDefinitions[23].Height = CheckBoxHasBias.IsChecked.Value ? new GridLength(30, GridUnitType.Pixel) : new GridLength(0, GridUnitType.Pixel);
+            Grid.RowDefinitions[24].Height = CheckBoxHasBias.IsChecked.Value ? new GridLength(30, GridUnitType.Pixel) : new GridLength(0, GridUnitType.Pixel);
             textBoxBiasesWDM.IsEnabled = CheckBoxHasBias.IsChecked.Value;
             textBlockBiasesWDM.Visibility = CheckBoxHasBias.IsChecked.Value ? Visibility.Visible : Visibility.Collapsed;
 
@@ -180,16 +182,19 @@ namespace ScriptsDialog
             removeRows += CheckBoxHasBias.IsChecked.Value ? 0 : 2;
           
             double rowHeight = Grid.RowDefinitions[0].ActualHeight;
-            const double totalHeight = 910;
+            const double totalHeight = 1030;
             switch ((Scripts)comboBoxModel.SelectedIndex)
             {
+                case Scripts.efficientnetv2:
+                    Height = totalHeight - ((7 + removeRows) * rowHeight);
+                    break;
                 case Scripts.densenet:
                 case Scripts.resnet:
-                    Height = totalHeight - ((3 + removeRows) * rowHeight);
+                    Height = totalHeight - ((7 + removeRows) * rowHeight);
                     break;
                 case Scripts.mobilenetv3:
                 case Scripts.shufflenetv2:
-                    Height = totalHeight - ((5 + removeRows) * rowHeight);
+                    Height = totalHeight - ((9 + removeRows) * rowHeight);
                     break;
             }
         }
