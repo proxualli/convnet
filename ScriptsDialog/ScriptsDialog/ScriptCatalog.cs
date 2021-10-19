@@ -413,9 +413,8 @@ namespace ScriptsDialog
 
                 case Scripts.efficientnetv2:
                     {
-                        var se = p.SqueezeExcitation;
                         var channelsplit = true;
-                        var W = p.Width * 16;
+                        var W = p.EffNet[0].Channels;
 
                         net +=
                            Convolution(1, "Input", DIV8(W), 3, 3, 1, 1, 1, 1) +
