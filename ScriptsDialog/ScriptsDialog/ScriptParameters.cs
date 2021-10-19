@@ -68,7 +68,16 @@ namespace ScriptsDialog
         [field: NonSerializedAttribute()]
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public EffNetRecord(UInt expandRatio, UInt channels, UInt iterations, UInt stride, bool se)
+        public EffNetRecord()
+        { 
+            ExpandRatio = 4; 
+            Channels = 24; 
+            Iterations = 2; 
+            Stride = 1; 
+            SE = false;
+        }
+
+        public EffNetRecord(UInt expandRatio = 4, UInt channels= 24, UInt iterations = 2, UInt stride = 1, bool se = false)
         {
             this.expandRatio = expandRatio;
             this.channels = channels;
@@ -157,7 +166,11 @@ namespace ScriptsDialog
         private bool squeezeExcitation = false;
         private bool channelZeroPad = true;
         private Activations activation = Activations.Relu;
-        private ObservableCollection<EffNetRecord> effnet;
+        private ObservableCollection<EffNetRecord> effnet = new ObservableCollection<EffNetRecord>();
+
+        public ScriptParameters()
+        { 
+        }
 
         public ScriptParameters(Scripts script = Scripts.shufflenetv2, Datasets dataset = Datasets.cifar10, UInt h = 32, UInt w = 32, UInt padH = 4, UInt padW = 4, bool mirrorPad = false, bool meanStdNorm = true, Fillers weightsFiller = Fillers.HeNormal, Float weightsScale = (Float)0.05, Float weightsLRM = 1, Float weightsWDM = 1, bool hasBias = false, Fillers biasesFiller = Fillers.Constant, Float biasesScale = 0, Float biasesLRM = 1, Float biasesWDM = 1, Float batchNormMomentum = (Float)0.995, Float batchNormEps = (Float)1E-04, bool batchNormScaling = false, Float alpha = (Float)0, Float beta = (Float)0, UInt groups = 3, UInt iterations = 4, UInt width = 8, UInt growthRate = 12, bool bottleneck = false, Float dropout = 0, Float compression = 0, bool squeezeExcitation = false, bool channelZeroPad = true, Activations activation = Activations.Relu)
         {

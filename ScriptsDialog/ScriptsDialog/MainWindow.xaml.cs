@@ -32,6 +32,8 @@ namespace ScriptsDialog
                 Settings.Default.Parameters = new ScriptParameters(Scripts.shufflenetv2, Datasets.cifar10, 32, 32, 4, 4, false, true, Fillers.HeNormal, 0.05f, 1f, 1f, false, Fillers.Constant, 0f, 1f, 1f, 0.995f, 0.0001f, false, 0f, 0f, 3, 4, 8, 12, false, 0.0f, 0.0f, false, true, Activations.Relu);
                 Settings.Default.Save();
             }
+
+            DataContext = Settings.Default.Parameters;
         }
 
         protected virtual void Dispose(bool disposing)
@@ -53,8 +55,6 @@ namespace ScriptsDialog
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            DataContext = Settings.Default.Parameters;
-
             if (Settings.Default.Parameters.Bottleneck)
                 Settings.Default.Parameters.Compression = 0.5f;
             else
