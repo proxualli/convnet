@@ -161,6 +161,10 @@ namespace ScriptsDialog
 
         private void Calc()
         {
+            Grid.RowDefinitions[4].Height = Settings.Default.Parameters.EffNetVisible ? new GridLength(0, GridUnitType.Pixel) : new GridLength(30, GridUnitType.Pixel);
+            Grid.RowDefinitions[5].Height = Settings.Default.Parameters.EffNetVisible ? new GridLength(0, GridUnitType.Pixel) : new GridLength(30, GridUnitType.Pixel);
+            Grid.RowDefinitions[6].Height = Settings.Default.Parameters.EffNetVisible ? new GridLength(0, GridUnitType.Pixel) : new GridLength(30, GridUnitType.Pixel);
+            Grid.RowDefinitions[7].Height = Settings.Default.Parameters.EffNetVisible ? new GridLength(0, GridUnitType.Pixel) : new GridLength(30, GridUnitType.Pixel);
             Grid.RowDefinitions[16].Height = Settings.Default.Parameters.EffNetVisible ? new GridLength(120, GridUnitType.Pixel) : new GridLength(0, GridUnitType.Pixel);
 
             comboBoxBiasesFiller.IsEnabled = CheckBoxHasBias.IsChecked.Value;
@@ -186,7 +190,7 @@ namespace ScriptsDialog
             switch ((Scripts)comboBoxModel.SelectedIndex)
             {
                 case Scripts.efficientnetv2:
-                    Height = totalHeight - ((7 + removeRows) * rowHeight);
+                    Height = totalHeight - ((11 + removeRows) * rowHeight);
                     break;
                 case Scripts.densenet:
                 case Scripts.resnet:
