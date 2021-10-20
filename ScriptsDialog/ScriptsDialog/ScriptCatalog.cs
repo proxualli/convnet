@@ -464,25 +464,32 @@ namespace ScriptsDialog
                             for (UInt n = 0ul; n < rec.Iterations; n++)
                             {
                                 var stride = n == 0ul ? rec.Stride : 1ul;
-                                var identity = stride == 1 && inputChannels == outputChannels;
-                                var se = rec.SE && n == 0ul;
+                                var identity = stride == 1ul && inputChannels == outputChannels;
 
-                                var subblocks = MBConv(C, inp, inputChannels, outputChannels, stride, rec.ExpandRatio, se, p.Activation);
+                                var subblocks = MBConv(C, inp, inputChannels, outputChannels, stride, rec.ExpandRatio, rec.SE, p.Activation);
                                 foreach (var blk in subblocks)
                                     net += blk;
 
                                 inputChannels = outputChannels;
 
                                 C++;
-                                if (se)
+
+                                if (rec.SE && n == 0ul)
                                     C++;
+                               
+
                                 inp = In((identity ? "A" : "B"), C);
+
+
+                                if (rec.SE && n > 0ul)
+                                    C++;
+
                                 C++;
                             }
                         }
 
                         net +=
-                           Convolution(C, In("A", C - 1), p.Classes, 1, 1, 1, 1, 0, 0) +
+                           Convolution(C, In("A", C - 2), p.Classes, 1, 1, 1, 1, 0, 0) +
                            BatchNormActivation(C + 1, In("C", C), p.Activation) +
                            GlobalAvgPooling(In("B", C + 1)) +
                            Activation("GAP", "LogSoftmax") +
