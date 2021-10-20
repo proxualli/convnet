@@ -271,11 +271,45 @@ namespace ScriptsDialog
                "Eps=" + to_string(eps);
         }
 
-        public static string MBConv(UInt inputChannels, UInt outputChannels, UInt stride = 1, UInt expandRatio = 4, bool se = false)
+        public static List<string> MBConv(UInt id, string inputs, UInt inputChannels, UInt outputChannels, UInt stride = 1, UInt expandRatio = 4, bool se = false, Activations activation = Activations.HardSwish)
         {
-            string str = "";
+            var blocks = new List<string>();
+            var hiddenDim = DIV8(inputChannels * expandRatio);
+            var identity = stride == 1 && inputChannels == outputChannels;
+            var num = id + 1;
 
-            return str;
+            if (se)
+            {
+                var group = In("SE", id + 1);
+                blocks.Add(
+                    Convolution(id, inputs, hiddenDim, 1, 1, 1, 1, 0, 0) +
+                    BatchNormActivation(id, In("C", id), activation) +
+                    DepthwiseConvolution(id + 1, In("B", id), 1, 3, 3, stride, stride, 1, 1) +
+                    BatchNormActivation(id + 1, In("DC", id + 1), activation) +
+                    GlobalAvgPooling(In("B", id + 1), group) +
+                   Convolution(1, group + "GAP", DIV8(hiddenDim / expandRatio), 1, 1, 1, 1, 0, 0, group) +
+                   BatchNormActivation(1, group + "C1", activation == Activations.FRelu ? Activations.HardSwish : activation, group) +
+                   Convolution(2, group + "B1", hiddenDim, 1, 1, 1, 1, 0, 0, group) +
+                   BatchNormActivation(2, group + "C2", "HardLogistic", group) +
+                   ChannelMultiply(In("B", id + 1) + "," + group + "B2", group) +
+                   Convolution(id + 2, group + "CM", DIV8(outputChannels), 1, 1, 1, 1, 0, 0) +
+                   BatchNorm(id + 2, In("C", id + 2)));
+                num += 1;
+            }
+            else
+            {
+
+                blocks.Add(
+                     Convolution(id, inputs, hiddenDim, 3, 3, stride, stride, 1, 1) +
+                     BatchNormActivation(id, In("C", id), activation) +
+                     Convolution(id + 1, In("B", id), DIV8(outputChannels), 1, 1, 1, 1, 0, 0) +
+                    BatchNorm(id + 1, In("C", id + 1)));
+            }
+
+            if (identity)
+                blocks.Add(Add(id + 1, In("B", num) + "," + inputs));
+
+            return blocks;
         }
 
         internal static string Generate(ScriptParameters p)
@@ -413,28 +447,46 @@ namespace ScriptsDialog
 
                 case Scripts.efficientnetv2:
                     {
-                        var channelsplit = true;
                         var W = p.EffNet[0].Channels;
+                        var inputChannels = DIV8(W);
+                        var outputChannels = DIV8(W);
 
                         net +=
-                           Convolution(1, "Input", DIV8(W), 3, 3, 1, 1, 1, 1) +
+                           Convolution(1, "Input", inputChannels, 3, 3, 1, 1, 1, 1) +
                            BatchNormActivation(1, "C1", p.Activation);
 
+                        var C = 2ul;
+
+                        string inp = "B1";
                         foreach (var rec in p.EffNet)
                         {
-                            net += "";
+                            outputChannels = DIV8(rec.Channels);
+                            for (UInt n = 0ul; n < rec.Iterations; n++)
+                            {
+                                var stride = n == 0ul ? rec.Stride : 1ul;
+                                var identity = stride == 1 && inputChannels == outputChannels;
+                                var se = rec.SE && n == 0ul;
+
+                                var subblocks = MBConv(C, inp, inputChannels, outputChannels, stride, rec.ExpandRatio, se, p.Activation);
+                                foreach (var blk in subblocks)
+                                    net += blk;
+
+                                inputChannels = outputChannels;
+
+                                C++;
+                                if (se)
+                                    C++;
+                                inp = In((identity ? "A" : "B"), C);
+                                C++;
+                            }
                         }
 
-                        var A = 1ul;
-                        var C = 5ul;
-
                         net +=
-                           BatchNormActivation(C, In("A", A), p.Activation) +
-                           Convolution(C, In("B", C), p.Classes, 1, 1, 1, 1, 0, 0) +
-                           BatchNorm(C + 1, In("C", C)) +
+                           Convolution(C, In("A", C - 1), p.Classes, 1, 1, 1, 1, 0, 0) +
+                           BatchNormActivation(C + 1, In("C", C), p.Activation) +
                            GlobalAvgPooling(In("B", C + 1)) +
                            Activation("GAP", "LogSoftmax") +
-                           Cost("ACT", p.Dataset, p.Classes, "CategoricalCrossEntropy", 0.125f);
+                           Cost("ACT", p.Dataset, p.Classes, "CategoricalCrossEntropy", 0.1f);
                     }
                     break;
 
