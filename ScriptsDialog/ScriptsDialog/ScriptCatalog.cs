@@ -296,7 +296,6 @@ namespace ScriptsDialog
             }
             else
             {
-
                 blocks.Add(
                     Convolution(id, inputs, hiddenDim, 1, 1, 1, 1, 0, 0) +
                     BatchNormActivation(id, In("C", id), activation) +
@@ -447,21 +446,18 @@ namespace ScriptsDialog
 
                 case Scripts.efficientnetv2:
                     {
-                        var W = p.EffNet[0].Channels;
-                        var inputChannels = DIV8(W);
-                        var outputChannels = DIV8(W);
+                        var inputChannels = DIV8(p.EffNet[0].Channels);
 
                         net +=
                            Convolution(1, "Input", inputChannels, 3, 3, 1, 1, 1, 1) +
                            BatchNormActivation(1, "C1", p.Activation);
 
                         var C = 2ul;
-
-                        string inp = "B1";
+                        var inp = "B1";
                         foreach (var rec in p.EffNet)
                         {
-                            outputChannels = DIV8(rec.Channels);
-                            for (UInt n = 0ul; n < rec.Iterations; n++)
+                            var outputChannels = DIV8(rec.Channels);
+                            for (var n = 0ul; n < rec.Iterations; n++)
                             {
                                 var stride = n == 0ul ? rec.Stride : 1ul;
                                 var identity = stride == 1ul && inputChannels == outputChannels;
@@ -473,14 +469,12 @@ namespace ScriptsDialog
                                 inputChannels = outputChannels;
                                 C += 2;
                                 inp = In((identity ? "A" : "B"), C);
-                                if (rec.SE && n > 0ul)
-                                    C++;
                                 C++;
                             }
                         }
 
                         net +=
-                           Convolution(C, In("A", C - 2), p.Classes, 1, 1, 1, 1, 0, 0) +
+                           Convolution(C, In("A", C - 1), p.Classes, 1, 1, 1, 1, 0, 0) +
                            BatchNormActivation(C + 1, In("C", C), p.Activation) +
                            GlobalAvgPooling(In("B", C + 1)) +
                            Activation("GAP", "LogSoftmax") +
