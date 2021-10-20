@@ -104,6 +104,7 @@
 
 ### Scripts
 * [densenet](https://arxiv.org/abs/1608.06993)
+* [efficientnetv2](https://arxiv.org/abs/2104.00298)
 * [mobilenetv3](https://arxiv.org/abs/1905.02244)
 * [resnet](https://arxiv.org/abs/1605.07146)
 * [shufflenetv2](https://arxiv.org/abs/1807.11164)
