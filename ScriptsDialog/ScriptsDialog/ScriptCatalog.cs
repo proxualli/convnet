@@ -485,7 +485,7 @@ namespace ScriptsDialog
                         }
 
                         net +=
-                           Convolution(C, In("A", C - 1), 256, 1, 1, 1, 1, 0, 0) +
+                           Convolution(C, In("A", C - 1), inputChannels, 1, 1, 1, 1, 0, 0) +
                            BatchNormActivation(C + 1, In("C", C), p.Activation) +
                            GlobalAvgPooling(In("B", C + 1)) +
                            Dense("GAP", p.Classes) +
