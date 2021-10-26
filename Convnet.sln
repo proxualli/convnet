@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.0.31815.197
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28803.156
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Convnet", "Convnet\Convnet.csproj", "{45AAE32B-0D5D-4494-A0A7-C170F8DBCA8B}"
 EndProject
@@ -32,10 +32,6 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScriptsDialog", "ScriptsDialog\ScriptsDialog\ScriptsDialog.csproj", "{70052D68-8CD0-4A1F-8CF2-CACA91EE39A6}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "dnncore", "dnncore\dnncore.vcxproj", "{773B7924-852A-470B-9091-735E10BC67ED}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "dnncli", "dnncli\dnncli.csproj", "{3F706A88-F012-4F1C-BE08-8325822F312D}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test", "test\test.vcxproj", "{42A112E4-E623-4F72-BDFA-1CE5AFE7DD9C}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "zlib", "dnn\deps\libpng\projects\vstudio\zlib\zlib.vcxproj", "{60F89955-91C6-3A36-8000-13C592FEC2DF}"
 EndProject
@@ -118,18 +114,6 @@ Global
 		{773B7924-852A-470B-9091-735E10BC67ED}.Debug|x64.Build.0 = Debug|x64
 		{773B7924-852A-470B-9091-735E10BC67ED}.Release|x64.ActiveCfg = Release|x64
 		{773B7924-852A-470B-9091-735E10BC67ED}.Release|x64.Build.0 = Release|x64
-		{3F706A88-F012-4F1C-BE08-8325822F312D}.All|x64.ActiveCfg = Release|x64
-		{3F706A88-F012-4F1C-BE08-8325822F312D}.All|x64.Build.0 = Release|x64
-		{3F706A88-F012-4F1C-BE08-8325822F312D}.Debug|x64.ActiveCfg = Debug|x64
-		{3F706A88-F012-4F1C-BE08-8325822F312D}.Debug|x64.Build.0 = Debug|x64
-		{3F706A88-F012-4F1C-BE08-8325822F312D}.Release|x64.ActiveCfg = Release|x64
-		{3F706A88-F012-4F1C-BE08-8325822F312D}.Release|x64.Build.0 = Release|x64
-		{42A112E4-E623-4F72-BDFA-1CE5AFE7DD9C}.All|x64.ActiveCfg = Release|x64
-		{42A112E4-E623-4F72-BDFA-1CE5AFE7DD9C}.All|x64.Build.0 = Release|x64
-		{42A112E4-E623-4F72-BDFA-1CE5AFE7DD9C}.Debug|x64.ActiveCfg = Debug|x64
-		{42A112E4-E623-4F72-BDFA-1CE5AFE7DD9C}.Debug|x64.Build.0 = Debug|x64
-		{42A112E4-E623-4F72-BDFA-1CE5AFE7DD9C}.Release|x64.ActiveCfg = Release|x64
-		{42A112E4-E623-4F72-BDFA-1CE5AFE7DD9C}.Release|x64.Build.0 = Release|x64
 		{60F89955-91C6-3A36-8000-13C592FEC2DF}.All|x64.ActiveCfg = Release|x64
 		{60F89955-91C6-3A36-8000-13C592FEC2DF}.All|x64.Build.0 = Release|x64
 		{60F89955-91C6-3A36-8000-13C592FEC2DF}.Debug|x64.ActiveCfg = Debug|x64
