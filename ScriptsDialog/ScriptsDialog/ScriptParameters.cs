@@ -86,6 +86,11 @@ namespace ScriptsDialog
             this.se = se;
         }
 
+        public override string ToString()
+        {
+            return "(" + ExpandRatio.ToString() + "-" + Channels.ToString() + "-" + Iterations.ToString() + "-" + Stride.ToString() + (SE ? "-se" : "") + ")";
+        }
+
         public UInt ExpandRatio
         {
             get { return expandRatio; }
@@ -238,7 +243,12 @@ namespace ScriptsDialog
                     case Scripts.densenet:
                         return Script.ToString() + "-" + H.ToString() + "x" + W.ToString() + "-" + Groups.ToString() + "-" + Iterations.ToString() + "-" + GrowthRate.ToString() + (Dropout > 0 ? "-dropout" : "") + (Compression > 0 ? "-compression" : "") + (Bottleneck ? "-bottleneck" : "") + "-" + Activation.ToString().ToLower();
                     case Scripts.efficientnetv2:
-                        return Script.ToString() + "-" + H.ToString() + "x" + W.ToString();
+                        {
+                            string name = "";
+                            foreach (var rec in EffNet)
+                                name += rec.ToString();
+                            return Script.ToString() + "-" + H.ToString() + "x" + W.ToString() + name;
+                        }
                     case Scripts.mobilenetv3:
                         return Script.ToString() + "-" + H.ToString() + "x" + W.ToString() + "-" + Groups.ToString() + "-" + Iterations.ToString() + "-" + Width.ToString() + "-" + Activation.ToString().ToLower() + (SqueezeExcitation ? " -se" : "");
                     case Scripts.resnet:
