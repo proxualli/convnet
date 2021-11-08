@@ -247,7 +247,7 @@ namespace ScriptsDialog
                             string name = "";
                             foreach (var rec in EffNet)
                                 name += rec.ToString();
-                            return Script.ToString() + "-" + H.ToString() + "x" + W.ToString() + name;
+                            return Script.ToString() + "-" + H.ToString() + "x" + W.ToString() + "-" + name;
                         }
                     case Scripts.mobilenetv3:
                         return Script.ToString() + "-" + H.ToString() + "x" + W.ToString() + "-" + Groups.ToString() + "-" + Iterations.ToString() + "-" + Width.ToString() + "-" + Activation.ToString().ToLower() + (SqueezeExcitation ? " -se" : "");

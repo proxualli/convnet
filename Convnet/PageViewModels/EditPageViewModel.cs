@@ -538,12 +538,12 @@ namespace Convnet.PageViewModels
 
             if (fileInfo.Exists)
             {
-        #pragma warning disable CA1416 // Validate platform compatibility
+                #pragma warning disable CA1416 // Validate platform compatibility
                 var security = new FileSecurity(fileInfo.FullName, AccessControlSections.Owner | AccessControlSections.Group | AccessControlSections.Access);
                 //var authorizationRules = security.GetAccessRules(true, true, typeof(NTAccount));
                 var owner = security.GetOwner(typeof(NTAccount));
                 security.ModifyAccessRule(AccessControlModification.Add, new FileSystemAccessRule(owner, FileSystemRights.Modify, AccessControlType.Allow), out bool modified);
-        #pragma warning restore CA1416 // Validate platform compatibility
+                #pragma warning restore CA1416 // Validate platform compatibility
 
                 Definition = File.ReadAllText(fileName);
                 ModelName = Definition.Split(new string[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries)[0].Replace("[", "").Replace("]", "");
