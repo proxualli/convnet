@@ -499,19 +499,23 @@ namespace Convnet.PageViewModels
         
         private void VisualStudioButtonClick(object sender, RoutedEventArgs e)
         {
-            string version = "Community";
-            if (Directory.Exists(@"C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE"))
+            string vspath = @"C:\Program Files\Microsoft Visual Studio\2022\";
+            if (!Directory.Exists(vspath))
+                vspath = @"C:\Program Files (x86)\Microsoft Visual Studio\2019\";
+            string version = @"Community";
+            string common = @"\Common7\IDE\";
+            if (Directory.Exists(vspath + @"Community" + common))
                 version = "Community";
-            else if (Directory.Exists(@"C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\Common7\IDE"))
+            else if (Directory.Exists(vspath + @"Professional" + common))
                 version = "Professional";
-            else if (Directory.Exists(@"C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\Common7\IDE"))
+            else if (Directory.Exists(vspath + @"Enterprise" + common))
                 version = "Enterprise";
 
             if (version.Length > 1)
             {
                 try
                 {
-                    var ProcStartInfo = new ProcessStartInfo(@"C:\Program Files (x86)\Microsoft Visual Studio\2019\" + version + @"\Common7\IDE\devenv.exe", ScriptsDirectory + @"ScriptsDialog.sln")
+                    var ProcStartInfo = new ProcessStartInfo(vspath + version + common + @"devenv.exe", ScriptsDirectory + @"ScriptsDialog.sln")
                     {
                         WorkingDirectory = ScriptsDirectory + @"ScriptsDialog",
                         Verb = "runas",
@@ -551,7 +555,8 @@ namespace Convnet.PageViewModels
                 fileInfo.Delete();
             }
         }
-
+            
+        /*
         private void ScriptDialog()
         {
             if (dirty)
@@ -560,7 +565,7 @@ namespace Convnet.PageViewModels
                 IsValid = false;
 
                 var projectFilePath = ScriptsDirectory + @"ScriptsDialog\ScriptsDialog.csproj";
-
+                
                 Dictionary<string, string> GlobalProperty = new()
                 {
                     { "Configuration", Mode },
@@ -611,37 +616,6 @@ namespace Convnet.PageViewModels
                 {
                     Xceed.Wpf.Toolkit.MessageBox.Show(File.ReadAllText(fileInfo.FullName), "Compiler Result", MessageBoxButton.OK);
                     fileInfo.Delete();
-                    /*
-                    try
-                    {
-                        var ProcStartInfo = new ProcessStartInfo()
-                        {
-                            FileName = "dotnet",
-                            Arguments = "build ScriptsDialog.csproj -p:Platform=AnyCPU -p:nugetinteractive=true -c Release",
-                            WorkingDirectory = ScriptsDirectory + @"ScriptsDialog\",
-                            UseShellExecute = true,
-                            Verb = "runas",
-                            RedirectStandardOutput = false,
-                            RedirectStandardError = false,
-                            CreateNoWindow = true
-                        };
-                        var process = Process.Start(ProcStartInfo);
-                        process.WaitForExit();
-
-                        if (process.ExitCode != 0)
-                            Xceed.Wpf.Toolkit.MessageBox.Show(File.ReadAllText(fileInfo.FullName), "Compiler Result", MessageBoxButton.OK);
-                        else
-                            dirty = false;
-
-                        process.Close();
-                       
-                        fileInfo.Delete();
-                    }
-                    catch (Exception ex)
-                    {
-                        Xceed.Wpf.Toolkit.MessageBox.Show(ex.Message, "Start dotnet build process failed", MessageBoxButton.OK);
-                    }
-                    */
                 }
             }
 
@@ -658,7 +632,70 @@ namespace Convnet.PageViewModels
                 Xceed.Wpf.Toolkit.MessageBox.Show(exception.Message, "Load Assembly", MessageBoxButton.OK);
             }
         }
+        */
 
+        private void ScriptDialog()
+        {
+            if (dirty)
+            {
+                Mouse.OverrideCursor = Cursors.Wait;
+                IsValid = false;
+                               
+                try
+                {
+                    
+                    var processInfo = new ProcessStartInfo("dotnet", @"build ScriptsDialog.csproj -p:Platform=AnyCPU -p:nugetinteractive=true -c Release -fl -flp:logfile=msbuild.log;verbosity=quiet")
+                    {
+                        WorkingDirectory = ScriptsDirectory + @"ScriptsDialog\",
+                        UseShellExecute = true,
+                        CreateNoWindow = true,
+                        WindowStyle = ProcessWindowStyle.Hidden,
+                        Verb = "runas"
+                    };
+                    
+                    File.Delete(ScriptsDirectory + @"ScriptsDialog\msbuild.log");
+
+                    using (var process = Process.Start(processInfo))
+                    {
+                        process.WaitForExit();
+                    }
+                  
+                    var log = File.ReadAllText(ScriptsDirectory + @"ScriptsDialog\msbuild.log");
+
+                    Mouse.OverrideCursor = null;
+                    IsValid = true;
+
+                    dirty = log.Length > 0;
+
+                    if (dirty)
+                         Xceed.Wpf.Toolkit.MessageBox.Show(log, "Build error", MessageBoxButton.OK);
+                }
+                catch (Exception ex)
+                {
+                    Mouse.OverrideCursor = null;
+                    IsValid = true;
+                    
+                    Xceed.Wpf.Toolkit.MessageBox.Show(ex.Message, "Build failed", MessageBoxButton.OK);
+                }
+            }
+
+            try
+            {
+                if (!dirty)
+                {
+                    File.Delete(ScriptPath + @"ScriptsDialog.deps.json");
+                    var task = ScriptsDialogAsync();
+                }
+            }
+            catch (Exception exception)
+            {
+                Mouse.OverrideCursor = null;
+                IsValid = true;
+
+                Xceed.Wpf.Toolkit.MessageBox.Show(exception.Message, "Load Assembly", MessageBoxButton.OK);
+            }
+        }
+       
         private bool CheckDefinition()
         {
             DNNCheckMsg msg = Model.CheckDefinition(Definition);
