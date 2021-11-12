@@ -330,6 +330,7 @@ namespace Convnet.PageViewModels
             try
             {
                 bool sameDef = Definition.ToLower(CultureInfo.CurrentCulture).Equals(Settings.Default.DefinitionActive.ToLower(CultureInfo.CurrentCulture));
+                ModelName = Definition.Split(Environment.NewLine.ToCharArray(), StringSplitOptions.RemoveEmptyEntries)[0].Trim().Replace("[", "").Replace("]", "").Trim();
 
                 string pathDefinition = Path.Combine(DefinitionsDirectory, ModelName + ".txt");
                 string pathStateDefinition = Path.Combine(StateDirectory, ModelName + ".txt");
