@@ -163,8 +163,7 @@ namespace ScriptsDialog
             Grid.RowDefinitions[16].Height = Settings.Default.Parameters.EffNetVisible ? new GridLength(120, GridUnitType.Pixel) : new GridLength(0, GridUnitType.Pixel);
             textBoxGroups.IsEnabled = !Settings.Default.Parameters.EffNetVisible;
             textBoxIterations.IsEnabled = !Settings.Default.Parameters.EffNetVisible;
-            textBoxDepth.IsEnabled = !Settings.Default.Parameters.EffNetVisible;
-
+            
             comboBoxBiasesFiller.IsEnabled = CheckBoxHasBias.IsChecked.Value;
 
             Grid.RowDefinitions[22].Height = CheckBoxHasBias.IsChecked.Value && Settings.Default.Parameters.BiasesScaleVisible ? new GridLength(30, GridUnitType.Pixel) : new GridLength(0, GridUnitType.Pixel);
