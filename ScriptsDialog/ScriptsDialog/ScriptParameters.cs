@@ -822,6 +822,8 @@ namespace ScriptsDialog
             }
         }
 
+        public bool GroupsVisible { get { return Script != Scripts.efficientnetv2; } }
+        public bool IterationsVisible { get { return Script != Scripts.efficientnetv2; } }
         public bool WidthVisible { get { return Script == Scripts.mobilenetv3 || Script == Scripts.resnet || Script == Scripts.shufflenetv2; } }
         public bool GrowthRateVisible { get { return Script == Scripts.densenet; } }
         public bool DropoutVisible { get { return Script == Scripts.densenet || Script == Scripts.resnet; } }
