@@ -643,7 +643,6 @@ namespace Convnet.PageViewModels
                                
                 try
                 {
-                    
                     var processInfo = new ProcessStartInfo("dotnet", @"build ScriptsDialog.csproj -p:Platform=AnyCPU -p:nugetinteractive=true -c Release -fl -flp:logfile=msbuild.log;verbosity=quiet")
                     {
                         WorkingDirectory = ScriptsDirectory + @"ScriptsDialog\",

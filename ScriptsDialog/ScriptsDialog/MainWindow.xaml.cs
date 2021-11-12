@@ -41,7 +41,6 @@ namespace ScriptsDialog
             if (disposing)
             {
                 // Free managed objects.
-
             }
             // Free unmanaged objects
         }
@@ -55,11 +54,8 @@ namespace ScriptsDialog
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            if (Settings.Default.Parameters.Bottleneck)
-                Settings.Default.Parameters.Compression = 0.5f;
-            else
-                Settings.Default.Parameters.Compression = 1.0f;
-
+            Settings.Default.Parameters.Compression = Settings.Default.Parameters.Bottleneck ? 0.5f : 1.0f;
+           
             Calc();
 
             comboBoxDataset.Focus();
@@ -146,16 +142,16 @@ namespace ScriptsDialog
             }
         }
 
-        private void radioButtonBottleneckYesNo_Checked(object sender, RoutedEventArgs e)
+        private void CheckBoxBottleneck_CheckedChanged(object sender, RoutedEventArgs e)
         {
-            switch ((Scripts)comboBoxModel.SelectedIndex)
+            if (checkBoxBottleneck.IsChecked.HasValue)
             {
-                case Scripts.densenet:
-                    if (radioButtonBottleneckYes.IsChecked.HasValue && radioButtonBottleneckYes.IsChecked.Value)
-                        Settings.Default.Parameters.Compression = 0.5f;
-                    if (radioButtonBottleneckNo.IsChecked.HasValue && radioButtonBottleneckNo.IsChecked.Value)
-                        Settings.Default.Parameters.Compression = 1.0f;
-                    break;
+                switch ((Scripts)comboBoxModel.SelectedIndex)
+                {
+                    case Scripts.densenet:
+                        Settings.Default.Parameters.Compression = checkBoxBottleneck.IsChecked.Value ? 0.5f : 1.0f;
+                        break;
+                }
             }
         }
 
@@ -187,22 +183,21 @@ namespace ScriptsDialog
             removeRows += CheckBoxHasBias.IsChecked.Value && Settings.Default.Parameters.BiasesScaleVisible ? 0 : 1;
             removeRows += CheckBoxHasBias.IsChecked.Value ? 0 : 2;
           
-            double rowHeight = Grid.RowDefinitions[0].ActualHeight;
-            const double totalHeight = 1030;
             switch ((Scripts)comboBoxModel.SelectedIndex)
             {
                 case Scripts.efficientnetv2:
-                    Height = totalHeight - ((10 + removeRows) * rowHeight);
+                    removeRows += 10;
                     break;
                 case Scripts.densenet:
                 case Scripts.resnet:
-                    Height = totalHeight - ((7 + removeRows) * rowHeight);
+                    removeRows += 7;
                     break;
                 case Scripts.mobilenetv3:
                 case Scripts.shufflenetv2:
-                    Height = totalHeight - ((9 + removeRows) * rowHeight);
+                    removeRows += 9;
                     break;
             }
+            Height = 1030 - (removeRows * Grid.RowDefinitions[0].ActualHeight);
         }
     }
 }
