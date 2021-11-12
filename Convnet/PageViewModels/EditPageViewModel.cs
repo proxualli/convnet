@@ -329,9 +329,10 @@ namespace Convnet.PageViewModels
             Mouse.OverrideCursor = null;
             try
             {
-                bool sameDef = Definition.ToLower(CultureInfo.CurrentCulture).Equals(Settings.Default.DefinitionActive.ToLower(CultureInfo.CurrentCulture));
                 ModelName = Definition.Split(Environment.NewLine.ToCharArray(), StringSplitOptions.RemoveEmptyEntries)[0].Trim().Replace("[", "").Replace("]", "").Trim();
 
+                bool sameDef = Definition.ToLower(CultureInfo.CurrentCulture).Equals(Settings.Default.DefinitionActive.ToLower(CultureInfo.CurrentCulture));
+                
                 string pathDefinition = Path.Combine(DefinitionsDirectory, ModelName + ".txt");
                 string pathStateDefinition = Path.Combine(StateDirectory, ModelName + ".txt");
                 string pathWeightsDirectory = DefinitionsDirectory + ModelName + "-weights\\";
