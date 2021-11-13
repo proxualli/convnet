@@ -294,12 +294,14 @@ namespace ScriptsDialog
                     BatchNormActivation(id, In("C", id), activation) +
                     DepthwiseConvolution(id + 1, In("B", id), 1, 3, 3, stride, stride, 1, 1) +
                     BatchNormActivation(id + 1, In("DC", id + 1), activation) +
+
                     GlobalAvgPooling(In("B", id + 1), group) +
                     Convolution(1, group + "GAP", DIV8(hiddenDim / expandRatio), 1, 1, 1, 1, 0, 0, group) +
                     BatchNormActivation(1, group + "C1", activation == Activations.FRelu ? Activations.HardSwish : activation, group) +
                     Convolution(2, group + "B1", hiddenDim, 1, 1, 1, 1, 0, 0, group) +
                     BatchNormActivation(2, group + "C2", "HardLogistic", group) +
                     ChannelMultiply(In("B", id + 1) + "," + group + "B2", group) +
+                    
                     Convolution(id + 2, group + "CM", DIV8(outputChannels), 1, 1, 1, 1, 0, 0) +
                     BatchNorm(id + 2, In("C", id + 2)));
             }
@@ -310,12 +312,62 @@ namespace ScriptsDialog
                     BatchNormActivation(id, In("C", id), activation) +
                     DepthwiseConvolution(id + 1, In("B", id), 1, 3, 3, stride, stride, 1, 1) +
                     BatchNormActivation(id + 1, In("DC", id + 1), activation) +
+
                     Convolution(id + 2, In("B", id + 1), DIV8(outputChannels), 1, 1, 1, 1, 0, 0) +
                     BatchNorm(id + 2, In("C", id + 2)));
             }
 
             if (identity)
                 blocks.Add(Add(id + 2, In("B", id + 2) + "," + inputs));
+
+            return blocks;
+        }
+
+        public static List<string> InvertedResidual(UInt id, UInt n, UInt channels, UInt stride = 1, UInt shuffle = 2, bool se = false, Activations activation = Activations.HardSwish)
+        {
+            var blocks = new List<string>();
+            var kernel = 3ul;
+            var pad = 1ul;
+
+            if (stride == 2)
+            {
+                blocks.Add(
+                    Convolution(id, In("CC", n), channels, 1, 1, 1, 1, 0, 0) +
+                    BatchNormActivation(id + 1, In("C", id), activation) +
+                    DepthwiseConvolution(id + 1, In("B", id + 1), 1, kernel, kernel, 2, 2, pad, pad) +
+                    BatchNorm(id + 2, In("DC", id + 1)) +
+                    Convolution(id + 2, In("B", id + 2), channels, 1, 1, 1, 1, 0, 0) +
+                    BatchNormActivation(id + 3, In("C", id + 2), activation) +
+                    DepthwiseConvolution(id + 3, In("CC", n), 1, kernel, kernel, 2, 2, pad, pad) +
+                    BatchNorm(id + 4, In("DC", id + 3)) +
+                    Convolution(id + 4, In("B", id + 4), channels, 1, 1, 1, 1, 0, 0) +
+                    BatchNormActivation(id + 5, In("C", id + 4), activation) +
+                    Concat(n + 1, In("B", id + 5) + "," + In("B", id + 3)));
+            }
+            else
+            {
+                var group = In("SE", id + 3);
+                var strSE =
+                    (se && stride == 1) ? GlobalAvgPooling(In("B", id + 3), group) +
+                    Convolution(1, group + "GAP", DIV8(channels / 4), 1, 1, 1, 1, 0, 0, group) +
+                    BatchNormActivation(1, group + "C1", activation == Activations.FRelu ? Activations.HardSwish : activation, group) +
+                    Convolution(2, group + "B1", channels, 1, 1, 1, 1, 0, 0, group) +
+                    BatchNormActivation(2, group + "C2", "HardLogistic", group) +
+                    ChannelMultiply(In("B", id + 3) + "," + group + "B2", group) +
+                    Concat(n + 1, In("LCS", n) + "," + group + "CM") :
+                    Concat(n + 1, In("LCS", n) + "," + In("B", id + 3));
+
+                blocks.Add(
+                    ChannelShuffle(n, In("CC", n), shuffle) +
+                    ChannelSplit(n, In("CSH", n), 2, 1, "L") + ChannelSplit(n, In("CSH", n), 2, 2, "R") +
+                    Convolution(id, In("RCS", n), channels, 1, 1, 1, 1, 0, 0) +
+                    BatchNormActivation(id + 1, In("C", id), activation) +
+                    DepthwiseConvolution(id + 1, In("B", id + 1), 1, kernel, kernel, 1, 1, pad, pad) +
+                    BatchNorm(id + 2, In("DC", id + 1)) +
+                    Convolution(id + 2, In("B", id + 2), channels, 1, 1, 1, 1, 0, 0) +
+                    BatchNormActivation(id + 3, In("C", id + 2), activation) +
+                    strSE);
+            }
 
             return blocks;
         }
@@ -455,7 +507,7 @@ namespace ScriptsDialog
 
                 case Scripts.efficientnetv2:
                     {
-                        var inputChannels = DIV8(p.EffNet[0].Channels);
+                        var inputChannels = DIV8(p.EfficientNet[0].Channels);
                         var C = 1ul;
 
                         net +=
@@ -464,7 +516,7 @@ namespace ScriptsDialog
 
                         var inp = In("B", C);
                         C++;
-                        foreach (var rec in p.EffNet)
+                        foreach (var rec in p.EfficientNet)
                         {
                             var outputChannels = DIV8(rec.Channels);
                             for (var n = 0ul; n < rec.Iterations; n++)
@@ -708,80 +760,37 @@ namespace ScriptsDialog
 
                 case Scripts.shufflenetv2:
                     {
-                        var se = false;
-                        var W = p.Width * 16;
-                        var kernel = 3ul;
-                        var pad = 1ul;
+                        var channels = DIV8(p.ShuffleNet[0].Channels);
 
-                        net += Convolution(1, "Input", DIV8(W), kernel, kernel, 1, 1, pad, pad);
-
-                        blocks.Add(
+                        net +=
+                            Convolution(1, "Input", channels, 3, 3, 1, 1, 1, 1) +
                             BatchNormActivation(1, "C1", p.Activation) +
-                            Convolution(2, "B1", DIV8(W), 1, 1, 1, 1, 0, 0) +
+                            Convolution(2, "B1", channels, 1, 1, 1, 1, 0, 0) +
                             BatchNormActivation(2, "C2", p.Activation) +
-                            DepthwiseConvolution(3, "B2", 1, kernel, kernel, 1, 1, pad, pad) +
+                            DepthwiseConvolution(3, "B2", 1, 3, 3, 1, 1, 1, 1) +
                             BatchNorm(3, "DC3") +
-                            Convolution(4, "B3", DIV8(W), 1, 1, 1, 1, 0, 0) +
+                            Convolution(4, "B3", channels, 1, 1, 1, 1, 0, 0) +
                             BatchNormActivation(4, "C4", p.Activation) +
-                            Convolution(5, "B1", DIV8(W), 1, 1, 1, 1, 0, 0) +
-                            Concat(1, "C5,B4"));
+                            Convolution(5, "B1", channels, 1, 1, 1, 1, 0, 0) +
+                            Concat(1, "C5,B4");
 
                         var C = 6ul;
                         var A = 1ul;
 
-                        for (var g = 1ul; g <= p.Groups; g++)
+                        foreach (var rec in p.ShuffleNet)
                         {
-                            if (g > 1)
+                            channels = DIV8(rec.Channels);
+                            for (var n = 0ul; n < rec.Iterations + (rec.Stride != 1ul ? 1ul : 0ul); n++)
                             {
-                                se = p.SqueezeExcitation;
-                                W *= 2;
+                                var stride = n == 0ul ? rec.Stride : 1ul;
+                                var subblocks = InvertedResidual(C, A++, channels, stride, rec.Shuffle, rec.SE, p.Activation);
 
-                                blocks.Add(
-                                    Convolution(C, In("CC", A), DIV8(W), 1, 1, 1, 1, 0, 0) +
-                                    BatchNormActivation(C + 1, In("C", C), p.Activation) +
-                                    DepthwiseConvolution(C + 1, In("B", C + 1), 1, kernel, kernel, 2, 2, pad, pad) +
-                                    BatchNorm(C + 2, In("DC", C + 1)) +
-                                    Convolution(C + 2, In("B", C + 2), DIV8(W), 1, 1, 1, 1, 0, 0) +
-                                    BatchNormActivation(C + 3, In("C", C + 2), p.Activation) +
-                                    DepthwiseConvolution(C + 3, In("CC", A), 1, kernel, kernel, 2, 2, pad, pad) +
-                                    BatchNorm(C + 4, In("DC", C + 3)) +
-                                    Convolution(C + 4, In("B", C + 4), DIV8(W), 1, 1, 1, 1, 0, 0) +
-                                    BatchNormActivation(C + 5, In("C", C + 4), p.Activation) +
-                                    Concat(A + 1, In("B", C + 5) + "," + In("B", C + 3)));
+                                foreach (var blk in subblocks)
+                                    net += blk;
 
-                                A++; C += 5;
-                            }
-
-                            for (var i = 1ul; i < p.Iterations; i++)
-                            {
-                                var group = In("SE", C + 3);
-                                var strSE =
-                                    se ? GlobalAvgPooling(In("B", C + 3), group) +
-                                    Convolution(1, group + "GAP", DIV8(W / 4), 1, 1, 1, 1, 0, 0, group) +
-                                    BatchNormActivation(1, group + "C1", p.Activation == Activations.FRelu ? Activations.HardSwish : p.Activation, group) +
-                                    Convolution(2, group + "B1", DIV8(W), 1, 1, 1, 1, 0, 0, group) +
-                                    BatchNormActivation(2, group + "C2", "HardLogistic", group) +
-                                    ChannelMultiply(In("B", C + 3) + "," + group + "B2", group) +
-                                    Concat(A + 1, In("LCS", A) + "," + group + "CM") :
-                                    Concat(A + 1, In("LCS", A) + "," + In("B", C + 3));
-
-                                blocks.Add(
-                                    ChannelShuffle(A, In("CC", A), 2) +
-                                    ChannelSplit(A, In("CSH", A), 2, 1, "L") + ChannelSplit(A, In("CSH", A), 2, 2, "R") +
-                                    Convolution(C, In("RCS", A), DIV8(W), 1, 1, 1, 1, 0, 0) +
-                                    BatchNormActivation(C + 1, In("C", C), p.Activation) +
-                                    DepthwiseConvolution(C + 1, In("B", C + 1), 1, kernel, kernel, 1, 1, pad, pad) +
-                                    BatchNorm(C + 2, In("DC", C + 1)) +
-                                    Convolution(C + 2, In("B", C + 2), DIV8(W), 1, 1, 1, 1, 0, 0) +
-                                    BatchNormActivation(C + 3, In("C", C + 2), p.Activation) +
-                                    strSE);
-
-                                A++; C += 3;
+                                C += (stride == 1ul) ? 3ul : 5ul;
                             }
                         }
-
-                        foreach (var block in blocks)
-                            net += block;
 
                         net +=
                             Convolution(C, In("CC", A), p.Classes, 1, 1, 1, 1, 0, 0) +

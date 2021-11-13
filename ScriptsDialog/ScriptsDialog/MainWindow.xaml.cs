@@ -157,13 +157,13 @@ namespace ScriptsDialog
 
         private void Calc()
         {
-            Grid.RowDefinitions[5].Height = Settings.Default.Parameters.EffNetVisible ? new GridLength(0, GridUnitType.Pixel) : new GridLength(30, GridUnitType.Pixel);
-            Grid.RowDefinitions[6].Height = Settings.Default.Parameters.EffNetVisible ? new GridLength(0, GridUnitType.Pixel) : new GridLength(30, GridUnitType.Pixel);
-            Grid.RowDefinitions[7].Height = Settings.Default.Parameters.EffNetVisible ? new GridLength(0, GridUnitType.Pixel) : new GridLength(30, GridUnitType.Pixel);
-            Grid.RowDefinitions[16].Height = Settings.Default.Parameters.EffNetVisible ? new GridLength(120, GridUnitType.Pixel) : new GridLength(0, GridUnitType.Pixel);
-            textBoxGroups.IsEnabled = !Settings.Default.Parameters.EffNetVisible;
-            textBoxIterations.IsEnabled = !Settings.Default.Parameters.EffNetVisible;
-            
+            Grid.RowDefinitions[5].Height = Settings.Default.Parameters.EfficientNetVisible || Settings.Default.Parameters.ShuffleNetVisible ? new GridLength(0, GridUnitType.Pixel) : new GridLength(30, GridUnitType.Pixel);
+            Grid.RowDefinitions[6].Height = Settings.Default.Parameters.EfficientNetVisible || Settings.Default.Parameters.ShuffleNetVisible ? new GridLength(0, GridUnitType.Pixel) : new GridLength(30, GridUnitType.Pixel);
+            Grid.RowDefinitions[7].Height = Settings.Default.Parameters.EfficientNetVisible || Settings.Default.Parameters.ShuffleNetVisible ? new GridLength(0, GridUnitType.Pixel) : new GridLength(30, GridUnitType.Pixel);
+            Grid.RowDefinitions[16].Height = Settings.Default.Parameters.EfficientNetVisible || Settings.Default.Parameters.ShuffleNetVisible ? new GridLength(120, GridUnitType.Pixel) : new GridLength(0, GridUnitType.Pixel);
+            textBoxGroups.IsEnabled = !Settings.Default.Parameters.EfficientNetVisible && !Settings.Default.Parameters.ShuffleNetVisible;
+            textBoxIterations.IsEnabled = !Settings.Default.Parameters.EfficientNetVisible && !Settings.Default.Parameters.ShuffleNetVisible;
+
             comboBoxBiasesFiller.IsEnabled = CheckBoxHasBias.IsChecked.Value;
 
             Grid.RowDefinitions[22].Height = CheckBoxHasBias.IsChecked.Value && Settings.Default.Parameters.BiasesScaleVisible ? new GridLength(30, GridUnitType.Pixel) : new GridLength(0, GridUnitType.Pixel);
@@ -185,6 +185,7 @@ namespace ScriptsDialog
             switch ((Scripts)comboBoxModel.SelectedIndex)
             {
                 case Scripts.efficientnetv2:
+                case Scripts.shufflenetv2:
                     removeRows += 10;
                     break;
                 case Scripts.densenet:
@@ -192,7 +193,6 @@ namespace ScriptsDialog
                     removeRows += 7;
                     break;
                 case Scripts.mobilenetv3:
-                case Scripts.shufflenetv2:
                     removeRows += 9;
                     break;
             }

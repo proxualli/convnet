@@ -57,7 +57,7 @@ namespace ScriptsDialog
     }
 
     [Serializable()]
-    public class EffNetRecord : INotifyPropertyChanged
+    public class EfficientNetRecord : INotifyPropertyChanged
     {
         private UInt expandRatio;
         private UInt channels;
@@ -68,7 +68,7 @@ namespace ScriptsDialog
         [field: NonSerializedAttribute()]
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public EffNetRecord()
+        public EfficientNetRecord()
         { 
             ExpandRatio = 4; 
             Channels = 24; 
@@ -77,7 +77,7 @@ namespace ScriptsDialog
             SE = false;
         }
 
-        public EffNetRecord(UInt expandRatio = 4, UInt channels= 24, UInt iterations = 2, UInt stride = 1, bool se = false)
+        public EfficientNetRecord(UInt expandRatio = 4, UInt channels= 24, UInt iterations = 2, UInt stride = 1, bool se = false)
         {
             this.expandRatio = expandRatio;
             this.channels = channels;
@@ -113,6 +113,78 @@ namespace ScriptsDialog
         {
             get { return stride; }
             set { stride = value; OnPropertyChanged("Stride"); }
+        }
+
+        public bool SE
+        {
+            get { return se; }
+            set { se = value; OnPropertyChanged("SE"); }
+        }
+
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            if (PropertyChanged != null)
+                PropertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+    }
+
+    [Serializable()]
+    public class ShuffleNetRecord : INotifyPropertyChanged
+    {
+        private UInt channels;
+        private UInt iterations;
+        private UInt stride;
+        private UInt shuffle;
+        private bool se;
+
+        [field: NonSerializedAttribute()]
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public ShuffleNetRecord()
+        {
+            Channels = 128;
+            Iterations = 6;
+            Stride = 1;
+            Shuffle = 2;
+            SE = false;
+        }
+
+        public ShuffleNetRecord(UInt channels = 128, UInt iterations = 6, UInt stride = 1, UInt shuffle = 2, bool se = false)
+        {
+            this.channels = channels;
+            this.iterations = iterations;
+            this.stride = stride;
+            this.shuffle = shuffle;
+            this.se = se;
+        }
+
+        public override string ToString()
+        {
+            return "(" + Channels.ToString() + "-" + Iterations.ToString() + "-" + Stride.ToString() + Shuffle.ToString() + "-" + (SE ? "-se" : "") + ")";
+        }
+
+        public UInt Channels
+        {
+            get { return channels; }
+            set { channels = value; OnPropertyChanged("Channels"); }
+        }
+
+        public UInt Iterations
+        {
+            get { return iterations; }
+            set { iterations = value; OnPropertyChanged("Iterations"); }
+        }
+
+        public UInt Stride
+        {
+            get { return stride; }
+            set { stride = value; OnPropertyChanged("Stride"); }
+        }
+
+        public UInt Shuffle
+        {
+            get { return shuffle; }
+            set { shuffle = value; OnPropertyChanged("Shuffle"); }
         }
 
         public bool SE
@@ -171,7 +243,8 @@ namespace ScriptsDialog
         private bool squeezeExcitation = false;
         private bool channelZeroPad = true;
         private Activations activation = Activations.Relu;
-        private ObservableCollection<EffNetRecord> effnet = new ObservableCollection<EffNetRecord>();
+        private ObservableCollection<EfficientNetRecord> efficientnet = new ObservableCollection<EfficientNetRecord>();
+        private ObservableCollection<ShuffleNetRecord> shufflenet = new ObservableCollection<ShuffleNetRecord>();
 
         public ScriptParameters()
         { 
@@ -216,14 +289,20 @@ namespace ScriptsDialog
             ChannelZeroPad = channelZeroPad;
             Activation = activation;
 
-            var efficientnetv2 = new ObservableCollection<EffNetRecord>();
-            efficientnetv2.Add(new EffNetRecord(1, 24, 2, 1, false));
-            efficientnetv2.Add(new EffNetRecord(4, 48, 4, 2, false));
-            efficientnetv2.Add(new EffNetRecord(4, 64, 4, 2, false));
-            efficientnetv2.Add(new EffNetRecord(4, 128, 6, 2, true));
-            efficientnetv2.Add(new EffNetRecord(6, 160, 9, 1, true));
-            efficientnetv2.Add(new EffNetRecord(6, 256, 15, 2, true));
-            EffNet = efficientnetv2;
+            var efficientnetv2 = new ObservableCollection<EfficientNetRecord>();
+            efficientnetv2.Add(new EfficientNetRecord(1, 24, 2, 1, false));
+            efficientnetv2.Add(new EfficientNetRecord(4, 48, 4, 2, false));
+            efficientnetv2.Add(new EfficientNetRecord(4, 64, 4, 2, false));
+            efficientnetv2.Add(new EfficientNetRecord(4, 128, 6, 2, true));
+            efficientnetv2.Add(new EfficientNetRecord(6, 160, 9, 1, true));
+            efficientnetv2.Add(new EfficientNetRecord(6, 256, 15, 2, true));
+            EfficientNet = efficientnetv2;
+
+            var shufflenetv2 = new ObservableCollection<ShuffleNetRecord>();
+            shufflenetv2.Add(new ShuffleNetRecord(128, 6, 1, 4, false));
+            shufflenetv2.Add(new ShuffleNetRecord(256, 7, 2, 4, true));
+            shufflenetv2.Add(new ShuffleNetRecord(512, 8, 2, 4, true));
+            ShuffleNet = shufflenetv2;
         }
 
         public IEnumerable<Scripts> ScriptsList { get { return Enum.GetValues(typeof(Scripts)).Cast<Scripts>(); } }
@@ -245,7 +324,7 @@ namespace ScriptsDialog
                     case Scripts.efficientnetv2:
                         {
                             string name = "";
-                            foreach (var rec in EffNet)
+                            foreach (var rec in EfficientNet)
                                 name += rec.ToString();
                             return Script.ToString() + "-" + H.ToString() + "x" + W.ToString() + "-" + name;
                         }
@@ -280,7 +359,8 @@ namespace ScriptsDialog
                     OnPropertyChanged("ChannelZeroPadVisible");
                     OnPropertyChanged("SqueezeExcitationVisible");
                     OnPropertyChanged("BottleneckVisible");
-                    OnPropertyChanged("EffNetVisible");
+                    OnPropertyChanged("EfficientNetVisible");
+                    OnPropertyChanged("ShuffleNetVisible");
                 }
             }
         }
@@ -678,14 +758,11 @@ namespace ScriptsDialog
                 {
                     case Scripts.densenet:
                         return (Groups * Iterations * (Bottleneck ? 2u : 1u)) + ((Groups - 1) * 2);
-                    case Scripts.efficientnetv2:
-                        return (Groups * Iterations * 3) + ((Groups - 1) * 2);
                     case Scripts.mobilenetv3:
                         return (Groups * Iterations * 3) + ((Groups - 1) * 2);
                     case Scripts.resnet:
                         return (Groups * Iterations * (Bottleneck ? 3u : 2u)) + ((Groups - 1) * 2);
-                    case Scripts.shufflenetv2:
-                        return (Groups * (Iterations - 1) * 3) + (Groups * 5) + 1;
+                   
                     default:
                         return 0;
                 }
@@ -765,15 +842,28 @@ namespace ScriptsDialog
             }
         }
 
-        public ObservableCollection<EffNetRecord> EffNet
+        public ObservableCollection<EfficientNetRecord> EfficientNet
         {
-            get { return effnet; }
+            get { return efficientnet; }
             set
             {
-                if (value != effnet)
+                if (value != efficientnet)
                 {
-                    effnet = value;
-                    OnPropertyChanged("EffNet");
+                    efficientnet = value;
+                    OnPropertyChanged("EfficientNet");
+                }
+            }
+        }
+
+        public ObservableCollection<ShuffleNetRecord> ShuffleNet
+        {
+            get { return shufflenet; }
+            set
+            {
+                if (value != shufflenet)
+                {
+                    shufflenet = value;
+                    OnPropertyChanged("ShuffleNet");
                 }
             }
         }
@@ -822,16 +912,17 @@ namespace ScriptsDialog
             }
         }
 
-        public bool GroupsVisible { get { return Script != Scripts.efficientnetv2; } }
-        public bool IterationsVisible { get { return Script != Scripts.efficientnetv2; } }
-        public bool WidthVisible { get { return Script == Scripts.mobilenetv3 || Script == Scripts.resnet || Script == Scripts.shufflenetv2; } }
+        public bool GroupsVisible { get { return Script != Scripts.efficientnetv2 && Script != Scripts.shufflenetv2; } }
+        public bool IterationsVisible { get { return Script != Scripts.efficientnetv2 && Script != Scripts.shufflenetv2; } }
+        public bool WidthVisible { get { return Script == Scripts.mobilenetv3 || Script == Scripts.resnet; } }
         public bool GrowthRateVisible { get { return Script == Scripts.densenet; } }
         public bool DropoutVisible { get { return Script == Scripts.densenet || Script == Scripts.resnet; } }
         public bool CompressionVisible { get { return Script == Scripts.densenet; } }
         public bool BottleneckVisible { get { return Script == Scripts.densenet || Script == Scripts.resnet; } }
-        public bool SqueezeExcitationVisible { get { return Script == Scripts.mobilenetv3 || Script == Scripts.shufflenetv2; } }
+        public bool SqueezeExcitationVisible { get { return Script == Scripts.mobilenetv3; } }
         public bool ChannelZeroPadVisible { get { return Script == Scripts.resnet; } }
-        public bool EffNetVisible { get { return Script == Scripts.efficientnetv2; } }
+        public bool EfficientNetVisible { get { return Script == Scripts.efficientnetv2; } }
+        public bool ShuffleNetVisible { get { return Script == Scripts.shufflenetv2; } }
 
         protected virtual void OnPropertyChanged(string propertyName)
         {
