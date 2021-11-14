@@ -320,18 +320,18 @@ namespace ScriptsDialog
             return blocks;
         }
 
-        public static string InvertedResidual(UInt id, UInt n, UInt channels, UInt kernel = 3, UInt stride = 1, UInt pad = 1, UInt shuffle = 2, bool se = false, Activations activation = Activations.HardSwish)
+        public static string InvertedResidual(UInt id, UInt n, UInt channels, UInt kernel = 3, UInt pad = 1, bool subsample = false, UInt shuffle = 2, bool se = false, Activations activation = Activations.HardSwish)
         {
-            if (stride == 2)
+            if (subsample)
             {
                 return
                     Convolution(id, In("CC", n), channels, 1, 1, 1, 1, 0, 0) +
                     BatchNormActivation(id + 1, In("C", id), activation) +
-                    DepthwiseConvolution(id + 1, In("B", id + 1), 1, kernel, kernel, stride, stride, pad, pad) +
+                    DepthwiseConvolution(id + 1, In("B", id + 1), 1, kernel, kernel, 2, 2, pad, pad) +
                     BatchNorm(id + 2, In("DC", id + 1)) +
                     Convolution(id + 2, In("B", id + 2), channels, 1, 1, 1, 1, 0, 0) +
                     BatchNormActivation(id + 3, In("C", id + 2), activation) +
-                    DepthwiseConvolution(id + 3, In("CC", n), 1, kernel, kernel, stride, stride, pad, pad) +
+                    DepthwiseConvolution(id + 3, In("CC", n), 1, kernel, kernel, 2, 2, pad, pad) +
                     BatchNorm(id + 4, In("DC", id + 3)) +
                     Convolution(id + 4, In("B", id + 4), channels, 1, 1, 1, 1, 0, 0) +
                     BatchNormActivation(id + 5, In("C", id + 4), activation) +
@@ -355,7 +355,7 @@ namespace ScriptsDialog
                     ChannelSplit(n, In("CSH", n), 2, 1, "L") + ChannelSplit(n, In("CSH", n), 2, 2, "R") +
                     Convolution(id, In("RCS", n), channels, 1, 1, 1, 1, 0, 0) +
                     BatchNormActivation(id + 1, In("C", id), activation) +
-                    DepthwiseConvolution(id + 1, In("B", id + 1), 1, kernel, kernel, stride, stride, pad, pad) +
+                    DepthwiseConvolution(id + 1, In("B", id + 1), 1, kernel, kernel, 1, 1, pad, pad) +
                     BatchNorm(id + 2, In("DC", id + 1)) +
                     Convolution(id + 2, In("B", id + 2), channels, 1, 1, 1, 1, 0, 0) +
                     BatchNormActivation(id + 3, In("C", id + 2), activation) +
@@ -773,12 +773,12 @@ namespace ScriptsDialog
                             if (subsample)
                             {
                                 channels *= 2;
-                                net += InvertedResidual(C, A++, channels, rec.Kernel, 2, rec.Pad, rec.Shuffle, rec.SE, p.Activation);
+                                net += InvertedResidual(C, A++, channels, rec.Kernel, rec.Pad, true, rec.Shuffle, rec.SE, p.Activation);
                                 C += 5;
                             }
                             for (var n = 0ul; n < rec.Iterations; n++)
                             {
-                                net += InvertedResidual(C, A++, channels, rec.Kernel, 1, rec.Pad, rec.Shuffle, rec.SE, p.Activation);
+                                net += InvertedResidual(C, A++, channels, rec.Kernel, rec.Pad, false, rec.Shuffle, rec.SE, p.Activation);
                                 C += 3ul;
                             }
                             subsample = true;

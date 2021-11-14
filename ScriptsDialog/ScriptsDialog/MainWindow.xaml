@@ -177,7 +177,7 @@
             <DataGrid.Columns>
                 <DataGridTextColumn Header="ExpRatio" Binding="{Binding Path=ExpandRatio, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 <DataGridTextColumn Header="Channels" Binding="{Binding Path=Channels, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                <DataGridTextColumn Header="Iter" Binding="{Binding Path=Iterations, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                <DataGridTextColumn Header="Iter" Binding="{Binding Path=Iters, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 <DataGridTextColumn Header="Stride" Binding="{Binding Path=Stride, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 <DataGridCheckBoxColumn Header="SE" Binding="{Binding Path=SE, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             </DataGrid.Columns>
@@ -185,7 +185,7 @@
 
         <DataGrid Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="16" ItemsSource="{Binding ShuffleNet}" CanUserAddRows="True" CanUserDeleteRows="True" ContextMenu="{StaticResource MyContextMenu}" TabIndex="21" AutoGenerateColumns="False" Height="Auto" HorizontalAlignment="Stretch" Margin="3" x:Name="DataGridShuffleNet" VerticalAlignment="Stretch" Width="Auto" CanUserSortColumns="False" GridLinesVisibility="Horizontal" HorizontalGridLinesBrush="#FFAAE4F5" VerticalContentAlignment="Center" HorizontalContentAlignment="Stretch" SelectionMode="Single" MinHeight="0" MinWidth="0" CanUserResizeColumns="False" FontFamily="Consolas" FontSize="14" CanUserResizeRows="False" BorderThickness="0" Foreground="{DynamicResource {x:Static SystemColors.DesktopBrushKey}}" CanUserReorderColumns="False" IsSynchronizedWithCurrentItem="True" SelectionUnit="FullRow" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Visibility="{Binding Path=ShuffleNetVisible, Converter={StaticResource BooleanToVisibilityConverter}}" IsEnabled="{Binding Path=ShuffleNetVisible}" KeyboardNavigation.TabNavigation="Local" KeyboardNavigation.TabIndex="21">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Iterations" Binding="{Binding Path=Iterations, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                <DataGridTextColumn Header="Iterations" Binding="{Binding Path=Iters, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 <DataGridTextColumn Header="Kernel" Binding="{Binding Path=Kernel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 <DataGridTextColumn Header="Pad" Binding="{Binding Path=Pad, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 <DataGridTextColumn Header="Shuffle" Binding="{Binding Path=Shuffle, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
