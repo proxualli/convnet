@@ -320,11 +320,9 @@ namespace ScriptsDialog
             return blocks;
         }
 
-        public static List<string> InvertedResidual(UInt id, UInt n, UInt channels, UInt stride = 1, UInt shuffle = 2, bool se = false, Activations activation = Activations.HardSwish)
+        public static List<string> InvertedResidual(UInt id, UInt n, UInt channels, UInt kernel = 3, UInt stride = 1, UInt pad = 1, UInt shuffle = 2, bool se = false, Activations activation = Activations.HardSwish)
         {
             var blocks = new List<string>();
-            var kernel = 3ul;
-            var pad = 1ul;
 
             if (stride == 2)
             {
@@ -758,13 +756,15 @@ namespace ScriptsDialog
                 case Scripts.shufflenetv2:
                     {
                         var channels = DIV8(p.Width * 16);
+                        var kernel = 3ul;
+                        var pad = 1ul;
 
                         net +=
-                            Convolution(1, "Input", channels, 3, 3, 1, 1, 1, 1) +
+                            Convolution(1, "Input", channels, kernel, kernel, 1, 1, pad, pad) +
                             BatchNormActivation(1, "C1", p.Activation) +
                             Convolution(2, "B1", channels, 1, 1, 1, 1, 0, 0) +
                             BatchNormActivation(2, "C2", p.Activation) +
-                            DepthwiseConvolution(3, "B2", 1, 3, 3, 1, 1, 1, 1) +
+                            DepthwiseConvolution(3, "B2", 1, kernel, kernel, 1, 1, pad, pad) +
                             BatchNorm(3, "DC3") +
                             Convolution(4, "B3", channels, 1, 1, 1, 1, 0, 0) +
                             BatchNormActivation(4, "C4", p.Activation) +
@@ -779,7 +779,7 @@ namespace ScriptsDialog
                             var subsample = stride == 2ul ? 1ul : 0ul;
                             for (var n = 0ul; n < rec.Iterations + subsample; n++)
                             {
-                                var subblocks = InvertedResidual(C, A++, channels, stride, rec.Shuffle, rec.SE, p.Activation);
+                                var subblocks = InvertedResidual(C, A++, channels, kernel, stride, pad, rec.Shuffle, rec.SE, p.Activation);
                                 foreach (var blk in subblocks)
                                     net += blk;
 
