@@ -160,7 +160,7 @@ namespace ScriptsDialog
 
         public override string ToString()
         {
-            return "(" + Channels.ToString() + "-" + Iterations.ToString() + "-" + Stride.ToString() + Shuffle.ToString() + "-" + (SE ? "-se" : "") + ")";
+            return "(" + Channels.ToString() + "-" + Iterations.ToString() + "-" + Stride.ToString() + "-" + Shuffle.ToString() + (SE ? "-se" : "") + ")";
         }
 
         public UInt Channels
@@ -333,7 +333,12 @@ namespace ScriptsDialog
                     case Scripts.resnet:
                         return Script.ToString() + "-" + H.ToString() + "x" + W.ToString() + "-" + Groups.ToString() + "-" + Iterations.ToString() + "-" + Width.ToString() + (Dropout > 0 ? "-dropout" : "") + (Bottleneck ? "-bottleneck" : "") + (ChannelZeroPad ? "-channelzeropad" : "") + "-" + Activation.ToString().ToLower();
                     case Scripts.shufflenetv2:
-                        return Script.ToString() + "-" + H.ToString() + "x" + W.ToString() + "-" + Groups.ToString() + "-" + Iterations.ToString() + "-" + Width.ToString() + "-" + Activation.ToString().ToLower() + (SqueezeExcitation ? "-se" : "");
+                        {
+                            string name = "";
+                            foreach (var rec in ShuffleNet)
+                                name += rec.ToString();
+                            return Script.ToString() + "-" + H.ToString() + "x" + W.ToString() + "-" + name;
+                        }
                     default:
                         return Script.ToString() + "-" + H.ToString() + "x" + W.ToString() + "-" + Groups.ToString() + "-" + Iterations.ToString();
                 }
@@ -762,7 +767,6 @@ namespace ScriptsDialog
                         return (Groups * Iterations * 3) + ((Groups - 1) * 2);
                     case Scripts.resnet:
                         return (Groups * Iterations * (Bottleneck ? 3u : 2u)) + ((Groups - 1) * 2);
-                   
                     default:
                         return 0;
                 }
