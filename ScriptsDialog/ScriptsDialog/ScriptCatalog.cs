@@ -772,7 +772,6 @@ namespace ScriptsDialog
                         {
                             if (subsample)
                             {
-                                subsample = false;
                                 channels *= 2;
                                 net += InvertedResidual(C, A++, channels, rec.Kernel, 2, rec.Pad, rec.Shuffle, rec.SE, p.Activation);
                                 C += 5;
