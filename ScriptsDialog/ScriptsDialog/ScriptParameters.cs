@@ -69,15 +69,15 @@ namespace ScriptsDialog
         public event PropertyChangedEventHandler PropertyChanged;
 
         public EfficientNetRecord()
-        { 
-            ExpandRatio = 4; 
-            Channels = 24; 
-            Iterations = 2; 
-            Stride = 1; 
+        {
+            ExpandRatio = 4;
+            Channels = 24;
+            Iterations = 2;
+            Stride = 1;
             SE = false;
         }
 
-        public EfficientNetRecord(UInt expandRatio = 4, UInt channels= 24, UInt iterations = 2, UInt stride = 1, bool se = false)
+        public EfficientNetRecord(UInt expandRatio = 4, UInt channels = 24, UInt iterations = 2, UInt stride = 1, bool se = false)
         {
             this.expandRatio = expandRatio;
             this.channels = channels;
@@ -131,9 +131,9 @@ namespace ScriptsDialog
     [Serializable()]
     public class ShuffleNetRecord : INotifyPropertyChanged
     {
-        private UInt channels;
         private UInt iterations;
-        private UInt stride;
+        private UInt kernel;
+        private UInt pad;
         private UInt shuffle;
         private bool se;
 
@@ -142,31 +142,25 @@ namespace ScriptsDialog
 
         public ShuffleNetRecord()
         {
-            Channels = 128;
-            Iterations = 6;
-            Stride = 1;
-            Shuffle = 2;
+            Iterations = 6ul;
+            Kernel = 3ul;
+            Pad = 1ul;
+            Shuffle = 2ul;
             SE = false;
         }
 
-        public ShuffleNetRecord(UInt channels = 128, UInt iterations = 6, UInt stride = 1, UInt shuffle = 2, bool se = false)
+        public ShuffleNetRecord(UInt iterations = 6ul, UInt kernel = 3ul, UInt pad = 1ul, UInt shuffle = 2ul, bool se = false)
         {
-            this.channels = channels;
             this.iterations = iterations;
-            this.stride = stride;
+            this.kernel = kernel;
+            this.pad = pad;
             this.shuffle = shuffle;
             this.se = se;
         }
 
         public override string ToString()
         {
-            return "(" + Channels.ToString() + "-" + Iterations.ToString() + "-" + Stride.ToString() + "-" + Shuffle.ToString() + (SE ? "-se" : "") + ")";
-        }
-
-        public UInt Channels
-        {
-            get { return channels; }
-            set { channels = value; OnPropertyChanged("Channels"); }
+            return "(" + Iterations.ToString() + "-" + Kernel.ToString() + "-" + Pad.ToString() + "-" + Shuffle.ToString() + (SE ? "-se" : "") + ")";
         }
 
         public UInt Iterations
@@ -175,10 +169,16 @@ namespace ScriptsDialog
             set { iterations = value; OnPropertyChanged("Iterations"); }
         }
 
-        public UInt Stride
+        public UInt Kernel
         {
-            get { return stride; }
-            set { stride = value; OnPropertyChanged("Stride"); }
+            get { return kernel; }
+            set { kernel = value; OnPropertyChanged("Kernel"); }
+        }
+
+        public UInt Pad
+        {
+            get { return pad; }
+            set { pad = value; OnPropertyChanged("Pad"); }
         }
 
         public UInt Shuffle
@@ -247,7 +247,7 @@ namespace ScriptsDialog
         private ObservableCollection<ShuffleNetRecord> shufflenet = new ObservableCollection<ShuffleNetRecord>();
 
         public ScriptParameters()
-        { 
+        {
         }
 
         public ScriptParameters(Scripts script = Scripts.shufflenetv2, Datasets dataset = Datasets.cifar10, UInt h = 32, UInt w = 32, UInt padH = 4, UInt padW = 4, bool mirrorPad = false, bool meanStdNorm = true, Fillers weightsFiller = Fillers.HeNormal, Float weightsScale = (Float)0.05, Float weightsLRM = 1, Float weightsWDM = 1, bool hasBias = false, Fillers biasesFiller = Fillers.Constant, Float biasesScale = 0, Float biasesLRM = 1, Float biasesWDM = 1, Float batchNormMomentum = (Float)0.995, Float batchNormEps = (Float)1E-04, bool batchNormScaling = false, Float alpha = (Float)0, Float beta = (Float)0, UInt groups = 3, UInt iterations = 4, UInt width = 8, UInt growthRate = 12, bool bottleneck = false, Float dropout = 0, Float compression = 0, bool squeezeExcitation = false, bool channelZeroPad = true, Activations activation = Activations.Relu)
@@ -299,9 +299,9 @@ namespace ScriptsDialog
             EfficientNet = efficientnetv2;
 
             var shufflenetv2 = new ObservableCollection<ShuffleNetRecord>();
-            shufflenetv2.Add(new ShuffleNetRecord(128, 6, 1, 4, false));
-            shufflenetv2.Add(new ShuffleNetRecord(256, 7, 2, 4, true));
-            shufflenetv2.Add(new ShuffleNetRecord(512, 8, 2, 4, true));
+            shufflenetv2.Add(new ShuffleNetRecord(6, 3, 1, 4, false));
+            shufflenetv2.Add(new ShuffleNetRecord(7, 3, 1, 4, true));
+            shufflenetv2.Add(new ShuffleNetRecord(8, 3, 1, 4, true));
             ShuffleNet = shufflenetv2;
         }
 
@@ -337,7 +337,7 @@ namespace ScriptsDialog
                             string name = "";
                             foreach (var rec in ShuffleNet)
                                 name += rec.ToString();
-                            return Script.ToString() + "-" + H.ToString() + "x" + W.ToString() + "-" + name;
+                            return Script.ToString() + "-" + H.ToString() + "x" + W.ToString() + "-" + Width.ToString() + "-" + name;
                         }
                     default:
                         return Script.ToString() + "-" + H.ToString() + "x" + W.ToString() + "-" + Groups.ToString() + "-" + Iterations.ToString();
@@ -918,7 +918,7 @@ namespace ScriptsDialog
 
         public bool GroupsVisible { get { return Script != Scripts.efficientnetv2 && Script != Scripts.shufflenetv2; } }
         public bool IterationsVisible { get { return Script != Scripts.efficientnetv2 && Script != Scripts.shufflenetv2; } }
-        public bool WidthVisible { get { return Script == Scripts.mobilenetv3 || Script == Scripts.resnet; } }
+        public bool WidthVisible { get { return Script == Scripts.mobilenetv3 || Script == Scripts.resnet || Script == Scripts.shufflenetv2; } }
         public bool GrowthRateVisible { get { return Script == Scripts.densenet; } }
         public bool DropoutVisible { get { return Script == Scripts.densenet || Script == Scripts.resnet; } }
         public bool CompressionVisible { get { return Script == Scripts.densenet; } }

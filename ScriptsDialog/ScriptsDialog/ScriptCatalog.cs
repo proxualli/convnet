@@ -757,7 +757,7 @@ namespace ScriptsDialog
 
                 case Scripts.shufflenetv2:
                     {
-                        var channels = DIV8(p.ShuffleNet[0].Channels);
+                        var channels = DIV8(p.Width * 16);
 
                         net +=
                             Convolution(1, "Input", channels, 3, 3, 1, 1, 1, 1) +
@@ -773,20 +773,21 @@ namespace ScriptsDialog
 
                         var C = 6ul;
                         var A = 1ul;
-
+                        var stride = 1ul;
                         foreach (var rec in p.ShuffleNet)
                         {
-                            channels = DIV8(rec.Channels);
-                            for (var n = 0ul; n < rec.Iterations + (rec.Stride != 1ul ? 1ul : 0ul); n++)
+                            var subsample = stride == 2ul ? 1ul : 0ul;
+                            for (var n = 0ul; n < rec.Iterations + subsample; n++)
                             {
-                                var stride = n == 0ul ? rec.Stride : 1ul;
                                 var subblocks = InvertedResidual(C, A++, channels, stride, rec.Shuffle, rec.SE, p.Activation);
-
                                 foreach (var blk in subblocks)
                                     net += blk;
 
                                 C += (stride == 1ul) ? 3ul : 5ul;
+                                stride = 1ul;
                             }
+                            channels *= 2;
+                            stride = 2ul;
                         }
 
                         net +=

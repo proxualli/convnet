@@ -184,15 +184,17 @@ namespace ScriptsDialog
           
             switch ((Scripts)comboBoxModel.SelectedIndex)
             {
-                case Scripts.efficientnetv2:
-                case Scripts.shufflenetv2:
-                    removeRows += 10;
-                    break;
                 case Scripts.densenet:
                 case Scripts.resnet:
                     removeRows += 7;
                     break;
+                case Scripts.efficientnetv2:
+                    removeRows += 10;
+                    break;
                 case Scripts.mobilenetv3:
+                    removeRows += 9;
+                    break;
+                case Scripts.shufflenetv2:
                     removeRows += 9;
                     break;
             }
