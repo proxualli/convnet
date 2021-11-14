@@ -329,11 +329,11 @@ namespace ScriptsDialog
                 blocks.Add(
                     Convolution(id, In("CC", n), channels, 1, 1, 1, 1, 0, 0) +
                     BatchNormActivation(id + 1, In("C", id), activation) +
-                    DepthwiseConvolution(id + 1, In("B", id + 1), 1, kernel, kernel, 2, 2, pad, pad) +
+                    DepthwiseConvolution(id + 1, In("B", id + 1), 1, kernel, kernel, stride, stride, pad, pad) +
                     BatchNorm(id + 2, In("DC", id + 1)) +
                     Convolution(id + 2, In("B", id + 2), channels, 1, 1, 1, 1, 0, 0) +
                     BatchNormActivation(id + 3, In("C", id + 2), activation) +
-                    DepthwiseConvolution(id + 3, In("CC", n), 1, kernel, kernel, 2, 2, pad, pad) +
+                    DepthwiseConvolution(id + 3, In("CC", n), 1, kernel, kernel, stride, stride, pad, pad) +
                     BatchNorm(id + 4, In("DC", id + 3)) +
                     Convolution(id + 4, In("B", id + 4), channels, 1, 1, 1, 1, 0, 0) +
                     BatchNormActivation(id + 5, In("C", id + 4), activation) +
@@ -357,7 +357,7 @@ namespace ScriptsDialog
                     ChannelSplit(n, In("CSH", n), 2, 1, "L") + ChannelSplit(n, In("CSH", n), 2, 2, "R") +
                     Convolution(id, In("RCS", n), channels, 1, 1, 1, 1, 0, 0) +
                     BatchNormActivation(id + 1, In("C", id), activation) +
-                    DepthwiseConvolution(id + 1, In("B", id + 1), 1, kernel, kernel, 1, 1, pad, pad) +
+                    DepthwiseConvolution(id + 1, In("B", id + 1), 1, kernel, kernel, stride, stride, pad, pad) +
                     BatchNorm(id + 2, In("DC", id + 1)) +
                     Convolution(id + 2, In("B", id + 2), channels, 1, 1, 1, 1, 0, 0) +
                     BatchNormActivation(id + 3, In("C", id + 2), activation) +
@@ -756,16 +756,14 @@ namespace ScriptsDialog
                 case Scripts.shufflenetv2:
                     {
                         var channels = DIV8(p.Width * 16);
-                        var kernel = 3ul;
                         var stride = 1ul;
-                        var pad = 1ul;
 
                         net +=
-                            Convolution(1, "Input", channels, kernel, kernel, stride, stride, pad, pad) +
+                            Convolution(1, "Input", channels, 3, 3, 1, 1, 1, 1) +
                             BatchNormActivation(1, "C1", p.Activation) +
                             Convolution(2, "B1", channels, 1, 1, 1, 1, 0, 0) +
                             BatchNormActivation(2, "C2", p.Activation) +
-                            DepthwiseConvolution(3, "B2", 1, kernel, kernel, stride, stride, pad, pad) +
+                            DepthwiseConvolution(3, "B2", 1, 3, 3, 1, 1, 1, 1) +
                             BatchNorm(3, "DC3") +
                             Convolution(4, "B3", channels, 1, 1, 1, 1, 0, 0) +
                             BatchNormActivation(4, "C4", p.Activation) +
@@ -779,11 +777,11 @@ namespace ScriptsDialog
                             var subsample = stride == 2ul ? 1ul : 0ul;
                             for (var n = 0ul; n < rec.Iterations + subsample; n++)
                             {
-                                var subblocks = InvertedResidual(C, A++, channels, kernel, stride, pad, rec.Shuffle, rec.SE, p.Activation);
+                                var subblocks = InvertedResidual(C, A++, channels, rec.Kernel, stride, rec.Pad, rec.Shuffle, rec.SE, p.Activation);
                                 foreach (var blk in subblocks)
                                     net += blk;
 
-                                C += (stride == 1ul) ? 3ul : 5ul;
+                                C += (stride == 2ul) ? 5ul : 3ul;
                                 stride = 1ul;
                             }
                             channels *= 2;
