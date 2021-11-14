@@ -320,13 +320,11 @@ namespace ScriptsDialog
             return blocks;
         }
 
-        public static List<string> InvertedResidual(UInt id, UInt n, UInt channels, UInt kernel = 3, UInt stride = 1, UInt pad = 1, UInt shuffle = 2, bool se = false, Activations activation = Activations.HardSwish)
+        public static string InvertedResidual(UInt id, UInt n, UInt channels, UInt kernel = 3, UInt stride = 1, UInt pad = 1, UInt shuffle = 2, bool se = false, Activations activation = Activations.HardSwish)
         {
-            var blocks = new List<string>();
-
             if (stride == 2)
             {
-                blocks.Add(
+                return
                     Convolution(id, In("CC", n), channels, 1, 1, 1, 1, 0, 0) +
                     BatchNormActivation(id + 1, In("C", id), activation) +
                     DepthwiseConvolution(id + 1, In("B", id + 1), 1, kernel, kernel, stride, stride, pad, pad) +
@@ -337,7 +335,7 @@ namespace ScriptsDialog
                     BatchNorm(id + 4, In("DC", id + 3)) +
                     Convolution(id + 4, In("B", id + 4), channels, 1, 1, 1, 1, 0, 0) +
                     BatchNormActivation(id + 5, In("C", id + 4), activation) +
-                    Concat(n + 1, In("B", id + 5) + "," + In("B", id + 3)));
+                    Concat(n + 1, In("B", id + 5) + "," + In("B", id + 3));
             }
             else
             {
@@ -352,7 +350,7 @@ namespace ScriptsDialog
                     Concat(n + 1, In("LCS", n) + "," + group + "CM") :
                     Concat(n + 1, In("LCS", n) + "," + In("B", id + 3));
 
-                blocks.Add(
+                return
                     ChannelShuffle(n, In("CC", n), shuffle) +
                     ChannelSplit(n, In("CSH", n), 2, 1, "L") + ChannelSplit(n, In("CSH", n), 2, 2, "R") +
                     Convolution(id, In("RCS", n), channels, 1, 1, 1, 1, 0, 0) +
@@ -361,10 +359,8 @@ namespace ScriptsDialog
                     BatchNorm(id + 2, In("DC", id + 1)) +
                     Convolution(id + 2, In("B", id + 2), channels, 1, 1, 1, 1, 0, 0) +
                     BatchNormActivation(id + 3, In("C", id + 2), activation) +
-                    strSE);
+                    strSE;
             }
-
-            return blocks;
         }
 
         internal static string Generate(ScriptParameters p)
@@ -756,7 +752,6 @@ namespace ScriptsDialog
                 case Scripts.shufflenetv2:
                     {
                         var channels = DIV8(p.Width * 16);
-                        var stride = 1ul;
 
                         net +=
                             Convolution(1, "Input", channels, 3, 3, 1, 1, 1, 1) +
@@ -772,20 +767,22 @@ namespace ScriptsDialog
 
                         var C = 6ul;
                         var A = 1ul;
+                        var subsample = false;
                         foreach (var rec in p.ShuffleNet)
                         {
-                            var subsample = stride == 2ul ? 1ul : 0ul;
-                            for (var n = 0ul; n < rec.Iterations + subsample; n++)
+                            if (subsample)
                             {
-                                var subblocks = InvertedResidual(C, A++, channels, rec.Kernel, stride, rec.Pad, rec.Shuffle, rec.SE, p.Activation);
-                                foreach (var blk in subblocks)
-                                    net += blk;
-
-                                C += stride == 2ul ? 5ul : 3ul;
-                                stride = 1ul;
+                                subsample = false;
+                                channels *= 2;
+                                net += InvertedResidual(C, A++, channels, rec.Kernel, 2, rec.Pad, rec.Shuffle, rec.SE, p.Activation);
+                                C += 5;
                             }
-                            channels *= 2;
-                            stride = 2ul;
+                            for (var n = 0ul; n < rec.Iterations; n++)
+                            {
+                                net += InvertedResidual(C, A++, channels, rec.Kernel, 1, rec.Pad, rec.Shuffle, rec.SE, p.Activation);
+                                C += 3ul;
+                            }
+                            subsample = true;
                         }
 
                         net +=
