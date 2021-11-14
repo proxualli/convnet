@@ -341,7 +341,7 @@ namespace ScriptsDialog
             {
                 var group = In("SE", id + 3);
                 var strSE =
-                    (se && stride == 1) ? GlobalAvgPooling(In("B", id + 3), group) +
+                    se ? GlobalAvgPooling(In("B", id + 3), group) +
                     Convolution(1, group + "GAP", DIV8(channels / 4), 1, 1, 1, 1, 0, 0, group) +
                     BatchNormActivation(1, group + "C1", activation == Activations.FRelu ? Activations.HardSwish : activation, group) +
                     Convolution(2, group + "B1", channels, 1, 1, 1, 1, 0, 0, group) +
