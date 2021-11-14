@@ -781,7 +781,7 @@ namespace ScriptsDialog
                                 foreach (var blk in subblocks)
                                     net += blk;
 
-                                C += (stride == 2ul) ? 5ul : 3ul;
+                                C += stride == 2ul ? 5ul : 3ul;
                                 stride = 1ul;
                             }
                             channels *= 2;
