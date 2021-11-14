@@ -265,7 +265,7 @@ namespace Convnet.PageViewModels
                 if (value.Equals(modelName))
                     return;
 
-                if (value.Trim().All(c => char.IsLetterOrDigit(c) || c == '-'))
+                if (value.Trim().All(c => char.IsLetterOrDigit(c) || c == '-' || c == '(' || c == ')'))
                 {
                     modelName = value.Trim();
                     OnPropertyChanged(nameof(ModelName));
@@ -329,8 +329,6 @@ namespace Convnet.PageViewModels
             Mouse.OverrideCursor = null;
             try
             {
-                //ModelName = Definition.Split(Environment.NewLine.ToCharArray(), StringSplitOptions.RemoveEmptyEntries)[0].Trim().Replace("[", "").Replace("]", "").Trim();
-
                 bool sameDef = Definition.ToLower(CultureInfo.CurrentCulture).Equals(Settings.Default.DefinitionActive.ToLower(CultureInfo.CurrentCulture));
                 
                 string pathDefinition = Path.Combine(DefinitionsDirectory, ModelName + ".txt");
@@ -502,10 +500,11 @@ namespace Convnet.PageViewModels
         private void VisualStudioButtonClick(object sender, RoutedEventArgs e)
         {
             string vspath = @"C:\Program Files\Microsoft Visual Studio\2022\";
+            string version = @"Community";
+            const string common = @"\Common7\IDE\";
+
             if (!Directory.Exists(vspath))
                 vspath = @"C:\Program Files (x86)\Microsoft Visual Studio\2019\";
-            string version = @"Community";
-            string common = @"\Common7\IDE\";
             if (Directory.Exists(vspath + @"Community" + common))
                 version = "Community";
             else if (Directory.Exists(vspath + @"Professional" + common))
