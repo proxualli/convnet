@@ -1,5 +1,4 @@
-﻿using Convnet.PageViewModels;
-using dnncore;
+﻿using dnncore;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
