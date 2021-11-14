@@ -236,8 +236,8 @@
         <CheckBox x:Name="checkBoxHorizontalFlip" Foreground="White" Content="" Grid.Column="2" HorizontalAlignment="Left" Margin="3" Grid.Row="2" VerticalAlignment="Center" IsChecked="{Binding Path=HorizontalFlip, Mode=TwoWay}" FontSize="14" TabIndex="3"/>
         <CheckBox x:Name="checkBoxVerticalFlip" Foreground="White" Content="" Grid.Column="2" HorizontalAlignment="Left" Margin="3" Grid.Row="3" VerticalAlignment="Center" IsChecked="{Binding Path=VerticalFlip, Mode=TwoWay}" FontSize="14" TabIndex="4"/>
         
-        <RadioButton x:Name="radioButtonCutOut" GroupName="CutMix" Foreground="White" Content="CutOut" Grid.Column="1" HorizontalAlignment="Left" Margin="3" Grid.Row="7" VerticalAlignment="Center" IsChecked="{Binding Path=CutMix, Converter={StaticResource Inverter}, Mode=OneWay}" Width="Auto" TabIndex="8" FontSize="14"/>
-        <RadioButton x:Name="radioButtonCutMix" GroupName="CutMix" Foreground="White" Content="CutMix" Grid.Column="1" HorizontalAlignment="Left" Margin="70,3,3,3" Grid.Row="7" VerticalAlignment="Center" IsChecked="{Binding Path=CutMix, Mode=TwoWay}" Width="Auto" TabIndex="9" FontSize="14"/>
+        <RadioButton x:Name="radioButtonCutOut" GroupName="CutMix" Foreground="White" Content="Cutout" Grid.Column="1" HorizontalAlignment="Left" Margin="3" Grid.Row="7" VerticalAlignment="Center" IsChecked="{Binding Path=CutMix, Converter={StaticResource Inverter}, Mode=OneWay}" Width="Auto" TabIndex="8" FontSize="14"/>
+        <RadioButton x:Name="radioButtonCutMix" GroupName="CutMix" Foreground="White" Content="CutMix" Grid.Column="1" HorizontalAlignment="Left" Margin="67,3,3,3" Grid.Row="7" VerticalAlignment="Center" IsChecked="{Binding Path=CutMix, Mode=TwoWay}" Width="Auto" TabIndex="9" FontSize="14"/>
         
         <ComboBox Name="comboBoInterpolation" Grid.Column="2" Grid.Row="10" HorizontalAlignment="Stretch" Margin="2" VerticalAlignment="Stretch" Width="Auto" FontSize="14" TabIndex="13" ItemsSource="{x:Static pvm:TestPageViewModel.GetInterpolations}" SelectedItem="{Binding Path=Interpolation, Mode=TwoWay}"/>
         
