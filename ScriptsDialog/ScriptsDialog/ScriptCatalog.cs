@@ -320,7 +320,7 @@ namespace ScriptsDialog
             return blocks;
         }
 
-        public static List<string> InvertedResidual(UInt id, UInt n, UInt channels, UInt kernel = 3, UInt pad = 1, UInt stride = 1, UInt shuffle = 2, bool se = false, Activations activation = Activations.HardSwish)
+        public static List<string> InvertedResidual(UInt id, UInt n, UInt channels, UInt kernel = 3, UInt stride = 1, UInt pad = 1, UInt shuffle = 2, bool se = false, Activations activation = Activations.HardSwish)
         {
             var blocks = new List<string>();
 
@@ -779,7 +779,7 @@ namespace ScriptsDialog
                             var subsample = stride == 2ul ? 1ul : 0ul;
                             for (var n = 0ul; n < rec.Iterations + subsample; n++)
                             {
-                                var subblocks = InvertedResidual(C, A++, channels, kernel, pad, stride, rec.Shuffle, rec.SE, p.Activation);
+                                var subblocks = InvertedResidual(C, A++, channels, kernel, stride, pad, rec.Shuffle, rec.SE, p.Activation);
                                 foreach (var blk in subblocks)
                                     net += blk;
 
