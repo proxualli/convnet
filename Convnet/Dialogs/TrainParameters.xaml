@@ -305,9 +305,9 @@
         <TextBlock Foreground="White" Grid.Column="4" Grid.Row="0" Height="Auto" HorizontalAlignment="Stretch" Margin="0" Name="textBlockHorizontalFlip" Text="Horizontal Flip:" VerticalAlignment="Center" Width="Auto" FontSize="14"/>
         <TextBlock Foreground="White" Grid.Column="4" Grid.Row="1" Height="Auto" HorizontalAlignment="Stretch" Margin="0" Name="textBlockVerticalFlip" Text="Vertical Flip:" VerticalAlignment="Center" Width="Auto" FontSize="14"/>
 
-        <CheckBox Name="checkBoxHorizontalFlip" Foreground="White" Content="Yes" Grid.Column="5" HorizontalAlignment="Left" Margin="0,3,0,0" Grid.Row="0" VerticalAlignment="Center" IsChecked="{Binding Path=HorizontalFlip, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TabIndex="18" FontSize="14"/>
+        <CheckBox Name="checkBoxHorizontalFlip" Foreground="White" Content="" Grid.Column="5" HorizontalAlignment="Left" Margin="0,3,0,0" Grid.Row="0" VerticalAlignment="Center" IsChecked="{Binding Path=HorizontalFlip, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TabIndex="18" FontSize="14"/>
 
-        <CheckBox Name="checkBoxVerticalFlip" Foreground="White" Content="Yes" Grid.Column="5" HorizontalAlignment="Left" Margin="0,3,0,0" Grid.Row="1"  VerticalAlignment="Center" IsChecked="{Binding Path=VerticalFlip, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" TabIndex="20" FontSize="14"/>
+        <CheckBox Name="checkBoxVerticalFlip" Foreground="White" Content="" Grid.Column="5" HorizontalAlignment="Left" Margin="0,3,0,0" Grid.Row="1"  VerticalAlignment="Center" IsChecked="{Binding Path=VerticalFlip, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" TabIndex="20" FontSize="14"/>
 
         <xctk:AutoSelectTextBox ContextMenu="{StaticResource MyContextMenu}" Grid.Column="5" Grid.Row="2" Grid.RowSpan="1" HorizontalAlignment="Stretch" x:Name="textBoxColorCast" VerticalAlignment="Stretch" Margin="2" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" MaxLines="1" TabIndex="22" Validation.ErrorTemplate="{StaticResource validationTemplate}" Style="{StaticResource textBoxInError}" AutoWordSelection="True" AllowDrop="False" BorderThickness="1" SnapsToDevicePixels="True" AutoMoveFocus="True" AutoSelectBehavior="OnFocus" FontSize="14" TextChanged="TextBoxColorCast_TextChanged">
             <TextBox.Text>
