@@ -221,7 +221,7 @@ namespace dnn
 			fpropTime(std::chrono::duration<Float>(Float(0))),
 			bpropTime(std::chrono::duration<Float>(Float(0))),
 			updateTime(std::chrono::duration<Float>(Float(0))),
-		    	SampleSpeed(Float(0)),
+			SampleSpeed(Float(0)),
 			NewEpoch(nullptr),
 			AdjustedTrainingSamplesCount(0),
 			AdjustedTestingSamplesCount(0),
@@ -935,7 +935,7 @@ namespace dnn
 						for (auto index = 0ull; index < DataProv->TrainingSamplesCount; index++)
 							TrainingSamplesVFlip[index].flip();
 
-                   			if (CheckTaskState())
+					if (CheckTaskState())
 					{
 						State.store(States::Training);
 
@@ -1062,7 +1062,7 @@ namespace dnn
 								bpropTime = bpropTimeCount;
 								updateTime = updateTimeCount;
 
-                                				elapsedTime = timer.now() - timePointGlobal;
+								elapsedTime = timer.now() - timePointGlobal;
 								SampleSpeed = BatchSize / (Float(std::chrono::duration_cast<std::chrono::microseconds>(elapsedTime).count()) / 1000000);
 
 								if (TaskState.load() != TaskStates::Running && !CheckTaskState())
@@ -1188,8 +1188,8 @@ namespace dnn
 
 				auto timer = std::chrono::high_resolution_clock();
 				auto timePoint = timer.now();
-				auto timePointGlobal = timer.now();;
-                		auto elapsedTime = std::chrono::duration<Float>(Float(0));
+				auto timePointGlobal = timer.now();
+				auto elapsedTime = std::chrono::duration<Float>(Float(0));
 
 				CurrentTrainingRate = TrainingRates[0];
 				// check first if we have enough memory available
@@ -1268,8 +1268,8 @@ namespace dnn
 					RecognizedBatch(State.load(), BatchSize, overflow, TestSkipCount, SampleLabels);
 
 					fpropTime = timer.now() - timePointGlobal;
-
-                   			SampleSpeed = BatchSize / (Float(std::chrono::duration_cast<std::chrono::microseconds>(fpropTime).count()) / 1000000);
+					
+					SampleSpeed = BatchSize / (Float(std::chrono::duration_cast<std::chrono::microseconds>(fpropTime).count()) / 1000000);
 					
 					if (TaskState.load() != TaskStates::Running && !CheckTaskState())
 						break;
