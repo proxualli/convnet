@@ -3,8 +3,8 @@
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <LangVersion>latest</LangVersion>
     <UseWPF>true</UseWPF>
+    <LangVersion>latest</LangVersion>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <StartupObject>ScriptsDialog.App</StartupObject>
     <ApplicationIcon>Resources\App.ico</ApplicationIcon>
