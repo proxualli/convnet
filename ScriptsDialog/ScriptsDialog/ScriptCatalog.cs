@@ -505,7 +505,7 @@ namespace ScriptsDialog
                            Convolution(C, "Input", inputChannels, 3, 3, 1, 1, 1, 1) +
                            BatchNormActivation(C, In("C", C), p.Activation);
 
-                        var inp = In("B", C++);
+                        var input = In("B", C++);
                         foreach (var rec in p.EfficientNet)
                         {
                             var outputChannels = DIV8(rec.Channels);
@@ -514,14 +514,14 @@ namespace ScriptsDialog
                                 var stride = n == 0ul ? rec.Stride : 1ul;
                                 var identity = stride == 1ul && inputChannels == outputChannels;
 
-                                var subblocks = MBConv(C, inp, inputChannels, outputChannels, stride, rec.ExpandRatio, rec.SE, p.Activation);
+                                var subblocks = MBConv(C, input, inputChannels, outputChannels, stride, rec.ExpandRatio, rec.SE, p.Activation);
                                 foreach (var blk in subblocks)
                                     net += blk;
 
                                 inputChannels = outputChannels;
                                 C += 2;
 
-                                inp = In((identity ? "A" : "B"), C++);
+                                input = In((identity ? "A" : "B"), C++);
                             }
                         }
 
@@ -776,7 +776,7 @@ namespace ScriptsDialog
                             for (var n = 0ul; n < rec.Iterations; n++)
                             {
                                 net += InvertedResidual(C, A++, channels, rec.Kernel, rec.Pad, false, rec.Shuffle, rec.SE, p.Activation);
-                                C += 3ul;
+                                C += 3;
                             }
                             subsample = true;
                         }
