@@ -505,8 +505,7 @@ namespace ScriptsDialog
                            Convolution(C, "Input", inputChannels, 3, 3, 1, 1, 1, 1) +
                            BatchNormActivation(C, In("C", C), p.Activation);
 
-                        var inp = In("B", C);
-                        C++;
+                        var inp = In("B", C++);
                         foreach (var rec in p.EfficientNet)
                         {
                             var outputChannels = DIV8(rec.Channels);
@@ -514,16 +513,15 @@ namespace ScriptsDialog
                             {
                                 var stride = n == 0ul ? rec.Stride : 1ul;
                                 var identity = stride == 1ul && inputChannels == outputChannels;
-                                var subblocks = MBConv(C, inp, inputChannels, outputChannels, stride, rec.ExpandRatio, rec.SE, p.Activation);
 
+                                var subblocks = MBConv(C, inp, inputChannels, outputChannels, stride, rec.ExpandRatio, rec.SE, p.Activation);
                                 foreach (var blk in subblocks)
                                     net += blk;
 
                                 inputChannels = outputChannels;
                                 C += 2;
 
-                                inp = In((identity ? "A" : "B"), C);
-                                C++;
+                                inp = In((identity ? "A" : "B"), C++);
                             }
                         }
 
@@ -558,7 +556,6 @@ namespace ScriptsDialog
 
                         var A = 1ul;
                         var C = 5ul;
-
                         for (var g = 1ul; g <= p.Groups; g++)
                         {
                             var mix = 0ul; // g - 1ul;
