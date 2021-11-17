@@ -556,7 +556,7 @@ namespace Convnet.PageViewModels
                 fileInfo.Delete();
             }
         }
-        
+
         private void ScriptDialog()
         {
             if (dirty)
@@ -640,7 +640,7 @@ namespace Convnet.PageViewModels
         //    {
         //        Mouse.OverrideCursor = Cursors.Wait;
         //        IsValid = false;
-                               
+
         //        try
         //        {
         //            var processInfo = new ProcessStartInfo("dotnet", @"build ScriptsDialog.csproj -p:Platform=AnyCPU -p:nugetinteractive=true -c Release -fl -flp:logfile=msbuild.log;verbosity=quiet")
@@ -651,14 +651,14 @@ namespace Convnet.PageViewModels
         //                WindowStyle = ProcessWindowStyle.Hidden,
         //                Verb = "runas"
         //            };
-                    
+
         //            File.Delete(ScriptsDirectory + @"ScriptsDialog\msbuild.log");
 
         //            using (var process = Process.Start(processInfo))
         //            {
         //                process.WaitForExit();
         //            }
-                  
+
         //            var log = File.ReadAllText(ScriptsDirectory + @"ScriptsDialog\msbuild.log");
 
         //            Mouse.OverrideCursor = null;
@@ -667,13 +667,13 @@ namespace Convnet.PageViewModels
         //            dirty = log.Length > 0;
 
         //            if (dirty)
-        //                 Xceed.Wpf.Toolkit.MessageBox.Show(log, "Build error", MessageBoxButton.OK);
+        //                Xceed.Wpf.Toolkit.MessageBox.Show(log, "Build error", MessageBoxButton.OK);
         //        }
         //        catch (Exception ex)
         //        {
         //            Mouse.OverrideCursor = null;
         //            IsValid = true;
-                    
+
         //            Xceed.Wpf.Toolkit.MessageBox.Show(ex.Message, "Build failed", MessageBoxButton.OK);
         //        }
         //    }
@@ -694,7 +694,7 @@ namespace Convnet.PageViewModels
         //        Xceed.Wpf.Toolkit.MessageBox.Show(exception.Message, "Load Assembly", MessageBoxButton.OK);
         //    }
         //}
-       
+
         private bool CheckDefinition()
         {
             DNNCheckMsg msg = Model.CheckDefinition(Definition);

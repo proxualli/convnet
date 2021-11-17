@@ -1,18 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Net;
+using System.Net.NetworkInformation;
 using System.Runtime.InteropServices;
 using System.Windows.Threading;
 
 namespace Convnet.Common
 {
-    /// <summary>
-    /// This class provides static helper methods for 
-    /// working with the Dispatcher in WPF
-    /// The following MSDN page is quite useful :
-    /// http://msdn.microsoft.com/en-us/library/system.windows.threading.dispatcher.pushframe.aspx
-    /// </summary>
     public static class ApplicationHelper
     {
         #region DoEvents
@@ -57,18 +51,19 @@ namespace Convnet.Common
 
         public static bool CheckForInternetConnection()
         {
-            try
+            var result = false;
+            using (var p = new Ping())
             {
-                using (var client = new WebClient())
-                using (var stream = client.OpenRead("https://www.google.com"))
+                try
                 {
-                    return true;
+                    PingReply reply = p.Send(@"https://www.google.com", 3000);
+                    if (reply.Status == IPStatus.Success)
+                        return true;
                 }
+                catch { }
             }
-            catch
-            {
-                return false;
-            }
+            
+            return result;
         }
 
         public static IEnumerable<string> ToCsv<T>(IEnumerable<T> list)
