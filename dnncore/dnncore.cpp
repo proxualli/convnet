@@ -522,7 +522,7 @@ namespace dnncore
 			case DNNLayerTypes::DepthwiseConvolution:
 			case DNNLayerTypes::PartialDepthwiseConvolution:
 			{
-				if (TaskState == DNNTaskStates::Stopped)
+				if (TaskState == DNNTaskStates::Stopped && State != DNNStates::Training && State != DNNStates::Testing)
 				{
 					const auto depthwise = info->LayerType == DNNLayerTypes::DepthwiseConvolution || info->LayerType == DNNLayerTypes::PartialDepthwiseConvolution;
 					const auto width = (info->C * info->KernelH) + info->C + 1;
@@ -566,7 +566,7 @@ namespace dnncore
 			case DNNLayerTypes::Dense:
 			case DNNLayerTypes::LayerNorm:
 			{
-				if (TaskState == DNNTaskStates::Stopped)
+				if (TaskState == DNNTaskStates::Stopped && State != DNNStates::Training && State != DNNStates::Testing)
 				{
 					const auto width = info->BiasCount;
 					const auto height = (info->WeightCount / info->BiasCount) + 3;
@@ -597,7 +597,7 @@ namespace dnncore
 
 			case DNNLayerTypes::Activation:
 			{
-				if (TaskState == DNNTaskStates::Stopped)
+				if (TaskState == DNNTaskStates::Stopped && State != DNNStates::Training && State != DNNStates::Testing)
 				{
 					const auto width = info->WeightCount;
 					const auto height = 4;
