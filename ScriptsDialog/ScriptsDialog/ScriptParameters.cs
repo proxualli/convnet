@@ -299,9 +299,9 @@ namespace ScriptsDialog
             EfficientNet = efficientnetv2;
 
             var shufflenetv2 = new ObservableCollection<ShuffleNetRecord>();
-            shufflenetv2.Add(new ShuffleNetRecord(6, 3, 1, 4, false));
-            shufflenetv2.Add(new ShuffleNetRecord(7, 3, 1, 4, true));
-            shufflenetv2.Add(new ShuffleNetRecord(8, 3, 1, 4, true));
+            shufflenetv2.Add(new ShuffleNetRecord(6, 3, 1, 2, false));
+            shufflenetv2.Add(new ShuffleNetRecord(7, 3, 1, 2, true));
+            shufflenetv2.Add(new ShuffleNetRecord(8, 3, 1, 2, true));
             ShuffleNet = shufflenetv2;
         }
 
