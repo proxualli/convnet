@@ -509,12 +509,15 @@ namespace dnncore
 		delete updateTiming;
 		delete islocked;
 
-		if (updateUI)
+		if (info->LayerType == DNNLayerTypes::Input && !updateUI)
+			UpdateInputSnapshot(info->C, info->H, info->W);
+
+		if (updateUI && TaskState == DNNTaskStates::Stopped && State != DNNStates::Training && State != DNNStates::Testing)
 		{
 			switch (info->LayerType)
 			{
 			case DNNLayerTypes::Input:
-				UpdateInputSnapshot(info->C, info->H, info->W);
+				//UpdateInputSnapshot(info->C, info->H, info->W);
 				break;
 
 			case DNNLayerTypes::Convolution:
@@ -809,15 +812,18 @@ namespace dnncore
 		delete locked;
 		delete lockable;
 
+		bool refreshUI = layerIndex > 0 && TaskState == DNNTaskStates::Stopped && State != DNNStates::Training && State != DNNStates::Testing;
+
 		if (updateUI)
-			UpdateLayerStatistics(info, layerIndex, updateUI);
+			UpdateLayerStatistics(info, layerIndex, refreshUI);
 
 		return info;
 	}
 
 	void Model::UpdateLayerInfo(UInt layerIndex, bool updateUI)
 	{
-		UpdateLayerStatistics(Layers[layerIndex], layerIndex, updateUI);
+		bool refreshUI = updateUI && layerIndex > 0 && TaskState == DNNTaskStates::Stopped && State != DNNStates::Training && State != DNNStates::Testing;
+		UpdateLayerStatistics(Layers[layerIndex], layerIndex, refreshUI);
 	}
 
 	void Model::OnElapsed(Object^, System::Timers::ElapsedEventArgs^)

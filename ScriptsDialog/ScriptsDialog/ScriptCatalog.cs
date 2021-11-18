@@ -526,12 +526,12 @@ namespace ScriptsDialog
                         }
 
                         net +=
-                           Convolution(C, In("A", C - 1), DIV8(1024), 1, 1, 1, 1, 0, 0) +
-                           BatchNormActivation(C + 1, In("C", C), p.Activation) +
-                           GlobalAvgPooling(In("B", C + 1)) +
-                           Convolution(C + 1, "GAP", p.Classes, 1, 1, 1, 1, 0, 0) +
-                           Activation(In("C", C + 1), "LogSoftmax") +
-                           Cost("ACT", p.Dataset, p.Classes, "CategoricalCrossEntropy", 0.125f);
+                            Convolution(C, In("A", C - 1), DIV8(1024), 1, 1, 1, 1, 0, 0) +
+                            BatchNormActivation(C, In("C", C), p.Activation) +
+                            GlobalAvgPooling(In("B", C)) +
+                            Convolution(C + 1, "GAP", p.Classes, 1, 1, 1, 1, 0, 0, "", "C", "Normal(0.001)") +
+                            Activation(In("C", C + 1), "LogSoftmax") +
+                            Cost("ACT", p.Dataset, p.Classes, "CategoricalCrossEntropy", 0.125f);
                     }
                     break;
 

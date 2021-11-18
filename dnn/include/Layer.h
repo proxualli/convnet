@@ -4,7 +4,11 @@
 namespace dnn
 {
 	class Model;
-	
+	class Convolution;
+	class DepthwiseConvolution;
+	class PartialDepthwiseConvoltion;
+	class ConvolutionTranspose;
+
 	enum class Optimizers
 	{
 		AdaBound = 0,
