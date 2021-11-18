@@ -238,7 +238,7 @@ extern "C" DNN_API void DNNResetLayerWeights(const UInt layerIndex)
 
 extern "C" DNN_API void DNNGetImage(const UInt layerIndex, const Byte fillColor, Byte* image)
 {
-	if (model && (layerIndex < model->Layers.size()) && (model->TaskState.load() == dnn::TaskStates::Stopped) && !model->BatchSizeChanging.load() && !model->ResettingWeights.load())
+	if (model && layerIndex < model->Layers.size() && !model->BatchSizeChanging.load() && !model->ResettingWeights.load() && model->TaskState.load() == dnn::TaskStates::Stopped)
 	{
 		switch (model->Layers[layerIndex]->LayerType)
 		{
@@ -276,7 +276,7 @@ extern "C" DNN_API void DNNGetImage(const UInt layerIndex, const Byte fillColor,
 extern "C" DNN_API bool DNNGetInputSnapShot(std::vector<Float>* snapshot, std::vector<UInt>* label)
 {
 	if (model)
-		if ((model->TaskState.load() == TaskStates::Running) && ((model->State.load() == States::Training) || (model->State.load() == States::Testing)))
+		if (model->TaskState.load() == TaskStates::Running && model->State.load() == States::Training || model->State.load() == States::Testing)
 			return model->GetInputSnapShot(snapshot, label);
 
 	return false;
