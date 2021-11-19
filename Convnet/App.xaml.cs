@@ -78,8 +78,10 @@ namespace Convnet
 
                     if (Xceed.Wpf.Toolkit.MessageBox.Show("Do you want to save the network state?", "Save Network State", MessageBoxButton.YesNo, MessageBoxImage.None, MessageBoxResult.Yes) == MessageBoxResult.Yes)
                     {
-                        string pathWeights = Settings.Default.PersistOptimizer ? Path.Combine(Convnet.MainWindow.StateDirectory, mainWindow.PageVM.Model.Name + "-(" + Settings.Default.Optimizer.ToString().ToLower(CultureInfo.CurrentCulture) + ").bin") : Path.Combine(Convnet.MainWindow.StateDirectory, mainWindow.PageVM.Model.Name + ".bin");
-                        mainWindow.PageVM.Model.SaveWeights(pathWeights, Settings.Default.PersistOptimizer);
+                        var dataset = Settings.Default.Dataset.ToString().ToLower(CultureInfo.CurrentCulture);
+                        var optimizer = Settings.Default.Optimizer.ToString().ToLower(CultureInfo.CurrentCulture);
+                        var fileName = Convnet.MainWindow.StateDirectory + mainWindow.PageVM.Model.Name + @"-(" + dataset + @")" + (Settings.Default.PersistOptimizer ? (@"(" + optimizer + @").bin") : @".bin");
+                        mainWindow.PageVM.Model.SaveWeights(fileName, Settings.Default.PersistOptimizer);
                     }
 
                     Settings.Default.Save();

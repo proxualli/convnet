@@ -329,19 +329,19 @@ namespace Convnet.PageViewModels
             Mouse.OverrideCursor = null;
             try
             {
-                bool sameDef = Definition.ToLower(CultureInfo.CurrentCulture).Equals(Settings.Default.DefinitionActive.ToLower(CultureInfo.CurrentCulture));
+                var sameDef = Definition.ToLower(CultureInfo.CurrentCulture).Equals(Settings.Default.DefinitionActive.ToLower(CultureInfo.CurrentCulture));
+                var modelname = Definition.Split(Environment.NewLine.ToCharArray(), StringSplitOptions.RemoveEmptyEntries)[0].Trim().Replace("[", "").Replace("]", "").Trim();
+                var pathDefinition = Path.Combine(DefinitionsDirectory, modelname + ".txt");
+                var pathStateDefinition = Path.Combine(StateDirectory, modelname + ".txt");
+                var pathWeightsDirectory = DefinitionsDirectory + modelname + "-weights\\";
+                var pathWeights = Settings.Default.PersistOptimizer ? Path.Combine(pathWeightsDirectory, modelname + "-(" + Dataset.ToString().ToLower(CultureInfo.CurrentCulture) + ")(" + Settings.Default.Optimizer.ToString().ToLower(CultureInfo.CurrentCulture) + ").bin") : Path.Combine(pathWeightsDirectory, modelname + "-(" + Dataset.ToString().ToLower(CultureInfo.CurrentCulture) + ").bin");
                 
-                string pathDefinition = Path.Combine(DefinitionsDirectory, ModelName + ".txt");
-                string pathStateDefinition = Path.Combine(StateDirectory, ModelName + ".txt");
-                string pathWeightsDirectory = DefinitionsDirectory + ModelName + "-weights\\";
-                string pathWeights = Settings.Default.PersistOptimizer ? Path.Combine(pathWeightsDirectory, ModelName + "-(" + Dataset.ToString().ToLower(CultureInfo.CurrentCulture) + ")(" + Settings.Default.Optimizer.ToString().ToLower(CultureInfo.CurrentCulture) + ").bin") : Path.Combine(pathWeightsDirectory, ModelName + "-(" + Dataset.ToString().ToLower(CultureInfo.CurrentCulture) + ").bin");
-                
-                if (!sameDef || ModelName != Model.Name)
+                if (!sameDef || modelname != Model.Name || modelname != ModelName)
                 {
                     Mouse.OverrideCursor = Cursors.Wait;
 
                     MessageBoxResult overwrite = MessageBoxResult.Yes;
-                    if (File.Exists(Path.Combine(DefinitionsDirectory, ModelName + ".txt")))
+                    if (File.Exists(Path.Combine(DefinitionsDirectory, modelname + ".txt")))
                     {
                         Mouse.OverrideCursor = null;
                         overwrite = Xceed.Wpf.Toolkit.MessageBox.Show("File already exists! Overwrite?", "File already exists", MessageBoxButton.YesNo, MessageBoxImage.None, MessageBoxResult.No);
@@ -370,7 +370,7 @@ namespace Convnet.PageViewModels
                         try
                         {
                             Model.Dispose();
-                            Model = new Model(ModelName, pathDefinition);
+                            Model = new Model(modelname, pathDefinition);
                             Model.SetOptimizer(Settings.Default.Optimizer);
                             Model.SetFormat(Settings.Default.PlainFormat);
                             Model.SetPersistOptimizer(Settings.Default.PersistOptimizer);
@@ -382,11 +382,12 @@ namespace Convnet.PageViewModels
                             if (keepWeights == MessageBoxResult.Yes)
                                 Model.LoadWeights(pathWeights, Settings.Default.PersistOptimizer);
 
+                            ModelName = modelname;
                             Settings.Default.ModelNameActive = Model.Name;
                             Settings.Default.DefinitionEditing = Definition;
                             Settings.Default.DefinitionActive = Definition;
                             Settings.Default.Save();
-
+                           
                             Application.Current.MainWindow.Title = Model.Name + " - Convnet Explorer";
                             CanSynchronize = false;
 
@@ -405,12 +406,12 @@ namespace Convnet.PageViewModels
                 }
                 else
                 {
-                    if (ModelName != Model.Name)
+                    if (modelname != Model.Name || modelname != ModelName)
                     {
                         Mouse.OverrideCursor = Cursors.Wait;
 
                         MessageBoxResult overwrite = MessageBoxResult.Yes;
-                        if (File.Exists(Path.Combine(DefinitionsDirectory, ModelName + ".txt")))
+                        if (File.Exists(Path.Combine(DefinitionsDirectory, modelname + ".txt")))
                         {
                             Mouse.OverrideCursor = null;
                             overwrite = Xceed.Wpf.Toolkit.MessageBox.Show("File already exists! Overwrite?", "File already exists", MessageBoxButton.YesNo, MessageBoxImage.None, MessageBoxResult.No);
@@ -448,6 +449,7 @@ namespace Convnet.PageViewModels
                                 if (keepWeights == MessageBoxResult.Yes)
                                     Model.LoadWeights(pathWeights, Settings.Default.PersistOptimizer);
 
+                                ModelName = modelname;
                                 Settings.Default.ModelNameActive = Model.Name;
                                 Settings.Default.DefinitionEditing = Definition;
                                 Settings.Default.DefinitionActive = Definition;
@@ -499,8 +501,8 @@ namespace Convnet.PageViewModels
         
         private void VisualStudioButtonClick(object sender, RoutedEventArgs e)
         {
-            string vspath = @"C:\Program Files\Microsoft Visual Studio\2022\";
-            string version = @"Community";
+            var vspath = @"C:\Program Files\Microsoft Visual Studio\2022\";
+            var version = @"Community";
             const string common = @"\Common7\IDE\";
 
             if (!Directory.Exists(vspath))
@@ -697,7 +699,7 @@ namespace Convnet.PageViewModels
 
         private bool CheckDefinition()
         {
-            DNNCheckMsg msg = Model.CheckDefinition(Definition);
+            var msg = Model.CheckDefinition(Definition);
 
             Definition = msg.Definition;
 

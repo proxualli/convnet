@@ -110,13 +110,17 @@ namespace Convnet
                         PageVM.Model.SetDisableLocking(Settings.Default.DisableLocking);
                         PageVM.Model.BlockSize = (ulong)Settings.Default.PixelSize;
 
+                        var dataset = PageVM.Model.Dataset.ToString().ToLower(CultureInfo.CurrentCulture);
+                        var optimizer = PageVM.Model.Optimizer.ToString().ToLower(CultureInfo.CurrentCulture);
+
                         if (Settings.Default.PersistOptimizer)
                         {
-                            if (File.Exists(Path.Combine(StateDirectory, Settings.Default.ModelNameActive + "-(" + PageVM.Model.Dataset.ToString().ToLower(CultureInfo.CurrentCulture) + ")(" + PageVM.Model.Optimizer.ToString().ToLower(CultureInfo.CurrentCulture) + @").bin")))
+                           
+                            if (File.Exists(Path.Combine(StateDirectory, Settings.Default.ModelNameActive + "-(" + dataset + ")(" + optimizer + @").bin")))
                             {
-                                if (PageVM.Model.LoadWeights(Path.Combine(StateDirectory, Settings.Default.ModelNameActive + "-(" + PageVM.Model.Dataset.ToString().ToLower(CultureInfo.CurrentCulture) + ")(" + PageVM.Model.Optimizer.ToString().ToLower() + @").bin"), true) != 0)
+                                if (PageVM.Model.LoadWeights(Path.Combine(StateDirectory, Settings.Default.ModelNameActive + "-(" + dataset + ")(" + optimizer + @").bin"), true) != 0)
                                 {
-                                    if (PageVM.Model.LoadWeights(Path.Combine(StateDirectory, Settings.Default.ModelNameActive + "-(" + PageVM.Model.Dataset.ToString().ToLower(CultureInfo.CurrentCulture) + @").bin"), false) == 0)
+                                    if (PageVM.Model.LoadWeights(Path.Combine(StateDirectory, Settings.Default.ModelNameActive + "-(" + dataset + @").bin"), false) == 0)
                                     {
                                         Settings.Default.PersistOptimizer = !Settings.Default.PersistOptimizer;
                                         Settings.Default.Save();
@@ -127,8 +131,8 @@ namespace Convnet
                         }
                         else
                         {
-                            if (File.Exists(Path.Combine(StateDirectory, Settings.Default.ModelNameActive + "-(" + PageVM.Model.Dataset.ToString().ToLower(CultureInfo.CurrentCulture) + @").bin")))
-                                PageVM.Model.LoadWeights(Path.Combine(StateDirectory, Settings.Default.ModelNameActive + "-(" + PageVM.Model.Dataset.ToString().ToLower(CultureInfo.CurrentCulture) + @").bin"), false);
+                            if (File.Exists(Path.Combine(StateDirectory, Settings.Default.ModelNameActive + "-(" + dataset + @").bin")))
+                                PageVM.Model.LoadWeights(Path.Combine(StateDirectory, Settings.Default.ModelNameActive + "-(" + dataset + @").bin"), false);
                         }
                         Settings.Default.DefinitionActive = File.ReadAllText(Path.Combine(StateDirectory, Settings.Default.ModelNameActive + ".txt"));
                         Settings.Default.Save();
@@ -478,8 +482,12 @@ namespace Convnet
 
         private void SaveCmdExecuted(object target, ExecutedRoutedEventArgs e)
         {
-            var fileName = PageVM.Model.Name + (Settings.Default.PersistOptimizer ? "-(" + PageVM.Model.Optimizer.ToString().ToLower() + ").bin" : ".bin");
+            var dataset = PageVM.Model.Dataset.ToString().ToLower(CultureInfo.CurrentCulture);
+            var optimizer = PageVM.Model.Optimizer.ToString().ToLower(CultureInfo.CurrentCulture);
+            var fileName = PageVM.Model.Name + @"-(" + dataset + @")" + (Settings.Default.PersistOptimizer ? "-(" + optimizer + ").bin" : ".bin");
             var directory = DefinitionsDirectory + PageVM.Model.Name + @"-weights\";
+            MessageBox.Show(directory + fileName);
+
             if (File.Exists(directory + fileName))
             {
                 if (Xceed.Wpf.Toolkit.MessageBox.Show("Do you want to overwrite the existing file?", "File already exists", MessageBoxButton.YesNo, MessageBoxImage.None, MessageBoxResult.No) == MessageBoxResult.Yes)
@@ -499,34 +507,20 @@ namespace Convnet
         private void SaveWeights()
         {
             Mouse.OverrideCursor = Cursors.Wait;
-            if (Settings.Default.PersistOptimizer)
+            var dataset = PageVM.Model.Dataset.ToString().ToLower(CultureInfo.CurrentCulture);
+            var optimizer = PageVM.Model.Optimizer.ToString().ToLower(CultureInfo.CurrentCulture);
+            var fileName = PageVM.Model.Name + @"-(" + dataset + @")" + (Settings.Default.PersistOptimizer ? (@"-(" + optimizer + @")") : @".bin");
+            var directory = DefinitionsDirectory + PageVM.Model.Name + @"-weights\";
+            
+            PageVM.Model.SaveWeights(directory + fileName, Settings.Default.PersistOptimizer);
+            if (File.Exists(directory + fileName))
             {
-                var fileName = PageVM.Model.Name + "-(" + PageVM.Model.Dataset.ToString().ToLower() + ")(" + PageVM.Model.Optimizer.ToString().ToLower() + ").bin";
-                var directory = DefinitionsDirectory + PageVM.Model.Name + @"-weights\";
-                PageVM.Model.SaveWeights(directory + fileName, true);
-                if (File.Exists(directory + fileName))
-                {
-                    File.Copy(directory + fileName, StateDirectory + fileName, true);
-                    Mouse.OverrideCursor = null;
-                    Xceed.Wpf.Toolkit.MessageBox.Show("Weights are saved", "Information", MessageBoxButton.OK);
-                }
-                else
-                    Mouse.OverrideCursor = null;
+                File.Copy(directory + fileName, StateDirectory + fileName, true);
+                Mouse.OverrideCursor = null;
+                Xceed.Wpf.Toolkit.MessageBox.Show("Weights are saved", "Information", MessageBoxButton.OK);
             }
             else
-            {
-                var fileName = PageVM.Model.Name + "-(" + PageVM.Model.Dataset.ToString().ToLower() + ").bin";
-                var directory = DefinitionsDirectory + PageVM.Model.Name + @"-weights\";
-                PageVM.Model.SaveWeights(directory + fileName, false);
-                if (File.Exists(directory + fileName))
-                {
-                    File.Copy(directory + fileName, StateDirectory + fileName, true);
-                    Mouse.OverrideCursor = null;
-                    Xceed.Wpf.Toolkit.MessageBox.Show("Weights are saved", "Information", MessageBoxButton.OK);
-                }
-                else
-                    Mouse.OverrideCursor = null;
-            }
+                Mouse.OverrideCursor = null;
         }
 
         private void SaveAsCmdExecuted(object target, ExecutedRoutedEventArgs e)
@@ -601,6 +595,7 @@ namespace Convnet
                                             "BatchSize" + delim +
                                             "Dropout" + delim +
                                             "Cutout" + delim +
+                                            "CutMix" + delim +
                                             "AutoAugment" + delim +
                                             "HorizontalFlip" + delim +
                                             "VerticalFlip" + delim +
@@ -636,6 +631,7 @@ namespace Convnet
                                             row.BatchSize.ToString() + delim +
                                             row.Dropout.ToString() + delim +
                                             row.Cutout.ToString() + delim +
+                                            row.CutMix.ToString() + delim +
                                             row.AutoAugment.ToString() + delim +
                                             row.HorizontalFlip.ToString() + delim +
                                             row.VerticalFlip.ToString() + delim +

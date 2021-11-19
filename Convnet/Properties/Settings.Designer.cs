@@ -775,5 +775,20 @@ namespace Convnet.Properties
                 this["EditSplitPositionB"] = value;
             }
         }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("cifar10")]
+        public string Dataset
+        {
+            get
+            {
+                return ((string)(this["Dataset"]));
+            }
+            set
+            {
+                this["Dataset"] = value;
+            }
+        }
     }
 }
