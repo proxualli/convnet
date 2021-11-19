@@ -473,7 +473,7 @@ namespace Convnet.PageViewModels
                     }
                 }
 
-                Settings.Default.Dataset = Model.Dataset.ToString().ToLower();
+                Settings.Default.Dataset = Model.Dataset.ToString().ToLower(CultureInfo.CurrentCulture);
                 Settings.Default.Save();
             }
             catch (Exception ex)
