@@ -486,8 +486,7 @@ namespace Convnet
             var optimizer = PageVM.Model.Optimizer.ToString().ToLower(CultureInfo.CurrentCulture);
             var fileName = PageVM.Model.Name + @"-(" + dataset + @")" + (Settings.Default.PersistOptimizer ? "-(" + optimizer + ").bin" : ".bin");
             var directory = DefinitionsDirectory + PageVM.Model.Name + @"-weights\";
-            MessageBox.Show(directory + fileName);
-
+            
             if (File.Exists(directory + fileName))
             {
                 if (Xceed.Wpf.Toolkit.MessageBox.Show("Do you want to overwrite the existing file?", "File already exists", MessageBoxButton.YesNo, MessageBoxImage.None, MessageBoxResult.No) == MessageBoxResult.Yes)
