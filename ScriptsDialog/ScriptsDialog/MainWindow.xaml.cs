@@ -29,7 +29,7 @@ namespace ScriptsDialog
 
             if (Settings.Default.Parameters == null)
             {
-                Settings.Default.Parameters = new ScriptParameters(Scripts.shufflenetv2, Datasets.cifar10, 32, 32, 4, 4, false, true, Fillers.HeNormal, 0.05f, 1f, 1f, false, Fillers.Constant, 0f, 1f, 1f, 0.995f, 0.0001f, false, 0f, 0f, 3, 4, 8, 12, false, 0.0f, 0.0f, false, true, Activations.Relu);
+                Settings.Default.Parameters = new ScriptParameters(Scripts.shufflenetv2, Datasets.cifar10, 32, 32, 4, 4, false, true, Fillers.HeNormal, FillerModes.In, 0.05f, 1f, 1f, false, Fillers.Constant, FillerModes.In, 0f, 1f, 1f, 0.995f, 0.0001f, false, 0f, 0f, 3, 4, 8, 12, false, 0.0f, 0.0f, false, true, Activations.Relu);
                 Settings.Default.Save();
             }
 
@@ -133,6 +133,7 @@ namespace ScriptsDialog
                 if (!CheckBoxHasBias.IsChecked.Value)
                 {
                     Settings.Default.Parameters.BiasesFiller = Fillers.Constant;
+                    Settings.Default.Parameters.BiasesFillerMode = FillerModes.In;
                     Settings.Default.Parameters.BiasesScale = 0.0f;
                     Settings.Default.Parameters.BiasesLRM = 1.0f;
                     Settings.Default.Parameters.BiasesWDM = 1.0f;
@@ -164,22 +165,34 @@ namespace ScriptsDialog
             textBoxGroups.IsEnabled = !Settings.Default.Parameters.EfficientNetVisible && !Settings.Default.Parameters.ShuffleNetVisible;
             textBoxIterations.IsEnabled = !Settings.Default.Parameters.EfficientNetVisible && !Settings.Default.Parameters.ShuffleNetVisible;
 
+            Grid.RowDefinitions[18].Height = Settings.Default.Parameters.WeightsFillerModeVisible ? new GridLength(30, GridUnitType.Pixel) : new GridLength(0, GridUnitType.Pixel);
+            comboBoxWeightsFillerMode.IsEnabled = Settings.Default.Parameters.WeightsFillerModeVisible;
+            comboBoxWeightsFillerMode.Visibility = Settings.Default.Parameters.WeightsFillerModeVisible ? Visibility.Visible : Visibility.Collapsed;
+
+            Grid.RowDefinitions[19].Height = Settings.Default.Parameters.WeightsScaleVisible ? new GridLength(30, GridUnitType.Pixel) : new GridLength(0, GridUnitType.Pixel);
+            textBlockWeightsScale.IsEnabled = Settings.Default.Parameters.WeightsScaleVisible;
+            textBlockWeightsScale.Visibility = Settings.Default.Parameters.WeightsScaleVisible ? Visibility.Visible : Visibility.Collapsed;
+
             comboBoxBiasesFiller.IsEnabled = CheckBoxHasBias.IsChecked.Value;
 
-            Grid.RowDefinitions[22].Height = CheckBoxHasBias.IsChecked.Value && Settings.Default.Parameters.BiasesScaleVisible ? new GridLength(30, GridUnitType.Pixel) : new GridLength(0, GridUnitType.Pixel);
+            Grid.RowDefinitions[23].Height = CheckBoxHasBias.IsChecked.Value && Settings.Default.Parameters.BiasesFillerModeVisible ? new GridLength(30, GridUnitType.Pixel) : new GridLength(0, GridUnitType.Pixel);
+            comboBoxBiasesFillerMode.IsEnabled = CheckBoxHasBias.IsChecked.Value && Settings.Default.Parameters.BiasesFillerModeVisible;
+            comboBoxBiasesFillerMode.Visibility = CheckBoxHasBias.IsChecked.Value && Settings.Default.Parameters.BiasesFillerModeVisible ? Visibility.Visible : Visibility.Collapsed;
+
+            Grid.RowDefinitions[24].Height = CheckBoxHasBias.IsChecked.Value && Settings.Default.Parameters.BiasesScaleVisible ? new GridLength(30, GridUnitType.Pixel) : new GridLength(0, GridUnitType.Pixel);
             textBoxBiasesScale.IsEnabled = CheckBoxHasBias.IsChecked.Value && Settings.Default.Parameters.BiasesScaleVisible;
             textBlockBiasesScale.Visibility = CheckBoxHasBias.IsChecked.Value && Settings.Default.Parameters.BiasesScaleVisible ? Visibility.Visible : Visibility.Collapsed;
 
-            Grid.RowDefinitions[23].Height = CheckBoxHasBias.IsChecked.Value ? new GridLength(30, GridUnitType.Pixel) : new GridLength(0, GridUnitType.Pixel);
+            Grid.RowDefinitions[25].Height = CheckBoxHasBias.IsChecked.Value ? new GridLength(30, GridUnitType.Pixel) : new GridLength(0, GridUnitType.Pixel);
             textBoxBiasesLRM.IsEnabled = CheckBoxHasBias.IsChecked.Value;
             textBlockBiasesLRM.Visibility = CheckBoxHasBias.IsChecked.Value ? Visibility.Visible : Visibility.Collapsed;
 
-            Grid.RowDefinitions[24].Height = CheckBoxHasBias.IsChecked.Value ? new GridLength(30, GridUnitType.Pixel) : new GridLength(0, GridUnitType.Pixel);
+            Grid.RowDefinitions[26].Height = CheckBoxHasBias.IsChecked.Value ? new GridLength(30, GridUnitType.Pixel) : new GridLength(0, GridUnitType.Pixel);
             textBoxBiasesWDM.IsEnabled = CheckBoxHasBias.IsChecked.Value;
             textBlockBiasesWDM.Visibility = CheckBoxHasBias.IsChecked.Value ? Visibility.Visible : Visibility.Collapsed;
 
-            int removeRows = Settings.Default.Parameters.WeightsScaleVisible ? 0 : 1;
-            removeRows += CheckBoxHasBias.IsChecked.Value && Settings.Default.Parameters.BiasesScaleVisible ? 0 : 1;
+            int removeRows = CheckBoxHasBias.IsChecked.Value && Settings.Default.Parameters.BiasesScaleVisible ? 1 : 2;
+            removeRows += CheckBoxHasBias.IsChecked.Value && Settings.Default.Parameters.BiasesFillerModeVisible ? 0 : 1;
             removeRows += CheckBoxHasBias.IsChecked.Value ? 0 : 2;
           
             switch ((Scripts)comboBoxModel.SelectedIndex)
@@ -196,7 +209,7 @@ namespace ScriptsDialog
                     removeRows += 9;
                     break;
             }
-            Height = 1030 - (removeRows * Grid.RowDefinitions[0].ActualHeight);
+            Height = 1090 - (removeRows * Grid.RowDefinitions[0].ActualHeight);
         }
     }
 }

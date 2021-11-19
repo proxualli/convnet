@@ -117,10 +117,12 @@ namespace dnn
 		bool RandomCrop;
 		bool MeanStdNormalization;
 		Fillers WeightsFiller;
+		FillerMode WeightsFillerMode;
 		Float WeightsScale;
 		Float WeightsLRM;
 		Float WeightsWDM;
 		Fillers BiasesFiller;
+		FillerMode BiasesFillerMode;
 		Float BiasesScale;
 		Float BiasesLRM;
 		Float BiasesWDM;
@@ -184,10 +186,12 @@ namespace dnn
 			BatchNormEps(Float(1e-04)),			// Eps
 			Dropout(Float(0)),					// Dropout
 			WeightsFiller(Fillers::HeNormal),	// WeightsFiller
+			WeightsFillerMode(FillerMode::In), // WeightsFillerMode
 			WeightsScale(Float(0.05)),			// WeightsScale
 			WeightsLRM(Float(1)),				// WeightsLRM
 			WeightsWDM(Float(1)),				// WeightsWDM
 			BiasesFiller(Fillers::Constant),	// BiasesFiller
+			BiasesFillerMode(FillerMode::In),  // BiasesFillerMode
 			BiasesScale(Float(0)),				// BiasesScale
 			BiasesLRM(Float(1)),				// BiasesLRM
 			BiasesWDM(Float(1)),				// BiasesWDM
@@ -282,7 +286,7 @@ namespace dnn
 					while (layer->RefreshingStats.load())
 						std::this_thread::sleep_for(std::chrono::milliseconds(100));
 
-					layer->ResetWeights(WeightsFiller, WeightsScale, BiasesFiller, BiasesScale);
+					layer->ResetWeights(WeightsFiller, WeightsFillerMode, WeightsScale, BiasesFiller, BiasesFillerMode, BiasesScale);
 					layer->ResetOptimizer(Optimizer);
 				}
 

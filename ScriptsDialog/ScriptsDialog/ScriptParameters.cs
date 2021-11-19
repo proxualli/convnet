@@ -46,6 +46,14 @@ namespace ScriptsDialog
     }
 
     [Serializable()]
+    public enum FillerModes
+    {
+        In = 0,
+        Out = 1,
+        InOut = 2
+    }
+
+    [Serializable()]
     public enum Activations
     {
         FRelu = 1,
@@ -215,24 +223,22 @@ namespace ScriptsDialog
         private UInt padW = 0;
         private bool mirrorPad = false;
         private bool meanStdNormalization = true;
-
         private Fillers weightsFiller = Fillers.HeNormal;
+        private FillerModes weightsFillerMode = FillerModes.In;
         private Float weightsScale = (Float)0.05;
         private Float weightsLRM = 1;
         private Float weightsWDM = 1;
         private bool hasBias = false;
         private Fillers biasesFiller = Fillers.Constant;
+        private FillerModes biasesFillerMode = FillerModes.In;
         private Float biasesScale = 0;
         private Float biasesLRM = 1;
         private Float biasesWDM = 1;
-
         private Float batchNormMomentum = (Float)0.995;
         private Float batchNormEps = (Float)1E-04;
         private bool batchNormScaling = false;
-
         private Float alpha = 0;
         private Float beta = 0;
-
         private UInt groups = 3;
         private UInt iterations = 4;
         private UInt width = 8;
@@ -250,7 +256,7 @@ namespace ScriptsDialog
         {
         }
 
-        public ScriptParameters(Scripts script = Scripts.shufflenetv2, Datasets dataset = Datasets.cifar10, UInt h = 32, UInt w = 32, UInt padH = 4, UInt padW = 4, bool mirrorPad = false, bool meanStdNorm = true, Fillers weightsFiller = Fillers.HeNormal, Float weightsScale = (Float)0.05, Float weightsLRM = 1, Float weightsWDM = 1, bool hasBias = false, Fillers biasesFiller = Fillers.Constant, Float biasesScale = 0, Float biasesLRM = 1, Float biasesWDM = 1, Float batchNormMomentum = (Float)0.995, Float batchNormEps = (Float)1E-04, bool batchNormScaling = false, Float alpha = (Float)0, Float beta = (Float)0, UInt groups = 3, UInt iterations = 4, UInt width = 8, UInt growthRate = 12, bool bottleneck = false, Float dropout = 0, Float compression = 0, bool squeezeExcitation = false, bool channelZeroPad = true, Activations activation = Activations.Relu)
+        public ScriptParameters(Scripts script = Scripts.shufflenetv2, Datasets dataset = Datasets.cifar10, UInt h = 32, UInt w = 32, UInt padH = 4, UInt padW = 4, bool mirrorPad = false, bool meanStdNorm = true, Fillers weightsFiller = Fillers.HeNormal, FillerModes weightsFillerMode = FillerModes.In, Float weightsScale = (Float)0.05, Float weightsLRM = 1, Float weightsWDM = 1, bool hasBias = false, Fillers biasesFiller = Fillers.Constant, FillerModes biasesFillerMode = FillerModes.In, Float biasesScale = 0, Float biasesLRM = 1, Float biasesWDM = 1, Float batchNormMomentum = (Float)0.995, Float batchNormEps = (Float)1E-04, bool batchNormScaling = false, Float alpha = (Float)0, Float beta = (Float)0, UInt groups = 3, UInt iterations = 4, UInt width = 8, UInt growthRate = 12, bool bottleneck = false, Float dropout = 0, Float compression = 0, bool squeezeExcitation = false, bool channelZeroPad = true, Activations activation = Activations.Relu)
         {
             Script = script;
             Dataset = dataset;
@@ -260,24 +266,22 @@ namespace ScriptsDialog
             PadW = padW;
             MirrorPad = mirrorPad;
             MeanStdNormalization = meanStdNorm;
-
             WeightsFiller = weightsFiller;
+            WeightsFillerMode = weightsFillerMode;
             WeightsScale = weightsScale;
             WeightsLRM = weightsLRM;
             WeightsWDM = weightsWDM;
             HasBias = hasBias;
             BiasesFiller = biasesFiller;
+            BiasesFillerMode = biasesFillerMode;
             BiasesScale = biasesScale;
             BiasesLRM = biasesLRM;
             BiasesWDM = biasesWDM;
-
             BatchNormMomentum = batchNormMomentum;
             BatchNormEps = batchNormEps;
             BatchNormScaling = batchNormScaling;
-
             Alpha = alpha;
             Beta = beta;
-
             Groups = groups;
             Iterations = iterations;
             Width = width;
@@ -312,6 +316,8 @@ namespace ScriptsDialog
         public IEnumerable<Activations> ActivationsList { get { return Enum.GetValues(typeof(Activations)).Cast<Activations>(); } }
 
         public IEnumerable<Fillers> FillersList { get { return Enum.GetValues(typeof(Fillers)).Cast<Fillers>(); } }
+
+        public IEnumerable<FillerModes> FillerModesList { get { return Enum.GetValues(typeof(FillerModes)).Cast<FillerModes>(); } }
 
         public string ModelName
         {
@@ -532,15 +538,37 @@ namespace ScriptsDialog
                     weightsFiller = value;
                     OnPropertyChanged("WeightsFiller");
                     OnPropertyChanged("WeightsScaleVisible");
+                    OnPropertyChanged("WeightsFillerModeVisible");
                 }
             }
         }
 
+        public FillerModes WeightsFillerMode
+        {
+            get { return weightsFillerMode; }
+            set
+            {
+                if (value != weightsFillerMode)
+                {
+                    weightsFillerMode = value;
+                    OnPropertyChanged("WeightsFillerMode");
+                }
+            }
+        }
+        
         public bool WeightsScaleVisible
         {
             get
             {
                 return WeightsFiller == Fillers.Constant || WeightsFiller == Fillers.Normal || WeightsFiller == Fillers.TruncatedNormal || WeightsFiller == Fillers.Uniform;
+            }
+        }
+
+        public bool WeightsFillerModeVisible
+        {
+            get
+            {
+                return !WeightsScaleVisible;
             }
         }
 
@@ -606,6 +634,20 @@ namespace ScriptsDialog
                     biasesFiller = value;
                     OnPropertyChanged("BiasesFiller");
                     OnPropertyChanged("BiasesScaleVisible");
+                    OnPropertyChanged("BiasesFillerModeVisible");
+                }
+            }
+        }
+
+        public FillerModes BiasesFillerMode
+        {
+            get { return biasesFillerMode; }
+            set
+            {
+                if (value != biasesFillerMode)
+                {
+                    biasesFillerMode = value;
+                    OnPropertyChanged("BiasesFillerMode");
                 }
             }
         }
@@ -615,6 +657,14 @@ namespace ScriptsDialog
             get
             {
                 return BiasesFiller == Fillers.Constant || BiasesFiller == Fillers.Normal || BiasesFiller == Fillers.TruncatedNormal || BiasesFiller == Fillers.Uniform;
+            }
+        }
+
+        public bool BiasesFillerModeVisible
+        {
+            get
+            {
+                return !BiasesScaleVisible;
             }
         }
 
