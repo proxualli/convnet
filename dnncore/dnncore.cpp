@@ -509,52 +509,47 @@ namespace dnncore
 		delete updateTiming;
 		delete islocked;
 
-		if (info->LayerType == DNNLayerTypes::Input && !updateUI)
-			UpdateInputSnapshot(info->C, info->H, info->W);
-
-		if (updateUI && TaskState == DNNTaskStates::Stopped && State != DNNStates::Training && State != DNNStates::Testing)
+		if (updateUI)
 		{
 			switch (info->LayerType)
 			{
 			case DNNLayerTypes::Input:
-				//UpdateInputSnapshot(info->C, info->H, info->W);
-				break;
+			{
+				UpdateInputSnapshot(info->C, info->H, info->W);
+			}
+			break;
 
 			case DNNLayerTypes::Convolution:
 			case DNNLayerTypes::ConvolutionTranspose:
 			case DNNLayerTypes::DepthwiseConvolution:
 			case DNNLayerTypes::PartialDepthwiseConvolution:
 			{
-				if (TaskState == DNNTaskStates::Stopped && State != DNNStates::Training && State != DNNStates::Testing)
+				const auto depthwise = info->LayerType == DNNLayerTypes::DepthwiseConvolution || info->LayerType == DNNLayerTypes::PartialDepthwiseConvolution;
+				const auto width = (info->C * info->KernelH) + info->C + 1;
+				const auto height = depthwise ? 2 + info->KernelW + 1 : (info->InputC == 3 ? info->KernelW + 4 : 2 + (info->InputC / info->Groups) * (info->KernelW + 1));
+				const auto totalSize = (!depthwise && info->InputC == 3) ? 3 * width * height : width * height;
+				auto pixelFormat = (!depthwise && info->InputC == 3) ? PixelFormats::Rgb24 : PixelFormats::Gray8;
+
+				if (totalSize > 0 && totalSize <= INT_MAX)
 				{
-					const auto depthwise = info->LayerType == DNNLayerTypes::DepthwiseConvolution || info->LayerType == DNNLayerTypes::PartialDepthwiseConvolution;
-					const auto width = (info->C * info->KernelH) + info->C + 1;
-					const auto height = depthwise ? 2 + info->KernelW + 1 : (info->InputC == 3 ? info->KernelW + 4 : 2 + (info->InputC / info->Groups) * (info->KernelW + 1));
-					const auto totalSize = (!depthwise && info->InputC == 3) ? 3 * width * height : width * height;
-					auto pixelFormat = (!depthwise && info->InputC == 3) ? PixelFormats::Rgb24 : PixelFormats::Gray8;
+					auto img = gcnew cli::array<Byte>(int(totalSize));
+					pin_ptr<Byte> p = &img[0];
+					Byte* np = p;
 
-					if (totalSize > 0 && totalSize <= INT_MAX)
-					{
-						auto img = gcnew cli::array<Byte>(int(totalSize));
-						pin_ptr<Byte> p = &img[0];
-						Byte* np = p;
+					DNNGetImage(info->LayerIndex, 100, np);
 
-						DNNGetImage(info->LayerIndex, 100, np);
+					auto outputImage = System::Windows::Media::Imaging::BitmapSource::Create(int(width), int(height), 96.0, 96.0, pixelFormat, nullptr, img, int(width) * ((pixelFormat.BitsPerPixel + 7) / 8));
+					if (outputImage->CanFreeze)
+						outputImage->Freeze();
 
-						auto outputImage = System::Windows::Media::Imaging::BitmapSource::Create(int(width), int(height), 96.0, 96.0, pixelFormat, nullptr, img, int(width) * ((pixelFormat.BitsPerPixel + 7) / 8));
-						if (outputImage->CanFreeze)
-							outputImage->Freeze();
+					info->WeightsSnapshotX = int(width * BlockSize);
+					info->WeightsSnapshotY = int(height * BlockSize);
+					info->WeightsSnapshot = outputImage;
 
-						info->WeightsSnapshotX = int(width * BlockSize);
-						info->WeightsSnapshotY = int(height * BlockSize);
-						info->WeightsSnapshot = outputImage;
-
-						GC::Collect(GC::MaxGeneration, GCCollectionMode::Forced, true, true);
-					}
+					GC::Collect(GC::MaxGeneration, GCCollectionMode::Forced, true, true);
 				}
 			}
 			break;
-
 
 			case DNNLayerTypes::BatchNorm:
 			case DNNLayerTypes::BatchNormHardLogistic:
@@ -569,62 +564,56 @@ namespace dnncore
 			case DNNLayerTypes::Dense:
 			case DNNLayerTypes::LayerNorm:
 			{
-				if (TaskState == DNNTaskStates::Stopped && State != DNNStates::Training && State != DNNStates::Testing)
+				const auto width = info->BiasCount;
+				const auto height = (info->WeightCount / info->BiasCount) + 3;
+				const auto totalSize = width * height;
+				auto pixelFormat = PixelFormats::Gray8;
+
+				if (totalSize > 0 && totalSize <= INT_MAX)
 				{
-					const auto width = info->BiasCount;
-					const auto height = (info->WeightCount / info->BiasCount) + 3;
-					const auto totalSize = width * height;
-					auto pixelFormat = PixelFormats::Gray8;
+					auto img = gcnew cli::array<Byte>(int(totalSize));
+					pin_ptr<Byte> p = &img[0];
+					Byte* np = p;
 
-					if (totalSize > 0 && totalSize <= INT_MAX)
-					{
-						auto img = gcnew cli::array<Byte>(int(totalSize));
-						pin_ptr<Byte> p = &img[0];
-						Byte* np = p;
+					DNNGetImage(info->LayerIndex, 100, np);
 
-						DNNGetImage(info->LayerIndex, 100, np);
+					auto outputImage = System::Windows::Media::Imaging::BitmapSource::Create(int(width), int(height), 96.0, 96.0, pixelFormat, nullptr, img, int(width) * ((pixelFormat.BitsPerPixel + 7) / 8));
+					if (outputImage->CanFreeze)
+						outputImage->Freeze();
 
-						auto outputImage = System::Windows::Media::Imaging::BitmapSource::Create(int(width), int(height), 96.0, 96.0, pixelFormat, nullptr, img, int(width) * ((pixelFormat.BitsPerPixel + 7) / 8));
-						if (outputImage->CanFreeze)
-							outputImage->Freeze();
+					info->WeightsSnapshotX = int(width * BlockSize);
+					info->WeightsSnapshotY = int(height * BlockSize);
+					info->WeightsSnapshot = outputImage;
 
-						info->WeightsSnapshotX = int(width * BlockSize);
-						info->WeightsSnapshotY = int(height * BlockSize);
-						info->WeightsSnapshot = outputImage;
-
-						GC::Collect(GC::MaxGeneration, GCCollectionMode::Forced, true, true);
-					}
+					GC::Collect(GC::MaxGeneration, GCCollectionMode::Forced, true, true);
 				}
 			}
 			break;
 
 			case DNNLayerTypes::Activation:
 			{
-				if (TaskState == DNNTaskStates::Stopped && State != DNNStates::Training && State != DNNStates::Testing)
+				const auto width = info->WeightCount;
+				const auto height = 4;
+				const auto totalSize = width * height;
+				auto pixelFormat = PixelFormats::Gray8;
+
+				if (totalSize > 0 && totalSize <= INT_MAX)
 				{
-					const auto width = info->WeightCount;
-					const auto height = 4;
-					const auto totalSize = width * height;
-					auto pixelFormat = PixelFormats::Gray8;
+					auto img = gcnew cli::array<Byte>(int(totalSize));
+					pin_ptr<Byte> p = &img[0];
+					Byte* np = p;
 
-					if (totalSize > 0 && totalSize <= INT_MAX)
-					{
-						auto img = gcnew cli::array<Byte>(int(totalSize));
-						pin_ptr<Byte> p = &img[0];
-						Byte* np = p;
+					DNNGetImage(info->LayerIndex, 100, np);
 
-						DNNGetImage(info->LayerIndex, 100, np);
+					auto outputImage = System::Windows::Media::Imaging::BitmapSource::Create(int(width), int(height), 96.0, 96.0, pixelFormat, nullptr, img, int(width) * ((pixelFormat.BitsPerPixel + 7) / 8));
+					if (outputImage->CanFreeze)
+						outputImage->Freeze();
 
-						auto outputImage = System::Windows::Media::Imaging::BitmapSource::Create(int(width), int(height), 96.0, 96.0, pixelFormat, nullptr, img, int(width) * ((pixelFormat.BitsPerPixel + 7) / 8));
-						if (outputImage->CanFreeze)
-							outputImage->Freeze();
+					info->WeightsSnapshotX = int(width * BlockSize);
+					info->WeightsSnapshotY = int(height * BlockSize);
+					info->WeightsSnapshot = outputImage;
 
-						info->WeightsSnapshotX = int(width * BlockSize);
-						info->WeightsSnapshotY = int(height * BlockSize);
-						info->WeightsSnapshot = outputImage;
-
-						GC::Collect(GC::MaxGeneration, GCCollectionMode::Forced, true, true);
-					}
+					GC::Collect(GC::MaxGeneration, GCCollectionMode::Forced, true, true);
 				}
 			}
 			break;
@@ -812,18 +801,15 @@ namespace dnncore
 		delete locked;
 		delete lockable;
 
-		bool refreshUI = layerIndex > 0 && TaskState == DNNTaskStates::Stopped && State != DNNStates::Training && State != DNNStates::Testing;
-
 		if (updateUI)
-			UpdateLayerStatistics(info, layerIndex, refreshUI);
+			UpdateLayerStatistics(info, layerIndex, true);
 
 		return info;
 	}
 
 	void Model::UpdateLayerInfo(UInt layerIndex, bool updateUI)
 	{
-		bool refreshUI = updateUI && layerIndex > 0 && TaskState == DNNTaskStates::Stopped && State != DNNStates::Training && State != DNNStates::Testing;
-		UpdateLayerStatistics(Layers[layerIndex], layerIndex, refreshUI);
+		UpdateLayerStatistics(Layers[layerIndex], layerIndex, updateUI);
 	}
 
 	void Model::OnElapsed(Object^, System::Timers::ElapsedEventArgs^)

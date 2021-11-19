@@ -1756,13 +1756,13 @@ namespace Convnet.PageViewModels
 
                     ShowSample = Model.TaskState == DNNTaskStates.Running && index == 0;
                     ShowWeights = Model.Layers[index].HasWeights || Settings.Default.Timings;
-                    ShowWeightsSnapshot = (Model.TaskState == DNNTaskStates.Stopped && Model.Layers[index].IsNormalizationLayer && Model.Layers[index].Scaling) || Model.Layers[index].LayerType == DNNLayerTypes.PartialDepthwiseConvolution || Model.Layers[index].LayerType == DNNLayerTypes.DepthwiseConvolution || Model.Layers[index].LayerType == DNNLayerTypes.ConvolutionTranspose || Model.Layers[index].LayerType == DNNLayerTypes.Convolution || Model.Layers[index].LayerType == DNNLayerTypes.Dense || (Model.Layers[index].LayerType == DNNLayerTypes.Activation && Model.Layers[index].HasWeights);
+                    ShowWeightsSnapshot = (Model.Layers[index].IsNormalizationLayer && Model.Layers[index].Scaling) || Model.Layers[index].LayerType == DNNLayerTypes.PartialDepthwiseConvolution || Model.Layers[index].LayerType == DNNLayerTypes.DepthwiseConvolution || Model.Layers[index].LayerType == DNNLayerTypes.ConvolutionTranspose || Model.Layers[index].LayerType == DNNLayerTypes.Convolution || Model.Layers[index].LayerType == DNNLayerTypes.Dense || (Model.Layers[index].LayerType == DNNLayerTypes.Activation && Model.Layers[index].HasWeights);
 
                     Model.UpdateLayerInfo((ulong)index, ShowWeightsSnapshot);
 
                     if (ShowSample)
                     {
-                        Model.UpdateLayerInfo(0ul, false);
+                        Model.UpdateLayerInfo(0ul, true);
                         InputSnapshot = Model.InputSnapshot;
                         Label = Model.Label;
                     }
