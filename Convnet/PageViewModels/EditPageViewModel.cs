@@ -472,6 +472,9 @@ namespace Convnet.PageViewModels
                         }
                     }
                 }
+
+                Settings.Default.Dataset = Model.Dataset.ToString().ToLower();
+                Settings.Default.Save();
             }
             catch (Exception ex)
             {
