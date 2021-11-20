@@ -498,7 +498,7 @@ namespace ScriptsDialog
 
                 case Scripts.efficientnetv2:
                     {
-                        var inputChannels = DIV8(24);
+                        var inputChannels = DIV8(p.EfficientNet[0].Channels);
                         var C = 1ul;
 
                         net +=
