@@ -67,9 +67,7 @@ namespace dnn
 		LeCunUniform = 4,
 		Normal = 5,
 		TruncatedNormal = 6,
-		Uniform = 7,
-		XavierNormal = 8,
-		XavierUniform = 9
+		Uniform = 7
 	};
 
 	enum class LayerTypes
