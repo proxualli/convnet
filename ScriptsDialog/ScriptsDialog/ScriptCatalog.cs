@@ -35,6 +35,11 @@ namespace ScriptsDialog
             return filler.ToString();
         }
 
+        public static string to_string(FillerModes fillerMode)
+        {
+            return fillerMode.ToString();
+        }
+
         public static UInt DIV8(UInt channels)
         {
             if (channels % 8ul == 0ul)
