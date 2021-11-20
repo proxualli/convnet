@@ -92,8 +92,6 @@
 * Normal
 * TruncatedNormal
 * Uniform
-* XavierNormal
-* XavierUniform
 
 ### Datasets
 * [cifar10](https://www.cs.toronto.edu/~kriz/cifar.html)
