@@ -40,17 +40,15 @@ namespace ScriptsDialog
         LeCunUniform = 4,
         Normal = 5,
         TruncatedNormal = 6,
-        Uniform = 7,
-        XavierNormal = 8,
-        XavierUniform = 9
+        Uniform = 7
     }
 
     [Serializable()]
     public enum FillerModes
     {
         In = 0,
-        Out = 1,
-        InOut = 2
+        InOut = 1
+        Out = 2
     }
 
     [Serializable()]
