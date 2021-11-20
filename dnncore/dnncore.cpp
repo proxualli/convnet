@@ -70,6 +70,14 @@ namespace dnn
 		Uniform = 7
 	};
 
+	
+	enum class FillerModes
+	{
+		In = 0,
+		InOut = 1,
+		Out = 2
+	};
+
 	enum class LayerTypes
 	{
 		Activation = 0,

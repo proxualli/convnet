@@ -113,6 +113,14 @@ namespace dnncore
 	};
 
 	[Serializable()]
+	public enum class DNNFillerModes
+	{
+		In = 0,
+		InOut = 1,
+		Out = 2
+	};
+
+	[Serializable()]
 	public enum class DNNLayerTypes
 	{
 		Activation = 0,
