@@ -181,8 +181,8 @@ namespace dnn
 	enum class FillerMode
 	{
 		In = 0,
-		Out = 1,
-		InOut = 3
+		InOut = 1,
+		Out = 2
 	};
 
 	struct Device
