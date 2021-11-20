@@ -63,7 +63,7 @@ namespace dnn
 		Constant = 0,
 		HeNormal = 1,
 		HeUniform = 2,
-		LeCunNormal = 3,
+		LecunNormal = 3,
 		LeCunUniform = 4,
 		Normal = 5,
 		TruncatedNormal = 6,
@@ -73,9 +73,10 @@ namespace dnn
 	
 	enum class FillerModes
 	{
-		In = 0,
-		InOut = 1,
-		Out = 2
+		Auto = 0,
+		In = 1,
+		InOut = 2,
+		Out = 3
 	};
 
 	enum class LayerTypes

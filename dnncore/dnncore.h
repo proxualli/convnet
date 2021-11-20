@@ -115,9 +115,10 @@ namespace dnncore
 	[Serializable()]
 	public enum class DNNFillerModes
 	{
-		In = 0,
-		InOut = 1,
-		Out = 2
+		Auto = 0,
+		In = 1,
+		InOut = 2,
+		Out = 3
 	};
 
 	[Serializable()]

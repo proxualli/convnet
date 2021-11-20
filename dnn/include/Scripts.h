@@ -54,6 +54,14 @@ namespace scripts
         XavierUniform = 9
     };
 
+    enum class FillerModes
+    {
+        Auto = 0,
+        In = 1,
+        InOut = 2,
+        Out = 3
+    };
+
     enum class Activations
     {
         FRelu = 1,
@@ -125,11 +133,13 @@ namespace scripts
         bool MirrorPad = false;
         bool MeanStdNormalization = true;
         scripts::Fillers WeightsFiller = Fillers::HeNormal;
+        scripts::FillerModes WeightsFillerMode = FillerModes::Auto;
         Float WeightsScale = Float(0.05);
         Float WeightsLRM = Float(1);
         Float WeightsWDM = Float(1);
         bool HasBias = false;
         scripts::Fillers BiasesFiller = Fillers::Constant;
+        scripts::FillerModes BiasesFillerMode = FillerModes::Auto;
         Float BiasesScale = Float(0);
         Float BiasesLRM = Float(1);
         Float BiasesWDM = Float(1);
@@ -248,6 +258,11 @@ namespace scripts
         static auto to_string(const Fillers filler)
         {
             return std::string(magic_enum::enum_name<Fillers>(filler));
+        }
+
+        static auto to_string(const FillerModes fillerMode)
+        {
+            return std::string(magic_enum::enum_name<FillerModes>(fillerMode));
         }
 
         static UInt DIV8(UInt channels)
@@ -577,7 +592,7 @@ namespace scripts
                 "Dim=" + std::to_string(p.C) + "," + std::to_string(p.H) + "," + std::to_string(p.W) + nwl +
                 ((p.PadH > 0 || p.PadW > 0) ? (!p.MirrorPad ? "ZeroPad=" + std::to_string(p.PadH) + "," + std::to_string(p.PadW) + nwl : "MirrorPad=" + std::to_string(p.PadH) + "," + std::to_string(p.PadW) + nwl) : "") +
                 ((p.PadH > 0 || p.PadW > 0) ? "RandomCrop=Yes" + nwl : "") +
-                "WeightsFiller=" + to_string(p.WeightsFiller) + (ScaleVisible(p.WeightsFiller) ? "(" + std::to_string(p.WeightsScale) + ")" : "") + nwl +
+                "WeightsFiller=" + to_string(p.WeightsFiller) + (ScaleVisible(p.WeightsFiller) ? "(" + std::to_string(p.WeightsScale) + ")" : "")(ScaleVisible(p.WeightsFiller) ? "(" + std::to_string(p.WeightsScale) + ")" : "") + nwl +
                 (p.WeightsLRM != 1 ? "WeightsLRM=" + std::to_string(p.WeightsLRM) + nwl : "") +
                 (p.WeightsWDM != 1 ? "WeightsWDM=" + std::to_string(p.WeightsWDM) + nwl : "") +
                 (p.HasBias ? "BiasesFiller=" + to_string(p.BiasesFiller) + (ScaleVisible(p.BiasesFiller) ? "(" + std::to_string(p.BiasesScale) + ")" : "") + nwl +
