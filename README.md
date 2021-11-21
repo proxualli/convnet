@@ -119,6 +119,7 @@
 * [OxyPlot .NET Plotting Library - MIT License](https://github.com/oxyplot/oxyplot)
 * [WpfExToolkit - Xceed Software Community License](https://github.com/dotnetprojects/WpfExtendedToolkit)
 * [WpfMath - MIT License](https://github.com/ForNeVeR/wpf-math)
+* [zlib - zlib License](https://github.com/madler/zlib)
 
 ### Screenshots
 <p align="center"><img src="https://github.com/zamir1001/convnet/blob/main/doc/model_parameters_cifar10.png" alt="Model Parameters" title="Model Parameters"/></p>
