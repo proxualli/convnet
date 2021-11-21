@@ -112,12 +112,13 @@
 * [C++ Vector Class Library - Apache License 2.0](https://github.com/vectorclass)
 * [CImg Library - CeCILL License](https://github.com/dtschump/CImg)
 * [CsvHelper - Apache License 2.0](https://github.com/joshclose/csvhelper)
-* [WpfExToolkit - Xceed Software Community License](https://github.com/dotnetprojects/WpfExtendedToolkit)
 * [Intel(R) oneDNN Deep Neural Network Library - Apache License 2.0](https://github.com/oneapi-src/oneDNN)
 * [libjpeg-turbo - BSD Licenses](https://github.com/libjpeg-turbo/libjpeg-turbo)
 * [libpng - PNG Reference Library License version 2](https://github.com/glennrp/libpng)
 * [Magic Enum C++ - MIT License](https://github.com/Neargye/magic_enum)
 * [OxyPlot .NET Plotting Library - MIT License](https://github.com/oxyplot/oxyplot)
+* [WpfExToolkit - Xceed Software Community License](https://github.com/dotnetprojects/WpfExtendedToolkit)
+* [WpfMath - MIT License](https://github.com/ForNeVeR/wpf-math)
 
 ### Screenshots
 <p align="center"><img src="https://github.com/zamir1001/convnet/blob/main/doc/model_parameters_cifar10.png" alt="Model Parameters" title="Model Parameters"/></p>

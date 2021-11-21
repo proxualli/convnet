@@ -1,5 +1,7 @@
 ﻿using ScriptsDialog.Properties;
 using System;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
@@ -7,6 +9,65 @@ using System.Windows.Input;
 
 namespace ScriptsDialog
 {
+    [Serializable()]
+    public class Filler : INotifyPropertyChanged
+    {
+        [field: NonSerializedAttribute()]
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private Fillers id;
+        private string formula;
+
+        public Fillers Id
+        {
+            get { return id; }
+            set
+            {
+                if (value == id)
+                    return;
+
+                id = value;
+                OnPropertyChanged("Id");
+            }
+        }
+
+        public string Formula
+        {
+            get { return formula; }
+            set
+            {
+                if (value == formula)
+                    return;
+
+                formula = value;
+                OnPropertyChanged("Formula");
+            }
+        }
+
+        public string Name { get { return id.ToString(); } }
+
+        public override string ToString()
+        {
+            return Id.ToString();
+        }
+
+        public Filler()
+        {
+        }
+
+        public Filler(Fillers id, string formula)
+        {
+            Id = id;
+            Formula = formula;
+        }
+
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            if (PropertyChanged != null)
+                PropertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+    }
+
     /// <summary>
     /// Interaction logic for ModelParameters.xaml
     /// </summary>
@@ -18,20 +79,32 @@ namespace ScriptsDialog
 #else
         const string Mode = "Release";
 #endif
-        
         public static string StorageDirectory { get; } = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\convnet\";
         public static string ScriptsDirectory { get; } = StorageDirectory + @"scripts\";
         public static string ScriptPath { get; } = ScriptsDirectory + @"ScriptsDialog\bin\" + Mode + @"\" + Framework + @"\";
       
+        public ObservableCollection<Filler> fillersList;
+
         public MainWindow()
         {
+            fillersList = new ObservableCollection<Filler>();
+            fillersList.Add(new Filler { Id = Fillers.Constant, Formula = "constant=scale" });
+            fillersList.Add(new Filler { Id = Fillers.HeNormal, Formula = "stddev=\\sqrt{2/FanIn}" });
+            fillersList.Add(new Filler { Id = Fillers.HeUniform, Formula = "limit=\\sqrt{6/FanIn}" });
+            fillersList.Add(new Filler { Id = Fillers.LeCunNormal, Formula = "stddev=\\sqrt{1/FanIn}" });
+            fillersList.Add(new Filler { Id = Fillers.LeCunUniform, Formula = "limit=\\sqrt{3/FanIn}" });
+            fillersList.Add(new Filler { Id = Fillers.Normal, Formula = "stddev=scale" });
+            fillersList.Add(new Filler { Id = Fillers.TruncatedNormal, Formula = "stddev=scale" });
+            fillersList.Add(new Filler { Id = Fillers.Uniform, Formula = "limit=scale" });
+            fillersList.Add(new Filler { Id = Fillers.XavierNormal, Formula = "stddev=\\sqrt{2/(FanIn+FanOut)}" });
+            fillersList.Add(new Filler { Id = Fillers.XavierUniform, Formula = "limit=\\sqrt{6/(FanIn+FanOut)}" });
+
             InitializeComponent();
 
             if (Settings.Default.Parameters == null)
-            {
                 Settings.Default.Parameters = new ScriptParameters(Scripts.shufflenetv2, Datasets.cifar10, 32, 32, 4, 4, false, true, Fillers.HeNormal, FillerModes.In, 0.05f, 1f, 1f, false, Fillers.Constant, FillerModes.In, 0f, 1f, 1f, 0.995f, 0.0001f, false, 0f, 0f, 3, 4, 8, 12, false, 0.0f, 0.0f, false, true, Activations.Relu);
-                Settings.Default.Save();
-            }
+
+            Settings.Default.Save();
 
             DataContext = Settings.Default.Parameters;
         }
@@ -91,6 +164,20 @@ namespace ScriptsDialog
 
             // All dependency objects are valid
             return true;
+        }
+
+        private void ShowToolTip_Click(object sender, RoutedEventArgs e)
+        {
+            var filler = (Fillers)comboBoxWeightsFiller.SelectedValue;
+
+            foreach (var item in fillersList)
+            {
+                if (item.Id == filler)
+                {
+                    FormulaCtrl.Formula = item.Formula;
+                    break;
+                }
+            }
         }
 
         private void ButtonGenerate_Click(object sender, RoutedEventArgs e)

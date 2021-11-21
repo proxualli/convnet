@@ -252,7 +252,7 @@ namespace ScriptsDialog
         private Activations activation = Activations.Relu;
         private ObservableCollection<EfficientNetRecord> efficientnet = new ObservableCollection<EfficientNetRecord>();
         private ObservableCollection<ShuffleNetRecord> shufflenet = new ObservableCollection<ShuffleNetRecord>();
-
+       
         public ScriptParameters()
         {
         }

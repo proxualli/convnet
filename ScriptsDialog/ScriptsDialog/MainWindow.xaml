@@ -4,12 +4,18 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:c="clr-namespace:ScriptsDialog.Common"
+        xmlns:controls="clr-namespace:WpfMath.Controls;assembly=WpfMath"
         xmlns:converters="clr-namespace:ScriptsDialog.Converters"
         xmlns:xctk="clr-namespace:ScriptsDialog.AutoSelectTextBox"
         mc:Ignorable="d"
         Title="Model Parameters" Height="1090" Width="330" WindowStartupLocation="CenterScreen" ShowInTaskbar="False" ResizeMode="NoResize" Closing="Window_Closing" Loaded="Window_Loaded" Background="Gray" Icon="Resources\App.ico" Topmost="True">
 
     <Window.Resources>
+        <Style x:Key="ClearTypeFormula" TargetType="controls:FormulaControl">
+            <Setter Property="TextOptions.TextRenderingMode" Value="ClearType" />
+            <Setter Property="TextOptions.TextHintingMode" Value="Fixed" />
+            <Setter Property="TextOptions.TextFormattingMode" Value="Display" />
+        </Style>
         <converters:BoolToGridLengthConverter x:Key="BooleanToGridLengthConverter"/>
         <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
         <converters:BooleanValueInverter x:Key="Inverter"/>
@@ -155,7 +161,12 @@
         <TextBlock Foreground="White" Grid.Column="1" Grid.Row="13" Height="Auto" Margin="2" HorizontalAlignment="Stretch" Name="textBlockChannelZeroPad" Text="ChannelZeroPad:" Width="Auto" FontSize="14" VerticalAlignment="Center" Visibility="{Binding Path=ChannelZeroPadVisible, Converter={StaticResource BooleanToVisibilityConverter}}"/>
         <TextBlock Foreground="White" Grid.Column="1" Grid.Row="14" Height="Auto" Margin="2" HorizontalAlignment="Stretch" Name="textBlockSE" Text="Squeeze Excitation:" Width="Auto" FontSize="14" VerticalAlignment="Center" Visibility="{Binding Path=SqueezeExcitationVisible, Converter={StaticResource BooleanToVisibilityConverter}}"/>
         <TextBlock Foreground="White" Grid.Column="1" Grid.Row="15" Height="Auto" Margin="2" HorizontalAlignment="Stretch" Name="textBlockActivation" Text="Activation:" Width="Auto" FontSize="14" VerticalAlignment="Center" />
-        <TextBlock Foreground="White" Grid.Column="1" Grid.Row="17" Height="Auto" Margin="2" HorizontalAlignment="Stretch" Name="textBlockWeightsFiller" Text="Weights Filler:" Width="Auto" FontSize="14" VerticalAlignment="Center"/>
+        <TextBlock Foreground="White" Grid.Column="1" Grid.Row="17" Height="Auto" Margin="2" HorizontalAlignment="Left" Name="textBlockWeightsFiller" Text="Weights Filler:" Width="Auto" FontSize="14" VerticalAlignment="Center"/>
+        <Button x:Name="ButtonFormula" Content=" ? " HorizontalAlignment="Center" Margin="130,0,0,0" Grid.Column="1" Grid.Row="17" VerticalAlignment="Center" FontSize="12" ClickMode="Hover" Click="ShowToolTip_Click">
+            <Button.ToolTip>
+                <controls:FormulaControl x:Name="FormulaCtrl"/>
+            </Button.ToolTip>
+        </Button> 
         <TextBlock Foreground="White" Grid.Column="1" Grid.Row="18" Height="Auto" Margin="2" HorizontalAlignment="Stretch" Name="textBlockWeightsFillerMode" Text="     Mode:" Width="Auto" FontSize="14" VerticalAlignment="Center" Visibility="{Binding Path=WeightsFillerModeVisible, Converter={StaticResource BooleanToVisibilityConverter}}"/>
         <TextBlock Foreground="White" Grid.Column="1" Grid.Row="19" Height="Auto" Margin="2" HorizontalAlignment="Stretch" Name="textBlockWeightsScale" Text="     Scale:" Width="Auto" FontSize="14" VerticalAlignment="Center" Visibility="{Binding Path=WeightsScaleVisible, Converter={StaticResource BooleanToVisibilityConverter}}"/>
         <TextBlock Foreground="White" Grid.Column="1" Grid.Row="20" Height="Auto" Margin="2" HorizontalAlignment="Stretch" Name="textBlockWeightsLRM" Text="     LRM:" Width="Auto" FontSize="14" VerticalAlignment="Center" ToolTip="Learning Rate Multiplier"/>
@@ -174,9 +185,13 @@
         <ComboBox Name="comboBoxModel" Grid.Column="2" Grid.Row="0" HorizontalAlignment="Stretch" Margin="2" VerticalAlignment="Stretch" Width="Auto" FontSize="14" TabIndex="0" ItemsSource="{Binding Path=ScriptsList}" SelectedItem="{Binding Path=Script, Mode=TwoWay}" SelectionChanged="ComboBox_SelectionChanged"/>
         <ComboBox Name="comboBoxDataset" Grid.Column="2" Grid.Row="1" HorizontalAlignment="Stretch" Margin="2" VerticalAlignment="Stretch" Width="Auto" FontSize="14" TabIndex="1" ItemsSource="{Binding Path=DatasetsList}" SelectedItem="{Binding Path=Dataset, Mode=TwoWay}"/>
         <ComboBox x:Name="comboBoxActivation" Grid.Column="2" Grid.Row="15" HorizontalAlignment="Stretch" Margin="2" VerticalAlignment="Stretch" Width="Auto" FontSize="14" TabIndex="20" ItemsSource="{Binding Path=ActivationsList}" SelectedItem="{Binding Path=Activation, Mode=TwoWay}" SelectionChanged="ComboBox_SelectionChanged"/>
+
         <ComboBox x:Name="comboBoxWeightsFiller" Grid.Column="2" Grid.Row="17" HorizontalAlignment="Stretch" Margin="2" VerticalAlignment="Stretch" Width="Auto" FontSize="14" TabIndex="22" ItemsSource="{Binding Path=FillersList}" SelectedItem="{Binding Path=WeightsFiller, Mode=TwoWay}" SelectionChanged="ComboBox_SelectionChanged"/>
+
         <ComboBox x:Name="comboBoxWeightsFillerMode" Grid.Column="2" Grid.Row="18" HorizontalAlignment="Stretch" Margin="2" VerticalAlignment="Stretch" Width="Auto" FontSize="14" TabIndex="23" ItemsSource="{Binding Path=FillerModesList}" SelectedItem="{Binding Path=WeightsFillerMode, Mode=TwoWay}" Visibility="{Binding Path=WeightsFillerModeVisible, Converter={StaticResource BooleanToVisibilityConverter}}" SelectionChanged="ComboBox_SelectionChanged"/>
+
         <ComboBox x:Name="comboBoxBiasesFiller" Grid.Column="2" Grid.Row="22" HorizontalAlignment="Stretch" Margin="2" VerticalAlignment="Stretch" Width="Auto" FontSize="14" TabIndex="27" ItemsSource="{Binding Path=FillersList}" SelectedItem="{Binding Path=BiasesFiller, Mode=TwoWay}" SelectionChanged="ComboBox_SelectionChanged"/>
+
         <ComboBox x:Name="comboBoxBiasesFillerMode" Grid.Column="2" Grid.Row="23" HorizontalAlignment="Stretch" Margin="2" VerticalAlignment="Stretch" Width="Auto" FontSize="14" TabIndex="28" ItemsSource="{Binding Path=FillerModesList}" SelectedItem="{Binding Path=BiasesFillerMode, Mode=TwoWay}" SelectionChanged="ComboBox_SelectionChanged"/>
         <DataGrid Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="16" ItemsSource="{Binding EfficientNet}" CanUserAddRows="True" CanUserDeleteRows="True" ContextMenu="{StaticResource MyContextMenu}" TabIndex="21" AutoGenerateColumns="False" Height="Auto" HorizontalAlignment="Stretch" Margin="3" x:Name="DataGridEfficientNet" VerticalAlignment="Stretch" Width="Auto" CanUserSortColumns="False" GridLinesVisibility="Horizontal" HorizontalGridLinesBrush="#FFAAE4F5" VerticalContentAlignment="Center" HorizontalContentAlignment="Stretch" SelectionMode="Single" MinHeight="0" MinWidth="0" CanUserResizeColumns="False" FontFamily="Consolas" FontSize="14" CanUserResizeRows="False" BorderThickness="0" Foreground="{DynamicResource {x:Static SystemColors.DesktopBrushKey}}" CanUserReorderColumns="False" IsSynchronizedWithCurrentItem="True" SelectionUnit="FullRow" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Visibility="{Binding Path=EfficientNetVisible, Converter={StaticResource BooleanToVisibilityConverter}}" IsEnabled="{Binding Path=EfficientNetVisible}" KeyboardNavigation.TabNavigation="Local" KeyboardNavigation.TabIndex="21">
             <DataGrid.Columns>
@@ -374,7 +389,7 @@
         <CheckBox  Name="checkBoxBottleneck" Content="" Grid.Column="2" Margin="2" Grid.Row="12" TabIndex="17" VerticalContentAlignment="Center" IsEnabled="{Binding Path=BottleneckVisible}" IsChecked="{Binding Path=Bottleneck, Mode=TwoWay}" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Center" Checked="CheckBoxBottleneck_CheckedChanged"/>
         <CheckBox  Name="checkBoxChannelZeroPad" Content="" Grid.Column="2" Margin="2" Grid.Row="13" TabIndex="18" VerticalContentAlignment="Center" IsEnabled="{Binding Path=ChannelZeroPadVisible}" IsChecked="{Binding Path=ChannelZeroPad, Mode=TwoWay}" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Center"/>
         <CheckBox  Name="checkBoxSqueezeExcitation" Content="" Grid.Column="2" Margin="2" Grid.Row="14" TabIndex="19" VerticalContentAlignment="Center" IsEnabled="{Binding Path=SqueezeExcitationVisible}" IsChecked="{Binding Path=SqueezeExcitation, Mode=TwoWay}" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-      
+
         <Button Content="_Generate" Grid.Column="1" Grid.Row="31" Margin="2" Name="buttonGenerate" Click="ButtonGenerate_Click" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TabIndex="35" ClickMode="Release" FontSize="14" IsDefault="True"/>
         <Button Content="_Cancel" Grid.Column="2" Grid.Row="31" Margin="2" Name="buttonCancel" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TabIndex="36" ClickMode="Release" IsCancel="True"  FontSize="14" Click="buttonCancel_Click"/>
     </Grid>
