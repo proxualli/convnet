@@ -562,7 +562,7 @@ namespace ScriptsDialog
                                     net += blk;
 
                                 inputChannels = outputChannels;
-                                C += (stage < 3ul ? 1ul : 2ul);
+                                C += stage < 3ul ? 1ul : 2ul;
                                 input = In((identity ? "A" : "B"), C++);
                             }
                             stage++;
