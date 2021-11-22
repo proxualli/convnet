@@ -569,7 +569,7 @@ namespace ScriptsDialog
             {
                 if (value != weightsGain)
                 {
-                    weightsScale = value;
+                    weightsGain = value;
                     OnPropertyChanged("WeightsGain");
                 }
             }
@@ -711,7 +711,7 @@ namespace ScriptsDialog
             {
                 if (value != biasesGain)
                 {
-                    biasesScale = value;
+                    biasesGain = value;
                     OnPropertyChanged("BiasesGain");
                 }
             }
