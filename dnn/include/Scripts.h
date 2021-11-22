@@ -56,10 +56,9 @@ namespace scripts
 
     enum class FillerModes
     {
-        Auto = 0,
+        Avg = 0,
         In = 1,
-        InOut = 2,
-        Out = 3
+        Out = 2
     };
 
     enum class Activations
@@ -133,14 +132,14 @@ namespace scripts
         bool MirrorPad = false;
         bool MeanStdNormalization = true;
         scripts::Fillers WeightsFiller = Fillers::HeNormal;
-        scripts::FillerModes WeightsFillerMode = FillerModes::Auto;
+        scripts::FillerModes WeightsFillerMode = FillerModes::In;
         Float WeightsGain = Float(1);
         Float WeightsScale = Float(0.05);
         Float WeightsLRM = Float(1);
         Float WeightsWDM = Float(1);
         bool HasBias = false;
         scripts::Fillers BiasesFiller = Fillers::Constant;
-        scripts::FillerModes BiasesFillerMode = FillerModes::Auto;
+        scripts::FillerModes BiasesFillerMode = FillerModes::In;
         Float BiasesGain = Float(1);
         Float BiasesScale = Float(0);
         Float BiasesLRM = Float(1);

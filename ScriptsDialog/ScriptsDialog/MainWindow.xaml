@@ -123,9 +123,9 @@
             <RowDefinition Height="30" MaxHeight="30"/>
             <RowDefinition Height="{Binding Path=EffNetVisible, Converter={StaticResource BooleanToGridLengthConverter}}" MaxHeight="120"/>
             <RowDefinition Height="30" MaxHeight="30"/>
+            <RowDefinition Height="{Binding Path=WeightsFillerModeVisible, Converter={StaticResource BooleanToGridLengthConverter}}" MaxHeight="30"/>
             <RowDefinition Height="{Binding Path=WeightsGainVisible, Converter={StaticResource BooleanToGridLengthConverter}}" MaxHeight="30"/>
             <RowDefinition Height="{Binding Path=WeightsScaleVisible, Converter={StaticResource BooleanToGridLengthConverter}}" MaxHeight="30"/>
-            <RowDefinition Height="30" MaxHeight="30"/>
             <RowDefinition Height="30" MaxHeight="30"/>
             <RowDefinition Height="30" MaxHeight="30"/>
             <RowDefinition Height="30" MaxHeight="30"/>

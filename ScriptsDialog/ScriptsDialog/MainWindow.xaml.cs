@@ -89,8 +89,8 @@ namespace ScriptsDialog
         {
             fillersList = new ObservableCollection<Filler>();
             fillersList.Add(new Filler { Id = Fillers.Constant, Formula = "constant=scale" });
-            fillersList.Add(new Filler { Id = Fillers.HeNormal, Formula = "stddev=gain\\cdot\\sqrt{\\frac{2}{FanIn}}" });
-            fillersList.Add(new Filler { Id = Fillers.HeUniform, Formula = "limit=gain\\cdot\\sqrt{\\frac{6}{FanIn}}" });
+            fillersList.Add(new Filler { Id = Fillers.HeNormal, Formula = "stddev=\\frac{gain}{\\sqrt{mode}}" });
+            fillersList.Add(new Filler { Id = Fillers.HeUniform, Formula = "limit=gain\\cdot\\sqrt{\\frac{3}{mode}}" });
             fillersList.Add(new Filler { Id = Fillers.LeCunNormal, Formula = "stddev=gain\\cdot\\sqrt{\\frac{1}{FanIn}}" });
             fillersList.Add(new Filler { Id = Fillers.LeCunUniform, Formula = "limit=gain\\cdot\\sqrt{\\frac{3}{FanIn}}" });
             fillersList.Add(new Filler { Id = Fillers.Normal, Formula = "stddev=scale" });
@@ -103,7 +103,7 @@ namespace ScriptsDialog
 
             if (Settings.Default.Parameters == null)
             {
-                Settings.Default.Parameters = new ScriptParameters(Scripts.shufflenetv2, Datasets.cifar10, 32, 32, 4, 4, false, true, Fillers.HeNormal, FillerModes.Auto, 1f, 0.05f, 1f, 1f, false, Fillers.Constant, FillerModes.Auto, 1f, 0f, 1f, 1f, 0.995f, 0.0001f, false, 0f, 0f, 3, 4, 8, 12, false, 0.0f, 0.0f, false, true, Activations.Relu);
+                Settings.Default.Parameters = new ScriptParameters(Scripts.shufflenetv2, Datasets.cifar10, 32, 32, 4, 4, false, true, Fillers.HeNormal, FillerModes.In, 1f, 0.05f, 1f, 1f, false, Fillers.Constant, FillerModes.In, 1f, 0f, 1f, 1f, 0.995f, 0.0001f, false, 0f, 0f, 3, 4, 8, 12, false, 0.0f, 0.0f, false, true, Activations.Relu);
 
                 var efficientnetv2 = new ObservableCollection<EfficientNetRecord>();
                 efficientnetv2.Add(new EfficientNetRecord(1, 24, 2, 1, false));
@@ -223,7 +223,7 @@ namespace ScriptsDialog
                 if (!CheckBoxHasBias.IsChecked.Value)
                 {
                     Settings.Default.Parameters.BiasesFiller = Fillers.Constant;
-                    Settings.Default.Parameters.BiasesFillerMode = FillerModes.Auto;
+                    Settings.Default.Parameters.BiasesFillerMode = FillerModes.In;
                     Settings.Default.Parameters.BiasesGain = 1.0f;
                     Settings.Default.Parameters.BiasesScale = 0.0f;
                     Settings.Default.Parameters.BiasesLRM = 1.0f;
@@ -293,11 +293,15 @@ namespace ScriptsDialog
             Grid.RowDefinitions[28].Height = CheckBoxHasBias.IsChecked.Value ? new GridLength(30, GridUnitType.Pixel) : new GridLength(0, GridUnitType.Pixel);
             textBoxBiasesWDM.IsEnabled = CheckBoxHasBias.IsChecked.Value;
             textBlockBiasesWDM.Visibility = CheckBoxHasBias.IsChecked.Value ? Visibility.Visible : Visibility.Collapsed;
-
-            int removeRows = CheckBoxHasBias.IsChecked.Value && Settings.Default.Parameters.BiasesScaleVisible ? 2 : 1;
-            removeRows += CheckBoxHasBias.IsChecked.Value ? 0 : 4;
-            removeRows += Settings.Default.Parameters.WeightsFillerModeVisible ? 1 : 2;
-
+            
+            int removeRows = Settings.Default.Parameters.WeightsFillerModeVisible ? 0 : 1;
+            removeRows += Settings.Default.Parameters.WeightsGainVisible ? 0 : 1;
+            removeRows += Settings.Default.Parameters.WeightsScaleVisible ? 0 : 1;
+            removeRows += Settings.Default.Parameters.BiasesFillerModeVisible ? 0 : 1;
+            removeRows += Settings.Default.Parameters.BiasesGainVisible ? 0 : 1;
+            removeRows += Settings.Default.Parameters.BiasesScaleVisible ? 0 : 1;
+            removeRows += CheckBoxHasBias.IsChecked.Value ? 0 : 3;
+            
             switch ((Scripts)comboBoxModel.SelectedIndex)
             {
                 case Scripts.densenet:
