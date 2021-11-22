@@ -199,16 +199,21 @@ namespace ScriptsDialog
 
         private void ButtonFormulaBiases_Click(object sender, RoutedEventArgs e)
         {
-            var filler = (Fillers)comboBoxBiasesFiller.SelectedValue;
-
-            foreach (var item in fillersList)
+            if (CheckBoxHasBias.IsChecked.HasValue && CheckBoxHasBias.IsChecked.Value)
             {
-                if (item.Id == filler)
+                var filler = (Fillers)comboBoxBiasesFiller.SelectedValue;
+
+                foreach (var item in fillersList)
                 {
-                    FormulaBiasesCtrl.Formula = item.Formula;
-                    break;
+                    if (item.Id == filler)
+                    {
+                        FormulaBiasesCtrl.Formula = item.Formula;
+                        break;
+                    }
                 }
             }
+            else
+                FormulaBiasesCtrl.Formula = "none";
         }
 
         private void ButtonGenerate_Click(object sender, RoutedEventArgs e)
