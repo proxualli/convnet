@@ -931,7 +931,7 @@ namespace dnn
 
 				case Fillers::HeNormal:
 				{
-					auto stddev = weightsGain / std::sqrt(weightsScope);
+					auto stddev = weightsGain * std::sqrt(Float(2) / weightsScope);
 					auto distribution = std::normal_distribution<Float>(Float(0), stddev);
 					std::generate_n(weights.begin(), WeightCount, [&]() { return distribution(RandomEngine); });
 				}
@@ -939,7 +939,7 @@ namespace dnn
 
 				case Fillers::HeUniform:
 				{
-					auto limit = weightsGain * std::sqrt(Float(3) / weightsScope);
+					auto limit = weightsGain * std::sqrt(Float(6) / weightsScope);
 					auto distribution = std::uniform_real_distribution<Float>(-limit, limit);
 					std::generate_n(weights.begin(), WeightCount, [&]() { return distribution(RandomEngine); });
 				}
@@ -1060,7 +1060,7 @@ namespace dnn
 
 				case Fillers::HeNormal:
 				{
-					auto stddev = biasesGain / std::sqrt(biasesScope);
+					auto stddev = biasesGain * std::sqrt(Float(2) / biasesScope);
 					auto distribution = std::normal_distribution<Float>(Float(0), stddev);
 					std::generate_n(Biases.begin(), BiasCount, [&]() { return distribution(RandomEngine); });
 				}
@@ -1068,7 +1068,7 @@ namespace dnn
 
 				case Fillers::HeUniform:
 				{
-					auto limit = biasesGain * std::sqrt(Float(3) / biasesScope);
+					auto limit = biasesGain * std::sqrt(Float(6) / biasesScope);
 					auto distribution = std::uniform_real_distribution<Float>(-limit, limit);
 					std::generate_n(Biases.begin(), BiasCount, [&]() { return distribution(RandomEngine); });
 				}
