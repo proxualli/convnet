@@ -284,6 +284,43 @@ namespace ScriptsDialog
                "Eps=" + to_string(eps);
         }
 
+        public static List<string> FusedMBConv(UInt id, string inputs, UInt inputChannels, UInt outputChannels, UInt stride = 1, UInt expandRatio = 4, bool se = false, Activations activation = Activations.HardSwish)
+        {
+            var blocks = new List<string>();
+            var hiddenDim = DIV8(inputChannels * expandRatio);
+            var identity = stride == 1 && inputChannels == outputChannels;
+
+            if (se)
+            {
+                var group = In("SE", id);
+
+                blocks.Add(
+                    Convolution(id, inputs, hiddenDim, 3, 3, stride, stride, 1, 1) +
+                    BatchNormActivation(id, In("C", id), activation) +
+                    GlobalAvgPooling(In("B", id), group) +
+                    Convolution(1, group + "GAP", DIV8(hiddenDim / expandRatio), 1, 1, 1, 1, 0, 0, group) +
+                    BatchNormActivation(1, group + "C1", activation == Activations.FRelu ? Activations.HardSwish : activation, group) +
+                    Convolution(2, group + "B1", hiddenDim, 1, 1, 1, 1, 0, 0, group) +
+                    BatchNormActivation(2, group + "C2", "HardLogistic", group) +
+                    ChannelMultiply(In("B", id) + "," + group + "B2", group) +
+                    Convolution(id + 1, group + "CM", DIV8(outputChannels), 1, 1, 1, 1, 0, 0) +
+                    BatchNorm(id + 1, In("C", id + 1)));
+            }
+            else
+            {
+                blocks.Add(
+                    Convolution(id, inputs, hiddenDim, 3, 3, stride, stride, 1, 1) +
+                    BatchNormActivation(id, In("C", id), activation) +
+                    Convolution(id + 1, In("B", id), DIV8(outputChannels), 1, 1, 1, 1, 0, 0) +
+                    BatchNorm(id + 1, In("C", id + 1)));
+            }
+
+            if (identity)
+                blocks.Add(Add(id + 1, In("B", id + 1) + "," + inputs));
+
+            return blocks;
+        }
+
         public static List<string> MBConv(UInt id, string inputs, UInt inputChannels, UInt outputChannels, UInt stride = 1, UInt expandRatio = 4, bool se = false, Activations activation = Activations.HardSwish)
         {
             var blocks = new List<string>();
@@ -510,6 +547,7 @@ namespace ScriptsDialog
                            Convolution(C, "Input", inputChannels, 3, 3, 2, 2, 1, 1) +
                            BatchNormActivation(C, In("C", C), p.Activation);
 
+                        var stage = 0ul;
                         var input = In("B", C++);
                         foreach (var rec in p.EfficientNet)
                         {
@@ -519,15 +557,15 @@ namespace ScriptsDialog
                                 var stride = n == 0ul ? rec.Stride : 1ul;
                                 var identity = stride == 1ul && inputChannels == outputChannels;
 
-                                var subblocks = MBConv(C, input, inputChannels, outputChannels, stride, rec.ExpandRatio, rec.SE, p.Activation);
+                                var subblocks = stage < 3ul ? FusedMBConv(C, input, inputChannels, outputChannels, stride, rec.ExpandRatio, rec.SE, p.Activation) : MBConv(C, input, inputChannels, outputChannels, stride, rec.ExpandRatio, rec.SE, p.Activation);
                                 foreach (var blk in subblocks)
                                     net += blk;
 
                                 inputChannels = outputChannels;
-                                C += 2;
-
+                                C += (stage < 3ul ? 1ul : 2ul);
                                 input = In((identity ? "A" : "B"), C++);
                             }
+                            stage++;
                         }
 
                         net +=
