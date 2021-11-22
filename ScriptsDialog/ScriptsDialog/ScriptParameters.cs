@@ -226,12 +226,14 @@ namespace ScriptsDialog
         private bool meanStdNormalization = true;
         private Fillers weightsFiller = Fillers.HeNormal;
         private FillerModes weightsFillerMode = FillerModes.Auto;
+        private Float weightsGain= 1;
         private Float weightsScale = (Float)0.05;
         private Float weightsLRM = 1;
         private Float weightsWDM = 1;
         private bool hasBias = false;
         private Fillers biasesFiller = Fillers.Constant;
         private FillerModes biasesFillerMode = FillerModes.Auto;
+        private Float biasesGain = 1;
         private Float biasesScale = 0;
         private Float biasesLRM = 1;
         private Float biasesWDM = 1;
@@ -252,12 +254,12 @@ namespace ScriptsDialog
         private Activations activation = Activations.Relu;
         private ObservableCollection<EfficientNetRecord> efficientnet = new ObservableCollection<EfficientNetRecord>();
         private ObservableCollection<ShuffleNetRecord> shufflenet = new ObservableCollection<ShuffleNetRecord>();
-       
+
         public ScriptParameters()
         {
         }
 
-        public ScriptParameters(Scripts script = Scripts.shufflenetv2, Datasets dataset = Datasets.cifar10, UInt h = 32, UInt w = 32, UInt padH = 4, UInt padW = 4, bool mirrorPad = false, bool meanStdNorm = true, Fillers weightsFiller = Fillers.HeNormal, FillerModes weightsFillerMode = FillerModes.Auto, Float weightsScale = (Float)0.05, Float weightsLRM = 1, Float weightsWDM = 1, bool hasBias = false, Fillers biasesFiller = Fillers.Constant, FillerModes biasesFillerMode = FillerModes.Auto, Float biasesScale = 0, Float biasesLRM = 1, Float biasesWDM = 1, Float batchNormMomentum = (Float)0.995, Float batchNormEps = (Float)1E-04, bool batchNormScaling = false, Float alpha = (Float)0, Float beta = (Float)0, UInt groups = 3, UInt iterations = 4, UInt width = 8, UInt growthRate = 12, bool bottleneck = false, Float dropout = 0, Float compression = 0, bool squeezeExcitation = false, bool channelZeroPad = true, Activations activation = Activations.Relu)
+        public ScriptParameters(Scripts script = Scripts.shufflenetv2, Datasets dataset = Datasets.cifar10, UInt h = 32, UInt w = 32, UInt padH = 4, UInt padW = 4, bool mirrorPad = false, bool meanStdNorm = true, Fillers weightsFiller = Fillers.HeNormal, FillerModes weightsFillerMode = FillerModes.Auto, Float weightsGain = (Float)1.0, Float weightsScale = (Float)0.05, Float weightsLRM = 1, Float weightsWDM = 1, bool hasBias = false, Fillers biasesFiller = Fillers.Constant, FillerModes biasesFillerMode = FillerModes.Auto, Float biasesGain  = (Float)1.0, Float biasesScale = 0, Float biasesLRM = 1, Float biasesWDM = 1, Float batchNormMomentum = (Float)0.995, Float batchNormEps = (Float)1E-04, bool batchNormScaling = false, Float alpha = (Float)0, Float beta = (Float)0, UInt groups = 3, UInt iterations = 4, UInt width = 8, UInt growthRate = 12, bool bottleneck = false, Float dropout = 0, Float compression = 0, bool squeezeExcitation = false, bool channelZeroPad = true, Activations activation = Activations.Relu)
         {
             Script = script;
             Dataset = dataset;
@@ -269,12 +271,14 @@ namespace ScriptsDialog
             MeanStdNormalization = meanStdNorm;
             WeightsFiller = weightsFiller;
             WeightsFillerMode = weightsFillerMode;
+            WeightsGain = weightsGain;
             WeightsScale = weightsScale;
             WeightsLRM = weightsLRM;
             WeightsWDM = weightsWDM;
             HasBias = hasBias;
             BiasesFiller = biasesFiller;
             BiasesFillerMode = biasesFillerMode;
+            BiasesGain = biasesGain;
             BiasesScale = biasesScale;
             BiasesLRM = biasesLRM;
             BiasesWDM = biasesWDM;
@@ -540,6 +544,7 @@ namespace ScriptsDialog
                     OnPropertyChanged("WeightsFiller");
                     OnPropertyChanged("WeightsScaleVisible");
                     OnPropertyChanged("WeightsFillerModeVisible");
+                    OnPropertyChanged("WeightsGainVisible");
                 }
             }
         }
@@ -556,7 +561,20 @@ namespace ScriptsDialog
                 }
             }
         }
-        
+
+        public Float WeightsGain
+        {
+            get { return weightsGain; }
+            set
+            {
+                if (value != weightsGain)
+                {
+                    weightsScale = value;
+                    OnPropertyChanged("WeightsGain");
+                }
+            }
+        }
+
         public bool WeightsScaleVisible
         {
             get
@@ -570,6 +588,14 @@ namespace ScriptsDialog
             get
             {
                 return !WeightsScaleVisible;
+            }
+        }
+
+        public bool WeightsGainVisible
+        {
+            get 
+            {
+                return WeightsFillerModeVisible;
             }
         }
 
@@ -636,6 +662,7 @@ namespace ScriptsDialog
                     OnPropertyChanged("BiasesFiller");
                     OnPropertyChanged("BiasesScaleVisible");
                     OnPropertyChanged("BiasesFillerModeVisible");
+                    OnPropertyChanged("BiasesGainVisible");
                 }
             }
         }
@@ -666,6 +693,27 @@ namespace ScriptsDialog
             get
             {
                 return !BiasesScaleVisible;
+            }
+        }
+
+        public bool BiasesGainVisible
+        {
+            get
+            {
+                return BiasesFillerModeVisible;
+            }
+        }
+
+        public Float BiasesGain
+        {
+            get { return biasesGain; }
+            set
+            {
+                if (value != biasesGain)
+                {
+                    biasesScale = value;
+                    OnPropertyChanged("BiasesGain");
+                }
             }
         }
 
