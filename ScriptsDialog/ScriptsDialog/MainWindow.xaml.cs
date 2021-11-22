@@ -323,7 +323,7 @@ namespace ScriptsDialog
             textBlockBiasesWDM.Visibility = CheckBoxHasBias.IsChecked.Value ? Visibility.Visible : Visibility.Collapsed;
 
             int removeRows = CheckBoxHasBias.IsChecked.Value && Settings.Default.Parameters.BiasesScaleVisible ? 2 : 1;
-            removeRows += CheckBoxHasBias.IsChecked.Value ? 0 : 3;
+            removeRows += CheckBoxHasBias.IsChecked.Value ? 0 : 4;
             removeRows += Settings.Default.Parameters.WeightsFillerModeVisible ? 1 : 2;
 
             switch ((Scripts)comboBoxModel.SelectedIndex)
