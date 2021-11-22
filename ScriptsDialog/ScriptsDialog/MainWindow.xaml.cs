@@ -183,39 +183,6 @@ namespace ScriptsDialog
             return true;
         }
 
-        private void ButtonFormulaWeights_Click(object sender, RoutedEventArgs e)
-        {
-            var filler = (Fillers)comboBoxWeightsFiller.SelectedValue;
-
-            foreach (var item in fillersList)
-            {
-                if (item.Id == filler)
-                {
-                    FormulaWeightsCtrl.Formula = item.Formula;
-                    break;
-                }
-            }
-        }
-
-        private void ButtonFormulaBiases_Click(object sender, RoutedEventArgs e)
-        {
-            if (CheckBoxHasBias.IsChecked.HasValue && CheckBoxHasBias.IsChecked.Value)
-            {
-                var filler = (Fillers)comboBoxBiasesFiller.SelectedValue;
-
-                foreach (var item in fillersList)
-                {
-                    if (item.Id == filler)
-                    {
-                        FormulaBiasesCtrl.Formula = item.Formula;
-                        break;
-                    }
-                }
-            }
-            else
-                FormulaBiasesCtrl.Formula = "none";
-        }
-
         private void ButtonGenerate_Click(object sender, RoutedEventArgs e)
         {
             if (IsValid(this))
@@ -346,6 +313,45 @@ namespace ScriptsDialog
                     break;
             }
             Height = 1150 - (removeRows * Grid.RowDefinitions[0].ActualHeight);
+        }
+
+        private void ButtonFormulaWeights_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            var info = new ScriptsDialog.WeightsInitializers();
+            info.ShowDialog();
+        }
+
+        private void ButtonFormulaWeights_Click(object sender, RoutedEventArgs e)
+        {
+            var filler = (Fillers)comboBoxWeightsFiller.SelectedValue;
+
+            foreach (var item in fillersList)
+            {
+                if (item.Id == filler)
+                {
+                    FormulaWeightsCtrl.Formula = item.Formula;
+                    break;
+                }
+            }
+        }
+
+        private void ButtonFormulaBiases_Click(object sender, RoutedEventArgs e)
+        {
+            if (CheckBoxHasBias.IsChecked.HasValue && CheckBoxHasBias.IsChecked.Value)
+            {
+                var filler = (Fillers)comboBoxBiasesFiller.SelectedValue;
+
+                foreach (var item in fillersList)
+                {
+                    if (item.Id == filler)
+                    {
+                        FormulaBiasesCtrl.Formula = item.Formula;
+                        break;
+                    }
+                }
+            }
+            else
+                FormulaBiasesCtrl.Formula = "none";
         }
     }
 }

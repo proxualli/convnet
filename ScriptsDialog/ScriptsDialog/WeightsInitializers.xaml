@@ -1,0 +1,20 @@
+﻿<Window x:Class="ScriptsDialog.WeightsInitializers"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:controls="clr-namespace:WpfMath.Controls;assembly=WpfMath"
+        mc:Ignorable="d"
+        Title="Weights Initialization Formulas" Height="680" Width="580">
+    <Window.Resources>
+        <Style x:Key="ClearTypeFormula" TargetType="controls:FormulaControl">
+            <Setter Property="TextOptions.TextRenderingMode" Value="ClearType" />
+            <Setter Property="TextOptions.TextHintingMode" Value="Fixed" />
+            <Setter Property="TextOptions.TextFormattingMode" Value="Display" />
+        </Style>
+    </Window.Resources>
+    
+    <Grid Margin="40,40,40,40">
+        <controls:FormulaControl x:Name="Formulas" Formula="Constant\thickspace\thickspace\thickspace\thickspace\thickspace\thickspace\thickspace\thickspace\thickspace\thickspace\thickspace\thickspace\thickspace\thickspace\thickspace constant=scale\\\\\\HeNormal\thickspace\thickspace\thickspace\thickspace\thickspace\thickspace\thickspace\thickspace\thickspace\thickspace\thickspace\thickspace\thickspace stddev=gain\cdot\sqrt{\frac{2}{FanIn}}\\\\\\HeUniform\thickspace\thickspace\thickspace\thickspace\thickspace\thickspace\thickspace\thickspace\thickspace\thickspace\thickspace\thickspace limit=gain\cdot\sqrt{\frac{6}{FanIn}}\\\\\\LeCunNormal\thickspace\thickspace\thickspace\thickspace\thickspace\thickspace\thickspace\thinspace stddev=gain\cdot\sqrt{\frac{1}{FanIn}}\\\\\\LeCunUniform\thickspace\thickspace\thickspace\thickspace\thickspace\thickspace limit=gain\cdot\sqrt{\frac{3}{FanIn}}\\\\\\Normal\thickspace\thickspace\thickspace\thickspace\thickspace\thickspace\thickspace\thickspace\thickspace\thickspace\thickspace\thickspace\thickspace\thickspace\thickspace\thickspace\thickspace\thickspace\thickspace stddev=scale\\\\\\TruncatedNormal\thickspace\thickspace\thickspace stddev=scale\\\\\\Uniform\thickspace\thickspace\thinspace\thickspace\thickspace\thickspace\thickspace\thickspace\thickspace\thickspace\thickspace\thickspace\thickspace\thickspace\thickspace\thickspace\thickspace\thickspace limit=scale\\\\\\XavierNormal\thickspace\thickspace\thickspace\thickspace\thickspace\thickspace\thickspace\thickspace stddev=gain\cdot\sqrt{\frac{2}{FanIn+FanOut}}\\\\\\XavierUniform\thickspace\thickspace\thickspace\thickspace\thickspace\thickspace limit=gain\cdot\sqrt{\frac{6}{FanIn+FanOut}}" SystemTextFontName="Arial" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" SnapsToDevicePixels="True" Style="{StaticResource ClearTypeFormula}"/>
+    </Grid>
+</Window>
