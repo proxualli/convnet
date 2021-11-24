@@ -487,21 +487,10 @@ namespace dnn
 
 		bool CheckTaskState() const
 		{
-			if (TaskState.load() != TaskStates::Running)
-			{
-				if (TaskState.load() == TaskStates::Paused)
-				{
-					while (TaskState.load() == TaskStates::Paused)
-					{
-						std::this_thread::sleep_for(std::chrono::milliseconds(500));
-						SleepYield(std::chrono::milliseconds(500));
-					}
-				}
-				else
-					return false;
-			}
+			while (TaskState.load() == TaskStates::Paused)
+				std::this_thread::yield();
 
-			return true;
+			return TaskState.load() == TaskStates::Running;
 		}
 
 		void TrainingAsync()
