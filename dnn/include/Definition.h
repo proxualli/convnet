@@ -1328,6 +1328,7 @@ namespace dnn
 							model->WeightsScale = value.size() > 2 ? weightsScale : defaultWeightsScale;
 						}
 						break;
+
 						case dnn::Fillers::HeNormal:
 						case dnn::Fillers::HeUniform:
 						case dnn::Fillers::LeCunNormal:
