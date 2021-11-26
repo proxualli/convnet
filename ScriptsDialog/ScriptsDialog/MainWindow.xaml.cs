@@ -91,8 +91,8 @@ namespace ScriptsDialog
             fillersList.Add(new Filler { Id = Fillers.Constant, Formula = "constant=scale" });
             fillersList.Add(new Filler { Id = Fillers.HeNormal, Formula = "stddev=gain\\cdot\\sqrt{\\frac{2}{mode}}" });
             fillersList.Add(new Filler { Id = Fillers.HeUniform, Formula = "limit=gain\\cdot\\sqrt{\\frac{6}{mode}}" });
-            fillersList.Add(new Filler { Id = Fillers.LeCunNormal, Formula = "stddev=gain\\cdot\\sqrt{\\frac{1}{FanIn}}" });
-            fillersList.Add(new Filler { Id = Fillers.LeCunUniform, Formula = "limit=gain\\cdot\\sqrt{\\frac{3}{FanIn}}" });
+            fillersList.Add(new Filler { Id = Fillers.LeCunNormal, Formula = "stddev=gain\\cdot\\sqrt{\\frac{1}{mode}}" });
+            fillersList.Add(new Filler { Id = Fillers.LeCunUniform, Formula = "limit=gain\\cdot\\sqrt{\\frac{3}{mode}}" });
             fillersList.Add(new Filler { Id = Fillers.Normal, Formula = "stddev=scale" });
             fillersList.Add(new Filler { Id = Fillers.TruncatedNormal, Formula = "stddev=scale" });
             fillersList.Add(new Filler { Id = Fillers.Uniform, Formula = "limit=scale" });

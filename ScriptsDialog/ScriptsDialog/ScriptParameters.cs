@@ -578,7 +578,7 @@ namespace ScriptsDialog
         {
             get
             {
-                return WeightsFiller == Fillers.HeNormal || WeightsFiller == Fillers.HeUniform;
+                return WeightsFiller == Fillers.HeNormal || WeightsFiller == Fillers.HeUniform || WeightsFiller == Fillers.LeCunNormal || WeightsFiller == Fillers.LeCunUniform;
             }
         }
 
@@ -709,7 +709,7 @@ namespace ScriptsDialog
         {
             get
             {
-                return BiasesFiller == Fillers.HeNormal || BiasesFiller == Fillers.HeUniform;
+                return BiasesFiller == Fillers.HeNormal || BiasesFiller == Fillers.HeUniform || BiasesFiller == Fillers.LeCunNormal || BiasesFiller == Fillers.LeCunUniform;
             }
         }
 
