@@ -86,12 +86,12 @@ namespace Convnet
 
             if (!File.Exists(Path.Combine(StateDirectory, Settings.Default.ModelNameActive + ".txt")))
             {
-                Directory.CreateDirectory(DefinitionsDirectory + @"resnet-32-3-2-6-dropout-channelzeropad-relu-weights\");
+                Directory.CreateDirectory(DefinitionsDirectory + @"resnet-32-3-2-6-channelzeropad-relu-weights\");
                 Directory.CreateDirectory(DefinitionsDirectory + Settings.Default.ModelNameActive + @"-weights\");
-                File.Copy(ApplicationPath + @"Resources\state\resnet-32-3-2-6-dropout-channelzeropad-relu.txt", StateDirectory + "resnet-32-3-2-6-dropout-channelzeropad-relu.txt", true);
-                File.Copy(ApplicationPath + @"Resources\state\resnet-32-3-2-6-dropout-channelzeropad-relu.txt", DefinitionsDirectory + "resnet-32-3-2-6-dropout-channelzeropad-relu.txt", true);
+                File.Copy(ApplicationPath + @"Resources\state\resnet-32-3-2-6-channelzeropad-relu.txt", StateDirectory + "resnet-32-3-2-6-channelzeropad-relu.txt", true);
+                File.Copy(ApplicationPath + @"Resources\state\resnet-32-3-2-6-channelzeropad-relu.txt", DefinitionsDirectory + "resnet-32-3-2-6-channelzeropad-relu.txt", true);
 
-                Settings.Default.ModelNameActive = "resnet-32-3-2-6-dropout-channelzeropad-relu";
+                Settings.Default.ModelNameActive = "resnet-32-3-2-6-channelzeropad-relu";
                 Settings.Default.Optimizer = DNNOptimizers.NAG;
                 Settings.Default.Save();
             }
@@ -480,6 +480,13 @@ namespace Convnet
             }
         }
 
+        public static string GetTempFilePathWithExtension(string extension)
+        {
+            var path = Path.GetTempPath();
+            var fileName = Guid.NewGuid().ToString() + extension;
+            return Path.Combine(path, fileName);
+        }
+
         private void SaveCmdExecuted(object target, ExecutedRoutedEventArgs e)
         {
             var path = DefinitionsDirectory + (PageVM.CurrentPage as TrainPageViewModel).Model.Name + @"-weights\";
@@ -520,40 +527,51 @@ namespace Convnet
             switch (PageVM.CurrentModel)
             {
                 case ViewModels.Edit:
-                    saveFileDialog.FileName = (PageVM.CurrentPage as EditPageViewModel).ModelName;
-                    saveFileDialog.Filter = "Definition|*.txt";
-                    saveFileDialog.Title = "Save Model";
-                    saveFileDialog.DefaultExt = ".txt";
-                    saveFileDialog.FilterIndex = 1;
-                    saveFileDialog.InitialDirectory = DefinitionsDirectory;
-                    ret = saveFileDialog.ShowDialog(Application.Current.MainWindow);
-                    if (ret.HasValue && ret.Value)
                     {
-                        Mouse.OverrideCursor = Cursors.Wait;
-                        TextWriter writer = new StreamWriter(saveFileDialog.FileName, false);
-                        if (saveFileDialog.FileName.Contains(".txt"))
-                            writer.Write(Settings.Default.DefinitionEditing);
-                        writer.Flush();
-                        writer.Close();
-                        writer.Dispose();
-                        Mouse.OverrideCursor = null;
-                        Xceed.Wpf.Toolkit.MessageBox.Show(saveFileDialog.SafeFileName + " saved", "Information", MessageBoxButton.OK);
+                        saveFileDialog.FileName = (PageVM.CurrentPage as EditPageViewModel).ModelName;
+                        saveFileDialog.Filter = "Definition|*.txt";
+                        saveFileDialog.Title = "Save Model";
+                        saveFileDialog.DefaultExt = ".txt";
+                        saveFileDialog.FilterIndex = 1;
+                        saveFileDialog.InitialDirectory = DefinitionsDirectory;
+                        ret = saveFileDialog.ShowDialog(Application.Current.MainWindow);
+                        var ok = ret.HasValue && ret.Value;
+                        var fileName = saveFileDialog.FileName;
+                        var saveFileName = saveFileDialog.SafeFileName;
+                        
+                        if (ok)
+                        {
+                            Mouse.OverrideCursor = Cursors.Wait;
+                            TextWriter writer = new StreamWriter(fileName, false);
+                            if (saveFileDialog.FileName.Contains(".txt"))
+                                writer.Write(Settings.Default.DefinitionEditing);
+                            writer.Flush();
+                            writer.Close();
+                            writer.Dispose();
+                            Mouse.OverrideCursor = null;
+                            Xceed.Wpf.Toolkit.MessageBox.Show(saveFileName + " saved", "Information", MessageBoxButton.OK);
+                        }
                     }
                     break;
 
                 case ViewModels.Train:
-                    saveFileDialog.FileName = Settings.Default.PersistOptimizer ? (PageVM.CurrentPage as TrainPageViewModel).Model.Name + @"-(" + (PageVM.CurrentPage as TrainPageViewModel).Dataset.ToString().ToLower() + @")(" + (PageVM.CurrentPage as TrainPageViewModel).Optimizer.ToString().ToLower() + @")": (PageVM.CurrentPage as TrainPageViewModel).Model.Name + @"-(" + (PageVM.CurrentPage as TrainPageViewModel).Dataset.ToString().ToLower() + @")";
-                    saveFileDialog.Filter = "Weights|*.bin|Log|*.csv";
-                    saveFileDialog.Title = "Save";
-                    saveFileDialog.DefaultExt = ".bin";
-                    saveFileDialog.FilterIndex = 1;
-                    saveFileDialog.InitialDirectory = DefinitionsDirectory + PageVM.Model.Name + @"-weights\";
-                    ret = saveFileDialog.ShowDialog(Application.Current.MainWindow);
-                    if (ret.HasValue && ret.Value)
                     {
-                        if (saveFileDialog.FileName.EndsWith(".csv"))
+                        var tpvm = PageVM.CurrentPage as TrainPageViewModel;
+
+                        saveFileDialog.FileName = tpvm.Model.Name; // + @"-(" + tpvm.Dataset.ToString().ToLower() + @")" + (Settings.Default.PersistOptimizer ? @"(" +  tpvm.Optimizer.ToString().ToLower() + @")" : "");
+                        saveFileDialog.Filter = "Weights|*.bin|Log|*.csv";
+                        saveFileDialog.Title = "Save";
+                        saveFileDialog.DefaultExt = ".bin";
+                        saveFileDialog.FilterIndex = 1;
+                        saveFileDialog.InitialDirectory = DefinitionsDirectory + tpvm.Model.Name + @"-weights\";
+                        ret = saveFileDialog.ShowDialog(Application.Current.MainWindow);
+                        var ok = ret.HasValue && ret.Value;
+                        var fileName = saveFileDialog.FileName;
+                        var saveFileName = saveFileDialog.SafeFileName;
+                        
+                        if (ok)
                         {
-                            if (PageVM.CurrentPage is TrainPageViewModel tpvm)
+                            if (fileName.EndsWith(".csv"))
                             {
                                 try
                                 {
@@ -594,6 +612,7 @@ namespace Convnet
                                             "TestAccuracy" + delim +
                                             "ElapsedTicks" + delim +
                                             "ElapsedTime");
+
                                     foreach (var row in tpvm.TrainingLog)
                                         sb.AppendLine(
                                             row.Cycle.ToString() + delim +
@@ -632,43 +651,45 @@ namespace Convnet
                                             row.ElapsedTime.ToString());
 
                                     //Clipboard.SetText(sb.ToString());
-                                    File.WriteAllText(saveFileDialog.FileName, sb.ToString());
-                                   
-                                    //CsvHelper.Configuration.CsvConfiguration config = new CsvHelper.Configuration.CsvConfiguration(CultureInfo.CurrentCulture)
-                                    //{
-                                    //    HasHeaderRecord = true,
-                                    //    DetectDelimiter = true,
-                                    //    DetectDelimiterValues = new string[] { ";" },
-                                    //    Delimiter = ";"
-                                    //};
 
-                                    //using (var writer = new StreamWriter(saveFileDialog.FileName))
-                                    //using (var csv = new CsvWriter(writer, config))
-                                    //{
-                                    //    csv.WriteRecords(tpvm.TrainingLog);
-                                    //}
-
-                                    Mouse.OverrideCursor = null;
-                                    Xceed.Wpf.Toolkit.MessageBox.Show(saveFileDialog.SafeFileName + " log saved", "Information", MessageBoxButton.OK);
+                                    File.WriteAllText(fileName, sb.ToString());
                                 }
-                                catch (Exception exception)
+                                catch (Exception ex)
                                 {
                                     Mouse.OverrideCursor = null;
-                                    Xceed.Wpf.Toolkit.MessageBox.Show(exception.ToString(), "Exception occured", MessageBoxButton.OK);
+                                    Xceed.Wpf.Toolkit.MessageBox.Show(ex.ToString(), "Exception occured", MessageBoxButton.OK);
+                                }
+
+                                /*
+                                CsvHelper.Configuration.CsvConfiguration config = new CsvHelper.Configuration.CsvConfiguration(CultureInfo.CurrentCulture)
+                                {
+                                    HasHeaderRecord = true,
+                                    DetectDelimiter = true,
+                                    DetectDelimiterValues = new string[] { ";" },
+                                    Delimiter = ";"
+                                };
+
+                                using (var writer = new StreamWriter(saveFileDialog.FileName, false))
+                                using (var csv = new CsvWriter(writer, config))
+                                {
+                                    csv.WriteRecords(tpvm.TrainingLog);
+                                }
+                                */
+
+                                Mouse.OverrideCursor = null;
+                                Xceed.Wpf.Toolkit.MessageBox.Show(saveFileName + " log saved", "Information", MessageBoxButton.OK);
+                            }
+                            else
+                            {
+                                if (fileName.EndsWith(".bin"))
+                                {
+                                    PageVM.Model.SaveWeights(fileName, Settings.Default.PersistOptimizer);
+                                    Mouse.OverrideCursor = null;
+                                    Xceed.Wpf.Toolkit.MessageBox.Show(saveFileName + " weights saved", "Information", MessageBoxButton.OK);
                                 }
                             }
                             Mouse.OverrideCursor = null;
                         }
-                        else
-                        {
-                            if (saveFileDialog.FileName.EndsWith(".bin"))
-                            {
-                                PageVM.Model.SaveWeights(saveFileDialog.FileName, Settings.Default.PersistOptimizer);
-                                Mouse.OverrideCursor = null;
-                                Xceed.Wpf.Toolkit.MessageBox.Show(saveFileDialog.SafeFileName + " weights saved", "Information", MessageBoxButton.OK);
-                            }
-                        }
-                        Mouse.OverrideCursor = null;
                     }
                     break;
 

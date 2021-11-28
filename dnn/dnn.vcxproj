@@ -155,6 +155,7 @@
     <ClInclude Include="include\ConvolutionTranspose.h" />
     <ClInclude Include="include\Dataprovider.h" />
     <ClInclude Include="include\LayerNorm.h" />
+    <ClInclude Include="include\LogSoftmax.h" />
     <ClInclude Include="include\Max.h" />
     <ClInclude Include="include\Min.h" />
     <ClInclude Include="include\PartialDepthwiseConvolution.h" />
@@ -174,8 +175,10 @@
     <ClInclude Include="include\ParallelFor.h" />
     <ClInclude Include="include\DepthwiseConvolution.h" />
     <ClInclude Include="include\ChannelShuffle.h" />
+    <ClInclude Include="include\PRelu.h" />
     <ClInclude Include="include\Resampling.h" />
     <ClInclude Include="include\Scripts.h" />
+    <ClInclude Include="include\Softmax.h" />
     <ClInclude Include="include\stdafx.h" />
     <ClInclude Include="include\Substract.h" />
     <ClInclude Include="include\targetver.h" />
@@ -185,6 +188,7 @@
   <ItemGroup>
     <ClCompile Include="src\dllmain.cpp" />
     <ClCompile Include="src\stdafx.cpp" />
+    <ClCompile Include="src\test.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="deps\libjpeg-turbo\build\jpeg-static.vcxproj">

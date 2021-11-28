@@ -1,11 +1,11 @@
-[resnet-32x32-3-2-6-dropout-channelzeropad-relu]
+[resnet-32x32-3-2-6-channelzeropad-relu]
 Dataset=cifar10
 Dim=3,32,32
 ZeroPad=4,4
 RandomCrop=Yes
-WeightsFiller=HeNormal
+WeightsFiller=HeNormal(In,1)
 Biases=No
-Dropout=0.333333
+Dropout=0
 Scaling=No
 Momentum=0.995
 Eps=0.0001
@@ -29,7 +29,7 @@ Kernel=3,3
 Pad=1,1
 
 [B2]
-Type=BatchNormReluDropout
+Type=BatchNormRelu
 Inputs=C2
 
 [C3]
@@ -61,7 +61,7 @@ Kernel=3,3
 Pad=1,1
 
 [B6]
-Type=BatchNormReluDropout
+Type=BatchNormRelu
 Inputs=C5
 
 [C6]
@@ -88,7 +88,7 @@ Stride=2,2
 Pad=1,1
 
 [B8]
-Type=BatchNormReluDropout
+Type=BatchNormRelu
 Inputs=C7
 
 [C8]
@@ -126,7 +126,7 @@ Kernel=3,3
 Pad=1,1
 
 [B10]
-Type=BatchNormReluDropout
+Type=BatchNormRelu
 Inputs=C9
 
 [C10]
@@ -153,7 +153,7 @@ Stride=2,2
 Pad=1,1
 
 [B12]
-Type=BatchNormReluDropout
+Type=BatchNormRelu
 Inputs=C11
 
 [C12]
@@ -191,7 +191,7 @@ Kernel=3,3
 Pad=1,1
 
 [B14]
-Type=BatchNormReluDropout
+Type=BatchNormRelu
 Inputs=C13
 
 [C14]
@@ -223,14 +223,14 @@ Inputs=C15
 Type=GlobalAvgPooling
 Inputs=B16
 
-[ACT]
-Type=Activation
+[LSM1]
+Type=LogSoftmax
 Inputs=GAP
-Activation=LogSoftmax
 
 [Cost]
 Type=Cost
-Inputs=ACT
+Inputs=LSM1
 Cost=CategoricalCrossEntropy
+LabelIndex=0
 Channels=10
 Eps=0.125

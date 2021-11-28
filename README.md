@@ -24,11 +24,14 @@
 * GlobalMaxPooling
 * LayerNorm
 * LocalResponseNorm
+* LogSoftmax
 * Max
 * MaxPooling
 * Min
 * Multiply
+* PRelu
 * Resampling
+* Softmax
 * Substract
 
 ### Activations
@@ -46,12 +49,10 @@
 * Log
 * Logistic
 * LogLogistic
-* LogSoftmax
 * Mish
 * Pow
 * Relu
 * Round
-* Softmax
 * SoftRelu
 * Sqrt
 * Square

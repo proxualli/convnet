@@ -216,8 +216,8 @@ namespace Convnet.Properties
             "ution\r\nInputs=B14\r\nChannels=384\r\nKernel=3,3\r\nPad=1,1\r\n\r\n[A6]\r\nType=Add\r\nInputs=C" +
             "14,A5\r\n\r\n[B15]\r\nType=BatchNormRelu\r\nInputs=A6\r\n\r\n[C15]\r\nType=Convolution\r\nInputs" +
             "=B15\r\nChannels=10\r\nKernel=1,1\r\n\r\n[B16]\r\nType=BatchNorm\r\nInputs=C15\r\n\r\n[GAP]\r\nTyp" +
-            "e=GlobalAvgPooling\r\nInputs=B16\r\n\r\n[ACT]\r\nType=Activation\r\nInputs=GAP\r\nActivation" +
-            "=Softmax\r\n\r\n[Cost]\r\nType=Cost\r\nInputs=ACT\r\nCost=CategoricalCrossEntropy\r\nChannel" +
+            "e=GlobalAvgPooling\r\nInputs=B16\r\n\r\n[LSM1]\r\nType=LogSoftmax\r\nInputs=GAP\r\n\r\n" +
+            "[Cost]\r\nType=Cost\r\nInputs=LSM1\r\nCost=CategoricalCrossEntropy\r\nChannel" +
             "s=10")]
         public string DefinitionEditing {
             get {
@@ -260,8 +260,8 @@ namespace Convnet.Properties
             "ution\r\nInputs=B14\r\nChannels=384\r\nKernel=3,3\r\nPad=1,1\r\n\r\n[A6]\r\nType=Add\r\nInputs=C" +
             "14,A5\r\n\r\n[B15]\r\nType=BatchNormRelu\r\nInputs=A6\r\n\r\n[C15]\r\nType=Convolution\r\nInputs" +
             "=B15\r\nChannels=10\r\nKernel=1,1\r\n\r\n[B16]\r\nType=BatchNorm\r\nInputs=C15\r\n\r\n[GAP]\r\nTyp" +
-            "e=GlobalAvgPooling\r\nInputs=B16\r\n\r\n[ACT]\r\nType=Activation\r\nInputs=GAP\r\nActivation" +
-            "=Softmax\r\n\r\n[Cost]\r\nType=Cost\r\nInputs=ACT\r\nCost=CategoricalCrossEntropy\r\nChannel" +
+            "e=GlobalAvgPooling\r\nInputs=B16\r\n\r\n[LSM1]\r\nType=LogSoftmax\r\nInputs=GAP\r\n\r\n" +
+            "[Cost]\r\nType=Cost\r\nInputs=LSM1\r\nCost=CategoricalCrossEntropy\r\nChannel" +
             "s=10")]
         public string DefinitionActive {
             get {

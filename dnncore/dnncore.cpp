@@ -73,10 +73,9 @@ namespace dnn
 	
 	enum class FillerModes
 	{
-		Auto = 0,
+		Avg = 0,
 		In = 1,
-		InOut = 2,
-		Out = 3
+		Out = 2
 	};
 
 	enum class LayerTypes
@@ -114,13 +113,16 @@ namespace dnn
 		Input = 30,
 		LayerNorm = 31,
 		LocalResponseNorm = 32,
-		Max = 33,
-		MaxPooling = 34,
-		Min = 35,
-		Multiply = 36,
-		PartialDepthwiseConvolution = 37,
-		Resampling = 38,
-		Substract = 39
+		LogSoftmax = 33,
+		Max = 34,
+		MaxPooling = 35,
+		Min = 36,
+		Multiply = 37,
+		PartialDepthwiseConvolution = 38,
+		PRelu = 39,
+		Resampling = 40,
+		Softmax = 41,
+		Substract = 42
 	};
 
 	enum class Activations
@@ -128,31 +130,27 @@ namespace dnn
 		Abs = 0,
 		BoundedRelu = 1,
 		Clip = 2,
-		ClipV2 = 3,
-		Elu = 4,
-		Exp = 5,
-		FTS = 6,
-		Gelu = 7,
-		GeluErf = 8,
-		HardLogistic = 9,
-		HardSwish = 10,
-		Linear = 11,
-		Log = 12,
-		Logistic = 13,
-		LogLogistic = 14,
-		LogSoftmax = 15,
-		Mish = 16,
-		Pow = 17,
-		PRelu = 18,
-		Relu = 19,
-		Round = 20,
-		Softmax = 21,
-		SoftRelu = 22,
-		Sqrt = 23,
-		Square = 24,
-		Swish = 25,
-		Tanh = 26,
-		TanhExp = 27
+		ClipV2 = 3,			//
+		Elu = 4,			//
+		Exp = 5,			//
+		Gelu = 6,
+		GeluErf = 7,
+		HardLogistic = 8,
+		HardSwish = 9,
+		Linear = 10,
+		Log = 11,
+		Logistic = 12,		//
+		LogLogistic = 13,
+		Mish = 14,
+		Pow = 15,
+		Relu = 16,			//
+		Round = 17,
+		SoftRelu = 18,
+		Sqrt = 19,			//
+		Square = 20,
+		Swish = 21,
+		Tanh = 22,			//
+		TanhExp = 23
 	};
 
 	enum class Algorithms
@@ -173,9 +171,10 @@ namespace dnn
 	enum class Models
 	{
 		densenet = 0,
-		mobilenetv3 = 1,
-		resnet = 2,
-		shufflenetv2 = 3
+		efficientnetv2 = 1,
+		mobilenetv3 = 2,
+		resnet = 3,
+		shufflenetv2 = 4
 	};
 
 	enum class Positions
@@ -597,7 +596,7 @@ namespace dnncore
 			}
 			break;
 
-			case DNNLayerTypes::Activation:
+			case DNNLayerTypes::PRelu:
 			{
 				const auto width = info->WeightCount;
 				const auto height = 4;
