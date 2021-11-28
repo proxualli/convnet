@@ -284,14 +284,6 @@ namespace ScriptsDialog
                "Inputs=" + inputs + nwl + nwl;
         }
 
-        public static string Activation(string inputs, string activation = "Relu", string group = "", string prefix = "ACT")
-        {
-            return "[" + group + prefix + "]" + nwl +
-               "Type=Activation" + nwl +
-               "Inputs=" + inputs + nwl +
-               "Activation=" + activation + nwl + nwl;
-        }
-
         public static string Activation(UInt id, string inputs, string activation = "Relu", string group = "", string prefix = "ACT")
         {
             return "[" + group + prefix + to_string(id) + "]" + nwl +
@@ -326,9 +318,9 @@ namespace ScriptsDialog
                     BatchNormActivation(id, In("C", id), activation) +
 
                     GlobalAvgPooling(In("B", id), group) +
-                    Convolution(1, group + "GAP", DIV8(hiddenDim / expandRatio), 1, 1, 1, 1, 0, 0, true, group, "C", "") +
-                    Activation(1, group + "C1", "HardSwish", group) +
-                    Convolution(2, group + "B1", hiddenDim, 1, 1, 1, 1, 0, 0, true, group, "C", "") +
+                    Convolution(1, group + "GAP", DIV8(hiddenDim / expandRatio), 1, 1, 1, 1, 0, 0, true, group) +
+                    Activation(1, group + "C1", activation.ToString(), group) +
+                    Convolution(2, group + "B1", hiddenDim, 1, 1, 1, 1, 0, 0, true, group) +
                     Activation(2, group + "C2", "Logistic", group) +
                     ChannelMultiply(In("B", id) + "," + group + "ACT2", group) +
 
@@ -367,9 +359,9 @@ namespace ScriptsDialog
                     BatchNormActivation(id + 1, In("DC", id + 1), activation) +
 
                     GlobalAvgPooling(In("B", id + 1), group) +
-                    Convolution(1, group + "GAP", DIV8(hiddenDim / expandRatio), 1, 1, 1, 1, 0, 0, true, group, "C", "") +
-                    Activation(1, group + "C1", "HardSwish", group) +
-                    Convolution(2, group + "ACT1", hiddenDim, 1, 1, 1, 1, 0, 0, true, group, "C", "") +
+                    Convolution(1, group + "GAP", DIV8(hiddenDim / expandRatio), 1, 1, 1, 1, 0, 0, true, group) +
+                    Activation(1, group + "C1", activation.ToString(), group) +
+                    Convolution(2, group + "ACT1", hiddenDim, 1, 1, 1, 1, 0, 0, true, group) +
                     Activation(2, group + "C2", "Logistic", group) +
                     ChannelMultiply(In("B", id + 1) + "," + group + "ACT2", group) +
 
@@ -415,11 +407,11 @@ namespace ScriptsDialog
                 var group = In("SE", id + 3);
                 var strSE =
                     se ? GlobalAvgPooling(In("B", id + 3), group) +
-                    Convolution(1, group + "GAP", DIV8(channels / 4), 1, 1, 1, 1, 0, 0, false, group) +
-                    BatchNormActivation(1, group + "C1", activation == Activations.FRelu ? Activations.HardSwish : activation, group) +
-                    Convolution(2, group + "B1", channels, 1, 1, 1, 1, 0, 0, false, group) +
-                    BatchNormActivation(2, group + "C2", "HardLogistic", group) +
-                    ChannelMultiply(In("B", id + 3) + "," + group + "B2", group) +
+                    Convolution(1, group + "GAP", DIV8(channels / 4), 1, 1, 1, 1, 0, 0, true, group) +
+                    Activation(1, group + "C1", activation.ToString(), group) +
+                    Convolution(2, group + "ACT1", channels, 1, 1, 1, 1, 0, 0, true, group) +
+                    Activation(2, group + "C2", "Logistic", group) +
+                    ChannelMultiply(In("B", id + 3) + "," + group + "ACT2", group) +
                     Concat(n + 1, In("LCS", n) + "," + group + "CM") :
                     Concat(n + 1, In("LCS", n) + "," + In("B", id + 3));
 
@@ -604,7 +596,7 @@ namespace ScriptsDialog
                             BatchNormActivation(C, In("C", C), p.Activation) +
                             GlobalAvgPooling(In("B", C)) +
                             Dense(1, "GAP", p.Classes, true, "", "DS", "Normal(0.001)") +
-                            LogSoftmax(1, In("DS",1)) +
+                            LogSoftmax(1, In("DS", 1)) +
                             Cost(In("LSM", 1), p.Dataset, p.Classes, "CategoricalCrossEntropy", 0.1f);
                     }
                     break;
@@ -641,10 +633,10 @@ namespace ScriptsDialog
                                 var strSE =
                                     se ? GlobalAvgPooling(In("B", C + 1), group) +
                                     Convolution(1, group + "GAP", DIV8((6 * W) / 4), 1, 1, 1, 1, 0, 0, p.HasBias, group) +
-                                    BatchNormActivation(1, group + "C1", p.Activation == Activations.FRelu ? Activations.HardSwish : p.Activation, group) +
-                                    Convolution(2, group + "B1", DIV8(6 * W), 1, 1, 1, 1, 0, 0, p.HasBias, group) +
-                                    BatchNormActivation(2, group + "C2", "HardLogistic", group) +
-                                    ChannelMultiply(In("B", C + 1) + "," + group + "B2", group) +
+                                    Activation(1, group + "C1", (p.Activation == Activations.FRelu ? Activations.HardSwish : p.Activation).ToString(), group) +
+                                    Convolution(2, group + "ACT1", DIV8(6 * W), 1, 1, 1, 1, 0, 0, p.HasBias, group) +
+                                    Activation(2, group + "C2", "HardLogistic", group) +
+                                    ChannelMultiply(In("B", C + 1) + "," + group + "ACT2", group) +
                                     Convolution(C + 2, group + "CM", DIV8(W), 1, 1, 1, 1, 0, 0) :
                                     Convolution(C + 2, In("B", C + 1), DIV8(W), 1, 1, 1, 1, 0, 0);
 
@@ -668,10 +660,10 @@ namespace ScriptsDialog
                                 var strSE =
                                     se ? GlobalAvgPooling(In("B", C + 1), group) +
                                     Convolution(1, group + "GAP", DIV8((6 * W) / 4), 1, 1, 1, 1, 0, 0, p.HasBias, group) +
-                                    BatchNormActivation(1, group + "C1", p.Activation == Activations.FRelu ? Activations.HardSwish : p.Activation, group) +
-                                    Convolution(2, group + "B1", DIV8(6 * W), 1, 1, 1, 1, 0, 0, p.HasBias, group) +
-                                    BatchNormActivation(2, group + "C2", "HardLogistic", group) +
-                                    ChannelMultiply(In("B", C + 1) + "," + group + "B2", group) +
+                                    Activation(1, group + "C1", (p.Activation == Activations.FRelu ? Activations.HardSwish : p.Activation).ToString(), group) +
+                                    Convolution(2, group + "ACT1", DIV8(6 * W), 1, 1, 1, 1, 0, 0, p.HasBias, group) +
+                                    Activation(2, group + "C2", "HardLogistic", group) +
+                                    ChannelMultiply(In("B", C + 1) + "," + group + "ACT2", group) +
                                     Convolution(C + 2, group + "CM", DIV8(W), 1, 1, 1, 1, 0, 0) :
                                     Convolution(C + 2, In("B", C + 1), DIV8(W), 1, 1, 1, 1, 0, 0);
 
