@@ -632,9 +632,9 @@ namespace ScriptsDialog
                                 var group = In("SE", C + 1);
                                 var strSE =
                                     se ? GlobalAvgPooling(In("B", C + 1), group) +
-                                    Convolution(1, group + "GAP", DIV8((6 * W) / 4), 1, 1, 1, 1, 0, 0, p.HasBias, group) +
+                                    Convolution(1, group + "GAP", DIV8((6 * W) / 4), 1, 1, 1, 1, 0, 0, true, group) +
                                     Activation(1, group + "C1", (p.Activation == Activations.FRelu ? Activations.HardSwish : p.Activation).ToString(), group) +
-                                    Convolution(2, group + "ACT1", DIV8(6 * W), 1, 1, 1, 1, 0, 0, p.HasBias, group) +
+                                    Convolution(2, group + "ACT1", DIV8(6 * W), 1, 1, 1, 1, 0, 0, true, group) +
                                     Activation(2, group + "C2", "Logistic", group) +
                                     ChannelMultiply(In("B", C + 1) + "," + group + "ACT2", group) +
                                     Convolution(C + 2, group + "CM", DIV8(W), 1, 1, 1, 1, 0, 0) :
@@ -659,9 +659,9 @@ namespace ScriptsDialog
 
                                 var strSE =
                                     se ? GlobalAvgPooling(In("B", C + 1), group) +
-                                    Convolution(1, group + "GAP", DIV8((6 * W) / 4), 1, 1, 1, 1, 0, 0, p.HasBias, group) +
+                                    Convolution(1, group + "GAP", DIV8((6 * W) / 4), 1, 1, 1, 1, 0, 0, true, group) +
                                     Activation(1, group + "C1", (p.Activation == Activations.FRelu ? Activations.HardSwish : p.Activation).ToString(), group) +
-                                    Convolution(2, group + "ACT1", DIV8(6 * W), 1, 1, 1, 1, 0, 0, p.HasBias, group) +
+                                    Convolution(2, group + "ACT1", DIV8(6 * W), 1, 1, 1, 1, 0, 0, true, group) +
                                     Activation(2, group + "C2", "Logistic", group) +
                                     ChannelMultiply(In("B", C + 1) + "," + group + "ACT2", group) +
                                     Convolution(C + 2, group + "CM", DIV8(W), 1, 1, 1, 1, 0, 0) :
