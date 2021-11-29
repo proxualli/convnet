@@ -1582,7 +1582,7 @@ namespace dnn
 
 				if (CurrentTrainingRate.Dropout > Float(0))
 					dstImageByte = Image<Byte>::Dropout(dstImageByte, CurrentTrainingRate.Dropout, DataProv->Mean);
-
+				
 				for (auto c = 0ull; c < dstImageByte.Channels; c++)
 				{
 					const auto mean = MeanStdNormalization ? DataProv->Mean[c] : Image<Byte>::GetChannelMean(dstImageByte, c);
