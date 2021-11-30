@@ -335,9 +335,6 @@ namespace Convnet.PageViewModels
                 var pathStateDefinition = Path.Combine(StateDirectory, modelname + ".txt");
                 var pathWeightsDirectory = DefinitionsDirectory + modelname + @"\";
                 
-                if (!ApplicationHelper.IsValidPathName(pathWeightsDirectory))
-                    MessageBox.Show(pathWeightsDirectory, "Invalid path name");
-
                 var pathWeights = Settings.Default.PersistOptimizer ? Path.Combine(pathWeightsDirectory, modelname + "-(" + Dataset.ToString().ToLower(CultureInfo.CurrentCulture) + ")(" + Settings.Default.Optimizer.ToString().ToLower(CultureInfo.CurrentCulture) + ").bin") : Path.Combine(pathWeightsDirectory, modelname + "-(" + Dataset.ToString().ToLower(CultureInfo.CurrentCulture) + ").bin");
                 
                 if (!sameDef || modelname != Model.Name || modelname != ModelName)
