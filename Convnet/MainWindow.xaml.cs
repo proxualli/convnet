@@ -494,7 +494,7 @@ namespace Convnet
                 Mouse.OverrideCursor = Cursors.Wait;
                 if (PageVM.Model.SaveWeights(StateDirectory + fileName, Settings.Default.PersistOptimizer) == 0)
                 {
-                    File.Copy(StateDirectory + fileName, path + fileName, true);
+                    File.Copy(StateDirectory + fileName, path + PageVM.Model.Dataset.ToString().ToLower() + @"-" + (Settings.Default.PersistOptimizer ? PageVM.Model.Optimizer.ToString().ToLower() + @".bin" : @".bin"), true);
                     Mouse.OverrideCursor = null;
                     Xceed.Wpf.Toolkit.MessageBox.Show("Weights are saved", "Information", MessageBoxButton.OK);
                 }
@@ -551,20 +551,17 @@ namespace Convnet
                     {
                         var tpvm = PageVM.CurrentPage as TrainPageViewModel;
 
-                        saveFileDialog.FileName = PageVM.Model.Name + @"-(" + PageVM.Model.Dataset.ToString().ToLower() + @")" + (Settings.Default.PersistOptimizer ? @"(" + PageVM.Model.Optimizer.ToString().ToLower() + @")" : "");
+                        saveFileDialog.FileName = PageVM.Model.Dataset.ToString().ToLower() + @"-" + (Settings.Default.PersistOptimizer ? PageVM.Model.Optimizer.ToString().ToLower() : "");
                         saveFileDialog.Filter = "Weights|*.bin|Log|*.csv";
                         saveFileDialog.Title = "Save";
                         saveFileDialog.DefaultExt = ".bin";
                         saveFileDialog.FilterIndex = 1;
                         saveFileDialog.InitialDirectory = DefinitionsDirectory + PageVM.Model.Name + @"\";
                         ret = saveFileDialog.ShowDialog(Application.Current.MainWindow);
-                        var ok = ret.HasValue && ret.Value;
-                        var fileName = saveFileDialog.FileName;
-                        var saveFileName = saveFileDialog.SafeFileName;
-                        
-                        if (ok)
+                                                
+                        if (ret.HasValue && ret.Value)
                         {
-                            if (fileName.EndsWith(".csv"))
+                            if (saveFileDialog.FileName.EndsWith(".csv"))
                             {
                                 try
                                 {
@@ -645,7 +642,7 @@ namespace Convnet
 
                                     //Clipboard.SetText(sb.ToString());
 
-                                    File.WriteAllText(fileName, sb.ToString());
+                                    File.WriteAllText(saveFileDialog.FileName, sb.ToString());
                                 }
                                 catch (Exception ex)
                                 {
@@ -670,15 +667,15 @@ namespace Convnet
                                 */
 
                                 Mouse.OverrideCursor = null;
-                                Xceed.Wpf.Toolkit.MessageBox.Show(saveFileName + " log saved", "Information", MessageBoxButton.OK);
+                                Xceed.Wpf.Toolkit.MessageBox.Show(saveFileDialog.SafeFileName + " log saved", "Information", MessageBoxButton.OK);
                             }
                             else
                             {
-                                if (fileName.EndsWith(".bin"))
+                                if (saveFileDialog.FileName.EndsWith(".bin"))
                                 {
-                                    PageVM.Model.SaveWeights(fileName, Settings.Default.PersistOptimizer);
+                                    PageVM.Model.SaveWeights(saveFileDialog.FileName, Settings.Default.PersistOptimizer);
                                     Mouse.OverrideCursor = null;
-                                    Xceed.Wpf.Toolkit.MessageBox.Show(saveFileName + " weights saved", "Information", MessageBoxButton.OK);
+                                    Xceed.Wpf.Toolkit.MessageBox.Show(saveFileDialog.SafeFileName + " weights saved", "Information", MessageBoxButton.OK);
                                 }
                             }
                             Mouse.OverrideCursor = null;
@@ -850,7 +847,7 @@ namespace Convnet
             e.CanExecute = false;
 
             if (Plain != null && PageVM != null && PageVM.Model != null)
-              e.CanExecute = PageVM.Model.TaskState == DNNTaskStates.Stopped;
+                e.CanExecute = PageVM.Model.TaskState == DNNTaskStates.Stopped;
         }
 
         private void PrioritySlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
