@@ -330,7 +330,7 @@ namespace ScriptsDialog
                 switch (Script)
                 {
                     case Scripts.densenet:
-                        return Script.ToString() + "-" + H.ToString() + "x" + W.ToString() + "-" + Groups.ToString() + "-" + Iterations.ToString() + "-" + GrowthRate.ToString() + (Dropout > 0 ? "-dropout" : "") + (Compression > 0 ? "-compression" : "") + (Bottleneck ? "-bottleneck" : "") + "-" + Activation.ToString().ToLower();
+                        return Script.ToString() + "-" + Groups.ToString() + "-" + Iterations.ToString() + "-" + GrowthRate.ToString() + (Dropout > 0 ? "-dropout" : "") + (Compression > 0 ? "-compression" : "") + (Bottleneck ? "-bottleneck" : "") + "-" + Activation.ToString().ToLower();
                     case Scripts.efficientnetv2:
                         {
                             string name = "";
@@ -339,18 +339,18 @@ namespace ScriptsDialog
                             return Script.ToString() + name;
                         }
                     case Scripts.mobilenetv3:
-                        return Script.ToString() + "-" + H.ToString() + "x" + W.ToString() + "-" + Groups.ToString() + "-" + Iterations.ToString() + "-" + Width.ToString() + "-" + Activation.ToString().ToLower() + (SqueezeExcitation ? " -se" : "");
+                        return Script.ToString() + "-" + Groups.ToString() + "-" + Iterations.ToString() + "-" + Width.ToString() + "-" + Activation.ToString().ToLower() + (SqueezeExcitation ? " -se" : "");
                     case Scripts.resnet:
-                        return Script.ToString() + "-" + H.ToString() + "x" + W.ToString() + "-" + Groups.ToString() + "-" + Iterations.ToString() + "-" + Width.ToString() + (Dropout > 0 ? "-dropout" : "") + (Bottleneck ? "-bottleneck" : "") + (ChannelZeroPad ? "-channelzeropad" : "") + "-" + Activation.ToString().ToLower();
+                        return Script.ToString() + "-" + Groups.ToString() + "-" + Iterations.ToString() + "-" + Width.ToString() + (Dropout > 0 ? "-dropout" : "") + (Bottleneck ? "-bottleneck" : "") + (ChannelZeroPad ? "-channelzeropad" : "") + "-" + Activation.ToString().ToLower();
                     case Scripts.shufflenetv2:
                         {
                             string name = "";
                             foreach (var rec in ShuffleNet)
                                 name += rec.ToString();
-                            return Script.ToString() + "-" + H.ToString() + "x" + W.ToString() + "-" + Width.ToString() + "-" + name;
+                            return Script.ToString() + "-" + Width.ToString() + name;
                         }
                     default:
-                        return Script.ToString() + "-" + H.ToString() + "x" + W.ToString() + "-" + Groups.ToString() + "-" + Iterations.ToString();
+                        return Script.ToString() + "-" + Groups.ToString() + "-" + Iterations.ToString();
                 }
             }
         }
