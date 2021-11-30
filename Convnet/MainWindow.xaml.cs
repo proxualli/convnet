@@ -86,8 +86,8 @@ namespace Convnet
 
             if (!File.Exists(Path.Combine(StateDirectory, Settings.Default.ModelNameActive + ".txt")))
             {
-                Directory.CreateDirectory(DefinitionsDirectory + @"resnet-32-3-2-6-channelzeropad-relu-weights\");
-                Directory.CreateDirectory(DefinitionsDirectory + Settings.Default.ModelNameActive + @"-weights\");
+                Directory.CreateDirectory(DefinitionsDirectory + @"resnet-32-3-2-6-channelzeropad-relu\");
+                Directory.CreateDirectory(DefinitionsDirectory + Settings.Default.ModelNameActive + @"\");
                 File.Copy(ApplicationPath + @"Resources\state\resnet-32-3-2-6-channelzeropad-relu.txt", StateDirectory + "resnet-32-3-2-6-channelzeropad-relu.txt", true);
                 File.Copy(ApplicationPath + @"Resources\state\resnet-32-3-2-6-channelzeropad-relu.txt", DefinitionsDirectory + "resnet-32-3-2-6-channelzeropad-relu.txt", true);
 
@@ -362,7 +362,7 @@ namespace Convnet
                         openFileDialog.Title = "Load Weights";
                         openFileDialog.DefaultExt = ".bin";
                         openFileDialog.FilterIndex = 1;
-                        openFileDialog.InitialDirectory = DefinitionsDirectory + PageVM.Model.Name + @"-weights\";
+                        openFileDialog.InitialDirectory = DefinitionsDirectory + PageVM.Model.Name + @"\";
                         ret = openFileDialog.ShowDialog(Application.Current.MainWindow);
                         if (ret.HasValue && ret.Value)
                         {
@@ -404,7 +404,7 @@ namespace Convnet
                     }
 
                     openFileDialog.FilterIndex = 1;
-                    openFileDialog.InitialDirectory = DefinitionsDirectory + PageVM.Model.Name + @"-weights\";
+                    openFileDialog.InitialDirectory = DefinitionsDirectory + PageVM.Model.Name + @"\";
                     ret = openFileDialog.ShowDialog(Application.Current.MainWindow);
                     if (ret.HasValue && ret.Value)
                     {
@@ -480,17 +480,10 @@ namespace Convnet
             }
         }
 
-        public static string GetTempFilePathWithExtension(string extension)
-        {
-            var path = Path.GetTempPath();
-            var fileName = Guid.NewGuid().ToString() + extension;
-            return Path.Combine(path, fileName);
-        }
-
         private void SaveCmdExecuted(object target, ExecutedRoutedEventArgs e)
         {
-            var path = DefinitionsDirectory + (PageVM.CurrentPage as TrainPageViewModel).Model.Name + @"-weights\";
-            var fileName = (PageVM.CurrentPage as TrainPageViewModel).Model.Name + @"-(" + (PageVM.CurrentPage as TrainPageViewModel).Dataset.ToString().ToLower() + @")" + (Settings.Default.PersistOptimizer ? @"(" + (PageVM.CurrentPage as TrainPageViewModel).Optimizer.ToString().ToLower() + @").bin" : @".bin");
+            var path = DefinitionsDirectory + PageVM.Model.Name + @"\";
+            var fileName = PageVM.Model.Name + @"-(" + PageVM.Model.Dataset.ToString().ToLower() + @")" + (Settings.Default.PersistOptimizer ? @"(" + PageVM.Model.Optimizer.ToString().ToLower() + @").bin" : @".bin");
             
             var result = MessageBoxResult.Yes;
             if (File.Exists(path + fileName))
@@ -558,12 +551,12 @@ namespace Convnet
                     {
                         var tpvm = PageVM.CurrentPage as TrainPageViewModel;
 
-                        saveFileDialog.FileName = tpvm.Model.Name; // + @"-(" + tpvm.Dataset.ToString().ToLower() + @")" + (Settings.Default.PersistOptimizer ? @"(" +  tpvm.Optimizer.ToString().ToLower() + @")" : "");
+                        saveFileDialog.FileName = PageVM.Model.Name + @"-(" + PageVM.Model.Dataset.ToString().ToLower() + @")" + (Settings.Default.PersistOptimizer ? @"(" + PageVM.Model.Optimizer.ToString().ToLower() + @")" : "");
                         saveFileDialog.Filter = "Weights|*.bin|Log|*.csv";
                         saveFileDialog.Title = "Save";
                         saveFileDialog.DefaultExt = ".bin";
                         saveFileDialog.FilterIndex = 1;
-                        saveFileDialog.InitialDirectory = DefinitionsDirectory + tpvm.Model.Name + @"-weights\";
+                        saveFileDialog.InitialDirectory = DefinitionsDirectory + PageVM.Model.Name + @"\";
                         ret = saveFileDialog.ShowDialog(Application.Current.MainWindow);
                         var ok = ret.HasValue && ret.Value;
                         var fileName = saveFileDialog.FileName;

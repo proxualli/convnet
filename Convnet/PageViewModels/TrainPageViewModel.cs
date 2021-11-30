@@ -1654,7 +1654,7 @@ namespace Convnet.PageViewModels
                 Title = "Load layer weights",
                 DefaultExt = ".bin",
                 FilterIndex = 1,
-                InitialDirectory = DefinitionsDirectory + Model.Name + "-weights" + @"\"
+                InitialDirectory = DefinitionsDirectory + Model.Name + @"\"
             };
 
             bool stop = false;
@@ -1703,7 +1703,7 @@ namespace Convnet.PageViewModels
                 Title = "Save layer weights",
                 DefaultExt = ".bin",
                 FilterIndex = 1,
-                InitialDirectory = DefinitionsDirectory + Model.Name + "-weights" + @"\"
+                InitialDirectory = DefinitionsDirectory + Model.Name + @"\"
             };
 
             if (saveFileDialog.ShowDialog(Application.Current.MainWindow) == true)

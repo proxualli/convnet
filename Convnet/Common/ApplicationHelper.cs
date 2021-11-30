@@ -1,8 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Net.NetworkInformation;
 using System.Runtime.InteropServices;
+using System.Text.RegularExpressions;
+using System.Windows;
 using System.Windows.Threading;
 
 namespace Convnet.Common
@@ -105,5 +109,29 @@ namespace Convnet.Common
                 }
             }
         }
+
+        /*
+        public static bool IsValidFileName(string fileName)
+        {
+            if (string.IsNullOrWhiteSpace(fileName))
+                return false;
+
+            if (Path.GetInvalidFileNameChars().Any(x => fileName.Contains(x)))
+                return false;
+
+            return true;
+        }
+
+        public static bool IsValidPathName(string path)
+        {
+            if (string.IsNullOrWhiteSpace(path))
+                return false;
+
+            if (Path.GetInvalidPathChars().Any(x => path.Contains(x)))
+                return false;
+
+            return true;
+        }
+        */
     }
 }
