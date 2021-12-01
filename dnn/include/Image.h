@@ -37,7 +37,7 @@ namespace dnn
 
 	private:
 		VectorT Data;
-
+		
 	public:
 		UInt Channels;
 		UInt Depth;
