@@ -1018,7 +1018,7 @@ namespace ScriptsDialog
         public bool IterationsVisible { get { return Script != Scripts.efficientnetv2 && Script != Scripts.shufflenetv2; } }
         public bool WidthVisible { get { return Script == Scripts.mobilenetv3 || Script == Scripts.resnet || Script == Scripts.shufflenetv2; } }
         public bool GrowthRateVisible { get { return Script == Scripts.densenet; } }
-        public bool DropoutVisible { get { return Script == Scripts.densenet || Script == Scripts.resnet; } }
+        public bool DropoutVisible { get { return Script == Scripts.densenet || Script == Scripts.resnet || Script == Scripts.efficientnetv2; } }
         public bool CompressionVisible { get { return Script == Scripts.densenet; } }
         public bool BottleneckVisible { get { return Script == Scripts.densenet || Script == Scripts.resnet; } }
         public bool SqueezeExcitationVisible { get { return Script == Scripts.mobilenetv3; } }

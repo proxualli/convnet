@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Globalization;
+using System;
 
 using Float = System.Single;
 using UInt = System.UInt64;
@@ -337,7 +338,11 @@ namespace ScriptsDialog
             }
 
             if (identity)
-                blocks.Add(Add(id + 1, In("B", id + 1) + "," + inputs));
+            {
+                blocks.Add(
+                    Dropout(id + 1, In("B", id + 1)) +
+                    Add(id + 1, In("D", id + 1) + "," + inputs));
+            }
 
             return blocks;
         }
@@ -380,7 +385,11 @@ namespace ScriptsDialog
             }
 
             if (identity)
-                blocks.Add(Add(id + 2, In("B", id + 2) + "," + inputs));
+            {
+                blocks.Add(
+                    Dropout(id + 2, In("B", id + 2)) +
+                    Add(id + 2, In("D", id + 2) + "," + inputs));
+            }
 
             return blocks;
         }
@@ -565,6 +574,7 @@ namespace ScriptsDialog
                     {
                         var inputChannels = DIV8(p.EfficientNet[0].Channels);
                         var C = 1ul;
+                        float denseLimit = 1.0f / (float)Math.Sqrt((double)p.Classes);
 
                         net +=
                            Convolution(C, "Input", inputChannels, 3, 3, 2, 2, 1, 1) +
@@ -592,12 +602,12 @@ namespace ScriptsDialog
                         }
 
                         net +=
-                            Convolution(C, In("A", C - 1), 1792, 1, 1, 1, 1, 0, 0) +
+                            Convolution(C, In("A", C - 1), 1280, 1, 1, 1, 1, 0, 0) +
                             BatchNormActivation(C, In("C", C), p.Activation) +
                             GlobalAvgPooling(In("B", C)) +
-                            Dense(1, "GAP", p.Classes, true, "", "DS", "Normal(0.001)") +
+                            Dense(1, "GAP", p.Classes, true, "", "DS", "Uniform(" + to_string(denseLimit) + ")") +
                             LogSoftmax(1, In("DS", 1)) +
-                            Cost(In("LSM", 1), p.Dataset, p.Classes, "CategoricalCrossEntropy", 0.1f);
+                            Cost(In("LSM", 1), p.Dataset, p.Classes, "CategoricalCrossEntropy", 0.125f);
                     }
                     break;
 

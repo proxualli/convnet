@@ -309,7 +309,7 @@ namespace ScriptsDialog
                     removeRows += 7;
                     break;
                 case Scripts.efficientnetv2:
-                    removeRows += 10;
+                    removeRows += 9;
                     break;
                 case Scripts.mobilenetv3:
                 case Scripts.shufflenetv2:
