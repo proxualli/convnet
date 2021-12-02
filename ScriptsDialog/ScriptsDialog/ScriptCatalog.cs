@@ -572,9 +572,9 @@ namespace ScriptsDialog
 
                 case Scripts.efficientnetv2:
                     {
-                        var inputChannels = DIV8(p.EfficientNet[0].Channels);
+                        const Float width = 1.0f;
+                        var inputChannels = DIV8((UInt)((Float)p.EfficientNet[0].Channels * width));
                         var C = 1ul;
-                        float denseLimit = 1.0f / (float)Math.Sqrt((double)p.Classes);
 
                         net +=
                            Convolution(C, "Input", inputChannels, 3, 3, 2, 2, 1, 1) +
@@ -584,7 +584,7 @@ namespace ScriptsDialog
                         var input = In("B", C++);
                         foreach (var rec in p.EfficientNet)
                         {
-                            var outputChannels = DIV8(rec.Channels);
+                            var outputChannels = DIV8((UInt)((Float)rec.Channels * width));
                             for (var n = 0ul; n < rec.Iterations; n++)
                             {
                                 var stride = n == 0ul ? rec.Stride : 1ul;
@@ -605,7 +605,7 @@ namespace ScriptsDialog
                             Convolution(C, In("A", C - 1), 1280, 1, 1, 1, 1, 0, 0) +
                             BatchNormActivation(C, In("C", C), p.Activation) +
                             GlobalAvgPooling(In("B", C)) +
-                            Dense(1, "GAP", p.Classes, true, "", "DS", "Uniform(" + to_string(denseLimit) + ")") +
+                            Dense(1, "GAP", p.Classes, true, "", "DS", "Uniform(" + to_string(1.0f / (Float)Math.Sqrt((double)p.Classes)) + ")") +
                             LogSoftmax(1, In("DS", 1)) +
                             Cost(In("LSM", 1), p.Dataset, p.Classes, "CategoricalCrossEntropy", 0.125f);
                     }
