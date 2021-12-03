@@ -283,6 +283,7 @@ namespace dnn
 		const bool HasBias;
 		const bool HasWeights;
 		const bool InplaceBwd;
+		const bool InplaceFwd;
 		bool UseDefaultParameters;
 		Fillers WeightsFiller;
 		FillerModes WeightsFillerMode;
@@ -339,10 +340,11 @@ namespace dnn
 			PadW(padW),
 			Inputs(std::vector<Layer*>(inputs)),					// Inputs is switched between non-inplace (forward) and inplace (backprop) during training 
 			InputsOriginal(std::vector<Layer*>(inputs)),			// InputsOriginal = the non-inplace inputs 
-			InputsInplace(GetInplaceInputs(layerType, inputs)),		// InputsInplece = the inplace inputs
+			InputsInplace(GetInplaceInputs(layerType, inputs)),		// InputsInplace = the inplace inputs
 			InputLayer(inputs.size() > 0 ? inputs[0] : nullptr),
 			InputLayerOriginal(inputs.size() > 0 ? inputs[0] : nullptr),
 			InputLayerInplace(GetInplaceInputs(layerType, inputs).size() > 0 ? GetInplaceInputs(layerType, inputs)[0] : nullptr),
+			InplaceFwd(false),
 			InplaceBwd(IsInplaceBwd(layerType, inputs)),
 			Scaling(scaling),
 			HasBias(hasBias && biasCount > 0),
