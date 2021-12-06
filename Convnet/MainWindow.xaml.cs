@@ -494,7 +494,7 @@ namespace Convnet
                 Mouse.OverrideCursor = Cursors.Wait;
                 if (PageVM.Model.SaveWeights(StateDirectory + fileName, Settings.Default.PersistOptimizer) == 0)
                 {
-                    File.Copy(StateDirectory + fileName, path + PageVM.Model.Dataset.ToString().ToLower() + @"-" + (Settings.Default.PersistOptimizer ? PageVM.Model.Optimizer.ToString().ToLower() + @".bin" : @".bin"), true);
+                    File.Copy(StateDirectory + fileName, path + @"(" + PageVM.Model.Dataset.ToString().ToLower() + @")" + (Settings.Default.PersistOptimizer ? @"(" + PageVM.Model.Optimizer.ToString().ToLower() + @").bin" : @".bin"), true);
                     Mouse.OverrideCursor = null;
                     Xceed.Wpf.Toolkit.MessageBox.Show("Weights are saved", "Information", MessageBoxButton.OK);
                 }
@@ -551,7 +551,7 @@ namespace Convnet
                     {
                         var tpvm = PageVM.CurrentPage as TrainPageViewModel;
 
-                        saveFileDialog.FileName = PageVM.Model.Dataset.ToString().ToLower() + @"-" + (Settings.Default.PersistOptimizer ? PageVM.Model.Optimizer.ToString().ToLower() : "");
+                        saveFileDialog.FileName = @"(" + PageVM.Model.Dataset.ToString().ToLower() + @")" + (Settings.Default.PersistOptimizer ? @"(" + PageVM.Model.Optimizer.ToString().ToLower() + @")" : "");
                         saveFileDialog.Filter = "Weights|*.bin|Log|*.csv";
                         saveFileDialog.Title = "Save";
                         saveFileDialog.DefaultExt = ".bin";
