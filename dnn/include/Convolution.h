@@ -132,7 +132,7 @@ namespace dnn
 			dnnl::post_ops po;
 			dnnl::primitive_attr attr;
 			/*
-			if (Outputs.size() == 1 && Outputs[0]->InplaceFwd && Outputs[0]->LayerType == LayerTypes::Activation)
+			if (UseInplace && Outputs.size() == 1 && Outputs[0]->InplaceFwd && Outputs[0]->LayerType == LayerTypes::Activation)
 			{
 				Activation* layer = dynamic_cast<Activation*>(Outputs[0]);
 				dnnl::algorithm algorithm;
