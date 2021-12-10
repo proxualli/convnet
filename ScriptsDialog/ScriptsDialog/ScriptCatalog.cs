@@ -326,11 +326,11 @@ namespace ScriptsDialog
                     BatchNormActivation(id, In("C", id), activation) +
 
                     GlobalAvgPooling(In("B", id), group) +
-                    Convolution(1, group + "GAP", DIV8(hiddenDim / expandRatio), 1, 1, 1, 1, 0, 0, true, group) +
-                    Activation(1, group + "C1", activation.ToString(), group) +
-                    Convolution(2, group + "B1", hiddenDim, 1, 1, 1, 1, 0, 0, true, group) +
-                    Activation(2, group + "C2", "Logistic", group) +
-                    ChannelMultiply(In("B", id) + "," + group + "ACT2", group) +
+                    Convolution(1, group + "GAP", DIV8(hiddenDim / expandRatio), 1, 1, 1, 1, 0, 0, false, group) +
+                    BatchNormActivation(1, group + "C1", activation, group) +
+                    Convolution(2, group + "B1", hiddenDim, 1, 1, 1, 1, 0, 0, false, group) +
+                    BatchNormActivation(2, group + "C2", Activations.HardLogistic, group) +
+                    ChannelMultiply(In("B", id) + "," + group + "B2", group) +
 
                     Convolution(id + 1, group + "CM", DIV8(outputChannels), 1, 1, 1, 1, 0, 0) +
                     BatchNorm(id + 1, In("C", id + 1)));
@@ -371,11 +371,11 @@ namespace ScriptsDialog
                     BatchNormActivation(id + 1, In("DC", id + 1), activation) +
 
                     GlobalAvgPooling(In("B", id + 1), group) +
-                    Convolution(1, group + "GAP", DIV8(hiddenDim / expandRatio), 1, 1, 1, 1, 0, 0, true, group) +
-                    Activation(1, group + "C1", activation.ToString(), group) +
-                    Convolution(2, group + "ACT1", hiddenDim, 1, 1, 1, 1, 0, 0, true, group) +
-                    Activation(2, group + "C2", "Logistic", group) +
-                    ChannelMultiply(In("B", id + 1) + "," + group + "ACT2", group) +
+                    Convolution(1, group + "GAP", DIV8(hiddenDim / expandRatio), 1, 1, 1, 1, 0, 0, false, group) +
+                    BatchNormActivation(1, group + "C1", activation, group) +
+                    Convolution(2, group + "B1", hiddenDim, 1, 1, 1, 1, 0, 0, false, group) +
+                    BatchNormActivation(2, group + "C2", Activations.HardLogistic, group) +
+                    ChannelMultiply(In("B", id + 1) + "," + group + "B2", group) +
 
                     Convolution(id + 2, group + "CM", DIV8(outputChannels), 1, 1, 1, 1, 0, 0) +
                     BatchNorm(id + 2, In("C", id + 2)));
