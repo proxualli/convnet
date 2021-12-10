@@ -327,7 +327,7 @@ namespace ScriptsDialog
 
                     GlobalAvgPooling(In("B", id), group) +
                     Convolution(1, group + "GAP", DIV8(hiddenDim / expandRatio), 1, 1, 1, 1, 0, 0, false, group) +
-                    BatchNormActivation(1, group + "C1", activation, group) +
+                    BatchNormActivation(1, group + "C1", (activation == Activations.FRelu ? Activations.HardSwish : activation), group) +
                     Convolution(2, group + "B1", hiddenDim, 1, 1, 1, 1, 0, 0, false, group) +
                     BatchNormActivation(2, group + "C2", Activations.HardLogistic, group) +
                     ChannelMultiply(In("B", id) + "," + group + "B2", group) +
@@ -372,7 +372,7 @@ namespace ScriptsDialog
 
                     GlobalAvgPooling(In("B", id + 1), group) +
                     Convolution(1, group + "GAP", DIV8(hiddenDim / expandRatio), 1, 1, 1, 1, 0, 0, false, group) +
-                    BatchNormActivation(1, group + "C1", activation, group) +
+                    BatchNormActivation(1, group + "C1", (activation == Activations.FRelu ? Activations.HardSwish : activation), group) +
                     Convolution(2, group + "B1", hiddenDim, 1, 1, 1, 1, 0, 0, false, group) +
                     BatchNormActivation(2, group + "C2", Activations.HardLogistic, group) +
                     ChannelMultiply(In("B", id + 1) + "," + group + "B2", group) +
@@ -424,7 +424,7 @@ namespace ScriptsDialog
                 var strSE =
                     se ? GlobalAvgPooling(In("B", id + 3), group) +
                     Convolution(1, group + "GAP", DIV8(channels / 4), 1, 1, 1, 1, 0, 0, false, group) +
-                    BatchNormActivation(1, group + "C1", activation, group) +
+                    BatchNormActivation(1, group + "C1", (activation == Activations.FRelu ? Activations.HardSwish : activation), group) +
                     Convolution(2, group + "B1", channels, 1, 1, 1, 1, 0, 0, false, group) +
                     BatchNormActivation(2, group + "C2", Activations.HardLogistic, group) +
                     ChannelMultiply(In("B", id + 3) + "," + group + "B2", group) +
