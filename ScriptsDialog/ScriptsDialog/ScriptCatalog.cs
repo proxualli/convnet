@@ -285,6 +285,13 @@ namespace ScriptsDialog
                "Inputs=" + inputs + nwl + nwl;
         }
 
+        public static string LogSoftmax(string inputs, string group = "", string prefix = "LSM")
+        {
+            return "[" + group + prefix + "]" + nwl +
+               "Type=LogSoftmax" + nwl +
+               "Inputs=" + inputs + nwl + nwl;
+        }
+
         public static string Activation(UInt id, string inputs, string activation = "Relu", string group = "", string prefix = "ACT")
         {
             return "[" + group + prefix + to_string(id) + "]" + nwl +
@@ -416,11 +423,11 @@ namespace ScriptsDialog
                 var group = In("SE", id + 3);
                 var strSE =
                     se ? GlobalAvgPooling(In("B", id + 3), group) +
-                    Convolution(1, group + "GAP", DIV8(channels / 4), 1, 1, 1, 1, 0, 0, true, group) +
-                    Activation(1, group + "C1", activation.ToString(), group) +
-                    Convolution(2, group + "ACT1", channels, 1, 1, 1, 1, 0, 0, true, group) +
-                    Activation(2, group + "C2", "Logistic", group) +
-                    ChannelMultiply(In("B", id + 3) + "," + group + "ACT2", group) +
+                    Convolution(1, group + "GAP", DIV8(channels / 4), 1, 1, 1, 1, 0, 0, false, group) +
+                    BatchNormActivation(1, group + "C1", activation, group) +
+                    Convolution(2, group + "B1", channels, 1, 1, 1, 1, 0, 0, false, group) +
+                    BatchNormActivation(2, group + "C2", Activations.HardLogistic, group) +
+                    ChannelMultiply(In("B", id + 3) + "," + group + "B2", group) +
                     Concat(n + 1, In("LCS", n) + "," + group + "CM") :
                     Concat(n + 1, In("LCS", n) + "," + In("B", id + 3));
 
@@ -565,8 +572,8 @@ namespace ScriptsDialog
                             Convolution(C, In("CC", CC), p.Classes, 1, 1, 1, 1, 0, 0) +
                             BatchNorm(C + 1, In("C", C)) +
                             GlobalAvgPooling(In("B", C + 1)) +
-                            LogSoftmax(1, "GAP") +
-                            Cost(In("LSM", 1), p.Dataset, p.Classes, "CategoricalCrossEntropy", 0.125f);
+                            LogSoftmax("GAP") +
+                            Cost("LSM", p.Dataset, p.Classes, "CategoricalCrossEntropy", 0.125f);
                     }
                     break;
 
@@ -606,8 +613,8 @@ namespace ScriptsDialog
                             BatchNormActivation(C, In("C", C), p.Activation) +
                             GlobalAvgPooling(In("B", C)) +
                             Dense(1, "GAP", p.Classes, true, "", "DS", "Uniform(" + to_string(1.0f / (Float)Math.Sqrt((double)p.Classes)) + ")") +
-                            LogSoftmax(1, In("DS", 1)) +
-                            Cost(In("LSM", 1), p.Dataset, p.Classes, "CategoricalCrossEntropy", 0.125f);
+                            LogSoftmax(In("DS", 1)) +
+                            Cost("LSM", p.Dataset, p.Classes, "CategoricalCrossEntropy", 0.125f);
                     }
                     break;
 
@@ -699,8 +706,8 @@ namespace ScriptsDialog
                             Convolution(C, In("B", C), p.Classes, 1, 1, 1, 1, 0, 0) +
                             BatchNorm(C + 1, In("C", C)) +
                             GlobalAvgPooling(In("B", C + 1)) +
-                            LogSoftmax(1, "GAP") +
-                            Cost(In("LSM", 1), p.Dataset, p.Classes, "CategoricalCrossEntropy", 0.125f);
+                            LogSoftmax("GAP") +
+                            Cost("LSM", p.Dataset, p.Classes, "CategoricalCrossEntropy", 0.125f);
                     }
                     break;
 
@@ -816,8 +823,8 @@ namespace ScriptsDialog
                             Convolution(C, In("B", C), p.Classes, 1, 1, 1, 1, 0, 0) +
                             BatchNorm(C + 1, In("C", C)) +
                             GlobalAvgPooling(In("B", C + 1)) +
-                            LogSoftmax(1, "GAP") +
-                            Cost(In("LSM", 1), p.Dataset, p.Classes, "CategoricalCrossEntropy", 0.125f);
+                            LogSoftmax("GAP") +
+                            Cost("LSM", p.Dataset, p.Classes, "CategoricalCrossEntropy", 0.125f);
                     }
                     break;
 
@@ -826,7 +833,7 @@ namespace ScriptsDialog
                         var channels = DIV8(p.Width * 16);
 
                         net +=
-                            Convolution(1, "Input", channels, 3, 3, 1, 1, 1, 1) +
+                            Convolution(1, "Input", channels, 3, 3, 2, 2, 1, 1) +
                             BatchNormActivation(1, "C1", p.Activation) +
                             Convolution(2, "B1", channels, 1, 1, 1, 1, 0, 0) +
                             BatchNormActivation(2, "C2", p.Activation) +
@@ -860,8 +867,8 @@ namespace ScriptsDialog
                             Convolution(C, In("CC", A), p.Classes, 1, 1, 1, 1, 0, 0) +
                             BatchNorm(C + 1, In("C", C)) +
                             GlobalAvgPooling(In("B", C + 1)) +
-                            LogSoftmax(1, "GAP") +
-                            Cost(In("LSM", 1), p.Dataset, p.Classes, "CategoricalCrossEntropy", 0.125f);
+                            LogSoftmax("GAP") +
+                            Cost("LSM", p.Dataset, p.Classes, "CategoricalCrossEntropy", 0.125f);
                     }
                     break;
             }
