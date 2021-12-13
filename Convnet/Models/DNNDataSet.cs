@@ -332,6 +332,10 @@ public partial class DNNDataSet : global::System.Data.DataSet
 
         private global::System.Data.DataColumn columnBatchSize;
 
+        private global::System.Data.DataColumn columnWidth;
+
+        private global::System.Data.DataColumn columnHeight;
+
         private global::System.Data.DataColumn columnCycles;
 
         private global::System.Data.DataColumn columnEpochs;
@@ -462,6 +466,26 @@ public partial class DNNDataSet : global::System.Data.DataSet
             get
             {
                 return this.columnBatchSize;
+            }
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+        public global::System.Data.DataColumn HeightColumn
+        {
+            get
+            {
+                return this.columnHeight;
+            }
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+        public global::System.Data.DataColumn WidthColumn
+        {
+            get
+            {
+                return this.columnWidth;
             }
         }
 
@@ -733,6 +757,8 @@ public partial class DNNDataSet : global::System.Data.DataSet
                     double Eps,
                     double MaximumRate,
                     int BatchSize,
+                    int Height,
+                    int Width,
                     int Cycles,
                     int Epochs,
                     int EpochMultiplier,
@@ -763,6 +789,8 @@ public partial class DNNDataSet : global::System.Data.DataSet
                     Eps,
                     MaximumRate,
                     BatchSize,
+                    Height,
+                    Width,
                     Cycles,
                     Epochs,
                     EpochMultiplier,
@@ -822,6 +850,8 @@ public partial class DNNDataSet : global::System.Data.DataSet
             this.columnEps = base.Columns["Eps"];
             this.columnMaximumRate = base.Columns["MaximumRate"];
             this.columnBatchSize = base.Columns["BatchSize"];
+            this.columnHeight = base.Columns["Height"];
+            this.columnWidth = base.Columns["Width"];
             this.columnCycles = base.Columns["Cycles"];
             this.columnEpochs = base.Columns["Epochs"];
             this.columnEpochMultiplier = base.Columns["EpochMultiplier"];
@@ -860,6 +890,10 @@ public partial class DNNDataSet : global::System.Data.DataSet
             base.Columns.Add(this.columnMaximumRate);
             this.columnBatchSize = new global::System.Data.DataColumn("BatchSize", typeof(int), null, global::System.Data.MappingType.Element);
             base.Columns.Add(this.columnBatchSize);
+            this.columnHeight = new global::System.Data.DataColumn("Height", typeof(int), null, global::System.Data.MappingType.Element);
+            base.Columns.Add(this.columnHeight);
+            this.columnWidth = new global::System.Data.DataColumn("Width", typeof(int), null, global::System.Data.MappingType.Element);
+            base.Columns.Add(this.columnWidth);
             this.columnCycles = new global::System.Data.DataColumn("Cycles", typeof(int), null, global::System.Data.MappingType.Element);
             base.Columns.Add(this.columnCycles);
             this.columnEpochs = new global::System.Data.DataColumn("Epochs", typeof(int), null, global::System.Data.MappingType.Element);
@@ -913,6 +947,10 @@ public partial class DNNDataSet : global::System.Data.DataSet
             this.columnEps.DefaultValue = ((double)(0.00001));
             this.columnBatchSize.AllowDBNull = false;
             this.columnBatchSize.DefaultValue = ((int)(8));
+            this.columnHeight.AllowDBNull = false;
+            this.columnHeight.DefaultValue = ((int)(32));
+            this.columnWidth.AllowDBNull = false;
+            this.columnWidth.DefaultValue = ((int)(32));
             this.columnMaximumRate.AllowDBNull = false;
             this.columnBatchSize.AllowDBNull = false;
             this.columnBatchSize.DefaultValue = ((int)(8));
@@ -1183,6 +1221,34 @@ public partial class DNNDataSet : global::System.Data.DataSet
             set
             {
                 this[this.tableTrainingRates.BatchSizeColumn] = value;
+            }
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+        public int Height
+        {
+            get
+            {
+                return ((int)(this[this.tableTrainingRates.HeightColumn]));
+            }
+            set
+            {
+                this[this.tableTrainingRates.HeightColumn] = value;
+            }
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+        public int Width
+        {
+            get
+            {
+                return ((int)(this[this.tableTrainingRates.WidthColumn]));
+            }
+            set
+            {
+                this[this.tableTrainingRates.WidthColumn] = value;
             }
         }
 

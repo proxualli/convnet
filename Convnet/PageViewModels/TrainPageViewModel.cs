@@ -167,7 +167,7 @@ namespace Convnet.PageViewModels
             Application.Current.Dispatcher.Invoke(() => RefreshTrainingPlot(), DispatcherPriority.Render);
         }
 
-        private void NewEpoch(UInt Cycle, UInt Epoch, UInt TotalEpochs, UInt Optimizer, Float Beta2, Float Eps, bool HorizontalFlip, bool VerticalFlip, Float Dropout, Float Cutout, bool CutMix, Float AutoAugment, Float ColorCast, UInt ColorAngle, Float Distortion, UInt Interpolation, Float Scaling, Float Rotation, Float Rate, UInt64 BatchSize, Float Momentum, Float L2Penalty, Float AvgTrainLoss, Float TrainErrorPercentage, Float TrainAccuracy, UInt TrainErrors, Float AvgTestLoss, Float TestErrorPercentage, Float TestAccuracy, UInt TestErrors)
+        private void NewEpoch(UInt Cycle, UInt Epoch, UInt TotalEpochs, UInt Optimizer, Float Beta2, Float Eps, bool HorizontalFlip, bool VerticalFlip, Float Dropout, Float Cutout, bool CutMix, Float AutoAugment, Float ColorCast, UInt ColorAngle, Float Distortion, UInt Interpolation, Float Scaling, Float Rotation, Float Rate, UInt BatchSize, UInt Height, UInt Width, Float Momentum, Float L2Penalty, Float AvgTrainLoss, Float TrainErrorPercentage, Float TrainAccuracy, UInt TrainErrors, Float AvgTestLoss, Float TestErrorPercentage, Float TestAccuracy, UInt TestErrors)
         {
             Application.Current.Dispatcher.Invoke(() =>
             {
@@ -176,7 +176,7 @@ namespace Convnet.PageViewModels
                 for (uint c = 0; c < Model.CostLayersCount; c++)
                 {
                     Model.UpdateCostInfo(c);
-                    TrainingLog.Add(new DNNTrainingResult(Cycle, Epoch, c, Model.CostLayers[c].GroupIndex, Model.CostLayers[c].Name, (DNNOptimizers)Optimizer, Momentum, Beta2, L2Penalty, Eps, Rate, BatchSize, Dropout, Cutout, CutMix, AutoAugment, HorizontalFlip, VerticalFlip, ColorCast, ColorAngle, Distortion, (DNNInterpolations)Interpolation, Scaling, Rotation, Model.CostLayers[c].AvgTrainLoss, Model.CostLayers[c].TrainErrors, Model.CostLayers[c].TrainErrorPercentage, Model.CostLayers[c].TrainAccuracy, Model.CostLayers[c].AvgTestLoss, Model.CostLayers[c].TestErrors, Model.CostLayers[c].TestErrorPercentage, Model.CostLayers[c].TestAccuracy, span.Ticks));
+                    TrainingLog.Add(new DNNTrainingResult(Cycle, Epoch, c, Model.CostLayers[c].GroupIndex, Model.CostLayers[c].Name, (DNNOptimizers)Optimizer, Momentum, Beta2, L2Penalty, Eps, Rate, BatchSize, Height, Width, Dropout, Cutout, CutMix, AutoAugment, HorizontalFlip, VerticalFlip, ColorCast, ColorAngle, Distortion, (DNNInterpolations)Interpolation, Scaling, Rotation, Model.CostLayers[c].AvgTrainLoss, Model.CostLayers[c].TrainErrors, Model.CostLayers[c].TrainErrorPercentage, Model.CostLayers[c].TrainAccuracy, Model.CostLayers[c].AvgTestLoss, Model.CostLayers[c].TestErrors, Model.CostLayers[c].TestErrorPercentage, Model.CostLayers[c].TestAccuracy, span.Ticks));
                 }
 
                 SelectedIndex = TrainingLog.Count - 1;
@@ -1181,7 +1181,7 @@ namespace Convnet.PageViewModels
             get
             {
                 if (Settings.Default.TrainRate == null)
-                    Settings.Default.TrainRate = new DNNTrainingRate(DNNOptimizers.NAG, 0.9f, 0.999f, 0.0005f, 1E-08f, 128, 1, 200, 1, 0.05f, 0.0001f, 0.1f, 0.003f, 1, 1, false, false, 0, 0, false, 0, 0, 0, 0, DNNInterpolations.Cubic, 10, 12);
+                    Settings.Default.TrainRate = new DNNTrainingRate(DNNOptimizers.NAG, 0.9f, 0.999f, 0.0005f, 1E-08f, 128, 32, 32, 1, 200, 1, 0.05f, 0.0001f, 0.1f, 0.003f, 1, 1, false, false, 0, 0, false, 0, 0, 0, 0, DNNInterpolations.Cubic, 10, 12);
 
                 return Settings.Default.TrainRate;
             }
@@ -1350,6 +1350,8 @@ namespace Convnet.PageViewModels
                                 (double)rate.Eps,
                                 (double)rate.MaximumRate,
                                 (int)rate.BatchSize,
+                                (int)rate.Height,
+                                (int)rate.Width,
                                 (int)rate.Cycles,
                                 (int)rate.Epochs,
                                 (int)rate.EpochMultiplier,
@@ -1758,14 +1760,14 @@ namespace Convnet.PageViewModels
                     ShowWeights = Model.Layers[index].HasWeights || Settings.Default.Timings;
                     ShowWeightsSnapshot = (Model.Layers[index].IsNormalizationLayer && Model.Layers[index].Scaling) || Model.Layers[index].LayerType == DNNLayerTypes.PartialDepthwiseConvolution || Model.Layers[index].LayerType == DNNLayerTypes.DepthwiseConvolution || Model.Layers[index].LayerType == DNNLayerTypes.ConvolutionTranspose || Model.Layers[index].LayerType == DNNLayerTypes.Convolution || Model.Layers[index].LayerType == DNNLayerTypes.Dense || (Model.Layers[index].LayerType == DNNLayerTypes.Activation && Model.Layers[index].HasWeights);
 
-                    Model.UpdateLayerInfo((ulong)index, ShowWeightsSnapshot);
-
                     if (ShowSample)
                     {
                         Model.UpdateLayerInfo(0ul, true);
                         InputSnapshot = Model.InputSnapshot;
                         Label = Model.Label;
                     }
+                    else
+                        Model.UpdateLayerInfo((ulong)index, ShowWeightsSnapshot);
 
                     CommandToolBar[16].Visibility = !Settings.Default.DisableLocking ? Visibility.Visible : Visibility.Collapsed;
                     CommandToolBar[17].Visibility = !Settings.Default.DisableLocking ? Visibility.Visible : Visibility.Collapsed;

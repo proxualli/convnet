@@ -156,7 +156,10 @@
         <TextBlock Foreground="White" Grid.Column="4" Grid.Row="8" Height="Auto" HorizontalAlignment="Left" Margin="2" Name="textBlockInterpolation" Text="Interpolation:" VerticalAlignment="Center" Width="Auto" FontSize="14"/>
         <TextBlock Foreground="White" Grid.Column="4" Grid.Row="9" Height="Auto" HorizontalAlignment="Stretch" Margin="2" Name="textBlockScaling" Text="Scaling:" VerticalAlignment="Center" Width="Auto" FontSize="14"/>
         <TextBlock Foreground="White" Grid.Column="4" Grid.Row="10" Height="Auto" HorizontalAlignment="Stretch" Margin="2" Name="textBlockRotation" Text="Rotation:" VerticalAlignment="Center" Width="Auto" FontSize="14"/>
-
+        <TextBlock Foreground="White" Grid.Column="4" Grid.ColumnSpan="2" Grid.Row="11" Height="Auto" Margin="2,0,2,0" x:Name="textResolution" Text="Resolution" HorizontalAlignment="Center"  VerticalAlignment="Center" Width="Auto" FontSize="16"/>
+        <TextBlock Foreground="White" Grid.Column="4" Grid.Row="12" Height="Auto" Margin="2,0,2,0" x:Name="textBlockHeight" Text="Height:" VerticalAlignment="Center" Width="Auto" FontSize="14"/>
+        <TextBlock Foreground="White" Grid.Column="4" Grid.Row="13" Height="Auto" Margin="2,0,2,0" x:Name="textBlockWidth" Text="Width:" VerticalAlignment="Center" Width="Auto" FontSize="14"/>
+        
         <ComboBox Name="comboBoOptimizer" Grid.Column="2" Grid.Row="0" Margin="2,0,2,2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="Auto" FontSize="14" TabIndex="0" ItemsSource="{x:Static pvm:TrainPageViewModel.GetOptimizers}" SelectedItem="{Binding Path=Optimizer, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SelectionChanged="comboBoOptimizer_SelectionChanged" Height="27"/>
 
         <xctk:AutoSelectTextBox ContextMenu="{StaticResource MyContextMenu}" Grid.Column="2" Grid.Row="1" Grid.RowSpan="1" HorizontalAlignment="Stretch" x:Name="textBoxMomentum" VerticalAlignment="Stretch" Margin="2" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" TabIndex="1" Validation.ErrorTemplate="{StaticResource validationTemplate}" Style="{StaticResource textBoxInError}" MaxLines="1" AutoWordSelection="True" AllowDrop="False" BorderThickness="1" SnapsToDevicePixels="True" AutoMoveFocus="True" AutoSelectBehavior="OnFocus" FontSize="14">
@@ -394,10 +397,30 @@
             </TextBox.Text>
         </xctk:AutoSelectTextBox>
 
-        <CheckBox x:Name="CheckBoxSGDR" Content="SGDR" IsThreeState="False" HorizontalAlignment="Center" Grid.Column="4" Grid.ColumnSpan="2" Grid.Row="15" TabIndex="33" VerticalAlignment="Center" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" FontSize="14"  ToolTip="Stochastic Gradient Descent with Warm Restarts" Checked="CheckBoxSGDR_Checked" Unchecked="CheckBoxSGDR_Unchecked" Foreground="{DynamicResource NormalBrush}"/>
+        <xctk:AutoSelectTextBox ContextMenu="{StaticResource MyContextMenu}" Grid.Column="5" Grid.Row="12" Grid.RowSpan="1" HorizontalAlignment="Stretch" x:Name="textBoxHeight" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" Margin="2" MaxLines="1" TabIndex="33" Validation.ErrorTemplate="{StaticResource validationTemplate}" Style="{StaticResource textBoxInError}" AutoWordSelection="True" AllowDrop="False" BorderThickness="1" SnapsToDevicePixels="True" AutoMoveFocus="True" AutoSelectBehavior="OnFocus" FontSize="14">
+            <TextBox.Text>
+                <Binding Path="Height" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                    <Binding.ValidationRules>
+                        <c:UIntRangeRule Min="4" Max="10000"/>
+                    </Binding.ValidationRules>
+                </Binding>
+            </TextBox.Text>
+        </xctk:AutoSelectTextBox>
+
+        <xctk:AutoSelectTextBox ContextMenu="{StaticResource MyContextMenu}" Grid.Column="5" Grid.Row="13" Grid.RowSpan="1" HorizontalAlignment="Stretch" x:Name="textBoxWidth" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" Margin="2" MaxLines="1" TabIndex="34" Validation.ErrorTemplate="{StaticResource validationTemplate}" Style="{StaticResource textBoxInError}" AutoWordSelection="True" AllowDrop="False" BorderThickness="1" SnapsToDevicePixels="True" AutoMoveFocus="True" AutoSelectBehavior="OnFocus" FontSize="14">
+            <TextBox.Text>
+                <Binding Path="Width" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                    <Binding.ValidationRules>
+                        <c:UIntRangeRule Min="4" Max="10000"/>
+                    </Binding.ValidationRules>
+                </Binding>
+            </TextBox.Text>
+        </xctk:AutoSelectTextBox>
+        
+        <CheckBox x:Name="CheckBoxSGDR" Content="SGDR" IsThreeState="False" HorizontalAlignment="Center" Grid.Column="4" Grid.ColumnSpan="2" Grid.Row="15" TabIndex="35" VerticalAlignment="Center" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" FontSize="14"  ToolTip="Stochastic Gradient Descent with Warm Restarts" Checked="CheckBoxSGDR_Checked" Unchecked="CheckBoxSGDR_Unchecked" Foreground="{DynamicResource NormalBrush}"/>
         <Button x:Name="ButtonSGDRHelp" Content=" ? " HorizontalAlignment="Center" Margin="80,0,0,0" Grid.Column="4" Grid.ColumnSpan="2" Grid.Row="15" VerticalAlignment="Center" FontSize="12" Cursor="Help" ClickMode="Release" Click="ButtonSGDRHelp_Click" />
 
-        <Button Content="Train" Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="18" Margin="2" Name="buttonTrain" Click="ButtonTrain_Click" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TabIndex="34" ClickMode="Release"/>
-        <Button Content="Cancel" Grid.Column="4" Grid.ColumnSpan="2" Grid.Row="18" Margin="2" Name="buttonCancel" Click="ButtonCancel_Click" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TabIndex="35" ClickMode="Release" IsCancel="True" IsDefault="True" />
-    </Grid>
+        <Button Content="Train" Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="18" Margin="2" Name="buttonTrain" Click="ButtonTrain_Click" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TabIndex="36" ClickMode="Release"/>
+        <Button Content="Cancel" Grid.Column="4" Grid.ColumnSpan="2" Grid.Row="18" Margin="2" Name="buttonCancel" Click="ButtonCancel_Click" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TabIndex="37" ClickMode="Release" IsCancel="True" IsDefault="True" />
+     </Grid>
 </Window>

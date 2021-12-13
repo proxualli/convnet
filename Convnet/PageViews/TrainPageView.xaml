@@ -86,6 +86,8 @@
                     <ColumnDefinition Width="{Binding ActualWidth, ElementName=l2Penalty}" />
                     <ColumnDefinition Width="{Binding ActualWidth, ElementName=eps}" />
                     <ColumnDefinition Width="{Binding ActualWidth, ElementName=batchSize}" />
+                    <ColumnDefinition Width="{Binding ActualWidth, ElementName=height}" />
+                    <ColumnDefinition Width="{Binding ActualWidth, ElementName=width}" />
                     <ColumnDefinition Width="{Binding ActualWidth, ElementName=rate}" />
                     <ColumnDefinition Width="{Binding ActualWidth, ElementName=dropout}" />
                     <ColumnDefinition Width="{Binding ActualWidth, ElementName=cutout}" />
@@ -230,6 +232,22 @@
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding BatchSize, StringFormat=0.##}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextAlignment="Center" FontFamily="Consolas" FontSize="14"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+
+                    <GridViewColumn x:Name="height" Header="Height" Width="70">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Height, StringFormat=0.##}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextAlignment="Center" FontFamily="Consolas" FontSize="14"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+
+                    <GridViewColumn x:Name="width" Header="Width" Width="70">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Width, StringFormat=0.##}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextAlignment="Center" FontFamily="Consolas" FontSize="14"/>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>

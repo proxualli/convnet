@@ -37,7 +37,7 @@ namespace Convnet.PageViewModels
             get
             {
                 if (Settings.Default.TestRate == null)
-                    Settings.Default.TestRate = new DNNTrainingRate(DNNOptimizers.NAG, 0.9f, 0.0005f, 0.999f, 0.000001f, 128, 1, 200, 1, 0.05f, 0.0001f, 0.1f, 0.003f, 1, 1, false, false, 0, 0, false, 0, 0, 0, 0, DNNInterpolations.Cubic, 10, 12);
+                    Settings.Default.TestRate = new DNNTrainingRate(DNNOptimizers.NAG, 0.9f, 0.0005f, 0.999f, 0.000001f, 128, 32, 32, 1, 200, 1, 0.05f, 0.0001f, 0.1f, 0.003f, 1, 1, false, false, 0, 0, false, 0, 0, 0, 0, DNNInterpolations.Cubic, 10, 12);
                
                 return Settings.Default.TestRate;
             }
@@ -405,7 +405,7 @@ namespace Convnet.PageViewModels
                         Settings.Default.Save();
 
                         flag = 0;
-                        Model.AddLearningRate(true, 1, Model.TrainingSamples, new DNNTrainingRate(dialog.Rate.Optimizer, dialog.Rate.Momentum, dialog.Rate.L2Penalty, dialog.Rate.Beta2, dialog.Rate.Eps, dialog.Rate.BatchSize, 1, 1, dialog.Rate.EpochMultiplier, dialog.Rate.MaximumRate, dialog.Rate.MinimumRate, dialog.Rate.FinalRate, dialog.Rate.Gamma, dialog.Rate.DecayAfterEpochs, dialog.Rate.DecayFactor, dialog.Rate.HorizontalFlip, dialog.Rate.VerticalFlip, dialog.Rate.Dropout, dialog.Rate.Cutout, dialog.Rate.CutMix, dialog.Rate.AutoAugment, dialog.Rate.ColorCast, dialog.Rate.ColorAngle, dialog.Rate.Distortion, dialog.Rate.Interpolation, dialog.Rate.Scaling, dialog.Rate.Rotation));
+                        Model.AddLearningRate(true, 1, Model.TrainingSamples, new DNNTrainingRate(dialog.Rate.Optimizer, dialog.Rate.Momentum, dialog.Rate.L2Penalty, dialog.Rate.Beta2, dialog.Rate.Eps, dialog.Rate.BatchSize, dialog.Rate.Height,dialog.Rate.Width, 1, 1, dialog.Rate.EpochMultiplier, dialog.Rate.MaximumRate, dialog.Rate.MinimumRate, dialog.Rate.FinalRate, dialog.Rate.Gamma, dialog.Rate.DecayAfterEpochs, dialog.Rate.DecayFactor, dialog.Rate.HorizontalFlip, dialog.Rate.VerticalFlip, dialog.Rate.Dropout, dialog.Rate.Cutout, dialog.Rate.CutMix, dialog.Rate.AutoAugment, dialog.Rate.ColorCast, dialog.Rate.ColorAngle, dialog.Rate.Distortion, dialog.Rate.Interpolation, dialog.Rate.Scaling, dialog.Rate.Rotation));
                         Model.SetCostIndex((uint)costLayersComboBox.SelectedIndex);
                         Model.Start(false);
                         RefreshTimer = new Timer(1000.0);

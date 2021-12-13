@@ -341,6 +341,30 @@ namespace dnncore
 				OnPropertyChanged("BatchSize");
 			}
 		}
+		property UInt Height
+		{
+			UInt get() { return height; }
+			void set(UInt value)
+			{
+				if (value == height && value == 0)
+					return;
+
+				height = value;
+				OnPropertyChanged("Height");
+			}
+		}
+		property UInt Width
+		{
+			UInt get() { return width; }
+			void set(UInt value)
+			{
+				if (value == width && value == 0)
+					return;
+
+				width = value;
+				OnPropertyChanged("Width");
+			}
+		}
 		property UInt Cycles
 		{
 			UInt get() { return cycles; }
@@ -602,6 +626,8 @@ namespace dnncore
 			l2Penalty = 0.0005f;
 			eps = 1E-08f;
 			batchSize = 128;
+			height = 32;
+			width = 32;
 			cycles = 1;
 			epochs = 200;
 			epochMultiplier = 1;
@@ -625,7 +651,7 @@ namespace dnncore
 			rotation = 12.0f;
 		}
 
-		DNNTrainingRate(DNNOptimizers optimizer, Float momentum, Float beta2, Float l2penalty, Float eps, UInt batchSize, UInt cycles, UInt epochs, UInt epochMultiplier, Float maximumRate, Float minimumRate, Float finalRate, Float gamma, UInt decayAfterEpochs, Float decayFactor, bool horizontalFlip, bool verticalFlip, Float dropout, Float cutout, bool cutMix, Float autoAugment, Float colorCast, UInt colorAngle, Float distortion, DNNInterpolations interpolation, Float scaling, Float rotation)
+		DNNTrainingRate(DNNOptimizers optimizer, Float momentum, Float beta2, Float l2penalty, Float eps, UInt batchSize, UInt height, UInt width, UInt cycles, UInt epochs, UInt epochMultiplier, Float maximumRate, Float minimumRate, Float finalRate, Float gamma, UInt decayAfterEpochs, Float decayFactor, bool horizontalFlip, bool verticalFlip, Float dropout, Float cutout, bool cutMix, Float autoAugment, Float colorCast, UInt colorAngle, Float distortion, DNNInterpolations interpolation, Float scaling, Float rotation)
 		{
 			Optimizer = optimizer;
 			Momentum = momentum;
@@ -633,6 +659,8 @@ namespace dnncore
 			L2Penalty = l2penalty;
 			Eps = eps;
 			BatchSize = batchSize;
+			Height = height;
+			Width = width;
 			Cycles = cycles;
 			Epochs = epochs;
 			EpochMultiplier = epochMultiplier;
@@ -668,6 +696,8 @@ namespace dnncore
 			Float l2Penalty = Float(0.0005);
 			Float eps = Float(1E-08);
 			UInt batchSize = 128;
+			UInt height = 32;
+			UInt width = 32;
 			UInt cycles = 1;
 			UInt epochs = 200;
 			UInt epochMultiplier = 1;
@@ -707,6 +737,8 @@ namespace dnncore
 		property Float Eps;
 		property Float Rate;
 		property UInt BatchSize;
+		property UInt Height;
+		property UInt Width;
 		property Float Dropout;
 		property Float Cutout;
 		property bool CutMix;
@@ -734,7 +766,7 @@ namespace dnncore
 		{
 		}
 
-		DNNTrainingResult::DNNTrainingResult(UInt cycle, UInt epoch, UInt groupIndex, UInt costIndex, String^ costName, DNNOptimizers optimizer, Float momentum, Float beta2, Float l2Penalty, Float eps, Float rate, UInt batchSize, Float dropout, Float cutout, bool cutMix, Float autoAugment, bool horizontalFlip, bool verticalFlip, Float colorCast, UInt colorAngle, Float distortion, DNNInterpolations interpolation, Float scaling, Float rotation, Float avgTrainLoss, UInt trainErrors, Float trainErrorPercentage, Float trainAccuracy, Float avgTestLoss, UInt testErrors, Float testErrorPercentage, Float testAccuracy, long long elapsedTicks)
+		DNNTrainingResult::DNNTrainingResult(UInt cycle, UInt epoch, UInt groupIndex, UInt costIndex, String^ costName, DNNOptimizers optimizer, Float momentum, Float beta2, Float l2Penalty, Float eps, Float rate, UInt batchSize, UInt height, UInt width, Float dropout, Float cutout, bool cutMix, Float autoAugment, bool horizontalFlip, bool verticalFlip, Float colorCast, UInt colorAngle, Float distortion, DNNInterpolations interpolation, Float scaling, Float rotation, Float avgTrainLoss, UInt trainErrors, Float trainErrorPercentage, Float trainAccuracy, Float avgTestLoss, UInt testErrors, Float testErrorPercentage, Float testAccuracy, long long elapsedTicks)
 		{
 			Cycle = cycle;
 			Epoch = epoch;
@@ -748,6 +780,8 @@ namespace dnncore
 			Eps = eps;
 			Rate = rate;
 			BatchSize = batchSize;
+			Height = height;
+			Width = width;
 			Dropout = dropout;
 			Cutout = cutout;
 			CutMix = cutMix;
@@ -911,7 +945,7 @@ namespace dnncore
 	public:
 		delegate void TrainProgressEventDelegate(DNNOptimizers, UInt, UInt, UInt, UInt, UInt, bool, bool, Float, Float, bool, Float, Float, UInt, Float, DNNInterpolations, Float, Float, UInt, Float, Float, Float, Float, Float, Float, Float, UInt, Float, Float, Float, UInt, DNNStates, DNNTaskStates);
 		delegate void TestProgressEventDelegate(UInt, UInt, Float, Float, Float, UInt, DNNStates, DNNTaskStates);
-		delegate void NewEpochEventDelegate(UInt, UInt, UInt, UInt, Float, Float, bool, bool, Float, Float, bool, Float, Float, UInt, Float, UInt, Float, Float, Float, UInt, Float, Float, Float, Float, Float, UInt, Float, Float, Float, UInt);
+		delegate void NewEpochEventDelegate(UInt, UInt, UInt, UInt, Float, Float, bool, bool, Float, Float, bool, Float, Float, UInt, Float, UInt, Float, Float, Float, UInt, UInt, UInt, Float, Float, Float, Float, Float, UInt, Float, Float, Float, UInt);
 
 		property TrainProgressEventDelegate^ TrainProgress;
 		property TestProgressEventDelegate^ TestProgress;
@@ -948,6 +982,8 @@ namespace dnncore
 		property UInt GroupIndex;
 		property UInt LabelIndex;
 		property UInt BatchSize;
+		property UInt Height;
+		property UInt Width;
 		property UInt LayerCount;
 		property UInt Multiplier;
 		property UInt CostLayersCount;
@@ -1011,7 +1047,8 @@ namespace dnncore
 		void Pause();
 		void Resume();
 		void UpdateLayerStatistics(LayerInformation^ info, UInt layerIndex, bool updateUI);
-		LayerInformation^ GetLayerInfo(UInt layerIndex, bool updateUI);
+		LayerInformation^ GetLayerInfo(UInt layerIndex);
+		void GetLayerInfoUpdate(UInt layerIndex, LayerInformation^ info);
 		void UpdateLayerInfo(UInt layerIndex, bool updateUI);
 		void SetCostIndex(UInt costIndex);
 		void SetOptimizer(DNNOptimizers optimizer);

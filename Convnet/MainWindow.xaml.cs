@@ -580,6 +580,8 @@ namespace Convnet
                                             "Eps" + delim +
                                             "Rate" + delim +
                                             "BatchSize" + delim +
+                                            "Height" + delim +
+                                            "Width" + delim +
                                             "Dropout" + delim +
                                             "Cutout" + delim +
                                             "CutMix" + delim +
@@ -617,6 +619,8 @@ namespace Convnet
                                             row.Eps.ToString() + delim +
                                             row.Rate.ToString() + delim +
                                             row.BatchSize.ToString() + delim +
+                                            row.Height.ToString() + delim +
+                                            row.Width.ToString() + delim +
                                             row.Dropout.ToString() + delim +
                                             row.Cutout.ToString() + delim +
                                             row.CutMix.ToString() + delim +
