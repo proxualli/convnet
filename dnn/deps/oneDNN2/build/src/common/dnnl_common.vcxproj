@@ -1,0 +1,294 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
+  </PropertyGroup>
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{D19C60ED-80B0-3A0E-9DE4-80431A73A7B0}</ProjectGuid>
+    <WindowsTargetPlatformVersion>10.0.22000.0</WindowsTargetPlatformVersion>
+    <Keyword>Win32Proj</Keyword>
+    <Platform>x64</Platform>
+    <ProjectName>dnnl_common</ProjectName>
+    <VCProjectUpgraderObjectName>NoUpgrade</VCProjectUpgraderObjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">dnnl_common.dir\Debug\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">dnnl_common.dir\Debug\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">dnnl_common</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.lib</TargetExt>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">dnnl_common.dir\Release\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">dnnl_common.dir\Release\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">dnnl_common</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.lib</TargetExt>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\include;C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\include;C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /bigobj</AdditionalOptions>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DisableSpecificWarnings>4800;4068;4305;4551;4244</DisableSpecificWarnings>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <OpenMPSupport>true</OpenMPSupport>
+      <Optimization>Disabled</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <UseFullPaths>false</UseFullPaths>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;DNNL_DLL;DNNL_X64=1;__STDC_LIMIT_MACROS;__STDC_CONSTANT_MACROS;DNNL_DLL_EXPORTS;DNNL_ENABLE_MAX_CPU_ISA;DNNL_ENABLE_CPU_ISA_HINTS;_WIN;NOMINMAX;CMAKE_INTDIR="Debug"</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_DEBUG;_WINDOWS;DNNL_DLL;DNNL_X64=1;__STDC_LIMIT_MACROS;__STDC_CONSTANT_MACROS;DNNL_DLL_EXPORTS;DNNL_ENABLE_MAX_CPU_ISA;DNNL_ENABLE_CPU_ISA_HINTS;_WIN;NOMINMAX;CMAKE_INTDIR=\"Debug\"</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\include;C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\include;C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\include;C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\include;C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Lib>
+      <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\include;C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\include;C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /bigobj</AdditionalOptions>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <DisableSpecificWarnings>4800;4068;4305;4551;4244</DisableSpecificWarnings>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <OpenMPSupport>true</OpenMPSupport>
+      <Optimization>MaxSpeed</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <UseFullPaths>false</UseFullPaths>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;DNNL_DLL;DNNL_X64=1;__STDC_LIMIT_MACROS;__STDC_CONSTANT_MACROS;DNNL_DLL_EXPORTS;DNNL_ENABLE_MAX_CPU_ISA;DNNL_ENABLE_CPU_ISA_HINTS;_WIN;NOMINMAX;CMAKE_INTDIR="Release"</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <DebugInformationFormat>
+      </DebugInformationFormat>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;DNNL_DLL;DNNL_X64=1;__STDC_LIMIT_MACROS;__STDC_CONSTANT_MACROS;DNNL_DLL_EXPORTS;DNNL_ENABLE_MAX_CPU_ISA;DNNL_ENABLE_CPU_ISA_HINTS;_WIN;NOMINMAX;CMAKE_INTDIR=\"Release\"</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\include;C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\include;C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\include;C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\include;C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Lib>
+      <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\common\CMakeLists.txt">
+      <UseUtf8Encoding>Always</UseUtf8Encoding>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Building Custom Rule C:/Users/dhaen/source/repos/convnet/dnn/deps/oneDNN/src/common/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/dhaen/source/repos/convnet/dnn/deps/oneDNN -BC:/Users/dhaen/source/repos/convnet/dnn/deps/oneDNN2/build --check-stamp-file C:/Users/dhaen/source/repos/convnet/dnn/deps/oneDNN2/build/src/common/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\common\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Building Custom Rule C:/Users/dhaen/source/repos/convnet/dnn/deps/oneDNN/src/common/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/dhaen/source/repos/convnet/dnn/deps/oneDNN -BC:/Users/dhaen/source/repos/convnet/dnn/deps/oneDNN2/build --check-stamp-file C:/Users/dhaen/source/repos/convnet/dnn/deps/oneDNN2/build/src/common/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\common\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\common\batch_normalization.cpp" />
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\common\batch_normalization_pd.hpp" />
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\common\bfloat16.cpp" />
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\common\bfloat16.hpp" />
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\common\binary.cpp" />
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\common\binary_pd.hpp" />
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\common\bit_cast.hpp" />
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\common\broadcast_strategy.cpp" />
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\common\broadcast_strategy.hpp" />
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\common\c_types_map.hpp" />
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\common\cache_blob.hpp" />
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\common\cache_blob_id.cpp" />
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\common\cache_blob_id.hpp" />
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\common\compiler_workarounds.hpp" />
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\common\concat.cpp" />
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\common\concat_pd.hpp" />
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\common\convolution.cpp" />
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\common\convolution_pd.cpp" />
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\common\convolution_pd.hpp" />
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\common\counting_barrier.hpp" />
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\common\cpp_compat.hpp" />
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\common\deconvolution.cpp" />
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\common\deconvolution_pd.hpp" />
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\common\dnnl_debug.cpp" />
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\common\dnnl_debug_autogenerated.cpp" />
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\common\dnnl_thread.cpp" />
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\common\dnnl_thread.hpp" />
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\common\dnnl_traits.hpp" />
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\common\eltwise.cpp" />
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\common\eltwise_pd.hpp" />
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\common\engine.cpp" />
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\common\engine.hpp" />
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\common\engine_id.hpp" />
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\common\float16.hpp" />
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\common\fpmath_mode.cpp" />
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\common\gemm.cpp" />
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\common\gemm_pd.hpp" />
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\common\gemm_types.hpp" />
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\common\gemm_utils.hpp" />
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\common\guard_manager.hpp" />
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\common\impl_list_item.hpp" />
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\common\impl_registration.hpp" />
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\common\inner_product.cpp" />
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\common\inner_product_pd.hpp" />
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\common\internal_defs.hpp" />
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\common\internal_desc_types.hpp" />
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\common\ittnotify.cpp" />
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\common\ittnotify.hpp" />
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\common\layer_normalization.cpp" />
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\common\layer_normalization_pd.hpp" />
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\common\lrn.cpp" />
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\common\lrn_pd.hpp" />
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\common\math_utils.hpp" />
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\common\matmul.cpp" />
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\common\matmul_pd.hpp" />
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\common\memory.cpp" />
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\common\memory.hpp" />
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\common\memory_debug.cpp" />
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\common\memory_debug.hpp" />
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\common\memory_desc_wrapper.cpp" />
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\common\memory_desc_wrapper.hpp" />
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\common\memory_storage.cpp" />
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\common\memory_storage.hpp" />
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\common\memory_tracking.cpp" />
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\common\memory_tracking.hpp" />
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\common\memory_zero_pad.cpp" />
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\common\nstl.hpp" />
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\common\optional.hpp" />
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\common\pooling.cpp" />
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\common\pooling_pd.hpp" />
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\common\prelu.cpp" />
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\common\prelu_pd.hpp" />
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\common\primitive.cpp" />
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\common\primitive.hpp" />
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\common\primitive_attr.cpp" />
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\common\primitive_attr.hpp" />
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\common\primitive_cache.cpp" />
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\common\primitive_cache.hpp" />
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\common\primitive_desc.cpp" />
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\common\primitive_desc.hpp" />
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\common\primitive_exec_types.cpp" />
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\common\primitive_exec_types.hpp" />
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\common\primitive_hashing.cpp" />
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\common\primitive_hashing.hpp" />
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\common\primitive_iterator.cpp" />
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\common\primitive_iterator.hpp" />
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\common\query.cpp" />
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\common\reduction.cpp" />
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\common\reduction_pd.hpp" />
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\common\reorder.cpp" />
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\common\reorder.hpp" />
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\common\reorder_pd.hpp" />
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\common\resampling.cpp" />
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\common\resampling_pd.hpp" />
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\common\rnn.cpp" />
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\common\rnn.hpp" />
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\common\rnn_pd.hpp" />
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\common\rw_mutex.cpp" />
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\common\rw_mutex.hpp" />
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\common\scratchpad.cpp" />
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\common\scratchpad.hpp" />
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\common\scratchpad_debug.cpp" />
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\common\scratchpad_debug.hpp" />
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\common\serialization.cpp" />
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\common\serialization.hpp" />
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\common\serialization_stream.hpp" />
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\common\shuffle.cpp" />
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\common\shuffle_pd.hpp" />
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\common\softmax.cpp" />
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\common\softmax_pd.hpp" />
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\common\stack_checker.hpp" />
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\common\stream.cpp" />
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\common\stream.hpp" />
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\common\sum.cpp" />
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\common\sum_pd.hpp" />
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\common\tag_traits.hpp" />
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\common\thread_local_storage.hpp" />
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\common\type_helpers.hpp" />
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\common\utils.cpp" />
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\common\utils.hpp" />
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\common\verbose.cpp" />
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\common\verbose.hpp" />
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\common\z_magic.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\ZERO_CHECK.vcxproj">
+      <Project>{CAC46FDB-9D7B-31E3-B437-9DB7404AD513}</Project>
+      <Name>ZERO_CHECK</Name>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

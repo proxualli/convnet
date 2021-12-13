@@ -1,0 +1,588 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\bfloat16.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\binary_injector_utils.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\cpu_batch_normalization_list.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\cpu_batch_normalization_utils.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\cpu_binary_list.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\cpu_concat.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\cpu_convolution_list.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\cpu_deconvolution_list.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\cpu_eltwise_list.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\cpu_engine.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\cpu_inner_product_list.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\cpu_layer_normalization_list.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\cpu_lrn_list.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\cpu_pooling_list.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\cpu_prelu_list.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\cpu_reduction_list.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\cpu_resampling_list.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\cpu_rnn_list.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\cpu_shuffle_list.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\cpu_softmax_list.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\cpu_sum.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\gemm_convolution.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\gemm_convolution_utils.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\gemm_inner_product.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\gemm_inner_product_utils.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\gemm_x8s8s32x_conv_zp_src_pad_comp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\gemm_x8s8s32x_convolution.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\gemm_x8s8s32x_convolution_utils.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\gemm_x8s8s32x_inner_product.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\nchw_pooling.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\ncsp_batch_normalization.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\nhwc_pooling.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\nspc_batch_normalization.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\platform.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\primitive_attr_postops.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\ref_batch_normalization.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\ref_binary.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\ref_convolution.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\ref_convolution_int8.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\ref_deconvolution.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\ref_eltwise.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\ref_inner_product.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\ref_inner_product_int8.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\ref_layer_normalization.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\ref_lrn.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\ref_pooling.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\ref_prelu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\ref_reduction.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\ref_resampling.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\ref_shuffle.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\ref_softmax.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\simple_concat.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\simple_layer_normalization.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\simple_layer_normalization_kernels.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\simple_resampling.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\simple_sum.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\zero_point_utils.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\gemm\f32\gemm_utils_f32.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\gemm\f32\ref_gemm_f32.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\gemm\gemm.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\gemm\gemm_pack.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\gemm\s8x8s32\ref_gemm_s8x8s32.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\gemm\s8x8s32\simple_gemm_s8s8s32.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\matmul\cpu_matmul_list.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\matmul\gemm_bf16_matmul.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\matmul\gemm_f32_matmul.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\matmul\gemm_x8s8s32x_matmul.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\matmul\ref_matmul.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\matmul\ref_matmul_int8.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\reorder\cpu_reorder.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\reorder\cpu_reorder_comp_bf16_s8.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\reorder\cpu_reorder_comp_f32_s8.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\reorder\cpu_reorder_comp_s8_s8.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\reorder\cpu_reorder_regular_bf16.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\reorder\cpu_reorder_regular_f16.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\reorder\cpu_reorder_regular_f32_bf16.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\reorder\cpu_reorder_regular_f32_f16.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\reorder\cpu_reorder_regular_f32_f32.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\reorder\cpu_reorder_regular_f32_s32.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\reorder\cpu_reorder_regular_f32_s8.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\reorder\cpu_reorder_regular_f32_u8.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\reorder\cpu_reorder_regular_s32.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\reorder\cpu_reorder_regular_s8.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\reorder\cpu_reorder_regular_u8.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\rnn\brgemm_cell_common.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\rnn\cell_common.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\rnn\cell_gru.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\rnn\cell_gru_lbr.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\rnn\ref_postgemm_gru.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\rnn\ref_postgemm_gru_lbr.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\rnn\ref_postgemm_lstm.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\rnn\ref_postgemm_lstm_projection.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\rnn\ref_postgemm_rnn.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\rnn\ref_rnn.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\rnn\rnn_utils.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\jit_utils\jit_utils.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\jit_utils\linux_perf\linux_perf.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\binary_injector_utils.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\cpu_batch_normalization_pd.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\cpu_batch_normalization_utils.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\cpu_binary_pd.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\cpu_concat_pd.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\cpu_convolution_pd.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\cpu_deconvolution_pd.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\cpu_eltwise_pd.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\cpu_engine.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\cpu_inner_product_pd.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\cpu_layer_normalization_pd.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\cpu_lrn_pd.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\cpu_memory_storage.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\cpu_pooling_pd.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\cpu_prelu_pd.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\cpu_primitive.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\cpu_reduction_pd.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\cpu_resampling_pd.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\cpu_shuffle_pd.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\cpu_softmax_pd.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\cpu_stream.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\cpu_sum_pd.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\dw_convolution_utils.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\gemm_convolution.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\gemm_convolution_utils.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\gemm_inner_product.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\gemm_inner_product_utils.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\gemm_x8s8s32x_conv_zp_src_pad_comp.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\gemm_x8s8s32x_convolution.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\gemm_x8s8s32x_convolution_utils.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\gemm_x8s8s32x_inner_product.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\nchw_pooling.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\ncsp_batch_normalization.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\nhwc_pooling.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\nspc_batch_normalization.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\platform.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\primitive_attr_postops.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\ref_batch_normalization.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\ref_binary.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\ref_concat.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\ref_convolution.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\ref_convolution_int8.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\ref_convolution_utils.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\ref_deconvolution.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\ref_eltwise.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\ref_fused_convolution.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\ref_inner_product.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\ref_inner_product_int8.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\ref_inner_product_utils.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\ref_io_helper.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\ref_layer_normalization.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\ref_lrn.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\ref_pooling.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\ref_prelu.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\ref_reduction.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\ref_resampling.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\ref_shuffle.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\ref_softmax.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\ref_sum.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\resampling_utils.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\simple_concat.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\simple_layer_normalization.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\simple_layer_normalization_kernels.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\simple_q10n.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\simple_resampling.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\simple_sum.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\zero_point_utils.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\gemm\f32\gemm_utils_f32.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\gemm\f32\ref_gemm_f32.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\gemm\gemm.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\gemm\gemm_msan_unpoison.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\gemm\gemm_pack.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\gemm\os_blas.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\gemm\s8x8s32\ref_gemm_s8x8s32.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\gemm\s8x8s32\simple_gemm_s8s8s32.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\matmul\cpu_matmul_pd.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\matmul\gemm_based_common.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\matmul\gemm_bf16_matmul.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\matmul\gemm_f32_matmul.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\matmul\gemm_x8s8s32x_matmul.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\matmul\matmul_utils.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\matmul\ref_matmul.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\matmul\ref_matmul_int8.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\reorder\cpu_reorder.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\reorder\cpu_reorder_pd.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\reorder\simple_reorder.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\rnn\cpu_rnn_pd.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\rnn\postgemm_dispatcher.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\rnn\ref_rnn.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\rnn\rnn_reorders.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\rnn\rnn_utils.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\jit_utils\jit_utils.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\jit_utils\linux_perf\linux_perf.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\cpu\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{C1ABEA4F-DEBA-32B6-A9EF-9FC5CE04BB92}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{CDC9EE4A-D1DB-3FE2-9270-3AD36D2A446A}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

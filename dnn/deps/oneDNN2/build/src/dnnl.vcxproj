@@ -1,0 +1,617 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
+  </PropertyGroup>
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{5A514A82-CAEE-3AB7-BCDC-81836D4EAEB4}</ProjectGuid>
+    <WindowsTargetPlatformVersion>10.0.22000.0</WindowsTargetPlatformVersion>
+    <Keyword>Win32Proj</Keyword>
+    <Platform>x64</Platform>
+    <ProjectName>dnnl</ProjectName>
+    <VCProjectUpgraderObjectName>NoUpgrade</VCProjectUpgraderObjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\Debug\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">dnnl.dir\Debug\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">dnnl</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.dll</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</GenerateManifest>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\Release\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">dnnl.dir\Release\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">dnnl</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.dll</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</GenerateManifest>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\include;C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\include;C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src;C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /bigobj</AdditionalOptions>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DisableSpecificWarnings>4800;4068;4305;4551;4244</DisableSpecificWarnings>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <OpenMPSupport>true</OpenMPSupport>
+      <Optimization>Disabled</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <UseFullPaths>false</UseFullPaths>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;DNNL_DLL;DNNL_X64=1;__STDC_LIMIT_MACROS;__STDC_CONSTANT_MACROS;DNNL_DLL_EXPORTS;DNNL_ENABLE_MAX_CPU_ISA;DNNL_ENABLE_CPU_ISA_HINTS;_WIN;NOMINMAX;CMAKE_INTDIR="Debug";dnnl_EXPORTS</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_DEBUG;_WINDOWS;DNNL_DLL;DNNL_X64=1;__STDC_LIMIT_MACROS;__STDC_CONSTANT_MACROS;DNNL_DLL_EXPORTS;DNNL_ENABLE_MAX_CPU_ISA;DNNL_ENABLE_CPU_ISA_HINTS;_WIN;NOMINMAX;CMAKE_INTDIR=\"Debug\";dnnl_EXPORTS</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\include;C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\include;C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src;C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\include;C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\include;C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src;C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Link>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>C:/Users/dhaen/source/repos/convnet/dnn/deps/oneDNN2/build/src/Debug/dnnl.lib</ImportLibrary>
+      <ProgramDataBaseFile>C:/Users/dhaen/source/repos/convnet/dnn/deps/oneDNN2/build/src/Debug/dnnl.pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\include;C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\include;C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src;C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /bigobj</AdditionalOptions>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <DisableSpecificWarnings>4800;4068;4305;4551;4244</DisableSpecificWarnings>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <OpenMPSupport>true</OpenMPSupport>
+      <Optimization>MaxSpeed</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <UseFullPaths>false</UseFullPaths>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;DNNL_DLL;DNNL_X64=1;__STDC_LIMIT_MACROS;__STDC_CONSTANT_MACROS;DNNL_DLL_EXPORTS;DNNL_ENABLE_MAX_CPU_ISA;DNNL_ENABLE_CPU_ISA_HINTS;_WIN;NOMINMAX;CMAKE_INTDIR="Release";dnnl_EXPORTS</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <DebugInformationFormat>
+      </DebugInformationFormat>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;DNNL_DLL;DNNL_X64=1;__STDC_LIMIT_MACROS;__STDC_CONSTANT_MACROS;DNNL_DLL_EXPORTS;DNNL_ENABLE_MAX_CPU_ISA;DNNL_ENABLE_CPU_ISA_HINTS;_WIN;NOMINMAX;CMAKE_INTDIR=\"Release\";dnnl_EXPORTS</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\include;C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\include;C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src;C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\include;C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\include;C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src;C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Link>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>C:/Users/dhaen/source/repos/convnet/dnn/deps/oneDNN2/build/src/Release/dnnl.lib</ImportLibrary>
+      <ProgramDataBaseFile>C:/Users/dhaen/source/repos/convnet/dnn/deps/oneDNN2/build/src/Release/dnnl.pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\src\CMakeLists.txt">
+      <UseUtf8Encoding>Always</UseUtf8Encoding>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Building Custom Rule C:/Users/dhaen/source/repos/convnet/dnn/deps/oneDNN/src/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/dhaen/source/repos/convnet/dnn/deps/oneDNN -BC:/Users/dhaen/source/repos/convnet/dnn/deps/oneDNN2/build --check-stamp-file C:/Users/dhaen/source/repos/convnet/dnn/deps/oneDNN2/build/src/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\Program Files\CMake\share\cmake-3.22\Modules\BasicConfigVersion-SameMajorVersion.cmake.in;C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\cmake\config.cmake.in;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Building Custom Rule C:/Users/dhaen/source/repos/convnet/dnn/deps/oneDNN/src/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/dhaen/source/repos/convnet/dnn/deps/oneDNN -BC:/Users/dhaen/source/repos/convnet/dnn/deps/oneDNN2/build --check-stamp-file C:/Users/dhaen/source/repos/convnet/dnn/deps/oneDNN2/build/src/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\Program Files\CMake\share\cmake-3.22\Modules\BasicConfigVersion-SameMajorVersion.cmake.in;C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\cmake\config.cmake.in;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\version.rc" />
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\include\dnnl.h" />
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\include\dnnl.hpp" />
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\include\dnnl_config.h" />
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\include\dnnl_debug.h" />
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\include\dnnl_ocl.h" />
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\include\dnnl_ocl.hpp" />
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\include\dnnl_sycl.h" />
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\include\dnnl_sycl.hpp" />
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\include\dnnl_sycl_types.h" />
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\include\dnnl_threadpool.h" />
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\include\dnnl_threadpool.hpp" />
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\include\dnnl_threadpool_iface.hpp" />
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\include\dnnl_types.h" />
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\include\dnnl_version.h" />
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\include\oneapi\dnnl\dnnl.h" />
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\include\oneapi\dnnl\dnnl.hpp" />
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\include\oneapi\dnnl\dnnl_debug.h" />
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\include\oneapi\dnnl\dnnl_ocl.h" />
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\include\oneapi\dnnl\dnnl_ocl.hpp" />
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\include\oneapi\dnnl\dnnl_ocl_types.h" />
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\include\oneapi\dnnl\dnnl_sycl.h" />
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\include\oneapi\dnnl\dnnl_sycl.hpp" />
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\include\oneapi\dnnl\dnnl_sycl_types.h" />
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\include\oneapi\dnnl\dnnl_threadpool.h" />
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\include\oneapi\dnnl\dnnl_threadpool.hpp" />
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\include\oneapi\dnnl\dnnl_threadpool_iface.hpp" />
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN\include\oneapi\dnnl\dnnl_types.h" />
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\include\oneapi\dnnl\dnnl_config.h" />
+    <ClInclude Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\include\oneapi\dnnl\dnnl_version.h" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\common\dnnl_common.dir\$(Configuration)\batch_normalization.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\common\dnnl_common.dir\$(Configuration)\bfloat16.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\common\dnnl_common.dir\$(Configuration)\binary.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\common\dnnl_common.dir\$(Configuration)\broadcast_strategy.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\common\dnnl_common.dir\$(Configuration)\cache_blob_id.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\common\dnnl_common.dir\$(Configuration)\concat.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\common\dnnl_common.dir\$(Configuration)\convolution.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\common\dnnl_common.dir\$(Configuration)\convolution_pd.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\common\dnnl_common.dir\$(Configuration)\deconvolution.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\common\dnnl_common.dir\$(Configuration)\dnnl_debug.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\common\dnnl_common.dir\$(Configuration)\dnnl_debug_autogenerated.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\common\dnnl_common.dir\$(Configuration)\dnnl_thread.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\common\dnnl_common.dir\$(Configuration)\eltwise.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\common\dnnl_common.dir\$(Configuration)\engine.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\common\dnnl_common.dir\$(Configuration)\fpmath_mode.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\common\dnnl_common.dir\$(Configuration)\gemm.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\common\dnnl_common.dir\$(Configuration)\inner_product.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\common\dnnl_common.dir\$(Configuration)\ittnotify.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\common\dnnl_common.dir\$(Configuration)\layer_normalization.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\common\dnnl_common.dir\$(Configuration)\lrn.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\common\dnnl_common.dir\$(Configuration)\matmul.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\common\dnnl_common.dir\$(Configuration)\memory.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\common\dnnl_common.dir\$(Configuration)\memory_debug.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\common\dnnl_common.dir\$(Configuration)\memory_desc_wrapper.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\common\dnnl_common.dir\$(Configuration)\memory_storage.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\common\dnnl_common.dir\$(Configuration)\memory_tracking.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\common\dnnl_common.dir\$(Configuration)\memory_zero_pad.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\common\dnnl_common.dir\$(Configuration)\pooling.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\common\dnnl_common.dir\$(Configuration)\prelu.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\common\dnnl_common.dir\$(Configuration)\primitive.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\common\dnnl_common.dir\$(Configuration)\primitive_attr.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\common\dnnl_common.dir\$(Configuration)\primitive_cache.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\common\dnnl_common.dir\$(Configuration)\primitive_desc.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\common\dnnl_common.dir\$(Configuration)\primitive_exec_types.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\common\dnnl_common.dir\$(Configuration)\primitive_hashing.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\common\dnnl_common.dir\$(Configuration)\primitive_iterator.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\common\dnnl_common.dir\$(Configuration)\query.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\common\dnnl_common.dir\$(Configuration)\reduction.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\common\dnnl_common.dir\$(Configuration)\reorder.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\common\dnnl_common.dir\$(Configuration)\resampling.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\common\dnnl_common.dir\$(Configuration)\rnn.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\common\dnnl_common.dir\$(Configuration)\rw_mutex.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\common\dnnl_common.dir\$(Configuration)\scratchpad.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\common\dnnl_common.dir\$(Configuration)\scratchpad_debug.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\common\dnnl_common.dir\$(Configuration)\serialization.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\common\dnnl_common.dir\$(Configuration)\shuffle.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\common\dnnl_common.dir\$(Configuration)\softmax.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\common\dnnl_common.dir\$(Configuration)\stream.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\common\dnnl_common.dir\$(Configuration)\sum.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\common\dnnl_common.dir\$(Configuration)\utils.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\common\dnnl_common.dir\$(Configuration)\verbose.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\dnnl_cpu.dir\$(Configuration)\bfloat16.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\dnnl_cpu.dir\$(Configuration)\binary_injector_utils.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\dnnl_cpu.dir\$(Configuration)\cpu_batch_normalization_list.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\dnnl_cpu.dir\$(Configuration)\cpu_batch_normalization_utils.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\dnnl_cpu.dir\$(Configuration)\cpu_binary_list.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\dnnl_cpu.dir\$(Configuration)\cpu_concat.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\dnnl_cpu.dir\$(Configuration)\cpu_convolution_list.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\dnnl_cpu.dir\$(Configuration)\cpu_deconvolution_list.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\dnnl_cpu.dir\$(Configuration)\cpu_eltwise_list.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\dnnl_cpu.dir\$(Configuration)\cpu_engine.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\dnnl_cpu.dir\$(Configuration)\cpu_inner_product_list.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\dnnl_cpu.dir\$(Configuration)\cpu_layer_normalization_list.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\dnnl_cpu.dir\$(Configuration)\cpu_lrn_list.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\dnnl_cpu.dir\$(Configuration)\cpu_pooling_list.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\dnnl_cpu.dir\$(Configuration)\cpu_prelu_list.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\dnnl_cpu.dir\$(Configuration)\cpu_reduction_list.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\dnnl_cpu.dir\$(Configuration)\cpu_resampling_list.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\dnnl_cpu.dir\$(Configuration)\cpu_rnn_list.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\dnnl_cpu.dir\$(Configuration)\cpu_shuffle_list.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\dnnl_cpu.dir\$(Configuration)\cpu_softmax_list.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\dnnl_cpu.dir\$(Configuration)\cpu_sum.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\dnnl_cpu.dir\$(Configuration)\gemm_convolution.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\dnnl_cpu.dir\$(Configuration)\gemm_convolution_utils.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\dnnl_cpu.dir\$(Configuration)\gemm_inner_product.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\dnnl_cpu.dir\$(Configuration)\gemm_inner_product_utils.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\dnnl_cpu.dir\$(Configuration)\gemm_x8s8s32x_conv_zp_src_pad_comp.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\dnnl_cpu.dir\$(Configuration)\gemm_x8s8s32x_convolution.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\dnnl_cpu.dir\$(Configuration)\gemm_x8s8s32x_convolution_utils.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\dnnl_cpu.dir\$(Configuration)\gemm_x8s8s32x_inner_product.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\dnnl_cpu.dir\$(Configuration)\nchw_pooling.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\dnnl_cpu.dir\$(Configuration)\ncsp_batch_normalization.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\dnnl_cpu.dir\$(Configuration)\nhwc_pooling.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\dnnl_cpu.dir\$(Configuration)\nspc_batch_normalization.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\dnnl_cpu.dir\$(Configuration)\platform.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\dnnl_cpu.dir\$(Configuration)\primitive_attr_postops.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\dnnl_cpu.dir\$(Configuration)\ref_batch_normalization.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\dnnl_cpu.dir\$(Configuration)\ref_binary.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\dnnl_cpu.dir\$(Configuration)\ref_convolution.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\dnnl_cpu.dir\$(Configuration)\ref_convolution_int8.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\dnnl_cpu.dir\$(Configuration)\ref_deconvolution.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\dnnl_cpu.dir\$(Configuration)\ref_eltwise.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\dnnl_cpu.dir\$(Configuration)\ref_inner_product.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\dnnl_cpu.dir\$(Configuration)\ref_inner_product_int8.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\dnnl_cpu.dir\$(Configuration)\ref_layer_normalization.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\dnnl_cpu.dir\$(Configuration)\ref_lrn.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\dnnl_cpu.dir\$(Configuration)\ref_pooling.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\dnnl_cpu.dir\$(Configuration)\ref_prelu.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\dnnl_cpu.dir\$(Configuration)\ref_reduction.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\dnnl_cpu.dir\$(Configuration)\ref_resampling.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\dnnl_cpu.dir\$(Configuration)\ref_shuffle.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\dnnl_cpu.dir\$(Configuration)\ref_softmax.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\dnnl_cpu.dir\$(Configuration)\simple_concat.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\dnnl_cpu.dir\$(Configuration)\simple_layer_normalization.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\dnnl_cpu.dir\$(Configuration)\simple_layer_normalization_kernels.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\dnnl_cpu.dir\$(Configuration)\simple_resampling.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\dnnl_cpu.dir\$(Configuration)\simple_sum.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\dnnl_cpu.dir\$(Configuration)\zero_point_utils.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\dnnl_cpu.dir\$(Configuration)\gemm_utils_f32.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\dnnl_cpu.dir\$(Configuration)\ref_gemm_f32.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\dnnl_cpu.dir\$(Configuration)\gemm.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\dnnl_cpu.dir\$(Configuration)\gemm_pack.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\dnnl_cpu.dir\$(Configuration)\ref_gemm_s8x8s32.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\dnnl_cpu.dir\$(Configuration)\simple_gemm_s8s8s32.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\dnnl_cpu.dir\$(Configuration)\cpu_matmul_list.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\dnnl_cpu.dir\$(Configuration)\gemm_bf16_matmul.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\dnnl_cpu.dir\$(Configuration)\gemm_f32_matmul.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\dnnl_cpu.dir\$(Configuration)\gemm_x8s8s32x_matmul.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\dnnl_cpu.dir\$(Configuration)\ref_matmul.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\dnnl_cpu.dir\$(Configuration)\ref_matmul_int8.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\dnnl_cpu.dir\$(Configuration)\cpu_reorder.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\dnnl_cpu.dir\$(Configuration)\cpu_reorder_comp_bf16_s8.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\dnnl_cpu.dir\$(Configuration)\cpu_reorder_comp_f32_s8.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\dnnl_cpu.dir\$(Configuration)\cpu_reorder_comp_s8_s8.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\dnnl_cpu.dir\$(Configuration)\cpu_reorder_regular_bf16.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\dnnl_cpu.dir\$(Configuration)\cpu_reorder_regular_f16.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\dnnl_cpu.dir\$(Configuration)\cpu_reorder_regular_f32_bf16.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\dnnl_cpu.dir\$(Configuration)\cpu_reorder_regular_f32_f16.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\dnnl_cpu.dir\$(Configuration)\cpu_reorder_regular_f32_f32.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\dnnl_cpu.dir\$(Configuration)\cpu_reorder_regular_f32_s32.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\dnnl_cpu.dir\$(Configuration)\cpu_reorder_regular_f32_s8.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\dnnl_cpu.dir\$(Configuration)\cpu_reorder_regular_f32_u8.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\dnnl_cpu.dir\$(Configuration)\cpu_reorder_regular_s32.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\dnnl_cpu.dir\$(Configuration)\cpu_reorder_regular_s8.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\dnnl_cpu.dir\$(Configuration)\cpu_reorder_regular_u8.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\dnnl_cpu.dir\$(Configuration)\brgemm_cell_common.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\dnnl_cpu.dir\$(Configuration)\cell_common.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\dnnl_cpu.dir\$(Configuration)\cell_gru.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\dnnl_cpu.dir\$(Configuration)\cell_gru_lbr.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\dnnl_cpu.dir\$(Configuration)\ref_postgemm_gru.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\dnnl_cpu.dir\$(Configuration)\ref_postgemm_gru_lbr.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\dnnl_cpu.dir\$(Configuration)\ref_postgemm_lstm.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\dnnl_cpu.dir\$(Configuration)\ref_postgemm_lstm_projection.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\dnnl_cpu.dir\$(Configuration)\ref_postgemm_rnn.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\dnnl_cpu.dir\$(Configuration)\ref_rnn.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\dnnl_cpu.dir\$(Configuration)\rnn_utils.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\dnnl_cpu.dir\$(Configuration)\jit_utils.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\dnnl_cpu.dir\$(Configuration)\linux_perf.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\amx_tile_configure.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\brgemm.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_brdgmm_kernel.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_brgemm_amx_uker.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_brgemm_kernel.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\cpu_barrier.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\cpu_isa_traits.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\cpu_reducer.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_avx512_core_amx_copy_kern.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_avx512_core_amx_gemm_kern.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_avx512_core_gemm_bf16bf16f32_kern.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_avx512_core_gemv_bf16bf16f32_kern.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_avx512_core_s16_24x8_copy_an_kern_autogen.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_avx512_core_s16_24x8_copy_at_kern_autogen.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_avx512_core_s16_24x8_copy_bn_kern_autogen.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_avx512_core_s16_24x8_copy_bt_kern_autogen.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_avx512_core_s16_48x8_copy_an_kern_autogen.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_avx512_core_s16_48x8_copy_at_kern_autogen.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_avx512_core_s16_48x8_copy_bn_kern_autogen.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_avx512_core_s16_48x8_copy_bt_kern_autogen.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_avx2_f32_copy_an_kern_autogen.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_avx2_f32_copy_at_kern_autogen.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_avx2_f32_copy_bn_kern_autogen.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_avx2_f32_copy_bt_kern_autogen.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_avx2_kernel_sgemm_kern.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_avx512_common_gemm_f32.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_avx512_core_f32_copy_an_kern_autogen.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_avx512_core_f32_copy_at_kern_part1_autogen.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_avx512_core_f32_copy_at_kern_part2_autogen.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_avx512_core_f32_copy_bn_kern_autogen.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_avx512_core_f32_copy_bt_kern_autogen.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_avx512_core_gemm_smalln_tn_f32_kern.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_avx_f32_copy_an_kern_autogen.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_avx_f32_copy_at_kern_autogen.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_avx_f32_copy_bn_kern_autogen.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_avx_f32_copy_bt_kern_autogen.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_avx_gemm_f32.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_avx_gemv_t_f32_kern.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_avx_kernel_b0_sgemm_kern_part1_autogen.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_avx_kernel_b0_sgemm_kern_part2_autogen.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_avx_kernel_sgemm_kern_part1_autogen.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_avx_kernel_sgemm_kern_part2_autogen.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_sse41_f32_copy_an_kern_autogen.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_sse41_f32_copy_at_kern_autogen.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_sse41_f32_copy_bn_kern_autogen.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_sse41_f32_copy_bt_kern_autogen.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_sse41_gemv_n_f32_kern.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_sse41_gemv_t_f32_kern.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_sse41_kernel_b0_sgemm_kern_autogen.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_sse41_kernel_sgemm_kern_autogen.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\gemm_driver.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\gemm_info.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\gemm_pack.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\gemv_driver.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_avx2_gemm_s8u8s32_kern.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_avx2_u8_copy_an_kern_autogen.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_avx2_u8_copy_at_kern_autogen.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_avx2_u8_copy_bn_kern_autogen.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_avx2_u8_copy_bt_kern_autogen.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_avx2_u8_copy_sum_an_kern_autogen.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_avx2_u8_copy_sum_at_kern_autogen.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_avx2_u8_copy_sum_bn_kern_autogen.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_avx2_u8_copy_sum_bt_kern_autogen.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_avx2_vnni_u8_copy_an_kern_autogen.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_avx2_vnni_u8_copy_at_kern_autogen.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_avx2_vnni_u8_copy_bn_kern_autogen.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_avx2_vnni_u8_copy_bt_kern_autogen.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_avx2_vnni_u8_copy_sum_an_kern_autogen.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_avx2_vnni_u8_copy_sum_at_kern_autogen.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_avx2_vnni_u8_copy_sum_bn_kern_autogen.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_avx2_vnni_u8_copy_sum_bt_kern_autogen.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_avx512_core_gemm_s8u8s32_kern.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_avx512_core_gemv_s8x8s32.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_avx512_core_kernel_gemv_s8x8s32_kern.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_avx512_core_u8_copy_an_kern_autogen.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_avx512_core_u8_copy_at_kern_autogen.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_avx512_core_u8_copy_bn_kern_autogen.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_avx512_core_u8_copy_bt_kern_autogen.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_avx512_core_u8_copy_sum_an_kern_autogen.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_avx512_core_u8_copy_sum_at_kern_autogen.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_avx512_core_u8_copy_sum_bn_kern_autogen.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_avx512_core_u8_copy_sum_bt_kern_autogen.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_avx_kernel_b0_b_gemm_s8u8s32_kern_autogen.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_avx_kernel_b0_c_gemm_s8u8s32_kern_autogen.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_avx_kernel_b0_gemm_s8u8s32_kern_autogen.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_avx_kernel_b0_r_gemm_s8u8s32_kern_autogen.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_avx_kernel_b_gemm_s8u8s32_kern_autogen.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_avx_kernel_c_gemm_s8u8s32_kern_autogen.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_avx_kernel_gemm_s8u8s32_kern_autogen.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_avx_kernel_r_gemm_s8u8s32_kern_autogen.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_avx_u8_copy_an_kern_autogen.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_avx_u8_copy_at_kern_autogen.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_avx_u8_copy_bn_kern_autogen.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_avx_u8_copy_bt_kern_autogen.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_avx_u8_copy_sum_an_kern_autogen.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_avx_u8_copy_sum_at_kern_autogen.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_avx_u8_copy_sum_bn_kern_autogen.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_avx_u8_copy_sum_bt_kern_autogen.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_sse41_kernel_b0_b_gemm_s8u8s32_kern_autogen.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_sse41_kernel_b0_c_gemm_s8u8s32_kern_autogen.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_sse41_kernel_b0_gemm_s8u8s32_kern_autogen.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_sse41_kernel_b0_r_gemm_s8u8s32_kern_autogen.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_sse41_kernel_b_gemm_s8u8s32_kern_autogen.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_sse41_kernel_c_gemm_s8u8s32_kern_autogen.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_sse41_kernel_gemm_s8u8s32_kern_autogen.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_sse41_kernel_r_gemm_s8u8s32_kern_autogen.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_sse41_u8_copy_an_kern_autogen.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_sse41_u8_copy_at_kern_autogen.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_sse41_u8_copy_bn_kern_autogen.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_sse41_u8_copy_bt_kern_autogen.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_sse41_u8_copy_sum_an_kern_autogen.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_sse41_u8_copy_sum_at_kern_autogen.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_sse41_u8_copy_sum_bn_kern_autogen.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_sse41_u8_copy_sum_bt_kern_autogen.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\gemm_bf16_convolution.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\gemm_bf16_inner_product.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\injector_utils.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_uni_binary_injector.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_uni_eltwise_injector.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_uni_postops_injector.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\ip_convolution.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_avx2_1x1_conv_kernel_f32.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_avx2_1x1_convolution.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_avx2_conv_kernel_f32.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_avx2_convolution.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_avx512_common_1x1_conv_kernel.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_avx512_common_1x1_convolution.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_avx512_common_conv_kernel.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_avx512_common_conv_winograd_kernel_f32.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_avx512_common_convolution.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_avx512_common_convolution_winograd.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_avx512_common_resampling.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_avx512_core_amx_1x1_conv_kernel.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_avx512_core_amx_1x1_convolution.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_avx512_core_amx_conv_kernel.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_avx512_core_amx_convolution.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_avx512_core_amx_deconvolution.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_avx512_core_bf16_1x1_conv_kernel.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_avx512_core_bf16_1x1_convolution.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_avx512_core_bf16_conv_kernel.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_avx512_core_bf16_convolution.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_avx512_core_bf16_dw_conv_kernel.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_avx512_core_bf16_sum.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_avx512_core_bf16cvt.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_avx512_core_f32_wino_conv_2x3.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_avx512_core_f32_wino_conv_4x3.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_avx512_core_f32_wino_conv_4x3_kernel.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_avx512_core_u8s8s32x_wino_convolution.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_avx512_core_x8s8s32x_1x1_conv_kernel.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_avx512_core_x8s8s32x_1x1_convolution.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_avx512_core_x8s8s32x_conv_kernel.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_avx512_core_x8s8s32x_convolution.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_avx512_core_x8s8s32x_deconvolution.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_brdgmm_dw_conv.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_brgemm_1x1_conv.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_brgemm_conv.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_brgemm_conv_trans_kernel.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_brgemm_conv_utils.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_brgemm_inner_product.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_brgemm_inner_product_utils.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_brgemm_transpose_utils.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_gemm_inner_product_utils.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_gemm_x8s8s32x_conv_zp_src_pad_comp.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_gemm_x8s8s32x_convolution_utils.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_sse41_1x1_conv_kernel_f32.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_sse41_1x1_convolution.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_sse41_conv_kernel_f32.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_sse41_convolution.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_transpose_utils.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_uni_batch_normalization.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_uni_batch_normalization_s8.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_uni_binary.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_uni_binary_kernel.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_uni_deconv_zp_pad_str_kernel.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_uni_dw_conv_kernel_f32.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_uni_dw_conv_kernel_utils.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_uni_dw_convolution.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_uni_eltwise.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_uni_eltwise_int.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_uni_i8i8_pooling.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_uni_layer_normalization_kernels.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_uni_pool_kernel.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_uni_pooling.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_uni_reduction.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_uni_reduction_kernel.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_uni_reorder.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_uni_reorder_utils.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_uni_resampling.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_uni_resampling_kernel.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_uni_softmax.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_uni_tbb_batch_normalization.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_uni_x8s8s32x_1x1_conv_kernel.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_uni_x8s8s32x_1x1_convolution.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_uni_x8s8s32x_conv_kernel.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_uni_x8s8s32x_convolution.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_uni_x8s8s32x_deconvolution.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_avx512_common_lrn.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_avx512_common_lrn_bwd_base.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_avx512_common_lrn_bwd_blocked.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_avx512_common_lrn_bwd_nhwc.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_avx512_common_lrn_fwd_base.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_avx512_common_lrn_fwd_blocked.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_avx512_common_lrn_fwd_nhwc.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_uni_lrn.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_uni_lrn_kernel.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\brgemm_matmul.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\brgemm_matmul_copy_utils.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\brgemm_matmul_utils.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_prelu_backward.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_prelu_base_kernel.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_prelu_forward.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_prelu_reduction_kernel.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_prelu_utils.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_uni_prelu_backward_kernel.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_uni_prelu_forward_kernel.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\brgemm_cell_common_bwd.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\brgemm_cell_common_fwd.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\brgemm_cell_common_reorders.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\brgemm_cell_common_utils.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_brgemm_transpose_single_row.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_diff_weights_peephole.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_gates_reduction.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\rnn_brgemm_utils.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_uni_shuffle.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_uni_shuffle_kernel.obj" />
+    <Object Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.dir\$(Configuration)\jit_io_helper.obj" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\ZERO_CHECK.vcxproj">
+      <Project>{CAC46FDB-9D7B-31E3-B437-9DB7404AD513}</Project>
+      <Name>ZERO_CHECK</Name>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\common\dnnl_common.vcxproj">
+      <Project>{D19C60ED-80B0-3A0E-9DE4-80431A73A7B0}</Project>
+      <Name>dnnl_common</Name>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\dnnl_cpu.vcxproj">
+      <Project>{99DE1058-3355-317E-9AB1-518B0A8A4651}</Project>
+      <Name>dnnl_cpu</Name>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\cpu\x64\dnnl_cpu_x64.vcxproj">
+      <Project>{06168A0D-C30A-3B7D-918D-FA89433FB941}</Project>
+      <Name>dnnl_cpu_x64</Name>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
