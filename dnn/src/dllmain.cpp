@@ -61,7 +61,7 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD fdwReason, LPVOID lpReserved)
 #endif
 
 
-extern "C" DNN_API void DNNSetNewEpochDelegate(void(*newEpoch)(UInt, UInt, UInt, UInt, Float, Float, bool, bool, Float, Float, bool, Float, Float, UInt, Float, UInt, Float, Float, Float, UInt, UInt, UInt, Float, Float, Float, Float, Float, UInt, Float, Float, Float, UInt))
+extern "C" DNN_API void DNNSetNewEpochDelegate(void(*newEpoch)(UInt, UInt, UInt, UInt, Float, Float, Float, bool, bool, Float, Float, bool, Float, Float, UInt, Float, UInt, Float, Float, Float, UInt, UInt, UInt, Float, Float, Float, Float, Float, UInt, Float, Float, Float, UInt))
 {																	     
 	if (model)
 		model->NewEpoch = newEpoch;
@@ -295,16 +295,16 @@ extern "C" DNN_API void DNNGetLayerWeights(const UInt layerIndex, std::vector<Fl
 	}
 }
 
-extern "C" DNN_API void DNNAddLearningRate(const bool clear, const UInt gotoEpoch, const UInt trainSamples, const Optimizers optimizer, const Float momentum, const Float beta2, const Float L2penalty, const Float eps, const UInt batchSize, const UInt height, const UInt width, const UInt cycles, const UInt epochs, const UInt epochMultiplier, const Float maximumRate, const Float minimumRate, const Float finalRate, const Float gamma, const UInt decayAfterEpochs, const Float decayFactor, const bool horizontalFlip, const bool verticalFlip, const Float dropout, const Float cutout, const bool cutMix, const Float autoAugment, const Float colorCast, const UInt colorAngle, const Float distortion, const Interpolations interpolation, const Float scaling, const Float rotation)
+extern "C" DNN_API void DNNAddLearningRate(const bool clear, const UInt gotoEpoch, const UInt trainSamples, const Optimizers optimizer, const Float momentum, const Float beta2, const Float L2penalty, const Float dropout, const Float eps, const UInt batchSize, const UInt height, const UInt width, const UInt cycles, const UInt epochs, const UInt epochMultiplier, const Float maximumRate, const Float minimumRate, const Float finalRate, const Float gamma, const UInt decayAfterEpochs, const Float decayFactor, const bool horizontalFlip, const bool verticalFlip, const Float inputDropout, const Float cutout, const bool cutMix, const Float autoAugment, const Float colorCast, const UInt colorAngle, const Float distortion, const Interpolations interpolation, const Float scaling, const Float rotation)
 {
 	if (model)
-		model->AddTrainingRate(TrainingRate(optimizer, momentum, beta2, L2penalty, eps, batchSize, height, width, cycles, epochs, epochMultiplier, maximumRate, minimumRate, finalRate, gamma, decayAfterEpochs, decayFactor, horizontalFlip, verticalFlip, dropout, cutout, cutMix, autoAugment, colorCast, colorAngle, distortion, interpolation, scaling, rotation), clear, gotoEpoch, trainSamples);
+		model->AddTrainingRate(TrainingRate(optimizer, momentum, beta2, L2penalty, dropout, eps, batchSize, height, width, cycles, epochs, epochMultiplier, maximumRate, minimumRate, finalRate, gamma, decayAfterEpochs, decayFactor, horizontalFlip, verticalFlip, inputDropout, cutout, cutMix, autoAugment, colorCast, colorAngle, distortion, interpolation, scaling, rotation), clear, gotoEpoch, trainSamples);
 }
 
-extern "C" DNN_API void DNNAddLearningRateSGDR(const bool clear, const UInt gotoEpoch, const UInt trainSamples, const Optimizers optimizer, const Float momentum, const Float beta2, const Float L2penalty, const Float eps, const UInt batchSize, const UInt height, const UInt width, const UInt cycles, const UInt epochs, const UInt epochMultiplier, const Float maximumRate, const Float minimumRate, const Float finalRate, const Float gamma, const UInt decayAfterEpochs, const Float decayFactor, const bool horizontalFlip, const bool verticalFlip, const Float dropout, const Float cutout, const bool cutMix, const Float autoAugment, const Float colorCast, const UInt colorAngle, const Float distortion, const Interpolations interpolation, const Float saling, const Float rotation)
+extern "C" DNN_API void DNNAddLearningRateSGDR(const bool clear, const UInt gotoEpoch, const UInt trainSamples, const Optimizers optimizer, const Float momentum, const Float beta2, const Float L2penalty, const Float dropout, const Float eps, const UInt batchSize, const UInt height, const UInt width, const UInt cycles, const UInt epochs, const UInt epochMultiplier, const Float maximumRate, const Float minimumRate, const Float finalRate, const Float gamma, const UInt decayAfterEpochs, const Float decayFactor, const bool horizontalFlip, const bool verticalFlip, const Float inputDropout, const Float cutout, const bool cutMix, const Float autoAugment, const Float colorCast, const UInt colorAngle, const Float distortion, const Interpolations interpolation, const Float saling, const Float rotation)
 {
 	if (model)
-		model->AddTrainingRateSGDR(TrainingRate(optimizer, momentum, beta2, L2penalty, eps, batchSize, height, width, cycles, epochs, epochMultiplier, maximumRate, minimumRate, finalRate, gamma, decayAfterEpochs, decayFactor, horizontalFlip, verticalFlip, dropout, cutout, cutMix, autoAugment, colorCast, colorAngle, distortion, interpolation, saling, rotation), clear, gotoEpoch, trainSamples);
+		model->AddTrainingRateSGDR(TrainingRate(optimizer, momentum, beta2, L2penalty, dropout, eps, batchSize, height, width, cycles, epochs, epochMultiplier, maximumRate, minimumRate, finalRate, gamma, decayAfterEpochs, decayFactor, horizontalFlip, verticalFlip, inputDropout, cutout, cutMix, autoAugment, colorCast, colorAngle, distortion, interpolation, saling, rotation), clear, gotoEpoch, trainSamples);
 }
 
 extern "C" DNN_API void DNNTraining()
@@ -737,7 +737,7 @@ extern "C" DNN_API void DNNGetLayerInfo(const UInt layerIndex, UInt* inputsCount
 
 		case LayerTypes::Dropout:
 		{
-			auto drop = dynamic_cast<Dropout*>(model->Layers[layerIndex].get());
+			auto drop = dynamic_cast<dnn::Dropout*>(model->Layers[layerIndex].get());
 			if (drop)
 				*dropout = Float(1) - drop->Keep;
 		}

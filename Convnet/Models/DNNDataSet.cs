@@ -350,6 +350,8 @@ public partial class DNNDataSet : global::System.Data.DataSet
 
         private global::System.Data.DataColumn columnL2Penalty;
 
+        private global::System.Data.DataColumn columnDropout;
+
         private global::System.Data.DataColumn columnMomentum;
 
         private global::System.Data.DataColumn columnDecayFactor;
@@ -360,7 +362,7 @@ public partial class DNNDataSet : global::System.Data.DataSet
 
         private global::System.Data.DataColumn columnVerticalFlip;
 
-        private global::System.Data.DataColumn columnDropout;
+        private global::System.Data.DataColumn columnInputDropout;
 
         private global::System.Data.DataColumn columnCutout;
 
@@ -561,6 +563,16 @@ public partial class DNNDataSet : global::System.Data.DataSet
 
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+        public global::System.Data.DataColumn DropoutColumn
+        {
+            get
+            {
+                return this.columnDropout;
+            }
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         public global::System.Data.DataColumn MomentumColumn
         {
             get
@@ -611,11 +623,11 @@ public partial class DNNDataSet : global::System.Data.DataSet
 
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        public global::System.Data.DataColumn DropoutColumn
+        public global::System.Data.DataColumn InputDropoutColumn
         {
             get
             {
-                return this.columnDropout;
+                return this.columnInputDropout;
             }
         }
 
@@ -766,12 +778,13 @@ public partial class DNNDataSet : global::System.Data.DataSet
                     double FinalRate,
                     double Gamma,
                     double L2Penalty,
+                    double Dropout,
                     double Momentum,
                     double DecayFactor,
                     int DecayAfterEpochs,
                     bool HorizontalFlip,
                     bool VerticalFlip,
-                    double Dropout,
+                    double InputDropout,
                     double Cutout,
                     bool CutMix,
                     double AutoAugment,
@@ -798,12 +811,13 @@ public partial class DNNDataSet : global::System.Data.DataSet
                     FinalRate,
                     Gamma,
                     L2Penalty,
+                    Dropout,
                     Momentum,
                     DecayFactor,
                     DecayAfterEpochs,
                     HorizontalFlip,
                     VerticalFlip,
-                    Dropout,
+                    InputDropout,
                     Cutout,
                     CutMix,
                     AutoAugment,
@@ -859,12 +873,13 @@ public partial class DNNDataSet : global::System.Data.DataSet
             this.columnFinalRate = base.Columns["FinalRate"];
             this.columnGamma = base.Columns["Gamma"];
             this.columnL2Penalty = base.Columns["L2Penalty"];
+            this.columnDropout = base.Columns["Dropout"];
             this.columnMomentum = base.Columns["Momentum"];
             this.columnDecayFactor = base.Columns["DecayFactor"];
             this.columnDecayAfterEpochs = base.Columns["DecayAfterEpochs"];
             this.columnHorizontalFlip = base.Columns["HorizontalFlip"];
             this.columnVerticalFlip = base.Columns["VerticalFlip"];
-            this.columnDropout = base.Columns["Dropout"];
+            this.columnInputDropout = base.Columns["InputDropout"];
             this.columnCutout = base.Columns["Cutout"];
             this.columnCutout = base.Columns["CutMix"];
             this.columnAutoAugment = base.Columns["AutoAugment"];
@@ -908,6 +923,8 @@ public partial class DNNDataSet : global::System.Data.DataSet
             base.Columns.Add(this.columnGamma);
             this.columnL2Penalty = new global::System.Data.DataColumn("L2Penalty", typeof(double), null, global::System.Data.MappingType.Element);
             base.Columns.Add(this.columnL2Penalty);
+            this.columnDropout = new global::System.Data.DataColumn("Dropout", typeof(double), null, global::System.Data.MappingType.Element);
+            base.Columns.Add(this.columnDropout);
             this.columnMomentum = new global::System.Data.DataColumn("Momentum", typeof(double), null, global::System.Data.MappingType.Element);
             base.Columns.Add(this.columnMomentum);
             this.columnDecayFactor = new global::System.Data.DataColumn("DecayFactor", typeof(double), null, global::System.Data.MappingType.Element);
@@ -918,8 +935,8 @@ public partial class DNNDataSet : global::System.Data.DataSet
             base.Columns.Add(this.columnHorizontalFlip);
             this.columnVerticalFlip = new global::System.Data.DataColumn("VerticalFlip", typeof(bool), null, global::System.Data.MappingType.Element);
             base.Columns.Add(this.columnVerticalFlip);
-            this.columnDropout = new global::System.Data.DataColumn("Dropout", typeof(double), null, global::System.Data.MappingType.Element);
-            base.Columns.Add(this.columnDropout);
+            this.columnInputDropout = new global::System.Data.DataColumn("InputDropout", typeof(double), null, global::System.Data.MappingType.Element);
+            base.Columns.Add(this.columnInputDropout);
             this.columnCutout = new global::System.Data.DataColumn("Cutout", typeof(double), null, global::System.Data.MappingType.Element);
             base.Columns.Add(this.columnCutout);
             this.columnCutMix = new global::System.Data.DataColumn("CutMix", typeof(bool), null, global::System.Data.MappingType.Element);
@@ -965,6 +982,8 @@ public partial class DNNDataSet : global::System.Data.DataSet
             this.columnGamma.AllowDBNull = false;
             this.columnGamma.DefaultValue = ((double)(0.003));
             this.columnL2Penalty.AllowDBNull = false;
+            this.columnDropout.AllowDBNull = false;
+            this.columnDropout.DefaultValue = ((double)(0D));
             this.columnMomentum.AllowDBNull = false;
             this.columnDecayFactor.AllowDBNull = false;
             this.columnDecayAfterEpochs.AllowDBNull = false;
@@ -972,8 +991,8 @@ public partial class DNNDataSet : global::System.Data.DataSet
             this.columnHorizontalFlip.DefaultValue = ((bool)(false));
             this.columnVerticalFlip.AllowDBNull = false;
             this.columnVerticalFlip.DefaultValue = ((bool)(false));
-            this.columnDropout.AllowDBNull = false;
-            this.columnDropout.DefaultValue = ((double)(0D));
+            this.columnInputDropout.AllowDBNull = false;
+            this.columnInputDropout.DefaultValue = ((double)(0D));
             this.columnCutout.AllowDBNull = false;
             this.columnCutout.DefaultValue = ((double)(0D));
             this.columnCutMix.AllowDBNull = false;
@@ -1352,6 +1371,20 @@ public partial class DNNDataSet : global::System.Data.DataSet
 
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+        public double Dropout
+        {
+            get
+            {
+                return ((double)(this[this.tableTrainingRates.DropoutColumn]));
+            }
+            set
+            {
+                this[this.tableTrainingRates.DropoutColumn] = value;
+            }
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         public double Momentum
         {
             get
@@ -1422,15 +1455,15 @@ public partial class DNNDataSet : global::System.Data.DataSet
 
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        public double Dropout
+        public double InputDropout
         {
             get
             {
-                return ((double)(this[this.tableTrainingRates.DropoutColumn]));
+                return ((double)(this[this.tableTrainingRates.InputDropoutColumn]));
             }
             set
             {
-                this[this.tableTrainingRates.DropoutColumn] = value;
+                this[this.tableTrainingRates.InputDropoutColumn] = value;
             }
         }
 

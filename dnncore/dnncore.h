@@ -317,6 +317,18 @@ namespace dnncore
 				OnPropertyChanged("L2Penalty");
 			}
 		}
+		property Float Dropout
+		{
+			Float get() { return dropout; }
+			void set(Float value)
+			{
+				if (value == dropout || value < Float(0) || value > Float(1))
+					return;
+
+				dropout = value;
+				OnPropertyChanged("Dropout");
+			}
+		}
 		property Float Eps
 		{
 			Float get() { return eps; }
@@ -497,16 +509,16 @@ namespace dnncore
 				OnPropertyChanged("VerticalFlip");
 			}
 		}
-		property Float Dropout
+		property Float InputDropout
 		{
-			Float get() { return dropout; }
+			Float get() { return inputDropout; }
 			void set(Float value)
 			{
-				if (value == dropout || value < Float(0) || value > Float(1))
+				if (value == inputDropout || value < Float(0) || value > Float(1))
 					return;
 
-				dropout = value;
-				OnPropertyChanged("Dropout");
+				inputDropout = value;
+				OnPropertyChanged("InputDropout");
 			}
 		}
 		property Float Cutout
@@ -621,42 +633,44 @@ namespace dnncore
 		DNNTrainingRate()
 		{
 			optimizer = DNNOptimizers::NAG;
-			momentum = 0.9f;
-			beta2 = 0.999f;
-			l2Penalty = 0.0005f;
-			eps = 1E-08f;
+			momentum = Float(0.9);
+			beta2 = Float(0.999);
+			l2Penalty = Float(0.0005);
+			dropout = Float(0);
+			eps = Float(1E-08);
 			batchSize = 128;
 			height = 32;
 			width = 32;
 			cycles = 1;
 			epochs = 200;
 			epochMultiplier = 1;
-			maximumRate = 0.05f;
-			minimumRate = 0.0001f;
-			finalRate = 0.1f;
-			gamma = 0.003f;
+			maximumRate = Float(0.05);
+			minimumRate = Float(0.0001);
+			finalRate = Float(0.1);
+			gamma = Float(0.003);
 			decayAfterEpochs = 1;
-			decayFactor = 1.0f;
+			decayFactor = Float(1);
 			horizontalFlip = true;
 			verticalFlip = false;
-			dropout = 0.0f;
-			cutout = 0.0f;
+			inputDropout = Float(0);
+			cutout = Float(0);
 			cutMix = false;
-			autoAugment = 0.0f;
-			colorCast = 0.0f;
+			autoAugment = Float(0);
+			colorCast = Float(0);
 			colorAngle = 16;
-			distortion = 0.0f;
+			distortion = Float(0);
 			interpolation = DNNInterpolations::Linear;
-			scaling = 10.0f;
-			rotation = 12.0f;
+			scaling = Float(10);
+			rotation = Float(12);
 		}
 
-		DNNTrainingRate(DNNOptimizers optimizer, Float momentum, Float beta2, Float l2penalty, Float eps, UInt batchSize, UInt height, UInt width, UInt cycles, UInt epochs, UInt epochMultiplier, Float maximumRate, Float minimumRate, Float finalRate, Float gamma, UInt decayAfterEpochs, Float decayFactor, bool horizontalFlip, bool verticalFlip, Float dropout, Float cutout, bool cutMix, Float autoAugment, Float colorCast, UInt colorAngle, Float distortion, DNNInterpolations interpolation, Float scaling, Float rotation)
+		DNNTrainingRate(DNNOptimizers optimizer, Float momentum, Float beta2, Float l2penalty, Float dropout, Float eps, UInt batchSize, UInt height, UInt width, UInt cycles, UInt epochs, UInt epochMultiplier, Float maximumRate, Float minimumRate, Float finalRate, Float gamma, UInt decayAfterEpochs, Float decayFactor, bool horizontalFlip, bool verticalFlip, Float inputDropout, Float cutout, bool cutMix, Float autoAugment, Float colorCast, UInt colorAngle, Float distortion, DNNInterpolations interpolation, Float scaling, Float rotation)
 		{
 			Optimizer = optimizer;
 			Momentum = momentum;
 			Beta2 = beta2;
 			L2Penalty = l2penalty;
+			Dropout = dropout;
 			Eps = eps;
 			BatchSize = batchSize;
 			Height = height;
@@ -672,7 +686,7 @@ namespace dnncore
 			DecayFactor = decayFactor;
 			HorizontalFlip = horizontalFlip;
 			VerticalFlip = verticalFlip;
-			Dropout = dropout;
+			InputDropout = inputDropout;
 			Cutout = cutout;
 			CutMix = cutMix;
 			AutoAugment = autoAugment;
@@ -694,6 +708,7 @@ namespace dnncore
 			Float momentum = Float(0.9);
 			Float beta2 = Float(0.999);
 			Float l2Penalty = Float(0.0005);
+			Float dropout = Float(0);
 			Float eps = Float(1E-08);
 			UInt batchSize = 128;
 			UInt height = 32;
@@ -709,7 +724,7 @@ namespace dnncore
 			Float decayFactor = Float(1);
 			bool horizontalFlip = false;
 			bool verticalFlip = false;
-			Float dropout = Float(0);
+			Float inputDropout = Float(0);
 			Float cutout = Float(0);
 			bool cutMix = false;
 			Float autoAugment = Float(0);
@@ -734,12 +749,13 @@ namespace dnncore
 		property Float Momentum;
 		property Float Beta2;
 		property Float L2Penalty;
+		property Float Dropout;
 		property Float Eps;
 		property Float Rate;
 		property UInt BatchSize;
 		property UInt Height;
 		property UInt Width;
-		property Float Dropout;
+		property Float InputDropout;
 		property Float Cutout;
 		property bool CutMix;
 		property Float AutoAugment;
@@ -766,7 +782,7 @@ namespace dnncore
 		{
 		}
 
-		DNNTrainingResult::DNNTrainingResult(UInt cycle, UInt epoch, UInt groupIndex, UInt costIndex, String^ costName, DNNOptimizers optimizer, Float momentum, Float beta2, Float l2Penalty, Float eps, Float rate, UInt batchSize, UInt height, UInt width, Float dropout, Float cutout, bool cutMix, Float autoAugment, bool horizontalFlip, bool verticalFlip, Float colorCast, UInt colorAngle, Float distortion, DNNInterpolations interpolation, Float scaling, Float rotation, Float avgTrainLoss, UInt trainErrors, Float trainErrorPercentage, Float trainAccuracy, Float avgTestLoss, UInt testErrors, Float testErrorPercentage, Float testAccuracy, long long elapsedTicks)
+		DNNTrainingResult::DNNTrainingResult(UInt cycle, UInt epoch, UInt groupIndex, UInt costIndex, String^ costName, DNNOptimizers optimizer, Float momentum, Float beta2, Float l2Penalty, Float dropout, Float eps, Float rate, UInt batchSize, UInt height, UInt width, Float inputDropout, Float cutout, bool cutMix, Float autoAugment, bool horizontalFlip, bool verticalFlip, Float colorCast, UInt colorAngle, Float distortion, DNNInterpolations interpolation, Float scaling, Float rotation, Float avgTrainLoss, UInt trainErrors, Float trainErrorPercentage, Float trainAccuracy, Float avgTestLoss, UInt testErrors, Float testErrorPercentage, Float testAccuracy, long long elapsedTicks)
 		{
 			Cycle = cycle;
 			Epoch = epoch;
@@ -777,12 +793,13 @@ namespace dnncore
 			Momentum = momentum;
 			Beta2 = beta2;
 			L2Penalty = l2Penalty;
+			Dropout = dropout;
 			Eps = eps;
 			Rate = rate;
 			BatchSize = batchSize;
 			Height = height;
 			Width = width;
-			Dropout = dropout;
+			InputDropout = inputDropout;
 			Cutout = cutout;
 			CutMix = cutMix;
 			AutoAugment = autoAugment;

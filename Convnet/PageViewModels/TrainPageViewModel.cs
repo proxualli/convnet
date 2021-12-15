@@ -176,7 +176,7 @@ namespace Convnet.PageViewModels
                 for (uint c = 0; c < Model.CostLayersCount; c++)
                 {
                     Model.UpdateCostInfo(c);
-                    TrainingLog.Add(new DNNTrainingResult(Cycle, Epoch, c, Model.CostLayers[c].GroupIndex, Model.CostLayers[c].Name, (DNNOptimizers)Optimizer, Momentum, Beta2, L2Penalty, Eps, Rate, BatchSize, Height, Width, Dropout, Cutout, CutMix, AutoAugment, HorizontalFlip, VerticalFlip, ColorCast, ColorAngle, Distortion, (DNNInterpolations)Interpolation, Scaling, Rotation, Model.CostLayers[c].AvgTrainLoss, Model.CostLayers[c].TrainErrors, Model.CostLayers[c].TrainErrorPercentage, Model.CostLayers[c].TrainAccuracy, Model.CostLayers[c].AvgTestLoss, Model.CostLayers[c].TestErrors, Model.CostLayers[c].TestErrorPercentage, Model.CostLayers[c].TestAccuracy, span.Ticks));
+                    TrainingLog.Add(new DNNTrainingResult(Cycle, Epoch, c, Model.CostLayers[c].GroupIndex, Model.CostLayers[c].Name, (DNNOptimizers)Optimizer, Momentum, Dropout, Beta2, L2Penalty, Eps, Rate, BatchSize, Height, Width, Dropout, Cutout, CutMix, AutoAugment, HorizontalFlip, VerticalFlip, ColorCast, ColorAngle, Distortion, (DNNInterpolations)Interpolation, Scaling, Rotation, Model.CostLayers[c].AvgTrainLoss, Model.CostLayers[c].TrainErrors, Model.CostLayers[c].TrainErrorPercentage, Model.CostLayers[c].TrainAccuracy, Model.CostLayers[c].AvgTestLoss, Model.CostLayers[c].TestErrors, Model.CostLayers[c].TestErrorPercentage, Model.CostLayers[c].TestAccuracy, span.Ticks));
                 }
 
                 SelectedIndex = TrainingLog.Count - 1;
@@ -1181,7 +1181,7 @@ namespace Convnet.PageViewModels
             get
             {
                 if (Settings.Default.TrainRate == null)
-                    Settings.Default.TrainRate = new DNNTrainingRate(DNNOptimizers.NAG, 0.9f, 0.999f, 0.0005f, 1E-08f, 128, 32, 32, 1, 200, 1, 0.05f, 0.0001f, 0.1f, 0.003f, 1, 1, false, false, 0, 0, false, 0, 0, 0, 0, DNNInterpolations.Cubic, 10, 12);
+                    Settings.Default.TrainRate = new DNNTrainingRate(DNNOptimizers.NAG, 0.9f, 0.999f, 0.0005f, 0, 1E-08f, 128, 32, 32, 1, 200, 1, 0.05f, 0.0001f, 0.1f, 0.003f, 1, 1, false, false, 0, 0, false, 0, 0, 0, 0, DNNInterpolations.Cubic, 10, 12);
 
                 return Settings.Default.TrainRate;
             }
@@ -1359,12 +1359,13 @@ namespace Convnet.PageViewModels
                                 (double)rate.FinalRate,
                                 (double)rate.Gamma,
                                 (double)rate.L2Penalty,
+                                (double)rate.Dropout,
                                 (double)rate.Momentum,
                                 (double)rate.DecayFactor,
                                 (int)rate.DecayAfterEpochs,
                                 rate.HorizontalFlip,
                                 rate.VerticalFlip,
-                                (double)rate.Dropout,
+                                (double)rate.InputDropout,
                                 (double)rate.Cutout,
                                 rate.CutMix,
                                 (double)rate.AutoAugment,

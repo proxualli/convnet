@@ -128,6 +128,7 @@
                 <DataGridTextColumn Header="Momentum" Binding="{Binding Path=Momentum, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 <DataGridTextColumn Header="Beta2" Binding="{Binding Path=Beta2, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 <DataGridTextColumn Header="L2Penalty" Binding="{Binding Path=L2Penalty, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <DataGridTextColumn Header="Dropout" Binding="{Binding Path=Dropout, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 <DataGridTextColumn Header="Eps" Binding="{Binding Path=Eps, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 <DataGridTextColumn Header="BatchSize" Binding="{Binding Path=BatchSize, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 <DataGridTextColumn Header="Height" Binding="{Binding Path=Height, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
@@ -143,7 +144,7 @@
                 <DataGridTextColumn Header="DecayFactor" Binding="{Binding Path=DecayFactor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 <DataGridCheckBoxColumn Header="Horz.Flip" Binding="{Binding Path=HorizontalFlip, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 <DataGridCheckBoxColumn Header="Vert.Flip" Binding="{Binding Path=VerticalFlip, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                <DataGridTextColumn Header="Dropout" Binding="{Binding Path=Dropout, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <DataGridTextColumn Header="InputDropout" Binding="{Binding Path=InputDropout, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 <DataGridTextColumn Header="Cutout" Binding="{Binding Path=Cutout, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 <DataGridCheckBoxColumn Header="CutMix" Binding="{Binding Path=CutMix, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 <DataGridTextColumn Header="AutoAugment" Binding="{Binding Path=AutoAugment, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>

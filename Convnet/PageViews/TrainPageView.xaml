@@ -84,12 +84,13 @@
                     <ColumnDefinition Width="{Binding ActualWidth, ElementName=momentum}" />
                     <ColumnDefinition Width="{Binding ActualWidth, ElementName=beta2}" />
                     <ColumnDefinition Width="{Binding ActualWidth, ElementName=l2Penalty}" />
+                    <ColumnDefinition Width="{Binding ActualWidth, ElementName=dropout}" />
                     <ColumnDefinition Width="{Binding ActualWidth, ElementName=eps}" />
                     <ColumnDefinition Width="{Binding ActualWidth, ElementName=batchSize}" />
                     <ColumnDefinition Width="{Binding ActualWidth, ElementName=height}" />
                     <ColumnDefinition Width="{Binding ActualWidth, ElementName=width}" />
                     <ColumnDefinition Width="{Binding ActualWidth, ElementName=rate}" />
-                    <ColumnDefinition Width="{Binding ActualWidth, ElementName=dropout}" />
+                    <ColumnDefinition Width="{Binding ActualWidth, ElementName=inputDropout}" />
                     <ColumnDefinition Width="{Binding ActualWidth, ElementName=cutout}" />
                     <ColumnDefinition Width="{Binding ActualWidth, ElementName=cutMix}" />
                     <ColumnDefinition Width="{Binding ActualWidth, ElementName=autoaugment}" />
@@ -112,7 +113,36 @@
                     <ColumnDefinition Width="{Binding ActualWidth, ElementName=duration}" />
                 </Grid.ColumnDefinitions>
 
-                <Border Grid.Column="23" Grid.ColumnSpan="4" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  BorderThickness="1" BorderBrush="#FFE4E4E4" Margin="1,0,-1,0">
+                <Border Grid.Column="3" Grid.ColumnSpan="5" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  BorderThickness="1" BorderBrush="#FFE4E4E4" Margin="1,0,-1,0">
+                    <Border.Background>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <GradientStop Color="#FFF7F8F9" Offset="0"/>
+                            <GradientStop Color="White" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Border.Background>
+                    <TextBlock Text="Regularization" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextAlignment="Center" Foreground="Black" FontFamily="Consolas" FontSize="14" />
+                </Border>
+                
+                <Border Grid.Column="8" Grid.ColumnSpan="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  BorderThickness="1" BorderBrush="#FFE4E4E4" Margin="1,0,-1,0">
+                    <Border.Background>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <GradientStop Color="#FFF7F8F9" Offset="0"/>
+                            <GradientStop Color="White" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Border.Background>
+                    <TextBlock Text="Resolution" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextAlignment="Center" Foreground="Black" FontFamily="Consolas" FontSize="14" />
+                </Border>
+                
+                <Border Grid.Column="12" Grid.ColumnSpan="12" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  BorderThickness="1" BorderBrush="#FFE4E4E4" Margin="1,0,-1,0">
+                    <Border.Background>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <GradientStop Color="#FFF7F8F9" Offset="0"/>
+                            <GradientStop Color="White" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Border.Background>
+                    <TextBlock Text="Augmentation" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextAlignment="Center" Foreground="Black" FontFamily="Consolas" FontSize="14" />
+                </Border>
+                <Border Grid.Column="24" Grid.ColumnSpan="4" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  BorderThickness="1" BorderBrush="#FFE4E4E4" Margin="1,0,-1,0">
                     <Border.Background>
                         <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                             <GradientStop Color="#FFF7F8F9" Offset="0"/>
@@ -121,7 +151,7 @@
                     </Border.Background>
                     <TextBlock Text="Train" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextAlignment="Center" Foreground="Black" FontFamily="Consolas" FontSize="14" />
                 </Border>
-                <Border Grid.Column="27" Grid.ColumnSpan="4" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  BorderThickness="1" BorderBrush="#FFE4E4E4" Margin="1,0,-1,0">
+                <Border Grid.Column="28" Grid.ColumnSpan="4" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  BorderThickness="1" BorderBrush="#FFE4E4E4" Margin="1,0,-1,0">
                     <Border.Background>
                         <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                             <GradientStop Color="#FFF7F8F9" Offset="0"/>
@@ -214,7 +244,15 @@
                             </StackPanel>
                         </GridViewColumnHeader>
                     </GridViewColumn>
-
+                    
+                    <GridViewColumn x:Name="dropout" Header="Dropout" Width="80">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Dropout, StringFormat=0.#######}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextAlignment="Center" FontFamily="Consolas" FontSize="14"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    
                     <GridViewColumn x:Name="eps"  Width="75">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
@@ -260,10 +298,10 @@
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
                     
-                    <GridViewColumn x:Name="dropout" Header="Dropout" Width="80">
+                    <GridViewColumn x:Name="inputDropout" Header="Dropout" Width="80">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding Dropout, StringFormat=0.#######}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextAlignment="Center" FontFamily="Consolas" FontSize="14"/>
+                                <TextBlock Text="{Binding InputDropout, StringFormat=0.#######}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextAlignment="Center" FontFamily="Consolas" FontSize="14"/>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>

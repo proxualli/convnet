@@ -45,11 +45,11 @@ namespace Convnet.Dialogs
 
         private void ChangeSGDR()
         {
-            DataGridRates.Columns[8].Visibility = tpvm.SGDR ? Visibility.Visible : Visibility.Collapsed;
-            DataGridRates.Columns[10].Visibility = tpvm.SGDR ? Visibility.Visible : Visibility.Collapsed;
+            DataGridRates.Columns[9].Visibility = tpvm.SGDR ? Visibility.Visible : Visibility.Collapsed;
+            DataGridRates.Columns[11].Visibility = tpvm.SGDR ? Visibility.Visible : Visibility.Collapsed;
 
-            DataGridRates.Columns[15].Visibility = tpvm.SGDR ? Visibility.Collapsed : Visibility.Visible;
-            //DataGridRates.Columns[16].Visibility = tpvm.SGDR ? Visibility.Collapsed: Visibility.Visible;
+            DataGridRates.Columns[16].Visibility = tpvm.SGDR ? Visibility.Collapsed : Visibility.Visible;
+            //DataGridRates.Columns[17].Visibility = tpvm.SGDR ? Visibility.Collapsed: Visibility.Visible;
         }
 
         private bool IsValid(DependencyObject node)
@@ -152,7 +152,7 @@ namespace Convnet.Dialogs
                     {
                         table.BeginLoadData();
                         foreach (DNNTrainingRate rate in tpvm.TrainRates)
-                            table.AddTrainingRatesRow((int)rate.Optimizer, (double)rate.Beta2, (double)rate.Eps, (double)rate.MaximumRate, (int)rate.BatchSize, (int)rate.Height, (int)rate.Width, (int)rate.Cycles, (int)rate.Epochs, (int)rate.EpochMultiplier, (double)rate.MinimumRate, (double)rate.FinalRate, (double)rate.Gamma, (double)rate.L2Penalty, (double)rate.Momentum, (double)rate.DecayFactor, (int)rate.DecayAfterEpochs, rate.HorizontalFlip, rate.VerticalFlip, (double)rate.Dropout, (double)rate.Cutout, (bool)rate.CutMix, (double)rate.AutoAugment, (double)rate.ColorCast, (int)rate.ColorAngle, (double)rate.Distortion, (int)rate.Interpolation, (double)rate.Scaling, (double)rate.Rotation);
+                            table.AddTrainingRatesRow((int)rate.Optimizer, (double)rate.Beta2, (double)rate.Eps, (double)rate.MaximumRate, (int)rate.BatchSize, (int)rate.Height, (int)rate.Width, (int)rate.Cycles, (int)rate.Epochs, (int)rate.EpochMultiplier, (double)rate.MinimumRate, (double)rate.FinalRate, (double)rate.Gamma, (double)rate.L2Penalty, (double)rate.Dropout, (double)rate.Momentum, (double)rate.DecayFactor, (int)rate.DecayAfterEpochs, rate.HorizontalFlip, rate.VerticalFlip, (double)rate.InputDropout, (double)rate.Cutout, (bool)rate.CutMix, (double)rate.AutoAugment, (double)rate.ColorCast, (int)rate.ColorAngle, (double)rate.Distortion, (int)rate.Interpolation, (double)rate.Scaling, (double)rate.Rotation);
                         table.EndLoadData();
                         table.WriteXml(fileName, System.Data.XmlWriteMode.WriteSchema);
                     }
@@ -194,7 +194,7 @@ namespace Convnet.Dialogs
                                 tpvm.TrainRates.Clear();
 
                                 foreach (DNNDataSet.TrainingRatesRow row in table)
-                                    tpvm.TrainRates.Add(new DNNTrainingRate((DNNOptimizers)row.Optimizer, (float)row.Momentum, (float)row.Beta2, (float)row.L2Penalty,  (float)row.Eps, (uint)row.BatchSize, (uint)row.Height, (uint)row.Width, (uint)row.Cycles, (uint)row.Epochs, (uint)row.EpochMultiplier, (float)row.MaximumRate, (float)row.MinimumRate, (float)row.FinalRate, (float)row.Gamma, (uint)row.DecayAfterEpochs, (float)row.DecayFactor, row.HorizontalFlip, row.VerticalFlip, (float)row.Dropout, (float)row.Cutout, (bool)row.CutMix, (float)row.AutoAugment, (float)row.ColorCast, (uint)row.ColorAngle, (float)row.Distortion, (DNNInterpolations)row.Interpolation, (float)row.MaxScaling, (float)row.MaxRotation));
+                                    tpvm.TrainRates.Add(new DNNTrainingRate((DNNOptimizers)row.Optimizer, (float)row.Momentum, (float)row.Beta2, (float)row.L2Penalty,  (float)row.Dropout, (float)row.Eps, (uint)row.BatchSize, (uint)row.Height, (uint)row.Width, (uint)row.Cycles, (uint)row.Epochs, (uint)row.EpochMultiplier, (float)row.MaximumRate, (float)row.MinimumRate, (float)row.FinalRate, (float)row.Gamma, (uint)row.DecayAfterEpochs, (float)row.DecayFactor, row.HorizontalFlip, row.VerticalFlip, (float)row.InputDropout, (float)row.Cutout, (bool)row.CutMix, (float)row.AutoAugment, (float)row.ColorCast, (uint)row.ColorAngle, (float)row.Distortion, (DNNInterpolations)row.Interpolation, (float)row.MaxScaling, (float)row.MaxRotation));
                             }
 
                             Mouse.OverrideCursor = null;
