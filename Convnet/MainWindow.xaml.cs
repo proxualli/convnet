@@ -577,12 +577,13 @@ namespace Convnet
                                             "Momentum" + delim +
                                             "Beta2" + delim +
                                             "L2Penalty" + delim +
+                                            "Dropout" + delim +
                                             "Eps" + delim +
                                             "Rate" + delim +
                                             "BatchSize" + delim +
                                             "Height" + delim +
                                             "Width" + delim +
-                                            "Dropout" + delim +
+                                            "InputDropout" + delim +
                                             "Cutout" + delim +
                                             "CutMix" + delim +
                                             "AutoAugment" + delim +
@@ -616,12 +617,13 @@ namespace Convnet
                                             row.Momentum.ToString() + delim +
                                             row.Beta2.ToString() + delim +
                                             row.L2Penalty.ToString() + delim +
+                                            row.Dropout.ToString() + delim +
                                             row.Eps.ToString() + delim +
                                             row.Rate.ToString() + delim +
                                             row.BatchSize.ToString() + delim +
                                             row.Height.ToString() + delim +
                                             row.Width.ToString() + delim +
-                                            row.Dropout.ToString() + delim +
+                                            row.InputDropout.ToString() + delim +
                                             row.Cutout.ToString() + delim +
                                             row.CutMix.ToString() + delim +
                                             row.AutoAugment.ToString() + delim +

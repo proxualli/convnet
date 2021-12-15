@@ -960,9 +960,9 @@ namespace dnncore
 	public ref class Model
 	{
 	public:
-		delegate void TrainProgressEventDelegate(DNNOptimizers, UInt, UInt, UInt, UInt, UInt, bool, bool, Float, Float, bool, Float, Float, UInt, Float, DNNInterpolations, Float, Float, UInt, Float, Float, Float, Float, Float, Float, Float, UInt, Float, Float, Float, UInt, DNNStates, DNNTaskStates);
+		delegate void TrainProgressEventDelegate(DNNOptimizers, UInt, UInt, UInt, UInt, UInt, bool, bool, Float, Float, bool, Float, Float, UInt, Float, DNNInterpolations, Float, Float, UInt, Float, Float, Float, Float, Float, Float, Float, Float, UInt, Float, Float, Float, UInt, DNNStates, DNNTaskStates);
 		delegate void TestProgressEventDelegate(UInt, UInt, Float, Float, Float, UInt, DNNStates, DNNTaskStates);
-		delegate void NewEpochEventDelegate(UInt, UInt, UInt, UInt, Float, Float, bool, bool, Float, Float, bool, Float, Float, UInt, Float, UInt, Float, Float, Float, UInt, UInt, UInt, Float, Float, Float, Float, Float, UInt, Float, Float, Float, UInt);
+		delegate void NewEpochEventDelegate(UInt, UInt, UInt, UInt, Float, Float, bool, bool, Float, Float, bool, Float, Float, UInt, Float, UInt, Float, Float, Float, UInt, UInt, UInt, Float, Float, Float, Float, Float, Float, UInt, Float, Float, Float, UInt);
 
 		property TrainProgressEventDelegate^ TrainProgress;
 		property TestProgressEventDelegate^ TestProgress;
@@ -1019,7 +1019,7 @@ namespace dnncore
 		property UInt TrainErrors;
 		property UInt TestErrors;
 		property UInt BlockSize;
-		property Float Dropout;
+		property Float InputDropout;
 		property Float Cutout;
 		property bool CutMix;
 		property Float AutoAugment;
@@ -1034,6 +1034,7 @@ namespace dnncore
 		property Float Momentum;
 		property Float Beta2;
 		property Float L2Penalty;
+		property Float Dropout;
 		property Float SampleRate;
 		property DNNStates State;
 		property DNNTaskStates TaskState;

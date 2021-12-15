@@ -62,7 +62,7 @@
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <SDLCheck>true</SDLCheck>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
-      <AdditionalOptions> /favor:AMD64 /d2vzeroupper %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions> /favor:AMD64 /d2vzeroupper /fp:contract %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <AdditionalDependencies />
@@ -84,7 +84,7 @@
       <EnableEnhancedInstructionSet>AdvancedVectorExtensions2</EnableEnhancedInstructionSet>
       <FloatingPointModel>Fast</FloatingPointModel>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
-      <AdditionalOptions>/favor:AMD64 /d2vzeroupper %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>/favor:AMD64 /d2vzeroupper /fp:contract %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <AdditionalDependencies />

@@ -219,7 +219,7 @@ namespace dnn
 		std::atomic<bool> BatchSizeChanging;
 		std::atomic<bool> ResettingWeights;
 
-		void(*NewEpoch)(UInt, UInt, UInt, UInt, Float, Float, Float, bool, bool, Float, Float, bool, Float, Float, UInt, Float, UInt, Float, Float, Float, UInt, UInt, UInt, Float, Float, Float, Float, Float, UInt, Float, Float, Float, UInt);
+		void(*NewEpoch)(UInt, UInt, UInt, UInt, Float, Float, bool, bool, Float, Float, bool, Float, Float, UInt, Float, UInt, Float, Float, Float, UInt, UInt, UInt, Float, Float, Float, Float, Float, Float, UInt, Float, Float, Float, UInt);
 
 		Model(const std::string& name, Dataprovider* dataprovider) :
 			Name(name),
@@ -365,17 +365,17 @@ namespace dnn
 				H = h;
 				W = w;
 			}
-			else
-			{
-				// revert if unsuccessful
-				Layers[0]->H = H;
-				Layers[0]->W = W;
+			//else
+			//{
+			//	// revert if unsuccessful
+			//	Layers[0]->H = H;
+			//	Layers[0]->W = W;
 
-				for (auto& layer : Layers)
-					layer->UpdateResolution();
+			//	for (auto& layer : Layers)
+			//		layer->UpdateResolution();
 
-				SetBatchSize(BatchSize);
-			}
+			//	SetBatchSize(BatchSize);
+			//}
 		}
 
 		void ChangeDropout(const Float dropout)
@@ -1021,9 +1021,7 @@ namespace dnn
 				CurrentTrainingRate = TrainingRates[0];
 				Rate = CurrentTrainingRate.MaximumRate;
 				CurrentCycle = CurrentTrainingRate.Cycles;
-				auto height = CurrentTrainingRate.Height;
-				auto width = CurrentTrainingRate.Width;
-
+			
 				if (CurrentTrainingRate.BatchSize > BatchSize)
 					if (GetTotalFreeMemory() < GetNeuronsSize(CurrentTrainingRate.BatchSize - BatchSize))
 					{                           
@@ -1073,6 +1071,7 @@ namespace dnn
 						break;
 					}
 
+				
 				while (CurrentEpoch < TotalEpochs)
 				{
 					if (CurrentEpoch - (GoToEpoch - 1) == learningRateEpochs)
@@ -1081,13 +1080,12 @@ namespace dnn
 						CurrentTrainingRate = TrainingRates[learningRateIndex];
 						Rate = CurrentTrainingRate.MaximumRate;
 
-						if (height != CurrentTrainingRate.Height || width != CurrentTrainingRate.Width || BatchSize != CurrentTrainingRate.BatchSize)
-						{
-							ChangeResolution(CurrentTrainingRate.BatchSize, CurrentTrainingRate.Height, CurrentTrainingRate.Width);
-							height = CurrentTrainingRate.Height;
-							width = CurrentTrainingRate.Width;
-						}
+						if (Dropout != CurrentTrainingRate.Dropout)
+							ChangeDropout(CurrentTrainingRate.Dropout);
 						
+						if (H != CurrentTrainingRate.Height || W != CurrentTrainingRate.Width || BatchSize != CurrentTrainingRate.BatchSize)
+							ChangeResolution(CurrentTrainingRate.BatchSize, CurrentTrainingRate.Height, CurrentTrainingRate.Width);
+												
 						learningRateEpochs += CurrentTrainingRate.Epochs;
 
 						if (CurrentTrainingRate.Optimizer != Optimizer)
@@ -1345,7 +1343,7 @@ namespace dnn
 							
 							State.store(States::NewEpoch);
 
-							NewEpoch(CurrentCycle, CurrentEpoch, TotalEpochs, static_cast<UInt>(CurrentTrainingRate.Optimizer), CurrentTrainingRate.Beta2, CurrentTrainingRate.Dropout, CurrentTrainingRate.Eps, CurrentTrainingRate.HorizontalFlip, CurrentTrainingRate.VerticalFlip, CurrentTrainingRate.InputDropout, CurrentTrainingRate.Cutout, CurrentTrainingRate.CutMix, CurrentTrainingRate.AutoAugment, CurrentTrainingRate.ColorCast, CurrentTrainingRate.ColorAngle, CurrentTrainingRate.Distortion, static_cast<UInt>(CurrentTrainingRate.Interpolation), CurrentTrainingRate.Scaling, CurrentTrainingRate.Rotation, CurrentTrainingRate.MaximumRate, CurrentTrainingRate.BatchSize, CurrentTrainingRate.Height, CurrentTrainingRate.Width, CurrentTrainingRate.Momentum, CurrentTrainingRate.L2Penalty, AvgTrainLoss, TrainErrorPercentage, Float(100) - TrainErrorPercentage, TrainErrors, AvgTestLoss, TestErrorPercentage, Float(100) - TestErrorPercentage, TestErrors);
+							NewEpoch(CurrentCycle, CurrentEpoch, TotalEpochs, static_cast<UInt>(CurrentTrainingRate.Optimizer), CurrentTrainingRate.Beta2, CurrentTrainingRate.Eps, CurrentTrainingRate.HorizontalFlip, CurrentTrainingRate.VerticalFlip, CurrentTrainingRate.InputDropout, CurrentTrainingRate.Cutout, CurrentTrainingRate.CutMix, CurrentTrainingRate.AutoAugment, CurrentTrainingRate.ColorCast, CurrentTrainingRate.ColorAngle, CurrentTrainingRate.Distortion, static_cast<UInt>(CurrentTrainingRate.Interpolation), CurrentTrainingRate.Scaling, CurrentTrainingRate.Rotation, CurrentTrainingRate.MaximumRate, CurrentTrainingRate.BatchSize, CurrentTrainingRate.Height, CurrentTrainingRate.Width, CurrentTrainingRate.Momentum, CurrentTrainingRate.L2Penalty, CurrentTrainingRate.Dropout, AvgTrainLoss, TrainErrorPercentage, Float(100) - TrainErrorPercentage, TrainErrors, AvgTestLoss, TestErrorPercentage, Float(100) - TestErrorPercentage, TestErrors);
 						}
 						else
 							break;

@@ -245,7 +245,7 @@
                         </GridViewColumnHeader>
                     </GridViewColumn>
                     
-                    <GridViewColumn x:Name="dropout" Header="Dropout" Width="80">
+                    <GridViewColumn x:Name="dropout" Header="Dropout" Width="70">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding Dropout, StringFormat=0.#######}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextAlignment="Center" FontFamily="Consolas" FontSize="14"/>
@@ -298,7 +298,7 @@
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
                     
-                    <GridViewColumn x:Name="inputDropout" Header="Dropout" Width="80">
+                    <GridViewColumn x:Name="inputDropout" Header="Input Dropout" Width="100">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding InputDropout, StringFormat=0.#######}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextAlignment="Center" FontFamily="Consolas" FontSize="14"/>
@@ -321,8 +321,8 @@
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
-                    
-                    <GridViewColumn x:Name="autoaugment" Header="Auto Augment" Width="94">
+
+                    <GridViewColumn x:Name="autoaugment" Header="Auto Augment" Width="90">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding AutoAugment, StringFormat=0.#####}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextAlignment="Center" FontFamily="Consolas" FontSize="14"/>
