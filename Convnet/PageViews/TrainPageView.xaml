@@ -370,7 +370,7 @@
                             <Setter Property="Template">
                                 <Setter.Value>
                                     <ControlTemplate TargetType="{x:Type GridViewColumnHeader}">
-                                        <Border BorderThickness="1,0,0,1" BorderBrush="#FF17DE17" Background="Black">
+                                        <Border BorderThickness="1,1,0,1" BorderBrush="#FF17DE17" Background="Black">
                                             <TextBlock x:Name="ContentHeader" Text="{TemplateBinding Content}" Width="Auto" TextAlignment="Center" Foreground="#FF17DE17" Visibility="Visible"/>
                                         </Border>
                                     </ControlTemplate>
