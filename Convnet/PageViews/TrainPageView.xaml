@@ -160,35 +160,27 @@
                                 <VisualStateGroup x:Name="CheckStates">
                                     <VisualState x:Name="Checked">
                                         <Storyboard>
-                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)"
-                                                 Storyboard.TargetName="CheckMark">
-                                                <DiscreteObjectKeyFrame KeyTime="0"
-                                            Value="{x:Static Visibility.Visible}" />
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="CheckMark">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}" />
                                             </ObjectAnimationUsingKeyFrames>
                                         </Storyboard>
                                     </VisualState>
                                     <VisualState x:Name="Unchecked" />
                                     <VisualState x:Name="Indeterminate">
                                         <Storyboard>
-                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)"
-                                                 Storyboard.TargetName="InderminateMark">
-                                                <DiscreteObjectKeyFrame KeyTime="0"
-                                            Value="{x:Static Visibility.Visible}" />
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="InderminateMark">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}" />
                                             </ObjectAnimationUsingKeyFrames>
                                         </Storyboard>
                                     </VisualState>
                                 </VisualStateGroup>
                             </VisualStateManager.VisualStateGroups>
-                            <ContentPresenter Margin="4,0,0,0"
-                            VerticalAlignment="Center"
-                            HorizontalAlignment="Left"
-                            RecognizesAccessKey="True" />
+                            <ContentPresenter Margin="4,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" RecognizesAccessKey="True" />
                         </BulletDecorator>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
         </Style>
-
     </UserControl.Resources>
 
     <Grid x:Name="gridMain" Background="#FF646464" >
@@ -351,21 +343,15 @@
                     <Setter Property="Template">
                         <Setter.Value>
                             <ControlTemplate TargetType="{x:Type ListViewItem}">
-                                <Border CornerRadius="2" SnapsToDevicePixels="True"  
-                                BorderThickness="{TemplateBinding BorderThickness}"   
-                                BorderBrush="{TemplateBinding BorderBrush}"   
-                                Background="{TemplateBinding Background}">
+                                <Border CornerRadius="2" SnapsToDevicePixels="True" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}" Background="{TemplateBinding Background}">
                                     <Border Name="InnerBorder" CornerRadius="1" BorderThickness="1">
                                         <Grid>
                                             <Grid.RowDefinitions>
                                                 <RowDefinition MaxHeight="11" />
                                                 <RowDefinition />
                                             </Grid.RowDefinitions>
-
-                                            <Rectangle Name="UpperHighlight" Visibility="Collapsed" Fill="#75FFFFFF" />
-                                            <GridViewRowPresenter Grid.RowSpan="2"   
-                                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}"   
-                                            SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                            <Rectangle Name="UpperHighlight" Visibility="Collapsed" Fill="Black" />
+                                            <GridViewRowPresenter Grid.RowSpan="2" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
                                         </Grid>
                                     </Border>
                                 </Border>
@@ -470,7 +456,7 @@
                         </GridViewColumnHeader>
                     </GridViewColumn>
 
-                    <GridViewColumn x:Name="gamma" Width="70" >
+                    <GridViewColumn x:Name="gamma" Width="80" >
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding Gamma, StringFormat=0.#########}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextAlignment="Center" FontFamily="Consolas" FontSize="14"/>
