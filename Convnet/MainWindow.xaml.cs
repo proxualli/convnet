@@ -85,14 +85,17 @@ namespace Convnet
             }
 
             var fileName = Path.Combine(StateDirectory, Settings.Default.ModelNameActive + ".txt");
+
             if (!File.Exists(fileName))
             {
                 var backupModelName = "resnet-32-3-2-6-channelzeropad-relu";
                 Directory.CreateDirectory(DefinitionsDirectory + backupModelName + @"\");
                 File.Copy(ApplicationPath + @"Resources\state\" + backupModelName, StateDirectory + backupModelName, true);
                 File.Copy(ApplicationPath + @"Resources\state\" + backupModelName, DefinitionsDirectory + backupModelName, true);
-                Settings.Default.ModelNameActive = backupModelName;
+                
                 fileName = Path.Combine(StateDirectory, backupModelName + ".txt");
+                
+                Settings.Default.ModelNameActive = backupModelName;
                 Settings.Default.Optimizer = DNNOptimizers.NAG;
                 Settings.Default.Save();
             }
@@ -100,9 +103,11 @@ namespace Convnet
             try
             {
                 Model model = new Model(Settings.Default.ModelNameActive, fileName);
+
                 if (model != null)
                 {
                     PageVM = new PageViewModel(model);
+
                     if (PageVM != null)
                     {
                         PageVM.Model.SetFormat(Settings.Default.PlainFormat);
