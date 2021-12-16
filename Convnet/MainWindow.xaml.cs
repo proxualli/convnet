@@ -111,8 +111,8 @@ namespace Convnet
                         PageVM.Model.SetDisableLocking(Settings.Default.DisableLocking);
                         PageVM.Model.BlockSize = (ulong)Settings.Default.PixelSize;
 
-                        var dataset = PageVM.Model.Dataset.ToString().ToLower(CultureInfo.CurrentCulture);
-                        var optimizer = PageVM.Model.Optimizer.ToString().ToLower(CultureInfo.CurrentCulture);
+                        var dataset = PageVM.Model.Dataset.ToString().ToLower();
+                        var optimizer = PageVM.Model.Optimizer.ToString().ToLower();
 
                         var fileNamePersistOptimizer = Path.Combine(StateDirectory, Settings.Default.ModelNameActive + "-(" + dataset + ")(" + optimizer + @").bin");
                         var fileNameNoOptimizer = Path.Combine(StateDirectory, Settings.Default.ModelNameActive + "-(" + dataset + ").bin");
