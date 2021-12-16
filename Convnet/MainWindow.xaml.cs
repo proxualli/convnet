@@ -92,9 +92,7 @@ namespace Convnet
                 Directory.CreateDirectory(DefinitionsDirectory + backupModelName + @"\");
                 File.Copy(ApplicationPath + @"Resources\state\" + backupModelName, StateDirectory + backupModelName, true);
                 File.Copy(ApplicationPath + @"Resources\state\" + backupModelName, DefinitionsDirectory + backupModelName, true);
-                
                 fileName = Path.Combine(StateDirectory, backupModelName + ".txt");
-                
                 Settings.Default.ModelNameActive = backupModelName;
                 Settings.Default.Optimizer = DNNOptimizers.NAG;
                 Settings.Default.Save();
@@ -143,8 +141,7 @@ namespace Convnet
                         Title = PageVM.Model.Name + " - Convnet Explorer";
                         DataContext = PageVM;
 
-                        int priority = (int)Math.Round(Settings.Default.PrioritySetter);
-                        switch (priority)
+                        switch ((int)Math.Round(Settings.Default.PrioritySetter))
                         {
                             case 1:
                                 PrioritySlider.ToolTip = "Low";
@@ -174,7 +171,7 @@ namespace Convnet
             }
             catch (Exception exception)
             {
-                Xceed.Wpf.Toolkit.MessageBox.Show(exception.Message + "\r\n\r\n" + exception.GetBaseException().Message + "\r\n\r\n" + exception.InnerException.Message + "\r\n\r\nAn error occured while loading the model:" + Settings.Default.ModelNameActive, "Information", MessageBoxButton.OK);
+                Xceed.Wpf.Toolkit.MessageBox.Show(exception.Message + "\r\n\r\n" + exception.GetBaseException().Message + "\r\n\r\n" + exception.InnerException.Message + "\r\n\r\nAn error occured while loading the Model:" + Settings.Default.ModelNameActive, "Information", MessageBoxButton.OK);
             }
         }
 

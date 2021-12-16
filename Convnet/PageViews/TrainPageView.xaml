@@ -74,7 +74,7 @@
         </LinearGradientBrush>
 
         <LinearGradientBrush x:Key="MenuBrush" EndPoint="0.5,1" StartPoint="0.5,0.99">
-            <GradientStop Color="Black" Offset="0"/>
+            <GradientStop Color="#FF646464" Offset="0"/>
             <GradientStop Color="DarkGray" Offset="1"/>
         </LinearGradientBrush>
         
@@ -302,7 +302,7 @@
             </Grid>
         </ScrollViewer>
 
-        <ListView Grid.Row="2" Foreground="#FF17DE17" BorderBrush="{StaticResource DisabledBorderBrush}" Margin="0" Height="Auto" HorizontalAlignment="Stretch" x:Name="listViewTrainingResult" VerticalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Width="Auto" IsSynchronizedWithCurrentItem="True" SelectedIndex="{Binding SelectedIndex}" ItemsSource="{Binding Source={StaticResource src}}" SelectionMode="Single" UseLayoutRounding="True" IsEnabled="True" Grid.ColumnSpan="1" FontFamily="Consolas" FontSize="13" IsTextSearchEnabled="False" TextOptions.TextFormattingMode="Display" KeyDown="ListViewTrainingResult_KeyDown" BorderThickness="0" ScrollViewer.ScrollChanged="ListViewTrainingResult_ScrollChanged" SelectionChanged="ListViewTrainingResult_SelectionChanged" LayoutUpdated="ListViewTrainingResult_LayoutUpdated" Background="Black">
+        <ListView Grid.Row="2" Foreground="#FF17DE17" BorderBrush="{StaticResource DisabledBorderBrush}" Margin="0" Height="Auto" HorizontalAlignment="Stretch" x:Name="listViewTrainingResult" VerticalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Width="Auto" IsSynchronizedWithCurrentItem="True" SelectedIndex="{Binding SelectedIndex}" ItemsSource="{Binding Source={StaticResource src}}" SelectionMode="Single" UseLayoutRounding="True" IsEnabled="True" Grid.ColumnSpan="1" FontFamily="Consolas" FontSize="13" IsTextSearchEnabled="False" TextOptions.TextFormattingMode="Display" KeyDown="ListViewTrainingResult_KeyDown" BorderThickness="0" ScrollViewer.ScrollChanged="ListViewTrainingResult_ScrollChanged" SelectionChanged="ListViewTrainingResult_SelectionChanged" LayoutUpdated="ListViewTrainingResult_LayoutUpdated" Background="#FF646464">
             <ListView.ItemContainerStyle>
                 <Style TargetType="{x:Type ListViewItem}">
                     <Style.Resources>
@@ -370,7 +370,7 @@
                             <Setter Property="Template">
                                 <Setter.Value>
                                     <ControlTemplate TargetType="{x:Type GridViewColumnHeader}">
-                                        <Border BorderThickness="1,1,0,1" BorderBrush="#FF17DE17" Background="Black">
+                                        <Border BorderThickness="1,1,0,1" BorderBrush="#FF17DE17" Background="#FF646464">
                                             <TextBlock x:Name="ContentHeader" Text="{TemplateBinding Content}" Width="Auto" TextAlignment="Center" Foreground="#FF17DE17" Visibility="Visible"/>
                                         </Border>
                                     </ControlTemplate>

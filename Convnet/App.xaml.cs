@@ -14,13 +14,14 @@ namespace Convnet
 {
     public partial class App : Application, IDisposable
     {
+        static readonly bool singleInstanceApp = false;
         private static readonly SingleInstanceMutex sim;
-
         private MainWindow mainWindow;
        
         static App()
         {
-            sim = new SingleInstanceMutex();
+            if (singleInstanceApp)
+                sim = new SingleInstanceMutex();
 
             try
             {
@@ -46,11 +47,11 @@ namespace Convnet
 
         protected override void OnStartup(StartupEventArgs e)
         {
-            if (sim.IsOtherInstanceRunning)
+            if (singleInstanceApp && sim.IsOtherInstanceRunning)
             {
                 Current.Shutdown();
                 return;
-            }
+            }            
 
             try
             {
