@@ -296,7 +296,7 @@
                 <Border Grid.Column="25" Grid.ColumnSpan="4" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  BorderThickness="1,1,0,1" BorderBrush="#FF17DE17" Margin="1,0,-1,0" Background="{StaticResource MenuBrush}">
                     <TextBlock Text="Train" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextAlignment="Center" Foreground="#FF17DE17" FontFamily="Consolas" FontSize="14" />
                 </Border>
-                <Border Grid.Column="28" Grid.ColumnSpan="4" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  BorderThickness="1,1,0,1" BorderBrush="#FF17DE17" Margin="1,0,-1,0" Background="{StaticResource MenuBrush}">
+                <Border Grid.Column="29" Grid.ColumnSpan="4" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  BorderThickness="1,1,0,1" BorderBrush="#FF17DE17" Margin="1,0,-1,0" Background="{StaticResource MenuBrush}">
                     <TextBlock Text="Test" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextAlignment="Center" Foreground="#FF17DE17" FontFamily="Consolas" FontSize="14" />
                 </Border>
             </Grid>
