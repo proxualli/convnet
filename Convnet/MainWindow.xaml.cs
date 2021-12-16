@@ -576,6 +576,7 @@ namespace Convnet
                                             "Optimizer" + delim +
                                             "Momentum" + delim +
                                             "Beta2" + delim +
+                                            "Gamma" + delim +
                                             "L2Penalty" + delim +
                                             "Dropout" + delim +
                                             "Eps" + delim +
@@ -616,6 +617,7 @@ namespace Convnet
                                             row.Optimizer.ToString() + delim +
                                             row.Momentum.ToString() + delim +
                                             row.Beta2.ToString() + delim +
+                                            row.Gamma.ToString() + delim +
                                             row.L2Penalty.ToString() + delim +
                                             row.Dropout.ToString() + delim +
                                             row.Eps.ToString() + delim +
