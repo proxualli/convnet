@@ -484,7 +484,7 @@
                         </GridViewColumnHeader>
                     </GridViewColumn>
 
-                    <GridViewColumn x:Name="l2Penalty" Width="100">
+                    <GridViewColumn x:Name="l2Penalty" Width="78">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding L2Penalty, StringFormat=0.#########}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextAlignment="Center" FontFamily="Consolas" FontSize="14"/>
@@ -497,7 +497,7 @@
                         </GridViewColumnHeader>
                     </GridViewColumn>
                     
-                    <GridViewColumn x:Name="dropout" Header="Dropout" Width="70">
+                    <GridViewColumn x:Name="dropout" Header="Dropout" Width="66">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding Dropout, StringFormat=0.#######}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextAlignment="Center" FontFamily="Consolas" FontSize="14"/>
@@ -513,7 +513,7 @@
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
 
-                    <GridViewColumn x:Name="height" Header="Height" Width="70">
+                    <GridViewColumn x:Name="height" Header="Height" Width="60">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding Height, StringFormat=0.##}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextAlignment="Center" FontFamily="Consolas" FontSize="14"/>
@@ -521,7 +521,7 @@
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
 
-                    <GridViewColumn x:Name="width" Header="Width" Width="70">
+                    <GridViewColumn x:Name="width" Header="Width" Width="60">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding Width, StringFormat=0.##}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextAlignment="Center" FontFamily="Consolas" FontSize="14"/>
@@ -537,7 +537,7 @@
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
                     
-                    <GridViewColumn x:Name="cutout" Header="Cutout" Width="80">
+                    <GridViewColumn x:Name="cutout" Header="Cutout" Width="66">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding Cutout, StringFormat=0.#####}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextAlignment="Center" FontFamily="Consolas" FontSize="14"/>
@@ -545,7 +545,7 @@
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
 
-                    <GridViewColumn x:Name="cutMix" Header="CutMix" Width="80">
+                    <GridViewColumn x:Name="cutMix" Header="CutMix" Width="60">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <CheckBox HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="Consolas" HorizontalContentAlignment="Center" FontSize="14" IsChecked="{Binding CutMix}" Foreground="#FF17DE17" Background="Transparent" BorderBrush="{DynamicResource {x:Static SystemColors.DesktopBrushKey}}" IsThreeState="False" IsHitTestVisible="False" Style="{Binding Mode=OneWay, Source={StaticResource KioskCheckBox}}"/>
