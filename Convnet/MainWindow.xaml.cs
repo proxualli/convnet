@@ -88,12 +88,12 @@ namespace Convnet
 
             if (!File.Exists(fileName))
             {
-                Directory.CreateDirectory(DefinitionsDirectory + @"resnet-32-3-2-6-channelzeropad-relu\");
+                var backupModelName = "resnet-32-3-2-6-channelzeropad-relu";
+                Directory.CreateDirectory(DefinitionsDirectory + backupModelName + @"\");
                 Directory.CreateDirectory(DefinitionsDirectory + Settings.Default.ModelNameActive + @"\");
-                File.Copy(ApplicationPath + @"Resources\state\resnet-32-3-2-6-channelzeropad-relu.txt", StateDirectory + "resnet-32-3-2-6-channelzeropad-relu.txt", true);
-                File.Copy(ApplicationPath + @"Resources\state\resnet-32-3-2-6-channelzeropad-relu.txt", DefinitionsDirectory + "resnet-32-3-2-6-channelzeropad-relu.txt", true);
-
-                Settings.Default.ModelNameActive = "resnet-32-3-2-6-channelzeropad-relu";
+                File.Copy(ApplicationPath + @"Resources\state\" + backupModelName, StateDirectory + backupModelName, true);
+                File.Copy(ApplicationPath + @"Resources\state\" + backupModelName, DefinitionsDirectory + backupModelName, true);
+                Settings.Default.ModelNameActive = backupModelName;
                 Settings.Default.Optimizer = DNNOptimizers.NAG;
                 Settings.Default.Save();
             }
