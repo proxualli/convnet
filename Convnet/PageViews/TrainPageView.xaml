@@ -73,6 +73,11 @@
                 Offset="1" />
         </LinearGradientBrush>
 
+        <LinearGradientBrush x:Key="MenuBrush" EndPoint="0.5,1" StartPoint="0.5,0.99">
+            <GradientStop Color="Black" Offset="0"/>
+            <GradientStop Color="DarkGray" Offset="1"/>
+        </LinearGradientBrush>
+        
         <LinearGradientBrush x:Key="ProgressBarIndicatorAnimatedFill"
                      StartPoint="0,0"
                      EndPoint="1,0">
@@ -277,52 +282,22 @@
                     <ColumnDefinition Width="{Binding ActualWidth, ElementName=duration}" />
                 </Grid.ColumnDefinitions>
 
-                <Border Grid.Column="5" Grid.ColumnSpan="5" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  BorderThickness="1" BorderBrush="#FFE4E4E4" Margin="1,0,-1,0">
-                    <Border.Background>
-                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                            <GradientStop Color="#FFF7F8F9" Offset="0"/>
-                            <GradientStop Color="White" Offset="1"/>
-                        </LinearGradientBrush>
-                    </Border.Background>
-                    <TextBlock Text="Regularization" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextAlignment="Center" Foreground="Black" FontFamily="Consolas" FontSize="14" />
+                <Border Grid.Column="5" Grid.ColumnSpan="5" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  BorderThickness="1" BorderBrush="#FFE4E4E4" Margin="1,0,-1,0" Background="{StaticResource MenuBrush}">
+                    <TextBlock Text="Regularization" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextAlignment="Center" Foreground="#FF17DE17" FontFamily="Consolas" FontSize="14" />
                 </Border>
-                
-                <Border Grid.Column="10" Grid.ColumnSpan="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  BorderThickness="1" BorderBrush="#FFE4E4E4" Margin="1,0,-1,0">
-                    <Border.Background>
-                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                            <GradientStop Color="#FFF7F8F9" Offset="0"/>
-                            <GradientStop Color="White" Offset="1"/>
-                        </LinearGradientBrush>
-                    </Border.Background>
-                    <TextBlock Text="Resolution" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextAlignment="Center" Foreground="Black" FontFamily="Consolas" FontSize="14" />
+
+                <Border Grid.Column="10" Grid.ColumnSpan="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  BorderThickness="1" BorderBrush="#FFE4E4E4" Margin="1,0,-1,0" Background="{StaticResource MenuBrush}">
+                    <TextBlock Text="Resolution" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextAlignment="Center" Foreground="#FF17DE17" FontFamily="Consolas" FontSize="14" />
                 </Border>
-                
-                <Border Grid.Column="13" Grid.ColumnSpan="12" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  BorderThickness="1" BorderBrush="#FFE4E4E4" Margin="1,0,-1,0">
-                    <Border.Background>
-                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                            <GradientStop Color="#FFF7F8F9" Offset="0"/>
-                            <GradientStop Color="White" Offset="1"/>
-                        </LinearGradientBrush>
-                    </Border.Background>
-                    <TextBlock Text="Augmentation" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextAlignment="Center" Foreground="Black" FontFamily="Consolas" FontSize="14" />
+
+                <Border Grid.Column="13" Grid.ColumnSpan="12" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  BorderThickness="1" BorderBrush="#FFE4E4E4" Margin="1,0,-1,0" Background="{StaticResource MenuBrush}">
+                    <TextBlock Text="Augmentation" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextAlignment="Center" Foreground="#FF17DE17" FontFamily="Consolas" FontSize="14" />
                 </Border>
-                <Border Grid.Column="25" Grid.ColumnSpan="4" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  BorderThickness="1" BorderBrush="#FFE4E4E4" Margin="1,0,-1,0">
-                    <Border.Background>
-                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                            <GradientStop Color="#FFF7F8F9" Offset="0"/>
-                            <GradientStop Color="White" Offset="1"/>
-                        </LinearGradientBrush>
-                    </Border.Background>
-                    <TextBlock Text="Train" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextAlignment="Center" Foreground="Black" FontFamily="Consolas" FontSize="14" />
+                <Border Grid.Column="25" Grid.ColumnSpan="4" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  BorderThickness="1" BorderBrush="#FFE4E4E4" Margin="1,0,-1,0" Background="{StaticResource MenuBrush}">
+                    <TextBlock Text="Train" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextAlignment="Center" Foreground="#FF17DE17" FontFamily="Consolas" FontSize="14" />
                 </Border>
-                <Border Grid.Column="28" Grid.ColumnSpan="4" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  BorderThickness="1" BorderBrush="#FFE4E4E4" Margin="1,0,-1,0">
-                    <Border.Background>
-                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                            <GradientStop Color="#FFF7F8F9" Offset="0"/>
-                            <GradientStop Color="White" Offset="1"/>
-                        </LinearGradientBrush>
-                    </Border.Background>
-                    <TextBlock Text="Test" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextAlignment="Center" Foreground="Black" FontFamily="Consolas" FontSize="14" />
+                <Border Grid.Column="28" Grid.ColumnSpan="4" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  BorderThickness="1" BorderBrush="#FFE4E4E4" Margin="1,0,-1,0" Background="{StaticResource MenuBrush}">
+                    <TextBlock Text="Test" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextAlignment="Center" Foreground="#FF17DE17" FontFamily="Consolas" FontSize="14" />
                 </Border>
             </Grid>
         </ScrollViewer>
@@ -336,7 +311,7 @@
                         <!-- Background for Selected ListViewItem -->
                         <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="DarkGreen"/>
                         <LinearGradientBrush x:Key="ListItemHoverFill" EndPoint="0,1" StartPoint="0,0">
-                            <GradientStop Color="Black" Offset="0"/>
+                            <GradientStop Color="White" Offset="0"/>
                             <GradientStop Color="Black" Offset="1"/>
                         </LinearGradientBrush>
                     </Style.Resources>
@@ -394,7 +369,8 @@
                             <Setter Property="IsEnabled" Value="False"/>
                             <Style.Triggers>
                                 <Trigger Property="IsEnabled" Value="False">
-                                    <Setter Property="TextElement.Foreground" Value="Black"/>
+                                    <Setter Property="TextElement.Foreground" Value="#FF17DE17"/>
+                                    <Setter Property="Background" Value="{StaticResource MenuBrush}"/>
                                 </Trigger>
                             </Style.Triggers>
                         </Style>
