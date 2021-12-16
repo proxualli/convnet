@@ -85,7 +85,6 @@ namespace Convnet
             }
 
             var fileName = Path.Combine(StateDirectory, Settings.Default.ModelNameActive + ".txt");
-
             if (!File.Exists(fileName))
             {
                 var backupModelName = "resnet-32-3-2-6-channelzeropad-relu";
@@ -93,6 +92,7 @@ namespace Convnet
                 File.Copy(ApplicationPath + @"Resources\state\" + backupModelName, StateDirectory + backupModelName, true);
                 File.Copy(ApplicationPath + @"Resources\state\" + backupModelName, DefinitionsDirectory + backupModelName, true);
                 Settings.Default.ModelNameActive = backupModelName;
+                fileName = Path.Combine(StateDirectory, backupModelName + ".txt");
                 Settings.Default.Optimizer = DNNOptimizers.NAG;
                 Settings.Default.Save();
             }
