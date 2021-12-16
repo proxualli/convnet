@@ -793,6 +793,7 @@ namespace dnncore
 			Optimizer = optimizer;
 			Momentum = momentum;
 			Beta2 = beta2;
+			Gamma = gamma;
 			L2Penalty = l2Penalty;
 			Dropout = dropout;
 			Eps = eps;
