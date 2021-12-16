@@ -90,7 +90,6 @@ namespace Convnet
             {
                 var backupModelName = "resnet-32-3-2-6-channelzeropad-relu";
                 Directory.CreateDirectory(DefinitionsDirectory + backupModelName + @"\");
-                Directory.CreateDirectory(DefinitionsDirectory + Settings.Default.ModelNameActive + @"\");
                 File.Copy(ApplicationPath + @"Resources\state\" + backupModelName, StateDirectory + backupModelName, true);
                 File.Copy(ApplicationPath + @"Resources\state\" + backupModelName, DefinitionsDirectory + backupModelName, true);
                 Settings.Default.ModelNameActive = backupModelName;
