@@ -28,8 +28,7 @@ namespace Convnet.PageViews
 
         private void ListViewTrainingResult_ScrollChanged(object sender, ScrollChangedEventArgs e)
         {
-            if (e.VerticalOffset == 0)
-                 ScrollViewerHeader.ScrollToHorizontalOffset(e.HorizontalOffset);
+            ScrollViewerHeader.ScrollToHorizontalOffset(e.HorizontalOffset);
         }
 
         private void ListViewTrainingResult_KeyDown(object sender, KeyEventArgs e)
