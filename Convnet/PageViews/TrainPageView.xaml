@@ -411,7 +411,7 @@
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
 
-                    <GridViewColumn x:Name="rate" Header="Rate" Width="100">
+                    <GridViewColumn x:Name="rate" Header="Rate" Width="98">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding Rate, StringFormat=#0.00000000}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextAlignment="Center" FontFamily="Consolas" FontSize="14"/>
@@ -419,7 +419,7 @@
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
                     
-                    <GridViewColumn x:Name="eps" Header="Eps" Width="75">
+                    <GridViewColumn x:Name="eps" Header="Eps" Width="60">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding Eps, StringFormat=G}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextAlignment="Center" FontFamily="Consolas" FontSize="14"/>
@@ -427,7 +427,7 @@
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
                     
-                    <GridViewColumn x:Name="momentum" Header="Momentum" Width="80">
+                    <GridViewColumn x:Name="momentum" Header="Momentum" Width="74">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding Momentum, StringFormat=0.#######}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextAlignment="Center" FontFamily="Consolas" FontSize="14"/>
@@ -435,7 +435,7 @@
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
 
-                    <GridViewColumn x:Name="beta2" Header="Beta2" Width="80">
+                    <GridViewColumn x:Name="beta2" Header="Beta2" Width="60">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding Beta2, StringFormat=0.#########}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextAlignment="Center" FontFamily="Consolas" FontSize="14"/>
@@ -475,7 +475,7 @@
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
 
-                    <GridViewColumn x:Name="height" Header="Height" Width="60">
+                    <GridViewColumn x:Name="height" Header="Height" Width="58">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding Height, StringFormat=0.##}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextAlignment="Center" FontFamily="Consolas" FontSize="14"/>
@@ -483,7 +483,7 @@
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
 
-                    <GridViewColumn x:Name="width" Header="Width" Width="60">
+                    <GridViewColumn x:Name="width" Header="Width" Width="58">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding Width, StringFormat=0.##}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextAlignment="Center" FontFamily="Consolas" FontSize="14"/>
@@ -499,7 +499,7 @@
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
                     
-                    <GridViewColumn x:Name="cutout" Header="Cutout" Width="66">
+                    <GridViewColumn x:Name="cutout" Header="Cutout" Width="60">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding Cutout, StringFormat=0.#####}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextAlignment="Center" FontFamily="Consolas" FontSize="14"/>
@@ -563,7 +563,7 @@
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
 
-                    <GridViewColumn x:Name="interpolation" Header="Interpolation" Width="110">
+                    <GridViewColumn x:Name="interpolation" Header="Interpolation" Width="108">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding Interpolation, Converter={StaticResource EnumToStringConverter}}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextAlignment="Center" FontFamily="Consolas" FontSize="14"/>                                
