@@ -118,10 +118,10 @@ namespace Convnet
                         var fileNameNoOptimizer = Path.Combine(StateDirectory, Settings.Default.ModelNameActive + "-(" + dataset + ").bin");
 
                         var fileNameOptimizer = Settings.Default.PersistOptimizer ? fileNamePersistOptimizer : fileNameNoOptimizer;
-                        var fileNameOptimizerReverse = Settings.Default.PersistOptimizer ? fileNameNoOptimizer : fileNamePersistOptimizer;
+                        var fileNameOptimizerInverse = Settings.Default.PersistOptimizer ? fileNameNoOptimizer : fileNamePersistOptimizer;
 
                         if (PageVM.Model.LoadWeights(fileNameOptimizer, Settings.Default.PersistOptimizer) != 0)
-                            if (PageVM.Model.LoadWeights(fileNameOptimizerReverse, !Settings.Default.PersistOptimizer) == 0)
+                            if (PageVM.Model.LoadWeights(fileNameOptimizerInverse, !Settings.Default.PersistOptimizer) == 0)
                             {
                                 Settings.Default.PersistOptimizer = !Settings.Default.PersistOptimizer;
                                 Settings.Default.Save();
