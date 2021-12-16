@@ -84,7 +84,9 @@ namespace Convnet
                 Copy(ApplicationPath.Replace(@"Convnet\bin\x64\" + Mode + @"\" + Framework + @"\", "") + @"ScriptsDialog\", ScriptsDirectory);
             }
 
-            if (!File.Exists(Path.Combine(StateDirectory, Settings.Default.ModelNameActive + ".txt")))
+            var fileName = Path.Combine(StateDirectory, Settings.Default.ModelNameActive + ".txt");
+
+            if (!File.Exists(fileName))
             {
                 Directory.CreateDirectory(DefinitionsDirectory + @"resnet-32-3-2-6-channelzeropad-relu\");
                 Directory.CreateDirectory(DefinitionsDirectory + Settings.Default.ModelNameActive + @"\");
@@ -98,7 +100,6 @@ namespace Convnet
 
             try
             {
-                var fileName = Path.Combine(StateDirectory, Settings.Default.ModelNameActive + ".txt");
                 Model model = new Model(Settings.Default.ModelNameActive, fileName);
                 if (model != null)
                 {
