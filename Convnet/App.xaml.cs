@@ -1,26 +1,26 @@
 ﻿using Convnet.Properties;
+using dnncore;
 using Microsoft.Build.Locator;
 using System;
 using System.ComponentModel;
 using System.Globalization;
-using System.IO;
+using System.Reflection;
+using System.Threading;
 using System.Windows;
 using System.Windows.Markup;
-using dnncore;
-using System.Threading;
-using System.Reflection;
 
 namespace Convnet
 {
     public partial class App : Application, IDisposable
     {
-        static readonly bool singleInstanceApp = false;
+        public static readonly bool SingleInstanceApp = false;
+
         private static readonly SingleInstanceMutex sim;
         private MainWindow mainWindow;
        
         static App()
         {
-            if (singleInstanceApp)
+            if (SingleInstanceApp)
                 sim = new SingleInstanceMutex();
 
             try
@@ -47,7 +47,7 @@ namespace Convnet
 
         protected override void OnStartup(StartupEventArgs e)
         {
-            if (singleInstanceApp && sim.IsOtherInstanceRunning)
+            if (SingleInstanceApp && sim.IsOtherInstanceRunning)
             {
                 Current.Shutdown();
                 return;
