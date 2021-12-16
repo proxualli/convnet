@@ -113,27 +113,24 @@ namespace Convnet
                         var dataset = PageVM.Model.Dataset.ToString().ToLower(CultureInfo.CurrentCulture);
                         var optimizer = PageVM.Model.Optimizer.ToString().ToLower(CultureInfo.CurrentCulture);
 
+                        var fileName = Settings.Default.ModelNameActive + "-(" + dataset + ")(" + optimizer + @").bin";
+                        var fileNameNoOptimizer = Settings.Default.ModelNameActive + "-(" + dataset + ").bin";
+
                         if (Settings.Default.PersistOptimizer)
                         {
-                           
-                            if (File.Exists(Path.Combine(StateDirectory, Settings.Default.ModelNameActive + "-(" + dataset + ")(" + optimizer + @").bin")))
-                            {
-                                if (PageVM.Model.LoadWeights(Path.Combine(StateDirectory, Settings.Default.ModelNameActive + "-(" + dataset + ")(" + optimizer + @").bin"), true) != 0)
-                                {
-                                    if (PageVM.Model.LoadWeights(Path.Combine(StateDirectory, Settings.Default.ModelNameActive + "-(" + dataset + @").bin"), false) == 0)
+                            if (File.Exists(Path.Combine(StateDirectory, fileName)))
+                                if (PageVM.Model.LoadWeights(Path.Combine(StateDirectory, fileName), true) != 0)
+                                    if (PageVM.Model.LoadWeights(Path.Combine(StateDirectory, fileNameNoOptimizer), false) == 0)
                                     {
                                         Settings.Default.PersistOptimizer = !Settings.Default.PersistOptimizer;
                                         Settings.Default.Save();
                                         PageVM.Model.SetPersistOptimizer(Settings.Default.PersistOptimizer);
                                     }
-                                }
-                            }
                         }
                         else
-                        {
-                            if (File.Exists(Path.Combine(StateDirectory, Settings.Default.ModelNameActive + "-(" + dataset + @").bin")))
-                                PageVM.Model.LoadWeights(Path.Combine(StateDirectory, Settings.Default.ModelNameActive + "-(" + dataset + @").bin"), false);
-                        }
+                            if (File.Exists(Path.Combine(StateDirectory, fileNameNoOptimizer)))
+                                PageVM.Model.LoadWeights(Path.Combine(StateDirectory, fileNameNoOptimizer), false);
+                        
                         Settings.Default.DefinitionActive = File.ReadAllText(Path.Combine(StateDirectory, Settings.Default.ModelNameActive + ".txt"));
                         Settings.Default.Save();
 
