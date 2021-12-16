@@ -748,6 +748,7 @@ namespace dnncore
 		property DNNOptimizers Optimizer;
 		property Float Momentum;
 		property Float Beta2;
+		property Float Gamma;
 		property Float L2Penalty;
 		property Float Dropout;
 		property Float Eps;
@@ -782,7 +783,7 @@ namespace dnncore
 		{
 		}
 
-		DNNTrainingResult::DNNTrainingResult(UInt cycle, UInt epoch, UInt groupIndex, UInt costIndex, String^ costName, DNNOptimizers optimizer, Float momentum, Float beta2, Float l2Penalty, Float dropout, Float eps, Float rate, UInt batchSize, UInt height, UInt width, Float inputDropout, Float cutout, bool cutMix, Float autoAugment, bool horizontalFlip, bool verticalFlip, Float colorCast, UInt colorAngle, Float distortion, DNNInterpolations interpolation, Float scaling, Float rotation, Float avgTrainLoss, UInt trainErrors, Float trainErrorPercentage, Float trainAccuracy, Float avgTestLoss, UInt testErrors, Float testErrorPercentage, Float testAccuracy, long long elapsedTicks)
+		DNNTrainingResult::DNNTrainingResult(UInt cycle, UInt epoch, UInt groupIndex, UInt costIndex, String^ costName, DNNOptimizers optimizer, Float momentum, Float beta2, Float gamma, Float l2Penalty, Float dropout, Float eps, Float rate, UInt batchSize, UInt height, UInt width, Float inputDropout, Float cutout, bool cutMix, Float autoAugment, bool horizontalFlip, bool verticalFlip, Float colorCast, UInt colorAngle, Float distortion, DNNInterpolations interpolation, Float scaling, Float rotation, Float avgTrainLoss, UInt trainErrors, Float trainErrorPercentage, Float trainAccuracy, Float avgTestLoss, UInt testErrors, Float testErrorPercentage, Float testAccuracy, long long elapsedTicks)
 		{
 			Cycle = cycle;
 			Epoch = epoch;
@@ -960,9 +961,9 @@ namespace dnncore
 	public ref class Model
 	{
 	public:
-		delegate void TrainProgressEventDelegate(DNNOptimizers, UInt, UInt, UInt, UInt, UInt, bool, bool, Float, Float, bool, Float, Float, UInt, Float, DNNInterpolations, Float, Float, UInt, Float, Float, Float, Float, Float, Float, Float, Float, UInt, Float, Float, Float, UInt, DNNStates, DNNTaskStates);
+		delegate void TrainProgressEventDelegate(DNNOptimizers, UInt, UInt, UInt, UInt, UInt, bool, bool, Float, Float, bool, Float, Float, UInt, Float, DNNInterpolations, Float, Float, UInt, Float, Float, Float, Float, Float, Float, Float, Float, Float, UInt, Float, Float, Float, UInt, DNNStates, DNNTaskStates);
 		delegate void TestProgressEventDelegate(UInt, UInt, Float, Float, Float, UInt, DNNStates, DNNTaskStates);
-		delegate void NewEpochEventDelegate(UInt, UInt, UInt, UInt, Float, Float, bool, bool, Float, Float, bool, Float, Float, UInt, Float, UInt, Float, Float, Float, UInt, UInt, UInt, Float, Float, Float, Float, Float, Float, UInt, Float, Float, Float, UInt);
+		delegate void NewEpochEventDelegate(UInt, UInt, UInt, UInt, Float, Float, Float, bool, bool, Float, Float, bool, Float, Float, UInt, Float, UInt, Float, Float, Float, UInt, UInt, UInt, Float, Float, Float, Float, Float, Float, UInt, Float, Float, Float, UInt);
 
 		property TrainProgressEventDelegate^ TrainProgress;
 		property TestProgressEventDelegate^ TestProgress;
@@ -1012,6 +1013,7 @@ namespace dnncore
 		property UInt TotalCycles;
 		property UInt Epoch;
 		property UInt TotalEpochs;
+		property Float Gamma;
 		property Float ColorCast;
 		property UInt ColorAngle;
 		property DNNInterpolations Interpolation;

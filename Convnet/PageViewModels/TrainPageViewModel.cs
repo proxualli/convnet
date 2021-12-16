@@ -166,7 +166,7 @@ namespace Convnet.PageViewModels
 
             Application.Current.Dispatcher.Invoke(() => RefreshTrainingPlot(), DispatcherPriority.Render);
         }
-        private void NewEpoch(UInt Cycle, UInt Epoch, UInt TotalEpochs, UInt Optimizer, Float Beta2, Float Eps, bool HorizontalFlip, bool VerticalFlip, Float InputDropout, Float Cutout, bool CutMix, Float AutoAugment, Float ColorCast, UInt ColorAngle, Float Distortion, UInt Interpolation, Float Scaling, Float Rotation, Float Rate, UInt BatchSize, UInt Height, UInt Width, Float Momentum, Float L2Penalty, Float Dropout, Float AvgTrainLoss, Float TrainErrorPercentage, Float TrainAccuracy, UInt TrainErrors, Float AvgTestLoss, Float TestErrorPercentage, Float TestAccuracy, UInt TestErrors)
+        private void NewEpoch(UInt Cycle, UInt Epoch, UInt TotalEpochs, UInt Optimizer, Float Beta2, Float Gamma, Float Eps, bool HorizontalFlip, bool VerticalFlip, Float InputDropout, Float Cutout, bool CutMix, Float AutoAugment, Float ColorCast, UInt ColorAngle, Float Distortion, UInt Interpolation, Float Scaling, Float Rotation, Float Rate, UInt BatchSize, UInt Height, UInt Width, Float Momentum, Float L2Penalty, Float Dropout, Float AvgTrainLoss, Float TrainErrorPercentage, Float TrainAccuracy, UInt TrainErrors, Float AvgTestLoss, Float TestErrorPercentage, Float TestAccuracy, UInt TestErrors)
         {
             Application.Current.Dispatcher.Invoke(() =>
             {
@@ -175,7 +175,7 @@ namespace Convnet.PageViewModels
                 for (uint c = 0; c < Model.CostLayersCount; c++)
                 {
                     Model.UpdateCostInfo(c);
-                    TrainingLog.Add(new DNNTrainingResult(Cycle, Epoch, Model.CostLayers[c].GroupIndex, c, Model.CostLayers[c].Name, (DNNOptimizers)Optimizer, Momentum, Beta2, L2Penalty, Dropout, Eps, Rate, BatchSize, Height, Width, InputDropout, Cutout, CutMix, AutoAugment, HorizontalFlip, VerticalFlip, ColorCast, ColorAngle, Distortion, (DNNInterpolations)Interpolation, Scaling, Rotation, Model.CostLayers[c].AvgTrainLoss, Model.CostLayers[c].TrainErrors, Model.CostLayers[c].TrainErrorPercentage, Model.CostLayers[c].TrainAccuracy, Model.CostLayers[c].AvgTestLoss, Model.CostLayers[c].TestErrors, Model.CostLayers[c].TestErrorPercentage, Model.CostLayers[c].TestAccuracy, span.Ticks));
+                    TrainingLog.Add(new DNNTrainingResult(Cycle, Epoch, Model.CostLayers[c].GroupIndex, c, Model.CostLayers[c].Name, (DNNOptimizers)Optimizer, Momentum, Beta2, Gamma, L2Penalty, Dropout, Eps, Rate, BatchSize, Height, Width, InputDropout, Cutout, CutMix, AutoAugment, HorizontalFlip, VerticalFlip, ColorCast, ColorAngle, Distortion, (DNNInterpolations)Interpolation, Scaling, Rotation, Model.CostLayers[c].AvgTrainLoss, Model.CostLayers[c].TrainErrors, Model.CostLayers[c].TrainErrorPercentage, Model.CostLayers[c].TrainAccuracy, Model.CostLayers[c].AvgTestLoss, Model.CostLayers[c].TestErrors, Model.CostLayers[c].TestErrorPercentage, Model.CostLayers[c].TestAccuracy, span.Ticks));
                 }
 
                 SelectedIndex = TrainingLog.Count - 1;
@@ -184,7 +184,7 @@ namespace Convnet.PageViewModels
             }, DispatcherPriority.Render);
         }
 
-        private void TrainProgress(DNNOptimizers Optim, UInt BatchSize, UInt Cycle, UInt TotalCycles, UInt Epoch, UInt TotalEpochs, bool HorizontalFlip, bool VerticalFlip, Float InputDropout, Float Cutout, bool CutMix, Float AutoAugment, Float ColorCast, UInt ColorAngle, Float Distortion, DNNInterpolations Interpolation, Float Scaling, Float Rotation, UInt SampleIndex, Float Rate, Float Momentum, Float Beta2, Float L2Penalty, Float Dropout, Float AvgTrainLoss, Float TrainErrorPercentage, Float TrainAccuracy, UInt TrainErrors, Float AvgTestLoss, Float TestErrorPercentage, Float TestAccuracy, UInt TestErrors, DNNStates State, DNNTaskStates TaskState)
+        private void TrainProgress(DNNOptimizers Optim, UInt BatchSize, UInt Cycle, UInt TotalCycles, UInt Epoch, UInt TotalEpochs, bool HorizontalFlip, bool VerticalFlip, Float InputDropout, Float Cutout, bool CutMix, Float AutoAugment, Float ColorCast, UInt ColorAngle, Float Distortion, DNNInterpolations Interpolation, Float Scaling, Float Rotation, UInt SampleIndex, Float Rate, Float Momentum, Float Beta2, Float Gamma, Float L2Penalty, Float Dropout, Float AvgTrainLoss, Float TrainErrorPercentage, Float TrainAccuracy, UInt TrainErrors, Float AvgTestLoss, Float TestErrorPercentage, Float TestAccuracy, UInt TestErrors, DNNStates State, DNNTaskStates TaskState)
         {
             sb.Length = 0;
             switch (State)

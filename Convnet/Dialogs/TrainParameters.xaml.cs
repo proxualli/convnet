@@ -48,7 +48,7 @@ namespace Convnet.Dialogs
 
             textBoxColorAngle.IsEnabled = Rate.ColorCast > 0;
 
-            comboBoOptimizer.Focus();
+            textBoxCycles.Focus();
         }
 
         private bool IsValid(DependencyObject node)
