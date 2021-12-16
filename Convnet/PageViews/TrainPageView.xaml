@@ -515,7 +515,7 @@
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
 
-                    <GridViewColumn x:Name="autoaugment" Header="Auto Augment" Width="90">
+                    <GridViewColumn x:Name="autoaugment" Header="Auto Augment" Width="92">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding AutoAugment, StringFormat=0.#####}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextAlignment="Center" FontFamily="Consolas" FontSize="14"/>
