@@ -47,8 +47,9 @@ namespace Convnet.Dialogs
             ChangeSGDR();
 
             textBoxColorAngle.IsEnabled = Rate.ColorCast > 0;
-
+            
             textBoxCycles.Focus();
+            textBoxCycles.Select(0, textBoxCycles.GetLineLength(0));
         }
 
         private bool IsValid(DependencyObject node)
