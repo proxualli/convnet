@@ -981,7 +981,7 @@ namespace dnncore
 		property cli::array<cli::array<String^>^>^ LabelsCollection;
 		property cli::array<DNNTrainingRate^>^ TrainingRates;
 		property DNNTrainingRate^ TrainingRate;
-		property String^ DefinitionDocument;
+		property String^ Definition;
 		property String^ StorageDirectory;
 		property String^ DatasetsDirectory;
 		property String^ DefinitionsDirectory;

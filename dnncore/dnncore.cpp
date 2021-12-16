@@ -386,6 +386,7 @@ namespace dnncore
 	Model::Model(String^ name, String^ fileName)
 	{
 		Name = name;
+
 		Duration = gcnew System::Diagnostics::Stopwatch();
 		
 		sb = gcnew System::Text::StringBuilder();
@@ -411,7 +412,7 @@ namespace dnncore
 			DNNLoadDataset();
 
 			System::IO::StreamReader^ reader = gcnew System::IO::StreamReader(fileName, true);
-			DefinitionDocument = reader->ReadToEnd();
+			Definition = reader->ReadToEnd();
 			reader->Close();
 
 			ApplyParameters();
@@ -1511,7 +1512,7 @@ namespace dnncore
 			DNNLoadDataset();
 
 			auto reader = gcnew System::IO::StreamReader(fileName, true);
-			DefinitionDocument = reader->ReadToEnd();
+			Definition = reader->ReadToEnd();
 			reader->Close();
 
 			DNNResetWeights();
