@@ -117,20 +117,16 @@ namespace Convnet
                         var fileNamePersistOptimizer = Path.Combine(StateDirectory, Settings.Default.ModelNameActive + "-(" + dataset + ")(" + optimizer + @").bin");
                         var fileNameNoOptimizer = Path.Combine(StateDirectory, Settings.Default.ModelNameActive + "-(" + dataset + ").bin");
 
-                        if (Settings.Default.PersistOptimizer)
-                        {
-                            if (File.Exists(fileNamePersistOptimizer))
-                                if (PageVM.Model.LoadWeights(fileNamePersistOptimizer, true) != 0)
-                                    if (PageVM.Model.LoadWeights(fileNameNoOptimizer, false) == 0)
-                                    {
-                                        Settings.Default.PersistOptimizer = !Settings.Default.PersistOptimizer;
-                                        Settings.Default.Save();
-                                        PageVM.Model.SetPersistOptimizer(Settings.Default.PersistOptimizer);
-                                    }
-                        }
-                        else
-                            if (File.Exists(fileNameNoOptimizer))
-                                PageVM.Model.LoadWeights(fileNameNoOptimizer, false);
+                        var fileNameOptimizer = Settings.Default.PersistOptimizer ? fileNamePersistOptimizer : fileNameNoOptimizer;
+                        var fileNameOptimizerReverse = Settings.Default.PersistOptimizer ? fileNameNoOptimizer : fileNamePersistOptimizer;
+
+                        if (PageVM.Model.LoadWeights(fileNameOptimizer, Settings.Default.PersistOptimizer) != 0)
+                            if (PageVM.Model.LoadWeights(fileNameOptimizerReverse, !Settings.Default.PersistOptimizer) == 0)
+                            {
+                                Settings.Default.PersistOptimizer = !Settings.Default.PersistOptimizer;
+                                Settings.Default.Save();
+                                PageVM.Model.SetPersistOptimizer(Settings.Default.PersistOptimizer);
+                            }
                         
                         Settings.Default.DefinitionActive = File.ReadAllText(fileName);
                         Settings.Default.Save();
