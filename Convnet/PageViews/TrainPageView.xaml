@@ -28,7 +28,7 @@
         <Color x:Key="DisabledControlDarkColor">#FFC5CBF9</Color>
         <Color x:Key="DisabledForegroundColor">#FF888888</Color>
 
-        <Color x:Key="SelectedBackgroundColor">#FF555555</Color>
+        <Color x:Key="SelectedBackgroundColor">#FF444444</Color>
         <Color x:Key="SelectedUnfocusedColor">#FFDDDDDD</Color>
 
         <Color x:Key="ControlLightColor">White</Color>
@@ -361,11 +361,8 @@
                                             </VisualState>
                                             <VisualState x:Name="SelectedUnfocused">
                                                 <Storyboard>
-                                                    <ColorAnimationUsingKeyFrames Storyboard.TargetName="Border"
-                                                Storyboard.TargetProperty="(Panel.Background).
-                    (SolidColorBrush.Color)">
-                                                        <EasingColorKeyFrame KeyTime="0"
-                                         Value="{StaticResource SelectedUnfocusedColor}" />
+                                                    <ColorAnimationUsingKeyFrames Storyboard.TargetName="Border" Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)">
+                                                        <EasingColorKeyFrame KeyTime="0" Value="{StaticResource SelectedUnfocusedColor}" />
                                                     </ColorAnimationUsingKeyFrames>
                                                 </Storyboard>
                                             </VisualState>
@@ -373,7 +370,17 @@
                                     </VisualStateManager.VisualStateGroups>
                                     <GridViewRowPresenter VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
                                 </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Background" Value="{StaticResource ListItemHoverFill}" />
+                                        <Setter Property="BorderBrush" Value="#FFCCF0FF" />
+                                    </Trigger>
+                                    <Trigger Property="IsEnabled" Value="False">
+                                        <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
                             </ControlTemplate>
+                            
                         </Setter.Value>
                     </Setter>
                     <Setter Property="HorizontalContentAlignment" Value="Stretch" />
