@@ -255,6 +255,7 @@
                     <ColumnDefinition Width="{Binding ActualWidth, ElementName=eps}" />
                     <ColumnDefinition Width="{Binding ActualWidth, ElementName=momentum}" />
                     <ColumnDefinition Width="{Binding ActualWidth, ElementName=beta2}" />
+                    <ColumnDefinition Width="{Binding ActualWidth, ElementName=gamma}" />
                     <ColumnDefinition Width="{Binding ActualWidth, ElementName=l2Penalty}" />
                     <ColumnDefinition Width="{Binding ActualWidth, ElementName=dropout}" />
                     <ColumnDefinition Width="{Binding ActualWidth, ElementName=batchSize}" />
@@ -284,7 +285,7 @@
                     <ColumnDefinition Width="{Binding ActualWidth, ElementName=duration}" />
                 </Grid.ColumnDefinitions>
 
-                <Border Grid.Column="5" Grid.ColumnSpan="4" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  BorderThickness="1" BorderBrush="#FFE4E4E4" Margin="1,0,-1,0">
+                <Border Grid.Column="5" Grid.ColumnSpan="5" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  BorderThickness="1" BorderBrush="#FFE4E4E4" Margin="1,0,-1,0">
                     <Border.Background>
                         <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                             <GradientStop Color="#FFF7F8F9" Offset="0"/>
@@ -294,7 +295,7 @@
                     <TextBlock Text="Regularization" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextAlignment="Center" Foreground="Black" FontFamily="Consolas" FontSize="14" />
                 </Border>
                 
-                <Border Grid.Column="9" Grid.ColumnSpan="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  BorderThickness="1" BorderBrush="#FFE4E4E4" Margin="1,0,-1,0">
+                <Border Grid.Column="10" Grid.ColumnSpan="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  BorderThickness="1" BorderBrush="#FFE4E4E4" Margin="1,0,-1,0">
                     <Border.Background>
                         <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                             <GradientStop Color="#FFF7F8F9" Offset="0"/>
@@ -304,7 +305,7 @@
                     <TextBlock Text="Resolution" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextAlignment="Center" Foreground="Black" FontFamily="Consolas" FontSize="14" />
                 </Border>
                 
-                <Border Grid.Column="12" Grid.ColumnSpan="12" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  BorderThickness="1" BorderBrush="#FFE4E4E4" Margin="1,0,-1,0">
+                <Border Grid.Column="13" Grid.ColumnSpan="12" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  BorderThickness="1" BorderBrush="#FFE4E4E4" Margin="1,0,-1,0">
                     <Border.Background>
                         <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                             <GradientStop Color="#FFF7F8F9" Offset="0"/>
@@ -313,7 +314,7 @@
                     </Border.Background>
                     <TextBlock Text="Augmentation" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextAlignment="Center" Foreground="Black" FontFamily="Consolas" FontSize="14" />
                 </Border>
-                <Border Grid.Column="24" Grid.ColumnSpan="4" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  BorderThickness="1" BorderBrush="#FFE4E4E4" Margin="1,0,-1,0">
+                <Border Grid.Column="25" Grid.ColumnSpan="4" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  BorderThickness="1" BorderBrush="#FFE4E4E4" Margin="1,0,-1,0">
                     <Border.Background>
                         <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                             <GradientStop Color="#FFF7F8F9" Offset="0"/>
@@ -465,6 +466,19 @@
                         <GridViewColumnHeader>
                             <StackPanel>
                                 <TextBlock Text="Beta2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextAlignment="Center"/>
+                            </StackPanel>
+                        </GridViewColumnHeader>
+                    </GridViewColumn>
+
+                    <GridViewColumn x:Name="gamma" Width="70" >
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Gamma, StringFormat=0.#########}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextAlignment="Center" FontFamily="Consolas" FontSize="14"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                        <GridViewColumnHeader>
+                            <StackPanel>
+                                <TextBlock Text="Gamma" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextAlignment="Center"/>
                             </StackPanel>
                         </GridViewColumnHeader>
                     </GridViewColumn>
