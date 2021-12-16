@@ -167,10 +167,10 @@ namespace Convnet
                         }
                     }
                     else
-                       Xceed.Wpf.Toolkit.MessageBox.Show("Failed to create the viewmodel: " + Settings.Default.ModelNameActive, "Error", MessageBoxButton.OK);
+                       Xceed.Wpf.Toolkit.MessageBox.Show("Failed to create the PageViewModel: " + Settings.Default.ModelNameActive, "Error", MessageBoxButton.OK);
                 }
                 else
-                   Xceed.Wpf.Toolkit.MessageBox.Show("Failed to create the model: " + Settings.Default.ModelNameActive, "Error", MessageBoxButton.OK);
+                   Xceed.Wpf.Toolkit.MessageBox.Show("Failed to create the Model: " + Settings.Default.ModelNameActive, "Error", MessageBoxButton.OK);
             }
             catch (Exception exception)
             {
