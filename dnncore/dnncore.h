@@ -28,8 +28,6 @@ namespace dnncore
 	typedef size_t UInt;
 	typedef unsigned char Byte;
 
-	constexpr auto BackgroundColor = Byte(64);
-
 	constexpr auto FloatSaturate(const Float value) { return value > Float(255) ? Byte(255) : value < Float(0) ? Byte(0) : Byte(value); }
 
 	inline static auto ToUnmanagedString(String^ s) { return msclr::interop::marshal_as<std::string>(s); }
@@ -972,6 +970,7 @@ namespace dnncore
 		property TestProgressEventDelegate^ TestProgress;
 		property NewEpochEventDelegate^ NewEpoch;
 
+		property Byte BackgroundColor;
 		property int SelectedIndex;
 		property System::Collections::ObjectModel::ObservableCollection<LayerInformation^>^ Layers;
 		property System::Windows::Media::Imaging::BitmapSource^ InputSnapshot;
@@ -1052,7 +1051,7 @@ namespace dnncore
 
 		Model(String^ name, String^ fileName);
 		virtual ~Model();
-
+			
 		bool LoadDataset();
 		cli::array<String^>^ GetTextLabels(String^ fileName);
 		void OnElapsed(Object^ sender, System::Timers::ElapsedEventArgs^ e);

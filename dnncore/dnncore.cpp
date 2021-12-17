@@ -431,7 +431,7 @@ namespace dnncore
 		DNNModelDispose();
 		WorkerTimer->Close();
 	}
-
+	
 	void Model::SetPersistOptimizer(bool persist)
 	{
 		DNNPersistOptimizer(persist);

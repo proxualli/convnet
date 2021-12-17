@@ -371,7 +371,9 @@ namespace Convnet.PageViewModels
                         try
                         {
                             Model.Dispose();
+
                             Model = new Model(modelname, pathDefinition);
+                            Model.BackgroundColor = Settings.Default.BackgroundColor;
                             Model.SetOptimizer(Settings.Default.Optimizer);
                             Model.SetFormat(Settings.Default.PlainFormat);
                             Model.SetPersistOptimizer(Settings.Default.PersistOptimizer);

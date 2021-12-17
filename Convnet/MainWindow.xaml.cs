@@ -101,18 +101,19 @@ namespace Convnet
             try
             {
                 Model model = new Model(Settings.Default.ModelNameActive, fileName);
-
+               
                 if (model != null)
                 {
                     PageVM = new PageViewModel(model);
 
                     if (PageVM != null)
                     {
-                        PageVM.Model.SetFormat(Settings.Default.PlainFormat);
-                        PageVM.Model.SetOptimizer(Settings.Default.Optimizer);
-                        PageVM.Model.SetPersistOptimizer(Settings.Default.PersistOptimizer);
-                        PageVM.Model.SetDisableLocking(Settings.Default.DisableLocking);
-                        PageVM.Model.BlockSize = (ulong)Settings.Default.PixelSize;
+                        model.BackgroundColor = Settings.Default.BackgroundColor;
+                        model.SetFormat(Settings.Default.PlainFormat);
+                        model.SetOptimizer(Settings.Default.Optimizer);
+                        model.SetPersistOptimizer(Settings.Default.PersistOptimizer);
+                        model.SetDisableLocking(Settings.Default.DisableLocking);
+                        model.BlockSize = (ulong)Settings.Default.PixelSize;
 
                         var dataset = PageVM.Model.Dataset.ToString().ToLower();
                         var optimizer = PageVM.Model.Optimizer.ToString().ToLower();
