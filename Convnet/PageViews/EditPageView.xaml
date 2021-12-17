@@ -7,7 +7,7 @@
 
     <UserControl.Resources>
         <!--Common colors.-->
-        <Color x:Key="TextColor">#FFD7CEAD</Color>
+        <Color x:Key="TextColor">#FFD7CEBD</Color>
         <Color x:Key="BackgroundColor">#FF1E1E1E</Color>
 
         <SolidColorBrush x:Key="TextBrush" Color="{StaticResource TextColor}"/>
