@@ -26,7 +26,7 @@
         <SolidColorBrush x:Key="TextBrush" Color="{StaticResource TextColor}"/>
         <SolidColorBrush x:Key="BackgroundBrush" Color="{StaticResource BackgroundColor}"/>
 
-                <!--Control colors.-->
+        <!--Control colors.-->
         <Color x:Key="WindowColor">#FFE8EDF9</Color>
         <Color x:Key="ContentAreaColorLight">#FFC5CBF9</Color>
         <Color x:Key="ContentAreaColorDark">#FF7381F9</Color>
@@ -43,7 +43,6 @@
 
         <Color x:Key="ControlMouseOverColor">#FF3843C4</Color>
         <Color x:Key="ControlPressedColor">#FF211AA9</Color>
-
 
         <!--Border colors-->
         <Color x:Key="BorderLightColor">#FFCCCCCC</Color>
@@ -273,10 +272,6 @@
             <ListView.ItemContainerStyle>
                 <Style TargetType="{x:Type ListViewItem}">
                     <Style.Resources>
-                        <!-- Foreground for Selected ListViewItem -->
-                        <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}" Color="White"/>
-                        <!-- Background for Selected ListViewItem -->
-                        <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="White"/>
                         <LinearGradientBrush x:Key="ListItemHoverFill" EndPoint="0,1" StartPoint="0,0">
                             <GradientStop Color="{StaticResource BackgroundColor}" Offset="0"/>
                             <GradientStop Color="Black" Offset="1"/>
