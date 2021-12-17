@@ -869,7 +869,7 @@ namespace Convnet.PageViewModels
             plotModel.TextColor = OxyColor.FromRgb(255, 255, 255);
             plotModel.Background = OxyColor.FromRgb(64, 64, 64);
             //plotModel.PlotAreaBorderColor = OxyColor.FromRgb(255, 255, 255);
-            plotModel.PlotAreaBackground = OxyColor.FromRgb(100, 100, 100);
+            plotModel.PlotAreaBackground = OxyColor.FromRgb(64, 64, 64);
         }
 
         public PlotModel PlotModel
