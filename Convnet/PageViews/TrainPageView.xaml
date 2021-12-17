@@ -21,7 +21,7 @@
         <props:Settings x:Key="Settings"/>
 
         <!--Common colors.-->
-        <Color x:Key="TextColor">#FFC6C6C6</Color>
+        <Color x:Key="TextColor">#FFD7CFD7</Color>
         <Color x:Key="BackgroundColorLight">#FF404040</Color> 
         <Color x:Key="BackgroundColor">#FF323232</Color> 
 

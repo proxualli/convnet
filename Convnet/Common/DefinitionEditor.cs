@@ -48,8 +48,8 @@ namespace Convnet.Common
             FontFamily = new FontFamily("Consolas");
             Options = new TextEditorOptions
             {
-                IndentationSize = 1,
-                ConvertTabsToSpaces = true
+                IndentationSize = 4,
+                ConvertTabsToSpaces = false
             };
 
             TextArea.TextView.BackgroundRenderers.Add(new HighlightCurrentLineBackgroundRenderer(this));
