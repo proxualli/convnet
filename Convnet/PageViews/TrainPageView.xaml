@@ -19,6 +19,18 @@
             </CollectionViewSource.GroupDescriptions>
         </CollectionViewSource>
         <props:Settings x:Key="Settings"/>
+
+        <Color x:Key="TextColor">#FFC6C6C6</Color>
+        <LinearGradientBrush x:Key="TextBrush" EndPoint="0.5,1" StartPoint="0.5,0.99">
+            <GradientStop Color="{StaticResource TextColor}" Offset="0"/>
+            <GradientStop Color="{StaticResource TextColor}" Offset="1"/>
+        </LinearGradientBrush>
+        <Color x:Key="BackgroundColor">#FF404040</Color>
+        <LinearGradientBrush x:Key="BackgroundBrush" EndPoint="0.5,1" StartPoint="0.5,0.99">
+            <GradientStop  Color="{StaticResource BackgroundColor}" Offset="0"/>
+            <GradientStop Color="{StaticResource BackgroundColor}" Offset="1"/>
+        </LinearGradientBrush>
+        
         <!--Control colors.-->
         <Color x:Key="WindowColor">#FFE8EDF9</Color>
         <Color x:Key="ContentAreaColorLight">#FFC5CBF9</Color>
@@ -72,18 +84,7 @@
             <GradientStop Color="{DynamicResource ControlLightColor}"
                 Offset="1" />
         </LinearGradientBrush>
-
-        <Color x:Key="TextColor">#FFCACACA</Color>
-        <LinearGradientBrush x:Key="TextBrush" EndPoint="0.5,1" StartPoint="0.5,0.99">
-            <GradientStop Color="{StaticResource TextColor}" Offset="0"/>
-            <GradientStop Color="{StaticResource TextColor}" Offset="1"/>
-        </LinearGradientBrush>
-        <Color x:Key="BackgroundColor">#FF404040</Color>
-        <LinearGradientBrush x:Key="BackgroundBrush" EndPoint="0.5,1" StartPoint="0.5,0.99">
-            <GradientStop  Color="{StaticResource BackgroundColor}" Offset="0"/>
-            <GradientStop Color="{StaticResource BackgroundColor}" Offset="1"/>
-        </LinearGradientBrush>
-        
+       
         <LinearGradientBrush x:Key="ProgressBarIndicatorAnimatedFill"
                      StartPoint="0,0"
                      EndPoint="1,0">
@@ -100,6 +101,7 @@
                 </GradientStopCollection>
             </LinearGradientBrush.GradientStops>
         </LinearGradientBrush>
+        
         <Style x:Key="KioskCheckBox" TargetType="{x:Type CheckBox}">
             <Setter Property="Foreground" Value="{StaticResource TextBrush}" />
             <Setter Property="Template">
@@ -288,7 +290,7 @@
                 </Grid.ColumnDefinitions>
 
                 <Border Grid.Column="5" Grid.ColumnSpan="5" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  BorderThickness="1,1,0,0" BorderBrush="{StaticResource TextBrush}" Margin="1,0,-1,0" Background="{StaticResource BackgroundBrush}">
-                    <TextBlock Text="Regularization" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextAlignment="Center" Foreground="{StaticResource BackgroundBrush}" FontFamily="Consolas" FontSize="14" />
+                    <TextBlock Text="Regularization" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextAlignment="Center" Foreground="{StaticResource TextBrush}" FontFamily="Consolas" FontSize="14" />
                 </Border>
 
                 <Border Grid.Column="10" Grid.ColumnSpan="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  BorderThickness="1,1,0,0" BorderBrush="{StaticResource TextBrush}" Margin="1,0,-1,0" Background="{StaticResource BackgroundBrush}">
@@ -455,7 +457,7 @@
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
 
-                    <GridViewColumn x:Name="l2Penalty" Header="L2 Penalty" Width="80">
+                    <GridViewColumn x:Name="l2Penalty" Header="L2 Penalty" Width="82">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding L2Penalty, StringFormat=0.#########}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextAlignment="Center" FontFamily="Consolas" FontSize="14"/>
@@ -519,7 +521,7 @@
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
 
-                    <GridViewColumn x:Name="autoaugment" Header="Auto Augment" Width="92">
+                    <GridViewColumn x:Name="autoaugment" Header="Auto Augment" Width="96">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding AutoAugment, StringFormat=0.#####}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextAlignment="Center" FontFamily="Consolas" FontSize="14"/>
