@@ -33,7 +33,7 @@ namespace Convnet.Common
             foreach (var rect in BackgroundGeometryBuilder.GetRectsForSegment(textView, currentLine))
             {
                 if (textView.ActualWidth >= 32)
-                    drawingContext.DrawRectangle(new SolidColorBrush(Color.FromArgb(0x50, 0xFF, 0xCF, 0)), null, new Rect(rect.Location, new Size(textView.ActualWidth - 32, rect.Height)));
+                    drawingContext.DrawRectangle(new SolidColorBrush(Color.FromArgb(0x50, 0xCF, 0xCF, 0xCF)), null, new Rect(rect.Location, new Size(textView.ActualWidth - 32, rect.Height)));
             }
         }
     }

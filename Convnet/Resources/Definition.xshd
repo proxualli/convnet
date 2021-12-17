@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0"?>
 <SyntaxDefinition name="Definition" xmlns="http://icsharpcode.net/sharpdevelop/syntaxdefinition/2008">
-  <Color name="String" foreground="Brown"/>
+  <Color name="String" foreground="#FF00B6FF"/>
 	<!-- This is the main ruleset. -->
 	<RuleSet>
 		<Span color="String">
@@ -12,23 +12,32 @@
 		</Span>
 
     <Keywords foreground="Green">
-      <Word>Dataset</Word>
+      <Word>Dataset=</Word>
     </Keywords>
-
-    <Keywords foreground="Blue">
-      <Word>Dim</Word>
+    <Keywords foreground="Green">
+      <Word>Type=</Word>
     </Keywords>
-    
-		<Keywords foreground="Green">
-			<Word>Type</Word>
-		</Keywords>
-
-    <Keywords foreground="Blue">
-      <Word>Inputs</Word>
+    <Keywords foreground="Green">
+      <Word>Dim=</Word>
     </Keywords>
-    
-		<!-- Digits -->
-		<Rule foreground="DarkBlue">
+    <Keywords foreground="Green">
+      <Word>Inputs=</Word>
+    </Keywords>
+    <Keywords foreground="#FF00B6FF">
+      <Word>No</Word>
+    </Keywords>
+    <Keywords foreground="#FF00B6FF">
+      <Word>Yes</Word>
+    </Keywords>
+    <Keywords foreground="#FF00B6FF">
+      <Word>False</Word>
+    </Keywords>
+    <Keywords foreground="#FF00B6FF">
+      <Word>True</Word>
+    </Keywords>
+      
+   	<!-- Digits -->
+		<Rule foreground="#FF00B6FF">
             \b0[xX][0-9a-fA-F]+  # hex number
         |    \b
             (    \d+(\.[0-9]+)?   #number with optional floating point
