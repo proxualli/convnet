@@ -6,16 +6,24 @@
              x:Class="Convnet.PageViews.EditPageView">
 
     <UserControl.Resources>
-        <Color x:Key="TextColor">#FFC6C6C6</Color>
-        <LinearGradientBrush x:Key="TextBrush" EndPoint="0.5,1" StartPoint="0.5,0.99">
-            <GradientStop Color="{StaticResource TextColor}" Offset="0"/>
-            <GradientStop Color="{StaticResource TextColor}" Offset="1"/>
-        </LinearGradientBrush>
-        <Color x:Key="BackgroundColor">#FF303030</Color>
-        <LinearGradientBrush x:Key="BackgroundBrush" EndPoint="0.5,1" StartPoint="0.5,0.99">
-            <GradientStop  Color="{StaticResource BackgroundColor}" Offset="0"/>
-            <GradientStop Color="{StaticResource BackgroundColor}" Offset="1"/>
-        </LinearGradientBrush>
+        <!--Common colors.-->
+        <Color x:Key="TextColor">#FFD7CEAD</Color>
+        <Color x:Key="BackgroundColor">#FF1E1E1E</Color>
+
+        <SolidColorBrush x:Key="TextBrush" Color="{StaticResource TextColor}"/>
+        <SolidColorBrush x:Key="BackgroundBrush" Color="{StaticResource BackgroundColor}"/>
+
+        <!--Control colors.-->
+        <Color x:Key="WindowColor">#FFE8EDF9</Color>
+        <Color x:Key="ContentAreaColorLight">#FFC5CBF9</Color>
+        <Color x:Key="ContentAreaColorDark">#FF7381F9</Color>
+
+        <Color x:Key="DisabledControlLightColor">#FFE8EDF9</Color>
+        <Color x:Key="DisabledControlDarkColor">#FFC5CBF9</Color>
+        <Color x:Key="DisabledForegroundColor">#FF888888</Color>
+
+        <Color x:Key="SelectedBackgroundColor">#FF303030</Color>
+        <Color x:Key="SelectedUnfocusedColor">#FFDDDDDD</Color>
         
         <ContextMenu x:Key="MyContextMenu">
             <MenuItem Header="_Cut" Command="ApplicationCommands.Cut">

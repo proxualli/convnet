@@ -20,9 +20,10 @@
         </CollectionViewSource>
         <props:Settings x:Key="Settings"/>
 
+        <!--Common colors.-->
         <Color x:Key="TextColor">#FFC6C6C6</Color>
         <Color x:Key="BackgroundColor">#FF303030</Color>
-        <Color x:Key="SelectedBackgroundColor">#FF1A1A1A</Color>
+        
         <SolidColorBrush x:Key="TextBrush" Color="{StaticResource TextColor}"/>
         <SolidColorBrush x:Key="BackgroundBrush" Color="{StaticResource BackgroundColor}"/>
 
@@ -30,11 +31,12 @@
         <Color x:Key="WindowColor">#FFE8EDF9</Color>
         <Color x:Key="ContentAreaColorLight">#FFC5CBF9</Color>
         <Color x:Key="ContentAreaColorDark">#FF7381F9</Color>
-
+ 
         <Color x:Key="DisabledControlLightColor">#FFE8EDF9</Color>
         <Color x:Key="DisabledControlDarkColor">#FFC5CBF9</Color>
         <Color x:Key="DisabledForegroundColor">#FF888888</Color>
-        
+
+        <Color x:Key="SelectedBackgroundColor">#FF1A1A1A</Color>
         <Color x:Key="SelectedUnfocusedColor">#FFDDDDDD</Color>
 
         <Color x:Key="ControlLightColor">White</Color>
