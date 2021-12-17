@@ -828,7 +828,7 @@ namespace Convnet.PageViewModels
                 MinorGridlineStyle = LineStyle.Dot,
                 IsAxisVisible = true,
                 IsPanEnabled = false,
-                IsZoomEnabled = false
+                IsZoomEnabled = false               
             };
             var laBottomn = new LinearAxis
             {
@@ -867,7 +867,9 @@ namespace Convnet.PageViewModels
             legend.LegendPosition = LegendPosition.RightBottom;
             plotModel.Legends.Add(legend);
             plotModel.TextColor = OxyColor.FromRgb(255, 255, 255);
-            plotModel.Background = OxyColor.FromRgb(100, 100, 100);
+            plotModel.Background = OxyColor.FromRgb(64, 64, 64);
+            //plotModel.PlotAreaBorderColor = OxyColor.FromRgb(255, 255, 255);
+            plotModel.PlotAreaBackground = OxyColor.FromRgb(100, 100, 100);
         }
 
         public PlotModel PlotModel
