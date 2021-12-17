@@ -552,7 +552,7 @@ namespace dnncore
 					pin_ptr<Byte> p = &img[0];
 					Byte* np = p;
 
-					DNNGetImage(info->LayerIndex, 100, np);
+					DNNGetImage(info->LayerIndex, 64, np);
 
 					auto outputImage = System::Windows::Media::Imaging::BitmapSource::Create(int(width), int(height), 96.0, 96.0, pixelFormat, nullptr, img, int(width) * ((pixelFormat.BitsPerPixel + 7) / 8));
 					if (outputImage->CanFreeze)
@@ -591,7 +591,7 @@ namespace dnncore
 					pin_ptr<Byte> p = &img[0];
 					Byte* np = p;
 
-					DNNGetImage(info->LayerIndex, 100, np);
+					DNNGetImage(info->LayerIndex, 64, np);
 
 					auto outputImage = System::Windows::Media::Imaging::BitmapSource::Create(int(width), int(height), 96.0, 96.0, pixelFormat, nullptr, img, int(width) * ((pixelFormat.BitsPerPixel + 7) / 8));
 					if (outputImage->CanFreeze)
@@ -619,7 +619,7 @@ namespace dnncore
 					pin_ptr<Byte> p = &img[0];
 					Byte* np = p;
 
-					DNNGetImage(info->LayerIndex, 100, np);
+					DNNGetImage(info->LayerIndex, 64, np);
 
 					auto outputImage = System::Windows::Media::Imaging::BitmapSource::Create(int(width), int(height), 96.0, 96.0, pixelFormat, nullptr, img, int(width) * ((pixelFormat.BitsPerPixel + 7) / 8));
 					if (outputImage->CanFreeze)
