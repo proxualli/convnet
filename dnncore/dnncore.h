@@ -28,11 +28,13 @@ namespace dnncore
 	typedef size_t UInt;
 	typedef unsigned char Byte;
 
-	constexpr Byte FloatSaturate(const Float value) { return value > Float(255) ? Byte(255) : value < Float(0) ? Byte(0) : Byte(value); }
+	constexpr auto BackgroundColor = Byte(64);
 
-	inline static std::string ToUnmanagedString(String^ s) { return msclr::interop::marshal_as<std::string>(s); }
+	constexpr auto FloatSaturate(const Float value) { return value > Float(255) ? Byte(255) : value < Float(0) ? Byte(0) : Byte(value); }
 
-	inline static String^ ToManagedString(const std::string& s) { return gcnew String(s.c_str()); }
+	inline static auto ToUnmanagedString(String^ s) { return msclr::interop::marshal_as<std::string>(s); }
+
+	inline static auto ToManagedString(const std::string& s) { return gcnew String(s.c_str()); }
 
 	[Serializable()]
 	public enum class DNNAlgorithms
