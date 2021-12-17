@@ -47,10 +47,13 @@ namespace Convnet
 
         protected override void OnStartup(StartupEventArgs e)
         {
-            if (SingleInstanceApp && sim.IsOtherInstanceRunning)
+            if (SingleInstanceApp)
             {
-                Current.Shutdown();
-                return;
+                if (sim.IsOtherInstanceRunning)
+                {
+                    Current.Shutdown();
+                    return;
+                }
             }            
 
             try

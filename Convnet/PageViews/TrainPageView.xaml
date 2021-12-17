@@ -75,7 +75,7 @@
 
         <LinearGradientBrush x:Key="MenuBrush" EndPoint="0.5,1" StartPoint="0.5,0.99">
             <GradientStop Color="#FF646464" Offset="0"/>
-            <GradientStop Color="DarkGray" Offset="1"/>
+            <GradientStop Color="#FF646464" Offset="1"/>
         </LinearGradientBrush>
         
         <LinearGradientBrush x:Key="ProgressBarIndicatorAnimatedFill"
@@ -95,7 +95,7 @@
             </LinearGradientBrush.GradientStops>
         </LinearGradientBrush>
         <Style x:Key="KioskCheckBox" TargetType="{x:Type CheckBox}">
-            <Setter Property="Foreground" Value="#FF17DE17" />
+            <Setter Property="Foreground" Value="White" />
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type CheckBox}">
@@ -126,12 +126,12 @@
                                     <Grid>
                                         <Path Visibility="Collapsed" Width="7" Height="7" x:Name="CheckMark" SnapsToDevicePixels="False" StrokeThickness="2" Data="M 0 0 L 7 7 M 0 7 L 7 0">
                                             <Path.Stroke>
-                                                <SolidColorBrush Color="Green" />
+                                                <SolidColorBrush Color="White" />
                                             </Path.Stroke>
                                         </Path>
                                         <Path Visibility="Collapsed" Width="7" Height="7" x:Name="InderminateMark" SnapsToDevicePixels="False" StrokeThickness="2" Data="M 0 7 L 7 0">
                                             <Path.Stroke>
-                                                <SolidColorBrush Color="Green" />
+                                                <SolidColorBrush Color="White" />
                                             </Path.Stroke>
                                         </Path>
                                     </Grid>
@@ -258,7 +258,6 @@
                     <ColumnDefinition Width="{Binding ActualWidth, ElementName=batchSize}" />
                     <ColumnDefinition Width="{Binding ActualWidth, ElementName=height}" />
                     <ColumnDefinition Width="{Binding ActualWidth, ElementName=width}" />
-                    
                     <ColumnDefinition Width="{Binding ActualWidth, ElementName=inputDropout}" />
                     <ColumnDefinition Width="{Binding ActualWidth, ElementName=cutout}" />
                     <ColumnDefinition Width="{Binding ActualWidth, ElementName=cutMix}" />
@@ -282,27 +281,27 @@
                     <ColumnDefinition Width="{Binding ActualWidth, ElementName=duration}" />
                 </Grid.ColumnDefinitions>
 
-                <Border Grid.Column="5" Grid.ColumnSpan="5" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  BorderThickness="1,1,0,1" BorderBrush="#FF17DE17" Margin="1,0,-1,0" Background="{StaticResource MenuBrush}">
-                    <TextBlock Text="Regularization" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextAlignment="Center" Foreground="#FF17DE17" FontFamily="Consolas" FontSize="14" />
+                <Border Grid.Column="5" Grid.ColumnSpan="5" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  BorderThickness="1,1,0,0" BorderBrush="White" Margin="1,0,-1,0" Background="{StaticResource MenuBrush}">
+                    <TextBlock Text="Regularization" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextAlignment="Center" Foreground="White" FontFamily="Consolas" FontSize="14" />
                 </Border>
 
-                <Border Grid.Column="10" Grid.ColumnSpan="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  BorderThickness="1,1,0,1" BorderBrush="#FF17DE17" Margin="1,0,-1,0" Background="{StaticResource MenuBrush}">
-                    <TextBlock Text="Resolution" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextAlignment="Center" Foreground="#FF17DE17" FontFamily="Consolas" FontSize="14" />
+                <Border Grid.Column="10" Grid.ColumnSpan="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  BorderThickness="1,1,0,0" BorderBrush="White" Margin="1,0,-1,0" Background="{StaticResource MenuBrush}">
+                    <TextBlock Text="Resolution" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextAlignment="Center" Foreground="White" FontFamily="Consolas" FontSize="14" />
                 </Border>
 
-                <Border Grid.Column="13" Grid.ColumnSpan="12" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  BorderThickness="1,1,0,1" BorderBrush="#FF17DE17" Margin="1,0,-1,0" Background="{StaticResource MenuBrush}">
-                    <TextBlock Text="Augmentation" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextAlignment="Center" Foreground="#FF17DE17" FontFamily="Consolas" FontSize="14" />
+                <Border Grid.Column="13" Grid.ColumnSpan="12" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  BorderThickness="1,1,0,0" BorderBrush="White" Margin="1,0,-1,0" Background="{StaticResource MenuBrush}">
+                    <TextBlock Text="Augmentation" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextAlignment="Center" Foreground="White" FontFamily="Consolas" FontSize="14" />
                 </Border>
-                <Border Grid.Column="25" Grid.ColumnSpan="4" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  BorderThickness="1,1,0,1" BorderBrush="#FF17DE17" Margin="1,0,-1,0" Background="{StaticResource MenuBrush}">
-                    <TextBlock Text="Train" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextAlignment="Center" Foreground="#FF17DE17" FontFamily="Consolas" FontSize="14" />
+                <Border Grid.Column="25" Grid.ColumnSpan="4" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  BorderThickness="1,1,0,0" BorderBrush="White" Margin="1,0,-1,0" Background="{StaticResource MenuBrush}">
+                    <TextBlock Text="Train" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextAlignment="Center" Foreground="White" FontFamily="Consolas" FontSize="14" />
                 </Border>
-                <Border Grid.Column="29" Grid.ColumnSpan="4" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  BorderThickness="1,1,0,1" BorderBrush="#FF17DE17" Margin="1,0,-1,0" Background="{StaticResource MenuBrush}">
-                    <TextBlock Text="Test" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextAlignment="Center" Foreground="#FF17DE17" FontFamily="Consolas" FontSize="14" />
+                <Border Grid.Column="29" Grid.ColumnSpan="4" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  BorderThickness="1,1,1,0" BorderBrush="White" Margin="1,0,-1,0" Background="{StaticResource MenuBrush}">
+                    <TextBlock Text="Test" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextAlignment="Center" Foreground="White" FontFamily="Consolas" FontSize="14" />
                 </Border>
             </Grid>
         </ScrollViewer>
 
-        <ListView Grid.Row="2" Foreground="#FF17DE17" BorderBrush="{StaticResource DisabledBorderBrush}" Margin="0" Height="Auto" HorizontalAlignment="Stretch" x:Name="listViewTrainingResult" VerticalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Width="Auto" IsSynchronizedWithCurrentItem="True" SelectedIndex="{Binding SelectedIndex}" ItemsSource="{Binding Source={StaticResource src}}" SelectionMode="Single" UseLayoutRounding="True" IsEnabled="True" Grid.ColumnSpan="1" FontFamily="Consolas" FontSize="13" IsTextSearchEnabled="False" TextOptions.TextFormattingMode="Display" KeyDown="ListViewTrainingResult_KeyDown" BorderThickness="0" ScrollViewer.ScrollChanged="ListViewTrainingResult_ScrollChanged" SelectionChanged="ListViewTrainingResult_SelectionChanged" LayoutUpdated="ListViewTrainingResult_LayoutUpdated" Background="#FF646464">
+        <ListView Grid.Row="2" Foreground="Black" BorderBrush="{StaticResource DisabledBorderBrush}" Margin="0" Height="Auto" HorizontalAlignment="Stretch" x:Name="listViewTrainingResult" VerticalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Width="Auto" IsSynchronizedWithCurrentItem="True" SelectedIndex="{Binding SelectedIndex}" ItemsSource="{Binding Source={StaticResource src}}" SelectionMode="Single" UseLayoutRounding="True" IsEnabled="True" Grid.ColumnSpan="1" FontFamily="Consolas" FontSize="13" IsTextSearchEnabled="False" TextOptions.TextFormattingMode="Display" KeyDown="ListViewTrainingResult_KeyDown" BorderThickness="0" ScrollViewer.ScrollChanged="ListViewTrainingResult_ScrollChanged" SelectionChanged="ListViewTrainingResult_SelectionChanged" LayoutUpdated="ListViewTrainingResult_LayoutUpdated" Background="#FF646464">
             <ListView.ItemContainerStyle>
                 <Style TargetType="{x:Type ListViewItem}">
                     <Style.Resources>
@@ -359,7 +358,7 @@
                         </Setter.Value>
                     </Setter>
                     <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                    <Setter Property="Foreground" Value="#FF17DE17" />
+                    <Setter Property="Foreground" Value="White" />
                 </Style>
             </ListView.ItemContainerStyle>
             <ListView.View>
@@ -370,8 +369,8 @@
                             <Setter Property="Template">
                                 <Setter.Value>
                                     <ControlTemplate TargetType="{x:Type GridViewColumnHeader}">
-                                        <Border BorderThickness="1,1,0,1" BorderBrush="#FF17DE17" Background="#FF646464">
-                                            <TextBlock x:Name="ContentHeader" Text="{TemplateBinding Content}" Width="Auto" TextAlignment="Center" Foreground="#FF17DE17" Visibility="Visible"/>
+                                        <Border BorderThickness="1,1,0,1" BorderBrush="White" Background="#FF646464">
+                                            <TextBlock x:Name="ContentHeader" Text="{TemplateBinding Content}" Width="Auto" TextAlignment="Center" Foreground="White" Visibility="Visible"/>
                                         </Border>
                                     </ControlTemplate>
                                 </Setter.Value>
@@ -380,7 +379,7 @@
                             <Setter Property="Foreground" Value="White" />
                             <Style.Triggers>
                                 <Trigger Property="IsEnabled" Value="False">
-                                    <Setter Property="TextElement.Foreground" Value="#FF17DE17"/>
+                                    <Setter Property="TextElement.Foreground" Value="White"/>
                                     <Setter Property="Background" Value="{StaticResource MenuBrush}"/>
                                 </Trigger>
                             </Style.Triggers>
@@ -510,7 +509,7 @@
                     <GridViewColumn x:Name="cutMix" Header="CutMix" Width="60">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <CheckBox HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="Consolas" HorizontalContentAlignment="Center" FontSize="14" IsChecked="{Binding CutMix}" Foreground="#FF17DE17" Background="Transparent" BorderBrush="{DynamicResource {x:Static SystemColors.DesktopBrushKey}}" IsThreeState="False" IsHitTestVisible="False" Style="{Binding Mode=OneWay, Source={StaticResource KioskCheckBox}}"/>
+                                <CheckBox HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="Consolas" HorizontalContentAlignment="Center" FontSize="14" IsChecked="{Binding CutMix}" Foreground="White" Background="Transparent" BorderBrush="{DynamicResource {x:Static SystemColors.DesktopBrushKey}}" IsThreeState="False" IsHitTestVisible="False" Style="{Binding Mode=OneWay, Source={StaticResource KioskCheckBox}}"/>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
@@ -526,7 +525,7 @@
                     <GridViewColumn x:Name="hflip" Header="Horz.Flip" Width="80">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <CheckBox  HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="Consolas" HorizontalContentAlignment="Center" FontSize="14" Foreground="#FF17DE17" Background="Transparent" BorderBrush="{DynamicResource {x:Static SystemColors.DesktopBrushKey}}" IsChecked="{Binding HorizontalFlip}" IsThreeState="False" IsHitTestVisible="False" Style="{Binding Mode=OneWay, Source={StaticResource KioskCheckBox}}" />
+                                <CheckBox  HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="Consolas" HorizontalContentAlignment="Center" FontSize="14" Foreground="White" Background="Transparent" BorderBrush="{DynamicResource {x:Static SystemColors.DesktopBrushKey}}" IsChecked="{Binding HorizontalFlip}" IsThreeState="False" IsHitTestVisible="False" Style="{Binding Mode=OneWay, Source={StaticResource KioskCheckBox}}" />
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
@@ -534,7 +533,7 @@
                     <GridViewColumn x:Name="vflip" Header="Vert.Flip" Width="80">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <CheckBox HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="Consolas" HorizontalContentAlignment="Center" FontSize="14" Foreground="#FF17DE17" Background="Transparent" BorderBrush="{DynamicResource {x:Static SystemColors.DesktopBrushKey}}" IsChecked="{Binding VerticalFlip}" IsThreeState="False" IsHitTestVisible="False" Style="{Binding Mode=OneWay, Source={StaticResource KioskCheckBox}}"/>
+                                <CheckBox HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="Consolas" HorizontalContentAlignment="Center" FontSize="14" Foreground="White" Background="Transparent" BorderBrush="{DynamicResource {x:Static SystemColors.DesktopBrushKey}}" IsChecked="{Binding VerticalFlip}" IsThreeState="False" IsHitTestVisible="False" Style="{Binding Mode=OneWay, Source={StaticResource KioskCheckBox}}"/>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
