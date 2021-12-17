@@ -25,7 +25,7 @@
             <GradientStop Color="{StaticResource TextColor}" Offset="0"/>
             <GradientStop Color="{StaticResource TextColor}" Offset="1"/>
         </LinearGradientBrush>
-        <Color x:Key="BackgroundColor">#FF404040</Color>
+        <Color x:Key="BackgroundColor">#FF303030</Color>
         <LinearGradientBrush x:Key="BackgroundBrush" EndPoint="0.5,1" StartPoint="0.5,0.99">
             <GradientStop  Color="{StaticResource BackgroundColor}" Offset="0"/>
             <GradientStop Color="{StaticResource BackgroundColor}" Offset="1"/>
@@ -314,11 +314,11 @@
                 <Style TargetType="{x:Type ListViewItem}">
                     <Style.Resources>
                         <!-- Foreground for Selected ListViewItem -->
-                        <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}" Color="DarkGreen"/>
+                        <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}" Color="White"/>
                         <!-- Background for Selected ListViewItem -->
-                        <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="DarkGreen"/>
+                        <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="White"/>
                         <LinearGradientBrush x:Key="ListItemHoverFill" EndPoint="0,1" StartPoint="0,0">
-                            <GradientStop Color="White" Offset="0"/>
+                            <GradientStop Color="{StaticResource BackgroundColor}" Offset="0"/>
                             <GradientStop Color="Black" Offset="1"/>
                         </LinearGradientBrush>
                     </Style.Resources>
@@ -344,7 +344,7 @@
                                             <VisualState x:Name="SelectedUnfocused">
                                                 <Storyboard>
                                                     <ColorAnimationUsingKeyFrames Storyboard.TargetName="Border" Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)">
-                                                        <EasingColorKeyFrame KeyTime="0" Value="{StaticResource SelectedUnfocusedColor}" />
+                                                        <EasingColorKeyFrame KeyTime="0" Value="{StaticResource SelectedBackgroundColor}" />
                                                     </ColorAnimationUsingKeyFrames>
                                                 </Storyboard>
                                             </VisualState>
@@ -355,7 +355,7 @@
                                 <ControlTemplate.Triggers>
                                     <Trigger Property="IsMouseOver" Value="True">
                                         <Setter Property="Background" Value="{StaticResource ListItemHoverFill}" />
-                                        <Setter Property="BorderBrush" Value="#FFCCF0FF" />
+                                        <Setter Property="BorderBrush" Value="{StaticResource ListItemHoverFill}" />
                                     </Trigger>
                                     <Trigger Property="IsEnabled" Value="False">
                                         <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
@@ -376,7 +376,7 @@
                             <Setter Property="Template">
                                 <Setter.Value>
                                     <ControlTemplate TargetType="{x:Type GridViewColumnHeader}">
-                                        <Border BorderThickness="1,1,0,1" BorderBrush="White" Background="{StaticResource BackgroundBrush}">
+                                        <Border BorderThickness="1,1,0,1" BorderBrush="{StaticResource TextBrush}" Background="{StaticResource BackgroundBrush}">
                                             <TextBlock x:Name="ContentHeader" Text="{TemplateBinding Content}" Width="Auto" TextAlignment="Center" Foreground="{StaticResource TextBrush}" Visibility="Visible"/>
                                         </Border>
                                     </ControlTemplate>
