@@ -71,7 +71,7 @@
 
         <Label Content="Goto Epoch:" Foreground="{DynamicResource TextBrush}" FontFamily="Consolas" FontSize="14" HorizontalAlignment="Left" Margin="200,0,0,0" Grid.Row="1" VerticalAlignment="Center"/>
 
-        <xctk:AutoSelectTextBox ContextMenu="{StaticResource MyContextMenu}" Foreground="{DynamicResource TextBrush}" HorizontalAlignment="Left" Width="70" Margin="300,0,0,0" Grid.Row="1" x:Name="textBoxGotoEpoch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Validation.ErrorTemplate="{StaticResource validationTemplate}" Style="{StaticResource textBoxInError}" AllowDrop="False" MaxLines="1" AutoWordSelection="True" BorderThickness="1" SnapsToDevicePixels="True" AutoSelectBehavior="OnFocus" AutoMoveFocus="True" FontSize="14" TabIndex="0">
+        <xctk:AutoSelectTextBox ContextMenu="{StaticResource MyContextMenu}" Foreground="{DynamicResource TextBrush}" HorizontalAlignment="Left" Width="70" Height="22" Margin="300,0,0,0" Grid.Row="1" x:Name="textBoxGotoEpoch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Validation.ErrorTemplate="{StaticResource validationTemplate}" Style="{StaticResource textBoxInError}" AllowDrop="False" MaxLines="1" AutoWordSelection="True" BorderThickness="1" SnapsToDevicePixels="True" AutoSelectBehavior="OnFocus" AutoMoveFocus="True" FontSize="14" TabIndex="0">
             <Binding Path="GotoEpoch" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
                 <Binding.ValidationRules>
                     <c:UIntRangeRule Min="1" Max="1000000"/>
