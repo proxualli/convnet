@@ -41,15 +41,15 @@
             <ToolBar Name="CmdToolBar" ItemsSource="{Binding Path=CommandToolBar, Mode=TwoWay, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged}" Visibility="{Binding Path=CommandToolBarVisibility}"/>
         </ToolBarTray>
 
-        <Border Grid.Row="1"  Background="{StaticResource BackgroundBrushLight}">
+        <Border Grid.Row="1">
             <ContentControl Name="PageContentControl" Content="{Binding Path=CurrentPage}"/>
         </Border>
 
         <StatusBar Grid.Row="2" Name="statusBarMain" Width="Auto" Height="23" Background="{StaticResource BackgroundBrushLight}">
-            <StatusBarItem HorizontalAlignment="Right" Width="Auto" Foreground="Black">
+            <StatusBarItem HorizontalAlignment="Right" Width="Auto">
                 <TextBlock x:Name="SampleRate" Margin="2,0,2,0" HorizontalAlignment="Left" VerticalAlignment="Stretch" Text="{Binding Path=SampleRate}" ToolTip="Sample Rate" Foreground="{StaticResource TextBrush}" />
             </StatusBarItem>
-            <StatusBarItem HorizontalAlignment="Left" Width="Auto" Foreground="Black">
+            <StatusBarItem HorizontalAlignment="Left" Width="Auto">
                 <TextBlock x:Name="Time" Margin="2,0,2,0" HorizontalAlignment="Left" VerticalAlignment="Stretch" Text="{Binding Path=Duration}" ToolTip="Duration" Foreground="{StaticResource TextBrush}"/>
             </StatusBarItem>
             <StatusBarItem HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" HorizontalAlignment="Stretch">

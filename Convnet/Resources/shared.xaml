@@ -43,6 +43,15 @@
         </MenuItem>
     </ContextMenu>
 
+    <!--Common colors.-->
+    <Color x:Key="TextColor">#FFD7CFD7</Color>
+    <Color x:Key="BackgroundColor">#FF1E1E1E</Color>
+    <Color x:Key="BackgroundColorLight">#FF404040</Color>
+
+    <SolidColorBrush x:Key="TextBrush" Color="{StaticResource TextColor}"/>
+    <SolidColorBrush x:Key="BackgroundBrush" Color="{StaticResource BackgroundColor}"/>
+    <SolidColorBrush x:Key="BackgroundBrushLight" Color="{StaticResource BackgroundColorLight}"/>
+    
     <!-- Fill Brushes -->
 
     <LinearGradientBrush x:Key="NormalBrush" StartPoint="0,0" EndPoint="0,1">
@@ -687,65 +696,7 @@
         </DrawingImage.Drawing>
     </DrawingImage>
 
-    <ControlTemplate x:Key="validationTemplate">
-        <DockPanel>
-            <Image Source="/Convnet;component/Resources/Annotate_HighPriority.ico" Stretch="None"></Image>
-            <AdornedElementPlaceholder/>
-        </DockPanel>
-    </ControlTemplate>
-
-    <Style x:Key="textBoxInError" TargetType="{x:Type TextBox}">
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type TextBoxBase}">
-                    <Border 
-                Name="Border"
-                CornerRadius="2" 
-                Padding="2"
-                Background="{StaticResource DisabledBorderBrush}"
-                BorderBrush="#FFD5DFE5"
-                BorderThickness="1" >
-                        <ScrollViewer Margin="0" x:Name="PART_ContentHost"/>
-                    </Border>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsEnabled" Value="False">
-                            <Setter TargetName="Border" Property="Background" Value="Gray"/>
-                            <Setter TargetName="Border" Property="BorderBrush" Value="{StaticResource DisabledBorderBrush}"/>
-                            <Setter Property="Opacity" Value="0.5"/>
-                            <Setter Property="Foreground" Value="White"/>
-                            <Setter Property="CaretBrush" Value="White"/>
-                            <Setter Property="Background" Value="Gray"/>
-                        </Trigger>
-                        <Trigger Property="IsEnabled" Value="True">
-                            <Setter Property="Opacity" Value="1"/>
-                            <Setter TargetName="Border" Property="Background" Value="{StaticResource DisabledBorderBrush}"/>
-                            <Setter TargetName="Border" Property="BorderBrush" Value="{StaticResource DisabledBorderBrush}"/>
-                            <Setter Property="Foreground" Value="White"/>
-                            <Setter Property="CaretBrush" Value="White"/>
-                            <Setter Property="Background" Value="{StaticResource DisabledBorderBrush}"/>
-                        </Trigger>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-        <Style.Triggers>
-            <MultiTrigger>
-                <MultiTrigger.Conditions>
-                    <Condition Property="Validation.HasError" Value="true"/>
-                </MultiTrigger.Conditions>
-
-                <Setter Property="ToolTip"  Value="{Binding RelativeSource={x:Static RelativeSource.Self}, Path=(Validation.Errors)[0].ErrorContent}"/>
-            </MultiTrigger>
-            <MultiTrigger>
-                <MultiTrigger.Conditions>
-                    <Condition Property="IsMouseOver" Value="true"/>
-                </MultiTrigger.Conditions>
-                <Setter Property="ForceCursor" Value="True"/>
-                <Setter Property="Cursor" Value="IBeam"/>
-            </MultiTrigger>
-        </Style.Triggers>
-    </Style>
-
+    
     <Color x:Key="WindowColor">#FFE8EDF9</Color>
     <Color x:Key="ContentAreaColorLight">#FFC5CBF9</Color>
     <Color x:Key="ContentAreaColorDark">#FF7381F9</Color>
@@ -1020,14 +971,7 @@
         </Style.Triggers>
     </Style>
 
-    <!--Common colors.-->
-    <Color x:Key="TextColor">#FFD7CFD7</Color>
-    <Color x:Key="BackgroundColor">#FF1E1E1E</Color>
-    <Color x:Key="BackgroundColorLight">#FF404040</Color>
-
-    <SolidColorBrush x:Key="TextBrush" Color="{StaticResource TextColor}"/>
-    <SolidColorBrush x:Key="BackgroundBrush" Color="{StaticResource BackgroundColor}"/>
-    <SolidColorBrush x:Key="BackgroundBrushLight" Color="{StaticResource BackgroundColorLight}"/>
+   
 
 
     <Style x:Key="KioskCheckBox" TargetType="{x:Type CheckBox}">
@@ -1121,4 +1065,65 @@
             </Setter.Value>
         </Setter>
     </Style>
+
+
+    <ControlTemplate x:Key="validationTemplate">
+        <DockPanel>
+            <Image Source="/Convnet;component/Resources/Annotate_HighPriority.ico" Stretch="None"></Image>
+            <AdornedElementPlaceholder/>
+        </DockPanel>
+    </ControlTemplate>
+
+    <Style x:Key="textBoxInError" TargetType="{x:Type TextBox}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type TextBoxBase}">
+                    <Border 
+                Name="Border"
+                CornerRadius="2" 
+                Padding="2"
+                Background="{DynamicResource BackgroundBrushLight}"
+                BorderBrush="{DynamicResource BackgroundBrushLight}"
+                BorderThickness="1" >
+                        <ScrollViewer Margin="0" x:Name="PART_ContentHost"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="Border" Property="Background" Value="{DynamicResource BackgroundBrush}"/>
+                            <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource BackgroundBrushLight}"/>
+                            <Setter Property="Opacity" Value="0.5"/>
+                            <Setter Property="Foreground" Value="{DynamicResource TextBrush}"/>
+                            <Setter Property="CaretBrush" Value="{DynamicResource TextBrush}"/>
+                            <Setter Property="Background" Value="{DynamicResource BackgroundBrush}"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="True">
+                            <Setter Property="Opacity" Value="1"/>
+                            <Setter TargetName="Border" Property="Background" Value="{DynamicResource BackgroundBrushLight}"/>
+                            <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource BackgroundBrush}"/>
+                            <Setter Property="Foreground" Value="{DynamicResource TextBrush}"/>
+                            <Setter Property="CaretBrush" Value="{DynamicResource TextBrush}"/>
+                            <Setter Property="Background" Value="{DynamicResource BackgroundBrushLight}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="Validation.HasError" Value="true"/>
+                </MultiTrigger.Conditions>
+
+                <Setter Property="ToolTip"  Value="{Binding RelativeSource={x:Static RelativeSource.Self}, Path=(Validation.Errors)[0].ErrorContent}"/>
+            </MultiTrigger>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="IsMouseOver" Value="true"/>
+                </MultiTrigger.Conditions>
+                <Setter Property="ForceCursor" Value="True"/>
+                <Setter Property="Cursor" Value="IBeam"/>
+            </MultiTrigger>
+        </Style.Triggers>
+    </Style>
+
 </ResourceDictionary>
