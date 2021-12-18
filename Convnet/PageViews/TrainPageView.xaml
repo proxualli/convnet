@@ -295,7 +295,7 @@
         </CollectionViewSource>
         <props:Settings x:Key="Settings"/>
 
-        <!--Common colors.-->
+          <!--Common colors.-->
         <Color x:Key="TextColor">#FFD7CFD7</Color>
         <Color x:Key="BackgroundColor">#FF1E1E1E</Color>
         <Color x:Key="BackgroundColorLight">#FF404040</Color>

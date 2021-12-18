@@ -1758,7 +1758,7 @@ namespace Convnet.PageViewModels
                     Settings.Default.Save();
                     Model.SelectedIndex = Settings.Default.SelectedLayer;
 
-                    ShowSample = Model.TaskState == DNNTaskStates.Running && index == 0;
+                    ShowSample = Model.TaskState == DNNTaskStates.Running;
                     ShowWeights = Model.Layers[index].HasWeights || Settings.Default.Timings;
                     ShowWeightsSnapshot = (Model.Layers[index].IsNormalizationLayer && Model.Layers[index].Scaling) || Model.Layers[index].LayerType == DNNLayerTypes.PartialDepthwiseConvolution || Model.Layers[index].LayerType == DNNLayerTypes.DepthwiseConvolution || Model.Layers[index].LayerType == DNNLayerTypes.ConvolutionTranspose || Model.Layers[index].LayerType == DNNLayerTypes.Convolution || Model.Layers[index].LayerType == DNNLayerTypes.Dense || (Model.Layers[index].LayerType == DNNLayerTypes.Activation && Model.Layers[index].HasWeights);
 
@@ -1768,7 +1768,8 @@ namespace Convnet.PageViewModels
                         InputSnapshot = Model.InputSnapshot;
                         Label = Model.Label;
                     }
-                    else
+
+                    if (ShowWeightsSnapshot)
                         Model.UpdateLayerInfo((ulong)index, ShowWeightsSnapshot);
 
                     CommandToolBar[16].Visibility = !Settings.Default.DisableLocking ? Visibility.Visible : Visibility.Collapsed;
