@@ -301,7 +301,7 @@
         <Color x:Key="BackgroundColorLight">#FF404040</Color>
 
         <SolidColorBrush x:Key="TextBrush" Color="{StaticResource TextColor}"/>
-        <SolidColorBrush x:Key="BackgroundBrush" Color="{StaticResource BackgroundColorLight}"/>
+        <SolidColorBrush x:Key="BackgroundBrush" Color="{StaticResource BackgroundColor}"/>
         <SolidColorBrush x:Key="BackgroundBrushLight" Color="{StaticResource BackgroundColorLight}"/>
 
 
