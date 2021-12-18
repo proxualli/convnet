@@ -25,14 +25,6 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
-
-        <Color x:Key="TextColor">#FFD7CFD7</Color>
-        <Color x:Key="BackgroundColor">#FF1E1E1E</Color>
-        <Color x:Key="BackgroundColorLight">#FF404040</Color>
-
-        <SolidColorBrush x:Key="TextBrush" Color="{StaticResource TextColor}"/>
-        <SolidColorBrush x:Key="BackgroundBrush" Color="{StaticResource BackgroundColor}"/>
-        <SolidColorBrush x:Key="BackgroundBrushLight" Color="{StaticResource BackgroundColorLight}"/>
     </UserControl.Resources>
 
     <Grid>
