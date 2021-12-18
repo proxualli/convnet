@@ -5,6 +5,15 @@
              xmlns:converters="clr-namespace:Convnet.Converters">
     
     <UserControl.Resources >
+        <!--Common colors.-->
+        <Color x:Key="TextColor">#FFD7CFD7</Color>
+        <Color x:Key="BackgroundColorLight">#FF404040</Color>
+        <Color x:Key="BackgroundColor">#FF323232</Color>
+
+        <SolidColorBrush x:Key="TextBrush" Color="{StaticResource TextColor}"/>
+        <SolidColorBrush x:Key="BackgroundBrushLight" Color="{StaticResource BackgroundColorLight}"/>
+        <SolidColorBrush x:Key="BackgroundBrush" Color="{StaticResource BackgroundColor}"/>
+        
         <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <converters:BooleanValueInverter x:Key="Inverter" />
         <converters:FirstDegreeFunctionConverter x:Key="AdjustHeight" A="113"/>
@@ -60,7 +69,7 @@
         </Style>
     </UserControl.Resources>
 
-    <Grid Name="gridMain" Background="Gray">
+    <Grid Name="gridMain" Background="{StaticResource BackgroundBrushLight}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*" />
@@ -72,22 +81,22 @@
             </Grid.ColumnDefinitions>
             <StackPanel x:Name="StackPanelInfo" Height="Auto" Margin="0" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="1" Grid.RowSpan="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Width="Auto" Orientation="Horizontal" SnapsToDevicePixels="True" UseLayoutRounding="True">
                 <Border x:Name="BorderProgress" BorderThickness="1,1,0,1" BorderBrush="Gray" CornerRadius="3" Margin="1,1,0,1" Padding="2" Visibility="{Binding Path=ShowProgress, Converter={StaticResource BooleanToVisibilityConverter}}" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="1" Grid.RowSpan="1" Background="{StaticResource DisabledBorderBrush}">
-                    <TextBlock x:Name="TextBlockProgress" Margin="4" TextWrapping="NoWrap" SnapsToDevicePixels="True" UseLayoutRounding="True" FontFamily="Consolas" FontSize="14" Text="{Binding Path=ProgressText}" Foreground="White"/>
+                    <TextBlock x:Name="TextBlockProgress" Margin="4" TextWrapping="NoWrap" SnapsToDevicePixels="True" UseLayoutRounding="True" FontFamily="Consolas" FontSize="14" Text="{Binding Path=ProgressText}" Foreground="{StaticResource TextBrush}"/>
                 </Border>
                 <Border x:Name="BorderInputSnapShot" BorderThickness="1,1,0,1" BorderBrush="Gray" CornerRadius="3" Margin="1,1,0,1" Padding="2" Visibility="{Binding Path=ShowSample, Converter={StaticResource BooleanToVisibilityConverter}}" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="1" Grid.RowSpan="1" Background="{StaticResource DisabledBorderBrush}">
                     <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="Auto" Height="Auto"  Orientation="Vertical">
                         <Image Source="{Binding Path=InputSnapShot}" Width="64" Height="64" Margin="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Stretch="Uniform" StretchDirection="Both" RenderOptions.BitmapScalingMode="HighQuality"/>
-                        <TextBlock  x:Name="TextBlockLabel" Text="{Binding Path=Label}" Width ="Auto" Height="Auto" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="Consolas" Foreground="White"/>
+                        <TextBlock  x:Name="TextBlockLabel" Text="{Binding Path=Label}" Width ="Auto" Height="Auto" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="Consolas" Foreground="{StaticResource TextBrush}"/>
                     </StackPanel>
                 </Border>
             </StackPanel>
         </Grid>
         <Grid Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="Auto" Width="Auto">
             <StackPanel Orientation="Vertical">
-                <Border BorderThickness="1" BorderBrush="Gray" CornerRadius="3" Margin="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-                    <TextBlock x:Name="TextBlockConfusionMatrix" Margin="4" TextWrapping="NoWrap" SnapsToDevicePixels="True" UseLayoutRounding="True" FontFamily="Consolas" FontSize="16" Text="Confusion Matrix" Foreground="White" MouseLeftButtonDown="TextBlockConfusionMatrix_MouseLeftButtonDown" MouseEnter="TextBlockConfusionMatrix_MouseEnter" MouseLeave="TextBlockConfusionMatrix_MouseLeave"/>
+                <Border BorderThickness="1" BorderBrush="{StaticResource BackgroundBrushLight}"  CornerRadius="3" Margin="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                    <TextBlock x:Name="TextBlockConfusionMatrix" Margin="4" TextWrapping="NoWrap" SnapsToDevicePixels="True" UseLayoutRounding="True" FontFamily="Consolas" FontSize="16" Text="Confusion Matrix" Foreground="{StaticResource TextBrush}" MouseLeftButtonDown="TextBlockConfusionMatrix_MouseLeftButtonDown" MouseEnter="TextBlockConfusionMatrix_MouseEnter" MouseLeave="TextBlockConfusionMatrix_MouseLeave"/>
                 </Border>
-                <DataGrid x:Name="Matrix" Width="{Binding ElementName=MyUserControl, Path=ActualWidth}" Height="{Binding ElementName=MyUserControl, Path=ActualHeight, Converter={StaticResource AdjustHeight}, ConverterParameter=113}" CellStyle="{StaticResource MyDataGridCell}" RowBackground="Gray" Background="Gray" ItemsSource="{Binding ConfusionDataTable}" SelectionUnit="Cell" CanUserResizeRows="False" CanUserSortColumns="False" CanUserReorderColumns="False" CanUserResizeColumns="False" UseLayoutRounding="True" IsReadOnly="True" AutoGenerateColumns="True" MinColumnWidth="26" ClipboardCopyMode="IncludeHeader" GridLinesVisibility="None" BorderThickness="0" SnapsToDevicePixels="True" EnableRowVirtualization="True" ColumnHeaderStyle="{StaticResource MyColumnHeaderStyle}" RowHeaderStyle="{StaticResource MyRowHeaderStyle}" AutoGeneratedColumns="Matrix_AutoGeneratedColumns">
+                <DataGrid x:Name="Matrix" Background="{StaticResource BackgroundBrushLight}" Width="{Binding ElementName=MyUserControl, Path=ActualWidth}" Height="{Binding ElementName=MyUserControl, Path=ActualHeight, Converter={StaticResource AdjustHeight}, ConverterParameter=113}" CellStyle="{StaticResource MyDataGridCell}" RowBackground="Gray" ItemsSource="{Binding ConfusionDataTable}" SelectionUnit="Cell" CanUserResizeRows="False" CanUserSortColumns="False" CanUserReorderColumns="False" CanUserResizeColumns="False" UseLayoutRounding="True" IsReadOnly="True" AutoGenerateColumns="True" MinColumnWidth="26" ClipboardCopyMode="IncludeHeader" GridLinesVisibility="None" BorderThickness="0" SnapsToDevicePixels="True" EnableRowVirtualization="True" ColumnHeaderStyle="{StaticResource MyColumnHeaderStyle}" RowHeaderStyle="{StaticResource MyRowHeaderStyle}" AutoGeneratedColumns="Matrix_AutoGeneratedColumns">
 
                 </DataGrid>
             </StackPanel>
