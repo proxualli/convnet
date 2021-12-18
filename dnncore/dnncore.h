@@ -1062,8 +1062,8 @@ namespace dnncore
 		bool SetFormat(bool plain);
 		void ResetLayerWeights(UInt layerIndex);
 		void ResetWeights();
-		void AddLearningRate(DNNTrainingRate^ rate, bool clear, UInt gotoEpoch, UInt trainSamples);
-		void AddLearningRateSGDR(DNNTrainingRate^ rate, bool clear, UInt gotoEpoch, UInt trainSamples);
+		void AddTrainingRate(DNNTrainingRate^ rate, bool clear, UInt gotoEpoch, UInt trainSamples);
+		void AddTrainingRateSGDR(DNNTrainingRate^ rate, bool clear, UInt gotoEpoch, UInt trainSamples);
 		void Start(bool training);
 		void Stop();
 		void Pause();

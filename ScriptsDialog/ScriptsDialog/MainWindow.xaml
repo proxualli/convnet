@@ -8,9 +8,9 @@
         xmlns:converters="clr-namespace:ScriptsDialog.Converters"
         xmlns:xctk="clr-namespace:ScriptsDialog.AutoSelectTextBox"
         mc:Ignorable="d"
-        Title="Model Parameters" Height="1150" Width="330" WindowStartupLocation="CenterScreen" ShowInTaskbar="False" ResizeMode="NoResize" Closing="Window_Closing" Loaded="Window_Loaded" Background="Gray" Icon="Resources\App.ico" Topmost="True">
+        Title="Model Parameters" Height="1150" Width="330" WindowStartupLocation="CenterScreen" ShowInTaskbar="False" ResizeMode="NoResize" Closing="Window_Closing" Loaded="Window_Loaded" Icon="Resources\App.ico" Topmost="True" Background="#FF404040">
 
-    <Window.Resources>
+    <Window.Resources >
         <Style x:Key="ClearTypeFormula" TargetType="controls:FormulaControl">
             <Setter Property="TextOptions.TextRenderingMode" Value="ClearType" />
             <Setter Property="TextOptions.TextHintingMode" Value="Fixed" />
@@ -71,6 +71,290 @@
             </Style.Triggers>
         </Style>
 
+        <!--Control colors.-->
+        <Color x:Key="WindowColor">#FFE8EDF9</Color>
+        <Color x:Key="ContentAreaColorLight">#FFC5CBF9</Color>
+        <Color x:Key="ContentAreaColorDark">#FF7381F9</Color>
+
+        <Color x:Key="DisabledControlLightColor">#FFE8EDF9</Color>
+        <Color x:Key="DisabledControlDarkColor">#FFC5CBF9</Color>
+        <Color x:Key="DisabledForegroundColor">#FF888888</Color>
+
+        <Color x:Key="SelectedBackgroundColor">#FFC5CBF9</Color>
+        <Color x:Key="SelectedUnfocusedColor">#FFDDDDDD</Color>
+
+        <Color x:Key="ControlLightColor">#FF2E2E2E</Color>
+        <Color x:Key="ControlMediumColor">#FF646464</Color>
+        <Color x:Key="ControlDarkColor">#FF404040</Color>
+
+        <Color x:Key="ControlMouseOverColor">#FF2E2E2E</Color>
+        <Color x:Key="ControlPressedColor">#FF3E3E3E</Color>
+
+
+        <Color x:Key="GlyphColor">#FF555555</Color>
+        <Color x:Key="GlyphMouseOver">sc#1, 1.004391443, 1.002428215, 1.242281124</Color>
+
+        <!--Border colors-->
+        <Color x:Key="BorderLightColor">#FF888888</Color>
+        <Color x:Key="BorderMediumColor">#FF888888</Color>
+        <Color x:Key="BorderDarkColor">#FF888888</Color>
+
+        <Color x:Key="PressedBorderLightColor">#FF888888</Color>
+        <Color x:Key="PressedBorderDarkColor">#FF444444</Color>
+
+        <Color x:Key="DisabledBorderLightColor">#FFAAAAAA</Color>
+        <Color x:Key="DisabledBorderDarkColor">#FF888888</Color>
+
+        <Color x:Key="DefaultBorderBrushDarkColor">Black</Color>
+
+        <!--Control-specific resources.-->
+        <Color x:Key="HeaderTopColor">#FF2E2E2E</Color>
+        <Color x:Key="DatagridCurrentCellBorderColor">Black</Color>
+        <Color x:Key="SliderTrackDarkColor">#FFC5CBF9</Color>
+
+        <Color x:Key="NavButtonFrameColor">#FF3843C4</Color>
+
+        <LinearGradientBrush x:Key="MenuPopupBrush"
+                     EndPoint="0.5,1"
+                     StartPoint="0.5,0">
+            <GradientStop Color="{DynamicResource ControlLightColor}"
+                Offset="0" />
+            <GradientStop Color="{DynamicResource ControlLightColor}"
+                Offset="0.5" />
+            <GradientStop Color="{DynamicResource ControlLightColor}"
+                Offset="1" />
+        </LinearGradientBrush>
+
+        <LinearGradientBrush x:Key="ProgressBarIndicatorAnimatedFill"
+                     StartPoint="0,0"
+                     EndPoint="1,0">
+            <LinearGradientBrush.GradientStops>
+                <GradientStopCollection>
+                    <GradientStop Color="#000000FF"
+                    Offset="0" />
+                    <GradientStop Color="#600000FF"
+                    Offset="0.4" />
+                    <GradientStop Color="#600000FF"
+                    Offset="0.6" />
+                    <GradientStop Color="#000000FF"
+                    Offset="1" />
+                </GradientStopCollection>
+            </LinearGradientBrush.GradientStops>
+        </LinearGradientBrush>
+
+        <Style x:Key="ScrollBarLineButton" TargetType="{x:Type RepeatButton}">
+            <Setter Property="SnapsToDevicePixels" Value="True" />
+            <Setter Property="OverridesDefaultStyle" Value="true" />
+            <Setter Property="Focusable" Value="false" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type RepeatButton}">
+                        <Border x:Name="Border" Margin="1" CornerRadius="2" BorderThickness="1">
+                            <Border.BorderBrush>
+                                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                    <LinearGradientBrush.GradientStops>
+                                        <GradientStopCollection>
+                                            <GradientStop Color="{DynamicResource ControlLightColor}" Offset="0.0" />
+                                            <GradientStop Color="{DynamicResource ControlLightColor}" Offset="1.0" />
+                                        </GradientStopCollection>
+                                    </LinearGradientBrush.GradientStops>
+                                </LinearGradientBrush>
+                            </Border.BorderBrush>
+                            <Border.Background>
+                                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                    <LinearGradientBrush.GradientStops>
+                                        <GradientStopCollection>
+                                            <GradientStop Color="{DynamicResource ControlLightColor}"/>
+                                            <GradientStop Color="{DynamicResource ControlLightColor}" Offset="1.0" />
+                                        </GradientStopCollection>
+                                    </LinearGradientBrush.GradientStops>
+                                </LinearGradientBrush>
+                            </Border.Background>
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="CommonStates">
+                                    <VisualState x:Name="Normal" />
+                                    <VisualState x:Name="MouseOver" />
+                                    <VisualState x:Name="Pressed">
+                                        <Storyboard>
+                                            <ColorAnimationUsingKeyFrames Storyboard.TargetName="Border" Storyboard.TargetProperty="(Panel.Background).(GradientBrush.GradientStops)[1].(GradientStop.Color)">
+                                                <EasingColorKeyFrame KeyTime="0" Value="{StaticResource ControlPressedColor}" />
+                                            </ColorAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="Disabled">
+                                        <Storyboard>
+                                            <ColorAnimationUsingKeyFrames Storyboard.TargetName="Arrow" Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)">
+                                                <EasingColorKeyFrame KeyTime="0" Value="{StaticResource DisabledForegroundColor}" />
+                                            </ColorAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                            <Path x:Name="Arrow" HorizontalAlignment="Center" VerticalAlignment="Center" Data="{Binding Content, RelativeSource={RelativeSource TemplatedParent}}" >
+                                <Path.Fill>
+                                    <SolidColorBrush Color="{DynamicResource GlyphColor}"/>
+                                </Path.Fill>
+                            </Path>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="ScrollBarPageButton" TargetType="{x:Type RepeatButton}">
+            <Setter Property="SnapsToDevicePixels" Value="True" />
+            <Setter Property="OverridesDefaultStyle" Value="true" />
+            <Setter Property="IsTabStop" Value="false" />
+            <Setter Property="Focusable" Value="false" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type RepeatButton}">
+                        <Border Background="Transparent" />
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="ScrollBarThumb" TargetType="{x:Type Thumb}">
+            <Setter Property="SnapsToDevicePixels" Value="True" />
+            <Setter Property="OverridesDefaultStyle" Value="true" />
+            <Setter Property="IsTabStop" Value="false" />
+            <Setter Property="Focusable" Value="false" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Thumb}">
+                        <Border CornerRadius="2" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1" />
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <ControlTemplate x:Key="VerticalScrollBar" TargetType="{x:Type ScrollBar}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition MaxHeight="18" />
+                    <RowDefinition Height="0.00001*" />
+                    <RowDefinition MaxHeight="18" />
+                </Grid.RowDefinitions>
+                <Border Grid.RowSpan="3" CornerRadius="2" Background="#404040" />
+                <RepeatButton Grid.Row="0"
+                  Style="{StaticResource ScrollBarLineButton}"
+                  Height="18"
+                  Command="ScrollBar.LineUpCommand"
+                  Content="M 0 4 L 8 4 L 4 0 Z" />
+                <Track x:Name="PART_Track"
+           Grid.Row="1"
+           IsDirectionReversed="true">
+                    <Track.DecreaseRepeatButton>
+                        <RepeatButton Style="{StaticResource ScrollBarPageButton}"
+                      Command="ScrollBar.PageUpCommand" />
+                    </Track.DecreaseRepeatButton>
+                    <Track.Thumb>
+                        <Thumb Style="{StaticResource ScrollBarThumb}"
+               Margin="1,0,1,0">
+                            <Thumb.BorderBrush>
+
+                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                                    <LinearGradientBrush.GradientStops>
+                                        <GradientStopCollection>
+                                            <GradientStop Color="{DynamicResource ControlLightColor}" Offset="0.0" />
+                                            <GradientStop Color="{DynamicResource ControlLightColor}" Offset="1.0" />
+                                        </GradientStopCollection>
+                                    </LinearGradientBrush.GradientStops>
+                                </LinearGradientBrush>
+                            </Thumb.BorderBrush>
+                            <Thumb.Background>
+                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                                    <LinearGradientBrush.GradientStops>
+                                        <GradientStopCollection>
+                                            <GradientStop Color="{DynamicResource ControlLightColor}" Offset="0.0" />
+                                            <GradientStop Color="{DynamicResource ControlLightColor}" Offset="1.0" />
+                                        </GradientStopCollection>
+                                    </LinearGradientBrush.GradientStops>
+                                </LinearGradientBrush>
+                            </Thumb.Background>
+                        </Thumb>
+                    </Track.Thumb>
+                    <Track.IncreaseRepeatButton>
+                        <RepeatButton Style="{StaticResource ScrollBarPageButton}" Command="ScrollBar.PageDownCommand" />
+                    </Track.IncreaseRepeatButton>
+                </Track>
+                <RepeatButton Grid.Row="2" Style="{StaticResource ScrollBarLineButton}" Height="18" Command="ScrollBar.LineDownCommand" Content="M 0 0 L 4 4 L 8 0 Z" />
+            </Grid>
+        </ControlTemplate>
+
+        <ControlTemplate x:Key="HorizontalScrollBar" TargetType="{x:Type ScrollBar}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition MaxWidth="18" />
+                    <ColumnDefinition Width="0.00001*" />
+                    <ColumnDefinition MaxWidth="18" />
+                </Grid.ColumnDefinitions>
+                <Border Grid.ColumnSpan="3" CornerRadius="2" Background="#404040" />
+                <RepeatButton Grid.Column="0" Style="{StaticResource ScrollBarLineButton}" Width="18" Command="ScrollBar.LineLeftCommand" Content="M 4 0 L 4 8 L 0 4 Z" />
+                <Track x:Name="PART_Track" Grid.Column="1" IsDirectionReversed="False">
+                    <Track.DecreaseRepeatButton>
+                        <RepeatButton Style="{StaticResource ScrollBarPageButton}" Command="ScrollBar.PageLeftCommand" />
+                    </Track.DecreaseRepeatButton>
+                    <Track.Thumb>
+                        <Thumb Style="{StaticResource ScrollBarThumb}" Margin="0,1,0,1">
+                            <Thumb.BorderBrush>
+                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                                    <LinearGradientBrush.GradientStops>
+                                        <GradientStopCollection>
+                                            <GradientStop Color="{DynamicResource ControlLightColor}" Offset="0.0" />
+                                            <GradientStop Color="{DynamicResource ControlLightColor}" Offset="1.0" />
+                                        </GradientStopCollection>
+                                    </LinearGradientBrush.GradientStops>
+                                </LinearGradientBrush>
+                            </Thumb.BorderBrush>
+                            <Thumb.Background>
+                                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                    <LinearGradientBrush.GradientStops>
+                                        <GradientStopCollection>
+                                            <GradientStop Color="{DynamicResource ControlLightColor}" Offset="0.0" />
+                                            <GradientStop Color="{DynamicResource ControlLightColor}" Offset="1.0" />
+                                        </GradientStopCollection>
+                                    </LinearGradientBrush.GradientStops>
+                                </LinearGradientBrush>
+                            </Thumb.Background>
+                        </Thumb>
+                    </Track.Thumb>
+                    <Track.IncreaseRepeatButton>
+                        <RepeatButton Style="{StaticResource ScrollBarPageButton}" Command="ScrollBar.PageRightCommand" />
+                    </Track.IncreaseRepeatButton>
+                </Track>
+                <RepeatButton Grid.Column="2" Style="{StaticResource ScrollBarLineButton}" Width="18" Command="ScrollBar.LineRightCommand" Content="M 0 0 L 4 4 L 0 8 Z" />
+            </Grid>
+        </ControlTemplate>
+
+        <Style x:Key="{x:Type ScrollBar}" TargetType="{x:Type ScrollBar}">
+            <Setter Property="SnapsToDevicePixels" Value="True" />
+            <Setter Property="OverridesDefaultStyle" Value="true" />
+            <Style.Triggers>
+                <Trigger Property="Orientation" Value="Horizontal">
+                    <Setter Property="Width" Value="Auto" />
+                    <Setter Property="Height" Value="18" />
+                    <Setter Property="Template" Value="{StaticResource HorizontalScrollBar}" />
+                </Trigger>
+                <Trigger Property="Orientation" Value="Vertical">
+                    <Setter Property="Width" Value="18" />
+                    <Setter Property="Height" Value="Auto" />
+                    <Setter Property="Template" Value="{StaticResource VerticalScrollBar}" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!--Control colors.-->
+        <Color x:Key="TextColor">#FFD7CFD7</Color>
+        <Color x:Key="BackgroundColor">#FF1E1E1E</Color>
+        <Color x:Key="BackgroundColorLight">#FF404040</Color>
+
+        <SolidColorBrush x:Key="TextBrush" Color="{StaticResource TextColor}"/>
+        <SolidColorBrush x:Key="BackgroundBrush" Color="{StaticResource BackgroundColor}"/>
+        <SolidColorBrush x:Key="BackgroundBrushLight" Color="{StaticResource BackgroundColorLight}"/>
+
+        <!--<Color x:Key="SelectedBackgroundColor">#FF303030</Color>-->
         <ContextMenu x:Key="MyContextMenu">
             <MenuItem Header="_Cut" Command="ApplicationCommands.Cut">
                 <MenuItem.Icon>
@@ -103,7 +387,7 @@
         </ContextMenu>
     </Window.Resources>
 
-    <Grid Margin="6" Name="Grid">
+    <Grid Margin="6" Name="Grid" >
         <Grid.RowDefinitions>
             <RowDefinition Height="30" MaxHeight="30"/>
             <RowDefinition Height="30" MaxHeight="30"/>
@@ -147,49 +431,49 @@
             <ColumnDefinition Width="2"/>
         </Grid.ColumnDefinitions>
 
-        <TextBlock Foreground="White" Grid.Column="1" Grid.Row="0" Height="Auto" Margin="2" HorizontalAlignment="Stretch" Name="textBlockModels" Text="Model:" Width="Auto" FontSize="14" VerticalAlignment="Center"/>
-        <TextBlock Foreground="White" Grid.Column="1" Grid.Row="1" Height="Auto" Margin="2" HorizontalAlignment="Stretch" Name="textBlockDataset" Text="Dataset:" Width="Auto" FontSize="14" VerticalAlignment="Center"/>
-        <TextBlock Foreground="White" Grid.Column="1" Grid.Row="2" Height="Auto" Margin="2" HorizontalAlignment="Stretch" Name="textBlockResolution" Text="Resolution:" Width="Auto" FontSize="14" VerticalAlignment="Center"/>
-        <TextBlock Foreground="White" Grid.Column="1" Grid.Row="3" Height="Auto" Margin="2" HorizontalAlignment="Stretch" Name="textBlockPadding" Text="Padding:" Width="Auto" FontSize="14" VerticalAlignment="Center"/>
-        <TextBlock Foreground="White" Grid.Column="1" Grid.Row="4" Height="Auto" Margin="2" HorizontalAlignment="Stretch" Name="textBlockPaddingType" Text="Padding Type:" Width="Auto" FontSize="14" VerticalAlignment="Center"/>
-        <TextBlock Foreground="White" Grid.Column="1" Grid.Row="5" Height="Auto" Margin="2" HorizontalAlignment="Stretch" Name="textBlockGroups" Text="Groups:" Width="Auto" FontSize="14" VerticalAlignment="Center"/>
-        <TextBlock Foreground="White" Grid.Column="1" Grid.Row="6" Height="Auto" Margin="2" HorizontalAlignment="Stretch" Name="textBlockIterations" Text="Iterations:" Width="Auto" FontSize="14" VerticalAlignment="Center"/>
-        <TextBlock Foreground="White" Grid.Column="1" Grid.Row="7" Height="Auto" Margin="2" HorizontalAlignment="Stretch" Name="textBlockDepth" Text="Depth:" Width="Auto" FontSize="14" VerticalAlignment="Center"/>
-        <TextBlock Foreground="White" Grid.Column="1" Grid.Row="8" Height="Auto" Margin="2" HorizontalAlignment="Stretch" Name="textBlockWidth" Text="Width:" Width="Auto" FontSize="14" VerticalAlignment="Center" Visibility="{Binding Path=WidthVisible, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-        <TextBlock Foreground="White" Grid.Column="1" Grid.Row="9" Height="Auto" Margin="2" HorizontalAlignment="Stretch" Name="textBlockGrowthRate" Text="Growth Rate:" Width="Auto" FontSize="14" VerticalAlignment="Center" Visibility="{Binding Path=GrowthRateVisible, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-        <TextBlock Foreground="White" Grid.Column="1" Grid.Row="10" Height="Auto" Margin="2" HorizontalAlignment="Stretch" Name="textBlockDropout" Text="Dropout:" Width="Auto" FontSize="14" VerticalAlignment="Center" Visibility="{Binding Path=DropoutVisible, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-        <TextBlock Foreground="White" Grid.Column="1" Grid.Row="11" Height="Auto" Margin="2" HorizontalAlignment="Stretch" Name="textBlockCompression" Text="Compression:" Width="Auto" FontSize="14" VerticalAlignment="Center" Visibility="{Binding Path=CompressionVisible, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-        <TextBlock Foreground="White" Grid.Column="1" Grid.Row="12" Height="Auto" Margin="2" HorizontalAlignment="Stretch" Name="textBlockBottleneck" Text="Bottleneck:" Width="Auto" FontSize="14" VerticalAlignment="Center" Visibility="{Binding Path=BottleneckVisible, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-        <TextBlock Foreground="White" Grid.Column="1" Grid.Row="13" Height="Auto" Margin="2" HorizontalAlignment="Stretch" Name="textBlockChannelZeroPad" Text="ChannelZeroPad:" Width="Auto" FontSize="14" VerticalAlignment="Center" Visibility="{Binding Path=ChannelZeroPadVisible, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-        <TextBlock Foreground="White" Grid.Column="1" Grid.Row="14" Height="Auto" Margin="2" HorizontalAlignment="Stretch" Name="textBlockSE" Text="Squeeze Excitation:" Width="Auto" FontSize="14" VerticalAlignment="Center" Visibility="{Binding Path=SqueezeExcitationVisible, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-        <TextBlock Foreground="White" Grid.Column="1" Grid.Row="15" Height="Auto" Margin="2" HorizontalAlignment="Stretch" Name="textBlockActivation" Text="Activation:" Width="Auto" FontSize="14" VerticalAlignment="Center" />
-        <TextBlock Foreground="White" Grid.Column="1" Grid.Row="17" Height="Auto" Margin="2" HorizontalAlignment="Left" Name="textBlockWeightsFiller" Text="Weights Filler:" Width="Auto" FontSize="14" VerticalAlignment="Center"/>
+        <TextBlock Foreground="{StaticResource TextBrush}" Grid.Column="1" Grid.Row="0" Height="Auto" Margin="2" HorizontalAlignment="Stretch" Name="textBlockModels" Text="Model:" Width="Auto" FontSize="14" VerticalAlignment="Center"/>
+        <TextBlock Foreground="{StaticResource TextBrush}" Grid.Column="1" Grid.Row="1" Height="Auto" Margin="2" HorizontalAlignment="Stretch" Name="textBlockDataset" Text="Dataset:" Width="Auto" FontSize="14" VerticalAlignment="Center"/>
+        <TextBlock Foreground="{StaticResource TextBrush}" Grid.Column="1" Grid.Row="2" Height="Auto" Margin="2" HorizontalAlignment="Stretch" Name="textBlockResolution" Text="Resolution:" Width="Auto" FontSize="14" VerticalAlignment="Center"/>
+        <TextBlock Foreground="{StaticResource TextBrush}" Grid.Column="1" Grid.Row="3" Height="Auto" Margin="2" HorizontalAlignment="Stretch" Name="textBlockPadding" Text="Padding:" Width="Auto" FontSize="14" VerticalAlignment="Center"/>
+        <TextBlock Foreground="{StaticResource TextBrush}" Grid.Column="1" Grid.Row="4" Height="Auto" Margin="2" HorizontalAlignment="Stretch" Name="textBlockPaddingType" Text="Padding Type:" Width="Auto" FontSize="14" VerticalAlignment="Center"/>
+        <TextBlock Foreground="{StaticResource TextBrush}" Grid.Column="1" Grid.Row="5" Height="Auto" Margin="2" HorizontalAlignment="Stretch" Name="textBlockGroups" Text="Groups:" Width="Auto" FontSize="14" VerticalAlignment="Center"/>
+        <TextBlock Foreground="{StaticResource TextBrush}" Grid.Column="1" Grid.Row="6" Height="Auto" Margin="2" HorizontalAlignment="Stretch" Name="textBlockIterations" Text="Iterations:" Width="Auto" FontSize="14" VerticalAlignment="Center"/>
+        <TextBlock Foreground="{StaticResource TextBrush}" Grid.Column="1" Grid.Row="7" Height="Auto" Margin="2" HorizontalAlignment="Stretch" Name="textBlockDepth" Text="Depth:" Width="Auto" FontSize="14" VerticalAlignment="Center"/>
+        <TextBlock Foreground="{StaticResource TextBrush}" Grid.Column="1" Grid.Row="8" Height="Auto" Margin="2" HorizontalAlignment="Stretch" Name="textBlockWidth" Text="Width:" Width="Auto" FontSize="14" VerticalAlignment="Center" Visibility="{Binding Path=WidthVisible, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+        <TextBlock Foreground="{StaticResource TextBrush}" Grid.Column="1" Grid.Row="9" Height="Auto" Margin="2" HorizontalAlignment="Stretch" Name="textBlockGrowthRate" Text="Growth Rate:" Width="Auto" FontSize="14" VerticalAlignment="Center" Visibility="{Binding Path=GrowthRateVisible, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+        <TextBlock Foreground="{StaticResource TextBrush}" Grid.Column="1" Grid.Row="10" Height="Auto" Margin="2" HorizontalAlignment="Stretch" Name="textBlockDropout" Text="Dropout:" Width="Auto" FontSize="14" VerticalAlignment="Center" Visibility="{Binding Path=DropoutVisible, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+        <TextBlock Foreground="{StaticResource TextBrush}" Grid.Column="1" Grid.Row="11" Height="Auto" Margin="2" HorizontalAlignment="Stretch" Name="textBlockCompression" Text="Compression:" Width="Auto" FontSize="14" VerticalAlignment="Center" Visibility="{Binding Path=CompressionVisible, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+        <TextBlock Foreground="{StaticResource TextBrush}" Grid.Column="1" Grid.Row="12" Height="Auto" Margin="2" HorizontalAlignment="Stretch" Name="textBlockBottleneck" Text="Bottleneck:" Width="Auto" FontSize="14" VerticalAlignment="Center" Visibility="{Binding Path=BottleneckVisible, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+        <TextBlock Foreground="{StaticResource TextBrush}" Grid.Column="1" Grid.Row="13" Height="Auto" Margin="2" HorizontalAlignment="Stretch" Name="textBlockChannelZeroPad" Text="ChannelZeroPad:" Width="Auto" FontSize="14" VerticalAlignment="Center" Visibility="{Binding Path=ChannelZeroPadVisible, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+        <TextBlock Foreground="{StaticResource TextBrush}" Grid.Column="1" Grid.Row="14" Height="Auto" Margin="2" HorizontalAlignment="Stretch" Name="textBlockSE" Text="Squeeze Excitation:" Width="Auto" FontSize="14" VerticalAlignment="Center" Visibility="{Binding Path=SqueezeExcitationVisible, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+        <TextBlock Foreground="{StaticResource TextBrush}" Grid.Column="1" Grid.Row="15" Height="Auto" Margin="2" HorizontalAlignment="Stretch" Name="textBlockActivation" Text="Activation:" Width="Auto" FontSize="14" VerticalAlignment="Center" />
+        <TextBlock Foreground="{StaticResource TextBrush}" Grid.Column="1" Grid.Row="17" Height="Auto" Margin="2" HorizontalAlignment="Left" Name="textBlockWeightsFiller" Text="Weights Filler:" Width="Auto" FontSize="14" VerticalAlignment="Center"/>
         <Button x:Name="ButtonFormulaWeights" Content=" ? " HorizontalAlignment="Center" Margin="130,0,0,0" Grid.Column="1" Grid.Row="17" VerticalAlignment="Center" FontSize="12" ClickMode="Hover" Click="ButtonFormulaWeights_Click" MouseLeftButtonDown="ButtonFormulaWeights_MouseLeftButtonDown" IsTabStop="False">
             <Button.ToolTip>
                 <controls:FormulaControl x:Name="FormulaWeightsCtrl" SystemTextFontName="Arial" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" SnapsToDevicePixels="True" Style="{StaticResource ClearTypeFormula}"/>
             </Button.ToolTip>
         </Button> 
-        <TextBlock Foreground="White" Grid.Column="1" Grid.Row="18" Height="Auto" Margin="2" HorizontalAlignment="Stretch" Name="textBlockWeightsFillerMode" Text="     Mode:" Width="Auto" FontSize="14" VerticalAlignment="Center" Visibility="{Binding Path=WeightsFillerModeVisible, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-        <TextBlock Foreground="White" Grid.Column="1" Grid.Row="19" Height="Auto" Margin="2" HorizontalAlignment="Stretch" Name="textBlockWeightsGain" Text="     Gain:" Width="Auto" FontSize="14" VerticalAlignment="Center" Visibility="{Binding Path=WeightsGainVisible, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-        <TextBlock Foreground="White" Grid.Column="1" Grid.Row="20" Height="Auto" Margin="2" HorizontalAlignment="Stretch" Name="textBlockWeightsScale" Text="     Scale:" Width="Auto" FontSize="14" VerticalAlignment="Center" Visibility="{Binding Path=WeightsScaleVisible, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-        <TextBlock Foreground="White" Grid.Column="1" Grid.Row="21" Height="Auto" Margin="2" HorizontalAlignment="Stretch" Name="textBlockWeightsLRM" Text="     LRM:" Width="Auto" FontSize="14" VerticalAlignment="Center" ToolTip="Learning Rate Multiplier"/>
-        <TextBlock Foreground="White" Grid.Column="1" Grid.Row="22" Height="Auto" Margin="2" HorizontalAlignment="Stretch" Name="textBlockWeightsWDM" Text="     WDM:" Width="Auto" FontSize="14" VerticalAlignment="Center" ToolTip="Weight Decay Multiplier"/>
-        <TextBlock Foreground="White" Grid.Column="1" Grid.Row="23" Height="Auto" Margin="2" HorizontalAlignment="Stretch" Name="textBlockBiasesFiller" Text="Biases Filler:" Width="Auto" FontSize="14" VerticalAlignment="Center"/>
-        <CheckBox Name="CheckBoxHasBias"  Content="" Grid.Column="1" Grid.Row="23" Margin="2" Foreground="White" VerticalAlignment="Stretch" FontSize="14" TabIndex="28" VerticalContentAlignment="Center" IsChecked="{Binding Path=HasBias, Mode=TwoWay}" Unchecked="CheckBoxHasBias_CheckedChanged" Checked="CheckBoxHasBias_CheckedChanged" HorizontalContentAlignment="Stretch" Padding="22,0,0,0" HorizontalAlignment="Right" />
+        <TextBlock Foreground="{StaticResource TextBrush}" Grid.Column="1" Grid.Row="18" Height="Auto" Margin="2" HorizontalAlignment="Stretch" Name="textBlockWeightsFillerMode" Text="     Mode:" Width="Auto" FontSize="14" VerticalAlignment="Center" Visibility="{Binding Path=WeightsFillerModeVisible, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+        <TextBlock Foreground="{StaticResource TextBrush}" Grid.Column="1" Grid.Row="19" Height="Auto" Margin="2" HorizontalAlignment="Stretch" Name="textBlockWeightsGain" Text="     Gain:" Width="Auto" FontSize="14" VerticalAlignment="Center" Visibility="{Binding Path=WeightsGainVisible, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+        <TextBlock Foreground="{StaticResource TextBrush}" Grid.Column="1" Grid.Row="20" Height="Auto" Margin="2" HorizontalAlignment="Stretch" Name="textBlockWeightsScale" Text="     Scale:" Width="Auto" FontSize="14" VerticalAlignment="Center" Visibility="{Binding Path=WeightsScaleVisible, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+        <TextBlock Foreground="{StaticResource TextBrush}" Grid.Column="1" Grid.Row="21" Height="Auto" Margin="2" HorizontalAlignment="Stretch" Name="textBlockWeightsLRM" Text="     LRM:" Width="Auto" FontSize="14" VerticalAlignment="Center" ToolTip="Learning Rate Multiplier"/>
+        <TextBlock Foreground="{StaticResource TextBrush}" Grid.Column="1" Grid.Row="22" Height="Auto" Margin="2" HorizontalAlignment="Stretch" Name="textBlockWeightsWDM" Text="     WDM:" Width="Auto" FontSize="14" VerticalAlignment="Center" ToolTip="Weight Decay Multiplier"/>
+        <TextBlock Foreground="{StaticResource TextBrush}" Grid.Column="1" Grid.Row="23" Height="Auto" Margin="2" HorizontalAlignment="Stretch" Name="textBlockBiasesFiller" Text="Biases Filler:" Width="Auto" FontSize="14" VerticalAlignment="Center"/>
+        <CheckBox Name="CheckBoxHasBias"  Content="" Grid.Column="1" Grid.Row="23" Margin="2" Foreground="{StaticResource TextBrush}" VerticalAlignment="Stretch" FontSize="14" TabIndex="28" VerticalContentAlignment="Center" IsChecked="{Binding Path=HasBias, Mode=TwoWay}" Unchecked="CheckBoxHasBias_CheckedChanged" Checked="CheckBoxHasBias_CheckedChanged" HorizontalContentAlignment="Stretch" Padding="22,0,0,0" HorizontalAlignment="Right" />
         <Button x:Name="ButtonFormulaBiases" Content=" ? " HorizontalAlignment="Center" Margin="130,0,0,0" Grid.Column="1" Grid.Row="23" VerticalAlignment="Center" FontSize="12" ClickMode="Hover" Click="ButtonFormulaBiases_Click" MouseLeftButtonDown="ButtonFormulaWeights_MouseLeftButtonDown" IsTabStop="False">
             <Button.ToolTip>
                 <controls:FormulaControl x:Name="FormulaBiasesCtrl" SystemTextFontName="Arial" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" SnapsToDevicePixels="True" Style="{StaticResource ClearTypeFormula}"/>
             </Button.ToolTip>
         </Button>
-        <TextBlock Foreground="White" Grid.Column="1" Grid.Row="24" Height="Auto" Margin="2" HorizontalAlignment="Stretch" Name="textBlockBiasesFillerMode" Text="     Mode:" Width="Auto" FontSize="14" VerticalAlignment="Center" Visibility="{Binding Path=BiasesFillerModeVisible, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-        <TextBlock Foreground="White" Grid.Column="1" Grid.Row="25" Height="Auto" Margin="2" HorizontalAlignment="Stretch" Name="textBlockBiasesGain" Text="     Gain:" Width="Auto" FontSize="14" VerticalAlignment="Center"/>
-        <TextBlock Foreground="White" Grid.Column="1" Grid.Row="26" Height="Auto" Margin="2" HorizontalAlignment="Stretch" Name="textBlockBiasesScale" Text="     Scale:" Width="Auto" FontSize="14" VerticalAlignment="Center"/>
-        <TextBlock Foreground="White" Grid.Column="1" Grid.Row="27" Height="Auto" Margin="2" HorizontalAlignment="Stretch" Name="textBlockBiasesLRM" Text="     LRM:" Width="Auto" FontSize="14" VerticalAlignment="Center" ToolTip="Learning Rate Multiplier"/>
-        <TextBlock Foreground="White" Grid.Column="1" Grid.Row="28" Height="Auto" Margin="2" HorizontalAlignment="Stretch" Name="textBlockBiasesWDM" Text="     WDM:" Width="Auto" FontSize="14" VerticalAlignment="Center" ToolTip="Weight Decay Multiplier"/>
-        <TextBlock Foreground="White" Grid.Column="1" Grid.Row="29" Height="Auto" Margin="2" HorizontalAlignment="Stretch" Name="textBlockBatchNormScaling" Text="BatchNorm Scaling:" Width="Auto" FontSize="14" VerticalAlignment="Center" ToolTip="Batch Normalization Scaling" />
-        <CheckBox Name="CheckBoxBNScaling" Content="" Grid.Column="2" Grid.Row="29" Margin="2" Foreground="White" VerticalAlignment="Center" FontSize="14" TabIndex="35" VerticalContentAlignment="Center" IsChecked="{Binding Path=BatchNormScaling, Mode=TwoWay}" HorizontalContentAlignment="Stretch" Padding="0,-1,0,0" ToolTip="Batch Normalization Scaling" HorizontalAlignment="Left"/>
-        <TextBlock Foreground="White" Grid.Column="1" Grid.Row="30" Height="Auto" Margin="2" HorizontalAlignment="Stretch" Name="textBlockBatchNormMomentum" Text="     Momentum:" Width="Auto" FontSize="14" VerticalAlignment="Center" ToolTip="Batch Normalization Momentum" />
-        <TextBlock Foreground="White" Grid.Column="1" Grid.Row="31" Height="Auto" Margin="2" HorizontalAlignment="Stretch" Name="textBlockBatchNormEps" Text="     Eps:" Width="Auto" FontSize="14" VerticalAlignment="Center" ToolTip="Batch Normalization Eps"/>
+        <TextBlock Foreground="{StaticResource TextBrush}" Grid.Column="1" Grid.Row="24" Height="Auto" Margin="2" HorizontalAlignment="Stretch" Name="textBlockBiasesFillerMode" Text="     Mode:" Width="Auto" FontSize="14" VerticalAlignment="Center" Visibility="{Binding Path=BiasesFillerModeVisible, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+        <TextBlock Foreground="{StaticResource TextBrush}" Grid.Column="1" Grid.Row="25" Height="Auto" Margin="2" HorizontalAlignment="Stretch" Name="textBlockBiasesGain" Text="     Gain:" Width="Auto" FontSize="14" VerticalAlignment="Center"/>
+        <TextBlock Foreground="{StaticResource TextBrush}" Grid.Column="1" Grid.Row="26" Height="Auto" Margin="2" HorizontalAlignment="Stretch" Name="textBlockBiasesScale" Text="     Scale:" Width="Auto" FontSize="14" VerticalAlignment="Center"/>
+        <TextBlock Foreground="{StaticResource TextBrush}" Grid.Column="1" Grid.Row="27" Height="Auto" Margin="2" HorizontalAlignment="Stretch" Name="textBlockBiasesLRM" Text="     LRM:" Width="Auto" FontSize="14" VerticalAlignment="Center" ToolTip="Learning Rate Multiplier"/>
+        <TextBlock Foreground="{StaticResource TextBrush}" Grid.Column="1" Grid.Row="28" Height="Auto" Margin="2" HorizontalAlignment="Stretch" Name="textBlockBiasesWDM" Text="     WDM:" Width="Auto" FontSize="14" VerticalAlignment="Center" ToolTip="Weight Decay Multiplier"/>
+        <TextBlock Foreground="{StaticResource TextBrush}" Grid.Column="1" Grid.Row="29" Height="Auto" Margin="2" HorizontalAlignment="Stretch" Name="textBlockBatchNormScaling" Text="BatchNorm Scaling:" Width="Auto" FontSize="14" VerticalAlignment="Center" ToolTip="Batch Normalization Scaling" />
+        <CheckBox Name="CheckBoxBNScaling" Content="" Grid.Column="2" Grid.Row="29" Margin="2" Foreground="{StaticResource TextBrush}" VerticalAlignment="Center" FontSize="14" TabIndex="35" VerticalContentAlignment="Center" IsChecked="{Binding Path=BatchNormScaling, Mode=TwoWay}" HorizontalContentAlignment="Stretch" Padding="0,-1,0,0" ToolTip="Batch Normalization Scaling" HorizontalAlignment="Left"/>
+        <TextBlock Foreground="{StaticResource TextBrush}" Grid.Column="1" Grid.Row="30" Height="Auto" Margin="2" HorizontalAlignment="Stretch" Name="textBlockBatchNormMomentum" Text="     Momentum:" Width="Auto" FontSize="14" VerticalAlignment="Center" ToolTip="Batch Normalization Momentum" />
+        <TextBlock Foreground="{StaticResource TextBrush}" Grid.Column="1" Grid.Row="31" Height="Auto" Margin="2" HorizontalAlignment="Stretch" Name="textBlockBatchNormEps" Text="     Eps:" Width="Auto" FontSize="14" VerticalAlignment="Center" ToolTip="Batch Normalization Eps"/>
 
         <ComboBox Name="comboBoxModel" Grid.Column="2" Grid.Row="0" HorizontalAlignment="Stretch" Margin="2" VerticalAlignment="Stretch" Width="Auto" FontSize="14" TabIndex="0" ItemsSource="{Binding Path=ScriptsList}" SelectedItem="{Binding Path=Script, Mode=TwoWay}" SelectionChanged="ComboBox_SelectionChanged"/>
         <ComboBox Name="comboBoxDataset" Grid.Column="2" Grid.Row="1" HorizontalAlignment="Stretch" Margin="2" VerticalAlignment="Stretch" Width="Auto" FontSize="14" TabIndex="1" ItemsSource="{Binding Path=DatasetsList}" SelectedItem="{Binding Path=Dataset, Mode=TwoWay}"/>
@@ -202,7 +486,7 @@
         <ComboBox x:Name="comboBoxBiasesFiller" Grid.Column="2" Grid.Row="23" HorizontalAlignment="Stretch" Margin="2" VerticalAlignment="Stretch" Width="Auto" FontSize="14" TabIndex="29" ItemsSource="{Binding Path=FillersList}" SelectedItem="{Binding Path=BiasesFiller, Mode=TwoWay}" SelectionChanged="ComboBox_SelectionChanged"/>
 
         <ComboBox x:Name="comboBoxBiasesFillerMode" Grid.Column="2" Grid.Row="24" HorizontalAlignment="Stretch" Margin="2" VerticalAlignment="Stretch" Width="Auto" FontSize="14" TabIndex="30" ItemsSource="{Binding Path=FillerModesList}" SelectedItem="{Binding Path=BiasesFillerMode, Mode=TwoWay}" SelectionChanged="ComboBox_SelectionChanged"/>
-        <DataGrid Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="16" ItemsSource="{Binding EfficientNet}" CanUserAddRows="True" CanUserDeleteRows="True" ContextMenu="{StaticResource MyContextMenu}" TabIndex="21" AutoGenerateColumns="False" Height="Auto" HorizontalAlignment="Stretch" Margin="3" x:Name="DataGridEfficientNet" VerticalAlignment="Stretch" Width="Auto" CanUserSortColumns="False" GridLinesVisibility="Horizontal" HorizontalGridLinesBrush="#FFAAE4F5" VerticalContentAlignment="Center" HorizontalContentAlignment="Stretch" SelectionMode="Single" MinHeight="0" MinWidth="0" CanUserResizeColumns="False" FontFamily="Consolas" FontSize="14" CanUserResizeRows="False" BorderThickness="0" Foreground="{DynamicResource {x:Static SystemColors.DesktopBrushKey}}" CanUserReorderColumns="False" IsSynchronizedWithCurrentItem="True" SelectionUnit="FullRow" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Visibility="{Binding Path=EfficientNetVisible, Converter={StaticResource BooleanToVisibilityConverter}}" IsEnabled="{Binding Path=EfficientNetVisible}" KeyboardNavigation.TabNavigation="Local" KeyboardNavigation.TabIndex="21">
+        <DataGrid Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="16" ItemsSource="{Binding EfficientNet}" CanUserAddRows="True" CanUserDeleteRows="True" Background="{StaticResource BackgroundBrushLight}" ContextMenu="{StaticResource MyContextMenu}" TabIndex="21" AutoGenerateColumns="False" Height="Auto" HorizontalAlignment="Stretch" Margin="3" x:Name="DataGridEfficientNet" VerticalAlignment="Stretch" Width="Auto" CanUserSortColumns="False" GridLinesVisibility="Horizontal" HorizontalGridLinesBrush="#FFAAE4F5" VerticalContentAlignment="Center" HorizontalContentAlignment="Stretch" SelectionMode="Single" MinHeight="0" MinWidth="0" CanUserResizeColumns="False" FontFamily="Consolas" FontSize="14" CanUserResizeRows="False" BorderThickness="0" Foreground="{DynamicResource {x:Static SystemColors.DesktopBrushKey}}" CanUserReorderColumns="False" IsSynchronizedWithCurrentItem="True" SelectionUnit="FullRow" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Visibility="{Binding Path=EfficientNetVisible, Converter={StaticResource BooleanToVisibilityConverter}}" IsEnabled="{Binding Path=EfficientNetVisible}" KeyboardNavigation.TabNavigation="Local" KeyboardNavigation.TabIndex="21">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="ExpRatio" Binding="{Binding Path=ExpandRatio, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 <DataGridTextColumn Header="Channels" Binding="{Binding Path=Channels, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
@@ -212,7 +496,7 @@
             </DataGrid.Columns>
         </DataGrid>
 
-        <DataGrid Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="16" ItemsSource="{Binding ShuffleNet}" CanUserAddRows="True" CanUserDeleteRows="True" ContextMenu="{StaticResource MyContextMenu}" TabIndex="21" AutoGenerateColumns="False" Height="Auto" HorizontalAlignment="Stretch" Margin="3" x:Name="DataGridShuffleNet" VerticalAlignment="Stretch" Width="Auto" CanUserSortColumns="False" GridLinesVisibility="Horizontal" HorizontalGridLinesBrush="#FFAAE4F5" VerticalContentAlignment="Center" HorizontalContentAlignment="Stretch" SelectionMode="Single" MinHeight="0" MinWidth="0" CanUserResizeColumns="False" FontFamily="Consolas" FontSize="14" CanUserResizeRows="False" BorderThickness="0" Foreground="{DynamicResource {x:Static SystemColors.DesktopBrushKey}}" CanUserReorderColumns="False" IsSynchronizedWithCurrentItem="True" SelectionUnit="FullRow" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Visibility="{Binding Path=ShuffleNetVisible, Converter={StaticResource BooleanToVisibilityConverter}}" IsEnabled="{Binding Path=ShuffleNetVisible}" KeyboardNavigation.TabNavigation="Local" KeyboardNavigation.TabIndex="21">
+        <DataGrid Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="16" ItemsSource="{Binding ShuffleNet}" CanUserAddRows="True" CanUserDeleteRows="True" Background="{StaticResource BackgroundBrushLight}" ContextMenu="{StaticResource MyContextMenu}" TabIndex="21" AutoGenerateColumns="False" Height="Auto" HorizontalAlignment="Stretch" Margin="3" x:Name="DataGridShuffleNet" VerticalAlignment="Stretch" Width="Auto" CanUserSortColumns="False" GridLinesVisibility="Horizontal" HorizontalGridLinesBrush="#FFAAE4F5" VerticalContentAlignment="Center" HorizontalContentAlignment="Stretch" SelectionMode="Single" MinHeight="0" MinWidth="0" CanUserResizeColumns="False" FontFamily="Consolas" FontSize="14" CanUserResizeRows="False" BorderThickness="0" Foreground="{DynamicResource {x:Static SystemColors.DesktopBrushKey}}" CanUserReorderColumns="False" IsSynchronizedWithCurrentItem="True" SelectionUnit="FullRow" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Visibility="{Binding Path=ShuffleNetVisible, Converter={StaticResource BooleanToVisibilityConverter}}" IsEnabled="{Binding Path=ShuffleNetVisible}" KeyboardNavigation.TabNavigation="Local" KeyboardNavigation.TabIndex="21">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Iters" Binding="{Binding Path=Iterations, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 <DataGridTextColumn Header="Kernel" Binding="{Binding Path=Kernel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
@@ -221,13 +505,13 @@
                 <DataGridCheckBoxColumn Header="SE" Binding="{Binding Path=SE, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             </DataGrid.Columns>
         </DataGrid>
-        
+
         <StackPanel Grid.Column="2" Grid.Row="2" Orientation="Horizontal">
-            <xctk:AutoSelectTextBox ContextMenu="{StaticResource MyContextMenu}" Grid.Column="2" Grid.Row="2" HorizontalAlignment="Stretch" x:Name="textBoxC" VerticalAlignment="Stretch" TabIndex="2" Width="45" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" MaxLines="1" Style="{StaticResource textBoxInError}" AutoWordSelection="True" AllowDrop="False" BorderThickness="2"  BorderBrush="DarkGray" Margin="2"  IsEnabled="False" ToolTip="Channels" AutoMoveFocus="True" AutoSelectBehavior="OnFocus">
+            <xctk:AutoSelectTextBox BorderBrush="{StaticResource BackgroundBrushLight}" Background="{StaticResource BackgroundBrushLight}" ContextMenu="{StaticResource MyContextMenu}" Grid.Column="2" Grid.Row="2" HorizontalAlignment="Stretch" x:Name="textBoxC" VerticalAlignment="Stretch" TabIndex="2" Width="45" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" MaxLines="1" Style="{StaticResource textBoxInError}" AutoWordSelection="True" AllowDrop="False" BorderThickness="2" Margin="2"  IsEnabled="False" ToolTip="Channels" AutoMoveFocus="True" AutoSelectBehavior="OnFocus">
                 <Binding Path="C" Mode="OneWay"/>
             </xctk:AutoSelectTextBox>
 
-            <xctk:AutoSelectTextBox ContextMenu="{StaticResource MyContextMenu}" Grid.Column="2" Grid.Row="2" HorizontalAlignment="Stretch" x:Name="textBoxH" VerticalAlignment="Stretch" TabIndex="3" Width="45" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" MaxLines="1" Validation.ErrorTemplate="{StaticResource validationTemplate}" Style="{StaticResource textBoxInError}" AutoWordSelection="True" AllowDrop="False" BorderThickness="2" BorderBrush="DarkGray" Margin="2" AutoMoveFocus="True" AutoSelectBehavior="OnFocus">
+            <xctk:AutoSelectTextBox Foreground="{StaticResource BackgroundBrushLight}" Background="{StaticResource BackgroundBrushLight}" ContextMenu="{StaticResource MyContextMenu}" Grid.Column="2" Grid.Row="2" HorizontalAlignment="Stretch" x:Name="textBoxH" VerticalAlignment="Stretch" TabIndex="3" Width="45" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" MaxLines="1" Validation.ErrorTemplate="{StaticResource validationTemplate}" Style="{StaticResource textBoxInError}" AutoWordSelection="True" AllowDrop="False" BorderThickness="2" BorderBrush="{StaticResource BackgroundBrushLight}" Margin="2" AutoMoveFocus="True" AutoSelectBehavior="OnFocus">
                 <Binding Path="H" Mode="TwoWay">
                     <Binding.ValidationRules>
                         <c:UIntRangeRule  Min="1" Max="4096"/>
@@ -235,7 +519,7 @@
                 </Binding>
             </xctk:AutoSelectTextBox>
 
-            <xctk:AutoSelectTextBox ContextMenu="{StaticResource MyContextMenu}" Grid.Column="2" Grid.Row="2" HorizontalAlignment="Stretch" x:Name="textBoxW" VerticalAlignment="Stretch" TabIndex="4" Width="45" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" MaxLines="1" Validation.ErrorTemplate="{StaticResource validationTemplate}" Style="{StaticResource textBoxInError}" AutoWordSelection="True" AllowDrop="False" BorderThickness="2"  BorderBrush="DarkGray" Margin="2" AutoMoveFocus="True" AutoSelectBehavior="OnFocus">
+            <xctk:AutoSelectTextBox Foreground="{StaticResource BackgroundBrushLight}" Background="{StaticResource BackgroundBrushLight}" ContextMenu="{StaticResource MyContextMenu}" Grid.Column="2" Grid.Row="2" HorizontalAlignment="Stretch" x:Name="textBoxW" VerticalAlignment="Stretch" TabIndex="4" Width="45" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" MaxLines="1" Validation.ErrorTemplate="{StaticResource validationTemplate}" Style="{StaticResource textBoxInError}" AutoWordSelection="True" AllowDrop="False" BorderThickness="2"  BorderBrush="{StaticResource BackgroundBrushLight}" Margin="2" AutoMoveFocus="True" AutoSelectBehavior="OnFocus">
                 <Binding Path="W" Mode="TwoWay">
                     <Binding.ValidationRules>
                         <c:UIntRangeRule  Min="1" Max="4096"/>
@@ -245,11 +529,11 @@
         </StackPanel>
 
         <StackPanel Grid.Column="2" Grid.Row="3" Orientation="Horizontal">
-            <xctk:AutoSelectTextBox ContextMenu="{StaticResource MyContextMenu}" Grid.Column="2" Grid.Row="3" HorizontalAlignment="Stretch" x:Name="textBoxPadD" VerticalAlignment="Stretch" TabIndex="5" Width="45" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" MaxLines="1" Style="{StaticResource textBoxInError}" AutoWordSelection="True" AllowDrop="False" BorderThickness="2"  BorderBrush="DarkGray" Margin="2"  IsEnabled="False" AutoMoveFocus="True" AutoSelectBehavior="OnFocus">
+            <xctk:AutoSelectTextBox Foreground="{StaticResource BackgroundBrushLight}" Background="{StaticResource BackgroundBrushLight}" ContextMenu="{StaticResource MyContextMenu}" Grid.Column="2" Grid.Row="3" HorizontalAlignment="Stretch" x:Name="textBoxPadD" VerticalAlignment="Stretch" TabIndex="5" Width="45" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" MaxLines="1" Style="{StaticResource textBoxInError}" AutoWordSelection="True" AllowDrop="False" BorderThickness="2"  BorderBrush="{StaticResource BackgroundBrushLight}" Margin="2"  IsEnabled="False" AutoMoveFocus="True" AutoSelectBehavior="OnFocus">
                 <Binding Path="PadD" Mode="OneTime"/>
             </xctk:AutoSelectTextBox>
 
-            <xctk:AutoSelectTextBox ContextMenu="{StaticResource MyContextMenu}" Grid.Column="2" Grid.Row="3" HorizontalAlignment="Stretch" x:Name="textBoxPadH" VerticalAlignment="Stretch" TabIndex="6" Width="45" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" MaxLines="1" Validation.ErrorTemplate="{StaticResource validationTemplate}" Style="{StaticResource textBoxInError}" AutoWordSelection="True" AllowDrop="False" BorderThickness="2"  BorderBrush="DarkGray" Margin="2" AutoMoveFocus="True" AutoSelectBehavior="OnFocus">
+            <xctk:AutoSelectTextBox Foreground="{StaticResource BackgroundBrushLight}" Background="{StaticResource BackgroundBrushLight}" ContextMenu="{StaticResource MyContextMenu}" Grid.Column="2" Grid.Row="3" HorizontalAlignment="Stretch" x:Name="textBoxPadH" VerticalAlignment="Stretch" TabIndex="6" Width="45" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" MaxLines="1" Validation.ErrorTemplate="{StaticResource validationTemplate}" Style="{StaticResource textBoxInError}" AutoWordSelection="True" AllowDrop="False" BorderThickness="2"  BorderBrush="{StaticResource BackgroundBrushLight}" Margin="2" AutoMoveFocus="True" AutoSelectBehavior="OnFocus">
                 <Binding Path="PadH" Mode="TwoWay">
                     <Binding.ValidationRules>
                         <c:UIntRangeRule  Min="0" Max="2048"/>
@@ -257,7 +541,7 @@
                 </Binding>
             </xctk:AutoSelectTextBox>
 
-            <xctk:AutoSelectTextBox ContextMenu="{StaticResource MyContextMenu}" Grid.Column="2" Grid.Row="3" HorizontalAlignment="Stretch" x:Name="textBoxPadW" VerticalAlignment="Stretch" TabIndex="7" Width="45" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" MaxLines="1" Validation.ErrorTemplate="{StaticResource validationTemplate}" Style="{StaticResource textBoxInError}" AutoWordSelection="True" AllowDrop="False" BorderThickness="2"  BorderBrush="DarkGray" Margin="2" AutoMoveFocus="True" AutoSelectBehavior="OnFocus">
+            <xctk:AutoSelectTextBox Foreground="{StaticResource BackgroundBrushLight}" Background="{StaticResource BackgroundBrushLight}" ContextMenu="{StaticResource MyContextMenu}" Grid.Column="2" Grid.Row="3" HorizontalAlignment="Stretch" x:Name="textBoxPadW" VerticalAlignment="Stretch" TabIndex="7" Width="45" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" MaxLines="1" Validation.ErrorTemplate="{StaticResource validationTemplate}" Style="{StaticResource textBoxInError}" AutoWordSelection="True" AllowDrop="False" BorderThickness="2"  BorderBrush="{StaticResource BackgroundBrushLight}" Margin="2" AutoMoveFocus="True" AutoSelectBehavior="OnFocus">
                 <Binding Path="PadW" Mode="TwoWay">
                     <Binding.ValidationRules>
                         <c:UIntRangeRule  Min="0" Max="2048"/>
@@ -266,7 +550,7 @@
             </xctk:AutoSelectTextBox>
         </StackPanel>
 
-        <xctk:AutoSelectTextBox ContextMenu="{StaticResource MyContextMenu}" Grid.Column="2" Grid.Row="5" HorizontalAlignment="Stretch" x:Name="textBoxGroups" IsEnabled="{Binding Path=GroupsVisible}"  VerticalAlignment="Stretch" TabIndex="10" Width="Auto" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" MaxLines="1" Validation.ErrorTemplate="{StaticResource validationTemplate}" Style="{StaticResource textBoxInError}" AutoWordSelection="True" AllowDrop="False" BorderThickness="2"  BorderBrush="DarkGray" Margin="2" AutoMoveFocus="True" AutoSelectBehavior="OnFocus">
+        <xctk:AutoSelectTextBox Background="{StaticResource BackgroundBrushLight}" ContextMenu="{StaticResource MyContextMenu}" Grid.Column="2" Grid.Row="5" HorizontalAlignment="Stretch" x:Name="textBoxGroups" IsEnabled="{Binding Path=GroupsVisible}"  VerticalAlignment="Stretch" TabIndex="10" Width="Auto" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" MaxLines="1" Validation.ErrorTemplate="{StaticResource validationTemplate}" Style="{StaticResource textBoxInError}" AutoWordSelection="True" AllowDrop="False" BorderThickness="2"  BorderBrush="{StaticResource BackgroundBrushLight}" Margin="2" AutoMoveFocus="True" AutoSelectBehavior="OnFocus">
             <Binding Path="Groups" Mode="TwoWay">
                 <Binding.ValidationRules>
                     <c:UIntRangeRule  Min="2" Max="8"/>
@@ -274,7 +558,7 @@
             </Binding>
         </xctk:AutoSelectTextBox>
 
-        <xctk:AutoSelectTextBox ContextMenu="{StaticResource MyContextMenu}" Grid.Column="2" Grid.Row="6" HorizontalAlignment="Stretch" x:Name="textBoxIterations" IsEnabled="{Binding Path=IterationsVisible}" VerticalAlignment="Stretch" Width="Auto" VerticalContentAlignment="Center" HorizontalContentAlignment="Stretch" Margin="2" TabIndex="11" Validation.ErrorTemplate="{StaticResource validationTemplate}" Style="{StaticResource textBoxInError}" MaxLines="1" AutoWordSelection="True" AllowDrop="False" BorderThickness="2" AutoMoveFocus="True" AutoSelectBehavior="OnFocus">
+        <xctk:AutoSelectTextBox Background="{StaticResource BackgroundBrushLight}" ContextMenu="{StaticResource MyContextMenu}" Grid.Column="2" Grid.Row="6" HorizontalAlignment="Stretch" x:Name="textBoxIterations" IsEnabled="{Binding Path=IterationsVisible}" VerticalAlignment="Stretch" Width="Auto" VerticalContentAlignment="Center" HorizontalContentAlignment="Stretch" Margin="2" TabIndex="11" Validation.ErrorTemplate="{StaticResource validationTemplate}" Style="{StaticResource textBoxInError}" MaxLines="1" AutoWordSelection="True" AllowDrop="False" BorderThickness="2" AutoMoveFocus="True" AutoSelectBehavior="OnFocus">
             <xctk:AutoSelectTextBox.Text>
                 <Binding Path="Iterations" Mode="TwoWay">
                     <Binding.ValidationRules>
@@ -284,7 +568,7 @@
             </xctk:AutoSelectTextBox.Text>
         </xctk:AutoSelectTextBox>
 
-        <xctk:AutoSelectTextBox ContextMenu="{StaticResource MyContextMenu}" Grid.Column="2" Grid.Row="7" HorizontalAlignment="Stretch" x:Name="textBoxDepth" VerticalAlignment="Stretch" TabIndex="12" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" Validation.ErrorTemplate="{StaticResource validationTemplate}" Style="{StaticResource textBoxInError}" AllowDrop="False" MaxLines="1" AutoWordSelection="True" BorderThickness="2" BorderBrush="DarkGray" Margin="2" IsEnabled="False" AutoMoveFocus="True" AutoSelectBehavior="OnFocus">
+        <xctk:AutoSelectTextBox Background="{StaticResource BackgroundBrushLight}" ContextMenu="{StaticResource MyContextMenu}" Grid.Column="2" Grid.Row="7" HorizontalAlignment="Stretch" x:Name="textBoxDepth" VerticalAlignment="Stretch" TabIndex="12" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" Validation.ErrorTemplate="{StaticResource validationTemplate}" Style="{StaticResource textBoxInError}" AllowDrop="False" MaxLines="1" AutoWordSelection="True" BorderThickness="2" BorderBrush="{StaticResource BackgroundBrushLight}" Margin="2" IsEnabled="False" AutoMoveFocus="True" AutoSelectBehavior="OnFocus">
             <xctk:AutoSelectTextBox.Text>
                 <Binding Path="Depth" Mode="OneWay">
                     <Binding.ValidationRules>
@@ -294,7 +578,7 @@
             </xctk:AutoSelectTextBox.Text>
         </xctk:AutoSelectTextBox>
 
-        <xctk:AutoSelectTextBox ContextMenu="{StaticResource MyContextMenu}" Grid.Column="2" Grid.Row="8" HorizontalAlignment="Stretch" x:Name="textBoxWidth" IsEnabled="{Binding Path=WidthVisible}" VerticalAlignment="Stretch" TabIndex="13" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" Validation.ErrorTemplate="{StaticResource validationTemplate}" Style="{StaticResource textBoxInError}" AllowDrop="False" MaxLines="1" AutoWordSelection="True" BorderThickness="2"  BorderBrush="DarkGray" Margin="2" AutoMoveFocus="True" AutoSelectBehavior="OnFocus">
+        <xctk:AutoSelectTextBox Background="{StaticResource BackgroundBrushLight}" ContextMenu="{StaticResource MyContextMenu}" Grid.Column="2" Grid.Row="8" HorizontalAlignment="Stretch" x:Name="textBoxWidth" IsEnabled="{Binding Path=WidthVisible}" VerticalAlignment="Stretch" TabIndex="13" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" Validation.ErrorTemplate="{StaticResource validationTemplate}" Style="{StaticResource textBoxInError}" AllowDrop="False" MaxLines="1" AutoWordSelection="True" BorderThickness="2"  BorderBrush="{StaticResource BackgroundBrushLight}" Margin="2" AutoMoveFocus="True" AutoSelectBehavior="OnFocus">
             <xctk:AutoSelectTextBox.Text>
                 <Binding Path="Width" Mode="TwoWay" >
                     <Binding.ValidationRules>
@@ -304,7 +588,7 @@
             </xctk:AutoSelectTextBox.Text>
         </xctk:AutoSelectTextBox>
 
-        <xctk:AutoSelectTextBox ContextMenu="{StaticResource MyContextMenu}" Grid.Column="2" Grid.Row="9" HorizontalAlignment="Stretch" x:Name="textBoxGrowthRate" IsEnabled="{Binding Path=GrowthRateVisible}" VerticalAlignment="Stretch" TabIndex="14" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" Validation.ErrorTemplate="{StaticResource validationTemplate}" Style="{StaticResource textBoxInError}" AllowDrop="False" MaxLines="1" AutoWordSelection="True" BorderThickness="2" BorderBrush="DarkGray" Margin="2" AutoMoveFocus="True" AutoSelectBehavior="OnFocus">
+        <xctk:AutoSelectTextBox Background="{StaticResource BackgroundBrushLight}" ContextMenu="{StaticResource MyContextMenu}" Grid.Column="2" Grid.Row="9" HorizontalAlignment="Stretch" x:Name="textBoxGrowthRate" IsEnabled="{Binding Path=GrowthRateVisible}" VerticalAlignment="Stretch" TabIndex="14" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" Validation.ErrorTemplate="{StaticResource validationTemplate}" Style="{StaticResource textBoxInError}" AllowDrop="False" MaxLines="1" AutoWordSelection="True" BorderThickness="2" BorderBrush="{StaticResource BackgroundBrushLight}" Margin="2" AutoMoveFocus="True" AutoSelectBehavior="OnFocus">
             <Binding Path="GrowthRate" Mode="TwoWay" >
                 <Binding.ValidationRules>
                     <c:UIntRangeRule Min="1" Max="64"/>
@@ -312,7 +596,7 @@
             </Binding>
         </xctk:AutoSelectTextBox>
 
-        <xctk:AutoSelectTextBox ContextMenu="{StaticResource MyContextMenu}" Grid.Column="2" Grid.Row="10" HorizontalAlignment="Stretch" x:Name="textBoxDropout" IsEnabled="{Binding Path=DropoutVisible}" VerticalAlignment="Stretch" TabIndex="15" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" MaxLines="1" Validation.ErrorTemplate="{StaticResource validationTemplate}" Style="{StaticResource textBoxInError}" AutoWordSelection="True" AllowDrop="False" BorderThickness="2" BorderBrush="DarkGray" Margin="2" AutoMoveFocus="True" AutoSelectBehavior="OnFocus">
+        <xctk:AutoSelectTextBox Background="{StaticResource BackgroundBrushLight}" ContextMenu="{StaticResource MyContextMenu}" Grid.Column="2" Grid.Row="10" HorizontalAlignment="Stretch" x:Name="textBoxDropout" IsEnabled="{Binding Path=DropoutVisible}" VerticalAlignment="Stretch" TabIndex="15" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" MaxLines="1" Validation.ErrorTemplate="{StaticResource validationTemplate}" Style="{StaticResource textBoxInError}" AutoWordSelection="True" AllowDrop="False" BorderThickness="2" BorderBrush="{StaticResource BackgroundBrushLight}" Margin="2" AutoMoveFocus="True" AutoSelectBehavior="OnFocus">
             <Binding Path="Dropout" Mode="TwoWay">
                 <Binding.ValidationRules>
                     <c:FloatRangeRule  Min="0" Max="1"/>
@@ -320,7 +604,7 @@
             </Binding>
         </xctk:AutoSelectTextBox>
 
-        <xctk:AutoSelectTextBox ContextMenu="{StaticResource MyContextMenu}" Grid.Column="2" Grid.Row="11" HorizontalAlignment="Stretch" x:Name="textBoxCompression" IsEnabled="{Binding Path=CompressionVisible}" VerticalAlignment="Bottom" TabIndex="16" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" MaxLines="1" Validation.ErrorTemplate="{StaticResource validationTemplate}" Style="{StaticResource textBoxInError}" AutoWordSelection="True" AllowDrop="False" BorderThickness="2" BorderBrush="DarkGray" Margin="2" Height="27" AutoMoveFocus="True" AutoSelectBehavior="OnFocus">
+        <xctk:AutoSelectTextBox Background="{StaticResource BackgroundBrushLight}" ContextMenu="{StaticResource MyContextMenu}" Grid.Column="2" Grid.Row="11" HorizontalAlignment="Stretch" x:Name="textBoxCompression" IsEnabled="{Binding Path=CompressionVisible}" VerticalAlignment="Bottom" TabIndex="16" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" MaxLines="1" Validation.ErrorTemplate="{StaticResource validationTemplate}" Style="{StaticResource textBoxInError}" AutoWordSelection="True" AllowDrop="False" BorderThickness="2" BorderBrush="{StaticResource BackgroundBrushLight}" Margin="2" Height="27" AutoMoveFocus="True" AutoSelectBehavior="OnFocus">
             <Binding Path="Compression" Mode="TwoWay">
                 <Binding.ValidationRules>
                     <c:FloatRangeRule  Min="0" Max="1"/>
@@ -328,7 +612,7 @@
             </Binding>
         </xctk:AutoSelectTextBox>
 
-        <xctk:AutoSelectTextBox ContextMenu="{StaticResource MyContextMenu}" Grid.Column="2" Grid.Row="19" HorizontalAlignment="Stretch" x:Name="textBoxWeightsGain" IsEnabled="{Binding Path=WeightsGainVisible}" Visibility="{Binding Path=WeightsGainVisible, Converter={StaticResource BooleanToVisibilityConverter}}" VerticalAlignment="Stretch" TabIndex="24" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" MaxLines="1" Validation.ErrorTemplate="{StaticResource validationTemplate}" Style="{StaticResource textBoxInError}" AutoWordSelection="True" AllowDrop="False" BorderThickness="2" BorderBrush="DarkGray" Margin="2" AutoMoveFocus="True" AutoSelectBehavior="OnFocus">
+        <xctk:AutoSelectTextBox Background="{StaticResource BackgroundBrushLight}" ContextMenu="{StaticResource MyContextMenu}" Grid.Column="2" Grid.Row="19" HorizontalAlignment="Stretch" x:Name="textBoxWeightsGain" IsEnabled="{Binding Path=WeightsGainVisible}" Visibility="{Binding Path=WeightsGainVisible, Converter={StaticResource BooleanToVisibilityConverter}}" VerticalAlignment="Stretch" TabIndex="24" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" MaxLines="1" Validation.ErrorTemplate="{StaticResource validationTemplate}" Style="{StaticResource textBoxInError}" AutoWordSelection="True" AllowDrop="False" BorderThickness="2" BorderBrush="{StaticResource BackgroundBrushLight}" Margin="2" AutoMoveFocus="True" AutoSelectBehavior="OnFocus">
             <Binding Path="WeightsGain" Mode="TwoWay">
                 <Binding.ValidationRules>
                     <c:FloatRangeRule  Min="-100" Max="100"/>
@@ -336,7 +620,7 @@
             </Binding>
         </xctk:AutoSelectTextBox>
         
-        <xctk:AutoSelectTextBox ContextMenu="{StaticResource MyContextMenu}" Grid.Column="2" Grid.Row="20" HorizontalAlignment="Stretch" x:Name="textBoxWeightsScale" IsEnabled="{Binding Path=WeightsScaleVisible}" Visibility="{Binding Path=WeightsScaleVisible, Converter={StaticResource BooleanToVisibilityConverter}}" VerticalAlignment="Stretch" TabIndex="25" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" MaxLines="1" Validation.ErrorTemplate="{StaticResource validationTemplate}" Style="{StaticResource textBoxInError}" AutoWordSelection="True" AllowDrop="False" BorderThickness="2" BorderBrush="DarkGray" Margin="2" AutoMoveFocus="True" AutoSelectBehavior="OnFocus">
+        <xctk:AutoSelectTextBox Background="{StaticResource BackgroundBrushLight}" ContextMenu="{StaticResource MyContextMenu}" Grid.Column="2" Grid.Row="20" HorizontalAlignment="Stretch" x:Name="textBoxWeightsScale" IsEnabled="{Binding Path=WeightsScaleVisible}" Visibility="{Binding Path=WeightsScaleVisible, Converter={StaticResource BooleanToVisibilityConverter}}" VerticalAlignment="Stretch" TabIndex="25" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" MaxLines="1" Validation.ErrorTemplate="{StaticResource validationTemplate}" Style="{StaticResource textBoxInError}" AutoWordSelection="True" AllowDrop="False" BorderThickness="2" BorderBrush="{StaticResource BackgroundBrushLight}" Margin="2" AutoMoveFocus="True" AutoSelectBehavior="OnFocus">
             <Binding Path="WeightsScale" Mode="TwoWay">
                 <Binding.ValidationRules>
                     <c:FloatRangeRule  Min="-100" Max="100"/>
@@ -344,7 +628,7 @@
             </Binding>
         </xctk:AutoSelectTextBox>
 
-        <xctk:AutoSelectTextBox ContextMenu="{StaticResource MyContextMenu}" Grid.Column="2" Grid.Row="21" HorizontalAlignment="Stretch" x:Name="textBoxWeightsLRM" VerticalAlignment="Stretch" TabIndex="26" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" MaxLines="1" Validation.ErrorTemplate="{StaticResource validationTemplate}" Style="{StaticResource textBoxInError}" AutoWordSelection="True" AllowDrop="False" BorderThickness="2" BorderBrush="DarkGray" Margin="2" AutoMoveFocus="True" AutoSelectBehavior="OnFocus">
+        <xctk:AutoSelectTextBox Background="{StaticResource BackgroundBrushLight}" ContextMenu="{StaticResource MyContextMenu}" Grid.Column="2" Grid.Row="21" HorizontalAlignment="Stretch" x:Name="textBoxWeightsLRM" VerticalAlignment="Stretch" TabIndex="26" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" MaxLines="1" Validation.ErrorTemplate="{StaticResource validationTemplate}" Style="{StaticResource textBoxInError}" AutoWordSelection="True" AllowDrop="False" BorderThickness="2" BorderBrush="{StaticResource BackgroundBrushLight}" Margin="2" AutoMoveFocus="True" AutoSelectBehavior="OnFocus">
             <Binding Path="WeightsLRM" Mode="TwoWay">
                 <Binding.ValidationRules>
                     <c:FloatRangeRule  Min="0" Max="10"/>
@@ -352,7 +636,7 @@
             </Binding>
         </xctk:AutoSelectTextBox>
 
-        <xctk:AutoSelectTextBox ContextMenu="{StaticResource MyContextMenu}" Grid.Column="2" Grid.Row="22" HorizontalAlignment="Stretch" x:Name="textBoxWeightsWDM" VerticalAlignment="Stretch" TabIndex="27" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" MaxLines="1" Validation.ErrorTemplate="{StaticResource validationTemplate}" Style="{StaticResource textBoxInError}" AutoWordSelection="True" AllowDrop="False" BorderThickness="2" BorderBrush="DarkGray" Margin="2" AutoMoveFocus="True" AutoSelectBehavior="OnFocus">
+        <xctk:AutoSelectTextBox Background="{StaticResource BackgroundBrushLight}" ContextMenu="{StaticResource MyContextMenu}" Grid.Column="2" Grid.Row="22" HorizontalAlignment="Stretch" x:Name="textBoxWeightsWDM" VerticalAlignment="Stretch" TabIndex="27" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" MaxLines="1" Validation.ErrorTemplate="{StaticResource validationTemplate}" Style="{StaticResource textBoxInError}" AutoWordSelection="True" AllowDrop="False" BorderThickness="2" BorderBrush="{StaticResource BackgroundBrushLight}" Margin="2" AutoMoveFocus="True" AutoSelectBehavior="OnFocus">
             <Binding Path="WeightsWDM" Mode="TwoWay">
                 <Binding.ValidationRules>
                     <c:FloatRangeRule  Min="0" Max="10"/>
@@ -360,7 +644,7 @@
             </Binding>
         </xctk:AutoSelectTextBox>
 
-        <xctk:AutoSelectTextBox ContextMenu="{StaticResource MyContextMenu}" Grid.Column="2" Grid.Row="25" HorizontalAlignment="Stretch" x:Name="textBoxBiasesGain" VerticalAlignment="Stretch" TabIndex="31" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" MaxLines="1" Validation.ErrorTemplate="{StaticResource validationTemplate}" Style="{StaticResource textBoxInError}" AutoWordSelection="True" AllowDrop="False" BorderThickness="2" BorderBrush="DarkGray" Margin="2" AutoMoveFocus="True" AutoSelectBehavior="OnFocus">
+        <xctk:AutoSelectTextBox Background="{StaticResource BackgroundBrushLight}" ContextMenu="{StaticResource MyContextMenu}" Grid.Column="2" Grid.Row="25" HorizontalAlignment="Stretch" x:Name="textBoxBiasesGain" VerticalAlignment="Stretch" TabIndex="31" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" MaxLines="1" Validation.ErrorTemplate="{StaticResource validationTemplate}" Style="{StaticResource textBoxInError}" AutoWordSelection="True" AllowDrop="False" BorderThickness="2" BorderBrush="{StaticResource BackgroundBrushLight}" Margin="2" AutoMoveFocus="True" AutoSelectBehavior="OnFocus">
             <Binding Path="BiasesGain" Mode="TwoWay">
                 <Binding.ValidationRules>
                     <c:FloatRangeRule  Min="-100" Max="100"/>
@@ -368,7 +652,7 @@
             </Binding>
         </xctk:AutoSelectTextBox>
         
-        <xctk:AutoSelectTextBox ContextMenu="{StaticResource MyContextMenu}" Grid.Column="2" Grid.Row="26" HorizontalAlignment="Stretch" x:Name="textBoxBiasesScale" VerticalAlignment="Stretch" TabIndex="32" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" MaxLines="1" Validation.ErrorTemplate="{StaticResource validationTemplate}" Style="{StaticResource textBoxInError}" AutoWordSelection="True" AllowDrop="False" BorderThickness="2" BorderBrush="DarkGray" Margin="2" AutoMoveFocus="True" AutoSelectBehavior="OnFocus">
+        <xctk:AutoSelectTextBox Background="{StaticResource BackgroundBrushLight}" ContextMenu="{StaticResource MyContextMenu}" Grid.Column="2" Grid.Row="26" HorizontalAlignment="Stretch" x:Name="textBoxBiasesScale" VerticalAlignment="Stretch" TabIndex="32" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" MaxLines="1" Validation.ErrorTemplate="{StaticResource validationTemplate}" Style="{StaticResource textBoxInError}" AutoWordSelection="True" AllowDrop="False" BorderThickness="2" BorderBrush="{StaticResource BackgroundBrushLight}" Margin="2" AutoMoveFocus="True" AutoSelectBehavior="OnFocus">
             <Binding Path="BiasesScale" Mode="TwoWay">
                 <Binding.ValidationRules>
                     <c:FloatRangeRule  Min="-100" Max="100"/>
@@ -376,7 +660,7 @@
             </Binding>
         </xctk:AutoSelectTextBox>
 
-        <xctk:AutoSelectTextBox ContextMenu="{StaticResource MyContextMenu}" Grid.Column="2" Grid.Row="27" HorizontalAlignment="Stretch" x:Name="textBoxBiasesLRM" VerticalAlignment="Stretch" TabIndex="33" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" MaxLines="1" Validation.ErrorTemplate="{StaticResource validationTemplate}" Style="{StaticResource textBoxInError}" AutoWordSelection="True" AllowDrop="False" BorderThickness="2" BorderBrush="DarkGray" Margin="2" AutoMoveFocus="True" AutoSelectBehavior="OnFocus">
+        <xctk:AutoSelectTextBox Background="{StaticResource BackgroundBrushLight}" ContextMenu="{StaticResource MyContextMenu}" Grid.Column="2" Grid.Row="27" HorizontalAlignment="Stretch" x:Name="textBoxBiasesLRM" VerticalAlignment="Stretch" TabIndex="33" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" MaxLines="1" Validation.ErrorTemplate="{StaticResource validationTemplate}" Style="{StaticResource textBoxInError}" AutoWordSelection="True" AllowDrop="False" BorderThickness="2" BorderBrush="{StaticResource BackgroundBrushLight}" Margin="2" AutoMoveFocus="True" AutoSelectBehavior="OnFocus">
             <Binding Path="BiasesLRM" Mode="TwoWay">
                 <Binding.ValidationRules>
                     <c:FloatRangeRule  Min="0" Max="10"/>
@@ -384,7 +668,7 @@
             </Binding>
         </xctk:AutoSelectTextBox>
 
-        <xctk:AutoSelectTextBox ContextMenu="{StaticResource MyContextMenu}" Grid.Column="2" Grid.Row="28" HorizontalAlignment="Stretch" x:Name="textBoxBiasesWDM" VerticalAlignment="Stretch" TabIndex="34" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" MaxLines="1" Validation.ErrorTemplate="{StaticResource validationTemplate}" Style="{StaticResource textBoxInError}" AutoWordSelection="True" AllowDrop="False" BorderThickness="2" BorderBrush="DarkGray" Margin="2" AutoMoveFocus="True" AutoSelectBehavior="OnFocus">
+        <xctk:AutoSelectTextBox Background="{StaticResource BackgroundBrushLight}" ContextMenu="{StaticResource MyContextMenu}" Grid.Column="2" Grid.Row="28" HorizontalAlignment="Stretch" x:Name="textBoxBiasesWDM" VerticalAlignment="Stretch" TabIndex="34" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" MaxLines="1" Validation.ErrorTemplate="{StaticResource validationTemplate}" Style="{StaticResource textBoxInError}" AutoWordSelection="True" AllowDrop="False" BorderThickness="2" BorderBrush="{StaticResource BackgroundBrushLight}" Margin="2" AutoMoveFocus="True" AutoSelectBehavior="OnFocus">
             <Binding Path="BiasesWDM" Mode="TwoWay">
                 <Binding.ValidationRules>
                     <c:FloatRangeRule  Min="0" Max="10"/>
@@ -392,7 +676,7 @@
             </Binding>
         </xctk:AutoSelectTextBox>
 
-        <xctk:AutoSelectTextBox ContextMenu="{StaticResource MyContextMenu}" Grid.Column="2" Grid.Row="30" HorizontalAlignment="Stretch" x:Name="textBoxBNMomentum" VerticalAlignment="Stretch" TabIndex="36" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" MaxLines="1" Validation.ErrorTemplate="{StaticResource validationTemplate}" Style="{StaticResource textBoxInError}" AutoWordSelection="True" AllowDrop="False" BorderThickness="2" BorderBrush="DarkGray" Margin="2" AutoMoveFocus="True" AutoSelectBehavior="OnFocus">
+        <xctk:AutoSelectTextBox Background="{StaticResource BackgroundBrushLight}" ContextMenu="{StaticResource MyContextMenu}" Grid.Column="2" Grid.Row="30" HorizontalAlignment="Stretch" x:Name="textBoxBNMomentum" VerticalAlignment="Stretch" TabIndex="36" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" MaxLines="1" Validation.ErrorTemplate="{StaticResource validationTemplate}" Style="{StaticResource textBoxInError}" AutoWordSelection="True" AllowDrop="False" BorderThickness="2" BorderBrush="{StaticResource BackgroundBrushLight}" Margin="2" AutoMoveFocus="True" AutoSelectBehavior="OnFocus">
             <Binding Path="BatchNormMomentum" Mode="TwoWay">
                 <Binding.ValidationRules>
                     <c:FloatRangeRule  Min="0" Max="1"/>
@@ -400,7 +684,7 @@
             </Binding>
         </xctk:AutoSelectTextBox>
 
-        <xctk:AutoSelectTextBox ContextMenu="{StaticResource MyContextMenu}" Grid.Column="2" Grid.Row="31" HorizontalAlignment="Stretch" x:Name="textBoxBNEps" VerticalAlignment="Stretch" TabIndex="37" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" MaxLines="1" Validation.ErrorTemplate="{StaticResource validationTemplate}" Style="{StaticResource textBoxInError}" AutoWordSelection="True" AllowDrop="False" BorderThickness="2" BorderBrush="DarkGray" Margin="2" AutoMoveFocus="True" AutoSelectBehavior="OnFocus">
+        <xctk:AutoSelectTextBox Background="{StaticResource BackgroundBrushLight}" ContextMenu="{StaticResource MyContextMenu}" Grid.Column="2" Grid.Row="31" HorizontalAlignment="Stretch" x:Name="textBoxBNEps" VerticalAlignment="Stretch" TabIndex="37" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" MaxLines="1" Validation.ErrorTemplate="{StaticResource validationTemplate}" Style="{StaticResource textBoxInError}" AutoWordSelection="True" AllowDrop="False" BorderThickness="2" BorderBrush="{StaticResource BackgroundBrushLight}" Margin="2" AutoMoveFocus="True" AutoSelectBehavior="OnFocus">
             <Binding Path="BatchNormEps" Mode="TwoWay">
                 <Binding.ValidationRules>
                     <c:FloatRangeRule  Min="0" Max="1"/>
@@ -408,8 +692,8 @@
             </Binding>
         </xctk:AutoSelectTextBox>
 
-        <RadioButton Name="radioButtonPaddingTypeMirror" GroupName="PaddingType" Foreground="White" Content="Mirror" Grid.Column="2" HorizontalAlignment="Left" Margin="0,3,0,0" Grid.Row="4" VerticalAlignment="Center" IsChecked="{Binding Path=MirrorPad, Mode=TwoWay}" TabIndex="8" FontSize="14" IsEnabled="{Binding Path=RandomCrop, Mode=OneWay}"/>
-        <RadioButton Name="radioButtonPaddingTypeZero" GroupName="PaddingType" Foreground="White" Content="Zero" Grid.Column="2" HorizontalAlignment="Left" Margin="70,3,0,0" Grid.Row="4" VerticalAlignment="Center" TabIndex="9" FontSize="14" IsChecked="{Binding Path=MirrorPad, Converter={StaticResource Inverter}, Mode=OneWay}" IsEnabled="{Binding Path=RandomCrop, Mode=OneWay}"/>
+        <RadioButton Name="radioButtonPaddingTypeMirror" GroupName="PaddingType" Foreground="{StaticResource TextBrush}" Content="Mirror" Grid.Column="2" HorizontalAlignment="Left" Margin="0,3,0,0" Grid.Row="4" VerticalAlignment="Center" IsChecked="{Binding Path=MirrorPad, Mode=TwoWay}" TabIndex="8" FontSize="14" IsEnabled="{Binding Path=RandomCrop, Mode=OneWay}"/>
+        <RadioButton Name="radioButtonPaddingTypeZero" GroupName="PaddingType" Foreground="{StaticResource TextBrush}" Content="Zero" Grid.Column="2" HorizontalAlignment="Left" Margin="70,3,0,0" Grid.Row="4" VerticalAlignment="Center" TabIndex="9" FontSize="14" IsChecked="{Binding Path=MirrorPad, Converter={StaticResource Inverter}, Mode=OneWay}" IsEnabled="{Binding Path=RandomCrop, Mode=OneWay}"/>
 
         <CheckBox  Name="checkBoxBottleneck" Content="" Grid.Column="2" Margin="2" Grid.Row="12" TabIndex="17" VerticalContentAlignment="Center" IsEnabled="{Binding Path=BottleneckVisible}" IsChecked="{Binding Path=Bottleneck, Mode=TwoWay}" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Center" Checked="CheckBoxBottleneck_CheckedChanged"/>
         <CheckBox  Name="checkBoxChannelZeroPad" Content="" Grid.Column="2" Margin="2" Grid.Row="13" TabIndex="18" VerticalContentAlignment="Center" IsEnabled="{Binding Path=ChannelZeroPadVisible}" IsChecked="{Binding Path=ChannelZeroPad, Mode=TwoWay}" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Center"/>

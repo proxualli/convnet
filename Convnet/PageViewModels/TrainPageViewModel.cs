@@ -1333,9 +1333,9 @@ namespace Convnet.PageViewModels
                         TrainRate = dialog.Rate;
 
                         if (SGDR)
-                            Model.AddLearningRateSGDR(TrainRate, true, GotoEpoch, Model.TrainingSamples);
+                            Model.AddTrainingRateSGDR(TrainRate, true, GotoEpoch, Model.TrainingSamples);
                         else
-                            Model.AddLearningRate(TrainRate, true, GotoEpoch, Model.TrainingSamples);
+                            Model.AddTrainingRate(TrainRate, true, GotoEpoch, Model.TrainingSamples);
 
                         Model.SetOptimizer(TrainRate.Optimizer);
                         Model.Optimizer = TrainRate.Optimizer;
@@ -1532,9 +1532,9 @@ namespace Convnet.PageViewModels
                     foreach (DNNTrainingRate rate in TrainRates)
                     {
                         if (SGDR)
-                            Model.AddLearningRateSGDR(rate, first, GotoEpoch, Model.TrainingSamples);
+                            Model.AddTrainingRateSGDR(rate, first, GotoEpoch, Model.TrainingSamples);
                         else
-                            Model.AddLearningRate(rate, first, GotoEpoch, Model.TrainingSamples);
+                            Model.AddTrainingRate(rate, first, GotoEpoch, Model.TrainingSamples);
 
                         first = false;
                     }
