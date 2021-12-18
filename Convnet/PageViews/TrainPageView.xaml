@@ -284,7 +284,6 @@
         </Style>
         
         
-        
         <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <converters:BooleanValueInverter x:Key="Inverter" />
         <converters:EnumToStringConverter x:Key="EnumToStringConverter"/>
@@ -298,14 +297,14 @@
 
         <!--Common colors.-->
         <Color x:Key="TextColor">#FFD7CFD7</Color>
-        <Color x:Key="BackgroundColorLight">#FF404040</Color> 
-        <Color x:Key="BackgroundColor">#FF323232</Color> 
+        <Color x:Key="BackgroundColor">#FF1E1E1E</Color>
+        <Color x:Key="BackgroundColorLight">#FF404040</Color>
 
         <SolidColorBrush x:Key="TextBrush" Color="{StaticResource TextColor}"/>
+        <SolidColorBrush x:Key="BackgroundBrush" Color="{StaticResource BackgroundColorLight}"/>
         <SolidColorBrush x:Key="BackgroundBrushLight" Color="{StaticResource BackgroundColorLight}"/>
-        <SolidColorBrush x:Key="BackgroundBrush" Color="{StaticResource BackgroundColor}"/>
-     
-           
+
+
         <Style x:Key="KioskCheckBox" TargetType="{x:Type CheckBox}">
             <Setter Property="Foreground" Value="{StaticResource TextBrush}" />
             <Setter Property="Template">
