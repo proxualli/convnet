@@ -25,6 +25,15 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
+
+        <!--Common colors.-->
+        <Color x:Key="TextColor">#FFD7CFD7</Color>
+        <Color x:Key="BackgroundColorLight">#FF404040</Color>
+        <Color x:Key="BackgroundColor">#FF323232</Color>
+
+        <SolidColorBrush x:Key="TextBrush" Color="{StaticResource TextColor}"/>
+        <SolidColorBrush x:Key="BackgroundBrushLight" Color="{StaticResource BackgroundColorLight}"/>
+        <SolidColorBrush x:Key="BackgroundBrush" Color="{StaticResource BackgroundColor}"/>
     </UserControl.Resources>
 
     <Grid>
@@ -34,26 +43,26 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <ToolBarTray Grid.Row="0" Height="Auto" HorizontalAlignment="Stretch" Name="toolBarTray" VerticalAlignment="Top" Width="Auto">
+        <ToolBarTray Grid.Row="0" Height="Auto" HorizontalAlignment="Stretch" Name="toolBarTray" VerticalAlignment="Top" Width="Auto" Background="{StaticResource BackgroundBrushLight}">
             <ToolBar>
-                <ComboBox Name="PageViews" Margin="2" MinWidth="50" ItemsSource="{Binding Path=Pages}" SelectedItem="{Binding Path=CurrentPage}" IsEnabled="{Binding Path=CurrentPage.IsValid, Mode=TwoWay}" UseLayoutRounding="True" SnapsToDevicePixels="True" IsReadOnly="True" IsTextSearchEnabled="False" IsSynchronizedWithCurrentItem="True" DisplayMemberPath="DisplayName"/>
+                <ComboBox Name="PageViews" Margin="2" MinWidth="50"  ItemsSource="{Binding Path=Pages}" SelectedItem="{Binding Path=CurrentPage}" IsEnabled="{Binding Path=CurrentPage.IsValid, Mode=TwoWay}" UseLayoutRounding="True" SnapsToDevicePixels="True" IsReadOnly="True" IsTextSearchEnabled="False" IsSynchronizedWithCurrentItem="True" DisplayMemberPath="DisplayName"/>
             </ToolBar>
             <ToolBar Name="CmdToolBar" ItemsSource="{Binding Path=CommandToolBar, Mode=TwoWay, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged}" Visibility="{Binding Path=CommandToolBarVisibility}"/>
         </ToolBarTray>
 
-        <Border Grid.Row="1" Background="White">
+        <Border Grid.Row="1"  Background="{StaticResource BackgroundBrushLight}">
             <ContentControl Name="PageContentControl" Content="{Binding Path=CurrentPage}"/>
         </Border>
 
-        <StatusBar Grid.Row="2" Name="statusBarMain" Width="Auto" Height="23">
+        <StatusBar Grid.Row="2" Name="statusBarMain" Width="Auto" Height="23" Background="{StaticResource BackgroundBrushLight}">
             <StatusBarItem HorizontalAlignment="Right" Width="Auto" Foreground="Black">
-                <TextBlock x:Name="SampleRate" Margin="2,0,2,0" HorizontalAlignment="Left" VerticalAlignment="Stretch" Text="{Binding Path=SampleRate}" ToolTip="Sample Rate"/>
+                <TextBlock x:Name="SampleRate" Margin="2,0,2,0" HorizontalAlignment="Left" VerticalAlignment="Stretch" Text="{Binding Path=SampleRate}" ToolTip="Sample Rate" Foreground="{StaticResource TextBrush}" />
             </StatusBarItem>
             <StatusBarItem HorizontalAlignment="Left" Width="Auto" Foreground="Black">
-                <TextBlock x:Name="Time" Margin="2,0,2,0" HorizontalAlignment="Left" VerticalAlignment="Stretch" Text="{Binding Path=Duration}" ToolTip="Duration"/>
+                <TextBlock x:Name="Time" Margin="2,0,2,0" HorizontalAlignment="Left" VerticalAlignment="Stretch" Text="{Binding Path=Duration}" ToolTip="Duration" Foreground="{StaticResource TextBrush}"/>
             </StatusBarItem>
             <StatusBarItem HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" HorizontalAlignment="Stretch">
-                <ProgressBar Margin="0" x:Name="ProgressBar" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Minimum="{Binding Path=ProgressBarMinimum}" Maximum="{Binding Path=ProgressBarMaximum}" Value="{Binding Path=ProgressBarValue}" SmallChange="1" Height="Auto" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" IsTabStop="False" Width="Auto">
+                <ProgressBar Margin="0" x:Name="ProgressBar" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Background="{StaticResource BackgroundBrushLight}" BorderBrush="{StaticResource BackgroundBrushLight}" Minimum="{Binding Path=ProgressBarMinimum}" Maximum="{Binding Path=ProgressBarMaximum}" Value="{Binding Path=ProgressBarValue}" SmallChange="1" Height="Auto" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" IsTabStop="False" Width="Auto">
                 </ProgressBar>
             </StatusBarItem>
         </StatusBar>
