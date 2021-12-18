@@ -5,10 +5,7 @@
              xmlns:props="clr-namespace:Convnet.Properties"
              x:Class="Convnet.PageViews.EditPageView">
 
-    <UserControl.Resources>
-    </UserControl.Resources>
-
-    <Grid Background="{StaticResource BackgroundBrush}" x:Name="grid">
+   <Grid Background="{StaticResource BackgroundBrush}" x:Name="grid">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="{Binding Source={x:Static props:Settings.Default}, Path=EditSplitPositionA, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MinWidth="200" MaxWidth="800"/>
             <ColumnDefinition Width="{Binding Source={x:Static props:Settings.Default}, Path=EditSplitPositionB, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MinWidth="200" MaxWidth="1600"/>

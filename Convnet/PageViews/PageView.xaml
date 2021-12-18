@@ -57,6 +57,5 @@
                 </ProgressBar>
             </StatusBarItem>
         </StatusBar>
-
     </Grid>
 </UserControl>

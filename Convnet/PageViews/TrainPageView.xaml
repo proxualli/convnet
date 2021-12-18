@@ -9,17 +9,12 @@
              Foreground="White">
     
     <UserControl.Resources >
-        
-        <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
-        <converters:BooleanValueInverter x:Key="Inverter" />
-        <converters:EnumToStringConverter x:Key="EnumToStringConverter"/>
         <CollectionViewSource x:Key="src" Source="{Binding TrainingLog}">
             <CollectionViewSource.GroupDescriptions>
                 <!--<PropertyGroupDescription PropertyName="GroupIndex" />-->
                 <PropertyGroupDescription PropertyName="CostName" />
             </CollectionViewSource.GroupDescriptions>
         </CollectionViewSource>
-        <props:Settings x:Key="Settings"/>
     </UserControl.Resources>
     
     <Grid x:Name="gridMain" Background="{StaticResource BackgroundBrushLight}" >

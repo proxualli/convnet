@@ -6,10 +6,6 @@
              xmlns:converters="clr-namespace:Convnet.Converters">
 
     <UserControl.Resources >
-        <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
-        <converters:BooleanValueInverter x:Key="Inverter" />
-        <converters:FirstDegreeFunctionConverter x:Key="AdjustHeight" A="113"/>
-
         <Style x:Key="MyColumnHeaderStyle" TargetType="DataGridColumnHeader" BasedOn="{StaticResource {x:Type DataGridColumnHeader}}">
             <Setter Property="ContentTemplate" >
                 <Setter.Value>
