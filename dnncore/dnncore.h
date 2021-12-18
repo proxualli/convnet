@@ -78,7 +78,6 @@ namespace dnncore
 		tinyimagenet = 4
 	};
 
-
 	[Serializable()]
 	public enum class DNNScripts
 	{
@@ -737,6 +736,342 @@ namespace dnncore
 	};
 
 	[Serializable()]
+	public ref class DNNTrainingStrategy : public INotifyPropertyChanged
+	{
+	public:
+		property Float Epochs
+		{
+			Float get() { return epochs; }
+			void set(Float value)
+			{
+				if (value == epochs && value == 0)
+					return;
+
+				epochs = value;
+				OnPropertyChanged("Epochs");
+			}
+		}
+		property UInt BatchSize
+		{
+			UInt get() { return batchSize; }
+			void set(UInt value)
+			{
+				if (value == batchSize && value == 0)
+					return;
+
+				batchSize = value;
+				OnPropertyChanged("BatchSize");
+			}
+		}
+		property UInt Height
+		{
+			UInt get() { return height; }
+			void set(UInt value)
+			{
+				if (value == height && value == 0)
+					return;
+
+				height = value;
+				OnPropertyChanged("Height");
+			}
+		}
+		property UInt Width
+		{
+			UInt get() { return width; }
+			void set(UInt value)
+			{
+				if (value == width && value == 0)
+					return;
+
+				width = value;
+				OnPropertyChanged("Width");
+			}
+		}
+		property Float Momentum
+		{
+			Float get() { return momentum; }
+			void set(Float value)
+			{
+				if (value == momentum || value < Float(0) || value > Float(1))
+					return;
+
+				momentum = value;
+				OnPropertyChanged("Momentum");
+			}
+		}
+		property Float Beta2
+		{
+			Float get() { return beta2; }
+			void set(Float value)
+			{
+				if (value == beta2 || value < Float(0) || value > Float(1))
+					return;
+
+				beta2 = value;
+				OnPropertyChanged("Beta2");
+			}
+		}
+		property Float Gamma
+		{
+			Float get() { return gamma; }
+			void set(Float value)
+			{
+				if (value == gamma || value < Float(0) || value > Float(1))
+					return;
+
+				gamma = value;
+				OnPropertyChanged("Gamma");
+			}
+		}
+		property Float L2Penalty
+		{
+			Float get() { return l2Penalty; }
+			void set(Float value)
+			{
+				if (value == l2Penalty || value < Float(0) || value > Float(1))
+					return;
+
+				l2Penalty = value;
+				OnPropertyChanged("L2Penalty");
+			}
+		}
+		property Float Dropout
+		{
+			Float get() { return dropout; }
+			void set(Float value)
+			{
+				if (value == dropout || value < Float(0) || value > Float(1))
+					return;
+
+				dropout = value;
+				OnPropertyChanged("Dropout");
+			}
+		}
+		property bool HorizontalFlip
+		{
+			bool get() { return horizontalFlip; }
+			void set(bool value)
+			{
+				if (value == horizontalFlip)
+					return;
+
+				horizontalFlip = value;
+				OnPropertyChanged("HorizontalFlip");
+			}
+		}
+		property bool VerticalFlip
+		{
+			bool get() { return verticalFlip; }
+			void set(bool value)
+			{
+				if (value == verticalFlip)
+					return;
+
+				verticalFlip = value;
+				OnPropertyChanged("VerticalFlip");
+			}
+		}
+		property Float InputDropout
+		{
+			Float get() { return inputDropout; }
+			void set(Float value)
+			{
+				if (value == inputDropout || value < Float(0) || value > Float(1))
+					return;
+
+				inputDropout = value;
+				OnPropertyChanged("InputDropout");
+			}
+		}
+		property Float Cutout
+		{
+			Float get() { return cutout; }
+			void set(Float value)
+			{
+				if (value == cutout || value < Float(0) || value > Float(1))
+					return;
+
+				cutout = value;
+				OnPropertyChanged("Cutout");
+			}
+		}
+		property bool CutMix
+		{
+			bool get() { return cutMix; }
+			void set(bool value)
+			{
+				if (value == cutMix)
+					return;
+
+				cutMix = value;
+				OnPropertyChanged("CutMix");
+			}
+		}
+		property Float AutoAugment
+		{
+			Float get() { return autoAugment; }
+			void set(Float value)
+			{
+				if (value == autoAugment || value < Float(0) || value > Float(1))
+					return;
+
+				autoAugment = value;
+				OnPropertyChanged("AutoAugment");
+			}
+		}
+		property Float ColorCast
+		{
+			Float get() { return colorCast; }
+			void set(Float value)
+			{
+				if (value == colorCast || value < Float(0) || value > Float(1))
+					return;
+
+				colorCast = value;
+				OnPropertyChanged("ColorCast");
+			}
+		}
+		property UInt ColorAngle
+		{
+			UInt get() { return colorAngle; }
+			void set(UInt value)
+			{
+				if (value == colorAngle || value < Float(-360) || value > Float(360))
+					return;
+
+				colorAngle = value;
+				OnPropertyChanged("ColorAngle");
+			}
+		}
+		property Float Distortion
+		{
+			Float get() { return distortion; }
+			void set(Float value)
+			{
+				if (value == distortion || value < Float(0) || value > Float(1))
+					return;
+
+				distortion = value;
+				OnPropertyChanged("Distortion");
+			}
+		}
+		property DNNInterpolations Interpolation
+		{
+			DNNInterpolations get() { return interpolation; }
+			void set(DNNInterpolations value)
+			{
+				if (value == interpolation)
+					return;
+
+				interpolation = value;
+				OnPropertyChanged("Interpolation");
+			}
+		}
+		property Float Scaling
+		{
+			Float get() { return scaling; }
+			void set(Float value)
+			{
+				if (value == scaling || value <= Float(0) || value > Float(200))
+					return;
+
+				scaling = value;
+				OnPropertyChanged("Scaling");
+			}
+		}
+		property Float Rotation
+		{
+			Float get() { return rotation; }
+			void set(Float value)
+			{
+				if (value == rotation || value < Float(0) || value > Float(360))
+					return;
+
+				rotation = value;
+				OnPropertyChanged("Rotation");
+			}
+		}
+
+		DNNTrainingStrategy()
+		{
+			epochs = Float(1);
+			batchSize = 128;
+			height = 32;
+			width = 32;
+			momentum = Float(0.9);
+			beta2 = Float(0.999);
+			gamma = Float(0.003);
+			l2Penalty = Float(0.0005);
+			dropout = Float(0);
+			horizontalFlip = true;
+			verticalFlip = false;
+			inputDropout = Float(0);
+			cutout = Float(0);
+			cutMix = false;
+			autoAugment = Float(0);
+			colorCast = Float(0);
+			colorAngle = 16;
+			distortion = Float(0);
+			interpolation = DNNInterpolations::Linear;
+			scaling = Float(10);
+			rotation = Float(12);
+		}
+
+		DNNTrainingStrategy(Float epochs, UInt batchSize, UInt height, UInt width, Float momentum, Float beta2, Float gamma, Float l2penalty, Float dropout, bool horizontalFlip, bool verticalFlip, Float inputDropout, Float cutout, bool cutMix, Float autoAugment, Float colorCast, UInt colorAngle, Float distortion, DNNInterpolations interpolation, Float scaling, Float rotation)
+		{
+			Epochs = epochs;
+			BatchSize = batchSize;
+			Height = height;
+			Width = width;
+			Momentum = momentum;
+			Beta2 = beta2;
+			Gamma = gamma;
+			L2Penalty = l2penalty;
+			Dropout = dropout;
+			HorizontalFlip = horizontalFlip;
+			VerticalFlip = verticalFlip;
+			InputDropout = inputDropout;
+			Cutout = cutout;
+			CutMix = cutMix;
+			AutoAugment = autoAugment;
+			ColorCast = colorCast;
+			ColorAngle = colorAngle;
+			Distortion = distortion;
+			Interpolation = interpolation;
+			Scaling = scaling;
+			Rotation = rotation;
+		}
+
+		[field:NonSerializedAttribute()]
+		virtual event System::ComponentModel::PropertyChangedEventHandler^ PropertyChanged;
+
+		void OnPropertyChanged(String^ propertyName) { PropertyChanged(this, gcnew System::ComponentModel::PropertyChangedEventArgs(propertyName)); }
+
+	private:
+		float epochs = Float(1);
+		UInt batchSize = 128;
+		UInt height = 32;
+		UInt width = 32;
+		Float momentum = Float(0.9);
+		Float beta2 = Float(0.999);
+		Float gamma = Float(0.003);
+		Float l2Penalty = Float(0.0005);
+		Float dropout = Float(0);
+		bool horizontalFlip = false;
+		bool verticalFlip = false;
+		Float inputDropout = Float(0);
+		Float cutout = Float(0);
+		bool cutMix = false;
+		Float autoAugment = Float(0);
+		Float colorCast = Float(0);
+		UInt colorAngle = 0;
+		Float distortion = Float(0);
+		DNNInterpolations interpolation = DNNInterpolations::Linear;
+		Float scaling = Float(10);
+		Float rotation = Float(12);
+	};
+
+	[Serializable()]
 	public ref class DNNTrainingResult
 	{
 	public:
@@ -980,6 +1315,8 @@ namespace dnncore
 		property cli::array<Float>^ StdTrainSet;
 		property cli::array<cli::array<UInt>^>^ ConfusionMatrix;
 		property cli::array<cli::array<String^>^>^ LabelsCollection;
+		property bool UseTrainingStrategy;
+		property cli::array<DNNTrainingRate^>^ TrainingStrategies;
 		property cli::array<DNNTrainingRate^>^ TrainingRates;
 		property DNNTrainingRate^ TrainingRate;
 		property String^ Definition;
@@ -1064,6 +1401,8 @@ namespace dnncore
 		void ResetWeights();
 		void AddTrainingRate(DNNTrainingRate^ rate, bool clear, UInt gotoEpoch, UInt trainSamples);
 		void AddTrainingRateSGDR(DNNTrainingRate^ rate, bool clear, UInt gotoEpoch, UInt trainSamples);
+		void ClearTrainingStrategies();
+		void AddTrainingStrategy(DNNTrainingStrategy^ strategy);
 		void Start(bool training);
 		void Stop();
 		void Pause();

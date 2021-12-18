@@ -1,5 +1,4 @@
 #include "dnncore.h"
-#include <stdexcept>
 
 
 using namespace std;
@@ -320,6 +319,32 @@ namespace dnn
 		Float Scaling;
 		Float Rotation;
 
+		TrainingStrategy::TrainingStrategy() :
+		
+			Epochs(1),
+			BatchSize(1),
+			Height(32),
+			Width(32),
+			Momentum(Float(0.9)),
+			Beta2(Float(0.999)),
+			Gamma(Float(0.003)),
+			L2Penalty(Float(0.0005)),
+			Dropout(Float(0)),
+			HorizontalFlip(false),
+			VerticalFlip(false),
+			InputDropout(Float(0)),
+			Cutout(Float(0)),
+			CutMix(false),
+			AutoAugment(Float(0)),
+			ColorCast(Float(0)),
+			ColorAngle(0),
+			Distortion(Float(0)),
+			Interpolation(Interpolations::Cubic),
+			Scaling(Float(10.0)),
+			Rotation(Float(10.0))
+		{
+		}
+
 		TrainingStrategy(const Float epochs, const UInt batchSize, const UInt height, const UInt width, const Float momentum, const Float beta2, const Float gamma, const Float l2penalty, const Float dropout, const bool horizontalFlip, const bool verticalFlip, const Float inputDropout, const Float cutout, const bool cutMix, const Float autoAugment, const Float colorCast, const UInt colorAngle, const Float distortion, const Interpolations interpolation, const Float scaling, const Float rotation) :
 			Epochs(epochs),
 			BatchSize(batchSize),
@@ -343,40 +368,6 @@ namespace dnn
 			Scaling(scaling),
 			Rotation(rotation)
 		{
-			if (Epochs <= 0 || Epochs >= 1)
-				throw std::invalid_argument("Epochs out of range in TrainingStrategy");
-			if (BatchSize == 0)
-				throw std::invalid_argument("BatchSize cannot be zero in TrainingStrategy");
-			if (Height == 0)
-				throw std::invalid_argument("Height cannot be zero in TrainingStrategy");
-			if (Width == 0)
-				throw std::invalid_argument("Width cannot be zero in TrainingStrategy");
-			if (Momentum < 0 || Momentum > 1)
-				throw std::invalid_argument("Momentum out of range in TrainingStrategy");
-			if (Beta2 < 0 || Beta2 > 1)
-				throw std::invalid_argument("Beta2 out of range in TrainingStrategy");
-			if (Gamma < 0 || Gamma > 1)
-				throw std::invalid_argument("Gamma out of range in TrainingStrategy");
-			if (L2Penalty < 0 || L2Penalty > 1)
-				throw std::invalid_argument("L2Penalty out of range in TrainingStrategy");
-			if (Dropout < 0 || Dropout >= 1)
-				throw std::invalid_argument("Dropout out of range in TrainingStrategy");
-			if (InputDropout < 0 || InputDropout >= 1)
-				throw std::invalid_argument("InputDropout out of range in TrainingStrategy");
-			if (Cutout < 0 || Cutout > 1)
-				throw std::invalid_argument("Cutout out of range in TrainingStrategy");
-			if (AutoAugment < 0 || AutoAugment > 1)
-				throw std::invalid_argument("AutoAugment out of range in TrainingStrategy");
-			if (ColorCast < 0 || ColorCast > 1)
-				throw std::invalid_argument("ColorCast out of range in TrainingStrategy");
-			if (ColorAngle > 180)
-				throw std::invalid_argument("ColorAngle cannot be zero in TrainingStrategy");
-			if (Distortion < 0 || Distortion > 1)
-				throw std::invalid_argument("Distortion out of range in TrainingStrategy");
-			if (Scaling < 0 || Scaling > 100)
-				throw std::invalid_argument("Scaling out of range in TrainingStrategy");
-			if (Rotation < 0 || Rotation > 180)
-				throw std::invalid_argument("Rotation out of range in TrainingStrategy");
 		}
 	};
 
@@ -438,7 +429,7 @@ DNN_API void DNNResetWeights();
 DNN_API void DNNResetLayerWeights(const UInt layerIndex);
 DNN_API void DNNAddTrainingRate(const dnn::TrainingRate& rate, const bool clear, const UInt gotoEpoch, const UInt trainSamples);
 DNN_API void DNNAddTrainingRateSGDR(const dnn::TrainingRate& rate, const bool clear, const UInt gotoEpoch, const UInt trainSamples);
-DNN_API void DNNClearTrainingStrategy();
+DNN_API void DNNClearTrainingStrategies();
 DNN_API void DNNAddTrainingStrategy(const dnn::TrainingStrategy& strategy);
 DNN_API bool DNNLoadDataset();
 DNN_API void DNNTraining();
@@ -1528,6 +1519,16 @@ namespace dnncore
 		auto nativeRate = dnn::TrainingRate(static_cast<dnn::Optimizers>(rate->Optimizer), rate->Momentum, rate->Beta2, rate->L2Penalty, rate->Dropout, rate->Eps, rate->BatchSize, rate->Height, rate->Width, rate->Cycles, rate->Epochs, rate->EpochMultiplier, rate->MaximumRate, rate->MinimumRate, rate->FinalRate, rate->Gamma, rate->DecayAfterEpochs, rate->DecayFactor, rate->HorizontalFlip, rate->VerticalFlip, rate->InputDropout, rate->Cutout, rate->CutMix, rate->AutoAugment, rate->ColorCast, rate->ColorAngle, rate->Distortion, static_cast<dnn::Interpolations>(rate->Interpolation), rate->Scaling, rate->Rotation);
 
 		DNNAddTrainingRateSGDR(nativeRate, clear, gotoEpoch, trainSamples);
+	}
+
+	void Model::ClearTrainingStrategies()
+	{
+		DNNClearTrainingStrategies();
+	}
+
+	void Model::AddTrainingStrategy(DNNTrainingStrategy^ strategy)
+	{
+		DNNAddTrainingStrategy(dnn::TrainingStrategy(strategy->Epochs, strategy->BatchSize, strategy->Height, strategy->Width, strategy->Momentum, strategy->Beta2, strategy->Gamma, strategy->L2Penalty, strategy->Dropout, strategy->HorizontalFlip, strategy->VerticalFlip, strategy->InputDropout, strategy->Cutout, strategy->CutMix, strategy->AutoAugment, strategy->ColorCast, strategy->ColorAngle, strategy->Distortion, static_cast<dnn::Interpolations>(strategy->Interpolation), strategy->Scaling, strategy->Rotation));
 	}
 
 	void Model::Start(bool training)
