@@ -88,6 +88,17 @@ namespace Convnet.Dialogs
             return true;
         }
 
+        private void ButtonInsert_Click(object sender, RoutedEventArgs e)
+        {
+            int selectedIndex = DataGridRates.SelectedIndex;
+            if (selectedIndex != -1)
+            {
+                tpvm.TrainRates.Insert(selectedIndex, Settings.Default.TraininingRate);
+                DataGridRates.SelectedIndex = selectedIndex;
+                DataGridRates.Focus();
+            }
+        }
+
         private void ButtonCancel_Click(object sender, RoutedEventArgs e)
         {
             DialogResult = false;

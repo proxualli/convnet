@@ -79,6 +79,7 @@
             </Binding>
         </xctk:AutoSelectTextBox>
         <CheckBox x:Name="CheckBoxSGDR" Background="{DynamicResource BackgroundBrushLight}" Foreground="{DynamicResource TextBrush}" Content="SGDR" IsThreeState="False" HorizontalAlignment="Left"  Grid.Row="1" VerticalAlignment="Center" Width="100" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" FontSize="14"  IsChecked="{Binding Path=SGDR, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ToolTip="Stochastic Gradient Descent with Warm Restarts" Checked="CheckBoxSGDR_Checked" Unchecked="CheckBoxSGDR_Unchecked" Margin="400,0,0,0"/>
-        <Button x:Name="ButtonSGDRHelp" Style="{StaticResource ButtonStyle}" Background="{DynamicResource BackgroundBrushLight}" Foreground="{DynamicResource TextBrush}" Content=" ? " HorizontalAlignment="Left" Margin="460,0,0,0" Grid.Row="1" VerticalAlignment="Center" FontSize="12" Cursor="Help" ClickMode="Release" Click="ButtonSGDRHelp_Click" />
+        <Button x:Name="buttonInsert" Style="{StaticResource ButtonStyle}" Content="Insert" Height="24"  Width="75" TabIndex="1" Click="ButtonInsert_Click" Grid.Row="1" HorizontalAlignment="Center" Margin="4" VerticalContentAlignment="Center" ClickMode="Release"/>
+        <Button x:Name="ButtonSGDRHelp" Style="{StaticResource ButtonStyle}" Content=" ? "  Background="{DynamicResource BackgroundBrushLight}" Foreground="{DynamicResource TextBrush}" HorizontalAlignment="Left" Margin="460,0,0,0" Grid.Row="1" VerticalAlignment="Center" FontSize="12" Cursor="Help" ClickMode="Release" Click="ButtonSGDRHelp_Click" />
     </Grid>
 </Window>

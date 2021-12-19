@@ -104,6 +104,17 @@ namespace Convnet.Dialogs
             }
         }
 
+        private void ButtonInsert_Click(object sender, RoutedEventArgs e)
+        {
+            int selectedIndex = DataGridStrategies.SelectedIndex;
+            if (selectedIndex != -1 && Settings.Default.TrainingStrategies.Count > 0)
+            {
+                tpvm.TrainingStrategies.Insert(selectedIndex, Settings.Default.TrainingStrategies[0]);
+                DataGridStrategies.SelectedIndex = selectedIndex;
+                DataGridStrategies.Focus();
+            }
+        }
+
         private void ButtonSave_Click(object sender, RoutedEventArgs e)
         {
             saveFileDialog.InitialDirectory = Path;
