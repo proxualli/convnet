@@ -248,9 +248,9 @@
 
 
 
-        <CheckBox Name="checkBoxHorizontalFlip" Background="{DynamicResource BackgroundBrushLight}" Foreground="{DynamicResource TextBrush}" Content="" Grid.Column="5" HorizontalAlignment="Left" Margin="0,3,0,0" Grid.Row="2" VerticalAlignment="Center" IsChecked="{Binding Path=HorizontalFlip, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TabIndex="22" FontSize="14"/>
+        <CheckBox Name="checkBoxHorizontalFlip" Background="{DynamicResource TextBrush}" Foreground="{DynamicResource TextBrush}" Content="" Grid.Column="5" HorizontalAlignment="Left" Margin="0,3,0,0" Grid.Row="2" VerticalAlignment="Center" IsChecked="{Binding Path=HorizontalFlip, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TabIndex="22" FontSize="14"/>
 
-        <CheckBox Name="checkBoxVerticalFlip" Background="{DynamicResource BackgroundBrushLight}" Foreground="{DynamicResource TextBrush}" Content="" Grid.Column="5" HorizontalAlignment="Left" Margin="0,3,0,0" Grid.Row="3"  VerticalAlignment="Center" IsChecked="{Binding Path=VerticalFlip, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" TabIndex="23" FontSize="14"/>
+        <CheckBox Name="checkBoxVerticalFlip" Background="{DynamicResource TextBrush}" Foreground="{DynamicResource TextBrush}" Content="" Grid.Column="5" HorizontalAlignment="Left" Margin="0,3,0,0" Grid.Row="3"  VerticalAlignment="Center" IsChecked="{Binding Path=VerticalFlip, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" TabIndex="23" FontSize="14"/>
 
         <xctk:AutoSelectTextBox ContextMenu="{StaticResource MyContextMenu}" Grid.Column="5" Grid.Row="4" Grid.RowSpan="1" HorizontalAlignment="Stretch" x:Name="textBoxColorCast" VerticalAlignment="Stretch" Margin="2" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" MaxLines="1" TabIndex="24" Validation.ErrorTemplate="{StaticResource validationTemplate}" Style="{StaticResource textBoxInError}" AutoWordSelection="True" AllowDrop="False" BorderThickness="1" SnapsToDevicePixels="True" AutoMoveFocus="True" AutoSelectBehavior="OnFocus" FontSize="14" TextChanged="TextBoxColorCast_TextChanged">
             <TextBox.Text>
@@ -339,7 +339,7 @@
             </TextBox.Text>
         </xctk:AutoSelectTextBox>
 
-        <CheckBox x:Name="CheckBoxSGDR" Background="{DynamicResource BackgroundBrushLight}" Foreground="{DynamicResource TextBrush}" Content="SGDR" IsThreeState="False" HorizontalAlignment="Center" Grid.Column="4" Grid.ColumnSpan="2" Grid.Row="14" TabIndex="35" VerticalAlignment="Center" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" FontSize="14"  ToolTip="Stochastic Gradient Descent with Warm Restarts" Checked="CheckBoxSGDR_Checked" Unchecked="CheckBoxSGDR_Unchecked" />
+        <CheckBox x:Name="CheckBoxSGDR" Background="{DynamicResource TextBrush}" Foreground="{DynamicResource TextBrush}" Content="SGDR" IsThreeState="False" HorizontalAlignment="Center" Grid.Column="4" Grid.ColumnSpan="2" Grid.Row="14" TabIndex="35" VerticalAlignment="Center" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" FontSize="14"  ToolTip="Stochastic Gradient Descent with Warm Restarts" Checked="CheckBoxSGDR_Checked" Unchecked="CheckBoxSGDR_Unchecked" />
         <Button x:Name="ButtonSGDRHelp" Style="{StaticResource ButtonStyle}" Background="{DynamicResource BackgroundBrushLight}" Foreground="{DynamicResource TextBrush}" Content=" ? " HorizontalAlignment="Center" Margin="80,0,0,0" Grid.Column="4" Grid.ColumnSpan="2" Grid.Row="14" TabIndex="36" VerticalAlignment="Center" FontSize="12" Cursor="Help" ClickMode="Release" Click="ButtonSGDRHelp_Click" />
 
         <Button Content="Train" Style="{StaticResource ButtonStyle}" Background="{DynamicResource BackgroundBrushLight}" Foreground="{DynamicResource TextBrush}" Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="19" Margin="2" Name="buttonTrain" Click="ButtonTrain_Click" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TabIndex="37" ClickMode="Release"/>

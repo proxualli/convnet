@@ -5,7 +5,7 @@
         xmlns:c="clr-namespace:Convnet.Common"
         xmlns:converters="clr-namespace:Convnet.Converters"
         xmlns:pvm="clr-namespace:Convnet.PageViewModels"
-        Title="Test Parameters" Height="490" Width="300" WindowStartupLocation="CenterOwner" ShowInTaskbar="False" ResizeMode="NoResize" Closing="Window_Closing" Loaded="Window_Loaded" UseLayoutRounding="True" SnapsToDevicePixels="True" Background="{DynamicResource BackgroundBrush}">
+        Title="Test Parameters" Height="490" Width="334" WindowStartupLocation="CenterOwner" ShowInTaskbar="False" ResizeMode="NoResize" Closing="Window_Closing" Loaded="Window_Loaded" UseLayoutRounding="True" SnapsToDevicePixels="True" Background="{DynamicResource BackgroundBrush}">
 
     <Grid Margin="6">
         <Grid.RowDefinitions>
@@ -26,10 +26,10 @@
             <RowDefinition Height="30" MaxHeight="30"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="2" />
+            <ColumnDefinition Width="4" />
             <ColumnDefinition Width="2*" />
             <ColumnDefinition Width="2*" />
-            <ColumnDefinition Width="2" />
+            <ColumnDefinition Width="4" />
         </Grid.ColumnDefinitions>
 
         <TextBlock Foreground="{DynamicResource TextBrush}" Grid.Column="1" Grid.Row="0" Height="Auto" HorizontalAlignment="Stretch" Margin="2" Name="textBlockBatchSize" Text="Batch size:" VerticalAlignment="Center" Width="Auto" FontSize="14" />
@@ -137,18 +137,18 @@
             </TextBox.Text>
         </xctk:AutoSelectTextBox>
 
-        <RadioButton x:Name="radioButtonTestSet" GroupName="Dataset" Background="{DynamicResource BackgroundBrushLight}" Foreground="{DynamicResource TextBrush}" Content="Test" Grid.Column="2" HorizontalAlignment="Left" Margin="3,3,3,3" Grid.Row="1" VerticalAlignment="Center" FontSize="14" TabIndex="1" />
-        <RadioButton x:Name="radioButtonTrainSet" GroupName="Dataset" Background="{DynamicResource BackgroundBrushLight}" Foreground="{DynamicResource TextBrush}" Content="Train" Grid.Column="2" HorizontalAlignment="Left" Margin="54,3,3,3" Grid.Row="1" VerticalAlignment="Center" FontSize="14" TabIndex="2"/>
+        <RadioButton x:Name="radioButtonTestSet" GroupName="Dataset" Background="{DynamicResource TextBrush}" Foreground="{DynamicResource TextBrush}" Content="Test" Grid.Column="2" HorizontalAlignment="Left" Margin="3,3,3,3" Grid.Row="1" VerticalAlignment="Center" FontSize="14" TabIndex="1" />
+        <RadioButton x:Name="radioButtonTrainSet" GroupName="Dataset" Background="{DynamicResource TextBrush}" Foreground="{DynamicResource TextBrush}" Content="Train" Grid.Column="2" HorizontalAlignment="Left" Margin="54,3,3,3" Grid.Row="1" VerticalAlignment="Center" FontSize="14" TabIndex="2"/>
 
-        <CheckBox x:Name="checkBoxHorizontalFlip" Background="{DynamicResource BackgroundBrushLight}"  Foreground="{DynamicResource TextBrush}" Content="" Grid.Column="2" HorizontalAlignment="Left" Margin="3" Grid.Row="2" VerticalAlignment="Center" IsChecked="{Binding Path=HorizontalFlip, Mode=TwoWay}" FontSize="14" TabIndex="3"/>
-        <CheckBox x:Name="checkBoxVerticalFlip" Background="{DynamicResource BackgroundBrushLight}" Foreground="{DynamicResource TextBrush}" Content="" Grid.Column="2" HorizontalAlignment="Left" Margin="3" Grid.Row="3" VerticalAlignment="Center" IsChecked="{Binding Path=VerticalFlip, Mode=TwoWay}" FontSize="14" TabIndex="4"/>
+        <CheckBox x:Name="checkBoxHorizontalFlip" Background="{DynamicResource TextBrush}"  Foreground="{DynamicResource TextBrush}" Content="" Grid.Column="2" HorizontalAlignment="Left" Margin="3" Grid.Row="2" VerticalAlignment="Center" IsChecked="{Binding Path=HorizontalFlip, Mode=TwoWay}" FontSize="14" TabIndex="3"/>
+        <CheckBox x:Name="checkBoxVerticalFlip" Background="{DynamicResource TextBrush}" Foreground="{DynamicResource TextBrush}" Content="" Grid.Column="2" HorizontalAlignment="Left" Margin="3" Grid.Row="3" VerticalAlignment="Center" IsChecked="{Binding Path=VerticalFlip, Mode=TwoWay}" FontSize="14" TabIndex="4"/>
 
-        <RadioButton x:Name="radioButtonCutout" GroupName="CutMix" Background="{DynamicResource BackgroundBrushLight}" Foreground="{DynamicResource TextBrush}" Content="Cutout" Grid.Column="1" HorizontalAlignment="Left" Margin="3" Grid.Row="7" VerticalAlignment="Center" IsChecked="{Binding Path=CutMix, Converter={StaticResource Inverter}, Mode=OneWay}" Width="Auto" TabIndex="8" FontSize="14"/>
-        <RadioButton x:Name="radioButtonCutMix" GroupName="CutMix" Background="{DynamicResource BackgroundBrushLight}" Foreground="{DynamicResource TextBrush}" Content="CutMix" Grid.Column="1" HorizontalAlignment="Left" Margin="67,3,3,3" Grid.Row="7" VerticalAlignment="Center" IsChecked="{Binding Path=CutMix, Mode=TwoWay}" Width="Auto" TabIndex="9" FontSize="14"/>
+        <RadioButton x:Name="radioButtonCutout" GroupName="CutMix" Background="{DynamicResource TextBrush}" Foreground="{DynamicResource TextBrush}" Content="Cutout" Grid.Column="1" HorizontalAlignment="Left" Margin="3" Grid.Row="7" VerticalAlignment="Center" IsChecked="{Binding Path=CutMix, Converter={StaticResource Inverter}, Mode=OneWay}" Width="Auto" TabIndex="8" FontSize="14"/>
+        <RadioButton x:Name="radioButtonCutMix" GroupName="CutMix" Background="{DynamicResource TextBrush}" Foreground="{DynamicResource TextBrush}" Content="CutMix" Grid.Column="1" HorizontalAlignment="Left" Margin="67,3,3,3" Grid.Row="7" VerticalAlignment="Center" IsChecked="{Binding Path=CutMix, Mode=TwoWay}" Width="Auto" TabIndex="9" FontSize="14"/>
 
         <ComboBox Name="comboBoInterpolation" Grid.Column="2" Grid.Row="10" HorizontalAlignment="Stretch" Margin="2" VerticalAlignment="Stretch" Width="Auto" FontSize="14" TabIndex="13" ItemsSource="{x:Static pvm:TestPageViewModel.GetInterpolations}" SelectedItem="{Binding Path=Interpolation, Mode=TwoWay}"/>
 
-        <Button Style="{StaticResource ButtonStyle}" Background="{DynamicResource BackgroundBrushLight}" Foreground="{DynamicResource TextBrush}" Content="Test" Grid.Column="1" Grid.Row="16" Margin="2" Name="buttonTest" Click="ButtonTest_Click" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TabIndex="16" ClickMode="Release" FontSize="14"/>
-        <Button Style="{StaticResource ButtonStyle}" Background="{DynamicResource BackgroundBrushLight}" Foreground="{DynamicResource TextBrush}" Content="Cancel" Grid.Column="2" Grid.Row="16" Margin="2" Name="buttonCancel" Click="ButtonCancel_Click" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TabIndex="17" ClickMode="Release" IsCancel="True" IsDefault="True" FontSize="14"/>
+        <Button Style="{StaticResource ButtonStyle}" Background="{DynamicResource BackgroundBrushLight}" Foreground="{DynamicResource TextBrush}" Content="Test" Grid.Column="1" Grid.Row="16" Margin="3"  Name="buttonTest" Click="ButtonTest_Click" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TabIndex="16" ClickMode="Release" FontSize="14"/>
+        <Button Style="{StaticResource ButtonStyle}" Background="{DynamicResource BackgroundBrushLight}" Foreground="{DynamicResource TextBrush}" Content="Cancel" Grid.Column="2" Grid.Row="16" Margin="3" Name="buttonCancel" Click="ButtonCancel_Click" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TabIndex="17" ClickMode="Release" IsCancel="True" IsDefault="True" FontSize="14"/>
     </Grid>
 </Window>
