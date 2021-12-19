@@ -112,6 +112,7 @@ namespace Convnet
                         model.SetFormat(Settings.Default.PlainFormat);
                         model.SetOptimizer(Settings.Default.Optimizer);
                         model.SetPersistOptimizer(Settings.Default.PersistOptimizer);
+                        model.SetUseTrainingStrategy(Settings.Default.UseTrainingStrategy);
                         model.SetDisableLocking(Settings.Default.DisableLocking);
                         model.BlockSize = (ulong)Settings.Default.PixelSize;
 

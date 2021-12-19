@@ -111,8 +111,9 @@ namespace Convnet.Properties
                 this["Timings"] = value;
             }
         }
-              
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        
+
+       [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
         public bool PersistOptimizer {
@@ -121,6 +122,21 @@ namespace Convnet.Properties
             }
             set {
                 this["PersistOptimizer"] = value;
+            }
+        }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool UseTrainingStrategy
+        {
+            get
+            {
+                return ((bool)(this["UseTrainingStrategy"]));
+            }
+            set
+            {
+                this["UseTrainingStrategy"] = value;
             }
         }
 

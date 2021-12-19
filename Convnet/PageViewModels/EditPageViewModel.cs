@@ -377,6 +377,7 @@ namespace Convnet.PageViewModels
                             Model.SetOptimizer(Settings.Default.Optimizer);
                             Model.SetFormat(Settings.Default.PlainFormat);
                             Model.SetPersistOptimizer(Settings.Default.PersistOptimizer);
+                            Model.SetUseTrainingStrategy(Settings.Default.UseTrainingStrategy);
                             Model.SetDisableLocking(Settings.Default.DisableLocking);
                             
                             Settings.Default.Save();
