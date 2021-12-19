@@ -107,9 +107,9 @@ namespace Convnet.Dialogs
         private void ButtonInsert_Click(object sender, RoutedEventArgs e)
         {
             int selectedIndex = DataGridStrategies.SelectedIndex;
-            if (selectedIndex != -1 && Settings.Default.TrainingStrategies.Count > 0)
+            if (selectedIndex != -1)
             {
-                tpvm.TrainingStrategies.Insert(selectedIndex, Settings.Default.TrainingStrategies[0]);
+                tpvm.TrainingStrategies.Insert(selectedIndex, Settings.Default.TrainingStrategies.Count > 0 ? Settings.Default.TrainingStrategies[0] : new DNNTrainingStrategy());
                 DataGridStrategies.SelectedIndex = selectedIndex;
                 DataGridStrategies.Focus();
             }
