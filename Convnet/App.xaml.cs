@@ -13,7 +13,7 @@ namespace Convnet
 {
     public partial class App : Application, IDisposable
     {
-        public static readonly bool SingleInstanceApp = false;
+        public static readonly bool SingleInstanceApp = true;
 
         private static readonly SingleInstanceMutex sim;
         private MainWindow mainWindow;
