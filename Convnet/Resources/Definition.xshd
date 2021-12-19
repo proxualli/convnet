@@ -1,9 +1,12 @@
 ﻿<?xml version="1.0"?>
 <SyntaxDefinition name="Definition" xmlns="http://icsharpcode.net/sharpdevelop/syntaxdefinition/2008">
-  <Color name="String" foreground="#FFCBB6FF"/>
+  <Color name="Purple" foreground="#FFd8a0df"/>
+  <Color name="Brown" foreground="#FFD69D85"/>
+  <Color name="Blue" foreground ="#FF559CD6"/>
+  <Color name="Green" foreground ="#FF57A64A"/>
   <!-- This is the main ruleset. -->
 	<RuleSet>
-		<Span color="String">
+		<Span color="Purple">
 			<Begin>\[</Begin>
 			<End>\]</End>
       <RuleSet>
@@ -11,33 +14,33 @@
       </RuleSet>
 		</Span>
 
-    <Keywords foreground="#FF57A64A">
+    <Keywords color="Green">
       <Word>Dataset=</Word>
     </Keywords>
-    <Keywords foreground="#FF57A64A">
+    <Keywords color="Green">
       <Word>Type=</Word>
     </Keywords>
-    <Keywords foreground="#FF57A64A">
+    <Keywords color="Green">
       <Word>Dim=</Word>
     </Keywords>
-    <Keywords foreground="#FF57A64A">
+    <Keywords color="Green">
       <Word>Inputs=</Word>
     </Keywords>
-    <Keywords foreground="#FF559CD6">
+    <Keywords color="Blue">
       <Word>No</Word>
     </Keywords>
-    <Keywords foreground="#FF559CD6">
+    <Keywords color="Blue">
       <Word>Yes</Word>
     </Keywords>
-    <Keywords foreground="#FF559CD6">
+    <Keywords color="Blue">
       <Word>False</Word>
     </Keywords>
-    <Keywords foreground="#FF559CD6">
+    <Keywords color="Blue">
       <Word>True</Word>
     </Keywords>
       
    	<!-- Digits -->
-		<Rule foreground="#FF559CD6">
+		<Rule color="Blue">
             \b0[xX][0-9a-fA-F]+  # hex number
         |    \b
             (    \d+(\.[0-9]+)?   #number with optional floating point
