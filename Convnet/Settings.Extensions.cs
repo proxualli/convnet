@@ -23,15 +23,45 @@ namespace Convnet.Properties
         [global::System.Configuration.UserScopedSetting()]
         [global::System.Configuration.SettingsSerializeAs(global::System.Configuration.SettingsSerializeAs.Binary)]
         [global::System.Configuration.DefaultSettingValue("")]
-        public DNNTrainingRate TrainRate
+        public ObservableCollection<DNNTrainingStrategy> TrainingStrategies
         {
             get
             {
-                return this[nameof(TrainRate)] as DNNTrainingRate;
+                return this[nameof(TrainingStrategies)] as ObservableCollection<DNNTrainingStrategy>;
             }
             set
             {
-                this[nameof(TrainRate)] = value;
+                this[nameof(TrainingStrategies)] = value;
+            }
+        }
+
+        [global::System.Configuration.UserScopedSetting()]
+        [global::System.Configuration.SettingsSerializeAs(global::System.Configuration.SettingsSerializeAs.Binary)]
+        [global::System.Configuration.DefaultSettingValue("")]
+        public ObservableCollection<DNNTrainingRate> TrainingRates
+        {
+            get
+            {
+                return this[nameof(TrainingRates)] as ObservableCollection<DNNTrainingRate>;
+            }
+            set
+            {
+                this[nameof(TrainingRates)] = value;
+            }
+        }
+
+        [global::System.Configuration.UserScopedSetting()]
+        [global::System.Configuration.SettingsSerializeAs(global::System.Configuration.SettingsSerializeAs.Binary)]
+        [global::System.Configuration.DefaultSettingValue("")]
+        public DNNTrainingRate TraininingRate
+        {
+            get
+            {
+                return this[nameof(TraininingRate)] as DNNTrainingRate;
+            }
+            set
+            {
+                this[nameof(TraininingRate)] = value;
             }
         }
 

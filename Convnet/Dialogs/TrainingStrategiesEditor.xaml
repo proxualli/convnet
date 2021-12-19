@@ -1,0 +1,64 @@
+﻿<Window x:Class="Convnet.Dialogs.TrainingStrategiesEditor"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"  
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+        xmlns:pvm="clr-namespace:Convnet.PageViewModels" 
+        xmlns:c="clr-namespace:Convnet.Common"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        xmlns:converters="clr-namespace:Convnet.Converters"
+        d:DataContext="{d:DesignInstance Type=pvm:TrainPageViewModel}"
+        mc:Ignorable="d"
+        Title="Training Strategies Editor" 
+        UseLayoutRounding="True" 
+        SnapsToDevicePixels="True" 
+        d:DesignWidth="800" 
+        d:DesignHeight="300" 
+        MinWidth="700"
+        MinHeight="300"
+        SizeToContent="WidthAndHeight" 
+        ShowInTaskbar="False" 
+        WindowStartupLocation="CenterScreen" 
+        ResizeMode="CanResizeWithGrip"
+        Background="{DynamicResource BackgroundBrush}"
+        Loaded="Window_Loaded" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="40" />
+        </Grid.RowDefinitions>
+
+        <DataGrid ItemsSource="{Binding TrainingStrategies}" CanUserAddRows="True" CanUserDeleteRows="True" ContextMenu="{StaticResource MyContextMenu}" AutoGenerateColumns="False" Height="Auto" HorizontalAlignment="Stretch" Margin="6" x:Name="DataGridRates" VerticalAlignment="Stretch" Width="Auto" TabIndex="4" CanUserSortColumns="False" GridLinesVisibility="Horizontal" HorizontalGridLinesBrush="{DynamicResource BackgroundBrushLight}" VerticalContentAlignment="Center" HorizontalContentAlignment="Stretch" SelectionMode="Single" MinHeight="0" MinWidth="0" CanUserResizeColumns="False" FontFamily="Consolas" FontSize="14" CanUserResizeRows="False" BorderThickness="0" Foreground="{DynamicResource BackgroundBrush}" Background="{DynamicResource BackgroundBrushLight}"  CanUserReorderColumns="False" IsSynchronizedWithCurrentItem="True" SelectionUnit="FullRow" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Epochs" Binding="{Binding Path=Epochs, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <DataGridTextColumn Header="BatchSize" Binding="{Binding Path=BatchSize, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <DataGridTextColumn Header="Height" Binding="{Binding Path=Height, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <DataGridTextColumn Header="Width" Binding="{Binding Path=Width, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <DataGridTextColumn Header="Momentum" Binding="{Binding Path=Momentum, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <DataGridTextColumn Header="Beta2" Binding="{Binding Path=Beta2, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <DataGridTextColumn Header="Gamma" Binding="{Binding Path=Gamma, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <DataGridTextColumn Header="L2Penalty" Binding="{Binding Path=L2Penalty, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <DataGridTextColumn Header="Dropout" Binding="{Binding Path=Dropout, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <DataGridCheckBoxColumn Header="Horz.Flip" Binding="{Binding Path=HorizontalFlip, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                <DataGridCheckBoxColumn Header="Vert.Flip" Binding="{Binding Path=VerticalFlip, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <DataGridTextColumn Header="Input Dropout" Binding="{Binding Path=InputDropout, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <DataGridTextColumn Header="Cutout" Binding="{Binding Path=Cutout, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <DataGridCheckBoxColumn Header="CutMix" Binding="{Binding Path=CutMix, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                <DataGridTextColumn Header="AutoAugment" Binding="{Binding Path=AutoAugment, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <DataGridTextColumn Header="ColorCast" Binding="{Binding Path=ColorCast, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <DataGridTextColumn Header="ColorAngle" Binding="{Binding Path=ColorAngle, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <DataGridTextColumn Header="Distortion" Binding="{Binding Path=Distortion, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <DataGridComboBoxColumn Header="Interpolation" ItemsSource="{x:Static pvm:TrainPageViewModel.GetInterpolations}" SelectedItemBinding="{Binding Path=Interpolation, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                <DataGridTextColumn Header="Scaling" Binding="{Binding Path=Scaling, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <DataGridTextColumn Header="Rotation" Binding="{Binding Path=Rotation, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <Button Style="{StaticResource ButtonStyle}" Content="Load" Background="{DynamicResource BackgroundBrushLight}" Foreground="{DynamicResource TextBrush}" Height="24" HorizontalAlignment="Left" Margin="4" Name="buttonLoad" VerticalAlignment="Center" Width="75" TabIndex="2" Click="ButtonLoad_Click" Grid.Row="1" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" ClickMode="Release"/>
+        <Button Style="{StaticResource ButtonStyle}" Content="Save" Background="{DynamicResource BackgroundBrushLight}" Foreground="{DynamicResource TextBrush}" Height="24" HorizontalAlignment="Left" Margin="86,4,4,4" Name="buttonSave" Width="75" TabIndex="3" Click="ButtonSave_Click" Grid.Row="1" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" ClickMode="Release"/>
+        <Button Style="{StaticResource ButtonStyle}" Content="Ok" Height="24" HorizontalAlignment="Right" Margin="4,4,86,4" Name="buttonTrain" VerticalAlignment="Center" Width="75" TabIndex="1" Click="ButtonOk_Click" Grid.Row="1" VerticalContentAlignment="Center" ClickMode="Release" />
+        <Button Style="{StaticResource ButtonStyle}" Content="Cancel" Background="{DynamicResource BackgroundBrushLight}" Foreground="{DynamicResource TextBrush}" Height="24" HorizontalAlignment="Right" Margin="4" Name="buttonCancel" VerticalAlignment="Center" Width="75" IsCancel="True" IsDefault="True" TabIndex="4" Grid.Row="1" VerticalContentAlignment="Center" ClickMode="Release" Click="ButtonCancel_Click"/>
+      
+    </Grid>
+</Window>

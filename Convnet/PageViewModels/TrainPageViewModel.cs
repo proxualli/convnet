@@ -40,6 +40,7 @@ namespace Convnet.PageViewModels
         private string label;
         private bool showSample;
         private ObservableCollection<DNNTrainingRate> trainRates;
+        private ObservableCollection<DNNTrainingStrategy> trainingStrategies;
         private int selectedIndex = -1;
         private bool sgdr;
         private uint gotoEpoch = 1;
@@ -1181,17 +1182,17 @@ namespace Convnet.PageViewModels
         {
             get
             {
-                if (Settings.Default.TrainRate == null)
-                    Settings.Default.TrainRate = new DNNTrainingRate(DNNOptimizers.NAG, 0.9f, 0.999f, 0.0005f, 0, 1E-08f, 128, 32, 32, 1, 200, 1, 0.05f, 0.0001f, 0.1f, 0.003f, 1, 1, false, false, 0, 0, false, 0, 0, 0, 0, DNNInterpolations.Cubic, 10, 12);
+                if (Settings.Default.TraininingRate == null)
+                    Settings.Default.TraininingRate = new DNNTrainingRate(DNNOptimizers.NAG, 0.9f, 0.999f, 0.0005f, 0, 1E-08f, 128, 32, 32, 1, 200, 1, 0.05f, 0.0001f, 0.1f, 0.003f, 1, 1, false, false, 0, 0, false, 0, 0, 0, 0, DNNInterpolations.Cubic, 10, 12);
 
-                return Settings.Default.TrainRate;
+                return Settings.Default.TraininingRate;
             }
             private set
             {
-                if (value == Settings.Default.TrainRate)
+                if (value == Settings.Default.TraininingRate)
                     return;
 
-                Settings.Default.TrainRate = value;
+                Settings.Default.TraininingRate = value;
                 OnPropertyChanged(nameof(TrainRate));
             }
         }
@@ -1206,6 +1207,19 @@ namespace Convnet.PageViewModels
 
                 trainRates = value;
                 OnPropertyChanged(nameof(TrainRates));
+            }
+        }
+
+        public ObservableCollection<DNNTrainingStrategy> TrainingStrategies
+        {
+            get { return trainingStrategies; }
+            private set
+            {
+                if (value == trainingStrategies)
+                    return;
+
+                trainingStrategies = value;
+                OnPropertyChanged(nameof(TrainingStrategies));
             }
         }
 
@@ -1514,8 +1528,11 @@ namespace Convnet.PageViewModels
         {
             if (Model.TaskState == DNNTaskStates.Stopped)
             {
-                TrainRates = new ObservableCollection<DNNTrainingRate> { Settings.Default.TrainRate };
-
+                if (Settings.Default.TrainingRates == null)
+                    Settings.Default.TrainingRates = new ObservableCollection<DNNTrainingRate> { TrainRate };
+                else                
+                    TrainRates = Settings.Default.TrainingRates;
+                
                 TrainingSchemeEditor dialog = new TrainingSchemeEditor
                 {
                     Path = StorageDirectory
@@ -1526,6 +1543,7 @@ namespace Convnet.PageViewModels
                 dialog.buttonTrain.IsEnabled = true;
                 dialog.Owner = Application.Current.MainWindow;
                 dialog.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+
                 if (dialog.ShowDialog() ?? false)
                 {
                     bool first = true;
@@ -1603,15 +1621,22 @@ namespace Convnet.PageViewModels
             }
             else
             {
-                TrainRates = new ObservableCollection<DNNTrainingRate> { TrainRate };
+                if (Settings.Default.TrainingRates == null)
+                    Settings.Default.TrainingRates = new ObservableCollection<DNNTrainingRate> { TrainRate };
+                else
+                    TrainRates = Settings.Default.TrainingRates;
+
                 TrainingSchemeEditor dialog = new TrainingSchemeEditor { Path = StorageDirectory };
                 dialog.tpvm = this;
                 dialog.DataContext = this;
                 dialog.buttonTrain.IsEnabled = false;
                 dialog.Owner = Application.Current.MainWindow;
                 dialog.WindowStartupLocation = WindowStartupLocation.CenterOwner;
-                dialog.ShowDialog();
+                if (dialog.ShowDialog() ?? false)
+                    Settings.Default.TrainingRates = TrainRates;
             }
+
+            Settings.Default.Save();
         }
 
         private void ForgetButtonClick(object sender, RoutedEventArgs e)

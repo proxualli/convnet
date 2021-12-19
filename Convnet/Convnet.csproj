@@ -94,13 +94,6 @@
     <EmbeddedResource Include="Resources\PowerShell.xshd" />
     <EmbeddedResource Include="Resources\XML-Mode.xshd" />
     <EmbeddedResource Include="Resources\XmlDoc.xshd" />
-    <None Include="Models\DNNDataSet.xsc">
-      <DependentUpon>DNNDataSet.xsd</DependentUpon>
-    </None>
-    <Resource Include="Models\DNNDataSet.xsd" />
-    <None Include="Models\DNNDataSet.xss">
-      <DependentUpon>DNNDataSet.xsd</DependentUpon>
-    </None>
     <None Include="key.snk" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -145,6 +138,10 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Folder Include="Models\" />
   </ItemGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <PlatformTarget>x64</PlatformTarget>

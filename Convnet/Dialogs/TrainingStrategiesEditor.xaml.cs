@@ -13,47 +13,22 @@ using Cursors = System.Windows.Input.Cursors;
 
 namespace Convnet.Dialogs
 {
-    public partial class TrainingSchemeEditor : Window
+    public partial class TrainingStrategiesEditor : Window
     {
         public string Path { get; set; }
 
         public TrainPageViewModel tpvm;
-       
+
         private readonly Microsoft.Win32.OpenFileDialog openFileDialog = new Microsoft.Win32.OpenFileDialog();
         private readonly Microsoft.Win32.SaveFileDialog saveFileDialog = new Microsoft.Win32.SaveFileDialog();
 
-        public TrainingSchemeEditor()
+        public TrainingStrategiesEditor()
         {
             InitializeComponent();
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            ChangeSGDR();
-        }
-
-        private void ButtonSGDRHelp_Click(object sender, RoutedEventArgs e)
-        {
-            ApplicationHelper.OpenBrowser("https://arxiv.org/abs/1608.03983");
-        }
-
-        private void CheckBoxSGDR_Checked(object sender, RoutedEventArgs e)
-        {
-            ChangeSGDR();
-        }
-
-        private void CheckBoxSGDR_Unchecked(object sender, RoutedEventArgs e)
-        {
-            ChangeSGDR();
-        }
-
-        private void ChangeSGDR()
-        {
-            DataGridRates.Columns[9].Visibility = tpvm.SGDR ? Visibility.Visible : Visibility.Collapsed;
-            DataGridRates.Columns[11].Visibility = tpvm.SGDR ? Visibility.Visible : Visibility.Collapsed;
-
-            DataGridRates.Columns[16].Visibility = tpvm.SGDR ? Visibility.Collapsed : Visibility.Visible;
-            //DataGridRates.Columns[17].Visibility = tpvm.SGDR ? Visibility.Collapsed: Visibility.Visible;
         }
 
         private bool IsValid(DependencyObject node)
@@ -93,13 +68,13 @@ namespace Convnet.Dialogs
             DialogResult = false;
         }
 
-        private void ButtonTrain_Click(object sender, RoutedEventArgs e)
+        private void ButtonOk_Click(object sender, RoutedEventArgs e)
         {
             if (IsValid(this))
             {
                 bool stochastic = false;
 
-                foreach (DNNTrainingRate rate in tpvm.TrainRates)
+                foreach (DNNTrainingStrategy rate in tpvm.TrainingStrategies)
                 {
                     if (rate.BatchSize == 1)
                     {
@@ -114,32 +89,25 @@ namespace Convnet.Dialogs
                     return;
                 }
 
-                ulong totalEpochs = 0;
-                foreach (DNNTrainingRate rate in tpvm.TrainRates)
-                    totalEpochs += tpvm.SGDR ? rate.Epochs * rate.Cycles * rate.EpochMultiplier : rate.Epochs;
-  
-                if (uint.TryParse(textBoxGotoEpoch.Text, out uint gotoEpoch))
-                {
-                    if (gotoEpoch > totalEpochs)
-                    {
-                        Xceed.Wpf.Toolkit.MessageBox.Show("Goto epoch is to large", "Warning", MessageBoxButton.OK);
-                        return;
-                    }
+                float totalEpochs = 0;
+                foreach (DNNTrainingStrategy rate in tpvm.TrainingStrategies)
+                    totalEpochs += rate.Epochs;
 
-                    Settings.Default.TrainingRates = tpvm.TrainRates;
-                    Settings.Default.GotoEpoch = gotoEpoch;
-                    Settings.Default.Save();
-                    
-                    DialogResult = true;
-                    this.Close();
+                if (totalEpochs != 1)
+                {
+                    Xceed.Wpf.Toolkit.MessageBox.Show("Total sum of Epochs must be one.", "Warning", MessageBoxButton.OK);
+                    return;
                 }
+
+                DialogResult = true;
+                this.Close();
             }
         }
 
         private void ButtonSave_Click(object sender, RoutedEventArgs e)
         {
             saveFileDialog.InitialDirectory = Path;
-            saveFileDialog.Filter = "Csv Training Scheme|*.csv";
+            saveFileDialog.Filter = "Csv Training Strategy|*.csv";
             saveFileDialog.DefaultExt = ".csv";
             saveFileDialog.AddExtension = true;
             saveFileDialog.CreatePrompt = false;
@@ -165,7 +133,7 @@ namespace Convnet.Dialogs
                     using (var writer = new StreamWriter(fileName, false))
                     using (var csv = new CsvWriter(writer, config))
                     {
-                        csv.WriteRecords(tpvm.TrainRates);
+                        csv.WriteRecords(tpvm.TrainingStrategies);
                     }
 
                     Mouse.OverrideCursor = null;
@@ -178,8 +146,8 @@ namespace Convnet.Dialogs
         private void ButtonLoad_Click(object sender, RoutedEventArgs e)
         {
             openFileDialog.InitialDirectory = Path;
-            openFileDialog.Filter = "Csv Training Scheme|*.csv";
-            openFileDialog.Title = "Load Training Scheme";
+            openFileDialog.Filter = "Csv Training Strategy|*.csv";
+            openFileDialog.Title = "Load Training Strategy";
             openFileDialog.DefaultExt = ".csv";
             openFileDialog.CheckFileExists = true;
             openFileDialog.CheckPathExists = true;
@@ -212,22 +180,22 @@ namespace Convnet.Dialogs
                             using (var reader = new StreamReader(fileName, true))
                             using (var csv = new CsvReader(reader, config))
                             {
-                                var records = csv.GetRecords<DNNTrainingRate>();
+                                var records = csv.GetRecords<DNNTrainingStrategy>();
 
-                                if (Settings.Default.TrainingRates.Count > 0)
+                                if (Settings.Default.TrainingStrategies.Count > 0)
                                 {
                                     Mouse.OverrideCursor = null;
-                                    if (Xceed.Wpf.Toolkit.MessageBox.Show("Do you want to clear the existing sheme?", "Clear Training Scheme", MessageBoxButton.YesNo, MessageBoxImage.None, MessageBoxResult.No) == MessageBoxResult.Yes)
-                                        Settings.Default.TrainingRates.Clear();
+                                    if (Xceed.Wpf.Toolkit.MessageBox.Show("Do you want to clear the existing strategy?", "Clear Training Strategy", MessageBoxButton.YesNo, MessageBoxImage.None, MessageBoxResult.No) == MessageBoxResult.Yes)
+                                        Settings.Default.TrainingStrategies.Clear();
                                 }
 
                                 foreach (var record in records)
-                                    Settings.Default.TrainingRates.Add(record);
+                                    Settings.Default.TrainingStrategies.Add(record);
 
                             }
 
                             Mouse.OverrideCursor = null;
-                            Title = "Training Scheme Editor - " + fileName.Replace(".csv", "");
+                            Title = "Training Strategy Editor - " + fileName.Replace(".csv", "");
                             stop = true;
                         }
                         catch (Exception)

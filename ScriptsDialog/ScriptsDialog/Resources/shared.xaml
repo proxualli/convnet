@@ -40,11 +40,15 @@
     <!--Common colors.-->
     <Color x:Key="TextColor">#FFD7CFD7</Color>
     <Color x:Key="BackgroundColor">#FF1E1E1E</Color>
+    <Color x:Key="BackgroundColorNormal">#FF2E2E2E</Color>
     <Color x:Key="BackgroundColorLight">#FF404040</Color>
-
+    <Color x:Key="BackgroundColorLighter">#FF4D4D4D</Color>
+     
     <SolidColorBrush x:Key="TextBrush" Color="{StaticResource TextColor}"/>
     <SolidColorBrush x:Key="BackgroundBrush" Color="{StaticResource BackgroundColor}"/>
+    <SolidColorBrush x:Key="BackgroundBrushNormal" Color="{StaticResource BackgroundColorNormal}"/>
     <SolidColorBrush x:Key="BackgroundBrushLight" Color="{StaticResource BackgroundColorLight}"/>
+    <SolidColorBrush x:Key="BackgroundBrushLighter" Color="{StaticResource BackgroundColorLighter}"/>
     
     <!-- Fill Brushes -->
 
@@ -762,7 +766,7 @@
             </GradientStopCollection>
         </LinearGradientBrush.GradientStops>
     </LinearGradientBrush>
-
+    
     <Style x:Key="ScrollBarLineButton" TargetType="{x:Type RepeatButton}">
         <Setter Property="SnapsToDevicePixels" Value="True" />
         <Setter Property="OverridesDefaultStyle" Value="true" />
@@ -775,8 +779,8 @@
                             <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
                                 <LinearGradientBrush.GradientStops>
                                     <GradientStopCollection>
-                                        <GradientStop Color="{DynamicResource ControlLightColor}" Offset="0.0" />
-                                        <GradientStop Color="{DynamicResource ControlLightColor}" Offset="1.0" />
+                                        <GradientStop Color="{StaticResource BackgroundColorLighter}" Offset="0.0" />
+                                        <GradientStop Color="{StaticResource BackgroundColorNormal}" Offset="1.0" />
                                     </GradientStopCollection>
                                 </LinearGradientBrush.GradientStops>
                             </LinearGradientBrush>
@@ -785,8 +789,8 @@
                             <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
                                 <LinearGradientBrush.GradientStops>
                                     <GradientStopCollection>
-                                        <GradientStop Color="{DynamicResource ControlLightColor}"/>
-                                        <GradientStop Color="{DynamicResource ControlLightColor}" Offset="1.0" />
+                                        <GradientStop Color="{StaticResource BackgroundColorNormal}"/>
+                                        <GradientStop Color="{StaticResource BackgroundColorLighter}" Offset="1.0" />
                                     </GradientStopCollection>
                                 </LinearGradientBrush.GradientStops>
                             </LinearGradientBrush>
@@ -798,14 +802,14 @@
                                 <VisualState x:Name="Pressed">
                                     <Storyboard>
                                         <ColorAnimationUsingKeyFrames Storyboard.TargetName="Border" Storyboard.TargetProperty="(Panel.Background).(GradientBrush.GradientStops)[1].(GradientStop.Color)">
-                                            <EasingColorKeyFrame KeyTime="0" Value="{StaticResource ControlPressedColor}" />
+                                            <EasingColorKeyFrame KeyTime="0" Value="{StaticResource TextColor}" />
                                         </ColorAnimationUsingKeyFrames>
                                     </Storyboard>
                                 </VisualState>
                                 <VisualState x:Name="Disabled">
                                     <Storyboard>
                                         <ColorAnimationUsingKeyFrames Storyboard.TargetName="Arrow" Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)">
-                                            <EasingColorKeyFrame KeyTime="0" Value="{StaticResource DisabledForegroundColor}" />
+                                            <EasingColorKeyFrame KeyTime="0" Value="{StaticResource BackgroundColorLighter}" />
                                         </ColorAnimationUsingKeyFrames>
                                     </Storyboard>
                                 </VisualState>
@@ -844,7 +848,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Thumb}">
-                    <Border CornerRadius="2" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1" />
+                    <Border CornerRadius="2" Background="{TemplateBinding Background}" BorderThickness="1" />
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
@@ -857,7 +861,7 @@
                 <RowDefinition Height="0.00001*" />
                 <RowDefinition MaxHeight="18" />
             </Grid.RowDefinitions>
-            <Border Grid.RowSpan="3" CornerRadius="2" Background="#404040" />
+            <Border Grid.RowSpan="3" CornerRadius="2" Background="{StaticResource BackgroundBrushNormal}" />
             <RepeatButton Grid.Row="0"
                       Style="{StaticResource ScrollBarLineButton}"
                       Height="18"
@@ -874,12 +878,11 @@
                     <Thumb Style="{StaticResource ScrollBarThumb}"
                    Margin="1,0,1,0">
                         <Thumb.BorderBrush>
-
                             <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
                                 <LinearGradientBrush.GradientStops>
                                     <GradientStopCollection>
-                                        <GradientStop Color="{DynamicResource ControlLightColor}" Offset="0.0" />
-                                        <GradientStop Color="{DynamicResource ControlLightColor}" Offset="1.0" />
+                                        <GradientStop Color="{StaticResource BackgroundColorLighter}" Offset="0.0" />
+                                        <GradientStop Color="{StaticResource BackgroundColorLight}" Offset="1.0" />
                                     </GradientStopCollection>
                                 </LinearGradientBrush.GradientStops>
                             </LinearGradientBrush>
@@ -888,8 +891,8 @@
                             <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
                                 <LinearGradientBrush.GradientStops>
                                     <GradientStopCollection>
-                                        <GradientStop Color="{DynamicResource ControlLightColor}" Offset="0.0" />
-                                        <GradientStop Color="{DynamicResource ControlLightColor}" Offset="1.0" />
+                                        <GradientStop Color="{StaticResource BackgroundColorLight}" Offset="0.0" />
+                                        <GradientStop Color="{StaticResource BackgroundColorLighter}" Offset="1.0" />
                                     </GradientStopCollection>
                                 </LinearGradientBrush.GradientStops>
                             </LinearGradientBrush>
@@ -911,7 +914,7 @@
                 <ColumnDefinition Width="0.00001*" />
                 <ColumnDefinition MaxWidth="18" />
             </Grid.ColumnDefinitions>
-            <Border Grid.ColumnSpan="3" CornerRadius="2" Background="#404040" />
+            <Border Grid.ColumnSpan="3" CornerRadius="2" Background="{StaticResource BackgroundBrushNormal}" />
             <RepeatButton Grid.Column="0" Style="{StaticResource ScrollBarLineButton}" Width="18" Command="ScrollBar.LineLeftCommand" Content="M 4 0 L 4 8 L 0 4 Z" />
             <Track x:Name="PART_Track" Grid.Column="1" IsDirectionReversed="False">
                 <Track.DecreaseRepeatButton>
@@ -923,8 +926,8 @@
                             <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
                                 <LinearGradientBrush.GradientStops>
                                     <GradientStopCollection>
-                                        <GradientStop Color="{DynamicResource ControlLightColor}" Offset="0.0" />
-                                        <GradientStop Color="{DynamicResource ControlLightColor}" Offset="1.0" />
+                                        <GradientStop Color="{StaticResource BackgroundColorLighter}" Offset="0.0" />
+                                        <GradientStop Color="{StaticResource BackgroundColorLight}" Offset="1.0" />
                                     </GradientStopCollection>
                                 </LinearGradientBrush.GradientStops>
                             </LinearGradientBrush>
@@ -933,8 +936,8 @@
                             <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
                                 <LinearGradientBrush.GradientStops>
                                     <GradientStopCollection>
-                                        <GradientStop Color="{DynamicResource ControlLightColor}" Offset="0.0" />
-                                        <GradientStop Color="{DynamicResource ControlLightColor}" Offset="1.0" />
+                                        <GradientStop Color="{StaticResource BackgroundColorLight}" Offset="0.0" />
+                                        <GradientStop Color="{StaticResource BackgroundColorLighter}" Offset="1.0" />
                                     </GradientStopCollection>
                                 </LinearGradientBrush.GradientStops>
                             </LinearGradientBrush>
@@ -1184,13 +1187,13 @@
                     <VisualState x:Name="Disabled">
                         <Storyboard>
                             <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Panel.Background).(GradientBrush.GradientStops)[1].(GradientStop.Color)" Storyboard.TargetName="Border">
-                                <EasingColorKeyFrame KeyTime="0" Value="{StaticResource DisabledControlDarkColor}" />
+                                <EasingColorKeyFrame KeyTime="0" Value="{StaticResource ControlMouseOverColor}" />
                             </ColorAnimationUsingKeyFrames>
                             <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" Storyboard.TargetName="Arrow">
                                 <EasingColorKeyFrame KeyTime="0" Value="{StaticResource DisabledForegroundColor}" />
                             </ColorAnimationUsingKeyFrames>
                             <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Border.BorderBrush).(GradientBrush.GradientStops)[1].(GradientStop.Color)" Storyboard.TargetName="Border">
-                                <EasingColorKeyFrame KeyTime="0" Value="{StaticResource DisabledBorderDarkColor}" />
+                                <EasingColorKeyFrame KeyTime="0" Value="{StaticResource ControlMediumColor}" />
                             </ColorAnimationUsingKeyFrames>
                         </Storyboard>
                     </VisualState>
@@ -1210,8 +1213,8 @@
             <Border x:Name="Border" Grid.ColumnSpan="2" CornerRadius="2" BorderThickness="1">
                 <Border.BorderBrush>
                     <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
-                        <GradientStop Color="{DynamicResource BorderLightColor}" Offset="0" />
-                        <GradientStop Color="{DynamicResource BorderDarkColor}" Offset="1" />
+                        <GradientStop Color="{DynamicResource ControlMouseOverColor}" Offset="0" />
+                        <GradientStop Color="{DynamicResource ControlMediumColor}" Offset="1" />
                     </LinearGradientBrush>
                 </Border.BorderBrush>
                 <Border.Background>
@@ -1248,8 +1251,9 @@
         <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto" />
         <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto" />
         <Setter Property="ScrollViewer.CanContentScroll" Value="true" />
-        <Setter Property="Background" Value="{DynamicResource BackgroundBrushLight}"/>
+        <Setter Property="Background" Value="{DynamicResource BackgroundBrushLighter}"/>
         <Setter Property="Foreground" Value="{DynamicResource TextBrush}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource BackgroundBrush}"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ComboBox}">
@@ -1261,7 +1265,7 @@
                                 <VisualState x:Name="Disabled">
                                     <Storyboard>
                                         <ColorAnimationUsingKeyFrames Storyboard.TargetName="PART_EditableTextBox" Storyboard.TargetProperty="(TextElement.Foreground).(SolidColorBrush.Color)">
-                                            <EasingColorKeyFrame KeyTime="0" Value="{StaticResource DisabledForegroundColor}" />
+                                            <EasingColorKeyFrame KeyTime="0" Value="{StaticResource BackgroundColorLighter}" />
                                         </ColorAnimationUsingKeyFrames>
                                     </Storyboard>
                                 </VisualState>
@@ -1283,15 +1287,15 @@
                         <ToggleButton x:Name="ToggleButton" Template="{StaticResource ComboBoxToggleButton}" Grid.Column="2" Focusable="false" ClickMode="Press" IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"/>
                         <ContentPresenter x:Name="ContentSite" IsHitTestVisible="False" Content="{TemplateBinding SelectionBoxItem}" ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}" ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}" Margin="3,3,23,3" VerticalAlignment="Stretch" HorizontalAlignment="Left">
                         </ContentPresenter>
-                        <TextBox x:Name="PART_EditableTextBox" Style="{x:Null}" Template="{StaticResource ComboBoxTextBox}" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="3,3,23,3" Focusable="True" Background="Transparent" Visibility="Hidden" IsReadOnly="{TemplateBinding IsReadOnly}" />
+                        <TextBox x:Name="PART_EditableTextBox" Style="{x:Null}" Template="{StaticResource ComboBoxTextBox}" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="3,3,23,3" Focusable="True" Visibility="Hidden" IsReadOnly="{TemplateBinding IsReadOnly}" Background="Transparent" />
                         <Popup x:Name="Popup" Placement="Bottom" IsOpen="{TemplateBinding IsDropDownOpen}" AllowsTransparency="True" Focusable="False" PopupAnimation="Slide">
                             <Grid x:Name="DropDown" SnapsToDevicePixels="True" MinWidth="{TemplateBinding ActualWidth}" MaxHeight="{TemplateBinding MaxDropDownHeight}">
                                 <Border x:Name="DropDownBorder" BorderThickness="1">
                                     <Border.BorderBrush>
-                                        <SolidColorBrush Color="{DynamicResource BorderMediumColor}" />
+                                        <SolidColorBrush Color="{DynamicResource TextColor}" />
                                     </Border.BorderBrush>
                                     <Border.Background>
-                                        <SolidColorBrush Color="{DynamicResource ControlLightColor}" />
+                                        <SolidColorBrush Color="{DynamicResource BackgroundColor}" />
                                     </Border.Background>
                                 </Border>
                                 <ScrollViewer Margin="4,6,4,6" SnapsToDevicePixels="True">
@@ -1330,7 +1334,7 @@
                                 <VisualState x:Name="Selected">
                                     <Storyboard>
                                         <ColorAnimationUsingKeyFrames Storyboard.TargetName="Border" Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)">
-                                            <EasingColorKeyFrame KeyTime="0" Value="{StaticResource SelectedBackgroundColor}" />
+                                            <EasingColorKeyFrame KeyTime="0" Value="{StaticResource BackgroundColorLight}" />
                                         </ColorAnimationUsingKeyFrames>
                                     </Storyboard>
                                 </VisualState>

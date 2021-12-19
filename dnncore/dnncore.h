@@ -629,6 +629,16 @@ namespace dnncore
 			}
 		}
 
+		static String^ ObjectToXml(DNNTrainingRate^ object)
+		{
+			StringWriter^ Output = gcnew StringWriter(gcnew StringBuilder());
+			XmlSerializer^ xs = gcnew XmlSerializer(object->GetType());
+			XmlSerializerNamespaces^ ns = gcnew XmlSerializerNamespaces();
+			ns->Add("MyNs", "http://www.someXmlNamespace/namespace1"); // add as many or few as you need
+			xs->Serialize(Output, object, ns);
+			return Output->ToString();
+		}
+
 		DNNTrainingRate()
 		{
 			optimizer = DNNOptimizers::NAG;
@@ -990,6 +1000,16 @@ namespace dnncore
 				rotation = value;
 				OnPropertyChanged("Rotation");
 			}
+		}
+
+		static String^ ObjectToXml(DNNTrainingStrategy^ object)
+		{
+			StringWriter^ Output = gcnew StringWriter(gcnew StringBuilder());
+			XmlSerializer^ xs = gcnew XmlSerializer(object->GetType());
+			XmlSerializerNamespaces^ ns = gcnew XmlSerializerNamespaces();
+			ns->Add("MyNs", "http://www.someXmlNamespace/namespace1"); // add as many or few as you need
+			xs->Serialize(Output, object, ns);
+			return Output->ToString();
 		}
 
 		DNNTrainingStrategy()
