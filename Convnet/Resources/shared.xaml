@@ -1355,7 +1355,52 @@
             </Setter.Value>
         </Setter>
     </Style>
-    
+
+    <!--Styles for controls in a toolbar.-->
+    <Style x:Key="{x:Static ToolBar.SeparatorStyleKey}" TargetType="Separator">
+        <Setter Property="Foreground" Value="{DynamicResource BackgroundBrushLight}"/>
+        <Setter Property="Background" Value="{DynamicResource BackgroundBrush}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource TextBrush}"/>
+    </Style>
+
+    <Style x:Key="{x:Static ToolBar.ButtonStyleKey}" TargetType="Button">
+        <Setter Property="Foreground" Value="{DynamicResource BackgroundBrush}"/>
+        <Setter Property="Background" Value="{DynamicResource BackgroundBrush}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource BackgroundBrush}"/>
+    </Style>
+
+    <Style x:Key="{x:Static ToolBar.CheckBoxStyleKey}" TargetType="CheckBox">
+        <Setter Property="Foreground" Value="{DynamicResource TextBrush}"/>
+        <Setter Property="Background" Value="{DynamicResource BackgroundBrushLight}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource BackgroundBrush}"/>
+    </Style>
+
+    <Style x:Key="{x:Static ToolBar.MenuStyleKey}" TargetType="Menu">
+        <Setter Property="Foreground" Value="{DynamicResource TextBrush}"/>
+        <Setter Property="Background" Value="{DynamicResource BackgroundBrushLight}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource BackgroundBrush}"/>
+    </Style>
+
+    <Style x:Key="{x:Static ToolBar.RadioButtonStyleKey}" TargetType="RadioButton">
+        <Setter Property="Foreground" Value="{DynamicResource BackgroundBrushLight}"/>
+        <Setter Property="Background" Value="{DynamicResource BackgroundBrushLight}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource BackgroundBrush}"/>
+    </Style>
+
+    <Style x:Key="{x:Static ToolBar.TextBoxStyleKey}" TargetType="TextBox">
+        <Setter Property="Foreground" Value="{DynamicResource BackgroundBrushLight}"/>
+        <Setter Property="Background" Value="{DynamicResource BackgroundBrushLight}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource BackgroundBrush}"/>
+    </Style>
+
+    <Style x:Key="{x:Static ToolBar.ComboBoxStyleKey}" TargetType="ComboBox">
+        <Setter Property="Foreground" Value="{DynamicResource BackgroundBrushLight}"/>
+        <Setter Property="Background" Value="{DynamicResource TextBrush}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource BackgroundBrush}"/>
+        <Setter Property="Selector.Background" Value="{DynamicResource BackgroundBrushLight}"/>
+        <Setter Property="Selector.Foreground" Value="{DynamicResource TextBrush}"/>
+    </Style>
+
     <ControlTemplate x:Key="validationTemplate">
         <DockPanel>
             <Image Source="/Convnet;component/Resources/Annotate_HighPriority.ico" Stretch="None"></Image>
