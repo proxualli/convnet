@@ -298,7 +298,12 @@ namespace Convnet.Dialogs
         private void ButtonStrategies_Click(object sender, RoutedEventArgs e)
         {
             if (Settings.Default.TrainingStrategies == null)
-                Settings.Default.TrainingStrategies = new ObservableCollection<DNNTrainingStrategy> { new DNNTrainingStrategy() };
+            {
+                var rate = Rate;
+                var strategy = new DNNTrainingStrategy(1, rate.BatchSize, rate.Height, rate.Width, rate.Momentum, rate.Beta2, rate.Gamma, rate.L2Penalty, rate.Dropout, rate.HorizontalFlip, rate.VerticalFlip, rate.InputDropout, rate.Cutout, rate.CutMix, rate.AutoAugment, rate.ColorCast, rate.ColorAngle, rate.Distortion, rate.Interpolation, rate.Scaling, rate.Rotation);
+                Settings.Default.TrainingStrategies = new ObservableCollection<DNNTrainingStrategy> { strategy };
+                Settings.Default.Save();
+            }
 
             tpvm.TrainingStrategies = Settings.Default.TrainingStrategies;
 

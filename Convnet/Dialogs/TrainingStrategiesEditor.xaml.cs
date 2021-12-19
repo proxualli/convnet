@@ -112,7 +112,9 @@ namespace Convnet.Dialogs
             int selectedIndex = DataGridStrategies.SelectedIndex;
             if (selectedIndex != -1)
             {
-                tpvm.TrainingStrategies.Insert(selectedIndex, Settings.Default.TrainingStrategies.Count > 0 ? Settings.Default.TrainingStrategies[0] : new DNNTrainingStrategy());
+                var rate = Settings.Default.TraininingRate != null ? Settings.Default.TraininingRate : new DNNTrainingRate();
+                var strategy = new DNNTrainingStrategy(1, rate.BatchSize, rate.Height, rate.Width, rate.Momentum, rate.Beta2, rate.Gamma, rate.L2Penalty, rate.Dropout, rate.HorizontalFlip, rate.VerticalFlip, rate.InputDropout, rate.Cutout, rate.CutMix, rate.AutoAugment, rate.ColorCast, rate.ColorAngle, rate.Distortion, rate.Interpolation, rate.Scaling, rate.Rotation);
+                tpvm.TrainingStrategies.Insert(selectedIndex, strategy);
                 DataGridStrategies.SelectedIndex = selectedIndex;
                 DataGridStrategies.Focus();
             }
