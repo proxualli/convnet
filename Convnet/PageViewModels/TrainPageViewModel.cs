@@ -1223,7 +1223,7 @@ namespace Convnet.PageViewModels
         public ObservableCollection<DNNTrainingStrategy> TrainingStrategies
         {
             get { return trainingStrategies; }
-            private set
+            set
             {
                 if (value == trainingStrategies)
                     return;

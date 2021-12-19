@@ -1533,15 +1533,17 @@ namespace dnncore
 
 	void Model::Start(bool training)
 	{
-		IsTraining = training;
 		if (NewEpoch != nullptr)
 			DNNSetNewEpochDelegate((void(*)(UInt, UInt, UInt, UInt, Float, Float, Float, bool, bool, Float, Float, bool, Float, Float, UInt, Float, UInt, Float, Float, Float, UInt, UInt, UInt, Float, Float, Float, Float, Float, Float, UInt, Float, Float, Float, UInt))(Marshal::GetFunctionPointerForDelegate(NewEpoch).ToPointer()));
 		SampleRate = Float(0);
 		State = DNNStates::Idle;
-		if (training)
+
+		IsTraining = training;
+		if (IsTraining)
 			DNNTraining();
 		else 
 			DNNTesting();
+
 		TaskState = DNNTaskStates::Running;
 		WorkerTimer->Start();
 		Duration->Start();

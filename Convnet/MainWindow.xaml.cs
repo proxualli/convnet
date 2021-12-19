@@ -655,22 +655,6 @@ namespace Convnet
                                     Xceed.Wpf.Toolkit.MessageBox.Show(ex.ToString(), "Exception occured", MessageBoxButton.OK);
                                 }
 
-                                /*
-                                CsvHelper.Configuration.CsvConfiguration config = new CsvHelper.Configuration.CsvConfiguration(CultureInfo.CurrentCulture)
-                                {
-                                    HasHeaderRecord = true,
-                                    DetectDelimiter = true,
-                                    DetectDelimiterValues = new string[] { ";" },
-                                    Delimiter = ";"
-                                };
-
-                                using (var writer = new StreamWriter(saveFileDialog.FileName, false))
-                                using (var csv = new CsvWriter(writer, config))
-                                {
-                                    csv.WriteRecords(tpvm.TrainingLog);
-                                }
-                                */
-
                                 Mouse.OverrideCursor = null;
                                 Xceed.Wpf.Toolkit.MessageBox.Show(saveFileDialog.SafeFileName + " log saved", "Information", MessageBoxButton.OK);
                             }

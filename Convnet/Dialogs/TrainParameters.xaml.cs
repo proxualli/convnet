@@ -1,6 +1,8 @@
 ﻿using Convnet.Common;
 using Convnet.PageViewModels;
+using Convnet.Properties;
 using dnncore;
+using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -145,6 +147,16 @@ namespace Convnet.Dialogs
             ChangeSGDR();
         }
 
+        private void CheckBoxStrategy_Checked(object sender, RoutedEventArgs e)
+        {
+            //ChangeSGDR();
+        }
+
+        private void CheckBoxStrategy_Unchecked(object sender, RoutedEventArgs e)
+        {
+           // ChangeSGDR();
+        }
+
         private void ChangeSGDR()
         {
             tpvm.SGDR = CheckBoxSGDR.IsChecked.HasValue ? CheckBoxSGDR.IsChecked.Value : false;
@@ -275,6 +287,31 @@ namespace Convnet.Dialogs
         private void ButtonSGDRHelp_Click(object sender, RoutedEventArgs e)
         {
             ApplicationHelper.OpenBrowser("https://arxiv.org/abs/1608.03983");
+        }
+
+        private void ButtonStrategies_Click(object sender, RoutedEventArgs e)
+        {
+            if (Settings.Default.TrainingStrategies == null)
+                Settings.Default.TrainingStrategies = new ObservableCollection<DNNTrainingStrategy> { new DNNTrainingStrategy() };
+
+            tpvm.TrainingStrategies = Settings.Default.TrainingStrategies;
+
+            TrainingStrategiesEditor dialog = new TrainingStrategiesEditor { Path = TrainPageViewModel.StorageDirectory };
+            dialog.tpvm = tpvm;
+            dialog.DataContext = tpvm;
+            dialog.buttonOk.IsEnabled = true;
+            dialog.Owner = Application.Current.MainWindow;
+            dialog.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+
+            if (dialog.ShowDialog() ?? false)
+            {
+                Settings.Default.TrainingStrategies = tpvm.TrainingStrategies;
+                Settings.Default.Save();
+
+                Model.ClearTrainingStrategies();
+                foreach (DNNTrainingStrategy strategy in tpvm.TrainingStrategies)
+                    Model.AddTrainingStrategy(strategy);
+            }
         }
     }
 }

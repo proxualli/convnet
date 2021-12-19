@@ -339,6 +339,9 @@
             </TextBox.Text>
         </xctk:AutoSelectTextBox>
 
+        <CheckBox x:Name="CheckBoxStrategy" Background="{DynamicResource TextBrush}" Foreground="{DynamicResource TextBrush}" Content="" IsThreeState="False" Grid.Column="5" Grid.ColumnSpan="1" Grid.Row="1" TabIndex="35" VerticalAlignment="Center" HorizontalAlignment="Left" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" FontSize="14" ToolTip="Use Strategy" Checked="CheckBoxStrategy_Checked" Unchecked="CheckBoxStrategy_Checked" />
+        <Button x:Name="ButtonStrategy" Style="{StaticResource ButtonStyle}" Background="{DynamicResource BackgroundBrushLight}" Foreground="{DynamicResource TextBrush}" Content="Strategy" Width="80" HorizontalAlignment="Left" Margin="44,0,0,0" Grid.Column="5" Grid.ColumnSpan="1" Grid.Row="1" TabIndex="36" VerticalAlignment="Center" FontSize="12" Cursor="Help" ClickMode="Release" Click="ButtonStrategies_Click" />
+
         <CheckBox x:Name="CheckBoxSGDR" Background="{DynamicResource TextBrush}" Foreground="{DynamicResource TextBrush}" Content="SGDR" IsThreeState="False" HorizontalAlignment="Center" Grid.Column="4" Grid.ColumnSpan="2" Grid.Row="14" TabIndex="35" VerticalAlignment="Center" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" FontSize="14"  ToolTip="Stochastic Gradient Descent with Warm Restarts" Checked="CheckBoxSGDR_Checked" Unchecked="CheckBoxSGDR_Unchecked" />
         <Button x:Name="ButtonSGDRHelp" Style="{StaticResource ButtonStyle}" Background="{DynamicResource BackgroundBrushLight}" Foreground="{DynamicResource TextBrush}" Content=" ? " HorizontalAlignment="Center" Margin="80,0,0,0" Grid.Column="4" Grid.ColumnSpan="2" Grid.Row="14" TabIndex="36" VerticalAlignment="Center" FontSize="12" Cursor="Help" ClickMode="Release" Click="ButtonSGDRHelp_Click" />
 
