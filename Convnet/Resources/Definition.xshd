@@ -1,9 +1,10 @@
 ﻿<?xml version="1.0"?>
 <SyntaxDefinition name="Definition" xmlns="http://icsharpcode.net/sharpdevelop/syntaxdefinition/2008">
   <Color name="Purple" foreground="#FFd8a0df"/>
-  <Color name="Brown" foreground="#FFD69D85"/>
-  <Color name="Blue" foreground ="#FF559CD6"/>
-  <Color name="Green" foreground ="#FF57A64A"/>
+  <Color name="Brown" foreground="#FFD69d85"/>
+  <Color name="Blue" foreground ="#FF559cd6"/>
+  <Color name="Green" foreground ="#FF57a64a"/>
+  <Color name="Yellow" foreground="#FFdcdcaa"/>
   <!-- This is the main ruleset. -->
 	<RuleSet>
 		<Span color="Purple">
@@ -20,27 +21,27 @@
     <Keywords color="Green">
       <Word>Type=</Word>
     </Keywords>
-    <Keywords color="Green">
+    <Keywords color="Blue">
       <Word>Dim=</Word>
     </Keywords>
-    <Keywords color="Green">
+    <Keywords color="Blue">
       <Word>Inputs=</Word>
     </Keywords>
-    <Keywords color="Blue">
+    <Keywords color="Yellow">
       <Word>No</Word>
     </Keywords>
-    <Keywords color="Blue">
+    <Keywords color="Yellow">
       <Word>Yes</Word>
     </Keywords>
-    <Keywords color="Blue">
+    <Keywords color="Yellow">
       <Word>False</Word>
     </Keywords>
-    <Keywords color="Blue">
+    <Keywords color="Yellow">
       <Word>True</Word>
     </Keywords>
       
    	<!-- Digits -->
-		<Rule color="Blue">
+		<Rule color="Yellow">
             \b0[xX][0-9a-fA-F]+  # hex number
         |    \b
             (    \d+(\.[0-9]+)?   #number with optional floating point
