@@ -34,6 +34,13 @@
     <Exec Command="xcopy /Y $(SolutionDir)$(PlatformName)\$(ConfigurationName)\dnnl.dll $(TargetDir)" />
     <Exec Command="xcopy /Y $(SolutionDir)$(PlatformName)\$(ConfigurationName)\libpng16.dll $(TargetDir)" />
   </Target>
+ 
+  <ItemGroup>
+    <Compile Remove="Models\**" />
+    <EmbeddedResource Remove="Models\**" />
+    <None Remove="Models\**" />
+    <Page Remove="Models\**" />
+  </ItemGroup>
   
   <ItemGroup>
     <None Remove="Resources\CPP-Mode.xshd" />
@@ -138,10 +145,6 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-  </ItemGroup>
-  
-  <ItemGroup>
-    <Folder Include="Models\" />
   </ItemGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <PlatformTarget>x64</PlatformTarget>

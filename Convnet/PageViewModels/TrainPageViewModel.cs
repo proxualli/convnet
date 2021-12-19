@@ -335,6 +335,15 @@ namespace Convnet.PageViewModels
             };
             editorButton.Click += new RoutedEventHandler(EditorButtonClick);
 
+            Button strategiesButton = new Button
+            {
+                Name = "ButtonStrategies",
+                ToolTip = "Training Strategies Editor",
+                Content = new BitmapToImage(Resources.PerformanceLog),
+                ClickMode = ClickMode.Release
+            };
+            strategiesButton.Click += new RoutedEventHandler(StrategyButtonClick);
+
             Button openButton = new Button
             {
                 Name = "ButtonOpen",
@@ -590,30 +599,31 @@ namespace Convnet.PageViewModels
             CommandToolBar.Add(stopButton);                         // 1
             CommandToolBar.Add(pauseButton);                        // 2
             CommandToolBar.Add(editorButton);                       // 3
-            CommandToolBar.Add(new Separator());                    // 4
-            CommandToolBar.Add(openButton);                         // 5
-            CommandToolBar.Add(saveButton);                         // 6
-            CommandToolBar.Add(forgetButton);                       // 7
-            CommandToolBar.Add(clearButton);                        // 8
-            CommandToolBar.Add(new Separator());                    // 9
-            CommandToolBar.Add(dataProviderComboBox);               // 10
-            CommandToolBar.Add(optimizerComboBox);                  // 11
-            CommandToolBar.Add(new Separator());                    // 12
-            CommandToolBar.Add(costLayersComboBox);                 // 13
-            CommandToolBar.Add(layersComboBox);                     // 14
-            CommandToolBar.Add(disableLockingCheckBox);             // 15
-            CommandToolBar.Add(unlockAllButton);                    // 16
-            CommandToolBar.Add(lockAllButton);                      // 17
-            CommandToolBar.Add(openLayerWeightsButton);             // 18
-            CommandToolBar.Add(saveLayerWeightsButton);             // 19
-            CommandToolBar.Add(forgetLayerWeightsButton);           // 20
-            CommandToolBar.Add(new Separator());                    // 21
-            CommandToolBar.Add(trainingPlotCheckBox);               // 22
-            CommandToolBar.Add(plotTypeComboBox);                   // 23
-            CommandToolBar.Add(pixelSizeSlider);                    // 24
-            CommandToolBar.Add(new Separator());                    // 25
-            CommandToolBar.Add(refreshButton);                      // 26
-            CommandToolBar.Add(refreshRateIntegerUpDown);           // 27
+            CommandToolBar.Add(strategiesButton);                   // 4
+            CommandToolBar.Add(new Separator());                    // 5
+            CommandToolBar.Add(openButton);                         // 6
+            CommandToolBar.Add(saveButton);                         // 7
+            CommandToolBar.Add(forgetButton);                       // 8
+            CommandToolBar.Add(clearButton);                        // 9
+            CommandToolBar.Add(new Separator());                    // 10
+            CommandToolBar.Add(dataProviderComboBox);               // 11
+            CommandToolBar.Add(optimizerComboBox);                  // 12
+            CommandToolBar.Add(new Separator());                    // 13
+            CommandToolBar.Add(costLayersComboBox);                 // 14
+            CommandToolBar.Add(layersComboBox);                     // 15
+            CommandToolBar.Add(disableLockingCheckBox);             // 16
+            CommandToolBar.Add(unlockAllButton);                    // 17
+            CommandToolBar.Add(lockAllButton);                      // 18
+            CommandToolBar.Add(openLayerWeightsButton);             // 19
+            CommandToolBar.Add(saveLayerWeightsButton);             // 20
+            CommandToolBar.Add(forgetLayerWeightsButton);           // 21
+            CommandToolBar.Add(new Separator());                    // 22
+            CommandToolBar.Add(trainingPlotCheckBox);               // 23
+            CommandToolBar.Add(plotTypeComboBox);                   // 24
+            CommandToolBar.Add(pixelSizeSlider);                    // 25
+            CommandToolBar.Add(new Separator());                    // 26
+            CommandToolBar.Add(refreshButton);                      // 27
+            CommandToolBar.Add(refreshRateIntegerUpDown);           // 28
         }
 
         public void OnDisableLockingChanged(object sender, RoutedEventArgs e)
@@ -1406,23 +1416,23 @@ namespace Convnet.PageViewModels
                         CommandToolBar[1].Visibility = Visibility.Visible;
                         CommandToolBar[2].Visibility = Visibility.Visible;
 
-                        CommandToolBar[5].Visibility = Visibility.Collapsed;
-                        CommandToolBar[6].Visibility = Visibility.Visible;
-                        CommandToolBar[7].Visibility = Visibility.Collapsed;
+                        CommandToolBar[6].Visibility = Visibility.Collapsed;
+                        CommandToolBar[7].Visibility = Visibility.Visible;
+                        CommandToolBar[8].Visibility = Visibility.Collapsed;
                                                
-                        CommandToolBar[16].Visibility = Visibility.Collapsed;
                         CommandToolBar[17].Visibility = Visibility.Collapsed;
                         CommandToolBar[18].Visibility = Visibility.Collapsed;
                         CommandToolBar[19].Visibility = Visibility.Collapsed;
                         CommandToolBar[20].Visibility = Visibility.Collapsed;
+                        CommandToolBar[21].Visibility = Visibility.Collapsed;
 
                         if (Model.Layers[layersComboBox.SelectedIndex].HasWeights)
                         {
                             if ((Model.Layers[layersComboBox.SelectedIndex].IsNormalizationLayer && Model.Layers[layersComboBox.SelectedIndex].Scaling) || !Model.Layers[layersComboBox.SelectedIndex].IsNormalizationLayer)
                             {
-                                CommandToolBar[16].Visibility = !Settings.Default.DisableLocking ? Visibility.Visible : Visibility.Collapsed;
                                 CommandToolBar[17].Visibility = !Settings.Default.DisableLocking ? Visibility.Visible : Visibility.Collapsed;
-                                CommandToolBar[19].Visibility = Visibility.Visible;
+                                CommandToolBar[18].Visibility = !Settings.Default.DisableLocking ? Visibility.Visible : Visibility.Collapsed;
+                                CommandToolBar[20].Visibility = Visibility.Visible;
                             }
                         }
 
@@ -1438,9 +1448,9 @@ namespace Convnet.PageViewModels
                         CommandToolBar[1].Visibility = Visibility.Visible;
                         CommandToolBar[2].Visibility = Visibility.Visible;
 
-                        CommandToolBar[5].Visibility = Visibility.Collapsed;
-                        CommandToolBar[6].Visibility = Visibility.Visible;
-                        CommandToolBar[7].Visibility = Visibility.Collapsed;
+                        CommandToolBar[6].Visibility = Visibility.Collapsed;
+                        CommandToolBar[7].Visibility = Visibility.Visible;
+                        CommandToolBar[8].Visibility = Visibility.Collapsed;
                     }
                 }
             }, DispatcherPriority.Normal);
@@ -1465,25 +1475,25 @@ namespace Convnet.PageViewModels
                         CommandToolBar[1].Visibility = Visibility.Collapsed;
                         CommandToolBar[2].Visibility = Visibility.Collapsed;
 
-                        CommandToolBar[5].Visibility = Visibility.Visible;
                         CommandToolBar[6].Visibility = Visibility.Visible;
                         CommandToolBar[7].Visibility = Visibility.Visible;
+                        CommandToolBar[8].Visibility = Visibility.Visible;
                        
-                        CommandToolBar[16].Visibility = Visibility.Collapsed;
                         CommandToolBar[17].Visibility = Visibility.Collapsed;
                         CommandToolBar[18].Visibility = Visibility.Collapsed;
                         CommandToolBar[19].Visibility = Visibility.Collapsed;
                         CommandToolBar[20].Visibility = Visibility.Collapsed;
+                        CommandToolBar[21].Visibility = Visibility.Collapsed;
 
                         if (Model.Layers[layersComboBox.SelectedIndex].HasWeights)
                         {
                             if ((Model.Layers[layersComboBox.SelectedIndex].IsNormalizationLayer && Model.Layers[layersComboBox.SelectedIndex].Scaling) || !Model.Layers[layersComboBox.SelectedIndex].IsNormalizationLayer)
                             {
-                                CommandToolBar[16].Visibility = !Settings.Default.DisableLocking ? Visibility.Visible : Visibility.Collapsed;
                                 CommandToolBar[17].Visibility = !Settings.Default.DisableLocking ? Visibility.Visible : Visibility.Collapsed;
-                                CommandToolBar[18].Visibility = Visibility.Visible;
+                                CommandToolBar[18].Visibility = !Settings.Default.DisableLocking ? Visibility.Visible : Visibility.Collapsed;
                                 CommandToolBar[19].Visibility = Visibility.Visible;
                                 CommandToolBar[20].Visibility = Visibility.Visible;
+                                CommandToolBar[21].Visibility = Visibility.Visible;
                             }
                         }
 
@@ -1507,9 +1517,9 @@ namespace Convnet.PageViewModels
                     CommandToolBar[1].Visibility = Visibility.Visible;
                     CommandToolBar[2].Visibility = Visibility.Collapsed;
 
-                    CommandToolBar[5].Visibility = Visibility.Collapsed;
-                    CommandToolBar[6].Visibility = Visibility.Visible;
-                    CommandToolBar[7].Visibility = Visibility.Collapsed;
+                    CommandToolBar[6].Visibility = Visibility.Collapsed;
+                    CommandToolBar[7].Visibility = Visibility.Visible;
+                    CommandToolBar[8].Visibility = Visibility.Collapsed;
                 }
             }, DispatcherPriority.Normal);
         }
@@ -1630,6 +1640,114 @@ namespace Convnet.PageViewModels
                 dialog.tpvm = this;
                 dialog.DataContext = this;
                 dialog.buttonTrain.IsEnabled = false;
+                dialog.Owner = Application.Current.MainWindow;
+                dialog.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+                if (dialog.ShowDialog() ?? false)
+                    Settings.Default.TrainingRates = TrainRates;
+            }
+
+            Settings.Default.Save();
+        }
+
+        private void StrategyButtonClick(object sender, RoutedEventArgs e)
+        {
+            if (Model.TaskState == DNNTaskStates.Stopped)
+            {
+                if (Settings.Default.TrainingStrategies == null)
+                    Settings.Default.TrainingStrategies = new ObservableCollection<DNNTrainingStrategy> { new DNNTrainingStrategy() };
+                else
+                    TrainingStrategies = Settings.Default.TrainingStrategies;
+
+                TrainingStrategiesEditor dialog = new TrainingStrategiesEditor
+                {
+                    Path = StorageDirectory
+                };
+
+                dialog.tpvm = this;
+                dialog.DataContext = this;
+                dialog.buttonOk.IsEnabled = true;
+                dialog.Owner = Application.Current.MainWindow;
+                dialog.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+
+                if (dialog.ShowDialog() ?? false)
+                {
+                    /*
+                    var first = true;
+                    foreach (DNNTrainingStrategy rate in TrainingStrategies)
+                    {
+                        //if (SGDR)
+                        //    Model.AddTrainingRateSGDR(rate, first, GotoEpoch, Model.TrainingSamples);
+                        //else
+                        //    Model.AddTrainingRate(rate, first, GotoEpoch, Model.TrainingSamples);
+
+                        first = false;
+                    }
+                    */
+
+                    EpochDuration = TimeSpan.Zero;
+
+                    CommandToolBar[0].Visibility = Visibility.Collapsed;
+                    CommandToolBar[1].Visibility = Visibility.Visible;
+                    CommandToolBar[2].Visibility = Visibility.Visible;
+
+                    CommandToolBar[6].Visibility = Visibility.Collapsed;
+                    CommandToolBar[7].Visibility = Visibility.Visible;
+                    CommandToolBar[8].Visibility = Visibility.Collapsed;
+
+                    if (layersComboBox.SelectedIndex >= 0 && Model.Layers[layersComboBox.SelectedIndex].HasWeights)
+                    {
+                        LayerInformation info = Model.Layers[layersComboBox.SelectedIndex];
+                        if (info.IsNormalizationLayer)
+                        {
+                            if (info.Scaling)
+                            {
+                                CommandToolBar[17].Visibility = !Settings.Default.DisableLocking ? Visibility.Visible : Visibility.Collapsed;
+                                CommandToolBar[18].Visibility = !Settings.Default.DisableLocking ? Visibility.Visible : Visibility.Collapsed;
+                                CommandToolBar[19].Visibility = Visibility.Collapsed;
+                                CommandToolBar[20].Visibility = Visibility.Visible;
+                                CommandToolBar[21].Visibility = Visibility.Visible;
+                            }
+                            else
+                            {
+                                CommandToolBar[17].Visibility = Visibility.Collapsed;
+                                CommandToolBar[18].Visibility = Visibility.Collapsed;
+                                CommandToolBar[19].Visibility = Visibility.Collapsed;
+                                CommandToolBar[20].Visibility = Visibility.Collapsed;
+                                CommandToolBar[21].Visibility = Visibility.Visible;
+                            }
+                        }
+                        else
+                        {
+                            CommandToolBar[17].Visibility = !Settings.Default.DisableLocking ? Visibility.Visible : Visibility.Collapsed;
+                            CommandToolBar[18].Visibility = !Settings.Default.DisableLocking ? Visibility.Visible : Visibility.Collapsed;
+                            CommandToolBar[19].Visibility = Visibility.Collapsed;
+                            CommandToolBar[20].Visibility = Visibility.Visible;
+                            CommandToolBar[21].Visibility = Visibility.Collapsed;
+                        }
+                    }
+                    else
+                    {
+                        CommandToolBar[17].Visibility = Visibility.Collapsed;
+                        CommandToolBar[18].Visibility = Visibility.Collapsed;
+                        CommandToolBar[19].Visibility = Visibility.Collapsed;
+                        CommandToolBar[20].Visibility = Visibility.Collapsed;
+                        CommandToolBar[21].Visibility = Visibility.Collapsed;
+                    }
+
+                    ShowProgress = true;
+                }
+            }
+            else
+            {
+                if (Settings.Default.TrainingStrategies == null)
+                    Settings.Default.TrainingStrategies = new ObservableCollection<DNNTrainingStrategy>();
+                else
+                    TrainingStrategies = Settings.Default.TrainingStrategies;
+
+                TrainingStrategiesEditor dialog = new TrainingStrategiesEditor { Path = StorageDirectory };
+                dialog.tpvm = this;
+                dialog.DataContext = this;
+                dialog.buttonOk.IsEnabled = false;
                 dialog.Owner = Application.Current.MainWindow;
                 dialog.WindowStartupLocation = WindowStartupLocation.CenterOwner;
                 if (dialog.ShowDialog() ?? false)
@@ -1792,11 +1910,11 @@ namespace Convnet.PageViewModels
                     InputSnapshot = Model.InputSnapshot;
                     Label = Model.Label;
                    
-                    CommandToolBar[16].Visibility = !Settings.Default.DisableLocking ? Visibility.Visible : Visibility.Collapsed;
                     CommandToolBar[17].Visibility = !Settings.Default.DisableLocking ? Visibility.Visible : Visibility.Collapsed;
-                    CommandToolBar[18].Visibility = Model.Layers[index].Lockable && Model.TaskState == DNNTaskStates.Stopped ? Visibility.Visible : Visibility.Collapsed;
-                    CommandToolBar[19].Visibility = Model.Layers[index].Lockable ? Visibility.Visible : Visibility.Collapsed;
-                    CommandToolBar[20].Visibility = Model.Layers[index].Lockable && Model.TaskState == DNNTaskStates.Stopped ? Visibility.Visible : Visibility.Collapsed;
+                    CommandToolBar[18].Visibility = !Settings.Default.DisableLocking ? Visibility.Visible : Visibility.Collapsed;
+                    CommandToolBar[19].Visibility = Model.Layers[index].Lockable && Model.TaskState == DNNTaskStates.Stopped ? Visibility.Visible : Visibility.Collapsed;
+                    CommandToolBar[20].Visibility = Model.Layers[index].Lockable ? Visibility.Visible : Visibility.Collapsed;
+                    CommandToolBar[21].Visibility = Model.Layers[index].Lockable && Model.TaskState == DNNTaskStates.Stopped ? Visibility.Visible : Visibility.Collapsed;
 
                     LayerInfo = "<Span><Bold>Layer</Bold></Span><LineBreak/>";
                     LayerInfo += "<Span>" + Model.Layers[index].Description + "</Span><LineBreak/>";

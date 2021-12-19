@@ -100,14 +100,14 @@ namespace Convnet.Dialogs
                 }
 
                 DialogResult = true;
-                this.Close();
+                Close();
             }
         }
 
         private void ButtonSave_Click(object sender, RoutedEventArgs e)
         {
             saveFileDialog.InitialDirectory = Path;
-            saveFileDialog.Filter = "Csv Training Strategy|*.csv";
+            saveFileDialog.Filter = "Training Strategy|*.csv";
             saveFileDialog.DefaultExt = ".csv";
             saveFileDialog.AddExtension = true;
             saveFileDialog.CreatePrompt = false;
@@ -137,8 +137,8 @@ namespace Convnet.Dialogs
                     }
 
                     Mouse.OverrideCursor = null;
-                    Title = "Training Scheme Editor - " + fileName.Replace(".csv", "");
-                    Xceed.Wpf.Toolkit.MessageBox.Show("Training scheme is saved", "Information", MessageBoxButton.OK);
+                    Title = "Training Strategy Editor - " + fileName.Replace(".csv", "");
+                    Xceed.Wpf.Toolkit.MessageBox.Show("Training strategy is saved", "Information", MessageBoxButton.OK);
                 }
             }
         }
@@ -146,7 +146,7 @@ namespace Convnet.Dialogs
         private void ButtonLoad_Click(object sender, RoutedEventArgs e)
         {
             openFileDialog.InitialDirectory = Path;
-            openFileDialog.Filter = "Csv Training Strategy|*.csv";
+            openFileDialog.Filter = "Training Strategy|*.csv";
             openFileDialog.Title = "Load Training Strategy";
             openFileDialog.DefaultExt = ".csv";
             openFileDialog.CheckFileExists = true;

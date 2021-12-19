@@ -139,7 +139,7 @@ namespace Convnet.Dialogs
         private void ButtonSave_Click(object sender, RoutedEventArgs e)
         {
             saveFileDialog.InitialDirectory = Path;
-            saveFileDialog.Filter = "Csv Training Scheme|*.csv";
+            saveFileDialog.Filter = "Training Scheme|*.csv";
             saveFileDialog.DefaultExt = ".csv";
             saveFileDialog.AddExtension = true;
             saveFileDialog.CreatePrompt = false;
@@ -178,7 +178,7 @@ namespace Convnet.Dialogs
         private void ButtonLoad_Click(object sender, RoutedEventArgs e)
         {
             openFileDialog.InitialDirectory = Path;
-            openFileDialog.Filter = "Csv Training Scheme|*.csv";
+            openFileDialog.Filter = "Training Scheme|*.csv";
             openFileDialog.Title = "Load Training Scheme";
             openFileDialog.DefaultExt = ".csv";
             openFileDialog.CheckFileExists = true;
