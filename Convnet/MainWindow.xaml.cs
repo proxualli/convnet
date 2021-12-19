@@ -109,12 +109,14 @@ namespace Convnet
                     if (PageVM != null)
                     {
                         model.BackgroundColor = Settings.Default.BackgroundColor;
+                        model.BlockSize = (ulong)Settings.Default.PixelSize;
+
                         model.SetFormat(Settings.Default.PlainFormat);
                         model.SetOptimizer(Settings.Default.Optimizer);
                         model.SetPersistOptimizer(Settings.Default.PersistOptimizer);
                         model.SetUseTrainingStrategy(Settings.Default.UseTrainingStrategy);
                         model.SetDisableLocking(Settings.Default.DisableLocking);
-                        model.BlockSize = (ulong)Settings.Default.PixelSize;
+                        
 
                         var dataset = PageVM.Model.Dataset.ToString().ToLower();
                         var optimizer = PageVM.Model.Optimizer.ToString().ToLower();
