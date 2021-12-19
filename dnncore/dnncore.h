@@ -1414,6 +1414,7 @@ namespace dnncore
 		void OnElapsed(Object^ sender, System::Timers::ElapsedEventArgs^ e);
 		void UpdateInputSnapshot(UInt C, UInt H, UInt W);
 		void SetPersistOptimizer(bool persist);
+		void SetUseTrainingStrategy(bool enable);
 		void SetDisableLocking(bool disable);
 		void ApplyParameters();
 		bool SetFormat(bool plain);

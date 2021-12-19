@@ -430,6 +430,7 @@ DNN_API void DNNResetLayerWeights(const UInt layerIndex);
 DNN_API void DNNAddTrainingRate(const dnn::TrainingRate& rate, const bool clear, const UInt gotoEpoch, const UInt trainSamples);
 DNN_API void DNNAddTrainingRateSGDR(const dnn::TrainingRate& rate, const bool clear, const UInt gotoEpoch, const UInt trainSamples);
 DNN_API void DNNClearTrainingStrategies();
+DNN_API void DNNSetUseTrainingStrategy(const bool enable);
 DNN_API void DNNAddTrainingStrategy(const dnn::TrainingStrategy& strategy);
 DNN_API bool DNNLoadDataset();
 DNN_API void DNNTraining();
@@ -1270,6 +1271,15 @@ namespace dnncore
 		{
 			DNNSetOptimizer(static_cast<dnn::Optimizers>(strategy));
 			Optimizer = strategy;
+		}
+	}
+
+	void Model::SetUseTrainingStrategy(bool enable)
+	{
+		if (enable != UseTrainingStrategy)
+		{
+			DNNSetUseTrainingStrategy(enable);
+			UseTrainingStrategy = enable;
 		}
 	}
 
