@@ -47,11 +47,14 @@
     <Color x:Key="TextColor">#FFD7CFD7</Color>
     <Color x:Key="BackgroundColor">#FF1E1E1E</Color>
     <Color x:Key="BackgroundColorLight">#FF404040</Color>
-
+    <Color x:Key="BackgroundColorUltraLight">#FF2E2E2E</Color>
+    <Color x:Key="BackgroundColorLighter">#FF4D4D4D</Color>
     <SolidColorBrush x:Key="TextBrush" Color="{StaticResource TextColor}"/>
     <SolidColorBrush x:Key="BackgroundBrush" Color="{StaticResource BackgroundColor}"/>
     <SolidColorBrush x:Key="BackgroundBrushLight" Color="{StaticResource BackgroundColorLight}"/>
-    
+    <SolidColorBrush x:Key="BackgroundBrushUltraLight" Color="{StaticResource BackgroundColorUltraLight}"/>
+    <SolidColorBrush x:Key="BackgroundBrushLighter" Color="{StaticResource BackgroundColorLighter}"/>
+
     <!-- Fill Brushes -->
 
     <LinearGradientBrush x:Key="NormalBrush" StartPoint="0,0" EndPoint="0,1">
@@ -781,8 +784,8 @@
                             <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
                                 <LinearGradientBrush.GradientStops>
                                     <GradientStopCollection>
-                                        <GradientStop Color="{DynamicResource ControlLightColor}" Offset="0.0" />
-                                        <GradientStop Color="{DynamicResource ControlLightColor}" Offset="1.0" />
+                                        <GradientStop Color="{StaticResource BackgroundColorLighter}" Offset="0.0" />
+                                        <GradientStop Color="{StaticResource BackgroundColorLight}" Offset="1.0" />
                                     </GradientStopCollection>
                                 </LinearGradientBrush.GradientStops>
                             </LinearGradientBrush>
@@ -791,8 +794,8 @@
                             <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
                                 <LinearGradientBrush.GradientStops>
                                     <GradientStopCollection>
-                                        <GradientStop Color="{DynamicResource ControlLightColor}"/>
-                                        <GradientStop Color="{DynamicResource ControlLightColor}" Offset="1.0" />
+                                        <GradientStop Color="{StaticResource BackgroundColorLight}"/>
+                                        <GradientStop Color="{StaticResource BackgroundColorLighter}" Offset="1.0" />
                                     </GradientStopCollection>
                                 </LinearGradientBrush.GradientStops>
                             </LinearGradientBrush>
@@ -811,7 +814,7 @@
                                 <VisualState x:Name="Disabled">
                                     <Storyboard>
                                         <ColorAnimationUsingKeyFrames Storyboard.TargetName="Arrow" Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)">
-                                            <EasingColorKeyFrame KeyTime="0" Value="{StaticResource DisabledForegroundColor}" />
+                                            <EasingColorKeyFrame KeyTime="0" Value="{StaticResource ControlDarkColor}" />
                                         </ColorAnimationUsingKeyFrames>
                                     </Storyboard>
                                 </VisualState>
@@ -850,7 +853,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Thumb}">
-                    <Border CornerRadius="2" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1" />
+                    <Border CornerRadius="2" Background="{TemplateBinding Background}" BorderThickness="1" />
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
@@ -863,7 +866,7 @@
                 <RowDefinition Height="0.00001*" />
                 <RowDefinition MaxHeight="18" />
             </Grid.RowDefinitions>
-            <Border Grid.RowSpan="3" CornerRadius="2" Background="#404040" />
+            <Border Grid.RowSpan="3" CornerRadius="2" Background="{StaticResource BackgroundBrushUltraLight}" />
             <RepeatButton Grid.Row="0"
                       Style="{StaticResource ScrollBarLineButton}"
                       Height="18"
@@ -884,8 +887,8 @@
                             <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
                                 <LinearGradientBrush.GradientStops>
                                     <GradientStopCollection>
-                                        <GradientStop Color="{DynamicResource ControlLightColor}" Offset="0.0" />
-                                        <GradientStop Color="{DynamicResource ControlLightColor}" Offset="1.0" />
+                                        <GradientStop Color="{StaticResource BackgroundColorLighter}" Offset="0.0" />
+                                        <GradientStop Color="{StaticResource BackgroundColorLight}" Offset="1.0" />
                                     </GradientStopCollection>
                                 </LinearGradientBrush.GradientStops>
                             </LinearGradientBrush>
@@ -894,8 +897,8 @@
                             <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
                                 <LinearGradientBrush.GradientStops>
                                     <GradientStopCollection>
-                                        <GradientStop Color="{DynamicResource ControlLightColor}" Offset="0.0" />
-                                        <GradientStop Color="{DynamicResource ControlLightColor}" Offset="1.0" />
+                                        <GradientStop Color="{StaticResource BackgroundColorLight}" Offset="0.0" />
+                                        <GradientStop Color="{StaticResource BackgroundColorLighter}" Offset="1.0" />
                                     </GradientStopCollection>
                                 </LinearGradientBrush.GradientStops>
                             </LinearGradientBrush>
@@ -917,7 +920,7 @@
                 <ColumnDefinition Width="0.00001*" />
                 <ColumnDefinition MaxWidth="18" />
             </Grid.ColumnDefinitions>
-            <Border Grid.ColumnSpan="3" CornerRadius="2" Background="#404040" />
+            <Border Grid.ColumnSpan="3" CornerRadius="2" Background="{StaticResource BackgroundBrushUltraLight}" />
             <RepeatButton Grid.Column="0" Style="{StaticResource ScrollBarLineButton}" Width="18" Command="ScrollBar.LineLeftCommand" Content="M 4 0 L 4 8 L 0 4 Z" />
             <Track x:Name="PART_Track" Grid.Column="1" IsDirectionReversed="False">
                 <Track.DecreaseRepeatButton>
@@ -929,8 +932,8 @@
                             <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
                                 <LinearGradientBrush.GradientStops>
                                     <GradientStopCollection>
-                                        <GradientStop Color="{DynamicResource ControlLightColor}" Offset="0.0" />
-                                        <GradientStop Color="{DynamicResource ControlLightColor}" Offset="1.0" />
+                                        <GradientStop Color="{StaticResource BackgroundColorLighter}" Offset="0.0" />
+                                        <GradientStop Color="{StaticResource BackgroundColorLight}" Offset="1.0" />
                                     </GradientStopCollection>
                                 </LinearGradientBrush.GradientStops>
                             </LinearGradientBrush>
@@ -939,8 +942,8 @@
                             <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
                                 <LinearGradientBrush.GradientStops>
                                     <GradientStopCollection>
-                                        <GradientStop Color="{DynamicResource ControlLightColor}" Offset="0.0" />
-                                        <GradientStop Color="{DynamicResource ControlLightColor}" Offset="1.0" />
+                                        <GradientStop Color="{StaticResource BackgroundColorLight}" Offset="0.0" />
+                                        <GradientStop Color="{StaticResource BackgroundColorLighter}" Offset="1.0" />
                                     </GradientStopCollection>
                                 </LinearGradientBrush.GradientStops>
                             </LinearGradientBrush>
@@ -1254,8 +1257,13 @@
         <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto" />
         <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto" />
         <Setter Property="ScrollViewer.CanContentScroll" Value="true" />
-        <Setter Property="Background" Value="{DynamicResource BackgroundBrushLight}"/>
-        <Setter Property="Foreground" Value="{DynamicResource TextBrush}"/>
+        
+        <Setter Property="Foreground" Value="{DynamicResource BackgroundBrush}"/>
+        <Setter Property="Background" Value="{DynamicResource TextBrush}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource BackgroundBrushLight}"/>
+        <Setter Property="Selector.Background" Value="{DynamicResource BackgroundBrush}"/>
+        <Setter Property="Selector.Foreground" Value="{DynamicResource TextBrush}"/>
+       
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ComboBox}">
