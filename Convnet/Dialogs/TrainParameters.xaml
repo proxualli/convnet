@@ -59,7 +59,7 @@
         <TextBlock Foreground="{StaticResource TextBrush}" Grid.Column="1" Grid.Row="15" Height="Auto" HorizontalAlignment="Stretch" Margin="2" Name="textBlockagDropOut" Text="Dropout:" VerticalAlignment="Center" Width="Auto" FontSize="14"/>
 
         <TextBlock Foreground="{StaticResource TextBrush}" Grid.Column="4" Grid.Row="0" Height="Auto" HorizontalAlignment="Stretch" Margin="2" Name="textBlockResolution" Text="Resolution:" VerticalAlignment="Center" Width="Auto" FontSize="14" />
-        <TextBlock Foreground="{StaticResource TextBrush}" Grid.Column="4" Grid.Row="1" Height="Auto" HorizontalAlignment="Stretch" Margin="2" Name="textBlockResolutionStrategy" Text="Resolution Strategy:" VerticalAlignment="Center" Width="Auto" FontSize="14" />
+        <TextBlock Foreground="{StaticResource TextBrush}" Grid.Column="4" Grid.Row="1" Height="Auto" HorizontalAlignment="Stretch" Margin="2" Name="textBlockStrategy" Text="Strategy:" VerticalAlignment="Center" Width="Auto" FontSize="14" />
         <TextBlock Foreground="{StaticResource TextBrush}" Grid.Column="4" Grid.Row="2" Height="Auto" HorizontalAlignment="Stretch" Margin="0" Name="textBlockHorizontalFlip" Text="Horizontal Flip:" VerticalAlignment="Center" Width="Auto" FontSize="14"/>
         <TextBlock Foreground="{StaticResource TextBrush}" Grid.Column="4" Grid.Row="3" Height="Auto" HorizontalAlignment="Stretch" Margin="0" Name="textBlockVerticalFlip" Text="Vertical Flip:" VerticalAlignment="Center" Width="Auto" FontSize="14"/>
         <TextBlock Foreground="{StaticResource TextBrush}" Grid.Column="4" Grid.Row="4" Height="Auto" HorizontalAlignment="Stretch" Margin="2" Name="textBlockColorCast" Text="Color Cast:" VerticalAlignment="Center" Width="Auto" FontSize="14"/>
