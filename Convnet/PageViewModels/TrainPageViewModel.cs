@@ -1540,8 +1540,8 @@ namespace Convnet.PageViewModels
             {
                 if (Settings.Default.TrainingRates == null)
                     Settings.Default.TrainingRates = new ObservableCollection<DNNTrainingRate> { TrainRate };
-                else                
-                    TrainRates = Settings.Default.TrainingRates;
+                      
+                TrainRates = Settings.Default.TrainingRates;
                 
                 TrainingSchemeEditor dialog = new TrainingSchemeEditor { Path = StorageDirectory };
                 
@@ -1630,8 +1630,8 @@ namespace Convnet.PageViewModels
             {
                 if (Settings.Default.TrainingRates == null)
                     Settings.Default.TrainingRates = new ObservableCollection<DNNTrainingRate> { TrainRate };
-                else
-                    TrainRates = Settings.Default.TrainingRates;
+                
+                TrainRates = Settings.Default.TrainingRates;
 
                 TrainingSchemeEditor dialog = new TrainingSchemeEditor { Path = StorageDirectory };
                 dialog.tpvm = this;
@@ -1652,6 +1652,7 @@ namespace Convnet.PageViewModels
                 Settings.Default.TrainingStrategies = new ObservableCollection<DNNTrainingStrategy> { new DNNTrainingStrategy() };
 
             TrainingStrategies = Settings.Default.TrainingStrategies;
+
             TrainingStrategiesEditor dialog = new TrainingStrategiesEditor { Path = StorageDirectory };
             dialog.tpvm = this;
             dialog.DataContext = this;
