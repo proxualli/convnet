@@ -471,7 +471,7 @@ namespace ScriptsDialog
                     {
                         var channels = DIV8(p.GrowthRate);
 
-                        net += Convolution(1, "Input", channels, 3, 3, 1, 1, 1, 1);
+                        net += Convolution(1, "Input", channels, 3, 3, 2, 2, 1, 1);
 
                         if (p.Bottleneck)
                         {
@@ -625,7 +625,7 @@ namespace ScriptsDialog
                         var W = p.Width * 16;
 
                         net +=
-                            Convolution(1, "Input", DIV8(W), 3, 3, 1, 1, 1, 1) +
+                            Convolution(1, "Input", DIV8(W), 3, 3, 2, 2, 1, 1) +
                             BatchNormActivation(1, "C1", p.Activation);
 
                         blocks.Add(
@@ -719,7 +719,8 @@ namespace ScriptsDialog
                         var A = 1ul;
                         var C = 5ul;
 
-                        net += Convolution(1, "Input", DIV8(W), 3, 3, 1, 1, 1, 1);
+                        net +=
+                            Convolution(1, "Input", DIV8(W), 3, 3, 2, 2, 1, 1);
 
                         if (p.Bottleneck)
                         {
