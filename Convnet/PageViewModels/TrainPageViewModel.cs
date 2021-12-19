@@ -1582,9 +1582,9 @@ namespace Convnet.PageViewModels
                     CommandToolBar[1].Visibility = Visibility.Visible;
                     CommandToolBar[2].Visibility = Visibility.Visible;
 
-                    CommandToolBar[5].Visibility = Visibility.Collapsed;
-                    CommandToolBar[6].Visibility = Visibility.Visible;
-                    CommandToolBar[7].Visibility = Visibility.Collapsed;
+                    CommandToolBar[6].Visibility = Visibility.Collapsed;
+                    CommandToolBar[7].Visibility = Visibility.Visible;
+                    CommandToolBar[8].Visibility = Visibility.Collapsed;
                   
                     if (layersComboBox.SelectedIndex >= 0 && Model.Layers[layersComboBox.SelectedIndex].HasWeights)
                     {
@@ -1593,37 +1593,37 @@ namespace Convnet.PageViewModels
                         {
                             if (info.Scaling)
                             {
-                                CommandToolBar[16].Visibility = !Settings.Default.DisableLocking ? Visibility.Visible : Visibility.Collapsed;
                                 CommandToolBar[17].Visibility = !Settings.Default.DisableLocking ? Visibility.Visible : Visibility.Collapsed;
-                                CommandToolBar[18].Visibility = Visibility.Collapsed;
-                                CommandToolBar[19].Visibility = Visibility.Visible;
+                                CommandToolBar[18].Visibility = !Settings.Default.DisableLocking ? Visibility.Visible : Visibility.Collapsed;
+                                CommandToolBar[19].Visibility = Visibility.Collapsed;
                                 CommandToolBar[20].Visibility = Visibility.Visible;
+                                CommandToolBar[21].Visibility = Visibility.Visible;
                             }
                             else
                             {
-                                CommandToolBar[16].Visibility = Visibility.Collapsed;
                                 CommandToolBar[17].Visibility = Visibility.Collapsed;
                                 CommandToolBar[18].Visibility = Visibility.Collapsed;
                                 CommandToolBar[19].Visibility = Visibility.Collapsed;
-                                CommandToolBar[20].Visibility = Visibility.Visible;
+                                CommandToolBar[20].Visibility = Visibility.Collapsed;
+                                CommandToolBar[21].Visibility = Visibility.Visible;
                             }
                         }
                         else
                         {
-                            CommandToolBar[16].Visibility = !Settings.Default.DisableLocking ? Visibility.Visible : Visibility.Collapsed;
                             CommandToolBar[17].Visibility = !Settings.Default.DisableLocking ? Visibility.Visible : Visibility.Collapsed;
-                            CommandToolBar[18].Visibility = Visibility.Collapsed;
-                            CommandToolBar[19].Visibility = Visibility.Visible;
-                            CommandToolBar[20].Visibility = Visibility.Collapsed;
+                            CommandToolBar[18].Visibility = !Settings.Default.DisableLocking ? Visibility.Visible : Visibility.Collapsed;
+                            CommandToolBar[19].Visibility = Visibility.Collapsed;
+                            CommandToolBar[20].Visibility = Visibility.Visible;
+                            CommandToolBar[21].Visibility = Visibility.Collapsed;
                         }
                     }
                     else
                     {
-                        CommandToolBar[16].Visibility = Visibility.Collapsed;
                         CommandToolBar[17].Visibility = Visibility.Collapsed;
                         CommandToolBar[18].Visibility = Visibility.Collapsed;
                         CommandToolBar[19].Visibility = Visibility.Collapsed;
                         CommandToolBar[20].Visibility = Visibility.Collapsed;
+                        CommandToolBar[21].Visibility = Visibility.Collapsed;
                     }
 
                     ShowProgress = true;
@@ -1683,8 +1683,6 @@ namespace Convnet.PageViewModels
                         first = false;
                     }
                     */
-
-                    EpochDuration = TimeSpan.Zero;
 
                     CommandToolBar[0].Visibility = Visibility.Collapsed;
                     CommandToolBar[1].Visibility = Visibility.Visible;
