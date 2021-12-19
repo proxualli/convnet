@@ -1,10 +1,12 @@
 ﻿<?xml version="1.0"?>
 <SyntaxDefinition name="Definition" xmlns="http://icsharpcode.net/sharpdevelop/syntaxdefinition/2008">
+  
   <Color name="Purple" foreground="#FFd8a0df"/>
   <Color name="Brown" foreground="#FFD69d85"/>
   <Color name="Blue" foreground ="#FF559cd6"/>
   <Color name="Green" foreground ="#FF57a64a"/>
   <Color name="Yellow" foreground="#FFdcdcaa"/>
+  
   <!-- This is the main ruleset. -->
 	<RuleSet>
 		<Span color="Purple">
@@ -16,7 +18,7 @@
 		</Span>
 
     <Keywords color="Green">
-      <Word>Dataset=</Word>
+      <Word>Dataset</Word>
     </Keywords>
     <Keywords color="Green">
       <Word>Type=</Word>
@@ -28,16 +30,16 @@
       <Word>Inputs=</Word>
     </Keywords>
     <Keywords color="Yellow">
-      <Word>No</Word>
+      <Word>=No</Word>
     </Keywords>
     <Keywords color="Yellow">
-      <Word>Yes</Word>
+      <Word>=Yes</Word>
     </Keywords>
     <Keywords color="Yellow">
-      <Word>False</Word>
+      <Word>=False</Word>
     </Keywords>
     <Keywords color="Yellow">
-      <Word>True</Word>
+      <Word>=True</Word>
     </Keywords>
       
    	<!-- Digits -->
