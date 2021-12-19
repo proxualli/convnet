@@ -679,6 +679,7 @@ namespace dnn
 			auto maxRate = rate.MaximumRate;
 			auto minRate = rate.MinimumRate;
 			auto epoch = 0ull;
+
 			for (auto c = 0ull; c < TotalCycles; c++)
 			{
 				const auto totalEpochs = rate.Epochs * (c > 0 ? (rate.EpochMultiplier != 1 ? c * rate.EpochMultiplier : 1) : 1);
@@ -708,6 +709,7 @@ namespace dnn
 									else
 										break;
 								}
+
 								TrainingRates.push_back(tmpRate);
 							}
 							else
@@ -731,6 +733,7 @@ namespace dnn
 									else
 										break;
 								}
+
 								TrainingRates.push_back(tmpRate);
 							}
 							else
