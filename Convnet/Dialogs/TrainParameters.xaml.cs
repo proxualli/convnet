@@ -104,9 +104,9 @@ namespace Convnet.Dialogs
                 }
                 tpvm.GotoEpoch = gotoEpoch;
 
-                Properties.Settings.Default.TraininingRate = Rate;
-                Properties.Settings.Default.Optimizer = Rate.Optimizer;
-                Properties.Settings.Default.Save();
+                Settings.Default.TraininingRate = Rate;
+                Settings.Default.Optimizer = Rate.Optimizer;
+                Settings.Default.Save();
                
                 DialogResult = true;
                 Close();
