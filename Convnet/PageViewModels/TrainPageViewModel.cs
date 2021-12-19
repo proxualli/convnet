@@ -1762,16 +1762,11 @@ namespace Convnet.PageViewModels
                     ShowWeights = Model.Layers[index].HasWeights || Settings.Default.Timings;
                     ShowWeightsSnapshot = (Model.Layers[index].IsNormalizationLayer && Model.Layers[index].Scaling) || Model.Layers[index].LayerType == DNNLayerTypes.PartialDepthwiseConvolution || Model.Layers[index].LayerType == DNNLayerTypes.DepthwiseConvolution || Model.Layers[index].LayerType == DNNLayerTypes.ConvolutionTranspose || Model.Layers[index].LayerType == DNNLayerTypes.Convolution || Model.Layers[index].LayerType == DNNLayerTypes.Dense || (Model.Layers[index].LayerType == DNNLayerTypes.Activation && Model.Layers[index].HasWeights);
 
-                    if (ShowSample)
-                    {
-                        Model.UpdateLayerInfo(0ul, true);
-                        InputSnapshot = Model.InputSnapshot;
-                        Label = Model.Label;
-                    }
-
-                    if (ShowWeightsSnapshot)
-                        Model.UpdateLayerInfo((ulong)index, ShowWeightsSnapshot);
-
+                    Model.UpdateLayerInfo((ulong)index, ShowWeightsSnapshot);
+                    Model.UpdateLayerInfo(0ul, true);
+                    InputSnapshot = Model.InputSnapshot;
+                    Label = Model.Label;
+                   
                     CommandToolBar[16].Visibility = !Settings.Default.DisableLocking ? Visibility.Visible : Visibility.Collapsed;
                     CommandToolBar[17].Visibility = !Settings.Default.DisableLocking ? Visibility.Visible : Visibility.Collapsed;
                     CommandToolBar[18].Visibility = Model.Layers[index].Lockable && Model.TaskState == DNNTaskStates.Stopped ? Visibility.Visible : Visibility.Collapsed;
