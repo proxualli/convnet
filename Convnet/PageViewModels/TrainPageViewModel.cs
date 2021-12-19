@@ -1747,11 +1747,11 @@ namespace Convnet.PageViewModels
                 TrainingStrategiesEditor dialog = new TrainingStrategiesEditor { Path = StorageDirectory };
                 dialog.tpvm = this;
                 dialog.DataContext = this;
-                dialog.buttonOk.IsEnabled = false;
+                dialog.buttonOk.IsEnabled = true;
                 dialog.Owner = Application.Current.MainWindow;
                 dialog.WindowStartupLocation = WindowStartupLocation.CenterOwner;
                 if (dialog.ShowDialog() ?? false)
-                    Settings.Default.TrainingRates = TrainRates;
+                    Settings.Default.TrainingStrategies = TrainingStrategies;
             }
 
             Settings.Default.Save();
