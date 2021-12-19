@@ -1276,11 +1276,8 @@ namespace dnncore
 
 	void Model::SetUseTrainingStrategy(bool enable)
 	{
-		if (enable != UseTrainingStrategy)
-		{
-			DNNSetUseTrainingStrategy(enable);
-			UseTrainingStrategy = enable;
-		}
+		DNNSetUseTrainingStrategy(enable);
+		UseTrainingStrategy = enable;
 	}
 
 	void Model::ResetOptimizer()
