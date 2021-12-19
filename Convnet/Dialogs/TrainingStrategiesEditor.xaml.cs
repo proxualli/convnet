@@ -95,9 +95,12 @@ namespace Convnet.Dialogs
 
                 if (totalEpochs != 1)
                 {
-                    Xceed.Wpf.Toolkit.MessageBox.Show("Total sum of Epochs must be one.", "Warning", MessageBoxButton.OK);
+                    Xceed.Wpf.Toolkit.MessageBox.Show("Sum of Epochs must be exactly 1.", "Warning", MessageBoxButton.OK);
                     return;
                 }
+
+                Settings.Default.TrainingStrategies = tpvm.TrainingStrategies;
+                Settings.Default.Save();
 
                 DialogResult = true;
                 Close();

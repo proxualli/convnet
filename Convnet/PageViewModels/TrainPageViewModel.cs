@@ -1543,10 +1543,7 @@ namespace Convnet.PageViewModels
                 else                
                     TrainRates = Settings.Default.TrainingRates;
                 
-                TrainingSchemeEditor dialog = new TrainingSchemeEditor
-                {
-                    Path = StorageDirectory
-                };
+                TrainingSchemeEditor dialog = new TrainingSchemeEditor { Path = StorageDirectory };
                 
                 dialog.tpvm = this;
                 dialog.DataContext = this;
@@ -1651,108 +1648,26 @@ namespace Convnet.PageViewModels
 
         private void StrategyButtonClick(object sender, RoutedEventArgs e)
         {
-            if (Model.TaskState == DNNTaskStates.Stopped)
+            if (Settings.Default.TrainingStrategies == null)
+                Settings.Default.TrainingStrategies = new ObservableCollection<DNNTrainingStrategy> { new DNNTrainingStrategy() };
+
+            TrainingStrategies = Settings.Default.TrainingStrategies;
+            TrainingStrategiesEditor dialog = new TrainingStrategiesEditor { Path = StorageDirectory };
+            dialog.tpvm = this;
+            dialog.DataContext = this;
+            dialog.buttonOk.IsEnabled = true;
+            dialog.Owner = Application.Current.MainWindow;
+            dialog.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+
+            if (dialog.ShowDialog() ?? false)
             {
-                if (Settings.Default.TrainingStrategies == null)
-                    Settings.Default.TrainingStrategies = new ObservableCollection<DNNTrainingStrategy> { new DNNTrainingStrategy() };
-                else
-                    TrainingStrategies = Settings.Default.TrainingStrategies;
+                Settings.Default.TrainingStrategies = TrainingStrategies;
+                Settings.Default.Save();
 
-                TrainingStrategiesEditor dialog = new TrainingStrategiesEditor
-                {
-                    Path = StorageDirectory
-                };
-
-                dialog.tpvm = this;
-                dialog.DataContext = this;
-                dialog.buttonOk.IsEnabled = true;
-                dialog.Owner = Application.Current.MainWindow;
-                dialog.WindowStartupLocation = WindowStartupLocation.CenterOwner;
-
-                if (dialog.ShowDialog() ?? false)
-                {
-                    /*
-                    var first = true;
-                    foreach (DNNTrainingStrategy rate in TrainingStrategies)
-                    {
-                        //if (SGDR)
-                        //    Model.AddTrainingRateSGDR(rate, first, GotoEpoch, Model.TrainingSamples);
-                        //else
-                        //    Model.AddTrainingRate(rate, first, GotoEpoch, Model.TrainingSamples);
-
-                        first = false;
-                    }
-                    */
-
-                    CommandToolBar[0].Visibility = Visibility.Collapsed;
-                    CommandToolBar[1].Visibility = Visibility.Visible;
-                    CommandToolBar[2].Visibility = Visibility.Visible;
-
-                    CommandToolBar[6].Visibility = Visibility.Collapsed;
-                    CommandToolBar[7].Visibility = Visibility.Visible;
-                    CommandToolBar[8].Visibility = Visibility.Collapsed;
-
-                    if (layersComboBox.SelectedIndex >= 0 && Model.Layers[layersComboBox.SelectedIndex].HasWeights)
-                    {
-                        LayerInformation info = Model.Layers[layersComboBox.SelectedIndex];
-                        if (info.IsNormalizationLayer)
-                        {
-                            if (info.Scaling)
-                            {
-                                CommandToolBar[17].Visibility = !Settings.Default.DisableLocking ? Visibility.Visible : Visibility.Collapsed;
-                                CommandToolBar[18].Visibility = !Settings.Default.DisableLocking ? Visibility.Visible : Visibility.Collapsed;
-                                CommandToolBar[19].Visibility = Visibility.Collapsed;
-                                CommandToolBar[20].Visibility = Visibility.Visible;
-                                CommandToolBar[21].Visibility = Visibility.Visible;
-                            }
-                            else
-                            {
-                                CommandToolBar[17].Visibility = Visibility.Collapsed;
-                                CommandToolBar[18].Visibility = Visibility.Collapsed;
-                                CommandToolBar[19].Visibility = Visibility.Collapsed;
-                                CommandToolBar[20].Visibility = Visibility.Collapsed;
-                                CommandToolBar[21].Visibility = Visibility.Visible;
-                            }
-                        }
-                        else
-                        {
-                            CommandToolBar[17].Visibility = !Settings.Default.DisableLocking ? Visibility.Visible : Visibility.Collapsed;
-                            CommandToolBar[18].Visibility = !Settings.Default.DisableLocking ? Visibility.Visible : Visibility.Collapsed;
-                            CommandToolBar[19].Visibility = Visibility.Collapsed;
-                            CommandToolBar[20].Visibility = Visibility.Visible;
-                            CommandToolBar[21].Visibility = Visibility.Collapsed;
-                        }
-                    }
-                    else
-                    {
-                        CommandToolBar[17].Visibility = Visibility.Collapsed;
-                        CommandToolBar[18].Visibility = Visibility.Collapsed;
-                        CommandToolBar[19].Visibility = Visibility.Collapsed;
-                        CommandToolBar[20].Visibility = Visibility.Collapsed;
-                        CommandToolBar[21].Visibility = Visibility.Collapsed;
-                    }
-
-                    ShowProgress = true;
-                }
+                Model.ClearTrainingStrategies();
+                foreach (DNNTrainingStrategy strategy in TrainingStrategies)
+                    Model.AddTrainingStrategy(strategy);
             }
-            else
-            {
-                if (Settings.Default.TrainingStrategies == null)
-                    Settings.Default.TrainingStrategies = new ObservableCollection<DNNTrainingStrategy>();
-                else
-                    TrainingStrategies = Settings.Default.TrainingStrategies;
-
-                TrainingStrategiesEditor dialog = new TrainingStrategiesEditor { Path = StorageDirectory };
-                dialog.tpvm = this;
-                dialog.DataContext = this;
-                dialog.buttonOk.IsEnabled = true;
-                dialog.Owner = Application.Current.MainWindow;
-                dialog.WindowStartupLocation = WindowStartupLocation.CenterOwner;
-                if (dialog.ShowDialog() ?? false)
-                    Settings.Default.TrainingStrategies = TrainingStrategies;
-            }
-
-            Settings.Default.Save();
         }
 
         private void ForgetButtonClick(object sender, RoutedEventArgs e)
