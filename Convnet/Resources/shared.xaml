@@ -1357,7 +1357,7 @@
     </Style>
 
     <!--Styles for controls in a toolbar.-->
-    <Style x:Key="{x:Static ToolBar.SeparatorStyleKey}" TargetType="Separator">
+    <!--<Style x:Key="{x:Static ToolBar.SeparatorStyleKey}" TargetType="Separator">
         <Setter Property="Foreground" Value="{DynamicResource BackgroundBrushLight}"/>
         <Setter Property="Background" Value="{DynamicResource BackgroundBrush}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource TextBrush}"/>
@@ -1391,7 +1391,7 @@
         <Setter Property="Foreground" Value="{DynamicResource BackgroundBrushLight}"/>
         <Setter Property="Background" Value="{DynamicResource BackgroundBrushLight}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource BackgroundBrush}"/>
-    </Style>
+    </Style>-->
 
     <Style x:Key="{x:Static ToolBar.ComboBoxStyleKey}" TargetType="ComboBox">
         <Setter Property="Foreground" Value="{DynamicResource BackgroundBrushLight}"/>

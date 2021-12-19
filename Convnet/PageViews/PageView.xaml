@@ -34,11 +34,11 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <ToolBarTray Grid.Row="0" Height="Auto" HorizontalAlignment="Stretch" Name="toolBarTray" VerticalAlignment="Top" Width="Auto" Background="{StaticResource BackgroundBrush}" ToolBarTray.IsLocked="False">
-            <ToolBar Background="{StaticResource BackgroundBrush}" Foreground="{StaticResource BackgroundBrush}" BorderBrush="{StaticResource BackgroundBrush}">
+        <ToolBarTray Grid.Row="0" Height="Auto" HorizontalAlignment="Stretch" Name="toolBarTray" VerticalAlignment="Top" Width="Auto" ToolBarTray.IsLocked="False">
+            <ToolBar>
                 <ComboBox Name="PageViews" Margin="2" MinWidth="50"  ItemsSource="{Binding Path=Pages}" SelectedItem="{Binding Path=CurrentPage}" IsEnabled="{Binding Path=CurrentPage.IsValid, Mode=TwoWay}" UseLayoutRounding="True" SnapsToDevicePixels="True" IsReadOnly="True" IsTextSearchEnabled="False" IsSynchronizedWithCurrentItem="True" DisplayMemberPath="DisplayName"/>
             </ToolBar>
-            <ToolBar Name="CmdToolBar" ItemsSource="{Binding Path=CommandToolBar, Mode=TwoWay, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged}" Visibility="{Binding Path=CommandToolBarVisibility}" Background="{StaticResource BackgroundBrush}" Foreground="{StaticResource BackgroundBrush}" BorderBrush="{StaticResource BackgroundBrush}"/>
+            <ToolBar Name="CmdToolBar" ItemsSource="{Binding Path=CommandToolBar, Mode=TwoWay, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged}" Visibility="{Binding Path=CommandToolBarVisibility}"/>
         </ToolBarTray>
 
         <Border Grid.Row="1">
