@@ -1657,7 +1657,7 @@ namespace Convnet.PageViewModels
             }
 
             TrainingStrategies = Settings.Default.TrainingStrategies;
-
+            
             TrainingStrategiesEditor dialog = new TrainingStrategiesEditor { Path = StorageDirectory };
             dialog.tpvm = this;
             dialog.DataContext = this;
