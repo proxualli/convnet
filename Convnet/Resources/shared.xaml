@@ -1394,10 +1394,10 @@
     </Style>-->
 
     <Style x:Key="{x:Static ToolBar.ComboBoxStyleKey}" TargetType="ComboBox">
-        <Setter Property="Foreground" Value="{DynamicResource BackgroundBrushLight}"/>
+        <Setter Property="Foreground" Value="{DynamicResource BackgroundBrush}"/>
         <Setter Property="Background" Value="{DynamicResource TextBrush}"/>
-        <Setter Property="BorderBrush" Value="{DynamicResource BackgroundBrush}"/>
-        <Setter Property="Selector.Background" Value="{DynamicResource BackgroundBrushLight}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource BackgroundBrushLight}"/>
+        <Setter Property="Selector.Background" Value="{DynamicResource BackgroundBrush}"/>
         <Setter Property="Selector.Foreground" Value="{DynamicResource TextBrush}"/>
     </Style>
 
