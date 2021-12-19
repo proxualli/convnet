@@ -1974,7 +1974,7 @@ namespace Convnet.PageViewModels
                             sb.AppendFormat(" Min:     {0:N8}", Model.Layers[index].WeightsMin);
                         else
                             sb.AppendFormat(" Min:    {0:N8}", Model.Layers[index].WeightsMin);
-                        weightsMinMax += "<Span Foreground=\"White\">" + sb.ToString() + "</Span><LineBreak/>";
+                        weightsMinMax += "<Span>" + sb.ToString() + "</Span><LineBreak/>";
 
                         sb.Length = 0;
                         if (Model.Layers[index].WeightsMax >= 0.0f)
@@ -1982,9 +1982,9 @@ namespace Convnet.PageViewModels
                         else
                             sb.AppendFormat(" Max:    {0:N8}", Model.Layers[index].WeightsMax);
                         if (ShowWeightsSnapshot)
-                            weightsMinMax += "<Span Foreground=\"Black\">" + sb.ToString() + "</Span><LineBreak/>";
+                            weightsMinMax += "<Span>" + sb.ToString() + "</Span><LineBreak/>";
                         else
-                            weightsMinMax += "<Span Foreground=\"White\">" + sb.ToString() + "</Span><LineBreak/>";
+                            weightsMinMax += "<Span>" + sb.ToString() + "</Span><LineBreak/>";
 
                         if (Model.Layers[index].HasBias)
                         {
@@ -2009,7 +2009,7 @@ namespace Convnet.PageViewModels
                                 sb.AppendFormat(" Min:     {0:N8}", Model.Layers[index].BiasesMin);
                             else
                                 sb.AppendFormat(" Min:    {0:N8}", Model.Layers[index].BiasesMin);
-                            weightsMinMax += "<Span Foreground=\"White\">" + sb.ToString() + "</Span><LineBreak/>";
+                            weightsMinMax += "<Span>" + sb.ToString() + "</Span><LineBreak/>";
 
                             sb.Length = 0;
                             if (Model.Layers[index].BiasesMax >= 0.0f)
@@ -2017,9 +2017,9 @@ namespace Convnet.PageViewModels
                             else
                                 sb.AppendFormat(" Max:    {0:N8}", Model.Layers[index].BiasesMax);
                             if (ShowWeightsSnapshot)
-                                weightsMinMax += "<Span Foreground=\"Black\">" + sb.ToString() + "</Span>";
+                                weightsMinMax += "<Span>" + sb.ToString() + "</Span>";
                             else
-                                weightsMinMax += "<Span Foreground=\"White\">" + sb.ToString() + "</Span>";
+                                weightsMinMax += "<Span>" + sb.ToString() + "</Span>";
                         }
                     }
                     OnPropertyChanged(nameof(WeightsMinMax));
