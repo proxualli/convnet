@@ -149,12 +149,12 @@ namespace Convnet.Dialogs
 
         private void CheckBoxStrategy_Checked(object sender, RoutedEventArgs e)
         {
-            tpvm.Model.UseTrainingStrategy = CheckBoxStrategy.IsChecked.HasValue && CheckBoxStrategy.IsChecked.Value;
+            tpvm.Model.SetUseTrainingStrategy(CheckBoxStrategy.IsChecked.HasValue && CheckBoxStrategy.IsChecked.Value);
         }
 
         private void CheckBoxStrategy_Unchecked(object sender, RoutedEventArgs e)
         {
-           // ChangeSGDR();
+            tpvm.Model.SetUseTrainingStrategy(CheckBoxStrategy.IsChecked.HasValue && CheckBoxStrategy.IsChecked.Value);
         }
 
         private void ChangeSGDR()
