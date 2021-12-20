@@ -171,6 +171,7 @@ namespace Convnet
                 }
                 else
                 {
+                    // try backup model
                     File.Copy(ApplicationPath + @"Resources\state\" + backupModelName, StateDirectory + backupModelName, true);
                     fileName = Path.Combine(StateDirectory, backupModelName + ".txt");
                     Settings.Default.ModelNameActive = backupModelName;
