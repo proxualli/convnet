@@ -52,6 +52,8 @@ namespace Convnet.Dialogs
             
             textBoxCycles.Focus();
             textBoxCycles.Select(0, textBoxCycles.GetLineLength(0));
+
+            CheckBoxStrategy.IsChecked = Settings.Default.UseTrainingStrategy;
         }
 
         private bool IsValid(DependencyObject node)
@@ -107,7 +109,11 @@ namespace Convnet.Dialogs
                 Settings.Default.TraininingRate = Rate;
                 Settings.Default.Optimizer = Rate.Optimizer;
                 Settings.Default.Save();
-               
+
+                Model.ClearTrainingStrategies();
+                foreach (DNNTrainingStrategy strategy in Settings.Default.TrainingStrategies)
+                    Model.AddTrainingStrategy(strategy);
+
                 DialogResult = true;
                 Close();
             }
@@ -300,7 +306,7 @@ namespace Convnet.Dialogs
             if (Settings.Default.TrainingStrategies == null)
             {
                 var rate = Rate;
-                var strategy = new DNNTrainingStrategy(1, rate.BatchSize, rate.Height, rate.Width, rate.Momentum, rate.Beta2, rate.Gamma, rate.L2Penalty, rate.Dropout, rate.HorizontalFlip, rate.VerticalFlip, rate.InputDropout, rate.Cutout, rate.CutMix, rate.AutoAugment, rate.ColorCast, rate.ColorAngle, rate.Distortion, rate.Interpolation, rate.Scaling, rate.Rotation);
+                var strategy = new DNNTrainingStrategy(1.0f, rate.BatchSize, rate.Height, rate.Width, rate.Momentum, rate.Beta2, rate.Gamma, rate.L2Penalty, rate.Dropout, rate.HorizontalFlip, rate.VerticalFlip, rate.InputDropout, rate.Cutout, rate.CutMix, rate.AutoAugment, rate.ColorCast, rate.ColorAngle, rate.Distortion, rate.Interpolation, rate.Scaling, rate.Rotation);
                 Settings.Default.TrainingStrategies = new ObservableCollection<DNNTrainingStrategy> { strategy };
                 Settings.Default.Save();
             }

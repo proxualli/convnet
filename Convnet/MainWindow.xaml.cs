@@ -116,7 +116,9 @@ namespace Convnet
                         model.SetPersistOptimizer(Settings.Default.PersistOptimizer);
                         model.SetUseTrainingStrategy(Settings.Default.UseTrainingStrategy);
                         model.SetDisableLocking(Settings.Default.DisableLocking);
-                        
+                        model.ClearTrainingStrategies();
+                        foreach (DNNTrainingStrategy strategy in Settings.Default.TrainingStrategies)
+                            model.AddTrainingStrategy(strategy);
 
                         var dataset = PageVM.Model.Dataset.ToString().ToLower();
                         var optimizer = PageVM.Model.Optimizer.ToString().ToLower();
