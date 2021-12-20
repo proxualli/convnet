@@ -868,7 +868,7 @@ namespace scripts
                 }
 
                 net +=
-                    BatchNormActivation(C, In("A", C - 1), p.Activation) +
+                    BatchNormActivation(C, In("A", A - 1), p.Activation) +
                     Convolution(C, In("B", C), p.Classes(), 1, 1, 1, 1, 0, 0) +
                     BatchNorm(C + 1, In("C", C)) +
                     GlobalAvgPooling(In("B", C + 1)) +
