@@ -462,7 +462,7 @@ DNN_API dnn::Optimizers GetOptimizer();
 
 namespace dnncore
 {
-	Model::Model(String^ name, String^ fileName)
+	Model::Model(String^ name, String^ definition)
 	{
 		Name = name;
 
@@ -486,14 +486,10 @@ namespace dnncore
 		DNNDataprovider(ToUnmanagedString(StorageDirectory));
 
 		dnn::CheckMsg checkMsg;
-		if (DNNLoadDefinition(ToUnmanagedString(fileName), checkMsg))
+		if (DNNReadDefinition(ToUnmanagedString(definition), checkMsg))
 		{
 			DNNLoadDataset();
-
-			System::IO::StreamReader^ reader = gcnew System::IO::StreamReader(fileName, true);
-			Definition = reader->ReadToEnd();
-			reader->Close();
-
+			Definition = definition;
 			ApplyParameters();
 
 			WorkerTimer = gcnew System::Timers::Timer(1000.0);
@@ -1500,7 +1496,7 @@ namespace dnncore
 		UInt costLayersCounter = 0;
 				
 		Layers = gcnew System::Collections::ObjectModel::ObservableCollection<LayerInformation^>();
-
+		
 		for (UInt layer = 0; layer < LayerCount; layer++)
 		{
 			Layers->Add(GetLayerInfo(layer));

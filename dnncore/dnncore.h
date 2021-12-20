@@ -1386,7 +1386,7 @@ namespace dnncore
 		property bool DisableLocking;
 		property bool PlainFormat;
 
-		Model(String^ name, String^ fileName);
+		Model(String^ name, String^ definition);
 		virtual ~Model();
 			
 		bool LoadDataset();

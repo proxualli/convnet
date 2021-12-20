@@ -371,8 +371,7 @@ namespace Convnet.PageViewModels
                         try
                         {
                             Model.Dispose();
-
-                            Model = new Model(modelname, pathDefinition);
+                            Model = new Model(modelname, Definition);
 
                             Model.BackgroundColor = Settings.Default.BackgroundColor;
                             Model.BlockSize = (UInt64)Settings.Default.PixelSize;
@@ -386,7 +385,6 @@ namespace Convnet.PageViewModels
                             Model.SetUseTrainingStrategy(Settings.Default.UseTrainingStrategy);
                             Model.SetDisableLocking(Settings.Default.DisableLocking);
                             
-
                             if (keepWeights == MessageBoxResult.Yes)
                                 Model.LoadWeights(pathWeights, Settings.Default.PersistOptimizer);
 

@@ -85,22 +85,22 @@ namespace Convnet
             }
 
             var fileName = Path.Combine(StateDirectory, Settings.Default.ModelNameActive + ".txt");
-
-            if (!File.Exists(fileName))
+            var backupModelName = "resnet-32-3-2-6-channelzeropad-relu";
+            if (!File.Exists(fileName) || File.GetCreationTime(Path.Combine(StateDirectory, backupModelName + ".txt")) != File.GetCreationTime(ApplicationPath + @"Resources\state\" + backupModelName))
             {
-                var backupModelName = "resnet-32-3-2-6-channelzeropad-relu";
                 Directory.CreateDirectory(DefinitionsDirectory + backupModelName + @"\");
                 File.Copy(ApplicationPath + @"Resources\state\" + backupModelName, StateDirectory + backupModelName, true);
                 File.Copy(ApplicationPath + @"Resources\state\" + backupModelName, DefinitionsDirectory + backupModelName, true);
                 fileName = Path.Combine(StateDirectory, backupModelName + ".txt");
                 Settings.Default.ModelNameActive = backupModelName;
+                Settings.Default.DefinitionActive = File.ReadAllText(fileName);
                 Settings.Default.Optimizer = DNNOptimizers.NAG;
                 Settings.Default.Save();
             }
 
             try
             {
-                Model model = new Model(Settings.Default.ModelNameActive, fileName);
+                Model model = new Model(Settings.Default.ModelNameActive, Settings.Default.DefinitionActive);
                
                 if (model != null)
                 {
@@ -120,7 +120,6 @@ namespace Convnet
                         model.SetUseTrainingStrategy(Settings.Default.UseTrainingStrategy);
                         model.SetDisableLocking(Settings.Default.DisableLocking);
                        
-                        
                         var dataset = PageVM.Model.Dataset.ToString().ToLower();
                         var optimizer = PageVM.Model.Optimizer.ToString().ToLower();
 
@@ -138,9 +137,6 @@ namespace Convnet
                                 PageVM.Model.SetPersistOptimizer(Settings.Default.PersistOptimizer);
                             }
                         
-                        Settings.Default.DefinitionActive = File.ReadAllText(fileName);
-                        Settings.Default.Save();
-
                         for (int i = 0; i < Settings.Default.TrainingLog.Count; i++)
                             Settings.Default.TrainingLog[i].ElapsedTime = new TimeSpan(Settings.Default.TrainingLog[i].ElapsedTicks);
                         Settings.Default.Save();
