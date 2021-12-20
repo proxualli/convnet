@@ -957,9 +957,12 @@ namespace Convnet
 
         private void ResetCmdExecuted(object target, ExecutedRoutedEventArgs e)
         {
-            Directory.Delete(ScriptsDirectory, true);
-            Directory.CreateDirectory(ScriptsDirectory);
-            Copy(ApplicationPath.Replace(@"Convnet\bin\x64\" + Mode + @"\" + Framework + @"\", "") + @"ScriptsDialog\", ScriptsDirectory);
+            if (Xceed.Wpf.Toolkit.MessageBox.Show("Do you really want to reset the Scripts folder?", "Reset Application", MessageBoxButton.YesNo, MessageBoxImage.None, MessageBoxResult.No) == MessageBoxResult.Yes)
+            {
+                Directory.Delete(ScriptsDirectory, true);
+                Directory.CreateDirectory(ScriptsDirectory);
+                Copy(ApplicationPath.Replace(@"Convnet\bin\x64\" + Mode + @"\" + Framework + @"\", "") + @"ScriptsDialog\", ScriptsDirectory);
+            }
         }
 
         private void ResetCmdCanExecute(object sender, CanExecuteRoutedEventArgs e)
