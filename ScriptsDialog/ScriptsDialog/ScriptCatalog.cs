@@ -311,7 +311,7 @@ namespace ScriptsDialog
                "Eps=" + to_string(eps);
         }
 
-        public static List<string> FusedMBConv(UInt id, string inputs, UInt inputChannels, UInt outputChannels, UInt stride = 1, UInt expandRatio = 4, bool se = false, Activations activation = Activations.HardSwish)
+        public static List<string> FusedMBConv(UInt idA, UInt id, string inputs, UInt inputChannels, UInt outputChannels, UInt stride = 1, UInt expandRatio = 4, bool se = false, Activations activation = Activations.HardSwish)
         {
             var blocks = new List<string>();
             var hiddenDim = DIV8(inputChannels * expandRatio);
@@ -347,14 +347,14 @@ namespace ScriptsDialog
             if (identity)
             {
                 blocks.Add(
-                    Dropout(id + 1, In("B", id + 1)) +
-                    Add(id + 1, In("D", id + 1) + "," + inputs));
+                    Dropout(idA, In("B", id + 1)) +
+                    Add(idA, In("D", idA) + "," + inputs));
             }
 
             return blocks;
         }
 
-        public static List<string> MBConv(UInt id, string inputs, UInt inputChannels, UInt outputChannels, UInt stride = 1, UInt expandRatio = 4, bool se = false, Activations activation = Activations.HardSwish)
+        public static List<string> MBConv(UInt idA, UInt id, string inputs, UInt inputChannels, UInt outputChannels, UInt stride = 1, UInt expandRatio = 4, bool se = false, Activations activation = Activations.HardSwish)
         {
             var blocks = new List<string>();
             var hiddenDim = DIV8(inputChannels * expandRatio);
@@ -394,8 +394,8 @@ namespace ScriptsDialog
             if (identity)
             {
                 blocks.Add(
-                    Dropout(id + 2, In("B", id + 2)) +
-                    Add(id + 2, In("D", id + 2) + "," + inputs));
+                    Dropout(idA, In("B", id + 2)) +
+                    Add(idA, In("D", idA) + "," + inputs));
             }
 
             return blocks;
@@ -581,6 +581,7 @@ namespace ScriptsDialog
                     {
                         const Float width = 1.0f;
                         var inputChannels = DIV8((UInt)((Float)p.EfficientNet[0].Channels * width));
+                        var A = 1ul;
                         var C = 1ul;
 
                         net +=
@@ -597,19 +598,26 @@ namespace ScriptsDialog
                                 var stride = n == 0ul ? rec.Stride : 1ul;
                                 var identity = stride == 1ul && inputChannels == outputChannels;
 
-                                var subblocks = stage < 3ul ? FusedMBConv(C, input, inputChannels, outputChannels, stride, rec.ExpandRatio, rec.SE, p.Activation) : MBConv(C, input, inputChannels, outputChannels, stride, rec.ExpandRatio, rec.SE, p.Activation);
+                                var subblocks = stage < 3ul ? FusedMBConv(A, C, input, inputChannels, outputChannels, stride, rec.ExpandRatio, rec.SE, p.Activation) : MBConv(A, C, input, inputChannels, outputChannels, stride, rec.ExpandRatio, rec.SE, p.Activation);
                                 foreach (var blk in subblocks)
                                     net += blk;
 
                                 inputChannels = outputChannels;
                                 C += stage < 3ul ? 1ul : 2ul;
-                                input = In((identity ? "A" : "B"), C++);
+
+                                if (identity)
+                                {
+                                    input = In("A", A++);
+                                    C++;
+                                }
+                                else
+                                    input = In("B", C++);
                             }
                             stage++;
                         }
 
                         net +=
-                            BatchNormActivation(C, In("A", C - 1), p.Activation) +
+                            BatchNormActivation(C, In("A", A - 1), p.Activation) +
                             Convolution(C, In("B", C), p.Classes, 1, 1, 1, 1, 0, 0) +
                             BatchNorm(C + 1, In("C", C)) +
                             GlobalAvgPooling(In("B", C + 1)) +
