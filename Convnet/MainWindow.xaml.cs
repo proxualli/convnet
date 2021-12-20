@@ -33,6 +33,7 @@ namespace Convnet
         public static string DefinitionsDirectory { get; } = StorageDirectory + @"definitions\";
         public static string ScriptsDirectory { get; } = StorageDirectory + @"scripts\";
 
+        public static RoutedUICommand ResetCmd = new RoutedUICommand();
         public static RoutedUICommand AboutCmd = new RoutedUICommand();
         public static RoutedUICommand DisableLockingCmd = new RoutedUICommand();
         public static RoutedUICommand PlainFormatCmd = new RoutedUICommand();
@@ -952,6 +953,18 @@ namespace Convnet
                 Process.GetCurrentProcess().PriorityClass = Settings.Default.Priority;
                 Settings.Default.Save();
             }
+        }
+
+        private void ResetCmdExecuted(object target, ExecutedRoutedEventArgs e)
+        {
+            Directory.Delete(ScriptsDirectory, true);
+            Directory.CreateDirectory(ScriptsDirectory);
+            Copy(ApplicationPath.Replace(@"Convnet\bin\x64\" + Mode + @"\" + Framework + @"\", "") + @"ScriptsDialog\", ScriptsDirectory);
+        }
+
+        private void ResetCmdCanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
         }
     }
 }

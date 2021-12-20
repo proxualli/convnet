@@ -42,6 +42,7 @@
         <CommandBinding Command="ApplicationCommands.Redo" Executed="RedoCmdExecuted" CanExecute="RedoCmdCanExecute"/>
         <CommandBinding Command="ApplicationCommands.Help" Executed="HelpCmdExecuted" CanExecute="HelpCmdCanExecute"/>
         <CommandBinding Command="ApplicationCommands.Close" Executed="CloseCmdExecuted" CanExecute="CloseCmdCanExecute"/>
+        <CommandBinding Command="{x:Static main:MainWindow.ResetCmd}" Executed="ResetCmdExecuted" CanExecute="ResetCmdCanExecute"/>
         <CommandBinding Command="{x:Static main:MainWindow.AboutCmd}" Executed="AboutCmdExecuted" CanExecute="AboutCmdCanExecute"/>
         <CommandBinding Command="{x:Static main:MainWindow.DisableLockingCmd}" Executed="DisableLockingCmdExecuted" CanExecute="DisableLockingCmdCanExecute"/>
         <CommandBinding Command="{x:Static main:MainWindow.PlainFormatCmd}" Executed="PlainFormatCmdExecuted" CanExecute="PlainFormatCmdCanExecute"/>
@@ -114,6 +115,7 @@
                 <MenuItem Header="_Priority">
                     <c:FormattedSlider x:Name="PrioritySlider" Value="{Binding Default.PrioritySetter, Mode=TwoWay, Source={StaticResource Settings}, UpdateSourceTrigger=PropertyChanged}" Minimum="1" Maximum="6" LargeChange="1" SmallChange="1" Width="60" ValueChanged="PrioritySlider_ValueChanged" IsSnapToTickEnabled="True" AutoToolTipPlacement="TopLeft" Interval="10" ToolTipService.IsEnabled="True" AutoToolTipFormat="Priority"/>
                 </MenuItem>
+                <MenuItem Header="_Reset" Command="{x:Static main:MainWindow.ResetCmd}"/>
             </MenuItem>
             <MenuItem Header="_Help">
                 <MenuItem Header="_Documentation" Command="ApplicationCommands.Help">
