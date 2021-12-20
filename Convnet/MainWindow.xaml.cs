@@ -89,8 +89,8 @@ namespace Convnet
             if (!File.Exists(fileName) || File.GetCreationTime(Path.Combine(StateDirectory, backupModelName + ".txt")) != File.GetCreationTime(ApplicationPath + @"Resources\state\" + backupModelName))
             {
                 Directory.CreateDirectory(DefinitionsDirectory + backupModelName + @"\");
-                File.Copy(ApplicationPath + @"Resources\state\" + backupModelName, StateDirectory + backupModelName, true);
                 File.Copy(ApplicationPath + @"Resources\state\" + backupModelName, DefinitionsDirectory + backupModelName, true);
+                File.Copy(ApplicationPath + @"Resources\state\" + backupModelName, StateDirectory + backupModelName, true);
                 fileName = Path.Combine(StateDirectory, backupModelName + ".txt");
                 Settings.Default.ModelNameActive = backupModelName;
                 Settings.Default.DefinitionActive = File.ReadAllText(fileName);
@@ -101,7 +101,7 @@ namespace Convnet
             try
             {
                 Model model = new Model(Settings.Default.ModelNameActive, Settings.Default.DefinitionActive);
-               
+
                 if (model != null)
                 {
                     PageVM = new PageViewModel(model);
@@ -119,7 +119,7 @@ namespace Convnet
                         model.SetPersistOptimizer(Settings.Default.PersistOptimizer);
                         model.SetUseTrainingStrategy(Settings.Default.UseTrainingStrategy);
                         model.SetDisableLocking(Settings.Default.DisableLocking);
-                       
+
                         var dataset = PageVM.Model.Dataset.ToString().ToLower();
                         var optimizer = PageVM.Model.Optimizer.ToString().ToLower();
 
@@ -136,7 +136,7 @@ namespace Convnet
                                 Settings.Default.Save();
                                 PageVM.Model.SetPersistOptimizer(Settings.Default.PersistOptimizer);
                             }
-                        
+
                         for (int i = 0; i < Settings.Default.TrainingLog.Count; i++)
                             Settings.Default.TrainingLog[i].ElapsedTime = new TimeSpan(Settings.Default.TrainingLog[i].ElapsedTicks);
                         Settings.Default.Save();
@@ -167,10 +167,90 @@ namespace Convnet
                         }
                     }
                     else
-                       Xceed.Wpf.Toolkit.MessageBox.Show("Failed to create the PageViewModel: " + Settings.Default.ModelNameActive, "Error", MessageBoxButton.OK);
+                        Xceed.Wpf.Toolkit.MessageBox.Show("Failed to create the PageViewModel: " + Settings.Default.ModelNameActive, "Error", MessageBoxButton.OK);
                 }
                 else
-                   Xceed.Wpf.Toolkit.MessageBox.Show("Failed to create the Model: " + Settings.Default.ModelNameActive, "Error", MessageBoxButton.OK);
+                {
+                    File.Copy(ApplicationPath + @"Resources\state\" + backupModelName, StateDirectory + backupModelName, true);
+                    fileName = Path.Combine(StateDirectory, backupModelName + ".txt");
+                    Settings.Default.ModelNameActive = backupModelName;
+                    Settings.Default.DefinitionActive = File.ReadAllText(fileName);
+                    Settings.Default.Optimizer = DNNOptimizers.NAG;
+                    Settings.Default.Save();
+
+                    model = new Model(Settings.Default.ModelNameActive, Settings.Default.DefinitionActive);
+
+                    if (model == null)
+                    {
+                        Xceed.Wpf.Toolkit.MessageBox.Show("Failed to create the Model: " + Settings.Default.ModelNameActive, "Error", MessageBoxButton.OK);
+                        return;
+                    }
+
+                    PageVM = new PageViewModel(model);
+
+                    if (PageVM != null)
+                    {
+                        model.BackgroundColor = Settings.Default.BackgroundColor;
+                        model.BlockSize = (ulong)Settings.Default.PixelSize;
+                        model.TrainingStrategies = Settings.Default.TrainingStrategies;
+                        model.ClearTrainingStrategies();
+                        foreach (DNNTrainingStrategy strategy in Settings.Default.TrainingStrategies)
+                            model.AddTrainingStrategy(strategy);
+                        model.SetFormat(Settings.Default.PlainFormat);
+                        model.SetOptimizer(Settings.Default.Optimizer);
+                        model.SetPersistOptimizer(Settings.Default.PersistOptimizer);
+                        model.SetUseTrainingStrategy(Settings.Default.UseTrainingStrategy);
+                        model.SetDisableLocking(Settings.Default.DisableLocking);
+
+                        var dataset = PageVM.Model.Dataset.ToString().ToLower();
+                        var optimizer = PageVM.Model.Optimizer.ToString().ToLower();
+
+                        var fileNamePersistOptimizer = Path.Combine(StateDirectory, Settings.Default.ModelNameActive + "-(" + dataset + ")(" + optimizer + @").bin");
+                        var fileNameNoOptimizer = Path.Combine(StateDirectory, Settings.Default.ModelNameActive + "-(" + dataset + ").bin");
+
+                        var fileNameOptimizer = Settings.Default.PersistOptimizer ? fileNamePersistOptimizer : fileNameNoOptimizer;
+                        var fileNameOptimizerInverse = Settings.Default.PersistOptimizer ? fileNameNoOptimizer : fileNamePersistOptimizer;
+
+                        if (PageVM.Model.LoadWeights(fileNameOptimizer, Settings.Default.PersistOptimizer) != 0)
+                            if (PageVM.Model.LoadWeights(fileNameOptimizerInverse, !Settings.Default.PersistOptimizer) == 0)
+                            {
+                                Settings.Default.PersistOptimizer = !Settings.Default.PersistOptimizer;
+                                Settings.Default.Save();
+                                PageVM.Model.SetPersistOptimizer(Settings.Default.PersistOptimizer);
+                            }
+
+                        for (int i = 0; i < Settings.Default.TrainingLog.Count; i++)
+                            Settings.Default.TrainingLog[i].ElapsedTime = new TimeSpan(Settings.Default.TrainingLog[i].ElapsedTicks);
+                        Settings.Default.Save();
+
+                        Title = PageVM.Model.Name + " - Convnet Explorer";
+                        DataContext = PageVM;
+
+                        switch ((int)Math.Round(Settings.Default.PrioritySetter))
+                        {
+                            case 1:
+                                PrioritySlider.ToolTip = "Low";
+                                break;
+                            case 2:
+                                PrioritySlider.ToolTip = "Below Normal";
+                                break;
+                            case 3:
+                                PrioritySlider.ToolTip = "Normal";
+                                break;
+                            case 4:
+                                PrioritySlider.ToolTip = "Above Normal";
+                                break;
+                            case 5:
+                                PrioritySlider.ToolTip = "High";
+                                break;
+                            case 6:
+                                PrioritySlider.ToolTip = "Realtime";
+                                break;
+                        }
+                    }
+                    else
+                        Xceed.Wpf.Toolkit.MessageBox.Show("Failed to create the PageViewModel: " + Settings.Default.ModelNameActive, "Error", MessageBoxButton.OK);
+                }
             }
             catch (Exception exception)
             {
