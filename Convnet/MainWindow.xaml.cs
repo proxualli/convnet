@@ -110,16 +110,17 @@ namespace Convnet
                     {
                         model.BackgroundColor = Settings.Default.BackgroundColor;
                         model.BlockSize = (ulong)Settings.Default.PixelSize;
-
+                        model.TrainingStrategies = Settings.Default.TrainingStrategies;
+                        model.ClearTrainingStrategies();
+                        foreach (DNNTrainingStrategy strategy in Settings.Default.TrainingStrategies)
+                            model.AddTrainingStrategy(strategy);
                         model.SetFormat(Settings.Default.PlainFormat);
                         model.SetOptimizer(Settings.Default.Optimizer);
                         model.SetPersistOptimizer(Settings.Default.PersistOptimizer);
                         model.SetUseTrainingStrategy(Settings.Default.UseTrainingStrategy);
                         model.SetDisableLocking(Settings.Default.DisableLocking);
-                        model.ClearTrainingStrategies();
-                        foreach (DNNTrainingStrategy strategy in Settings.Default.TrainingStrategies)
-                            model.AddTrainingStrategy(strategy);
-
+                       
+                        
                         var dataset = PageVM.Model.Dataset.ToString().ToLower();
                         var optimizer = PageVM.Model.Optimizer.ToString().ToLower();
 

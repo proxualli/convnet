@@ -295,6 +295,7 @@ namespace dnn
 		}
 	};
 
+
 	struct TrainingStrategy
 	{
 		Float Epochs;
@@ -320,9 +321,8 @@ namespace dnn
 		Float Rotation;
 
 		TrainingStrategy::TrainingStrategy() :
-		
 			Epochs(1),
-			BatchSize(1),
+			BatchSize(128),
 			Height(32),
 			Width(32),
 			Momentum(Float(0.9)),
@@ -1423,6 +1423,8 @@ namespace dnncore
 		delete trainingSamples;
 		delete testingSamples;
 
+		TrainingStrategies = gcnew System::Collections::ObjectModel::ObservableCollection<DNNTrainingStrategy^>();
+
 		LabelsCollection = gcnew cli::array<cli::array<String^>^>(int(Hierarchies));
 
 		switch (Dataset)
@@ -1496,7 +1498,7 @@ namespace dnncore
 
 		CostLayers = gcnew cli::array<DNNCostLayer^>(int(CostLayersCount));
 		UInt costLayersCounter = 0;
-
+				
 		Layers = gcnew System::Collections::ObjectModel::ObservableCollection<LayerInformation^>();
 
 		for (UInt layer = 0; layer < LayerCount; layer++)

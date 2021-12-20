@@ -744,7 +744,7 @@ namespace dnncore
 			Float get() { return epochs; }
 			void set(Float value)
 			{
-				if (value == epochs && value == 0)
+				if (value == epochs || value <= 0 || value > 1)
 					return;
 
 				epochs = value;
@@ -1316,7 +1316,7 @@ namespace dnncore
 		property cli::array<cli::array<UInt>^>^ ConfusionMatrix;
 		property cli::array<cli::array<String^>^>^ LabelsCollection;
 		property bool UseTrainingStrategy;
-		property cli::array<DNNTrainingStrategy^>^ TrainingStrategies;
+		property System::Collections::ObjectModel::ObservableCollection<DNNTrainingStrategy^>^ TrainingStrategies;
 		property cli::array<DNNTrainingRate^>^ TrainingRates;
 		property DNNTrainingRate^ TrainingRate;
 		property String^ Definition;

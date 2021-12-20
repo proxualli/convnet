@@ -376,16 +376,17 @@ namespace Convnet.PageViewModels
 
                             Model.BackgroundColor = Settings.Default.BackgroundColor;
                             Model.BlockSize = (UInt64)Settings.Default.PixelSize;
-                           
+                            Model.TrainingStrategies = Settings.Default.TrainingStrategies;
+                            Model.ClearTrainingStrategies();
+                            foreach (DNNTrainingStrategy strategy in Settings.Default.TrainingStrategies)
+                                Model.AddTrainingStrategy(strategy);
                             Model.SetFormat(Settings.Default.PlainFormat);
                             Model.SetOptimizer(Settings.Default.Optimizer);
                             Model.SetPersistOptimizer(Settings.Default.PersistOptimizer);
                             Model.SetUseTrainingStrategy(Settings.Default.UseTrainingStrategy);
                             Model.SetDisableLocking(Settings.Default.DisableLocking);
-                            Model.ClearTrainingStrategies();
-                            foreach (DNNTrainingStrategy strategy in Settings.Default.TrainingStrategies)
-                                Model.AddTrainingStrategy(strategy);
                             
+
                             if (keepWeights == MessageBoxResult.Yes)
                                 Model.LoadWeights(pathWeights, Settings.Default.PersistOptimizer);
 
