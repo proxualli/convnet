@@ -517,6 +517,18 @@ namespace dnn
 		bool Lockable;
 	};
 
+	struct CostInfo
+	{
+		UInt TrainErrors;
+		Float TrainLoss;
+		Float AvgTrainLoss;
+		Float TrainErrorPercentage;
+		UInt TestErrors;
+		Float TestLoss;
+		Float AvgTestLoss;
+		Float TestErrorPercentage;
+	};
+
 	struct ModelInfo
 	{
 		std::string Name;
@@ -594,7 +606,7 @@ DNN_API int DNNLoadLayerWeights(const std::string& fileName, const UInt layerInd
 DNN_API int DNNSaveLayerWeights(const std::string& fileName, const UInt layerIndex, const bool persistOptimizer);
 DNN_API void DNNGetLayerWeights(const UInt layerIndex, std::vector<Float>* weights, std::vector<Float>* biases);
 DNN_API void DNNSetCostIndex(const UInt index);
-DNN_API void DNNGetCostInfo(const UInt costIndex, UInt* trainErrors, Float* trainLoss, Float* avgTrainLoss, Float* trainErrorPercentage, UInt* testErrors, Float* testLoss, Float* avgTestLoss, Float* testErrorPercentage);
+DNN_API void DNNGetCostInfo(const UInt costIndex, dnn::CostInfo* info);
 DNN_API void DNNGetImage(const UInt layer, const dnn::Byte fillColor, dnn::Byte* image);
 DNN_API bool DNNSetFormat(const bool plain);
 DNN_API dnn::Optimizers GetOptimizer();
@@ -1151,39 +1163,23 @@ namespace dnncore
 
 	void DNNModel::UpdateCostInfo(UInt index)
 	{
-		auto trainErrors = new UInt();
-		auto trainLoss = new Float();
-		auto avgTrainLoss = new Float();
-		auto trainErrorPercentage = new Float();
+		auto info = new dnn::CostInfo();
+	
+		DNNGetCostInfo(index, info);
 
-		auto testErrors = new UInt();
-		auto testLoss = new Float();
-		auto avgTestLoss = new Float();
-		auto testErrorPercentage = new Float();
+		CostLayers[index]->TrainErrors = info->TrainErrors;
+		CostLayers[index]->TrainLoss = info->TrainLoss;
+		CostLayers[index]->AvgTrainLoss = info->AvgTrainLoss;
+		CostLayers[index]->TrainErrorPercentage = info->TrainErrorPercentage;
+		CostLayers[index]->TrainAccuracy = Float(100) - info->TrainErrorPercentage;
 
-		DNNGetCostInfo(index, trainErrors, trainLoss, avgTrainLoss, trainErrorPercentage, testErrors, testLoss, avgTestLoss, testErrorPercentage);
+		CostLayers[index]->TestErrors = info->TestErrors;
+		CostLayers[index]->TestLoss = info->TestLoss;
+		CostLayers[index]->AvgTestLoss = info->AvgTestLoss;
+		CostLayers[index]->TestErrorPercentage = info->TestErrorPercentage;
+		CostLayers[index]->TestAccuracy = Float(100) - info->TestErrorPercentage;
 
-		CostLayers[index]->TrainErrors = *trainErrors;
-		CostLayers[index]->TrainLoss = *trainLoss;
-		CostLayers[index]->AvgTrainLoss = *avgTrainLoss;
-		CostLayers[index]->TrainErrorPercentage = *trainErrorPercentage;
-		CostLayers[index]->TrainAccuracy = Float(100) - *trainErrorPercentage;
-
-		CostLayers[index]->TestErrors = *testErrors;
-		CostLayers[index]->TestLoss = *testLoss;
-		CostLayers[index]->AvgTestLoss = *avgTestLoss;
-		CostLayers[index]->TestErrorPercentage = *testErrorPercentage;
-		CostLayers[index]->TestAccuracy = Float(100) - *testErrorPercentage;
-
-		delete trainErrors;
-		delete trainLoss;
-		delete avgTrainLoss;
-		delete trainErrorPercentage;
-
-		delete testErrors;
-		delete testLoss;
-		delete avgTestLoss;
-		delete testErrorPercentage;
+		delete info;
 	}
 
 	void DNNModel::ApplyParameters()
