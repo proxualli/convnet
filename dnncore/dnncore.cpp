@@ -295,7 +295,6 @@ namespace dnn
 		}
 	};
 
-
 	struct TrainingStrategy
 	{
 		Float Epochs;
@@ -692,7 +691,6 @@ namespace dnncore
 		DNNRefreshStatistics(layerIndex, statsInfo);
 
 		info->Description = ToManagedString(statsInfo->Description);
-
 		info->NeuronsStdDev = statsInfo->NeuronsStats.StdDev;
 		info->NeuronsMean = statsInfo->NeuronsStats.Mean;
 		info->NeuronsMin = statsInfo->NeuronsStats.Min;
@@ -714,6 +712,7 @@ namespace dnncore
 		info->LockUpdate = info->Lockable ? Nullable<bool>(statsInfo->Locked) : Nullable<bool>(false);
 
 		delete statsInfo;
+
 
 		if (updateUI)
 		{
@@ -934,11 +933,6 @@ namespace dnncore
 		infoManaged->LockUpdate = infoNative->Lockable ? Nullable<bool>(infoNative->Locked) : Nullable<bool>(false);
 		infoManaged->Lockable = infoNative->Lockable;
 
-		//infoManaged->HW = infoNative->H * infoNative->W;
-		//infoManaged->KernelHW = infoNative->KernelH * infoNative->KernelW;
-		//infoManaged->HasWeights = infoNative->WeightCount > 0;
-		//infoManaged->HasDropout = infoNative->Dropout > 0;
-		
 		delete infoNative;
 
 		return infoManaged;
