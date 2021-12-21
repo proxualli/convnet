@@ -1189,7 +1189,7 @@ namespace dnncore
 		property String^ Description;
 		property DNNLayerTypes LayerType;
 		property DNNActivations Activation;
-		property DNNCosts CostFunction;
+		property DNNCosts Cost;
 		property System::Collections::Generic::List<UInt>^ Inputs;
 		property System::Collections::Generic::List<String^>^ InputsNames;
 		property System::Windows::Media::Imaging::BitmapSource^ WeightsSnapshot;
