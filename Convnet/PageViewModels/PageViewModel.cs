@@ -254,9 +254,9 @@ namespace Convnet.PageViewModels
 
                 if (testPVM.Model != null)
                 {
-                    testPVM.CommandToolBar[0].Visibility = testPVM.Model.TaskState != DNNTaskStates.Running ? System.Windows.Visibility.Collapsed : System.Windows.Visibility.Visible;
-                    testPVM.CommandToolBar[1].Visibility = testPVM.Model.TaskState != DNNTaskStates.Running ? System.Windows.Visibility.Collapsed : System.Windows.Visibility.Visible;
-                    testPVM.CommandToolBar[2].Visibility = testPVM.Model.TaskState != DNNTaskStates.Running ? System.Windows.Visibility.Collapsed : System.Windows.Visibility.Visible;
+                    testPVM.CommandToolBar[0].Visibility = testPVM.Model.TaskState == DNNTaskStates.Stopped ? System.Windows.Visibility.Visible : System.Windows.Visibility.Collapsed;
+                    testPVM.CommandToolBar[1].Visibility = System.Windows.Visibility.Collapsed;
+                    testPVM.CommandToolBar[2].Visibility = System.Windows.Visibility.Collapsed;
                 }
 
                 if (CostLayers.Count > 1)

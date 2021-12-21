@@ -247,7 +247,6 @@
         </xctk:AutoSelectTextBox>
 
 
-
         <CheckBox Name="checkBoxHorizontalFlip" Background="{DynamicResource TextBrush}" Foreground="{DynamicResource TextBrush}" Content="" Grid.Column="5" HorizontalAlignment="Left" Margin="0,3,0,0" Grid.Row="2" VerticalAlignment="Center" IsChecked="{Binding Path=HorizontalFlip, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TabIndex="22" FontSize="14"/>
 
         <CheckBox Name="checkBoxVerticalFlip" Background="{DynamicResource TextBrush}" Foreground="{DynamicResource TextBrush}" Content="" Grid.Column="5" HorizontalAlignment="Left" Margin="0,3,0,0" Grid.Row="3"  VerticalAlignment="Center" IsChecked="{Binding Path=VerticalFlip, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" TabIndex="23" FontSize="14"/>
