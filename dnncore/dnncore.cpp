@@ -902,7 +902,7 @@ namespace dnncore
 		info->D = layerInfo->D;
 		info->H = layerInfo->H;
 		info->W = layerInfo->W;
-		info->HW = (layerInfo->H) * (layerInfo->W);
+		info->HW = layerInfo->H * layerInfo->W;
 		info->DilationH = layerInfo->DilationH;
 		info->DilationW = layerInfo->DilationW;
 		info->KernelH = layerInfo->KernelH;
