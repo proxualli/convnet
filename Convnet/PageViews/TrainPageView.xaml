@@ -109,7 +109,7 @@
                     <ColumnDefinition Width="{Binding ActualWidth, ElementName=duration}" />
                 </Grid.ColumnDefinitions>
 
-                <Border Grid.Column="5" Grid.ColumnSpan="5" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  BorderThickness="1,1,0,0" BorderBrush="{StaticResource TextBrush}" Margin="1,0,-1,0" Background="{StaticResource BackgroundBrush}">
+                <Border Grid.Column="3" Grid.ColumnSpan="7" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  BorderThickness="1,1,0,0" BorderBrush="{StaticResource TextBrush}" Margin="1,0,-1,0" Background="{StaticResource BackgroundBrush}">
                     <TextBlock Text="Regularization" HorizontalAlignment="Stretch" VerticalAlignment="Center" TextAlignment="Center" Foreground="{StaticResource TextBrush}" FontFamily="Consolas" FontSize="14" />
                 </Border>
 
