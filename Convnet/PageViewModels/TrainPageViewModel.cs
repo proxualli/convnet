@@ -80,7 +80,7 @@ namespace Convnet.PageViewModels
         public event EventHandler Save;
         public event EventHandler<int?> RefreshRateChanged;
 
-        public TrainPageViewModel(dnncore.Model model) : base(model)
+        public TrainPageViewModel(DNNModel model) : base(model)
         {
             sb = new StringBuilder();
             refreshRate = Settings.Default.RefreshInterval;
@@ -674,7 +674,7 @@ namespace Convnet.PageViewModels
         {
             DataTemplate checkBoxLayout = new DataTemplate
             {
-                DataType = typeof(LayerInformation)
+                DataType = typeof(DNNLayerInfo)
             };
             //set up the StackPanel
             FrameworkElementFactory panelFactory = new FrameworkElementFactory(typeof(StackPanel))
@@ -1585,7 +1585,7 @@ namespace Convnet.PageViewModels
                   
                     if (layersComboBox.SelectedIndex >= 0 && Model.Layers[layersComboBox.SelectedIndex].HasWeights)
                     {
-                        LayerInformation info = Model.Layers[layersComboBox.SelectedIndex];
+                        DNNLayerInfo info = Model.Layers[layersComboBox.SelectedIndex];
                         if (info.IsNormalizationLayer)
                         {
                             if (info.Scaling)

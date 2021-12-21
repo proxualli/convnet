@@ -34,7 +34,7 @@ namespace Convnet.PageViewModels
         public event PropertyChangedEventHandler PropertyChanged;
         public event EventHandler Modelhanged;
 
-        private Model model;
+        private DNNModel model;
         private DNNDatasets dataset;
         private ObservableCollection<Control> commandToolBar;
         private Visibility commandToolBarVisibility;
@@ -42,7 +42,7 @@ namespace Convnet.PageViewModels
         private ObservableCollection<DNNCostLayer> costLayers;
         private int costIndex;
 
-        protected PageViewModelBase(Model model)
+        protected PageViewModelBase(DNNModel model)
         {
             if (model != null)
             {
@@ -70,7 +70,7 @@ namespace Convnet.PageViewModels
             Modelhanged?.Invoke(this, EventArgs.Empty);
         }
 
-        public Model Model
+        public DNNModel Model
         {
             get { return model; }
             set

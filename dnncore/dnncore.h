@@ -1182,13 +1182,13 @@ namespace dnncore
 	};
 
 	[Serializable()]
-	public ref class LayerInformation : public System::ComponentModel::INotifyPropertyChanged
+	public ref class DNNLayerInfo : public System::ComponentModel::INotifyPropertyChanged
 	{
 	public:
 		property String^ Name;
 		property String^ Description;
 		property DNNLayerTypes LayerType;
-		property DNNActivations ActivationFunctionEnum;
+		property DNNActivations Activation;
 		property DNNCosts CostFunction;
 		property System::Collections::Generic::List<UInt>^ Inputs;
 		property System::Collections::Generic::List<String^>^ InputsNames;
@@ -1294,7 +1294,7 @@ namespace dnncore
 		Nullable<bool> lockUpdate;
 	};
 
-	public ref class Model
+	public ref class DNNModel
 	{
 	public:
 		delegate void TrainProgressEventDelegate(DNNOptimizers, UInt, UInt, UInt, UInt, UInt, bool, bool, Float, Float, bool, Float, Float, UInt, Float, DNNInterpolations, Float, Float, UInt, Float, Float, Float, Float, Float, Float, Float, Float, Float, UInt, Float, Float, Float, UInt, DNNStates, DNNTaskStates);
@@ -1307,7 +1307,7 @@ namespace dnncore
 
 		property Byte BackgroundColor;
 		property int SelectedIndex;
-		property System::Collections::ObjectModel::ObservableCollection<LayerInformation^>^ Layers;
+		property System::Collections::ObjectModel::ObservableCollection<DNNLayerInfo^>^ Layers;
 		property System::Windows::Media::Imaging::BitmapSource^ InputSnapshot;
 		property String^ Label;
 		property cli::array<DNNCostLayer^>^ CostLayers;
@@ -1386,8 +1386,8 @@ namespace dnncore
 		property bool DisableLocking;
 		property bool PlainFormat;
 
-		Model(String^ name, String^ definition);
-		virtual ~Model();
+		DNNModel(String^ definition);
+		virtual ~DNNModel();
 			
 		bool LoadDataset();
 		cli::array<String^>^ GetTextLabels(String^ fileName);
@@ -1408,9 +1408,9 @@ namespace dnncore
 		void Stop();
 		void Pause();
 		void Resume();
-		void UpdateLayerStatistics(LayerInformation^ info, UInt layerIndex, bool updateUI);
-		LayerInformation^ GetLayerInfo(UInt layerIndex);
-		void GetLayerInfoUpdate(UInt layerIndex, LayerInformation^ info);
+		void UpdateLayerStatistics(DNNLayerInfo^ info, UInt layerIndex, bool updateUI);
+		DNNLayerInfo^ GetLayerInfo(UInt layerIndex);
+		void GetLayerInfoUpdate(UInt layerIndex, DNNLayerInfo^ info);
 		void UpdateLayerInfo(UInt layerIndex, bool updateUI);
 		void SetCostIndex(UInt costIndex);
 		void SetOptimizer(DNNOptimizers optimizer);

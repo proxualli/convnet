@@ -49,7 +49,7 @@ namespace Convnet.Common
                 return new ValidationResult(false, e.Message);
             }
 
-            if (Model.StochasticEnabled())
+            if (DNNModel.StochasticEnabled())
             {
                 if (intValue < 1u)
                     return new ValidationResult(false, "Please enter one or a multiple of eight.");

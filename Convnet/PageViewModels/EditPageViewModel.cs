@@ -49,7 +49,7 @@ namespace Convnet.PageViewModels
         private static bool initAction = true;
         private DispatcherTimer clickWaitTimer;
        
-        public EditPageViewModel(Model model) : base(model)
+        public EditPageViewModel(DNNModel model) : base(model)
         {
             initAction = true;
             clickWaitTimer = new DispatcherTimer(new TimeSpan(0, 0, 0, 0, 500), DispatcherPriority.Background, mouseWaitTimer_Tick, Dispatcher.CurrentDispatcher);
@@ -371,7 +371,7 @@ namespace Convnet.PageViewModels
                         try
                         {
                             Model.Dispose();
-                            Model = new Model(modelname, Definition);
+                            Model = new DNNModel(Definition);
 
                             Model.BackgroundColor = Settings.Default.BackgroundColor;
                             Model.BlockSize = (UInt64)Settings.Default.PixelSize;
@@ -444,7 +444,7 @@ namespace Convnet.PageViewModels
                             try
                             {
                                 Model.Dispose();
-                                Model = new Model(ModelName, pathDefinition);
+                                Model = new DNNModel(Definition);
                                 Model.SetFormat(Settings.Default.PlainFormat);
                                 Model.SetOptimizer(Settings.Default.Optimizer);
                                 Model.SetPersistOptimizer(Settings.Default.PersistOptimizer);

@@ -51,7 +51,7 @@ namespace Convnet.PageViewModels
             }
         }
 
-        public TestPageViewModel(Model model) : base(model)
+        public TestPageViewModel(DNNModel model) : base(model)
         {
             AddCommandButtons();
 

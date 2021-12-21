@@ -449,6 +449,10 @@ namespace dnn
 		Float SampleSpeed;
 		States State;
 		TaskStates TaskState;
+
+		TrainingInfo()
+		{
+		}
 	};
 
 	struct TestingInfo
@@ -467,6 +471,10 @@ namespace dnn
 		Float SampleSpeed;
 		States State;
 		TaskStates TaskState;
+
+		TestingInfo()
+		{
+		}
 	};
 
 	struct LayerInfo
@@ -474,7 +482,7 @@ namespace dnn
 		std::string Name;
 		std::string Description;
 		LayerTypes LayerType;
-		Activations ActivationFunction;
+		Activations Activation;
 		Algorithms Algorithm;
 		Costs Cost;
 		UInt NeuronCount;
@@ -516,6 +524,10 @@ namespace dnn
 		bool AcrossChannels;
 		bool Locked;
 		bool Lockable;
+
+		LayerInfo()
+		{
+		}
 	};
 }
 
@@ -528,7 +540,7 @@ DNN_API void DNNPersistOptimizer(const bool persist);
 DNN_API void DNNDisableLocking(const bool disable);
 DNN_API void DNNGetConfusionMatrix(const UInt costLayerIndex, std::vector<std::vector<UInt>>* confusionMatrix);
 DNN_API void DNNGetLayerInputs(const UInt layerIndex, std::vector<UInt>* inputs);
-DNN_API void DNNGetLayerInfo(dnn::LayerInfo* info);
+DNN_API void DNNGetLayerInfo(const UInt layerIndex, dnn::LayerInfo* info);
 DNN_API void DNNSetNewEpochDelegate(void(*newEpoch)(UInt, UInt, UInt, UInt, Float, Float, Float, bool, bool, Float, Float, bool, Float, Float, UInt, Float, UInt, Float, Float, Float, UInt, UInt, UInt, Float, Float, Float, Float, Float, Float, UInt, Float, Float, Float, UInt));
 DNN_API void DNNModelDispose();
 DNN_API bool DNNBatchNormalizationUsed();
@@ -569,10 +581,8 @@ DNN_API dnn::Optimizers GetOptimizer();
 
 namespace dnncore
 {
-	Model::Model(String^ name, String^ definition)
+	DNNModel::DNNModel(String^ definition)
 	{
-		Name = name;
-
 		Duration = gcnew System::Diagnostics::Stopwatch();
 		
 		sb = gcnew System::Text::StringBuilder();
@@ -600,7 +610,7 @@ namespace dnncore
 			ApplyParameters();
 
 			WorkerTimer = gcnew System::Timers::Timer(1000.0);
-			WorkerTimer->Elapsed += gcnew System::Timers::ElapsedEventHandler(this, &dnncore::Model::OnElapsed);
+			WorkerTimer->Elapsed += gcnew System::Timers::ElapsedEventHandler(this, &dnncore::DNNModel::OnElapsed);
 		}
 		else
 		{
@@ -608,25 +618,25 @@ namespace dnncore
 		}
 	}
 
-	Model::~Model()
+	DNNModel::~DNNModel()
 	{
 		DNNModelDispose();
 		WorkerTimer->Close();
 	}
 	
-	void Model::SetPersistOptimizer(bool persist)
+	void DNNModel::SetPersistOptimizer(bool persist)
 	{
 		DNNPersistOptimizer(persist);
 		PersistOptimizer = persist;
 	}
 
-	void Model::SetDisableLocking(bool disable)
+	void DNNModel::SetDisableLocking(bool disable)
 	{
 		DNNDisableLocking(disable);
 		DisableLocking = disable;
 	}
 
-	void Model::GetConfusionMatrix()
+	void DNNModel::GetConfusionMatrix()
 	{
 		const auto classCount = CostLayers[CostIndex]->ClassCount;
 
@@ -645,17 +655,17 @@ namespace dnncore
 		}
 	}
 
-	bool Model::LoadDataset()
+	bool DNNModel::LoadDataset()
 	{
 		return DNNLoadDataset();
 	}
 
-	bool Model::BatchNormalizationUsed()
+	bool DNNModel::BatchNormalizationUsed()
 	{
 		return DNNBatchNormalizationUsed();
 	}
 
-	void Model::UpdateLayerStatistics(LayerInformation^ info, UInt layerIndex, bool updateUI)
+	void DNNModel::UpdateLayerStatistics(DNNLayerInfo^ info, UInt layerIndex, bool updateUI)
 	{
 		auto description = new std::string();
 		auto neuronsStats = new dnn::Stats();
@@ -819,7 +829,7 @@ namespace dnncore
 		}
 	}
 
-	void Model::UpdateInputSnapshot(UInt C, UInt H, UInt W)
+	void DNNModel::UpdateInputSnapshot(UInt C, UInt H, UInt W)
 	{
 		const auto totalSize = C * H * W;
 		auto snapshot = std::vector<Float>(totalSize);
@@ -851,17 +861,17 @@ namespace dnncore
 		}
 	}
 
-	LayerInformation^ Model::GetLayerInfo(UInt layerIndex)
+	DNNLayerInfo^ DNNModel::GetLayerInfo(UInt layerIndex)
 	{
-		LayerInformation^ info = gcnew LayerInformation();
+		DNNLayerInfo^ info = gcnew DNNLayerInfo();
 		
 		auto layerInfo = new dnn::LayerInfo();
-		DNNGetLayerInfo(layerInfo);
+		DNNGetLayerInfo(layerIndex, layerInfo);
 
 		info->LayerIndex = layerInfo->LayerIndex;
 		info->LayerType = static_cast<DNNLayerTypes>(layerInfo->LayerType);
 		info->IsNormalizationLayer = info->LayerType == DNNLayerTypes::BatchNorm || info->LayerType == DNNLayerTypes::BatchNormHardLogistic || info->LayerType == DNNLayerTypes::BatchNormHardSwish || info->LayerType == DNNLayerTypes::BatchNormHardSwishDropout || info->LayerType == DNNLayerTypes::BatchNormMish || info->LayerType == DNNLayerTypes::BatchNormMishDropout || info->LayerType == DNNLayerTypes::BatchNormRelu || info->LayerType == DNNLayerTypes::BatchNormReluDropout || info->LayerType == DNNLayerTypes::BatchNormSwish || info->LayerType == DNNLayerTypes::BatchNormSwishDropout || info->LayerType == DNNLayerTypes::BatchNormTanhExp || info->LayerType == DNNLayerTypes::BatchNormTanhExpDropout || info->LayerType == DNNLayerTypes::LayerNorm;
-		info->ActivationFunctionEnum = static_cast<DNNActivations>(layerInfo->ActivationFunction);
+		info->Activation = static_cast<DNNActivations>(layerInfo->Activation);
 		info->CostFunction = static_cast<DNNCosts>(layerInfo->Cost);
 		info->InputCount = layerInfo->InputsCount;
 		
@@ -919,15 +929,15 @@ namespace dnncore
 		return info;
 	}
 
-	void Model::GetLayerInfoUpdate(UInt layerIndex, LayerInformation^ info)
+	void DNNModel::GetLayerInfoUpdate(UInt layerIndex, DNNLayerInfo^ info)
 	{
 		auto layerInfo = new dnn::LayerInfo();
-		DNNGetLayerInfo(layerInfo);
+		DNNGetLayerInfo(layerIndex, layerInfo);
 		
 		info->LayerIndex = layerInfo->LayerIndex;
 		info->LayerType = static_cast<DNNLayerTypes>(layerInfo->LayerType);
 		info->IsNormalizationLayer = info->LayerType == DNNLayerTypes::BatchNorm || info->LayerType == DNNLayerTypes::BatchNormHardLogistic || info->LayerType == DNNLayerTypes::BatchNormHardSwish || info->LayerType == DNNLayerTypes::BatchNormHardSwishDropout || info->LayerType == DNNLayerTypes::BatchNormMish || info->LayerType == DNNLayerTypes::BatchNormMishDropout || info->LayerType == DNNLayerTypes::BatchNormRelu || info->LayerType == DNNLayerTypes::BatchNormReluDropout || info->LayerType == DNNLayerTypes::BatchNormSwish || info->LayerType == DNNLayerTypes::BatchNormSwishDropout || info->LayerType == DNNLayerTypes::BatchNormTanhExp || info->LayerType == DNNLayerTypes::BatchNormTanhExpDropout || info->LayerType == DNNLayerTypes::LayerNorm;
-		info->ActivationFunctionEnum = static_cast<DNNActivations>(layerInfo->ActivationFunction);
+		info->Activation = static_cast<DNNActivations>(layerInfo->Activation);
 		info->CostFunction = static_cast<DNNCosts>(layerInfo->Cost);
 		info->InputCount = layerInfo->InputsCount;
 
@@ -983,7 +993,7 @@ namespace dnncore
 		delete layerInfo;
 	}
 
-	void Model::UpdateLayerInfo(UInt layerIndex, bool updateUI)
+	void DNNModel::UpdateLayerInfo(UInt layerIndex, bool updateUI)
 	{
 		if (layerIndex == 0)
 			GetLayerInfoUpdate(layerIndex, Layers[layerIndex]);
@@ -991,7 +1001,7 @@ namespace dnncore
 		UpdateLayerStatistics(Layers[layerIndex], layerIndex, updateUI);
 	}
 
-	void Model::OnElapsed(Object^, System::Timers::ElapsedEventArgs^)
+	void DNNModel::OnElapsed(Object^, System::Timers::ElapsedEventArgs^)
 	{
 		sb->Length = 0;
 		if (Duration->Elapsed.Days > 0)
@@ -1097,17 +1107,17 @@ namespace dnncore
 		}
 	}
 
-	void Model::ResetWeights()
+	void DNNModel::ResetWeights()
 	{
 		DNNResetWeights();
 	}
 
-	void Model::ResetLayerWeights(UInt layerIndex)
+	void DNNModel::ResetLayerWeights(UInt layerIndex)
 	{
 		DNNResetLayerWeights(layerIndex);
 	}
 
-	bool Model::SetFormat(bool plain)
+	bool DNNModel::SetFormat(bool plain)
 	{
 		bool ret = DNNSetFormat(plain);
 
@@ -1117,7 +1127,7 @@ namespace dnncore
 		return ret;
 	}
 
-	void Model::SetOptimizer(DNNOptimizers strategy)
+	void DNNModel::SetOptimizer(DNNOptimizers strategy)
 	{
 		if (strategy != Optimizer)
 		{
@@ -1126,18 +1136,18 @@ namespace dnncore
 		}
 	}
 
-	void Model::SetUseTrainingStrategy(bool enable)
+	void DNNModel::SetUseTrainingStrategy(bool enable)
 	{
 		DNNSetUseTrainingStrategy(enable);
 		UseTrainingStrategy = enable;
 	}
 
-	void Model::ResetOptimizer()
+	void DNNModel::ResetOptimizer()
 	{
 		DNNResetOptimizer();
 	}
 
-	cli::array<String^>^ Model::GetTextLabels(String^ fileName)
+	cli::array<String^>^ DNNModel::GetTextLabels(String^ fileName)
 	{
 		int lines = 0;
 		cli::array<String^>^ list;
@@ -1185,7 +1195,7 @@ namespace dnncore
 
 	}
 
-	void Model::SetCostIndex(UInt index)
+	void DNNModel::SetCostIndex(UInt index)
 	{
 		DNNSetCostIndex(index);
 		CostIndex = index;
@@ -1194,7 +1204,7 @@ namespace dnncore
 		ClassCount = CostLayers[CostIndex]->ClassCount;
 	}
 
-	void Model::UpdateCostInfo(UInt index)
+	void DNNModel::UpdateCostInfo(UInt index)
 	{
 		auto trainErrors = new UInt();
 		auto trainLoss = new Float();
@@ -1231,7 +1241,7 @@ namespace dnncore
 		delete testErrorPercentage;
 	}
 
-	void Model::ApplyParameters()
+	void DNNModel::ApplyParameters()
 	{
 		auto aName = new std::string();
 		auto meanStdNormalization = new bool();
@@ -1351,7 +1361,7 @@ namespace dnncore
 		CostLayers = gcnew cli::array<DNNCostLayer^>(int(CostLayersCount));
 		UInt costLayersCounter = 0;
 				
-		Layers = gcnew System::Collections::ObjectModel::ObservableCollection<LayerInformation^>();
+		Layers = gcnew System::Collections::ObjectModel::ObservableCollection<DNNLayerInfo^>();
 		
 		for (UInt layer = 0; layer < LayerCount; layer++)
 		{
@@ -1368,31 +1378,31 @@ namespace dnncore
 		Optimizer = static_cast<DNNOptimizers>(GetOptimizer());
 	}
 
-	void Model::AddTrainingRate(DNNTrainingRate^ rate, bool clear, UInt gotoEpoch, UInt trainSamples)
+	void DNNModel::AddTrainingRate(DNNTrainingRate^ rate, bool clear, UInt gotoEpoch, UInt trainSamples)
 	{
 		auto nativeRate = dnn::TrainingRate(static_cast<dnn::Optimizers>(rate->Optimizer), rate->Momentum, rate->Beta2, rate->L2Penalty, rate->Dropout, rate->Eps, rate->BatchSize, rate->Height, rate->Width, rate->Cycles, rate->Epochs, rate->EpochMultiplier,rate->MaximumRate, rate->MinimumRate, rate->FinalRate, rate->Gamma, rate->DecayAfterEpochs, rate->DecayFactor, rate->HorizontalFlip, rate->VerticalFlip, rate->InputDropout, rate->Cutout, rate->CutMix, rate->AutoAugment, rate->ColorCast, rate->ColorAngle, rate->Distortion, static_cast<dnn::Interpolations>(rate->Interpolation), rate->Scaling, rate->Rotation);
 
 		DNNAddTrainingRate(nativeRate, clear, gotoEpoch, trainSamples);
 	}
 
-	void Model::AddTrainingRateSGDR(DNNTrainingRate^ rate, bool clear, UInt gotoEpoch, UInt trainSamples)
+	void DNNModel::AddTrainingRateSGDR(DNNTrainingRate^ rate, bool clear, UInt gotoEpoch, UInt trainSamples)
 	{
 		auto nativeRate = dnn::TrainingRate(static_cast<dnn::Optimizers>(rate->Optimizer), rate->Momentum, rate->Beta2, rate->L2Penalty, rate->Dropout, rate->Eps, rate->BatchSize, rate->Height, rate->Width, rate->Cycles, rate->Epochs, rate->EpochMultiplier, rate->MaximumRate, rate->MinimumRate, rate->FinalRate, rate->Gamma, rate->DecayAfterEpochs, rate->DecayFactor, rate->HorizontalFlip, rate->VerticalFlip, rate->InputDropout, rate->Cutout, rate->CutMix, rate->AutoAugment, rate->ColorCast, rate->ColorAngle, rate->Distortion, static_cast<dnn::Interpolations>(rate->Interpolation), rate->Scaling, rate->Rotation);
 
 		DNNAddTrainingRateSGDR(nativeRate, clear, gotoEpoch, trainSamples);
 	}
 
-	void Model::ClearTrainingStrategies()
+	void DNNModel::ClearTrainingStrategies()
 	{
 		DNNClearTrainingStrategies();
 	}
 
-	void Model::AddTrainingStrategy(DNNTrainingStrategy^ strategy)
+	void DNNModel::AddTrainingStrategy(DNNTrainingStrategy^ strategy)
 	{
 		DNNAddTrainingStrategy(dnn::TrainingStrategy(strategy->Epochs, strategy->BatchSize, strategy->Height, strategy->Width, strategy->Momentum, strategy->Beta2, strategy->Gamma, strategy->L2Penalty, strategy->Dropout, strategy->HorizontalFlip, strategy->VerticalFlip, strategy->InputDropout, strategy->Cutout, strategy->CutMix, strategy->AutoAugment, strategy->ColorCast, strategy->ColorAngle, strategy->Distortion, static_cast<dnn::Interpolations>(strategy->Interpolation), strategy->Scaling, strategy->Rotation));
 	}
 
-	void Model::Start(bool training)
+	void DNNModel::Start(bool training)
 	{
 		if (NewEpoch != nullptr)
 			DNNSetNewEpochDelegate((void(*)(UInt, UInt, UInt, UInt, Float, Float, Float, bool, bool, Float, Float, bool, Float, Float, UInt, Float, UInt, Float, Float, Float, UInt, UInt, UInt, Float, Float, Float, Float, Float, Float, UInt, Float, Float, Float, UInt))(Marshal::GetFunctionPointerForDelegate(NewEpoch).ToPointer()));
@@ -1410,7 +1420,7 @@ namespace dnncore
 		Duration->Start();
 	}
 
-	void Model::Stop()
+	void DNNModel::Stop()
 	{
 		SampleRate = Float(0);
 		Duration->Reset();
@@ -1420,7 +1430,7 @@ namespace dnncore
 		TaskState = DNNTaskStates::Stopped;
 	}
 
-	void Model::Pause()
+	void DNNModel::Pause()
 	{
 		WorkerTimer->Stop();
 		Duration->Stop();
@@ -1428,7 +1438,7 @@ namespace dnncore
 		TaskState = DNNTaskStates::Paused;
 	}
 
-	void Model::Resume()
+	void DNNModel::Resume()
 	{
 		DNNResume();
 		Duration->Start();
@@ -1436,7 +1446,7 @@ namespace dnncore
 		TaskState = DNNTaskStates::Running;
 	}
 
-	DNNCheckMsg^ Model::CheckDefinition(String^ definition)
+	DNNCheckMsg^ DNNModel::CheckDefinition(String^ definition)
 	{
 		dnn::CheckMsg checkMsg;
 		
@@ -1449,7 +1459,7 @@ namespace dnncore
 		return gcnew DNNCheckMsg(checkMsg.Row, checkMsg.Column, ToManagedString(checkMsg.Message), checkMsg.Error, definition);
 	}
 
-	int Model::LoadDefinition(String^ fileName)
+	int DNNModel::LoadDefinition(String^ fileName)
 	{
 		dnn::CheckMsg checkMsg;
 
@@ -1477,7 +1487,7 @@ namespace dnncore
 		return 1;
 	}
 
-	void Model::SetLocked(bool locked)
+	void DNNModel::SetLocked(bool locked)
 	{
 		DNNSetLocked(locked);
 		for (int i = 0; i < LayerCount; i++)
@@ -1485,12 +1495,12 @@ namespace dnncore
 				Layers[i]->LockUpdate = locked;
 	}
 
-	void Model::SetLayerLocked(UInt layerIndex, bool locked)
+	void DNNModel::SetLayerLocked(UInt layerIndex, bool locked)
 	{
 		DNNSetLayerLocked(layerIndex, locked);
 	}
 
-	int Model::LoadWeights(String^ fileName, bool persist)
+	int DNNModel::LoadWeights(String^ fileName, bool persist)
 	{
 		int ret = DNNLoadWeights(ToUnmanagedString(fileName), persist);
 
@@ -1502,12 +1512,12 @@ namespace dnncore
 		return ret;
 	}
 
-	int Model::SaveWeights(String^ fileName, bool persist)
+	int DNNModel::SaveWeights(String^ fileName, bool persist)
 	{
 		return DNNSaveWeights(ToUnmanagedString(fileName), persist);
 	}
 
-	int Model::LoadLayerWeights(String^ fileName, UInt layerIndex)
+	int DNNModel::LoadLayerWeights(String^ fileName, UInt layerIndex)
 	{
 		int ret = DNNLoadLayerWeights(ToUnmanagedString(fileName).c_str(), layerIndex, false);
 
@@ -1517,12 +1527,12 @@ namespace dnncore
 		return ret;
 	}
 
-	int Model::SaveLayerWeights(String^ fileName, UInt layerIndex)
+	int DNNModel::SaveLayerWeights(String^ fileName, UInt layerIndex)
 	{
 		return DNNSaveLayerWeights(ToUnmanagedString(fileName), layerIndex, false);
 	}
 
-	bool Model::StochasticEnabled()
+	bool DNNModel::StochasticEnabled()
 	{
 		return DNNStochasticEnabled();
 	}

@@ -101,7 +101,7 @@ namespace Convnet
 
             try
             {
-                Model model = new Model(Settings.Default.ModelNameActive, Settings.Default.DefinitionActive);
+                var model = new DNNModel(Settings.Default.DefinitionActive);
 
                 if (model != null)
                 {
@@ -180,7 +180,7 @@ namespace Convnet
                     Settings.Default.Optimizer = DNNOptimizers.NAG;
                     Settings.Default.Save();
 
-                    model = new Model(Settings.Default.ModelNameActive, Settings.Default.DefinitionActive);
+                    model = new DNNModel(Settings.Default.DefinitionActive);
 
                     if (model == null)
                     {

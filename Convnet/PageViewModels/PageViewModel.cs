@@ -28,7 +28,7 @@ namespace Convnet.PageViewModels
 
         public event EventHandler PageChange;
 
-        public PageViewModel(Model model) : base(model)
+        public PageViewModel(DNNModel model) : base(model)
         {
             Settings.Default.PropertyChanged += Default_PropertyChanged;
 

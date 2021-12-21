@@ -8,7 +8,7 @@ namespace Convnet.Dialogs
     public partial class TestParameters : Window
     {
         public DNNTrainingRate Rate { get; set; }
-        public Model Model { get; set; }
+        public DNNModel Model { get; set; }
         public string Path { get; set; }
 
         public TestParameters()
