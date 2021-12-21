@@ -1343,7 +1343,7 @@ namespace dnncore
 		property UInt Width;
 		property UInt LayerCount;
 		property UInt Multiplier;
-		property UInt CostLayersCount;
+		property UInt CostLayerCount;
 		property UInt TrainingSamples;
 		property UInt AdjustedTrainingSamplesCount;
 		property UInt TestingSamples;

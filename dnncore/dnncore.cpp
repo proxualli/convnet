@@ -449,10 +449,6 @@ namespace dnn
 		Float SampleSpeed;
 		States State;
 		TaskStates TaskState;
-
-		TrainingInfo()
-		{
-		}
 	};
 
 	struct TestingInfo
@@ -471,10 +467,6 @@ namespace dnn
 		Float SampleSpeed;
 		States State;
 		TaskStates TaskState;
-
-		TestingInfo()
-		{
-		}
 	};
 
 	struct LayerInfo
@@ -524,10 +516,24 @@ namespace dnn
 		bool AcrossChannels;
 		bool Locked;
 		bool Lockable;
+	};
 
-		LayerInfo()
-		{
-		}
+	struct ModelInfo
+	{
+		std::string Name;
+		Datasets Dataset;
+		Costs LossFunction;
+		UInt LayerCount;
+		UInt CostLayerCount;
+		UInt CostIndex;
+		UInt GroupIndex;
+		UInt LabelIndex;
+		UInt Hierarchies;
+		UInt TrainingSamplesCount;
+		UInt TestingSamplesCount;
+		bool MeanStdNormalization;
+		std::vector<Float> MeanTrainSet;
+		std::vector<Float> StdTrainSet;
 	};
 }
 
@@ -559,7 +565,7 @@ DNN_API void DNNResume();
 DNN_API void DNNTesting();
 DNN_API void DNNGetTrainingInfo(dnn::TrainingInfo* info);
 DNN_API void DNNGetTestingInfo(dnn::TestingInfo* info);
-DNN_API void DNNGetModelInfo(std::string* name, UInt* costIndex, UInt* costLayerCount, UInt* groupIndex, UInt* labelindex, UInt* hierarchies, bool* meanStdNormalization, dnn::Costs* lossFunction, dnn::Datasets* dataset, UInt* layerCount, UInt* trainingSamples, UInt* testingSamples, std::vector<Float>* meanTrainSet, std::vector<Float>* stdTrainSet);
+DNN_API void DNNGetModelInfo(dnn::ModelInfo* info);
 DNN_API void DNNSetOptimizer(const dnn::Optimizers strategy);
 DNN_API void DNNResetOptimizer();
 DNN_API void DNNRefreshStatistics(const UInt layerIndex, std::string* description, dnn::Stats* neuronsStats, dnn::Stats* weightsStats, dnn::Stats* biasesStats, Float* fpropLayerTime, Float* bpropLayerTime, Float* updateLayerTime, Float* fpropTime, Float* bpropTime, Float* updateTime, bool* locked);
@@ -1243,50 +1249,23 @@ namespace dnncore
 
 	void DNNModel::ApplyParameters()
 	{
-		auto aName = new std::string();
-		auto meanStdNormalization = new bool();
-		auto costFunction = new dnn::Costs();
-		auto dataset = new dnn::Datasets();
-		auto aCostIndex = new UInt();
-		auto costLayersCount = new UInt();
-		auto hierarchies = new UInt();
-		auto groupIndex = new UInt();
-		auto labelIndex = new UInt();
-		auto layerCount = new UInt();
-		auto trainingSamples = new UInt();
-		auto testingSamples = new UInt();
-		auto meanTrainSet = vector<Float>();
-		auto stdTrainSet = vector<Float>();
+		auto info = new dnn::ModelInfo();
+	
+		DNNGetModelInfo(info);
 
-		DNNGetModelInfo(aName, aCostIndex, costLayersCount, groupIndex, labelIndex, hierarchies, meanStdNormalization, costFunction, dataset, layerCount, trainingSamples, testingSamples, &meanTrainSet, &stdTrainSet);
-		Name = ToManagedString(*aName);
-		CostIndex = *aCostIndex;
-		CostLayersCount = *costLayersCount;
-		GroupIndex = *groupIndex;
-		LabelIndex = *labelIndex;
-		Hierarchies = *hierarchies;
-		MeanStdNormalization = *meanStdNormalization;
-		CostFunction = safe_cast<DNNCosts>(*costFunction);
-		Dataset = safe_cast<DNNDatasets>(*dataset);
-		LayerCount = *layerCount;
-		TrainingSamples = *trainingSamples;
-		TestingSamples = *testingSamples;
-
-		delete aName;
-		delete meanStdNormalization;
-		delete costFunction;
-		delete dataset;
-		delete aCostIndex;
-		delete costLayersCount;
-		delete hierarchies;
-		delete groupIndex;
-		delete labelIndex;
-		delete layerCount;
-		delete trainingSamples;
-		delete testingSamples;
-
-		TrainingStrategies = gcnew System::Collections::ObjectModel::ObservableCollection<DNNTrainingStrategy^>();
-
+		Name = ToManagedString(info->Name);
+		Dataset = safe_cast<DNNDatasets>(info->Dataset);
+		CostFunction = safe_cast<DNNCosts>(info->LossFunction);
+		LayerCount = info->LayerCount;
+		CostLayerCount = info->CostLayerCount;
+		CostIndex = info->CostIndex;
+		GroupIndex = info->GroupIndex;
+		LabelIndex = info->LabelIndex;
+		Hierarchies = info->Hierarchies;
+		TrainingSamples = info->TrainingSamplesCount;
+		TestingSamples = info->TestingSamplesCount;
+		MeanStdNormalization = info->MeanStdNormalization;
+		
 		LabelsCollection = gcnew cli::array<cli::array<String^>^>(int(Hierarchies));
 
 		switch (Dataset)
@@ -1296,24 +1275,24 @@ namespace dnncore
 			/*LabelsCollection[0] = gcnew cli::array<String^>(200);
 			for (int i = 0; i < 200; i++)
 				LabelsCollection[0][i] = i.ToString();*/
-			if (meanTrainSet.size() >= 3)
+			if (info->MeanTrainSet.size() >= 3)
 			{
 				for (int i = 0; i < 3; i++)
 				{
-					MeanTrainSet[i] = meanTrainSet[i];
-					StdTrainSet[i] = stdTrainSet[i];
+					MeanTrainSet[i] = info->MeanTrainSet[i];
+					StdTrainSet[i] = info->StdTrainSet[i];
 				}
 			}
 			break;
 
 		case DNNDatasets::cifar10:
 			LabelsCollection[0] = GetTextLabels(String::Concat(DatasetsDirectory, Dataset.ToString() + "\\batches.meta.txt"));
-			if (meanTrainSet.size() >= 3)
+			if (info->MeanTrainSet.size() >= 3)
 			{
 				for (int i = 0; i < 3; i++)
 				{
-					MeanTrainSet[i] = meanTrainSet[i];
-					StdTrainSet[i] = stdTrainSet[i];
+					MeanTrainSet[i] = info->MeanTrainSet[i];
+					StdTrainSet[i] = info->StdTrainSet[i];
 				}
 			}
 			break;
@@ -1321,24 +1300,24 @@ namespace dnncore
 		case DNNDatasets::cifar100:
 			LabelsCollection[0] = GetTextLabels(String::Concat(DatasetsDirectory, Dataset.ToString() + "\\coarse_label_names.txt"));
 			LabelsCollection[1] = GetTextLabels(String::Concat(DatasetsDirectory, Dataset.ToString() + "\\fine_label_names.txt"));
-			if (meanTrainSet.size() >= 3)
+			if (info->MeanTrainSet.size() >= 3)
 			{
 				for (int i = 0; i < 3; i++)
 				{
-					MeanTrainSet[i] = meanTrainSet[i];
-					StdTrainSet[i] = stdTrainSet[i];
+					MeanTrainSet[i] = info->MeanTrainSet[i];
+					StdTrainSet[i] = info->StdTrainSet[i];
 				}
 			}
 			break;
 
 		case DNNDatasets::fashionmnist:
 			LabelsCollection[0] = GetTextLabels(String::Concat(DatasetsDirectory, Dataset.ToString() + "\\batches.meta.txt"));
-			if (meanTrainSet.size() >= 1)
+			if (info->MeanTrainSet.size() >= 1)
 			{
 				for (int i = 0; i < 1; i++)
 				{
-					MeanTrainSet[i] = meanTrainSet[i];
-					StdTrainSet[i] = stdTrainSet[i];
+					MeanTrainSet[i] = info->MeanTrainSet[i];
+					StdTrainSet[i] = info->StdTrainSet[i];
 				}
 			}
 			break;
@@ -1347,19 +1326,24 @@ namespace dnncore
 			LabelsCollection[0] = gcnew cli::array<String^>(10);
 			for (int i = 0; i < 10; i++)
 				LabelsCollection[0][i] = i.ToString();
-			if (meanTrainSet.size() >= 1)
+			if (info->MeanTrainSet.size() >= 1)
 			{
 				for (int i = 0; i < 1; i++)
 				{
-					MeanTrainSet[i] = meanTrainSet[i];
-					StdTrainSet[i] = stdTrainSet[i];
+					MeanTrainSet[i] = info->MeanTrainSet[i];
+					StdTrainSet[i] = info->StdTrainSet[i];
 				}
 			}
 			break;
 		}
 
-		CostLayers = gcnew cli::array<DNNCostLayer^>(int(CostLayersCount));
-		UInt costLayersCounter = 0;
+		delete info;
+
+
+		TrainingStrategies = gcnew System::Collections::ObjectModel::ObservableCollection<DNNTrainingStrategy^>();
+
+		CostLayers = gcnew cli::array<DNNCostLayer^>(int(CostLayerCount));
+		UInt counter = 0;
 				
 		Layers = gcnew System::Collections::ObjectModel::ObservableCollection<DNNLayerInfo^>();
 		
@@ -1368,7 +1352,7 @@ namespace dnncore
 			Layers->Add(GetLayerInfo(layer));
 
 			if (Layers[layer]->LayerType == DNNLayerTypes::Cost)
-				CostLayers[costLayersCounter++] = gcnew DNNCostLayer(Layers[layer]->CostFunction, Layers[layer]->LayerIndex, Layers[layer]->GroupIndex, Layers[layer]->LabelIndex, Layers[layer]->NeuronCount, Layers[layer]->Name, Layers[layer]->Weight);
+				CostLayers[counter++] = gcnew DNNCostLayer(Layers[layer]->CostFunction, Layers[layer]->LayerIndex, Layers[layer]->GroupIndex, Layers[layer]->LabelIndex, Layers[layer]->NeuronCount, Layers[layer]->Name, Layers[layer]->Weight);
 		}
 
 		GroupIndex = CostLayers[CostIndex]->GroupIndex;

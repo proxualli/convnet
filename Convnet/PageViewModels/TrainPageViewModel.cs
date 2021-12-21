@@ -135,7 +135,7 @@ namespace Convnet.PageViewModels
             Model.TrainProgress += TrainProgress;
 
             costLayersComboBox.Items.Clear();
-            for (uint layer = 0u; layer < Model.CostLayersCount; layer++)
+            for (uint layer = 0u; layer < Model.CostLayerCount; layer++)
             {
                 ComboBoxItem item = new ComboBoxItem
                 {
@@ -147,8 +147,8 @@ namespace Convnet.PageViewModels
             }
             costLayersComboBox.SelectedIndex = (int)Model.CostIndex;
             selectedCostIndex = costLayersComboBox.SelectedIndex;
-            costLayersComboBox.IsEnabled = Model.CostLayersCount > 1;
-            costLayersComboBox.Visibility = Model.CostLayersCount > 1 ? Visibility.Visible : Visibility.Collapsed;
+            costLayersComboBox.IsEnabled = Model.CostLayerCount > 1;
+            costLayersComboBox.Visibility = Model.CostLayerCount > 1 ? Visibility.Visible : Visibility.Collapsed;
 
             layersComboBox.ItemsSource = Model.Layers;
             layersComboBox.SelectedIndex = 0;
@@ -173,7 +173,7 @@ namespace Convnet.PageViewModels
             {
                 TimeSpan span = Model.Duration.Elapsed.Subtract(EpochDuration);
                 EpochDuration = Model.Duration.Elapsed;
-                for (uint c = 0; c < Model.CostLayersCount; c++)
+                for (uint c = 0; c < Model.CostLayerCount; c++)
                 {
                     Model.UpdateCostInfo(c);
                     TrainingLog.Add(new DNNTrainingResult(Cycle, Epoch, Model.CostLayers[c].GroupIndex, c, Model.CostLayers[c].Name, (DNNOptimizers)Optimizer, Momentum, Beta2, Gamma, L2Penalty, Dropout, Eps, Rate, BatchSize, Height, Width, InputDropout, Cutout, CutMix, AutoAugment, HorizontalFlip, VerticalFlip, ColorCast, ColorAngle, Distortion, (DNNInterpolations)Interpolation, Scaling, Rotation, Model.CostLayers[c].AvgTrainLoss, Model.CostLayers[c].TrainErrors, Model.CostLayers[c].TrainErrorPercentage, Model.CostLayers[c].TrainAccuracy, Model.CostLayers[c].AvgTestLoss, Model.CostLayers[c].TestErrors, Model.CostLayers[c].TestErrorPercentage, Model.CostLayers[c].TestAccuracy, span.Ticks));
@@ -412,7 +412,7 @@ namespace Convnet.PageViewModels
                 Name = "ComboBoxCostLayers"
             };
             costLayersComboBox.Items.Clear();
-            for (uint layer = 0u; layer < Model.CostLayersCount; layer++)
+            for (uint layer = 0u; layer < Model.CostLayerCount; layer++)
             {
                 ComboBoxItem item = new ComboBoxItem
                 {
@@ -426,7 +426,7 @@ namespace Convnet.PageViewModels
             costLayersComboBox.SelectedIndex = (int)Model.CostIndex;
             selectedCostIndex = costLayersComboBox.SelectedIndex;
             costLayersComboBox.SelectionChanged += CostLayersComboBox_SelectionChanged;
-            costLayersComboBox.Visibility = Model.CostLayersCount > 1 ? Visibility.Visible : Visibility.Collapsed;
+            costLayersComboBox.Visibility = Model.CostLayerCount > 1 ? Visibility.Visible : Visibility.Collapsed;
 
             layersComboBox = new ComboBox { Name = "ComboBoxLayers" };
             layersComboBox.DataContext = Model;

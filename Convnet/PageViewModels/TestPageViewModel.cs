@@ -111,7 +111,7 @@ namespace Convnet.PageViewModels
                 Name = "ComboBoxCostLayers"
             };
             costLayersComboBox.Items.Clear();
-            for (uint layer = 0u; layer < Model.CostLayersCount; layer++)
+            for (uint layer = 0u; layer < Model.CostLayerCount; layer++)
             {
                 ComboBoxItem item = new ComboBoxItem
                 {
@@ -124,7 +124,7 @@ namespace Convnet.PageViewModels
             costLayersComboBox.ToolTip = "Cost Layer";
             costLayersComboBox.SelectedIndex = (int)Model.CostIndex;
             costLayersComboBox.SelectionChanged += CostLayersComboBox_SelectionChanged;
-            costLayersComboBox.IsEnabled = Model.CostLayersCount > 1;
+            costLayersComboBox.IsEnabled = Model.CostLayerCount > 1;
 
             CommandToolBar.Add(startButton);
             CommandToolBar.Add(stopButton);
@@ -160,7 +160,7 @@ namespace Convnet.PageViewModels
             ConfusionDataTable = null;
 
             costLayersComboBox.Items.Clear();
-            for (uint layer = 0u; layer < Model.CostLayersCount; layer++)
+            for (uint layer = 0u; layer < Model.CostLayerCount; layer++)
             {
                 ComboBoxItem item = new ComboBoxItem
                 {
@@ -171,7 +171,7 @@ namespace Convnet.PageViewModels
                 costLayersComboBox.Items.Add(item);
             }
             costLayersComboBox.SelectedIndex = (int)Model.CostIndex;
-            costLayersComboBox.IsEnabled = Model.CostLayersCount > 1;
+            costLayersComboBox.IsEnabled = Model.CostLayerCount > 1;
 
             dataProviderComboBox.SelectedIndex = (int)Dataset;
 
