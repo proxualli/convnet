@@ -410,6 +410,57 @@ namespace dnn
 		{
 		}
 	};
+
+	struct TrainingInfo
+	{
+		UInt TotalCycles;
+		UInt TotalEpochs;
+		UInt Cycle;
+		UInt Epoch;
+		UInt SampleIndex;
+
+		Float Rate;
+		Optimizers Optimizer;
+
+		Float Momentum;
+		Float Beta2;
+		Float Gamma;
+		Float L2Penalty;
+		Float Dropout;
+
+		UInt BatchSize;
+		UInt Height;
+		UInt Width;
+
+		bool HorizontalFlip;
+		bool VerticalFlip;
+		Float InputDropout;
+		Float Cutout;
+		bool CutMix;
+		Float AutoAugment;
+		Float ColorCast;
+		UInt ColorAngle;
+		Float Distortion;
+		Interpolations Interpolation;
+		Float Scaling;
+		Float Rotation;
+
+		Float AvgTrainLoss;
+		Float TrainErrorPercentage;
+		UInt TrainErrors;
+		Float AvgTestLoss;
+		Float TestErrorPercentage;
+		UInt TestErrors;
+
+		Float SampleSpeed;
+
+		States State;
+		TaskStates TaskState;
+
+		TrainingInfo()
+		{
+		}
+	};
 }
 
 #define DNN_API extern "C" __declspec(dllimport)
@@ -438,8 +489,8 @@ DNN_API void DNNStop();
 DNN_API void DNNPause();
 DNN_API void DNNResume();
 DNN_API void DNNTesting();
-DNN_API void DNNGetTrainingInfo(UInt* currentCycle, UInt* totalCycles, UInt* currentEpoch, UInt* totalEpochs, bool* horizontalFlip, bool* verticalFlip, Float* inputDropout, Float* cutout, bool* cutMix, Float* autoAugment, Float* colorCast, UInt* colorAngle, Float* distortion, dnn::Interpolations* interpolation, Float* scaling, Float* rotation, UInt* sampleIndex, UInt* batchSize, UInt* height, UInt* width, Float* maximumRate, dnn::Optimizers* optimizer, Float* momentum, Float* beta2, Float* gamma, Float* l2Penalty, Float* dropout, Float* avgTrainLoss, Float* trainErrorPercentage, UInt* trainErrors, Float* avgTestLoss, Float* testErrorPercentage, UInt* testErrors, Float* sampleSpeed, dnn::States* networkState, dnn::TaskStates* taskState);
-DNN_API void DNNGetTestingInfo(UInt* batchSize, UInt* height, UInt* width, UInt* sampleIndex, Float* avgTestLoss, Float* testErrorPercentage, UInt* testErrors, Float* sampleSpeed, dnn::States* networkState, dnn::TaskStates* taskState);
+DNN_API void DNNGetTrainingInfo(dnn::TrainingInfo* info);
+DNN_API void DNNGetTestingInfo(dnn::TrainingInfo* info);
 DNN_API void DNNGetModelInfo(std::string* name, UInt* costIndex, UInt* costLayerCount, UInt* groupIndex, UInt* labelindex, UInt* hierarchies, bool* meanStdNormalization, dnn::Costs* lossFunction, dnn::Datasets* dataset, UInt* layerCount, UInt* trainingSamples, UInt* testingSamples, std::vector<Float>* meanTrainSet, std::vector<Float>* stdTrainSet);
 DNN_API void DNNSetOptimizer(const dnn::Optimizers strategy);
 DNN_API void DNNResetOptimizer();
@@ -1066,82 +1117,52 @@ namespace dnncore
 
 		if (IsTraining)
 		{
-			auto cycle = new UInt();
-			auto totalCycles = new UInt();
-			auto epoch = new UInt();
-			auto totalEpochs = new UInt();
-			auto horizontalFlip = new bool();
-			auto verticalFlip = new bool();
-			auto inputDropout = new Float();
-			auto cutout = new Float();
-			auto cutMix = new bool();
-			auto autoAugment = new Float();
-			auto colorCast = new Float();
-			auto colorAngle = new UInt();
-			auto distortion = new Float();
-			auto interpolation = new dnn::Interpolations();
-			auto scaling = new Float();
-			auto rotation = new Float;
-			auto sampleIndex = new UInt();
-			auto rate = new Float();
-			auto momentum = new Float();
-			auto beta2 = new Float();
-			auto gamma = new Float();
-			auto optimizer = new dnn::Optimizers();
-			auto l2Penalty = new Float();
-			auto dropout = new Float();
-			auto batchSize = new UInt();
-			auto height = new UInt();
-			auto width = new UInt();
-			auto avgTrainLoss = new Float();
-			auto trainErrorPercentage = new Float();
-			auto trainErrors = new UInt();
-			auto avgTestLoss = new Float();
-			auto testErrorPercentage = new Float();
-			auto testErrors = new UInt();
-			auto sampleSpeed = new Float();
-			auto aState = new dnn::States();
-			auto aTaskState = new dnn::TaskStates();
+			auto info = new dnn::TrainingInfo;
+			DNNGetTrainingInfo(info);
 
-			DNNGetTrainingInfo(cycle, totalCycles, epoch, totalEpochs, horizontalFlip, verticalFlip, inputDropout, cutout, cutMix, autoAugment, colorCast, colorAngle, distortion, interpolation, scaling, rotation, sampleIndex, batchSize, height, width, rate, optimizer, momentum, beta2, gamma, l2Penalty, dropout, avgTrainLoss, trainErrorPercentage, trainErrors, avgTestLoss, testErrorPercentage, testErrors, sampleSpeed, aState, aTaskState);
+			TotalCycles = info->TotalCycles;
+			TotalEpochs = info->TotalEpochs;
+			Cycle = info->Cycle;
+			Epoch = info->Epoch;;
+			SampleIndex = info->SampleIndex;
+			
+			Rate = info->Rate;
+			if (Optimizer != static_cast<dnncore::DNNOptimizers>(info->Optimizer))
+				Optimizer = static_cast<dnncore::DNNOptimizers>(info->Optimizer);
 
-			Cycle = *cycle;
-			TotalCycles = *totalCycles;
-			Epoch = *epoch;
-			TotalEpochs = *totalEpochs;
-			HorizontalFlip = *horizontalFlip;
-			VerticalFlip = *verticalFlip;
-			InputDropout = *inputDropout;
-			Cutout = *cutout;
-			CutMix = *cutMix;
-			AutoAugment = *autoAugment;
-			ColorCast = *colorCast;
-			ColorAngle = *colorAngle;
-			Distortion = *distortion;
-			Interpolation = static_cast<dnncore::DNNInterpolations>(*interpolation);
-			Scaling = *scaling;
-			Rotation = *rotation;
-			SampleIndex = *sampleIndex;
-			Rate = *rate;
-			if (Optimizer != static_cast<dnncore::DNNOptimizers>(*optimizer))
-				Optimizer = static_cast<dnncore::DNNOptimizers>(*optimizer);
-			Momentum = *momentum;
-			Beta2 = *beta2;
-			L2Penalty = *l2Penalty;
-			Gamma = *gamma;
-			Dropout = *dropout;
-			BatchSize = *batchSize;
-			Height = *height;
-			Width = *width;
-			AvgTrainLoss = *avgTrainLoss;
-			TrainErrorPercentage = *trainErrorPercentage;
-			TrainErrors = *trainErrors;
-			AvgTestLoss = *avgTestLoss;
-			TestErrorPercentage = *testErrorPercentage;
-			TestErrors = *testErrors;
-			SampleRate = *sampleSpeed;;
-			State = static_cast<dnncore::DNNStates>(*aState);
-			TaskState = static_cast<dnncore::DNNTaskStates>(*aTaskState);
+			Momentum = info->Momentum;
+			Beta2 = info->Beta2;
+			L2Penalty = info->L2Penalty;
+			Gamma = info->Gamma;
+			Dropout = info->Dropout;
+			BatchSize = info->BatchSize;
+			Height = info->Height;
+			Width = info->Width;
+
+			HorizontalFlip = info->HorizontalFlip;
+			VerticalFlip = info->VerticalFlip;
+			InputDropout = info->InputDropout;
+			Cutout = info->Cutout;
+			CutMix = info->CutMix;
+			AutoAugment = info->AutoAugment;
+			ColorCast = info->ColorCast;
+			ColorAngle = info->ColorAngle;
+			Distortion = info->Distortion;
+			Interpolation = static_cast<dnncore::DNNInterpolations>(info->Interpolation);
+			Scaling = info->Scaling;
+			Rotation = info->Rotation;
+			
+			AvgTrainLoss = info->AvgTrainLoss;
+			TrainErrorPercentage = info->TrainErrorPercentage;
+			TrainErrors = info->TrainErrors;
+			AvgTestLoss = info->AvgTestLoss;
+			TestErrorPercentage = info->TestErrorPercentage;
+			TestErrors = info->TestErrors;
+			
+			SampleRate = info->SampleSpeed;
+
+			State = static_cast<dnncore::DNNStates>(info->State);
+			TaskState = static_cast<dnncore::DNNTaskStates>(info->TaskState);
 
 
 			AdjustedTrainingSamplesCount = TrainingSamples % BatchSize == 0 ? TrainingSamples : ((TrainingSamples / BatchSize) + 1) * BatchSize;
@@ -1155,68 +1176,27 @@ namespace dnncore
 				SampleRate = Float(0);
 			}
 
-			delete cycle;
-			delete totalCycles;
-			delete epoch;
-			delete totalEpochs;
-			delete horizontalFlip;
-			delete verticalFlip;
-			delete inputDropout;
-			delete cutout;
-			delete cutMix;
-			delete autoAugment;
-			delete colorCast;
-			delete colorAngle;
-			delete distortion;
-			delete interpolation;
-			delete scaling;
-			delete rotation;
-			delete sampleIndex;
-			delete rate;
-			delete optimizer;
-			delete momentum;
-			delete beta2;
-			delete gamma;
-			delete l2Penalty;
-			delete dropout;
-			delete batchSize;
-			delete height;
-			delete width;
-			delete avgTrainLoss;
-			delete trainErrorPercentage;
-			delete trainErrors;
-			delete avgTestLoss;
-			delete testErrorPercentage;
-			delete testErrors;
-			delete sampleSpeed;
-			delete aState;
-			delete aTaskState;
+			delete info;
 		}
 		else
 		{
-			auto batchSize = new UInt();
-			auto height = new UInt();
-			auto width = new UInt();
-			auto sampleIndex = new UInt();
-			auto avgTestLoss = new Float();
-			auto testErrorPercentage = new Float();
-			auto testErrors = new UInt();
-			auto sampleSpeed = new Float();
-			auto aState = new dnn::States();
-			auto aTaskState = new dnn::TaskStates();
+			auto info = new dnn::TrainingInfo;
+			DNNGetTestingInfo(info);
 
-			DNNGetTestingInfo(batchSize, height, width, sampleIndex, avgTestLoss, testErrorPercentage, testErrors, sampleSpeed, aState, aTaskState);
+			SampleIndex = info->SampleIndex;
 
-			BatchSize = *batchSize;
-			Height = *height;
-			Width = *width;
-			SampleIndex = *sampleIndex;
-			AvgTestLoss = *avgTestLoss;
-			TestErrorPercentage = *testErrorPercentage;
-			TestErrors = *testErrors;
-			State = static_cast<dnncore::DNNStates>(*aState);
-			TaskState = static_cast<dnncore::DNNTaskStates>(*aTaskState);
-			SampleRate = *sampleSpeed;
+			BatchSize = info->BatchSize;
+			Height = info->Height;
+			Width = info->Width;
+						
+			AvgTestLoss = info->AvgTestLoss;
+			TestErrorPercentage = info->TestErrorPercentage;
+			TestErrors = info->TestErrors;
+			
+			State = static_cast<dnncore::DNNStates>(info->State);
+			TaskState = static_cast<dnncore::DNNTaskStates>(info->TaskState);
+			
+			SampleRate = info->SampleSpeed;
 
 			AdjustedTestingSamplesCount = TestingSamples % BatchSize == 0 ? TestingSamples : ((TestingSamples / BatchSize) + 1) * BatchSize;
 
@@ -1228,16 +1208,7 @@ namespace dnncore
 				SampleRate = Float(0);
 			}
 
-			delete batchSize;
-			delete height;
-			delete width;
-			delete sampleIndex;
-			delete avgTestLoss;
-			delete testErrorPercentage;
-			delete testErrors;
-			delete sampleSpeed;
-			delete aState;
-			delete aTaskState;
+			delete info;
 		}
 	}
 
