@@ -418,20 +418,16 @@ namespace dnn
 		UInt Cycle;
 		UInt Epoch;
 		UInt SampleIndex;
-
 		Float Rate;
 		Optimizers Optimizer;
-
 		Float Momentum;
 		Float Beta2;
 		Float Gamma;
 		Float L2Penalty;
 		Float Dropout;
-
 		UInt BatchSize;
 		UInt Height;
 		UInt Width;
-
 		bool HorizontalFlip;
 		bool VerticalFlip;
 		Float InputDropout;
@@ -444,22 +440,15 @@ namespace dnn
 		Interpolations Interpolation;
 		Float Scaling;
 		Float Rotation;
-
 		Float AvgTrainLoss;
 		Float TrainErrorPercentage;
 		UInt TrainErrors;
 		Float AvgTestLoss;
 		Float TestErrorPercentage;
 		UInt TestErrors;
-
 		Float SampleSpeed;
-
 		States State;
 		TaskStates TaskState;
-
-		TrainingInfo()
-		{
-		}
 	};
 
 	struct TestingInfo
@@ -469,23 +458,64 @@ namespace dnn
 		UInt Cycle;
 		UInt Epoch;
 		UInt SampleIndex;
-
 		UInt BatchSize;
 		UInt Height;
 		UInt Width;
-
 		Float AvgTestLoss;
 		Float TestErrorPercentage;
 		UInt TestErrors;
-
 		Float SampleSpeed;
-
 		States State;
 		TaskStates TaskState;
+	};
 
-		TestingInfo()
-		{
-		}
+	struct LayerInfo
+	{
+		std::string Name;
+		std::string Description;
+		LayerTypes LayerType;
+		Activations ActivationFunction;
+		Algorithms Algorithm;
+		Costs Cost;
+		UInt NeuronCount;
+		UInt WeightCount;
+		UInt BiasesCount;
+		UInt LayerIndex;
+		UInt InputsCount;
+		UInt C;
+		UInt D;
+		UInt H;
+		UInt W;
+		UInt PadD;
+		UInt PadH;
+		UInt PadW;
+		UInt KernelH;
+		UInt KernelW;
+		UInt StrideH;
+		UInt StrideW;
+		UInt DilationH;
+		UInt DilationW;
+		UInt Multiplier;
+		UInt Groups;
+		UInt Group;
+		UInt LocalSize;
+		Float Dropout;
+		Float LabelTrue;
+		Float LabelFalse;
+		Float Weight;
+		UInt GroupIndex;
+		UInt LabelIndex;
+		UInt InputC;
+		Float Alpha;
+		Float Beta;
+		Float K;
+		Float fH;
+		Float fW;
+		bool HasBias;
+		bool Scaling;
+		bool AcrossChannels;
+		bool Locked;
+		bool Lockable;
 	};
 }
 
@@ -498,7 +528,7 @@ DNN_API void DNNPersistOptimizer(const bool persist);
 DNN_API void DNNDisableLocking(const bool disable);
 DNN_API void DNNGetConfusionMatrix(const UInt costLayerIndex, std::vector<std::vector<UInt>>* confusionMatrix);
 DNN_API void DNNGetLayerInputs(const UInt layerIndex, std::vector<UInt>* inputs);
-DNN_API void DNNGetLayerInfo(const UInt layerIndex, UInt* inputsCount, dnn::LayerTypes* layerType, dnn::Activations* activationFunction, dnn::Costs* cost, std::string* name, std::string* description, UInt* neuronCount, UInt* weightCount, UInt* biasesCount, UInt* multiplier, UInt* groups, UInt* group, UInt* localSize, UInt* c, UInt* d, UInt* h, UInt* w, UInt* kernelH, UInt* kernelW, UInt* strideH, UInt* strideW, UInt* dilationH, UInt* dilationW, UInt* padD, UInt* padH, UInt* padW, Float* dropout, Float* labelTrue, Float* labelFalse, Float* weight, UInt* groupIndex, UInt* labelIndex, UInt* inputC, Float* alpha, Float* beta, Float* k, dnn::Algorithms* algorithm, Float* fH, Float* fW, bool* hasBias, bool* scaling, bool* acrossChannels, bool* locked, bool* lockable);
+DNN_API void DNNGetLayerInfo(dnn::LayerInfo* info);
 DNN_API void DNNSetNewEpochDelegate(void(*newEpoch)(UInt, UInt, UInt, UInt, Float, Float, Float, bool, bool, Float, Float, bool, Float, Float, UInt, Float, UInt, Float, Float, Float, UInt, UInt, UInt, Float, Float, Float, Float, Float, Float, UInt, Float, Float, Float, UInt));
 DNN_API void DNNModelDispose();
 DNN_API bool DNNBatchNormalizationUsed();
@@ -824,299 +854,133 @@ namespace dnncore
 	LayerInformation^ Model::GetLayerInfo(UInt layerIndex)
 	{
 		LayerInformation^ info = gcnew LayerInformation();
+		
+		auto layerInfo = new dnn::LayerInfo();
+		DNNGetLayerInfo(layerInfo);
 
-		auto layerType = new dnn::LayerTypes();
-		auto activationFunction = new dnn::Activations();
-		auto costFunction = new dnn::Costs();
-		auto aName = new std::string();
-		auto aDescription = new std::string();
-		auto inputsCount = new UInt();
-		auto neuronCount = new UInt();
-		auto weightCount = new UInt();
-		auto biasCount = new UInt();
-		auto multiplier = new UInt();
-		auto groups = new UInt();
-		auto group = new UInt();
-		auto localSize = new UInt();
-		auto c = new UInt();
-		auto d = new UInt();
-		auto h = new UInt();
-		auto w = new UInt();
-		auto kernelH = new UInt();
-		auto kernelW = new UInt();
-		auto strideH = new UInt();
-		auto strideW = new UInt();
-		auto dilationH = new UInt();
-		auto dilationW = new UInt();
-		auto padD = new UInt();
-		auto padH = new UInt();
-		auto padW = new UInt();
-		auto algorithm = new dnn::Algorithms();
-		auto factorH = new Float();
-		auto factorW = new Float();
-		auto dropout = new Float();
-		auto labelTrue = new Float();
-		auto labelFalse = new Float();
-		auto weight = new Float();
-		auto labelIndex = new UInt();
-		auto groupIndex = new UInt();
-		auto inputC = new UInt();
-		auto alpha = new Float();
-		auto beta = new Float();
-		auto k = new Float;
-		auto hasBias = new bool();
-		auto scaling = new bool();
-		auto acrossChannels = new bool();
-		auto lockable = new bool();
-		auto locked = new bool();
-
-		DNNGetLayerInfo(layerIndex, inputsCount, layerType, activationFunction, costFunction, aName, aDescription, neuronCount, weightCount, biasCount, multiplier, groups, group, localSize, c, d, h, w, kernelH, kernelW, strideH, strideW, dilationH, dilationW, padD, padH, padW, dropout, labelTrue, labelFalse, weight, groupIndex, labelIndex, inputC, alpha, beta, k, algorithm, factorH, factorW, hasBias, scaling, acrossChannels, locked, lockable);
-
-		info->LayerIndex = layerIndex;
-		info->LayerType = static_cast<DNNLayerTypes>(*layerType);
+		info->LayerIndex = layerInfo->LayerIndex;
+		info->LayerType = static_cast<DNNLayerTypes>(layerInfo->LayerType);
 		info->IsNormalizationLayer = info->LayerType == DNNLayerTypes::BatchNorm || info->LayerType == DNNLayerTypes::BatchNormHardLogistic || info->LayerType == DNNLayerTypes::BatchNormHardSwish || info->LayerType == DNNLayerTypes::BatchNormHardSwishDropout || info->LayerType == DNNLayerTypes::BatchNormMish || info->LayerType == DNNLayerTypes::BatchNormMishDropout || info->LayerType == DNNLayerTypes::BatchNormRelu || info->LayerType == DNNLayerTypes::BatchNormReluDropout || info->LayerType == DNNLayerTypes::BatchNormSwish || info->LayerType == DNNLayerTypes::BatchNormSwishDropout || info->LayerType == DNNLayerTypes::BatchNormTanhExp || info->LayerType == DNNLayerTypes::BatchNormTanhExpDropout || info->LayerType == DNNLayerTypes::LayerNorm;
-		info->ActivationFunctionEnum = static_cast<DNNActivations>(*activationFunction);
-		info->CostFunction = static_cast<DNNCosts>(*costFunction);
-		info->InputCount = *inputsCount;
+		info->ActivationFunctionEnum = static_cast<DNNActivations>(layerInfo->ActivationFunction);
+		info->CostFunction = static_cast<DNNCosts>(layerInfo->Cost);
+		info->InputCount = layerInfo->InputsCount;
+		
 		std::vector<UInt>* inputs = new std::vector<UInt>();
 		DNNGetLayerInputs(layerIndex, inputs);
 		info->Inputs = gcnew System::Collections::Generic::List<UInt>();
 		for each (UInt inputLayerIndex in *inputs)
 			info->Inputs->Add(inputLayerIndex);
-		info->Name = ToManagedString(*aName);
-		info->Description = ToManagedString(*aDescription);
-		info->NeuronCount = *neuronCount;
-		info->WeightCount = *weightCount;
-		info->HasWeights = info->WeightCount > 0;
-		info->HasBias = *hasBias;
-		info->BiasCount = *biasCount;
-		info->Multiplier = *multiplier;
-		info->Groups = *groups;
-		info->Group = *group;
-		info->LocalSize = *localSize;
-		info->C = *c;
-		info->D = *d;
-		info->H = *h;
-		info->W = *w;
-		info->HW = (*h) * (*w);
-		info->DilationH = *dilationH;
-		info->DilationW = *dilationW;
-		info->KernelH = *kernelH;
-		info->KernelW = *kernelW;
-		info->KernelHW = info->KernelH * info->KernelW;
-		info->StrideH = *strideH;
-		info->StrideW = *strideW;
-		info->PadD = *padD;
-		info->PadH = *padH;
-		info->PadW = *padW;
-		info->Dropout = *dropout;
-		info->HasDropout = *dropout > 0;
-		info->InputC = *inputC;
-		info->Weight = *weight;
-		info->GroupIndex = *groupIndex;
-		info->LabelIndex = *labelIndex;
-		info->Alpha = *alpha;
-		info->Beta = *beta;
-		info->K = *k;
-		info->Algorithm = static_cast<DNNAlgorithms>(*algorithm);
-		info->FactorH = *factorH;
-		info->FactorW = *factorW;
-		info->Scaling = info->IsNormalizationLayer ? *scaling : false;
-		info->AcrossChannels = *acrossChannels;
-		info->Lockable = *lockable;
-		info->LockUpdate = *lockable ? Nullable<bool>(*locked) : Nullable<bool>(false);
+		
+		info->Name = ToManagedString(layerInfo->Name);
+		info->Description = ToManagedString(layerInfo->Description);
+		info->NeuronCount = layerInfo->NeuronCount;
+		info->WeightCount = layerInfo->WeightCount;
+		info->HasWeights = layerInfo->WeightCount > 0;
+		info->HasBias = layerInfo->HasBias;
+		info->BiasCount = layerInfo->BiasesCount;
+		info->Multiplier = layerInfo->Multiplier;
+		info->Groups = layerInfo->Groups;
+		info->Group = layerInfo->Group;
+		info->LocalSize = layerInfo->LocalSize;
+		info->C = layerInfo->C;
+		info->D = layerInfo->D;
+		info->H = layerInfo->H;
+		info->W = layerInfo->W;
+		info->HW = (layerInfo->H) * (layerInfo->W);
+		info->DilationH = layerInfo->DilationH;
+		info->DilationW = layerInfo->DilationW;
+		info->KernelH = layerInfo->KernelH;
+		info->KernelW = layerInfo->KernelW;
+		info->KernelHW = layerInfo->KernelH * layerInfo->KernelW;
+		info->StrideH = layerInfo->StrideH;
+		info->StrideW = layerInfo->StrideW;
+		info->PadD = layerInfo->PadD;
+		info->PadH = layerInfo->PadH;
+		info->PadW = layerInfo->PadW;
+		info->Dropout = layerInfo->Dropout;
+		info->HasDropout = layerInfo->Dropout > 0;
+		info->InputC = layerInfo->InputC;
+		info->Weight = layerInfo->Weight;
+		info->GroupIndex = layerInfo->GroupIndex;
+		info->LabelIndex = layerInfo->LabelIndex;
+		info->Alpha = layerInfo->Alpha;
+		info->Beta = layerInfo->Beta;
+		info->K = layerInfo->K;
+		info->Algorithm = static_cast<DNNAlgorithms>(layerInfo->Algorithm);
+		info->FactorH = layerInfo->fH;
+		info->FactorW = layerInfo->fW;
+		info->Scaling = info->IsNormalizationLayer ? layerInfo->Scaling : false;
+		info->AcrossChannels = layerInfo->AcrossChannels;
+		info->Lockable = layerInfo->Lockable;
+		info->LockUpdate = layerInfo->Lockable ? Nullable<bool>(layerInfo->Locked) : Nullable<bool>(false);
 
-		delete aName;
-		delete aDescription;
-		delete inputs;
-		delete layerType;
-		delete activationFunction;
-		delete costFunction;
-		delete neuronCount;
-		delete weightCount;
-		delete biasCount;
-		delete multiplier;
-		delete groups;
-		delete group;
-		delete localSize;
-		delete c;
-		delete h;
-		delete w;
-		delete kernelH;
-		delete kernelW;
-		delete strideH;
-		delete strideW;
-		delete dilationH;
-		delete dilationW;
-		delete padH;
-		delete padW;
-		delete dropout;
-		delete labelTrue;
-		delete labelFalse;
-		delete weight;
-		delete groupIndex;
-		delete labelIndex;
-		delete inputC;
-		delete alpha;
-		delete beta;
-		delete k;
-		delete algorithm;
-		delete factorH;
-		delete factorW;
-		delete hasBias;
-		delete scaling;
-		delete acrossChannels;
-		delete locked;
-		delete lockable;
+		delete layerInfo;
 
 		return info;
 	}
 
 	void Model::GetLayerInfoUpdate(UInt layerIndex, LayerInformation^ info)
 	{
-		auto layerType = new dnn::LayerTypes();
-		auto activationFunction = new dnn::Activations();
-		auto costFunction = new dnn::Costs();
-		auto aName = new std::string();
-		auto aDescription = new std::string();
-		auto inputsCount = new UInt();
-		auto neuronCount = new UInt();
-		auto weightCount = new UInt();
-		auto biasCount = new UInt();
-		auto multiplier = new UInt();
-		auto groups = new UInt();
-		auto group = new UInt();
-		auto localSize = new UInt();
-		auto c = new UInt();
-		auto d = new UInt();
-		auto h = new UInt();
-		auto w = new UInt();
-		auto kernelH = new UInt();
-		auto kernelW = new UInt();
-		auto strideH = new UInt();
-		auto strideW = new UInt();
-		auto dilationH = new UInt();
-		auto dilationW = new UInt();
-		auto padD = new UInt();
-		auto padH = new UInt();
-		auto padW = new UInt();
-		auto algorithm = new dnn::Algorithms();
-		auto factorH = new Float();
-		auto factorW = new Float();
-		auto dropout = new Float();
-		auto labelTrue = new Float();
-		auto labelFalse = new Float();
-		auto weight = new Float();
-		auto labelIndex = new UInt();
-		auto groupIndex = new UInt();
-		auto inputC = new UInt();
-		auto alpha = new Float();
-		auto beta = new Float();
-		auto k = new Float;
-		auto hasBias = new bool();
-		auto scaling = new bool();
-		auto acrossChannels = new bool();
-		auto lockable = new bool();
-		auto locked = new bool();
-
-		DNNGetLayerInfo(layerIndex, inputsCount, layerType, activationFunction, costFunction, aName, aDescription, neuronCount, weightCount, biasCount, multiplier, groups, group, localSize, c, d, h, w, kernelH, kernelW, strideH, strideW, dilationH, dilationW, padD, padH, padW, dropout, labelTrue, labelFalse, weight, groupIndex, labelIndex, inputC, alpha, beta, k, algorithm, factorH, factorW, hasBias, scaling, acrossChannels, locked, lockable);
-
-		info->LayerIndex = layerIndex;
-		info->LayerType = static_cast<DNNLayerTypes>(*layerType);
+		auto layerInfo = new dnn::LayerInfo();
+		DNNGetLayerInfo(layerInfo);
+		
+		info->LayerIndex = layerInfo->LayerIndex;
+		info->LayerType = static_cast<DNNLayerTypes>(layerInfo->LayerType);
 		info->IsNormalizationLayer = info->LayerType == DNNLayerTypes::BatchNorm || info->LayerType == DNNLayerTypes::BatchNormHardLogistic || info->LayerType == DNNLayerTypes::BatchNormHardSwish || info->LayerType == DNNLayerTypes::BatchNormHardSwishDropout || info->LayerType == DNNLayerTypes::BatchNormMish || info->LayerType == DNNLayerTypes::BatchNormMishDropout || info->LayerType == DNNLayerTypes::BatchNormRelu || info->LayerType == DNNLayerTypes::BatchNormReluDropout || info->LayerType == DNNLayerTypes::BatchNormSwish || info->LayerType == DNNLayerTypes::BatchNormSwishDropout || info->LayerType == DNNLayerTypes::BatchNormTanhExp || info->LayerType == DNNLayerTypes::BatchNormTanhExpDropout || info->LayerType == DNNLayerTypes::LayerNorm;
-		info->ActivationFunctionEnum = static_cast<DNNActivations>(*activationFunction);
-		info->CostFunction = static_cast<DNNCosts>(*costFunction);
-		info->InputCount = *inputsCount;
+		info->ActivationFunctionEnum = static_cast<DNNActivations>(layerInfo->ActivationFunction);
+		info->CostFunction = static_cast<DNNCosts>(layerInfo->Cost);
+		info->InputCount = layerInfo->InputsCount;
+
 		std::vector<UInt>* inputs = new std::vector<UInt>();
 		DNNGetLayerInputs(layerIndex, inputs);
 		info->Inputs = gcnew System::Collections::Generic::List<UInt>();
 		for each (UInt inputLayerIndex in *inputs)
 			info->Inputs->Add(inputLayerIndex);
-		info->Name = ToManagedString(*aName);
-		info->Description = ToManagedString(*aDescription);
-		info->NeuronCount = *neuronCount;
-		info->WeightCount = *weightCount;
-		info->HasWeights = info->WeightCount > 0;
-		info->HasBias = *hasBias;
-		info->BiasCount = *biasCount;
-		info->Multiplier = *multiplier;
-		info->Groups = *groups;
-		info->Group = *group;
-		info->LocalSize = *localSize;
-		info->C = *c;
-		info->D = *d;
-		info->H = *h;
-		info->W = *w;
-		info->HW = (*h) * (*w);
-		info->DilationH = *dilationH;
-		info->DilationW = *dilationW;
-		info->KernelH = *kernelH;
-		info->KernelW = *kernelW;
-		info->KernelHW = info->KernelH * info->KernelW;
-		info->StrideH = *strideH;
-		info->StrideW = *strideW;
-		info->PadD = *padD;
-		info->PadH = *padH;
-		info->PadW = *padW;
-		info->Dropout = *dropout;
-		info->HasDropout = *dropout > 0;
-		info->InputC = *inputC;
-		info->Weight = *weight;
-		info->GroupIndex = *groupIndex;
-		info->LabelIndex = *labelIndex;
-		info->Alpha = *alpha;
-		info->Beta = *beta;
-		info->K = *k;
-		info->Algorithm = static_cast<DNNAlgorithms>(*algorithm);
-		info->FactorH = *factorH;
-		info->FactorW = *factorW;
-		info->Scaling = info->IsNormalizationLayer ? *scaling : false;
-		info->AcrossChannels = *acrossChannels;
-		info->Lockable = *lockable;
-		info->LockUpdate = *lockable ? Nullable<bool>(*locked) : Nullable<bool>(false);
 
-		delete aName;
-		delete aDescription;
-		delete inputs;
-		delete layerType;
-		delete activationFunction;
-		delete costFunction;
-		delete neuronCount;
-		delete weightCount;
-		delete biasCount;
-		delete multiplier;
-		delete groups;
-		delete group;
-		delete localSize;
-		delete c;
-		delete h;
-		delete w;
-		delete kernelH;
-		delete kernelW;
-		delete strideH;
-		delete strideW;
-		delete dilationH;
-		delete dilationW;
-		delete padH;
-		delete padW;
-		delete dropout;
-		delete labelTrue;
-		delete labelFalse;
-		delete weight;
-		delete groupIndex;
-		delete labelIndex;
-		delete inputC;
-		delete alpha;
-		delete beta;
-		delete k;
-		delete algorithm;
-		delete factorH;
-		delete factorW;
-		delete hasBias;
-		delete scaling;
-		delete acrossChannels;
-		delete locked;
-		delete lockable;
+		info->Name = ToManagedString(layerInfo->Name);
+		info->Description = ToManagedString(layerInfo->Description);
+		info->NeuronCount = layerInfo->NeuronCount;
+		info->WeightCount = layerInfo->WeightCount;
+		info->HasWeights = layerInfo->WeightCount > 0;
+		info->HasBias = layerInfo->HasBias;
+		info->BiasCount = layerInfo->BiasesCount;
+		info->Multiplier = layerInfo->Multiplier;
+		info->Groups = layerInfo->Groups;
+		info->Group = layerInfo->Group;
+		info->LocalSize = layerInfo->LocalSize;
+		info->C = layerInfo->C;
+		info->D = layerInfo->D;
+		info->H = layerInfo->H;
+		info->W = layerInfo->W;
+		info->HW = (layerInfo->H) * (layerInfo->W);
+		info->DilationH = layerInfo->DilationH;
+		info->DilationW = layerInfo->DilationW;
+		info->KernelH = layerInfo->KernelH;
+		info->KernelW = layerInfo->KernelW;
+		info->KernelHW = layerInfo->KernelH * layerInfo->KernelW;
+		info->StrideH = layerInfo->StrideH;
+		info->StrideW = layerInfo->StrideW;
+		info->PadD = layerInfo->PadD;
+		info->PadH = layerInfo->PadH;
+		info->PadW = layerInfo->PadW;
+		info->Dropout = layerInfo->Dropout;
+		info->HasDropout = layerInfo->Dropout > 0;
+		info->InputC = layerInfo->InputC;
+		info->Weight = layerInfo->Weight;
+		info->GroupIndex = layerInfo->GroupIndex;
+		info->LabelIndex = layerInfo->LabelIndex;
+		info->Alpha = layerInfo->Alpha;
+		info->Beta = layerInfo->Beta;
+		info->K = layerInfo->K;
+		info->Algorithm = static_cast<DNNAlgorithms>(layerInfo->Algorithm);
+		info->FactorH = layerInfo->fH;
+		info->FactorW = layerInfo->fW;
+		info->Scaling = info->IsNormalizationLayer ? layerInfo->Scaling : false;
+		info->AcrossChannels = layerInfo->AcrossChannels;
+		info->Lockable = layerInfo->Lockable;
+		info->LockUpdate = layerInfo->Lockable ? Nullable<bool>(layerInfo->Locked) : Nullable<bool>(false);
+
+		delete layerInfo;
 	}
 
 	void Model::UpdateLayerInfo(UInt layerIndex, bool updateUI)
