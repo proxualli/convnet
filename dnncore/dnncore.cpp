@@ -1053,7 +1053,8 @@ namespace dnncore
 
 			State = static_cast<dnncore::DNNStates>(info->State);
 			TaskState = static_cast<dnncore::DNNTaskStates>(info->TaskState);
-
+			
+			delete info;
 
 			AdjustedTrainingSamplesCount = TrainingSamples % BatchSize == 0 ? TrainingSamples : ((TrainingSamples / BatchSize) + 1) * BatchSize;
 			AdjustedTestingSamplesCount = TestingSamples % BatchSize == 0 ? TestingSamples : ((TestingSamples / BatchSize) + 1) * BatchSize;
@@ -1065,8 +1066,6 @@ namespace dnncore
 				OldState = State;
 				SampleRate = Float(0);
 			}
-
-			delete info;
 		}
 		else
 		{
@@ -1074,22 +1073,20 @@ namespace dnncore
 			DNNGetTestingInfo(info);
 
 			SampleIndex = info->SampleIndex;
-
 			BatchSize = info->BatchSize;
 			Height = info->Height;
 			Width = info->Width;
-						
 			AvgTestLoss = info->AvgTestLoss;
 			TestErrorPercentage = info->TestErrorPercentage;
 			TestErrors = info->TestErrors;
-			
 			State = static_cast<dnncore::DNNStates>(info->State);
 			TaskState = static_cast<dnncore::DNNTaskStates>(info->TaskState);
-			
 			SampleRate = info->SampleSpeed;
 
-			AdjustedTestingSamplesCount = TestingSamples % BatchSize == 0 ? TestingSamples : ((TestingSamples / BatchSize) + 1) * BatchSize;
+			delete info;
 
+			AdjustedTestingSamplesCount = TestingSamples % BatchSize == 0 ? TestingSamples : ((TestingSamples / BatchSize) + 1) * BatchSize;
+			
 			TestProgress(BatchSize, SampleIndex, AvgTestLoss, TestErrorPercentage, Float(100) - TestErrorPercentage, TestErrors, State, TaskState);
 
 			if (State != OldState)
@@ -1097,8 +1094,6 @@ namespace dnncore
 				OldState = State;
 				SampleRate = Float(0);
 			}
-
-			delete info;
 		}
 	}
 
