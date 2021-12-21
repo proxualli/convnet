@@ -1155,6 +1155,7 @@ namespace dnncore
 	void DNNModel::SetCostIndex(UInt index)
 	{
 		DNNSetCostIndex(index);
+
 		CostIndex = index;
 		GroupIndex = CostLayers[CostIndex]->GroupIndex;
 		LabelIndex = CostLayers[CostIndex]->LabelIndex;
