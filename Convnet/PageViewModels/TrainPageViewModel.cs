@@ -878,9 +878,6 @@ namespace Convnet.PageViewModels
             legend.LegendPosition = LegendPosition.RightBottom;
             plotModel.Legends.Add(legend);
             plotModel.TextColor = OxyColor.FromRgb(255, 255, 255);
-            plotModel.Background = OxyColor.FromRgb(Settings.Default.BackgroundColor, Settings.Default.BackgroundColor, Settings.Default.BackgroundColor);
-            //plotModel.PlotAreaBorderColor = OxyColor.FromRgb(255, 255, 255);
-            plotModel.PlotAreaBackground = OxyColor.FromRgb(Settings.Default.BackgroundColor, Settings.Default.BackgroundColor, Settings.Default.BackgroundColor);
         }
 
         public PlotModel PlotModel

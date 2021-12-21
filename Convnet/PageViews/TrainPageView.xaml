@@ -54,7 +54,7 @@
                 <oxy:PlotView x:Name="TrainingPlot" Model="{Binding PlotModel, Mode=TwoWay}" MouseLeftButtonDown="TrainingPlot_MouseLeftButtonDown" Background="{StaticResource BackgroundBrushLight}">
                     <oxy:PlotView.DefaultTrackerTemplate>
                         <ControlTemplate>
-                            <oxyshared:TrackerControl Position="{Binding Position}" LineExtents="{Binding PlotModel.PlotArea}" Background="{StaticResource BackgroundBrushLight}" BorderBrush="Transparent">
+                            <oxyshared:TrackerControl Position="{Binding Position}" LineExtents="{Binding PlotModel.PlotArea}" Background="{StaticResource BackgroundBrushLight}" BorderBrush="Transparent" Foreground="{StaticResource TextBrush}">
                                 <oxyshared:TrackerControl.Content>
                                     <UniformGrid Columns="2" Canvas.Left="{Binding Position.X}" Canvas.Top="{Binding Position.Y}" Margin="3">
                                         <TextBlock Text="{Binding DataPoint.X, StringFormat='{}{0:0}'}"/>
