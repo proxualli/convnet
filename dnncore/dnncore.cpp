@@ -535,6 +535,21 @@ namespace dnn
 		std::vector<Float> MeanTrainSet;
 		std::vector<Float> StdTrainSet;
 	};
+
+	struct StatsInfo
+	{
+		std::string Description;
+		Stats NeuronsStats;
+		Stats WeightsStats;
+		Stats BiasesStats;
+		Float FPropLayerTime;
+		Float BPropLayerTime;
+		Float UpdateLayerTime;
+		Float FPropTime;
+		Float BPropTime;
+		Float UpdateTime;
+		bool Locked;
+	};
 }
 
 #define DNN_API extern "C" __declspec(dllimport)
@@ -568,7 +583,7 @@ DNN_API void DNNGetTestingInfo(dnn::TestingInfo* info);
 DNN_API void DNNGetModelInfo(dnn::ModelInfo* info);
 DNN_API void DNNSetOptimizer(const dnn::Optimizers strategy);
 DNN_API void DNNResetOptimizer();
-DNN_API void DNNRefreshStatistics(const UInt layerIndex, std::string* description, dnn::Stats* neuronsStats, dnn::Stats* weightsStats, dnn::Stats* biasesStats, Float* fpropLayerTime, Float* bpropLayerTime, Float* updateLayerTime, Float* fpropTime, Float* bpropTime, Float* updateTime, bool* locked);
+DNN_API void DNNRefreshStatistics(const UInt layerIndex, dnn::StatsInfo* info);
 DNN_API bool DNNGetInputSnapShot(std::vector<Float>* snapshot, std::vector<UInt>* label);
 DNN_API bool DNNCheckDefinition(std::string& definition, dnn::CheckMsg& checkMsg);
 DNN_API int DNNLoadDefinition(const std::string& fileName,dnn::CheckMsg& checkMsg);
@@ -673,55 +688,32 @@ namespace dnncore
 
 	void DNNModel::UpdateLayerStatistics(DNNLayerInfo^ info, UInt layerIndex, bool updateUI)
 	{
-		auto description = new std::string();
-		auto neuronsStats = new dnn::Stats();
-		auto weightsStats = new dnn::Stats();
-		auto biasesStats = new dnn::Stats();
-		auto fpropLayerTime = new Float();
-		auto bpropLayerTime = new Float();
-		auto updateLayerTime = new Float();
-		auto fpropTiming = new Float();
-		auto bpropTiming = new Float();
-		auto updateTiming = new Float();
-		auto islocked = new bool();
+		auto statsInfo = new dnn::StatsInfo;
+		DNNRefreshStatistics(layerIndex, statsInfo);
 
-		DNNRefreshStatistics(layerIndex, description, neuronsStats, weightsStats, biasesStats, fpropLayerTime, bpropLayerTime, updateLayerTime, fpropTiming, bpropTiming, updateTiming, islocked);
+		info->Description = ToManagedString(statsInfo->Description);
 
-		info->Description = ToManagedString(*description);
+		info->NeuronsStdDev = statsInfo->NeuronsStats.StdDev;
+		info->NeuronsMean = statsInfo->NeuronsStats.Mean;
+		info->NeuronsMin = statsInfo->NeuronsStats.Min;
+		info->NeuronsMax = statsInfo->NeuronsStats.Max;
+		info->WeightsStdDev = statsInfo->WeightsStats.StdDev;
+		info->WeightsMean = statsInfo->WeightsStats.Mean;
+		info->WeightsMin = statsInfo->WeightsStats.Min;
+		info->WeightsMax = statsInfo->WeightsStats.Max;
+		info->BiasesStdDev = statsInfo->BiasesStats.StdDev;
+		info->BiasesMean = statsInfo->BiasesStats.Mean;
+		info->BiasesMin = statsInfo->BiasesStats.Min;
+		info->BiasesMax = statsInfo->BiasesStats.Max;
+		info->FPropLayerTime = statsInfo->FPropLayerTime;
+		info->BPropLayerTime = statsInfo->BPropLayerTime;
+		info->UpdateLayerTime = statsInfo->UpdateLayerTime;
+		fpropTime = statsInfo->FPropTime;
+		bpropTime = statsInfo->BPropTime;
+		updateTime = statsInfo->UpdateTime;
+		info->LockUpdate = info->Lockable ? Nullable<bool>(statsInfo->Locked) : Nullable<bool>(false);
 
-		info->NeuronsStdDev = neuronsStats->StdDev;
-		info->NeuronsMean = neuronsStats->Mean;
-		info->NeuronsMin = neuronsStats->Min;
-		info->NeuronsMax = neuronsStats->Max;
-		info->WeightsStdDev = weightsStats->StdDev;
-		info->WeightsMean = weightsStats->Mean;
-		info->WeightsMin = weightsStats->Min;
-		info->WeightsMax = weightsStats->Max;
-		info->BiasesStdDev = biasesStats->StdDev;
-		info->BiasesMean = biasesStats->Mean;
-		info->BiasesMin = biasesStats->Min;
-		info->BiasesMax = biasesStats->Max;
-
-		info->FPropLayerTime = *fpropLayerTime;
-		info->BPropLayerTime = *bpropLayerTime;
-		info->UpdateLayerTime = *updateLayerTime;
-		fpropTime = *fpropTiming;
-		bpropTime = *bpropTiming;
-		updateTime = *updateTiming;
-
-		info->LockUpdate = info->Lockable ? Nullable<bool>(*islocked) : Nullable<bool>(false);
-
-		delete description;
-		delete neuronsStats;
-		delete weightsStats;
-		delete biasesStats;
-		delete fpropLayerTime;
-		delete bpropLayerTime;
-		delete updateLayerTime;
-		delete fpropTiming;
-		delete bpropTiming;
-		delete updateTiming;
-		delete islocked;
+		delete statsInfo;
 
 		if (updateUI)
 		{
