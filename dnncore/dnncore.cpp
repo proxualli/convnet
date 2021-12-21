@@ -952,68 +952,9 @@ namespace dnncore
 		return infoManaged;
 	}
 
-	void DNNModel::GetLayerInfoUpdate(UInt layerIndex, DNNLayerInfo^ info)
+	void DNNModel::GetLayerInfoUpdate(UInt layerIndex, DNNLayerInfo^ infoManaged)
 	{
-		auto layerInfo = new dnn::LayerInfo();
-		DNNGetLayerInfo(layerIndex, layerInfo);
-		
-		info->LayerIndex = layerInfo->LayerIndex;
-		info->LayerType = static_cast<DNNLayerTypes>(layerInfo->LayerType);
-		info->IsNormalizationLayer = info->LayerType == DNNLayerTypes::BatchNorm || info->LayerType == DNNLayerTypes::BatchNormHardLogistic || info->LayerType == DNNLayerTypes::BatchNormHardSwish || info->LayerType == DNNLayerTypes::BatchNormHardSwishDropout || info->LayerType == DNNLayerTypes::BatchNormMish || info->LayerType == DNNLayerTypes::BatchNormMishDropout || info->LayerType == DNNLayerTypes::BatchNormRelu || info->LayerType == DNNLayerTypes::BatchNormReluDropout || info->LayerType == DNNLayerTypes::BatchNormSwish || info->LayerType == DNNLayerTypes::BatchNormSwishDropout || info->LayerType == DNNLayerTypes::BatchNormTanhExp || info->LayerType == DNNLayerTypes::BatchNormTanhExpDropout || info->LayerType == DNNLayerTypes::LayerNorm;
-		info->Activation = static_cast<DNNActivations>(layerInfo->Activation);
-		info->Cost = static_cast<DNNCosts>(layerInfo->Cost);
-		info->InputCount = layerInfo->InputsCount;
-
-		std::vector<UInt>* inputs = new std::vector<UInt>();
-		DNNGetLayerInputs(layerIndex, inputs);
-		info->Inputs = gcnew System::Collections::Generic::List<UInt>();
-		for each (UInt inputLayerIndex in *inputs)
-			info->Inputs->Add(inputLayerIndex);
-
-		info->Name = ToManagedString(layerInfo->Name);
-		info->Description = ToManagedString(layerInfo->Description);
-		info->NeuronCount = layerInfo->NeuronCount;
-		info->WeightCount = layerInfo->WeightCount;
-		info->HasWeights = layerInfo->WeightCount > 0;
-		info->HasBias = layerInfo->HasBias;
-		info->BiasCount = layerInfo->BiasesCount;
-		info->Multiplier = layerInfo->Multiplier;
-		info->Groups = layerInfo->Groups;
-		info->Group = layerInfo->Group;
-		info->LocalSize = layerInfo->LocalSize;
-		info->C = layerInfo->C;
-		info->D = layerInfo->D;
-		info->H = layerInfo->H;
-		info->W = layerInfo->W;
-		info->HW = (layerInfo->H) * (layerInfo->W);
-		info->DilationH = layerInfo->DilationH;
-		info->DilationW = layerInfo->DilationW;
-		info->KernelH = layerInfo->KernelH;
-		info->KernelW = layerInfo->KernelW;
-		info->KernelHW = layerInfo->KernelH * layerInfo->KernelW;
-		info->StrideH = layerInfo->StrideH;
-		info->StrideW = layerInfo->StrideW;
-		info->PadD = layerInfo->PadD;
-		info->PadH = layerInfo->PadH;
-		info->PadW = layerInfo->PadW;
-		info->Dropout = layerInfo->Dropout;
-		info->HasDropout = layerInfo->Dropout > 0;
-		info->InputC = layerInfo->InputC;
-		info->Weight = layerInfo->Weight;
-		info->GroupIndex = layerInfo->GroupIndex;
-		info->LabelIndex = layerInfo->LabelIndex;
-		info->Alpha = layerInfo->Alpha;
-		info->Beta = layerInfo->Beta;
-		info->K = layerInfo->K;
-		info->Algorithm = static_cast<DNNAlgorithms>(layerInfo->Algorithm);
-		info->FactorH = layerInfo->fH;
-		info->FactorW = layerInfo->fW;
-		info->Scaling = info->IsNormalizationLayer ? layerInfo->Scaling : false;
-		info->AcrossChannels = layerInfo->AcrossChannels;
-		info->Lockable = layerInfo->Lockable;
-		info->LockUpdate = layerInfo->Lockable ? Nullable<bool>(layerInfo->Locked) : Nullable<bool>(false);
-
-		delete layerInfo;
+		infoManaged = GetLayerInfo(layerIndex);
 	}
 
 	void DNNModel::UpdateLayerInfo(UInt layerIndex, bool updateUI)
@@ -1451,7 +1392,7 @@ namespace dnncore
 	{
 		dnn::CheckMsg checkMsg;
 		
-		std::string def = ToUnmanagedString(definition);
+		auto def = ToUnmanagedString(definition);
 
 		DNNCheckDefinition(def, checkMsg);
 				
