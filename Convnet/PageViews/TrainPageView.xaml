@@ -75,6 +75,9 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="{Binding ActualWidth, ElementName=cycle}" />
                     <ColumnDefinition Width="{Binding ActualWidth, ElementName=epoch}" />
+                    <ColumnDefinition Width="{Binding ActualWidth, ElementName=batchSize}" />
+                    <ColumnDefinition Width="{Binding ActualWidth, ElementName=height}" />
+                    <ColumnDefinition Width="{Binding ActualWidth, ElementName=width}" />
                     <ColumnDefinition Width="{Binding ActualWidth, ElementName=optimizer}" />
                     <ColumnDefinition Width="{Binding ActualWidth, ElementName=rate}" />
                     <ColumnDefinition Width="{Binding ActualWidth, ElementName=eps}" />
@@ -83,9 +86,6 @@
                     <ColumnDefinition Width="{Binding ActualWidth, ElementName=gamma}" />
                     <ColumnDefinition Width="{Binding ActualWidth, ElementName=l2Penalty}" />
                     <ColumnDefinition Width="{Binding ActualWidth, ElementName=dropout}" />
-                    <ColumnDefinition Width="{Binding ActualWidth, ElementName=batchSize}" />
-                    <ColumnDefinition Width="{Binding ActualWidth, ElementName=height}" />
-                    <ColumnDefinition Width="{Binding ActualWidth, ElementName=width}" />
                     <ColumnDefinition Width="{Binding ActualWidth, ElementName=inputDropout}" />
                     <ColumnDefinition Width="{Binding ActualWidth, ElementName=cutout}" />
                     <ColumnDefinition Width="{Binding ActualWidth, ElementName=cutMix}" />
@@ -109,14 +109,12 @@
                     <ColumnDefinition Width="{Binding ActualWidth, ElementName=duration}" />
                 </Grid.ColumnDefinitions>
 
-                <Border Grid.Column="2" Grid.ColumnSpan="8" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  BorderThickness="1,1,0,0" BorderBrush="{StaticResource TextBrush}" Margin="1,0,-1,0" Background="{StaticResource BackgroundBrush}">
-                    <TextBlock Text="Regularization" HorizontalAlignment="Stretch" VerticalAlignment="Center" TextAlignment="Center" Foreground="{StaticResource TextBrush}" FontFamily="Consolas" FontSize="14" />
-                </Border>
-
-                <Border Grid.Column="10" Grid.ColumnSpan="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  BorderThickness="1,1,0,0" BorderBrush="{StaticResource TextBrush}" Margin="1,0,-1,0" Background="{StaticResource BackgroundBrush}">
+                <Border Grid.Column="2" Grid.ColumnSpan="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  BorderThickness="1,1,0,0" BorderBrush="{StaticResource TextBrush}" Margin="1,0,-1,0" Background="{StaticResource BackgroundBrush}">
                     <TextBlock Text="Resolution" HorizontalAlignment="Stretch" VerticalAlignment="Center" TextAlignment="Center" Foreground="{StaticResource TextBrush}" FontFamily="Consolas" FontSize="14" />
                 </Border>
-
+                <Border Grid.Column="5" Grid.ColumnSpan="8" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  BorderThickness="1,1,0,0" BorderBrush="{StaticResource TextBrush}" Margin="1,0,-1,0" Background="{StaticResource BackgroundBrush}">
+                    <TextBlock Text="Regularization" HorizontalAlignment="Stretch" VerticalAlignment="Center" TextAlignment="Center" Foreground="{StaticResource TextBrush}" FontFamily="Consolas" FontSize="14" />
+                </Border>
                 <Border Grid.Column="13" Grid.ColumnSpan="12" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  BorderThickness="1,1,0,0" BorderBrush="{StaticResource TextBrush}" Margin="1,0,-1,0" Background="{StaticResource BackgroundBrush}">
                     <TextBlock Text="Augmentation" HorizontalAlignment="Stretch" VerticalAlignment="Center" TextAlignment="Center" Foreground="{StaticResource TextBrush}" FontFamily="Consolas" FontSize="14" />
                 </Border>
@@ -225,6 +223,30 @@
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
 
+                    <GridViewColumn x:Name="batchSize" Header="Batch Size" Width="84">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding BatchSize, StringFormat=0.##}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextAlignment="Center" FontFamily="Consolas" FontSize="14"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+
+                    <GridViewColumn x:Name="height" Header="Height" Width="58">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Height, StringFormat=0.##}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextAlignment="Center" FontFamily="Consolas" FontSize="14"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+
+                    <GridViewColumn x:Name="width" Header="Width" Width="56">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Width, StringFormat=0.##}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextAlignment="Center" FontFamily="Consolas" FontSize="14"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    
                     <GridViewColumn x:Name="optimizer" Header="Optimizer" Width="100">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
@@ -288,31 +310,7 @@
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
-                    
-                    <GridViewColumn x:Name="batchSize" Header="Batch Size" Width="84">
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding BatchSize, StringFormat=0.##}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextAlignment="Center" FontFamily="Consolas" FontSize="14"/>
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
 
-                    <GridViewColumn x:Name="height" Header="Height" Width="58">
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding Height, StringFormat=0.##}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextAlignment="Center" FontFamily="Consolas" FontSize="14"/>
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
-
-                    <GridViewColumn x:Name="width" Header="Width" Width="56">
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding Width, StringFormat=0.##}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextAlignment="Center" FontFamily="Consolas" FontSize="14"/>
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
-                    
                     <GridViewColumn x:Name="inputDropout" Header="Input Dropout" Width="100">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
