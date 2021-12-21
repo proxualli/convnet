@@ -952,15 +952,10 @@ namespace dnncore
 		return infoManaged;
 	}
 
-	void DNNModel::GetLayerInfoUpdate(UInt layerIndex, DNNLayerInfo^ infoManaged)
-	{
-		infoManaged = GetLayerInfo(layerIndex);
-	}
-
 	void DNNModel::UpdateLayerInfo(UInt layerIndex, bool updateUI)
 	{
 		if (layerIndex == 0)
-			GetLayerInfoUpdate(layerIndex, Layers[layerIndex]);
+			Layers[layerIndex] = GetLayerInfo(layerIndex);
 		
 		UpdateLayerStatistics(Layers[layerIndex], layerIndex, updateUI);
 	}

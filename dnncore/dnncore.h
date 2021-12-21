@@ -1410,7 +1410,6 @@ namespace dnncore
 		void Resume();
 		void UpdateLayerStatistics(DNNLayerInfo^ info, UInt layerIndex, bool updateUI);
 		DNNLayerInfo^ GetLayerInfo(UInt layerIndex);
-		void GetLayerInfoUpdate(UInt layerIndex, DNNLayerInfo^ info);
 		void UpdateLayerInfo(UInt layerIndex, bool updateUI);
 		void SetCostIndex(UInt costIndex);
 		void SetOptimizer(DNNOptimizers optimizer);
