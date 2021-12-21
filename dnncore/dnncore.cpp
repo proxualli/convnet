@@ -1279,13 +1279,11 @@ namespace dnncore
 		delete info;
 
 
-		TrainingStrategies = gcnew System::Collections::ObjectModel::ObservableCollection<DNNTrainingStrategy^>();
-
-		CostLayers = gcnew cli::array<DNNCostLayer^>(int(CostLayerCount));
-		UInt counter = 0;
-				
 		Layers = gcnew System::Collections::ObjectModel::ObservableCollection<DNNLayerInfo^>();
-		
+		TrainingStrategies = gcnew System::Collections::ObjectModel::ObservableCollection<DNNTrainingStrategy^>();
+		CostLayers = gcnew cli::array<DNNCostLayer^>(int(CostLayerCount));
+				
+		UInt counter = 0;
 		for (UInt layer = 0; layer < LayerCount; layer++)
 		{
 			Layers->Add(GetLayerInfo(layer));
