@@ -138,7 +138,7 @@ namespace Convnet.PageViewModels
         {
             if (costLayersComboBox.SelectedIndex >= 0)
             {
-                uint costIndex = (uint)costLayersComboBox.SelectedIndex;
+                var costIndex = (uint)costLayersComboBox.SelectedIndex;
                 Model.SetCostIndex(costIndex);
                 if (Model.TaskState != DNNTaskStates.Running && ConfusionDataTable != null)
                 {
@@ -380,12 +380,6 @@ namespace Convnet.PageViewModels
         {
             Application.Current.Dispatcher.Invoke(() =>
             {
-                if (Model.TaskState == DNNTaskStates.Running)
-                {
-                    Xceed.Wpf.Toolkit.MessageBox.Show("You must stop training first.", "Information", MessageBoxButton.OK);
-                    return;
-                }
-
                 if (Model.TaskState == DNNTaskStates.Stopped)
                 {
                     TestParameters dialog = new TestParameters

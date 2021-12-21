@@ -219,34 +219,26 @@ namespace Convnet.PageViewModels
             }
         }
 
+        public ReadOnlyCollection<PageViewModelBase> Pages { get; }
+
         public PageViewModelBase CurrentPage
         {
             get { return currentPage; }
             set
             {
-                if (value == currentPage)
+                if (value == currentPage || value == null)
                     return;
 
                 currentPage = value;
                 OnPropertyChanged(nameof(CurrentPage));
 
-                if (currentPage != null)
-                {
-                    CommandToolBar = currentPage.CommandToolBar;
-                    CommandToolBarVisibility = currentPage.CommandToolBarVisibility;
-                    Settings.Default.CurrentPage = Pages.IndexOf(currentPage);
-                    Settings.Default.Save();
-                    OnPageChange();
-                }
+                CommandToolBar = currentPage.CommandToolBar;
+                CommandToolBarVisibility = currentPage.CommandToolBarVisibility;
+                Settings.Default.CurrentPage = Pages.IndexOf(currentPage);
+                Settings.Default.Save();
+                
+                OnPageChange();
             }
-        }
-
-        public ReadOnlyCollection<PageViewModelBase> Pages { get; }
-
-        public override void Reset()
-        {
-            foreach (PageViewModelBase page in Pages)
-                page.Reset();
         }
 
         public void OnPageChange()
@@ -256,12 +248,29 @@ namespace Convnet.PageViewModels
             if (Settings.Default.CurrentPage == (int)ViewModels.Edit)
                 (Pages[(int)ViewModels.Edit] as EditPageViewModel).CheckButtonClick(this, new System.Windows.RoutedEventArgs());
 
-            if (Settings.Default.CurrentPage == (int)ViewModels.Test && CostLayers.Count > 1)
-                (Pages[(int)ViewModels.Test] as TestPageViewModel).CostLayersComboBox_SelectionChanged(this, null);
+            if (Settings.Default.CurrentPage == (int)ViewModels.Test)
+            {
+                var testPVM = Pages[(int)ViewModels.Test] as TestPageViewModel;
+
+                if (testPVM.Model != null)
+                {
+                    testPVM.CommandToolBar[0].Visibility = testPVM.Model.TaskState != DNNTaskStates.Running ? System.Windows.Visibility.Collapsed : System.Windows.Visibility.Visible;
+                    testPVM.CommandToolBar[1].Visibility = testPVM.Model.TaskState != DNNTaskStates.Running ? System.Windows.Visibility.Collapsed : System.Windows.Visibility.Visible;
+                    testPVM.CommandToolBar[2].Visibility = testPVM.Model.TaskState != DNNTaskStates.Running ? System.Windows.Visibility.Collapsed : System.Windows.Visibility.Visible;
+                }
+
+                if (CostLayers.Count > 1)
+                    testPVM.CostLayersComboBox_SelectionChanged(this, null);
+            }
 
             if (Settings.Default.CurrentPage == (int)ViewModels.Train && CostLayers.Count > 1)
                 (Pages[(int)ViewModels.Train] as TrainPageViewModel).CostLayersComboBox_SelectionChanged(this, null);
         }
+
+        public override void Reset()
+        {
+            foreach (PageViewModelBase page in Pages)
+                page.Reset();
+        }
     }
 }
-
