@@ -942,10 +942,10 @@ namespace dnncore
 		infoManaged->LockUpdate = infoNative->Lockable ? Nullable<bool>(infoNative->Locked) : Nullable<bool>(false);
 		infoManaged->Lockable = infoNative->Lockable;
 
-		infoManaged->HW = infoNative->H * infoNative->W;
-		infoManaged->KernelHW = infoNative->KernelH * infoNative->KernelW;
-		infoManaged->HasWeights = infoNative->WeightCount > 0;
-		infoManaged->HasDropout = infoNative->Dropout > 0;
+		//infoManaged->HW = infoNative->H * infoNative->W;
+		//infoManaged->KernelHW = infoNative->KernelH * infoNative->KernelW;
+		//infoManaged->HasWeights = infoNative->WeightCount > 0;
+		//infoManaged->HasDropout = infoNative->Dropout > 0;
 		
 		delete infoNative;
 

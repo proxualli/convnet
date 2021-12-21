@@ -1210,8 +1210,7 @@ namespace dnncore
 				OnPropertyChanged("LockUpdate");
 			}
 		};
-		property bool HasDropout;
-		property bool HasWeights;
+
 		property bool IsNormalizationLayer;
 		property bool HasBias;
 		property bool MirrorPad;
@@ -1227,10 +1226,8 @@ namespace dnncore
 		property UInt D;
 		property UInt W;
 		property UInt H;
-		property UInt HW;
 		property UInt KernelH;
 		property UInt KernelW;
-		property UInt KernelHW;
 		property UInt DilationH;
 		property UInt DilationW;
 		property UInt StrideH;
