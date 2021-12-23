@@ -1847,31 +1847,31 @@ namespace Convnet.PageViewModels
                     weightsMinMax += "<Span><Bold>Neurons</Bold></Span><LineBreak/>";
 
                     sb.Length = 0;
-                    if (Model.Layers[index].NeuronsStdDev >= 0.0f)
-                        sb.AppendFormat(" Std:     {0:N8}", Model.Layers[index].NeuronsStdDev);
+                    if (Model.Layers[index].NeuronsStats.StdDev >= 0.0f)
+                        sb.AppendFormat(" Std:     {0:N8}", Model.Layers[index].NeuronsStats.StdDev);
                     else
-                        sb.AppendFormat(" Std:    {0:N8}", Model.Layers[index].NeuronsStdDev);
+                        sb.AppendFormat(" Std:    {0:N8}", Model.Layers[index].NeuronsStats.StdDev);
                     weightsMinMax += "<Span>" + sb.ToString() + "</Span><LineBreak/>";
 
                     sb.Length = 0;
-                    if (Model.Layers[index].NeuronsMean >= 0.0f)
-                        sb.AppendFormat(" Mean:    {0:N8}", Model.Layers[index].NeuronsMean);
+                    if (Model.Layers[index].NeuronsStats.Mean >= 0.0f)
+                        sb.AppendFormat(" Mean:    {0:N8}", Model.Layers[index].NeuronsStats.Mean);
                     else
-                        sb.AppendFormat(" Mean:   {0:N8}", Model.Layers[index].NeuronsMean);
+                        sb.AppendFormat(" Mean:   {0:N8}", Model.Layers[index].NeuronsStats.Mean);
                     weightsMinMax += "<Span>" + sb.ToString() + "</Span><LineBreak/>";
 
                     sb.Length = 0;
-                    if (Model.Layers[index].NeuronsMin >= 0.0f)
-                        sb.AppendFormat(" Min:     {0:N8}", Model.Layers[index].NeuronsMin);
+                    if (Model.Layers[index].NeuronsStats.Min >= 0.0f)
+                        sb.AppendFormat(" Min:     {0:N8}", Model.Layers[index].NeuronsStats.Min);
                     else
-                        sb.AppendFormat(" Min:    {0:N8}", Model.Layers[index].NeuronsMin);
+                        sb.AppendFormat(" Min:    {0:N8}", Model.Layers[index].NeuronsStats.Min);
                     weightsMinMax += "<Span>" + sb.ToString() + "</Span><LineBreak/>";
 
                     sb.Length = 0;
-                    if (Model.Layers[index].NeuronsMax >= 0.0f)
-                        sb.AppendFormat(" Max:     {0:N8}", Model.Layers[index].NeuronsMax);
+                    if (Model.Layers[index].NeuronsStats.Max >= 0.0f)
+                        sb.AppendFormat(" Max:     {0:N8}", Model.Layers[index].NeuronsStats.Max);
                     else
-                        sb.AppendFormat(" Max:    {0:N8}", Model.Layers[index].NeuronsMax);
+                        sb.AppendFormat(" Max:    {0:N8}", Model.Layers[index].NeuronsStats.Max);
                     weightsMinMax += "<Span>" + sb.ToString() + "</Span><LineBreak/>";
 
                     if (ShowWeightsSnapshot)
@@ -1879,32 +1879,32 @@ namespace Convnet.PageViewModels
                         weightsMinMax += "<Span><Bold>Weights</Bold></Span><LineBreak/>";
 
                         sb.Length = 0;
-                        if (Model.Layers[index].WeightsStdDev >= 0.0f)
-                            sb.AppendFormat(" Std:     {0:N8}", Model.Layers[index].WeightsStdDev);
+                        if (Model.Layers[index].WeightsStats.StdDev >= 0.0f)
+                            sb.AppendFormat(" Std:     {0:N8}", Model.Layers[index].WeightsStats.StdDev);
                         else
-                            sb.AppendFormat(" Std:    {0:N8}", Model.Layers[index].WeightsStdDev);
+                            sb.AppendFormat(" Std:    {0:N8}", Model.Layers[index].WeightsStats.StdDev);
                         weightsMinMax += "<Span>" + sb.ToString() + "</Span><LineBreak/>";
 
                         sb.Length = 0;
-                        if (Model.Layers[index].WeightsMean >= 0.0f)
-                            sb.AppendFormat(" Mean:    {0:N8}", Model.Layers[index].WeightsMean);
+                        if (Model.Layers[index].WeightsStats.Mean >= 0.0f)
+                            sb.AppendFormat(" Mean:    {0:N8}", Model.Layers[index].WeightsStats.Mean);
                         else
-                            sb.AppendFormat(" Mean:   {0:N8}", Model.Layers[index].WeightsMean);
+                            sb.AppendFormat(" Mean:   {0:N8}", Model.Layers[index].WeightsStats.Mean);
                         weightsMinMax += "<Span>" + sb.ToString() + "</Span><LineBreak/>";
 
 
                         sb.Length = 0;
-                        if (Model.Layers[index].WeightsMin >= 0.0f)
-                            sb.AppendFormat(" Min:     {0:N8}", Model.Layers[index].WeightsMin);
+                        if (Model.Layers[index].WeightsStats.Min >= 0.0f)
+                            sb.AppendFormat(" Min:     {0:N8}", Model.Layers[index].WeightsStats.Min);
                         else
-                            sb.AppendFormat(" Min:    {0:N8}", Model.Layers[index].WeightsMin);
+                            sb.AppendFormat(" Min:    {0:N8}", Model.Layers[index].WeightsStats.Min);
                         weightsMinMax += "<Span>" + sb.ToString() + "</Span><LineBreak/>";
 
                         sb.Length = 0;
-                        if (Model.Layers[index].WeightsMax >= 0.0f)
-                            sb.AppendFormat(" Max:     {0:N8}", Model.Layers[index].WeightsMax);
+                        if (Model.Layers[index].WeightsStats.Max >= 0.0f)
+                            sb.AppendFormat(" Max:     {0:N8}", Model.Layers[index].WeightsStats.Max);
                         else
-                            sb.AppendFormat(" Max:    {0:N8}", Model.Layers[index].WeightsMax);
+                            sb.AppendFormat(" Max:    {0:N8}", Model.Layers[index].WeightsStats.Max);
                         if (ShowWeightsSnapshot)
                             weightsMinMax += "<Span>" + sb.ToString() + "</Span><LineBreak/>";
                         else
@@ -1915,31 +1915,31 @@ namespace Convnet.PageViewModels
                             weightsMinMax += "<Span><Bold>Biases</Bold></Span><LineBreak/>";
 
                             sb.Length = 0;
-                            if (Model.Layers[index].BiasesStdDev >= 0.0f)
-                                sb.AppendFormat(" Std:     {0:N8}", Model.Layers[index].BiasesStdDev);
+                            if (Model.Layers[index].BiasesStats.StdDev >= 0.0f)
+                                sb.AppendFormat(" Std:     {0:N8}", Model.Layers[index].BiasesStats.StdDev);
                             else
-                                sb.AppendFormat(" Std:    {0:N8}", Model.Layers[index].BiasesStdDev);
+                                sb.AppendFormat(" Std:    {0:N8}", Model.Layers[index].BiasesStats.StdDev);
                             weightsMinMax += "<Span>" + sb.ToString() + "</Span><LineBreak/>";
 
                             sb.Length = 0;
-                            if (Model.Layers[index].BiasesMean >= 0.0f)
-                                sb.AppendFormat(" Mean:    {0:N8}", Model.Layers[index].BiasesMean);
+                            if (Model.Layers[index].BiasesStats.Mean >= 0.0f)
+                                sb.AppendFormat(" Mean:    {0:N8}", Model.Layers[index].BiasesStats.Mean);
                             else
-                                sb.AppendFormat(" Mean:   {0:N8}", Model.Layers[index].BiasesMean);
+                                sb.AppendFormat(" Mean:   {0:N8}", Model.Layers[index].BiasesStats.Mean);
                             weightsMinMax += "<Span>" + sb.ToString() + "</Span><LineBreak/>";
 
                             sb.Length = 0;
-                            if (Model.Layers[index].BiasesMin >= 0.0f)
-                                sb.AppendFormat(" Min:     {0:N8}", Model.Layers[index].BiasesMin);
+                            if (Model.Layers[index].BiasesStats.Min >= 0.0f)
+                                sb.AppendFormat(" Min:     {0:N8}", Model.Layers[index].BiasesStats.Min);
                             else
-                                sb.AppendFormat(" Min:    {0:N8}", Model.Layers[index].BiasesMin);
+                                sb.AppendFormat(" Min:    {0:N8}", Model.Layers[index].BiasesStats.Min);
                             weightsMinMax += "<Span>" + sb.ToString() + "</Span><LineBreak/>";
 
                             sb.Length = 0;
-                            if (Model.Layers[index].BiasesMax >= 0.0f)
-                                sb.AppendFormat(" Max:     {0:N8}", Model.Layers[index].BiasesMax);
+                            if (Model.Layers[index].BiasesStats.Max >= 0.0f)
+                                sb.AppendFormat(" Max:     {0:N8}", Model.Layers[index].BiasesStats.Max);
                             else
-                                sb.AppendFormat(" Max:    {0:N8}", Model.Layers[index].BiasesMax);
+                                sb.AppendFormat(" Max:    {0:N8}", Model.Layers[index].BiasesStats.Max);
                             if (ShowWeightsSnapshot)
                                 weightsMinMax += "<Span>" + sb.ToString() + "</Span>";
                             else
