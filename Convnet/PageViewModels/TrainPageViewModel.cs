@@ -1821,11 +1821,16 @@ namespace Convnet.PageViewModels
                     ShowWeights = Model.Layers[index].WeightCount > 0 || Settings.Default.Timings;
                     ShowWeightsSnapshot = (Model.Layers[index].IsNormalizationLayer && Model.Layers[index].Scaling) || Model.Layers[index].LayerType == DNNLayerTypes.PartialDepthwiseConvolution || Model.Layers[index].LayerType == DNNLayerTypes.DepthwiseConvolution || Model.Layers[index].LayerType == DNNLayerTypes.ConvolutionTranspose || Model.Layers[index].LayerType == DNNLayerTypes.Convolution || Model.Layers[index].LayerType == DNNLayerTypes.Dense || (Model.Layers[index].LayerType == DNNLayerTypes.Activation && Model.Layers[index].WeightCount > 0);
 
-                    Model.UpdateLayerInfo((ulong)index, ShowWeightsSnapshot);
-                    Model.UpdateLayerInfo(0ul, true);
-                    InputSnapshot = Model.InputSnapshot;
-                    Label = Model.Label;
-                    
+                    if (ShowSample)
+                    {
+                        Model.UpdateLayerInfo(0ul, true);
+                        InputSnapshot = Model.InputSnapshot;
+                        Label = Model.Label;
+                    }
+                   
+                    if (index > 0)
+                        Model.UpdateLayerInfo((ulong)index, ShowWeightsSnapshot);
+
 
                     CommandToolBar[17].Visibility = !Settings.Default.DisableLocking ? Visibility.Visible : Visibility.Collapsed;
                     CommandToolBar[18].Visibility = !Settings.Default.DisableLocking ? Visibility.Visible : Visibility.Collapsed;

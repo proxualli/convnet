@@ -216,6 +216,24 @@ namespace dnncore
 		Stopped = 2
 	};
 
+	/*[Serializable()]
+	public ref class DNNStats
+	{
+	public:
+		property Float Mean;
+		property Float StdDev;
+		property Float Min;
+		property Float Max;
+
+		DNNStats::DNNStats(const Float mean, const Float stddev, const Float min, const Float max)
+		{
+			Mean = mean;
+			StdDev = stddev;
+			Min = min;
+			Max = max;
+		}
+	};*/
+
 	[Serializable()]
 	public ref class DNNCostLayer
 	{
@@ -1247,30 +1265,18 @@ namespace dnncore
 		property UInt LabelIndex;
 		property Float Dropout;
 		property Float Cutout;
-		property Float NeuronsStdDev;
 		property Float NeuronsMean;
+		property Float NeuronsStdDev;
 		property Float NeuronsMin;
 		property Float NeuronsMax;
-		property Float NeuronsD1StdDev;
-		property Float NeuronsD1Mean;
-		property Float NeuronsD1Min;
-		property Float NeuronsD1Max;
-		property Float WeightsStdDev;
 		property Float WeightsMean;
+		property Float WeightsStdDev;
 		property Float WeightsMin;
 		property Float WeightsMax;
-		property Float WeightsD1StdDev;
-		property Float WeightsD1Mean;
-		property Float WeightsD1Min;
-		property Float WeightsD1Max;
-		property Float BiasesStdDev;
 		property Float BiasesMean;
+		property Float BiasesStdDev;
 		property Float BiasesMin;
 		property Float BiasesMax;
-		property Float BiasesD1StdDev;
-		property Float BiasesD1Mean;
-		property Float BiasesD1Min;
-		property Float BiasesD1Max;
 		property Float Weight;
 		property Float Alpha;
 		property Float Beta;

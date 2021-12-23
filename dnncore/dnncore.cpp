@@ -377,15 +377,19 @@ namespace dnn
 		Float Min;
 		Float Max;
 
-		Stats() :
-			Mean(0),
-			StdDev(0),
-			Min(0),
-			Max(0)
+		Stats() : Mean(0), StdDev(0), Min(0), Max(0)
 		{
 		}
 
-		Stats(const Float mean, const Float stddev, const Float min, const Float  max) :
+		Stats(const Stats& stats) :
+			Mean(stats.Mean),
+			StdDev(stats.StdDev),
+			Min(stats.Min),
+			Max(stats.Max)
+		{
+		}
+
+		Stats(const Float mean, const Float stddev, const Float min, const Float max) :
 			Mean(mean),
 			StdDev(stddev),
 			Min(min),
@@ -609,6 +613,7 @@ DNN_API void DNNSetCostIndex(const UInt index);
 DNN_API void DNNGetCostInfo(const UInt costIndex, dnn::CostInfo* info);
 DNN_API void DNNGetImage(const UInt layer, const dnn::Byte fillColor, dnn::Byte* image);
 DNN_API bool DNNSetFormat(const bool plain);
+DNN_API void DNNGetResolution(UInt* N, UInt* H, UInt* W);
 DNN_API dnn::Optimizers GetOptimizer();
 
 namespace dnncore
@@ -776,23 +781,99 @@ namespace dnncore
 
 		return infoManaged;
 	}
+	
+	void DNNModel::GetLayerInfoUpdate(DNNLayerInfo^ infoManaged, UInt layerIndex)
+	{
+		auto infoNative = new dnn::LayerInfo();
+		DNNGetLayerInfo(layerIndex, infoNative);
 
+		infoManaged->Name = ToManagedString(infoNative->Name);
+		infoManaged->Description = ToManagedString(infoNative->Description);
+
+		auto layerType = static_cast<DNNLayerTypes>(infoNative->LayerType);
+		infoManaged->LayerType = layerType;
+		infoManaged->IsNormalizationLayer =
+			layerType == DNNLayerTypes::BatchNorm ||
+			layerType == DNNLayerTypes::BatchNormHardLogistic ||
+			layerType == DNNLayerTypes::BatchNormHardSwish ||
+			layerType == DNNLayerTypes::BatchNormHardSwishDropout ||
+			layerType == DNNLayerTypes::BatchNormMish ||
+			layerType == DNNLayerTypes::BatchNormMishDropout ||
+			layerType == DNNLayerTypes::BatchNormRelu ||
+			layerType == DNNLayerTypes::BatchNormReluDropout ||
+			layerType == DNNLayerTypes::BatchNormSwish ||
+			layerType == DNNLayerTypes::BatchNormSwishDropout ||
+			layerType == DNNLayerTypes::BatchNormTanhExp ||
+			layerType == DNNLayerTypes::BatchNormTanhExpDropout ||
+			layerType == DNNLayerTypes::LayerNorm;
+
+		infoManaged->Activation = static_cast<DNNActivations>(infoNative->Activation);
+		infoManaged->Algorithm = static_cast<DNNAlgorithms>(infoNative->Algorithm);
+		infoManaged->Cost = static_cast<DNNCosts>(infoNative->Cost);
+		infoManaged->NeuronCount = infoNative->NeuronCount;
+		infoManaged->WeightCount = infoNative->WeightCount;
+		infoManaged->BiasCount = infoNative->BiasesCount;
+		infoManaged->LayerIndex = layerIndex; // infoNative->LayerIndex;
+
+		infoManaged->InputCount = infoNative->InputsCount;
+		std::vector<UInt>* inputs = new std::vector<UInt>();
+		DNNGetLayerInputs(layerIndex, inputs);
+		infoManaged->Inputs = gcnew System::Collections::Generic::List<UInt>();
+		for each (UInt index in *inputs)
+			infoManaged->Inputs->Add(index);
+
+		infoManaged->C = infoNative->C;
+		infoManaged->D = infoNative->D;
+		infoManaged->H = infoNative->H;
+		infoManaged->W = infoNative->W;
+		infoManaged->PadD = infoNative->PadD;
+		infoManaged->PadH = infoNative->PadH;
+		infoManaged->PadW = infoNative->PadW;
+		infoManaged->KernelH = infoNative->KernelH;
+		infoManaged->KernelW = infoNative->KernelW;
+		infoManaged->StrideH = infoNative->StrideH;
+		infoManaged->StrideW = infoNative->StrideW;
+		infoManaged->DilationH = infoNative->DilationH;
+		infoManaged->DilationW = infoNative->DilationW;
+		infoManaged->Multiplier = infoNative->Multiplier;
+		infoManaged->Groups = infoNative->Groups;
+		infoManaged->Group = infoNative->Group;
+		infoManaged->LocalSize = infoNative->LocalSize;
+		infoManaged->Dropout = infoNative->Dropout;
+		infoManaged->Weight = infoNative->Weight;
+		infoManaged->GroupIndex = infoNative->GroupIndex;
+		infoManaged->LabelIndex = infoNative->LabelIndex;
+		infoManaged->InputC = infoNative->InputC;
+		infoManaged->Alpha = infoNative->Alpha;
+		infoManaged->Beta = infoNative->Beta;
+		infoManaged->K = infoNative->K;
+		infoManaged->FactorH = infoNative->fH;
+		infoManaged->FactorW = infoNative->fW;
+		infoManaged->HasBias = infoNative->HasBias;
+		infoManaged->Scaling = infoManaged->IsNormalizationLayer ? infoNative->Scaling : false;
+		infoManaged->AcrossChannels = infoNative->AcrossChannels;
+		infoManaged->LockUpdate = infoNative->Lockable ? Nullable<bool>(infoNative->Locked) : Nullable<bool>(false);
+		infoManaged->Lockable = infoNative->Lockable;
+
+		delete infoNative;
+	}
+	
 	void DNNModel::UpdateLayerStatistics(DNNLayerInfo^ info, UInt layerIndex, bool updateUI)
 	{
-		auto statsInfo = new dnn::StatsInfo;
+		auto statsInfo = new dnn::StatsInfo();
 		DNNRefreshStatistics(layerIndex, statsInfo);
 
 		info->Description = ToManagedString(statsInfo->Description);
-		info->NeuronsStdDev = statsInfo->NeuronsStats.StdDev;
 		info->NeuronsMean = statsInfo->NeuronsStats.Mean;
+		info->NeuronsStdDev = statsInfo->NeuronsStats.StdDev;
 		info->NeuronsMin = statsInfo->NeuronsStats.Min;
 		info->NeuronsMax = statsInfo->NeuronsStats.Max;
-		info->WeightsStdDev = statsInfo->WeightsStats.StdDev;
 		info->WeightsMean = statsInfo->WeightsStats.Mean;
+		info->WeightsStdDev = statsInfo->WeightsStats.StdDev;
 		info->WeightsMin = statsInfo->WeightsStats.Min;
 		info->WeightsMax = statsInfo->WeightsStats.Max;
-		info->BiasesStdDev = statsInfo->BiasesStats.StdDev;
 		info->BiasesMean = statsInfo->BiasesStats.Mean;
+		info->BiasesStdDev = statsInfo->BiasesStats.StdDev;
 		info->BiasesMin = statsInfo->BiasesStats.Min;
 		info->BiasesMax = statsInfo->BiasesStats.Max;
 		info->FPropLayerTime = statsInfo->FPropLayerTime;
@@ -944,87 +1025,11 @@ namespace dnncore
 		}
 	}
 
-	void DNNModel::GetLayerInfoUpdate(DNNLayerInfo^ infoManaged, UInt layerIndex)
-	{
-		auto infoNative = new dnn::LayerInfo();
-		DNNGetLayerInfo(layerIndex, infoNative);
-
-		infoManaged->Name = ToManagedString(infoNative->Name);
-		infoManaged->Description = ToManagedString(infoNative->Description);
-
-		auto layerType = static_cast<DNNLayerTypes>(infoNative->LayerType);
-		infoManaged->LayerType = layerType;
-		infoManaged->IsNormalizationLayer =
-			layerType == DNNLayerTypes::BatchNorm ||
-			layerType == DNNLayerTypes::BatchNormHardLogistic ||
-			layerType == DNNLayerTypes::BatchNormHardSwish ||
-			layerType == DNNLayerTypes::BatchNormHardSwishDropout ||
-			layerType == DNNLayerTypes::BatchNormMish ||
-			layerType == DNNLayerTypes::BatchNormMishDropout ||
-			layerType == DNNLayerTypes::BatchNormRelu ||
-			layerType == DNNLayerTypes::BatchNormReluDropout ||
-			layerType == DNNLayerTypes::BatchNormSwish ||
-			layerType == DNNLayerTypes::BatchNormSwishDropout ||
-			layerType == DNNLayerTypes::BatchNormTanhExp ||
-			layerType == DNNLayerTypes::BatchNormTanhExpDropout ||
-			layerType == DNNLayerTypes::LayerNorm;
-
-		infoManaged->Activation = static_cast<DNNActivations>(infoNative->Activation);
-		infoManaged->Algorithm = static_cast<DNNAlgorithms>(infoNative->Algorithm);
-		infoManaged->Cost = static_cast<DNNCosts>(infoNative->Cost);
-		infoManaged->NeuronCount = infoNative->NeuronCount;
-		infoManaged->WeightCount = infoNative->WeightCount;
-		infoManaged->BiasCount = infoNative->BiasesCount;
-		infoManaged->LayerIndex = layerIndex; // infoNative->LayerIndex;
-
-		infoManaged->InputCount = infoNative->InputsCount;
-		std::vector<UInt>* inputs = new std::vector<UInt>();
-		DNNGetLayerInputs(layerIndex, inputs);
-		infoManaged->Inputs = gcnew System::Collections::Generic::List<UInt>();
-		for each (UInt index in *inputs)
-			infoManaged->Inputs->Add(index);
-
-		infoManaged->C = infoNative->C;
-		infoManaged->D = infoNative->D;
-		infoManaged->H = infoNative->H;
-		infoManaged->W = infoNative->W;
-		infoManaged->PadD = infoNative->PadD;
-		infoManaged->PadH = infoNative->PadH;
-		infoManaged->PadW = infoNative->PadW;
-		infoManaged->KernelH = infoNative->KernelH;
-		infoManaged->KernelW = infoNative->KernelW;
-		infoManaged->StrideH = infoNative->StrideH;
-		infoManaged->StrideW = infoNative->StrideW;
-		infoManaged->DilationH = infoNative->DilationH;
-		infoManaged->DilationW = infoNative->DilationW;
-		infoManaged->Multiplier = infoNative->Multiplier;
-		infoManaged->Groups = infoNative->Groups;
-		infoManaged->Group = infoNative->Group;
-		infoManaged->LocalSize = infoNative->LocalSize;
-		infoManaged->Dropout = infoNative->Dropout;
-		infoManaged->Weight = infoNative->Weight;
-		infoManaged->GroupIndex = infoNative->GroupIndex;
-		infoManaged->LabelIndex = infoNative->LabelIndex;
-		infoManaged->InputC = infoNative->InputC;
-		infoManaged->Alpha = infoNative->Alpha;
-		infoManaged->Beta = infoNative->Beta;
-		infoManaged->K = infoNative->K;
-		infoManaged->FactorH = infoNative->fH;
-		infoManaged->FactorW = infoNative->fW;
-		infoManaged->HasBias = infoNative->HasBias;
-		infoManaged->Scaling = infoManaged->IsNormalizationLayer ? infoNative->Scaling : false;
-		infoManaged->AcrossChannels = infoNative->AcrossChannels;
-		infoManaged->LockUpdate = infoNative->Lockable ? Nullable<bool>(infoNative->Locked) : Nullable<bool>(false);
-		infoManaged->Lockable = infoNative->Lockable;
-
-		delete infoNative;
-	}
-
 	void DNNModel::UpdateLayerInfo(UInt layerIndex, bool updateUI)
 	{
 		if (layerIndex == 0)
-			GetLayerInfoUpdate(Layers[layerIndex], layerIndex);
-
+			GetLayerInfoUpdate(Layers[0], false);
+		
 		UpdateLayerStatistics(Layers[layerIndex], layerIndex, updateUI);
 	}
 
@@ -1494,8 +1499,8 @@ namespace dnncore
 
 		Optimizer = static_cast<DNNOptimizers>(GetOptimizer());
 
-		for (UInt layerIndex = 0; layerIndex < LayerCount; layerIndex++)
-			UpdateLayerStatistics(Layers[layerIndex], layerIndex, layerIndex == SelectedIndex);
+		if (ret == 0)
+			UpdateLayerStatistics(Layers[SelectedIndex], SelectedIndex, true);
 
 		return ret;
 	}
