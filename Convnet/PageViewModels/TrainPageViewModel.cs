@@ -1813,9 +1813,9 @@ namespace Convnet.PageViewModels
                 int index = layersComboBox.SelectedIndex;
                 if (index < (int)Model.LayerCount)
                 {
-                    Settings.Default.SelectedLayer = layersComboBox.SelectedIndex;
+                    Settings.Default.SelectedLayer = index;
                     Settings.Default.Save();
-                    Model.SelectedIndex = Settings.Default.SelectedLayer;
+                    Model.SelectedIndex = index;
 
                     ShowSample = Model.TaskState == DNNTaskStates.Running;
                     ShowWeights = Model.Layers[index].WeightCount > 0 || Settings.Default.Timings;
@@ -1825,7 +1825,8 @@ namespace Convnet.PageViewModels
                     Model.UpdateLayerInfo(0ul, true);
                     InputSnapshot = Model.InputSnapshot;
                     Label = Model.Label;
-                   
+                    
+
                     CommandToolBar[17].Visibility = !Settings.Default.DisableLocking ? Visibility.Visible : Visibility.Collapsed;
                     CommandToolBar[18].Visibility = !Settings.Default.DisableLocking ? Visibility.Visible : Visibility.Collapsed;
                     CommandToolBar[19].Visibility = Model.Layers[index].Lockable && Model.TaskState == DNNTaskStates.Stopped ? Visibility.Visible : Visibility.Collapsed;

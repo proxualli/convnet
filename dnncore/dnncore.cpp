@@ -697,6 +697,86 @@ namespace dnncore
 		return DNNBatchNormalizationUsed();
 	}
 
+	DNNLayerInfo^ DNNModel::GetLayerInfo(UInt layerIndex)
+	{
+		DNNLayerInfo^ infoManaged = gcnew DNNLayerInfo();
+
+		auto infoNative = new dnn::LayerInfo();
+		DNNGetLayerInfo(layerIndex, infoNative);
+
+		infoManaged->Name = ToManagedString(infoNative->Name);
+		infoManaged->Description = ToManagedString(infoNative->Description);
+
+		auto layerType = static_cast<DNNLayerTypes>(infoNative->LayerType);
+		infoManaged->LayerType = layerType;
+		infoManaged->IsNormalizationLayer =
+			layerType == DNNLayerTypes::BatchNorm ||
+			layerType == DNNLayerTypes::BatchNormHardLogistic ||
+			layerType == DNNLayerTypes::BatchNormHardSwish ||
+			layerType == DNNLayerTypes::BatchNormHardSwishDropout ||
+			layerType == DNNLayerTypes::BatchNormMish ||
+			layerType == DNNLayerTypes::BatchNormMishDropout ||
+			layerType == DNNLayerTypes::BatchNormRelu ||
+			layerType == DNNLayerTypes::BatchNormReluDropout ||
+			layerType == DNNLayerTypes::BatchNormSwish ||
+			layerType == DNNLayerTypes::BatchNormSwishDropout ||
+			layerType == DNNLayerTypes::BatchNormTanhExp ||
+			layerType == DNNLayerTypes::BatchNormTanhExpDropout ||
+			layerType == DNNLayerTypes::LayerNorm;
+
+		infoManaged->Activation = static_cast<DNNActivations>(infoNative->Activation);
+		infoManaged->Algorithm = static_cast<DNNAlgorithms>(infoNative->Algorithm);
+		infoManaged->Cost = static_cast<DNNCosts>(infoNative->Cost);
+		infoManaged->NeuronCount = infoNative->NeuronCount;
+		infoManaged->WeightCount = infoNative->WeightCount;
+		infoManaged->BiasCount = infoNative->BiasesCount;
+		infoManaged->LayerIndex = layerIndex; // infoNative->LayerIndex;
+
+		infoManaged->InputCount = infoNative->InputsCount;
+		std::vector<UInt>* inputs = new std::vector<UInt>();
+		DNNGetLayerInputs(layerIndex, inputs);
+		infoManaged->Inputs = gcnew System::Collections::Generic::List<UInt>();
+		for each (UInt index in *inputs)
+			infoManaged->Inputs->Add(index);
+
+		infoManaged->C = infoNative->C;
+		infoManaged->D = infoNative->D;
+		infoManaged->H = infoNative->H;
+		infoManaged->W = infoNative->W;
+		infoManaged->PadD = infoNative->PadD;
+		infoManaged->PadH = infoNative->PadH;
+		infoManaged->PadW = infoNative->PadW;
+		infoManaged->KernelH = infoNative->KernelH;
+		infoManaged->KernelW = infoNative->KernelW;
+		infoManaged->StrideH = infoNative->StrideH;
+		infoManaged->StrideW = infoNative->StrideW;
+		infoManaged->DilationH = infoNative->DilationH;
+		infoManaged->DilationW = infoNative->DilationW;
+		infoManaged->Multiplier = infoNative->Multiplier;
+		infoManaged->Groups = infoNative->Groups;
+		infoManaged->Group = infoNative->Group;
+		infoManaged->LocalSize = infoNative->LocalSize;
+		infoManaged->Dropout = infoNative->Dropout;
+		infoManaged->Weight = infoNative->Weight;
+		infoManaged->GroupIndex = infoNative->GroupIndex;
+		infoManaged->LabelIndex = infoNative->LabelIndex;
+		infoManaged->InputC = infoNative->InputC;
+		infoManaged->Alpha = infoNative->Alpha;
+		infoManaged->Beta = infoNative->Beta;
+		infoManaged->K = infoNative->K;
+		infoManaged->FactorH = infoNative->fH;
+		infoManaged->FactorW = infoNative->fW;
+		infoManaged->HasBias = infoNative->HasBias;
+		infoManaged->Scaling = infoManaged->IsNormalizationLayer ? infoNative->Scaling : false;
+		infoManaged->AcrossChannels = infoNative->AcrossChannels;
+		infoManaged->LockUpdate = infoNative->Lockable ? Nullable<bool>(infoNative->Locked) : Nullable<bool>(false);
+		infoManaged->Lockable = infoNative->Lockable;
+
+		delete infoNative;
+
+		return infoManaged;
+	}
+
 	void DNNModel::UpdateLayerStatistics(DNNLayerInfo^ info, UInt layerIndex, bool updateUI)
 	{
 		auto statsInfo = new dnn::StatsInfo;
@@ -725,14 +805,40 @@ namespace dnncore
 
 		delete statsInfo;
 
-
 		if (updateUI)
 		{
 			switch (info->LayerType)
 			{
 			case DNNLayerTypes::Input:
 			{
-				UpdateInputSnapshot(info->C, info->H, info->W);
+				const auto totalSize = info->C * info->H * info->W;
+				auto snapshot = std::vector<Float>(totalSize);
+				auto labelVector = std::vector<UInt64>(Hierarchies);
+
+				const auto pictureLoaded = DNNGetInputSnapShot(&snapshot, &labelVector);
+
+				if (totalSize > 0)
+				{
+					auto img = gcnew cli::array<Byte>(int(totalSize));
+					auto pixelFormat = info->C == 3 ? PixelFormats::Rgb24 : PixelFormats::Gray8;
+					const auto HW = info->H * info->W;
+
+					if (MeanStdNormalization)
+						for (UInt channel = 0; channel < info->C; channel++)
+							for (UInt hw = 0; hw < HW; hw++)
+								img[int((hw * info->C) + channel)] = pictureLoaded ? FloatSaturate((snapshot[hw + channel * HW] * StdTrainSet[channel]) + MeanTrainSet[channel]) : FloatSaturate(MeanTrainSet[channel]);
+					else
+						for (UInt channel = 0; channel < info->C; channel++)
+							for (UInt hw = 0; hw < HW; hw++)
+								img[int((hw * info->C) + channel)] = pictureLoaded ? FloatSaturate((snapshot[hw + channel * HW] + Float(2)) * 64) : FloatSaturate(128);
+
+					auto outputImage = System::Windows::Media::Imaging::BitmapSource::Create(int(info->W), int(info->H), 96.0, 96.0, pixelFormat, nullptr, img, int(info->W) * ((pixelFormat.BitsPerPixel + 7) / 8));
+					if (outputImage->CanFreeze)
+						outputImage->Freeze();
+
+					InputSnapshot = outputImage;
+					Label = pictureLoaded ? LabelsCollection[int(LabelIndex)][int(labelVector[LabelIndex])] : System::String::Empty;
+				}
 			}
 			break;
 
@@ -838,49 +944,15 @@ namespace dnncore
 		}
 	}
 
-	void DNNModel::UpdateInputSnapshot(UInt C, UInt H, UInt W)
+	void DNNModel::GetLayerInfoUpdate(DNNLayerInfo^ infoManaged, UInt layerIndex)
 	{
-		const auto totalSize = C * H * W;
-		auto snapshot = std::vector<Float>(totalSize);
-		auto labelVector = std::vector<UInt64>(Hierarchies);
-
-		const auto pictureLoaded = DNNGetInputSnapShot(&snapshot, &labelVector);
-
-		if (totalSize > 0)
-		{
-			auto img = gcnew cli::array<Byte>(int(totalSize));
-			auto pixelFormat = C == 3 ? PixelFormats::Rgb24 : PixelFormats::Gray8;
-			const auto HW = H * W;
-
-			if (MeanStdNormalization)
-				for (UInt channel = 0; channel < C; channel++)
-					for (UInt hw = 0; hw < HW; hw++)
-						img[int((hw * C) + channel)] = pictureLoaded ? FloatSaturate((snapshot[hw + channel * HW] * StdTrainSet[channel]) + MeanTrainSet[channel]) : FloatSaturate(MeanTrainSet[channel]);
-			else
-				for (UInt channel = 0; channel < C; channel++)
-					for (UInt hw = 0; hw < HW; hw++)
-						img[int((hw * C) + channel)] = pictureLoaded ? FloatSaturate((snapshot[hw + channel * HW] + Float(2)) * 64) : FloatSaturate(128);
-
-			auto outputImage = System::Windows::Media::Imaging::BitmapSource::Create(int(W), int(H), 96.0, 96.0, pixelFormat, nullptr, img, int(W) * ((pixelFormat.BitsPerPixel + 7) / 8));
-			if (outputImage->CanFreeze)
-				outputImage->Freeze();
-
-			InputSnapshot = outputImage;
-			Label = pictureLoaded ? LabelsCollection[int(LabelIndex)][int(labelVector[LabelIndex])] : System::String::Empty;
-		}
-	}
-
-	DNNLayerInfo^ DNNModel::GetLayerInfo(UInt layerIndex)
-	{
-		DNNLayerInfo^ infoManaged = gcnew DNNLayerInfo();
-		
 		auto infoNative = new dnn::LayerInfo();
 		DNNGetLayerInfo(layerIndex, infoNative);
 
 		infoManaged->Name = ToManagedString(infoNative->Name);
 		infoManaged->Description = ToManagedString(infoNative->Description);
 
-		const auto layerType = static_cast<DNNLayerTypes>(infoNative->LayerType);
+		auto layerType = static_cast<DNNLayerTypes>(infoNative->LayerType);
 		infoManaged->LayerType = layerType;
 		infoManaged->IsNormalizationLayer =
 			layerType == DNNLayerTypes::BatchNorm ||
@@ -897,13 +969,13 @@ namespace dnncore
 			layerType == DNNLayerTypes::BatchNormTanhExpDropout ||
 			layerType == DNNLayerTypes::LayerNorm;
 
-    	infoManaged->Activation = static_cast<DNNActivations>(infoNative->Activation);
+		infoManaged->Activation = static_cast<DNNActivations>(infoNative->Activation);
 		infoManaged->Algorithm = static_cast<DNNAlgorithms>(infoNative->Algorithm);
 		infoManaged->Cost = static_cast<DNNCosts>(infoNative->Cost);
 		infoManaged->NeuronCount = infoNative->NeuronCount;
 		infoManaged->WeightCount = infoNative->WeightCount;
 		infoManaged->BiasCount = infoNative->BiasesCount;
-		infoManaged->LayerIndex = infoNative->LayerIndex;
+		infoManaged->LayerIndex = layerIndex; // infoNative->LayerIndex;
 
 		infoManaged->InputCount = infoNative->InputsCount;
 		std::vector<UInt>* inputs = new std::vector<UInt>();
@@ -946,15 +1018,13 @@ namespace dnncore
 		infoManaged->Lockable = infoNative->Lockable;
 
 		delete infoNative;
-
-		return infoManaged;
 	}
 
 	void DNNModel::UpdateLayerInfo(UInt layerIndex, bool updateUI)
 	{
 		if (layerIndex == 0)
-			Layers[layerIndex] = GetLayerInfo(layerIndex);
-		
+			GetLayerInfoUpdate(Layers[layerIndex], layerIndex);
+
 		UpdateLayerStatistics(Layers[layerIndex], layerIndex, updateUI);
 	}
 
@@ -1201,7 +1271,7 @@ namespace dnncore
 		TrainingSamples = info->TrainingSamplesCount;
 		TestingSamples = info->TestingSamplesCount;
 		MeanStdNormalization = info->MeanStdNormalization;
-		
+	
 		LabelsCollection = gcnew cli::array<cli::array<String^>^>(int(Hierarchies));
 
 		switch (Dataset)
@@ -1437,7 +1507,7 @@ namespace dnncore
 
 	int DNNModel::LoadLayerWeights(String^ fileName, UInt layerIndex)
 	{
-		int ret = DNNLoadLayerWeights(ToUnmanagedString(fileName).c_str(), layerIndex, false);
+		int ret = DNNLoadLayerWeights(ToUnmanagedString(fileName), layerIndex, false);
 
 		if (ret == 0)
 			UpdateLayerStatistics(Layers[layerIndex], layerIndex, layerIndex == SelectedIndex);

@@ -1389,7 +1389,6 @@ namespace dnncore
 		bool LoadDataset();
 		cli::array<String^>^ GetTextLabels(String^ fileName);
 		void OnElapsed(Object^ sender, System::Timers::ElapsedEventArgs^ e);
-		void UpdateInputSnapshot(UInt C, UInt H, UInt W);
 		void SetPersistOptimizer(bool persist);
 		void SetUseTrainingStrategy(bool enable);
 		void SetDisableLocking(bool disable);
@@ -1408,6 +1407,7 @@ namespace dnncore
 		void UpdateLayerStatistics(DNNLayerInfo^ info, UInt layerIndex, bool updateUI);
 		DNNLayerInfo^ GetLayerInfo(UInt layerIndex);
 		void UpdateLayerInfo(UInt layerIndex, bool updateUI);
+		void GetLayerInfoUpdate(DNNLayerInfo^ info, UInt layerIndex);
 		void SetCostIndex(UInt costIndex);
 		void SetOptimizer(DNNOptimizers optimizer);
 		void ResetOptimizer();
