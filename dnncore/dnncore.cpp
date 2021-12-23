@@ -1499,7 +1499,7 @@ namespace dnncore
 
 		Optimizer = static_cast<DNNOptimizers>(GetOptimizer());
 
-		if (ret == 0)
+		if (ret == 0 && SelectedIndex > 0)
 			UpdateLayerStatistics(Layers[SelectedIndex], SelectedIndex, true);
 
 		return ret;
@@ -1514,7 +1514,7 @@ namespace dnncore
 	{
 		int ret = DNNLoadLayerWeights(ToUnmanagedString(fileName), layerIndex, false);
 
-		if (ret == 0)
+		if (ret == 0 && SelectedIndex > 0)
 			UpdateLayerStatistics(Layers[layerIndex], layerIndex, layerIndex == SelectedIndex);
 
 		return ret;
