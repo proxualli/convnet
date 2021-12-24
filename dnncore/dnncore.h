@@ -1798,7 +1798,6 @@ namespace dnncore
 				OnPropertyChanged("LockUpdate");
 			}
 		};
-
 		property bool IsNormalizationLayer;
 		property bool HasBias;
 		property bool MirrorPad;
@@ -1851,6 +1850,13 @@ namespace dnncore
 
 		[field:NonSerializedAttribute()]
 		virtual event System::ComponentModel::PropertyChangedEventHandler^ PropertyChanged;
+
+		DNNLayerInfo()
+		{
+			NeuronsStats = gcnew DNNStats(0.0f, 0.0f, 0.0f, 0.0f);
+			WeightsStats = gcnew DNNStats(0.0f, 0.0f, 0.0f, 0.0f);
+			BiasesStats = gcnew DNNStats(0.0f, 0.0f, 0.0f, 0.0f);
+		}
 
 		void OnPropertyChanged(String^ propertyName) { PropertyChanged(this, gcnew System::ComponentModel::PropertyChangedEventArgs(propertyName)); }
 
