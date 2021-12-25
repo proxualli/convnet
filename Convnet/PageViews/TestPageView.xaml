@@ -32,7 +32,7 @@
                         <Border>
                             <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" RecognizesAccessKey="False">
                                 <ContentPresenter.Content>
-                                    <Button Content="{Binding Path=RowHeader}" MinHeight="23" MinWidth="23" TextBlock.FontSize="12" TextBlock.Foreground="Black"  Foreground="Black" Background="WhiteSmoke" BorderThickness="1,1,1,0" BorderBrush="LightGray" IsHitTestVisible="False" IsTabStop="False"/>
+                                    <Button Content="{Binding Path=RowHeader}" MinHeight="23" MinWidth="23" TextBlock.FontSize="12" TextBlock.Foreground="Black" Foreground="Black" BorderBrush="LightGray" Background="WhiteSmoke" BorderThickness="1,1,1,0" IsHitTestVisible="False" IsTabStop="False"/>
                                 </ContentPresenter.Content>
                             </ContentPresenter>
                         </Border>
@@ -46,12 +46,12 @@
             <Setter Property="HorizontalContentAlignment" Value="Center"/>
             <Setter Property="HorizontalAlignment" Value="Center"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
-            <Setter Property="Background" Value="Gray"/>
-            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Background" Value="{StaticResource BackgroundBrushLight}"/>
+            <Setter Property="Foreground" Value="{StaticResource TextBrush}"/>
             <Style.Triggers>
                 <Trigger Property="IsSelected" Value="True">
-                    <Setter Property="Foreground" Value="Gray"/>
-                    <Setter Property="Background" Value="White"/>
+                    <Setter Property="Foreground" Value="{StaticResource BackgroundBrushLight}"/>
+                    <Setter Property="Background" Value="{StaticResource TextBrush}"/>
                 </Trigger>
             </Style.Triggers>
         </Style>
@@ -68,10 +68,10 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <StackPanel x:Name="StackPanelInfo" Height="Auto" Margin="0" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="1" Grid.RowSpan="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Width="Auto" Orientation="Horizontal" SnapsToDevicePixels="True" UseLayoutRounding="True">
-                <Border x:Name="BorderProgress" BorderThickness="1,1,0,1" BorderBrush="Gray" CornerRadius="3" Margin="1,1,0,1" Padding="2" Visibility="{Binding Path=ShowProgress, Converter={StaticResource BooleanToVisibilityConverter}}" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="1" Grid.RowSpan="1" Background="{StaticResource DisabledBorderBrush}">
+                <Border x:Name="BorderProgress" BorderThickness="1,1,0,1" BorderBrush="{StaticResource BackgroundBrushLight}" CornerRadius="3" Margin="1,1,0,1" Padding="2" Visibility="{Binding Path=ShowProgress, Converter={StaticResource BooleanToVisibilityConverter}}" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="1" Grid.RowSpan="1" Background="{StaticResource BackgroundBrushLight}">
                     <TextBlock x:Name="TextBlockProgress" Margin="4" TextWrapping="NoWrap" SnapsToDevicePixels="True" UseLayoutRounding="True" FontFamily="Consolas" FontSize="14" Text="{Binding Path=ProgressText}" Foreground="{StaticResource TextBrush}"/>
                 </Border>
-                <Border x:Name="BorderInputSnapShot" BorderThickness="1,1,0,1" BorderBrush="Gray" CornerRadius="3" Margin="1,1,0,1" Padding="2" Visibility="{Binding Path=ShowSample, Converter={StaticResource BooleanToVisibilityConverter}}" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="1" Grid.RowSpan="1" Background="{StaticResource DisabledBorderBrush}">
+                <Border x:Name="BorderInputSnapShot" BorderThickness="1,1,0,1" BorderBrush="{StaticResource BackgroundBrushLight}" CornerRadius="3" Margin="1,1,0,1" Padding="2" Visibility="{Binding Path=ShowSample, Converter={StaticResource BooleanToVisibilityConverter}}" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="1" Grid.RowSpan="1" Background="{StaticResource BackgroundBrushLight}">
                     <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="Auto" Height="Auto"  Orientation="Vertical">
                         <Image Source="{Binding Path=InputSnapShot}" Width="64" Height="64" Margin="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Stretch="Uniform" StretchDirection="Both" RenderOptions.BitmapScalingMode="HighQuality"/>
                         <TextBlock  x:Name="TextBlockLabel" Text="{Binding Path=Label}" Width ="Auto" Height="Auto" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="Consolas" Foreground="{StaticResource TextBrush}"/>
@@ -81,10 +81,10 @@
         </Grid>
         <Grid Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="Auto" Width="Auto">
             <StackPanel Orientation="Vertical">
-                <Border BorderThickness="1" BorderBrush="{StaticResource BackgroundBrushLight}"  CornerRadius="3" Margin="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                <Border BorderThickness="1" BorderBrush="{StaticResource BackgroundBrushLight}" CornerRadius="3" Margin="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
                     <TextBlock x:Name="TextBlockConfusionMatrix" Margin="4" TextWrapping="NoWrap" SnapsToDevicePixels="True" UseLayoutRounding="True" FontFamily="Consolas" FontSize="16" Text="Confusion Matrix" Foreground="{StaticResource TextBrush}" MouseLeftButtonDown="TextBlockConfusionMatrix_MouseLeftButtonDown" MouseEnter="TextBlockConfusionMatrix_MouseEnter" MouseLeave="TextBlockConfusionMatrix_MouseLeave"/>
                 </Border>
-                <DataGrid x:Name="Matrix" Background="{StaticResource BackgroundBrushLight}" Width="{Binding ElementName=MyUserControl, Path=ActualWidth}" Height="{Binding ElementName=MyUserControl, Path=ActualHeight, Converter={StaticResource AdjustHeight}, ConverterParameter=113}" CellStyle="{StaticResource MyDataGridCell}" RowBackground="Gray" ItemsSource="{Binding ConfusionDataTable}" SelectionUnit="Cell" CanUserResizeRows="False" CanUserSortColumns="False" CanUserReorderColumns="False" CanUserResizeColumns="False" UseLayoutRounding="True" IsReadOnly="True" AutoGenerateColumns="True" MinColumnWidth="26" ClipboardCopyMode="IncludeHeader" GridLinesVisibility="None" BorderThickness="0" SnapsToDevicePixels="True" EnableRowVirtualization="True" ColumnHeaderStyle="{StaticResource MyColumnHeaderStyle}" RowHeaderStyle="{StaticResource MyRowHeaderStyle}" AutoGeneratedColumns="Matrix_AutoGeneratedColumns">
+                <DataGrid x:Name="Matrix" Background="{StaticResource BackgroundBrushLight}" Width="{Binding ElementName=MyUserControl, Path=ActualWidth}" Height="{Binding ElementName=MyUserControl, Path=ActualHeight, Converter={StaticResource AdjustHeight}, ConverterParameter=113}" CellStyle="{StaticResource MyDataGridCell}" RowBackground="{StaticResource BackgroundBrushLight}" ItemsSource="{Binding ConfusionDataTable}" SelectionUnit="Cell" CanUserResizeRows="False" CanUserSortColumns="False" CanUserReorderColumns="False" CanUserResizeColumns="False" UseLayoutRounding="True" IsReadOnly="True" AutoGenerateColumns="True" MinColumnWidth="26" ClipboardCopyMode="IncludeHeader" GridLinesVisibility="None" BorderThickness="0" SnapsToDevicePixels="True" EnableRowVirtualization="True" ColumnHeaderStyle="{StaticResource MyColumnHeaderStyle}" RowHeaderStyle="{StaticResource MyRowHeaderStyle}" AutoGeneratedColumns="Matrix_AutoGeneratedColumns">
 
                 </DataGrid>
             </StackPanel>

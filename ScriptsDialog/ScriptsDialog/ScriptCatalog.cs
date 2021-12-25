@@ -347,8 +347,7 @@ namespace ScriptsDialog
             if (identity)
             {
                 blocks.Add(
-                    Dropout(A, In("B", C + 1)) +
-                    Add(A, In("D", A) + "," + inputs));
+                    Add(A, In("B", C + 1) + "," + inputs));
             }
 
             return blocks;
@@ -394,8 +393,7 @@ namespace ScriptsDialog
             if (identity)
             {
                 blocks.Add(
-                    Dropout(A, In("B", C + 2)) +
-                    Add(A, In("D", A) + "," + inputs));
+                    Add(A, In("B", C + 2) + "," + inputs));
             }
 
             return blocks;
