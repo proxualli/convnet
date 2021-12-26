@@ -105,7 +105,7 @@ namespace ScriptsDialog
                 return "[" + group + prefix + to_string(id) + "]" + nwl +
                     "Type=BatchNorm" + activation.ToString() + "Dropout" + nwl +
                     "Inputs=" + inputs + nwl +
-                      (dropout > 0f ? "Dropout=" + to_string(dropout) + nwl + nwl : nwl);
+                    (dropout > 0f ? "Dropout=" + to_string(dropout) + nwl + nwl : nwl);
             }
             else
             {
@@ -331,7 +331,7 @@ namespace ScriptsDialog
 
                 blocks.Add(
                     Convolution(C, inputs, hiddenDim, 3, 3, stride, stride, 1, 1) +
-                    (expandRatio > 1 ? BatchNormActivationDropout(C, In("C", C)) : BatchNormActivation(C, In("C", C), activation)) +
+                    (expandRatio > 1 ? BatchNormActivationDropout(C, In("C", C), activation) : BatchNormActivation(C, In("C", C), activation)) +
 
                     GlobalAvgPooling(In("B", C), group) +
                     Convolution(1, group + "GAP", DIV8(hiddenDim / expandRatio), 1, 1, 1, 1, 0, 0, false, group) +
@@ -347,7 +347,7 @@ namespace ScriptsDialog
             {
                 blocks.Add(
                     Convolution(C, inputs, hiddenDim, 3, 3, stride, stride, 1, 1) +
-                    (expandRatio > 1 ? BatchNormActivationDropout(C, In("C", C)) : BatchNormActivation(C, In("C", C), activation)) +
+                    (expandRatio > 1 ? BatchNormActivationDropout(C, In("C", C), activation) : BatchNormActivation(C, In("C", C), activation)) +
                     Convolution(C + 1, In("B", C), DIV8(outputChannels), 1, 1, 1, 1, 0, 0) +
                     BatchNorm(C + 1, In("C", C + 1)));
             }
@@ -375,7 +375,7 @@ namespace ScriptsDialog
                     Convolution(C, inputs, hiddenDim, 1, 1, 1, 1, 0, 0) +
                     BatchNormActivation(C, In("C", C), activation) +
                     DepthwiseConvolution(C + 1, In("B", C), 1, 3, 3, stride, stride, 1, 1) +
-                    (expandRatio > 1 ? BatchNormActivationDropout(C + 1, In("DC", C + 1)) : BatchNormActivation(C + 1, In("DC", C + 1), activation)) +
+                    (expandRatio > 1 ? BatchNormActivationDropout(C + 1, In("DC", C + 1), activation) : BatchNormActivation(C + 1, In("DC", C + 1), activation)) +
 
                     GlobalAvgPooling(In("B", C + 1), group) +
                     Convolution(1, group + "GAP", DIV8(hiddenDim / expandRatio), 1, 1, 1, 1, 0, 0, false, group) +
@@ -393,7 +393,7 @@ namespace ScriptsDialog
                     Convolution(C, inputs, hiddenDim, 1, 1, 1, 1, 0, 0) +
                     BatchNormActivation(C, In("C", C), activation) +
                     DepthwiseConvolution(C + 1, In("B", C), 1, 3, 3, stride, stride, 1, 1) +
-                    (expandRatio > 1 ? BatchNormActivationDropout(C + 1, In("DC", C + 1)) : BatchNormActivation(C + 1, In("DC", C + 1), activation)) +
+                    (expandRatio > 1 ? BatchNormActivationDropout(C + 1, In("DC", C + 1), activation) : BatchNormActivation(C + 1, In("DC", C + 1), activation)) +
                     Convolution(C + 2, In("B", C + 1), DIV8(outputChannels), 1, 1, 1, 1, 0, 0) +
                     BatchNorm(C + 2, In("C", C + 2)));
             }
