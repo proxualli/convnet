@@ -339,7 +339,7 @@ namespace Convnet.PageViewModels
             {
                 Name = "ButtonStrategies",
                 ToolTip = "Training Strategies Editor",
-                Content = new BitmapToImage(Resources.PerformanceLog),
+                Content = new BitmapToImage(Resources.Property),
                 ClickMode = ClickMode.Release
             };
             strategiesButton.Click += new RoutedEventHandler(StrategyButtonClick);
