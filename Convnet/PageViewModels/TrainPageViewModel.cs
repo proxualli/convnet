@@ -684,13 +684,17 @@ namespace Convnet.PageViewModels
             panelFactory.SetValue(StackPanel.OrientationProperty, Orientation.Horizontal);
 
             FrameworkElementFactory contentFactory;
-
+            var color = System.Windows.Media.Color.FromArgb(255,215,199,215);
+            var brush = new System.Windows.Media.SolidColorBrush(color);
+            brush.Freeze();
             if (!Settings.Default.DisableLocking)
             {
 
                 //set up the CheckBox
                 contentFactory = new FrameworkElementFactory(typeof(CheckBox));
                 contentFactory.SetBinding(CheckBox.ContentProperty, new Binding("Name"));
+                contentFactory.SetValue(Control.ForegroundProperty, brush);
+
                 Binding bindingIsChecked = new Binding("LockUpdate")
                 {
                     Mode = BindingMode.TwoWay,
@@ -704,19 +708,20 @@ namespace Convnet.PageViewModels
             {
                 contentFactory = new FrameworkElementFactory(typeof(TextBlock));
                 contentFactory.SetBinding(TextBlock.TextProperty, new Binding("Name"));
+                contentFactory.SetValue(Control.ForegroundProperty, brush);
             }
 
             Binding bindingFontWeights = new Binding("Lockable");
             Converters.BoolToStringConverter converter = new Converters.BoolToStringConverter
             {
-                TrueValue = System.Windows.FontWeights.Bold,
+                TrueValue = System.Windows.FontWeights.ExtraBold,
                 FalseValue = System.Windows.FontWeights.Normal
             };
             bindingFontWeights.Converter = converter;
             contentFactory.SetBinding(CheckBox.FontWeightProperty, bindingFontWeights);
             panelFactory.AppendChild(contentFactory);
             checkBoxLayout.VisualTree = panelFactory;
-
+           
             return checkBoxLayout;
         }
 
