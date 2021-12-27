@@ -295,6 +295,7 @@ namespace dnn
 		const bool HasWeights;
 		const bool InplaceBwd;
 		bool Enabled;
+		bool Skip;
 		bool UseDefaultParameters;
 		Fillers WeightsFiller;
 		FillerModes WeightsFillerMode;
@@ -357,6 +358,7 @@ namespace dnn
 			InputLayerInplaceBwd(GetInplaceInputsBwd(layerType, inputs).size() > 0 ? GetInplaceInputsBwd(layerType, inputs)[0] : nullptr),
 			InplaceBwd(IsInplaceBwd(layerType, inputs)),
 			Enabled(enabled),
+			Skip(false),
 			Scaling(scaling),
 			HasBias(hasBias && biasCount > 0),
 			HasWeights(weightCount > 0),
