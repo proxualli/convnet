@@ -271,7 +271,6 @@ namespace dnn
 							for (auto cdhw = end; cdhw < start + size; cdhw++)
 							{
 								Neurons[cdhw] = (Inputs[0]->Neurons[cdhw] * SurvivalProbability[0]) + (Inputs[1]->Neurons[cdhw] * SurvivalProbability[1]);
-								NeuronsD1[cdhw] = 0;
 							}
 						});
 				}
@@ -295,7 +294,6 @@ namespace dnn
 							for (auto cdhw = end; cdhw < start + size; cdhw++)
 							{
 								Neurons[cdhw] = (Inputs[0]->Neurons[cdhw] * SurvivalProbability[0]) + (Inputs[1]->Neurons[cdhw] * SurvivalProbability[1]) + (Inputs[2]->Neurons[cdhw] * SurvivalProbability[2]);
-								NeuronsD1[cdhw] = 0;
 							}
 						});
 				}
@@ -320,7 +318,6 @@ namespace dnn
 							for (auto cdhw = end; cdhw < start + size; cdhw++)
 							{
 								Neurons[cdhw] = (Inputs[0]->Neurons[cdhw] * SurvivalProbability[0]) + (Inputs[1]->Neurons[cdhw] * SurvivalProbability[1]) + (Inputs[2]->Neurons[cdhw] * SurvivalProbability[2]) + (Inputs[3]->Neurons[cdhw] * SurvivalProbability[3]);
-								NeuronsD1[cdhw] = 0;
 							}
 						});
 				}
@@ -346,7 +343,6 @@ namespace dnn
 							}
 							for (auto cdhw = end; cdhw < start + size; cdhw++)
 							{
-								NeuronsD1[cdhw] = 0;
 								Neurons[cdhw] = 0;
 								for (auto i = 0ull; i < inputs; i++)
 									Neurons[cdhw] += Inputs[i]->Neurons[cdhw] * SurvivalProbability[i];
