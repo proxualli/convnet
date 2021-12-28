@@ -146,7 +146,7 @@ namespace dnn
 						{
 							In0.load_a(&Inputs[0]->Neurons[cdhw]);
 							In1.load_a(&Inputs[1]->Neurons[cdhw]);
-							((In0 * skippedInputs[0]) + (In1 * skippedInputs[1])).store_a(&Neurons[cdhw]);
+							mul_add(In0, skippedInputs[0], In1 * skippedInputs[1]).store_a(&Neurons[cdhw]);
 							vecZero.store_nt(&NeuronsD1[cdhw]);
 						}
 						for (auto cdhw = end; cdhw < start + size; cdhw++)
@@ -256,98 +256,95 @@ namespace dnn
 				case 2:
 				{
 					for_i(batchSize, threads, [=](UInt n)
-						{
-							const auto start = n * size;
-							const auto end = start + part;
+					{
+						const auto start = n * size;
+						const auto end = start + part;
 
-							VecFloat In0, In1;
-							for (auto cdhw = start; cdhw < end; cdhw += VectorSize)
-							{
-								In0.load_a(&Inputs[0]->Neurons[cdhw]);
-								In1.load_a(&Inputs[1]->Neurons[cdhw]);
-								((In0 * SurvivalProbability[0]) + (In1 * SurvivalProbability[1])).store_a(&Neurons[cdhw]);
-							
-							}
-							for (auto cdhw = end; cdhw < start + size; cdhw++)
-							{
-								Neurons[cdhw] = (Inputs[0]->Neurons[cdhw] * SurvivalProbability[0]) + (Inputs[1]->Neurons[cdhw] * SurvivalProbability[1]);
-							}
-						});
+						VecFloat In0, In1;
+						for (auto cdhw = start; cdhw < end; cdhw += VectorSize)
+						{
+							In0.load_a(&Inputs[0]->Neurons[cdhw]);
+							In1.load_a(&Inputs[1]->Neurons[cdhw]);
+							mul_add(In0, SurvivalProbability[0], In1 * SurvivalProbability[1]).store_a(&Neurons[cdhw]);
+						}
+						for (auto cdhw = end; cdhw < start + size; cdhw++)
+							Neurons[cdhw] = (Inputs[0]->Neurons[cdhw] * SurvivalProbability[0]) + (Inputs[1]->Neurons[cdhw] * SurvivalProbability[1]);
+					});
 				}
 				break;
 
 				case 3:
 				{
 					for_i(batchSize, threads, [=](UInt n)
-						{
-							const auto start = n * size;
-							const auto end = start + part;
+					{
+						const auto start = n * size;
+						const auto end = start + part;
 
-							VecFloat In0, In1, In2;
-							for (auto cdhw = start; cdhw < end; cdhw += VectorSize)
-							{
-								In0.load_a(&Inputs[0]->Neurons[cdhw]);
-								In1.load_a(&Inputs[1]->Neurons[cdhw]);
-								In2.load_a(&Inputs[2]->Neurons[cdhw]);
-								((In0 * SurvivalProbability[0]) + (In1 * SurvivalProbability[1]) + (In2 * SurvivalProbability[2])).store_a(&Neurons[cdhw]);
-							}
-							for (auto cdhw = end; cdhw < start + size; cdhw++)
-							{
-								Neurons[cdhw] = (Inputs[0]->Neurons[cdhw] * SurvivalProbability[0]) + (Inputs[1]->Neurons[cdhw] * SurvivalProbability[1]) + (Inputs[2]->Neurons[cdhw] * SurvivalProbability[2]);
-							}
-						});
+						VecFloat In0, In1, In2;
+						for (auto cdhw = start; cdhw < end; cdhw += VectorSize)
+						{
+							In0.load_a(&Inputs[0]->Neurons[cdhw]);
+							In1.load_a(&Inputs[1]->Neurons[cdhw]);
+							In2.load_a(&Inputs[2]->Neurons[cdhw]);
+							((In0 * SurvivalProbability[0]) + (In1 * SurvivalProbability[1]) + (In2 * SurvivalProbability[2])).store_a(&Neurons[cdhw]);
+						}
+						for (auto cdhw = end; cdhw < start + size; cdhw++)
+						{
+							Neurons[cdhw] = (Inputs[0]->Neurons[cdhw] * SurvivalProbability[0]) + (Inputs[1]->Neurons[cdhw] * SurvivalProbability[1]) + (Inputs[2]->Neurons[cdhw] * SurvivalProbability[2]);
+						}
+					});
 				}
 				break;
 
 				case 4:
 				{
 					for_i(batchSize, threads, [=](UInt n)
-						{
-							const auto start = n * size;
-							const auto end = start + part;
+					{
+						const auto start = n * size;
+						const auto end = start + part;
 
-							VecFloat In0, In1, In2, In3;
-							for (auto cdhw = start; cdhw < end; cdhw += VectorSize)
-							{
-								In0.load_a(&Inputs[0]->Neurons[cdhw]);
-								In1.load_a(&Inputs[1]->Neurons[cdhw]);
-								In2.load_a(&Inputs[2]->Neurons[cdhw]);
-								In3.load_a(&Inputs[3]->Neurons[cdhw]);
-								((In0 * SurvivalProbability[0]) + (In1 * SurvivalProbability[1]) + (In2 * SurvivalProbability[2]) + (In3 * SurvivalProbability[3])).store_a(&Neurons[cdhw]);
-							}
-							for (auto cdhw = end; cdhw < start + size; cdhw++)
-							{
-								Neurons[cdhw] = (Inputs[0]->Neurons[cdhw] * SurvivalProbability[0]) + (Inputs[1]->Neurons[cdhw] * SurvivalProbability[1]) + (Inputs[2]->Neurons[cdhw] * SurvivalProbability[2]) + (Inputs[3]->Neurons[cdhw] * SurvivalProbability[3]);
-							}
-						});
+						VecFloat In0, In1, In2, In3;
+						for (auto cdhw = start; cdhw < end; cdhw += VectorSize)
+						{
+							In0.load_a(&Inputs[0]->Neurons[cdhw]);
+							In1.load_a(&Inputs[1]->Neurons[cdhw]);
+							In2.load_a(&Inputs[2]->Neurons[cdhw]);
+							In3.load_a(&Inputs[3]->Neurons[cdhw]);
+							((In0 * SurvivalProbability[0]) + (In1 * SurvivalProbability[1]) + (In2 * SurvivalProbability[2]) + (In3 * SurvivalProbability[3])).store_a(&Neurons[cdhw]);
+						}
+						for (auto cdhw = end; cdhw < start + size; cdhw++)
+						{
+							Neurons[cdhw] = (Inputs[0]->Neurons[cdhw] * SurvivalProbability[0]) + (Inputs[1]->Neurons[cdhw] * SurvivalProbability[1]) + (Inputs[2]->Neurons[cdhw] * SurvivalProbability[2]) + (Inputs[3]->Neurons[cdhw] * SurvivalProbability[3]);
+						}
+					});
 				}
 				break;
 
 				default:
 				{
 					for_i(batchSize, threads, [=](UInt n)
-						{
-							const auto start = n * size;
-							const auto end = start + part;
+					{
+						const auto start = n * size;
+						const auto end = start + part;
 
-							VecFloat inputD1, sum;
-							for (auto cdhw = start; cdhw < end; cdhw += VectorSize)
+						VecFloat inputD1, sum;
+						for (auto cdhw = start; cdhw < end; cdhw += VectorSize)
+						{
+							sum = VecFloat(0);
+							for (auto i = 0ull; i < inputs; i++)
 							{
-								sum = VecFloat(0);
-								for (auto i = 0ull; i < inputs; i++)
-								{
-									inputD1.load_a(&Inputs[i]->Neurons[cdhw]);
-									sum += inputD1 * SurvivalProbability[i];
-								}
-								sum.store_a(&Neurons[cdhw]);
+								inputD1.load_a(&Inputs[i]->Neurons[cdhw]);
+								sum += inputD1 * SurvivalProbability[i];
 							}
-							for (auto cdhw = end; cdhw < start + size; cdhw++)
-							{
-								Neurons[cdhw] = 0;
-								for (auto i = 0ull; i < inputs; i++)
-									Neurons[cdhw] += Inputs[i]->Neurons[cdhw] * SurvivalProbability[i];
-							}
-						});
+							sum.store_a(&Neurons[cdhw]);
+						}
+						for (auto cdhw = end; cdhw < start + size; cdhw++)
+						{
+							Neurons[cdhw] = 0;
+							for (auto i = 0ull; i < inputs; i++)
+								Neurons[cdhw] += Inputs[i]->Neurons[cdhw] * SurvivalProbability[i];
+						}
+					});
 				}
 				break;
 				}
