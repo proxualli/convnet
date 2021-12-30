@@ -254,12 +254,16 @@ namespace ScriptsDialog
         private Activations activation = Activations.Relu;
         private ObservableCollection<EfficientNetRecord> efficientnet = new ObservableCollection<EfficientNetRecord>();
         private ObservableCollection<ShuffleNetRecord> shufflenet = new ObservableCollection<ShuffleNetRecord>();
+        private UInt strideHFirstConv = 2;
+        private UInt strideWFirstConv = 2;
+        private Float depthDrop = (Float)0.2;
+        private bool fixedDepthDrop = false;
 
         public ScriptParameters()
         {
         }
 
-        public ScriptParameters(Scripts script = Scripts.shufflenetv2, Datasets dataset = Datasets.cifar10, UInt h = 32, UInt w = 32, UInt padH = 4, UInt padW = 4, bool mirrorPad = false, bool meanStdNorm = true, Fillers weightsFiller = Fillers.HeNormal, FillerModes weightsFillerMode = FillerModes.In, Float weightsGain = (Float)1.0, Float weightsScale = (Float)0.05, Float weightsLRM = 1, Float weightsWDM = 1, bool hasBias = false, Fillers biasesFiller = Fillers.Constant, FillerModes biasesFillerMode = FillerModes.In, Float biasesGain = (Float)1.0, Float biasesScale = 0, Float biasesLRM = 1, Float biasesWDM = 1, Float batchNormMomentum = (Float)0.995, Float batchNormEps = (Float)1E-04, bool batchNormScaling = false, Float alpha = (Float)0, Float beta = (Float)0, UInt groups = 3, UInt iterations = 4, UInt width = 8, UInt growthRate = 12, bool bottleneck = false, Float dropout = 0, Float compression = 0, bool squeezeExcitation = false, bool channelZeroPad = true, Activations activation = Activations.Relu)
+        public ScriptParameters(Scripts script = Scripts.shufflenetv2, Datasets dataset = Datasets.cifar10, UInt h = 32, UInt w = 32, UInt padH = 4, UInt padW = 4, bool mirrorPad = false, bool meanStdNorm = true, Fillers weightsFiller = Fillers.HeNormal, FillerModes weightsFillerMode = FillerModes.In, Float weightsGain = (Float)1.0, Float weightsScale = (Float)0.05, Float weightsLRM = 1, Float weightsWDM = 1, bool hasBias = false, Fillers biasesFiller = Fillers.Constant, FillerModes biasesFillerMode = FillerModes.In, Float biasesGain = (Float)1.0, Float biasesScale = 0, Float biasesLRM = 1, Float biasesWDM = 1, Float batchNormMomentum = (Float)0.995, Float batchNormEps = (Float)1E-04, bool batchNormScaling = false, Float alpha = (Float)0, Float beta = (Float)0, UInt groups = 3, UInt iterations = 4, UInt width = 8, UInt growthRate = 12, bool bottleneck = false, Float dropout = 0, Float compression = 0, bool squeezeExcitation = false, bool channelZeroPad = true, Activations activation = Activations.Relu, UInt strideHFirstConv = 2, UInt strideWFirstConv = 2, Float depthDrop = (Float)0.2, bool fixedDepthDrop = false)
         {
             Script = script;
             Dataset = dataset;
@@ -297,6 +301,10 @@ namespace ScriptsDialog
             SqueezeExcitation = squeezeExcitation;
             ChannelZeroPad = channelZeroPad;
             Activation = activation;
+            StrideHFirstConv = strideHFirstConv;
+            StrideWFirstConv = strideWFirstConv;
+            DepthDrop = depthDrop;
+            FixedDepthDrop = fixedDepthDrop;
 
             var efficientnetv2 = new ObservableCollection<EfficientNetRecord>();
             efficientnetv2.Add(new EfficientNetRecord(1, 24, 2, 1, false));
@@ -332,18 +340,18 @@ namespace ScriptsDialog
                 switch (Script)
                 {
                     case Scripts.densenet:
-                        return Script.ToString() + "-" + Groups.ToString() + "-" + Iterations.ToString() + "-" + GrowthRate.ToString() + (Dropout > 0 ? "-dropout" : "") + (Compression > 0 ? "-compression" : "") + (Bottleneck ? "-bottleneck" : "") + "-" + Activation.ToString().ToLower();
+                        return Script.ToString() + "-" + Groups.ToString() + "-" + Iterations.ToString() + "-" + GrowthRate.ToString() + (Dropout > 0 ? "-dropout" : "") + (DepthDrop > 0 ? (FixedDepthDrop ? "-fixeddepthdrop" : "-depthdrop") : "") + (Compression > 0 ? "-compression" : "") + (Bottleneck ? "-bottleneck" : "") + "-" + Activation.ToString().ToLower();
                     case Scripts.efficientnetv2:
                         {
                             string name = "";
                             foreach (var rec in EfficientNet)
                                 name += rec.ToString();
-                            return Script.ToString() + name;
+                            return Script.ToString() + (DepthDrop > 0 ? (FixedDepthDrop ? "-fixeddepthdrop" : "-depthdrop") : "") + name;
                         }
                     case Scripts.mobilenetv3:
-                        return Script.ToString() + "-" + Groups.ToString() + "-" + Iterations.ToString() + "-" + Width.ToString() + "-" + Activation.ToString().ToLower() + (SqueezeExcitation ? " -se" : "");
+                        return Script.ToString() + "-" + Groups.ToString() + "-" + Iterations.ToString() + "-" + Width.ToString() + "-" + Activation.ToString().ToLower() + (SqueezeExcitation ? " -se" : "") + (DepthDrop > 0 ? (FixedDepthDrop ? "-fixeddepthdrop" : "-depthdrop") : "");
                     case Scripts.resnet:
-                        return Script.ToString() + "-" + Groups.ToString() + "-" + Iterations.ToString() + "-" + Width.ToString() + (Dropout > 0 ? "-dropout" : "") + (Bottleneck ? "-bottleneck" : "") + (ChannelZeroPad ? "-channelzeropad" : "") + "-" + Activation.ToString().ToLower();
+                        return Script.ToString() + "-" + Groups.ToString() + "-" + Iterations.ToString() + "-" + Width.ToString() + (Dropout > 0 ? "-dropout" : "") + (DepthDrop > 0 ? (FixedDepthDrop ? "-fixeddepthdrop" : "-depthdrop") : "") + (Bottleneck ? "-bottleneck" : "") + (ChannelZeroPad ? "-channelzeropad" : "") + "-" + Activation.ToString().ToLower();
                     case Scripts.shufflenetv2:
                         {
                             string name = "";
@@ -378,6 +386,7 @@ namespace ScriptsDialog
                     OnPropertyChanged("BottleneckVisible");
                     OnPropertyChanged("EfficientNetVisible");
                     OnPropertyChanged("ShuffleNetVisible");
+                    OnPropertyChanged("DepthDropVisible");
                 }
             }
         }
@@ -530,6 +539,32 @@ namespace ScriptsDialog
                 {
                     meanStdNormalization = value;
                     OnPropertyChanged("MeanStdNormalization");
+                }
+            }
+        }
+
+        public bool FixedDepthDrop
+        {
+            get { return fixedDepthDrop; }
+            set
+            {
+                if (value != fixedDepthDrop)
+                {
+                    fixedDepthDrop = value;
+                    OnPropertyChanged("FixedDepthDrop");
+                }
+            }
+        }
+
+        public Float DepthDrop
+        {
+            get { return depthDrop; }
+            set
+            {
+                if (value >= 0 && value <= 1 && value != depthDrop)
+                {
+                    depthDrop = value;
+                    OnPropertyChanged("DepthDrop");
                 }
             }
         }
@@ -873,7 +908,6 @@ namespace ScriptsDialog
             }
         }
 
-
         public UInt Width
         {
             get { return width; }
@@ -1016,11 +1050,38 @@ namespace ScriptsDialog
             }
         }
 
+        public UInt StrideHFirstConv
+        {
+            get { return strideHFirstConv; }
+            set
+            {
+                if (value != strideHFirstConv && value > 0)
+                {
+                    strideHFirstConv = value;
+                    OnPropertyChanged("StrideHFirstConv");
+                }
+            }
+        }
+
+        public UInt StrideWFirstConv
+        {
+            get { return strideWFirstConv; }
+            set
+            {
+                if (value != strideWFirstConv && value > 0)
+                {
+                    strideWFirstConv = value;
+                    OnPropertyChanged("StrideWFirstConv");
+                }
+            }
+        }
+
         public bool GroupsVisible { get { return Script != Scripts.efficientnetv2 && Script != Scripts.shufflenetv2; } }
         public bool IterationsVisible { get { return Script != Scripts.efficientnetv2 && Script != Scripts.shufflenetv2; } }
         public bool WidthVisible { get { return Script == Scripts.mobilenetv3 || Script == Scripts.resnet || Script == Scripts.shufflenetv2; } }
         public bool GrowthRateVisible { get { return Script == Scripts.densenet; } }
         public bool DropoutVisible { get { return Script == Scripts.densenet || Script == Scripts.resnet || Script == Scripts.efficientnetv2; } }
+        public bool DepthDropVisible { get { return Script == Scripts.efficientnetv2 || Script == Scripts.mobilenetv3 || Script == Scripts.resnet || Script == Scripts.densenet; } }
         public bool CompressionVisible { get { return Script == Scripts.densenet; } }
         public bool BottleneckVisible { get { return Script == Scripts.densenet || Script == Scripts.resnet; } }
         public bool SqueezeExcitationVisible { get { return Script == Scripts.mobilenetv3; } }

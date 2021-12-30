@@ -465,6 +465,8 @@ namespace ScriptsDialog
                 (p.BiasesLRM != 1 ? "BiasesLRM=" + to_string(p.BiasesLRM) + nwl : "") +
                 (p.BiasesWDM != 1 ? "BiasesWDM=" + to_string(p.BiasesWDM) + nwl : "") : "Biases=No" + nwl) +
                 (p.DropoutVisible ? "Dropout=" + to_string(p.Dropout) + nwl : "") +
+                (p.DepthDropVisible ? "DepthDrop=" + to_string(p.DepthDrop) + nwl : "") +
+                (p.DepthDropVisible ? "FixedDepthDrop=" + to_string(p.FixedDepthDrop) + nwl : "") +
                 "Scaling=" + to_string(p.BatchNormScaling) + nwl +
                 "Momentum=" + to_string(p.BatchNormMomentum) + nwl +
                 "Eps=" + to_string(p.BatchNormEps) + nwl + nwl;
@@ -477,7 +479,7 @@ namespace ScriptsDialog
                     {
                         var channels = DIV8(p.GrowthRate);
 
-                        net += Convolution(1, "Input", channels, 3, 3, 2, 2, 1, 1);
+                        net += Convolution(1, "Input", channels, 3, 3, p.StrideHFirstConv, p.StrideWFirstConv, 1, 1);
 
                         if (p.Bottleneck)
                         {
@@ -591,7 +593,7 @@ namespace ScriptsDialog
                         var C = 1ul;
 
                         net +=
-                           Convolution(C, "Input", inputChannels, 3, 3, 2, 2, 1, 1) +
+                           Convolution(C, "Input", inputChannels, 3, 3, p.StrideHFirstConv, p.StrideWFirstConv, 1, 1) +
                            BatchNormActivation(C, In("C", C), p.Activation);
 
                         var stage = 0ul;
@@ -640,7 +642,7 @@ namespace ScriptsDialog
                         var W = p.Width * 16;
 
                         net +=
-                            Convolution(1, "Input", DIV8(W), 3, 3, 2, 2, 1, 1) +
+                            Convolution(1, "Input", DIV8(W), 3, 3, p.StrideHFirstConv, p.StrideWFirstConv, 1, 1) +
                             BatchNormActivation(1, "C1", p.Activation);
 
                         blocks.Add(
@@ -735,7 +737,7 @@ namespace ScriptsDialog
                         var C = 5ul;
 
                         net +=
-                            Convolution(1, "Input", DIV8(W), 3, 3, 2, 2, 1, 1);
+                            Convolution(1, "Input", DIV8(W), 3, 3, p.StrideHFirstConv, p.StrideWFirstConv, 1, 1);
 
                         if (p.Bottleneck)
                         {
@@ -849,7 +851,7 @@ namespace ScriptsDialog
                         var channels = DIV8(p.Width * 16);
 
                         net +=
-                            Convolution(1, "Input", channels, 3, 3, 2, 2, 1, 1) +
+                            Convolution(1, "Input", channels, 3, 3, p.StrideHFirstConv, p.StrideWFirstConv, 1, 1) +
                             BatchNormActivation(1, "C1", p.Activation) +
                             Convolution(2, "B1", channels, 1, 1, 1, 1, 0, 0) +
                             BatchNormActivation(2, "C2", p.Activation) +

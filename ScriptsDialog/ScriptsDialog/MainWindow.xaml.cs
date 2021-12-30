@@ -103,7 +103,7 @@ namespace ScriptsDialog
 
             if (Settings.Default.Parameters == null)
             {
-                Settings.Default.Parameters = new ScriptParameters(Scripts.shufflenetv2, Datasets.cifar10, 32, 32, 4, 4, false, true, Fillers.HeNormal, FillerModes.In, 1f, 0.05f, 1f, 1f, false, Fillers.Constant, FillerModes.In, 1f, 0f, 1f, 1f, 0.995f, 0.0001f, false, 0f, 0f, 3, 4, 8, 12, false, 0.0f, 0.0f, false, true, Activations.Relu);
+                Settings.Default.Parameters = new ScriptParameters(Scripts.shufflenetv2, Datasets.cifar10, 32, 32, 4, 4, false, true, Fillers.HeNormal, FillerModes.In, 1f, 0.05f, 1f, 1f, false, Fillers.Constant, FillerModes.In, 1f, 0f, 1f, 1f, 0.995f, 0.0001f, false, 0f, 0f, 3, 4, 8, 12, false, 0.0f, 0.0f, false, true, Activations.Relu, 2, 2);
 
                 var efficientnetv2 = new ObservableCollection<EfficientNetRecord>();
                 efficientnetv2.Add(new EfficientNetRecord(1, 24, 2, 1, false));
