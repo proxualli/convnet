@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <PropertyGroup>
-    <LocalDebuggerEnvironment>PATH=C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\Release;C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\Debug;C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\RelWithDebInfo;C:\Users\dhaen\source\repos\convnet\dnn\deps\oneDNN2\build\src\MinSizeRel;$(PATH)</LocalDebuggerEnvironment>
-    <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
-  </PropertyGroup>
-</Project>
