@@ -537,7 +537,7 @@ namespace dnn
 		return select(generator.random4f() < p, VecFloat(1), VecFloat(0));
 #endif
 	}
-
+	
 	template<typename T>
 	inline static auto Bernoulli(const Float p = Float(0.5)) noexcept
 	{
