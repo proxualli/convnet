@@ -346,7 +346,7 @@ namespace ScriptsDialog
                             string name = "";
                             foreach (var rec in EfficientNet)
                                 name += rec.ToString();
-                            return Script.ToString() + (DepthDrop > 0 ? (FixedDepthDrop ? "-fixeddepthdrop" : "-depthdrop") : "") + name;
+                            return Script.ToString() + (DepthDrop > 0 ? (FixedDepthDrop ? "-fixeddepthdrop-" : "-depthdrop-") : "") + name;
                         }
                     case Scripts.mobilenetv3:
                         return Script.ToString() + "-" + Groups.ToString() + "-" + Iterations.ToString() + "-" + Width.ToString() + "-" + Activation.ToString().ToLower() + (SqueezeExcitation ? " -se" : "") + (DepthDrop > 0 ? (FixedDepthDrop ? "-fixeddepthdrop" : "-depthdrop") : "");
