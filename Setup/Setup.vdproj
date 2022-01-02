@@ -93,12 +93,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_62E7C69C603542FAA21D13E6061FEAB3"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_6A2D321A03A848CCA8C3A684CFE5CCA6"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -347,7 +341,7 @@
                 {
                 "Name" = "8:.NET Core"
                 "Message" = "8:[VSDNETCOREMSG]"
-                "FrameworkVersion" = "8:3.1                       "
+                "FrameworkVersion" = "8:3.1                        "
                 "AllowLaterVersions" = "11:FALSE"
                 "InstallUrl" = "8:https://dotnet.microsoft.com/download/dotnet-core/[NetCoreVerMajorDotMinor]"
                 "IsNETCore" = "11:TRUE"
@@ -582,26 +576,6 @@
             {
             "SourcePath" = "8:..\\ScriptsDialog\\ScriptsDialog\\Resources\\Copy.png"
             "TargetName" = "8:Copy.png"
-            "Tag" = "8:"
-            "Folder" = "8:_47A5B6B60B554571A6DDB6FA3ED7138F"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_62E7C69C603542FAA21D13E6061FEAB3"
-            {
-            "SourcePath" = "8:..\\ScriptsDialog\\ScriptsDialog\\Resources\\Annotate_HighPriority.ico"
-            "TargetName" = "8:Annotate_HighPriority.ico"
             "Tag" = "8:"
             "Folder" = "8:_47A5B6B60B554571A6DDB6FA3ED7138F"
             "Condition" = "8:"
