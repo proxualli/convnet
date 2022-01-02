@@ -22,7 +22,6 @@
   </PropertyGroup>
     
   <ItemGroup>
-    <Resource Include="Resources\Annotate_HighPriority.ico" />
     <Resource Include="Resources\App.ico" />
     <Resource Include="Resources\Copy.png" />
     <Resource Include="Resources\Cut.png" />

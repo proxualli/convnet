@@ -1411,8 +1411,10 @@
 
     <ControlTemplate x:Key="validationTemplate">
         <DockPanel>
-            <Image Source="/Convnet;component/Resources/Annotate_HighPriority.ico" Stretch="None"></Image>
-            <AdornedElementPlaceholder/>
+            <TextBlock Foreground="Red" FontSize="20" FontFamily="Segoe UI" Margin="0,0,3,0">!</TextBlock>
+            <Border BorderBrush="Red" BorderThickness="1">
+                <AdornedElementPlaceholder x:Name="controlWithError"/>
+            </Border>
         </DockPanel>
     </ControlTemplate>
 
