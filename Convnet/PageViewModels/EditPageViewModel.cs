@@ -708,7 +708,7 @@ namespace Convnet.PageViewModels
 
         private bool CheckDefinition()
         {
-            var msg = Model.CheckDefinition(Definition);
+            var msg = Model.Check(Definition);
 
             Definition = msg.Definition;
 

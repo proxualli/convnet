@@ -1988,8 +1988,8 @@ namespace dnncore
 		void GetConfusionMatrix();
 		void UpdateCostInfo(UInt costIndex);
 		bool BatchNormalizationUsed();
-		DNNCheckMsg^ CheckDefinition(String^ definition);
-		int LoadDefinition(String^ fileName);
+		DNNCheckMsg^ Check(String^ definition);
+		int Load(String^ fileName);
 		int LoadWeights(String^ fileName, bool persistOptimizer);
 		int SaveWeights(String^ fileName, bool persistOptimizer);
 		int LoadLayerWeights(String^ fileName, UInt layerIndex);

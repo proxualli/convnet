@@ -1367,45 +1367,6 @@ namespace Convnet.PageViewModels
                         Model.Optimizer = TrainRate.Optimizer;
                         Optimizer = TrainRate.Optimizer;
 
-                        /*
-                        DNNDataSet.TrainingRatesDataTable table = new DNNDataSet.TrainingRatesDataTable();
-                        table.BeginLoadData();
-                        foreach (DNNTrainingRate rate in Model.TrainingRates)
-                            table.AddTrainingRatesRow(
-                                (int)rate.Optimizer,
-                                (double)rate.Beta2,
-                                (double)rate.Eps,
-                                (double)rate.MaximumRate,
-                                (int)rate.BatchSize,
-                                (int)rate.Height,
-                                (int)rate.Width,
-                                (int)rate.Cycles,
-                                (int)rate.Epochs,
-                                (int)rate.EpochMultiplier,
-                                (double)rate.MinimumRate,
-                                (double)rate.FinalRate,
-                                (double)rate.Gamma,
-                                (double)rate.L2Penalty,
-                                (double)rate.Dropout,
-                                (double)rate.Momentum,
-                                (double)rate.DecayFactor,
-                                (int)rate.DecayAfterEpochs,
-                                rate.HorizontalFlip,
-                                rate.VerticalFlip,
-                                (double)rate.InputDropout,
-                                (double)rate.Cutout,
-                                rate.CutMix,
-                                (double)rate.AutoAugment,
-                                (double)rate.ColorCast,
-                                (int)rate.ColorAngle,
-                                (double)rate.Distortion,
-                                (int)rate.Interpolation,
-                                (double)rate.Scaling,
-                                (double)rate.Rotation);
-                        table.EndLoadData();
-                        table.WriteXml(StorageDirectory + @"rates.scheme-xml", System.Data.XmlWriteMode.WriteSchema);
-                        */
-
                         EpochDuration = TimeSpan.Zero;
 
                         RefreshTimer = new Timer(1000 * Settings.Default.RefreshInterval.Value);

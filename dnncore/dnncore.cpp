@@ -42,9 +42,9 @@ DNN_API void DNNSetOptimizer(const dnn::Optimizers strategy);
 DNN_API void DNNResetOptimizer();
 DNN_API void DNNRefreshStatistics(const UInt layerIndex, dnn::StatsInfo* info);
 DNN_API bool DNNGetInputSnapShot(std::vector<Float>* snapshot, std::vector<UInt>* label);
-DNN_API bool DNNCheckDefinition(std::string& definition, dnn::CheckMsg& checkMsg);
-DNN_API int DNNLoadDefinition(const std::string& fileName,dnn::CheckMsg& checkMsg);
-DNN_API int DNNReadDefinition(const std::string& definition, dnn::CheckMsg& checkMsg);
+DNN_API bool DNNCheck(std::string& definition, dnn::CheckMsg& checkMsg);
+DNN_API int DNNLoad(const std::string& fileName,dnn::CheckMsg& checkMsg);
+DNN_API int DNNRead(const std::string& definition, dnn::CheckMsg& checkMsg);
 DNN_API void DNNDataprovider(const std::string& directory);
 DNN_API int DNNLoadWeights(const std::string& fileName, const bool persistOptimizer);
 DNN_API int DNNSaveWeights(const std::string& fileName, const bool persistOptimizer);
@@ -82,7 +82,7 @@ namespace dnncore
 		DNNDataprovider(ToUnmanagedString(StorageDirectory));
 
 		dnn::CheckMsg checkMsg;
-		if (DNNReadDefinition(ToUnmanagedString(definition), checkMsg))
+		if (DNNRead(ToUnmanagedString(definition), checkMsg))
 		{
 			DNNLoadDataset();
 			Definition = definition;
@@ -797,20 +797,20 @@ namespace dnncore
 		TaskState = DNNTaskStates::Running;
 	}
 
-	DNNCheckMsg^ DNNModel::CheckDefinition(String^ definition)
+	DNNCheckMsg^ DNNModel::Check(String^ definition)
 	{
 		dnn::CheckMsg checkMsg;
 		
 		auto def = ToUnmanagedString(definition);
 
-		DNNCheckDefinition(def, checkMsg);
+		DNNCheck(def, checkMsg);
 				
 		definition = ToManagedString(def);
 
 		return gcnew DNNCheckMsg(checkMsg.Row, checkMsg.Column, ToManagedString(checkMsg.Message), checkMsg.Error, definition);
 	}
 
-	int DNNModel::LoadDefinition(String^ fileName)
+	int DNNModel::Load(String^ fileName)
 	{
 		dnn::CheckMsg checkMsg;
 
@@ -819,7 +819,7 @@ namespace dnncore
 
 		GC::Collect(GC::MaxGeneration, GCCollectionMode::Forced, true, true);
 
-		if (DNNLoadDefinition(ToUnmanagedString(fileName), checkMsg))
+		if (DNNLoad(ToUnmanagedString(fileName), checkMsg))
 		{
 			DNNLoadDataset();
 
