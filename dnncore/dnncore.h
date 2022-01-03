@@ -1987,6 +1987,8 @@ namespace dnncore
 		property UInt BatchSize;
 		property UInt Height;
 		property UInt Width;
+		property UInt PadH;
+		property UInt PadW;
 		property UInt LayerCount;
 		property UInt Multiplier;
 		property UInt CostLayerCount;

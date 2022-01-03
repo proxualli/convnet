@@ -427,6 +427,8 @@ namespace dnncore
 			BatchSize = info->BatchSize;
 			Height = info->Height;
 			Width = info->Width;
+			PadH = info->PadH;
+			PadW = info->PadW;
 
 			HorizontalFlip = info->HorizontalFlip;
 			VerticalFlip = info->VerticalFlip;
@@ -475,6 +477,8 @@ namespace dnncore
 			BatchSize = info->BatchSize;
 			Height = info->Height;
 			Width = info->Width;
+			PadH = info->PadH;
+			PadW = info->PadW;
 			AvgTestLoss = info->AvgTestLoss;
 			TestErrorPercentage = info->TestErrorPercentage;
 			TestErrors = info->TestErrors;

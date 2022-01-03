@@ -93,7 +93,7 @@ namespace Convnet.Dialogs
                 foreach (DNNTrainingStrategy rate in tpvm.TrainingStrategies)
                     totalEpochs += rate.Epochs;
 
-                if (totalEpochs != 1)
+                if (totalEpochs < 0.9995 || totalEpochs > 1.0005)
                 {
                     Xceed.Wpf.Toolkit.MessageBox.Show("Sum of Epochs must be exactly 1.", "Warning", MessageBoxButton.OK);
                     return;
