@@ -63,7 +63,6 @@ namespace dnncore
 	DNNModel::DNNModel(String^ definition)
 	{
 		Duration = gcnew System::Diagnostics::Stopwatch();
-		
 		sb = gcnew System::Text::StringBuilder();
 		State = DNNStates::Idle;
 		OldState = DNNStates::Idle;
@@ -155,7 +154,7 @@ namespace dnncore
 		infoManaged->Name = ToManagedString(infoNative->Name);
 		infoManaged->Description = ToManagedString(infoNative->Description);
 
-		auto layerType = static_cast<DNNLayerTypes>(infoNative->LayerType);
+		const auto layerType = static_cast<DNNLayerTypes>(infoNative->LayerType);
 		infoManaged->LayerType = layerType;
 		infoManaged->IsNormalizationLayer =
 			layerType == DNNLayerTypes::BatchNorm ||
@@ -598,7 +597,6 @@ namespace dnncore
 	void DNNModel::UpdateCostInfo(UInt index)
 	{
 		auto info = new dnn::CostInfo();
-	
 		DNNGetCostInfo(index, info);
 
 		CostLayers[index]->TrainErrors = info->TrainErrors;
@@ -619,7 +617,6 @@ namespace dnncore
 	void DNNModel::ApplyParameters()
 	{
 		auto info = new dnn::ModelInfo();
-	
 		DNNGetModelInfo(info);
 
 		Name = ToManagedString(info->Name);
@@ -802,7 +799,6 @@ namespace dnncore
 		dnn::CheckMsg checkMsg;
 		
 		auto def = ToUnmanagedString(definition);
-
 		DNNCheck(def, checkMsg);
 				
 		definition = ToManagedString(def);
