@@ -49,11 +49,11 @@ namespace Convnet.Dialogs
 
         private void ChangeSGDR()
         {
-            DataGridRates.Columns[9].Visibility = tpvm.SGDR ? Visibility.Visible : Visibility.Collapsed;
             DataGridRates.Columns[11].Visibility = tpvm.SGDR ? Visibility.Visible : Visibility.Collapsed;
+            DataGridRates.Columns[13].Visibility = tpvm.SGDR ? Visibility.Visible : Visibility.Collapsed;
 
-            DataGridRates.Columns[16].Visibility = tpvm.SGDR ? Visibility.Collapsed : Visibility.Visible;
-            //DataGridRates.Columns[17].Visibility = tpvm.SGDR ? Visibility.Collapsed: Visibility.Visible;
+            DataGridRates.Columns[18].Visibility = tpvm.SGDR ? Visibility.Collapsed : Visibility.Visible;
+            //DataGridRates.Columns[19].Visibility = tpvm.SGDR ? Visibility.Collapsed: Visibility.Visible;
         }
 
         private bool IsValid(DependencyObject node)

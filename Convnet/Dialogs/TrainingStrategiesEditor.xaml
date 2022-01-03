@@ -35,6 +35,8 @@
                 <DataGridTextColumn Header="BatchSize" Binding="{Binding Path=BatchSize, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 <DataGridTextColumn Header="Height" Binding="{Binding Path=Height, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 <DataGridTextColumn Header="Width" Binding="{Binding Path=Width, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <DataGridTextColumn Header="PadH" Binding="{Binding Path=PadH, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <DataGridTextColumn Header="PadW" Binding="{Binding Path=PadW, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 <DataGridTextColumn Header="Momentum" Binding="{Binding Path=Momentum, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 <DataGridTextColumn Header="Beta2" Binding="{Binding Path=Beta2, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 <DataGridTextColumn Header="Gamma" Binding="{Binding Path=Gamma, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>

@@ -728,14 +728,14 @@ namespace dnncore
 
 	void DNNModel::AddTrainingRate(DNNTrainingRate^ rate, bool clear, UInt gotoEpoch, UInt trainSamples)
 	{
-		auto nativeRate = dnn::TrainingRate(static_cast<dnn::Optimizers>(rate->Optimizer), rate->Momentum, rate->Beta2, rate->L2Penalty, rate->Dropout, rate->Eps, rate->BatchSize, rate->Height, rate->Width, rate->Cycles, rate->Epochs, rate->EpochMultiplier,rate->MaximumRate, rate->MinimumRate, rate->FinalRate, rate->Gamma, rate->DecayAfterEpochs, rate->DecayFactor, rate->HorizontalFlip, rate->VerticalFlip, rate->InputDropout, rate->Cutout, rate->CutMix, rate->AutoAugment, rate->ColorCast, rate->ColorAngle, rate->Distortion, static_cast<dnn::Interpolations>(rate->Interpolation), rate->Scaling, rate->Rotation);
+		auto nativeRate = dnn::TrainingRate(static_cast<dnn::Optimizers>(rate->Optimizer), rate->Momentum, rate->Beta2, rate->L2Penalty, rate->Dropout, rate->Eps, rate->BatchSize, rate->Height, rate->Width, rate->PadH, rate->PadW, rate->Cycles, rate->Epochs, rate->EpochMultiplier,rate->MaximumRate, rate->MinimumRate, rate->FinalRate, rate->Gamma, rate->DecayAfterEpochs, rate->DecayFactor, rate->HorizontalFlip, rate->VerticalFlip, rate->InputDropout, rate->Cutout, rate->CutMix, rate->AutoAugment, rate->ColorCast, rate->ColorAngle, rate->Distortion, static_cast<dnn::Interpolations>(rate->Interpolation), rate->Scaling, rate->Rotation);
 
 		DNNAddTrainingRate(nativeRate, clear, gotoEpoch, trainSamples);
 	}
 
 	void DNNModel::AddTrainingRateSGDR(DNNTrainingRate^ rate, bool clear, UInt gotoEpoch, UInt trainSamples)
 	{
-		auto nativeRate = dnn::TrainingRate(static_cast<dnn::Optimizers>(rate->Optimizer), rate->Momentum, rate->Beta2, rate->L2Penalty, rate->Dropout, rate->Eps, rate->BatchSize, rate->Height, rate->Width, rate->Cycles, rate->Epochs, rate->EpochMultiplier, rate->MaximumRate, rate->MinimumRate, rate->FinalRate, rate->Gamma, rate->DecayAfterEpochs, rate->DecayFactor, rate->HorizontalFlip, rate->VerticalFlip, rate->InputDropout, rate->Cutout, rate->CutMix, rate->AutoAugment, rate->ColorCast, rate->ColorAngle, rate->Distortion, static_cast<dnn::Interpolations>(rate->Interpolation), rate->Scaling, rate->Rotation);
+		auto nativeRate = dnn::TrainingRate(static_cast<dnn::Optimizers>(rate->Optimizer), rate->Momentum, rate->Beta2, rate->L2Penalty, rate->Dropout, rate->Eps, rate->BatchSize, rate->Height, rate->Width, rate->PadH, rate->PadW, rate->Cycles, rate->Epochs, rate->EpochMultiplier, rate->MaximumRate, rate->MinimumRate, rate->FinalRate, rate->Gamma, rate->DecayAfterEpochs, rate->DecayFactor, rate->HorizontalFlip, rate->VerticalFlip, rate->InputDropout, rate->Cutout, rate->CutMix, rate->AutoAugment, rate->ColorCast, rate->ColorAngle, rate->Distortion, static_cast<dnn::Interpolations>(rate->Interpolation), rate->Scaling, rate->Rotation);
 
 		DNNAddTrainingRateSGDR(nativeRate, clear, gotoEpoch, trainSamples);
 	}
@@ -747,7 +747,7 @@ namespace dnncore
 
 	void DNNModel::AddTrainingStrategy(DNNTrainingStrategy^ strategy)
 	{
-		DNNAddTrainingStrategy(dnn::TrainingStrategy(strategy->Epochs, strategy->BatchSize, strategy->Height, strategy->Width, strategy->Momentum, strategy->Beta2, strategy->Gamma, strategy->L2Penalty, strategy->Dropout, strategy->HorizontalFlip, strategy->VerticalFlip, strategy->InputDropout, strategy->Cutout, strategy->CutMix, strategy->AutoAugment, strategy->ColorCast, strategy->ColorAngle, strategy->Distortion, static_cast<dnn::Interpolations>(strategy->Interpolation), strategy->Scaling, strategy->Rotation));
+		DNNAddTrainingStrategy(dnn::TrainingStrategy(strategy->Epochs, strategy->BatchSize, strategy->Height, strategy->Width, strategy->PadH, strategy->PadW, strategy->Momentum, strategy->Beta2, strategy->Gamma, strategy->L2Penalty, strategy->Dropout, strategy->HorizontalFlip, strategy->VerticalFlip, strategy->InputDropout, strategy->Cutout, strategy->CutMix, strategy->AutoAugment, strategy->ColorCast, strategy->ColorAngle, strategy->Distortion, static_cast<dnn::Interpolations>(strategy->Interpolation), strategy->Scaling, strategy->Rotation));
 	}
 
 	void DNNModel::Start(bool training)

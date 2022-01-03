@@ -5,10 +5,11 @@
         xmlns:c="clr-namespace:Convnet.Common"
         xmlns:converters="clr-namespace:Convnet.Converters"
         xmlns:pvm="clr-namespace:Convnet.PageViewModels"
-        Title="Test Parameters" Height="490" Width="334" WindowStartupLocation="CenterOwner" ShowInTaskbar="False" ResizeMode="NoResize" Closing="Window_Closing" Loaded="Window_Loaded" UseLayoutRounding="True" SnapsToDevicePixels="True" Background="{DynamicResource BackgroundBrush}">
+        Title="Test Parameters" Height="520" Width="334" WindowStartupLocation="CenterOwner" ShowInTaskbar="False" ResizeMode="NoResize" Closing="Window_Closing" Loaded="Window_Loaded" UseLayoutRounding="True" SnapsToDevicePixels="True" Background="{DynamicResource BackgroundBrush}">
 
     <Grid Margin="6">
         <Grid.RowDefinitions>
+            <RowDefinition Height="30" MaxHeight="30"/>
             <RowDefinition Height="30" MaxHeight="30"/>
             <RowDefinition Height="30" MaxHeight="30"/>
             <RowDefinition Height="30" MaxHeight="30"/>
@@ -32,18 +33,19 @@
             <ColumnDefinition Width="4" />
         </Grid.ColumnDefinitions>
 
-        <TextBlock Foreground="{DynamicResource TextBrush}" Grid.Column="1" Grid.Row="0" Height="Auto" HorizontalAlignment="Stretch" Margin="2" Name="textBlockBatchSize" Text="Batch size:" VerticalAlignment="Center" Width="Auto" FontSize="14" />
-        <TextBlock Foreground="{DynamicResource TextBrush}" Grid.Column="1" Grid.Row="1" Height="Auto" HorizontalAlignment="Stretch" Margin="2" Name="textBlockDataset" Text="Dataset:" VerticalAlignment="Center" Width="Auto" FontSize="14"/>
-        <TextBlock Foreground="{DynamicResource TextBrush}" Grid.Column="1" Grid.Row="2" Height="Auto" HorizontalAlignment="Stretch" Margin="2" Name="textBlockHorizontalFlip" Text="Horizontal Flip:" VerticalAlignment="Center" Width="Auto" FontSize="14"/>
-        <TextBlock Foreground="{DynamicResource TextBrush}" Grid.Column="1" Grid.Row="3" Height="Auto" HorizontalAlignment="Stretch" Margin="2" Name="textBlockVerticalFlip" Text="Vertical Flip:" VerticalAlignment="Center" Width="Auto" FontSize="14"/>
-        <TextBlock Foreground="{DynamicResource TextBrush}" Grid.Column="1" Grid.Row="4" Height="Auto" HorizontalAlignment="Stretch" Margin="2" Name="textBlockColorCast" Text="Color Cast:" VerticalAlignment="Center" Width="Auto" FontSize="14"/>
-        <TextBlock Foreground="{DynamicResource TextBrush}" Grid.Column="1" Grid.Row="5" Height="Auto" HorizontalAlignment="Stretch" Margin="2" Name="textBlockColorAngle" Text="Color Angle:" VerticalAlignment="Center" Width="Auto" FontSize="14"/>
-        <TextBlock Foreground="{DynamicResource TextBrush}" Grid.Column="1" Grid.Row="6" Height="Auto" HorizontalAlignment="Stretch" Margin="2" Name="textBlockagDropOut" Text="Dropout:" VerticalAlignment="Center" Width="Auto" FontSize="14"/>
-        <TextBlock Foreground="{DynamicResource TextBrush}" Grid.Column="1" Grid.Row="8" Height="Auto" HorizontalAlignment="Stretch" Margin="2" Name="textBlockagAutoAugment" Text="Auto Augment:" VerticalAlignment="Center" Width="Auto" FontSize="14"/>
-        <TextBlock Foreground="{DynamicResource TextBrush}" Grid.Column="1" Grid.Row="9" Height="Auto" HorizontalAlignment="Stretch" Margin="2" Name="textBlockDistortion" Text="Distortion:" VerticalAlignment="Center" Width="Auto" FontSize="14"/>
-        <TextBlock Foreground="{DynamicResource TextBrush}" Grid.Column="1" Grid.Row="10" Height="Auto" HorizontalAlignment="Stretch" Margin="2" Name="textBlockInterpolation" Text="Interpolation:" VerticalAlignment="Center" Width="Auto" FontSize="14"/>
-        <TextBlock Foreground="{DynamicResource TextBrush}" Grid.Column="1" Grid.Row="11" Height="Auto" HorizontalAlignment="Stretch" Margin="2" Name="textBlockScaling" Text="Scaling:" VerticalAlignment="Center" Width="Auto" FontSize="14"/>
-        <TextBlock Foreground="{DynamicResource TextBrush}" Grid.Column="1" Grid.Row="12" Height="Auto" HorizontalAlignment="Stretch" Margin="2" Name="textBlockRotation" Text="Rotation:" VerticalAlignment="Center" Width="Auto" FontSize="14"/>
+        <TextBlock Foreground="{DynamicResource TextBrush}" Grid.Column="1" Grid.Row="0" Height="Auto" HorizontalAlignment="Stretch" Margin="2" Name="textBlockResolution" Text="Resolution:" VerticalAlignment="Center" Width="Auto" FontSize="14" />
+        <TextBlock Foreground="{DynamicResource TextBrush}" Grid.Column="1" Grid.Row="1" Height="Auto" HorizontalAlignment="Stretch" Margin="2" Name="textBlockPadding" Text="Padding:" VerticalAlignment="Center" Width="Auto" FontSize="14" />
+        <TextBlock Foreground="{DynamicResource TextBrush}" Grid.Column="1" Grid.Row="2" Height="Auto" HorizontalAlignment="Stretch" Margin="2" Name="textBlockDataset" Text="Dataset:" VerticalAlignment="Center" Width="Auto" FontSize="14"/>
+        <TextBlock Foreground="{DynamicResource TextBrush}" Grid.Column="1" Grid.Row="3" Height="Auto" HorizontalAlignment="Stretch" Margin="2" Name="textBlockHorizontalFlip" Text="Horizontal Flip:" VerticalAlignment="Center" Width="Auto" FontSize="14"/>
+        <TextBlock Foreground="{DynamicResource TextBrush}" Grid.Column="1" Grid.Row="4" Height="Auto" HorizontalAlignment="Stretch" Margin="2" Name="textBlockVerticalFlip" Text="Vertical Flip:" VerticalAlignment="Center" Width="Auto" FontSize="14"/>
+        <TextBlock Foreground="{DynamicResource TextBrush}" Grid.Column="1" Grid.Row="5" Height="Auto" HorizontalAlignment="Stretch" Margin="2" Name="textBlockColorCast" Text="Color Cast:" VerticalAlignment="Center" Width="Auto" FontSize="14"/>
+        <TextBlock Foreground="{DynamicResource TextBrush}" Grid.Column="1" Grid.Row="6" Height="Auto" HorizontalAlignment="Stretch" Margin="2" Name="textBlockColorAngle" Text="Color Angle:" VerticalAlignment="Center" Width="Auto" FontSize="14"/>
+        <TextBlock Foreground="{DynamicResource TextBrush}" Grid.Column="1" Grid.Row="7" Height="Auto" HorizontalAlignment="Stretch" Margin="2" Name="textBlockagDropOut" Text="Dropout:" VerticalAlignment="Center" Width="Auto" FontSize="14"/>
+        <TextBlock Foreground="{DynamicResource TextBrush}" Grid.Column="1" Grid.Row="9" Height="Auto" HorizontalAlignment="Stretch" Margin="2" Name="textBlockagAutoAugment" Text="Auto Augment:" VerticalAlignment="Center" Width="Auto" FontSize="14"/>
+        <TextBlock Foreground="{DynamicResource TextBrush}" Grid.Column="1" Grid.Row="10" Height="Auto" HorizontalAlignment="Stretch" Margin="2" Name="textBlockDistortion" Text="Distortion:" VerticalAlignment="Center" Width="Auto" FontSize="14"/>
+        <TextBlock Foreground="{DynamicResource TextBrush}" Grid.Column="1" Grid.Row="11" Height="Auto" HorizontalAlignment="Stretch" Margin="2" Name="textBlockInterpolation" Text="Interpolation:" VerticalAlignment="Center" Width="Auto" FontSize="14"/>
+        <TextBlock Foreground="{DynamicResource TextBrush}" Grid.Column="1" Grid.Row="12" Height="Auto" HorizontalAlignment="Stretch" Margin="2" Name="textBlockScaling" Text="Scaling:" VerticalAlignment="Center" Width="Auto" FontSize="14"/>
+        <TextBlock Foreground="{DynamicResource TextBrush}" Grid.Column="1" Grid.Row="13" Height="Auto" HorizontalAlignment="Stretch" Margin="2" Name="textBlockRotation" Text="Rotation:" VerticalAlignment="Center" Width="Auto" FontSize="14"/>
 
 
         <xctk:AutoSelectTextBox ContextMenu="{StaticResource MyContextMenu}" Width="40"  Grid.Column="2" Grid.Row="0" HorizontalAlignment="Left" x:Name="textBoxBatchSize" VerticalAlignment="Stretch" TabIndex="0" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" Validation.ErrorTemplate="{StaticResource validationTemplate}" Style="{StaticResource textBoxInError}" AllowDrop="False" MaxLines="1" AutoWordSelection="True" BorderThickness="1" SnapsToDevicePixels="True" Margin="2" AutoSelectBehavior="OnFocus" AutoMoveFocus="True" FontSize="14">
@@ -76,7 +78,27 @@
             </TextBox.Text>
         </xctk:AutoSelectTextBox>
 
-        <xctk:AutoSelectTextBox ContextMenu="{StaticResource MyContextMenu}" Grid.Column="2" Grid.Row="4" Grid.RowSpan="1" HorizontalAlignment="Stretch" x:Name="textBoxColorCast" VerticalAlignment="Stretch" Margin="2" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" MaxLines="1" TabIndex="7" Validation.ErrorTemplate="{StaticResource validationTemplate}" Style="{StaticResource textBoxInError}" AutoWordSelection="True" AllowDrop="False" BorderThickness="1" SnapsToDevicePixels="True" AutoMoveFocus="True" AutoSelectBehavior="OnFocus" TextChanged="TextBoxColorCast_TextChanged">
+        <xctk:AutoSelectTextBox ContextMenu="{StaticResource MyContextMenu}" Grid.Column="2" Grid.Row="1" Grid.RowSpan="1" HorizontalAlignment="Center" Width="42" x:Name="textBoxPadH" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" Margin="2" MaxLines="1" TabIndex="3" Validation.ErrorTemplate="{StaticResource validationTemplate}" Style="{StaticResource textBoxInError}" AutoWordSelection="True" AllowDrop="False" BorderThickness="1" SnapsToDevicePixels="True" AutoMoveFocus="True" AutoSelectBehavior="OnFocus" FontSize="14">
+            <TextBox.Text>
+                <Binding Path="PadH" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                    <Binding.ValidationRules>
+                        <c:UIntRangeRule Min="0" Max="1024"/>
+                    </Binding.ValidationRules>
+                </Binding>
+            </TextBox.Text>
+        </xctk:AutoSelectTextBox>
+
+        <xctk:AutoSelectTextBox ContextMenu="{StaticResource MyContextMenu}" Grid.Column="2" Grid.Row="1" Grid.RowSpan="1" HorizontalAlignment="Right" Width="42" x:Name="textBoxPadW" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" Margin="2" MaxLines="1" TabIndex="4" Validation.ErrorTemplate="{StaticResource validationTemplate}" Style="{StaticResource textBoxInError}" AutoWordSelection="True" AllowDrop="False" BorderThickness="1" SnapsToDevicePixels="True" AutoMoveFocus="True" AutoSelectBehavior="OnFocus" FontSize="14">
+            <TextBox.Text>
+                <Binding Path="PadW" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                    <Binding.ValidationRules>
+                        <c:UIntRangeRule Min="0" Max="1024"/>
+                    </Binding.ValidationRules>
+                </Binding>
+            </TextBox.Text>
+        </xctk:AutoSelectTextBox>
+
+        <xctk:AutoSelectTextBox ContextMenu="{StaticResource MyContextMenu}" Grid.Column="2" Grid.Row="5" Grid.RowSpan="1" HorizontalAlignment="Stretch" x:Name="textBoxColorCast" VerticalAlignment="Stretch" Margin="2" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" MaxLines="1" TabIndex="9" Validation.ErrorTemplate="{StaticResource validationTemplate}" Style="{StaticResource textBoxInError}" AutoWordSelection="True" AllowDrop="False" BorderThickness="1" SnapsToDevicePixels="True" AutoMoveFocus="True" AutoSelectBehavior="OnFocus" TextChanged="TextBoxColorCast_TextChanged">
             <TextBox.Text>
                 <Binding Path="ColorCast" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
                     <Binding.ValidationRules>
@@ -87,7 +109,7 @@
             </TextBox.Text>
         </xctk:AutoSelectTextBox>
 
-        <xctk:AutoSelectTextBox ContextMenu="{StaticResource MyContextMenu}" Grid.Column="2" Grid.Row="5" Grid.RowSpan="1" HorizontalAlignment="Stretch" x:Name="textBoxColorAngle" VerticalAlignment="Stretch" Margin="2" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" MaxLines="1" TabIndex="8" Validation.ErrorTemplate="{StaticResource validationTemplate}" Style="{StaticResource textBoxInError}" AutoWordSelection="True" AllowDrop="False" BorderThickness="1" SnapsToDevicePixels="True" AutoMoveFocus="True" AutoSelectBehavior="OnFocus" >
+        <xctk:AutoSelectTextBox ContextMenu="{StaticResource MyContextMenu}" Grid.Column="2" Grid.Row="6" Grid.RowSpan="1" HorizontalAlignment="Stretch" x:Name="textBoxColorAngle" VerticalAlignment="Stretch" Margin="2" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" MaxLines="1" TabIndex="10" Validation.ErrorTemplate="{StaticResource validationTemplate}" Style="{StaticResource textBoxInError}" AutoWordSelection="True" AllowDrop="False" BorderThickness="1" SnapsToDevicePixels="True" AutoMoveFocus="True" AutoSelectBehavior="OnFocus" >
             <TextBox.Text>
                 <Binding Path="ColorAngle" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
                     <Binding.ValidationRules>
@@ -97,7 +119,7 @@
             </TextBox.Text>
         </xctk:AutoSelectTextBox>
 
-        <xctk:AutoSelectTextBox ContextMenu="{StaticResource MyContextMenu}" Grid.Column="2" Grid.Row="6" Grid.RowSpan="1" HorizontalAlignment="Stretch" x:Name="textBoxDropOut" VerticalAlignment="Stretch" Margin="2" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" MaxLines="1" TabIndex="9" Validation.ErrorTemplate="{StaticResource validationTemplate}" Style="{StaticResource textBoxInError}" AutoWordSelection="True" AllowDrop="False" BorderThickness="1" SnapsToDevicePixels="True" AutoMoveFocus="True" AutoSelectBehavior="OnFocus" >
+        <xctk:AutoSelectTextBox ContextMenu="{StaticResource MyContextMenu}" Grid.Column="2" Grid.Row="7" Grid.RowSpan="1" HorizontalAlignment="Stretch" x:Name="textBoxDropOut" VerticalAlignment="Stretch" Margin="2" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" MaxLines="1" TabIndex="11" Validation.ErrorTemplate="{StaticResource validationTemplate}" Style="{StaticResource textBoxInError}" AutoWordSelection="True" AllowDrop="False" BorderThickness="1" SnapsToDevicePixels="True" AutoMoveFocus="True" AutoSelectBehavior="OnFocus" >
             <TextBox.Text>
                 <Binding Path="Dropout" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
                     <Binding.ValidationRules>
@@ -107,7 +129,7 @@
             </TextBox.Text>
         </xctk:AutoSelectTextBox>
 
-        <xctk:AutoSelectTextBox ContextMenu="{StaticResource MyContextMenu}" Grid.Column="2" Grid.Row="7" Grid.RowSpan="1" HorizontalAlignment="Stretch" x:Name="textBoxCutout" VerticalAlignment="Stretch" Margin="2" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" MaxLines="1" TabIndex="12" Validation.ErrorTemplate="{StaticResource validationTemplate}" Style="{StaticResource textBoxInError}" AutoWordSelection="True" AllowDrop="False" BorderThickness="1" SnapsToDevicePixels="True" AutoMoveFocus="True" AutoSelectBehavior="OnFocus" FontSize="14">
+        <xctk:AutoSelectTextBox ContextMenu="{StaticResource MyContextMenu}" Grid.Column="2" Grid.Row="8" Grid.RowSpan="1" HorizontalAlignment="Stretch" x:Name="textBoxCutout" VerticalAlignment="Stretch" Margin="2" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" MaxLines="1" TabIndex="14" Validation.ErrorTemplate="{StaticResource validationTemplate}" Style="{StaticResource textBoxInError}" AutoWordSelection="True" AllowDrop="False" BorderThickness="1" SnapsToDevicePixels="True" AutoMoveFocus="True" AutoSelectBehavior="OnFocus" FontSize="14">
             <TextBox.Text>
                 <Binding Path="Cutout" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
                     <Binding.ValidationRules>
@@ -117,7 +139,7 @@
             </TextBox.Text>
         </xctk:AutoSelectTextBox>
 
-        <xctk:AutoSelectTextBox ContextMenu="{StaticResource MyContextMenu}" Grid.Column="2" Grid.Row="8" x:Name="textBoxAutoAugment" VerticalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Stretch" Margin="2" TabIndex="13" Validation.ErrorTemplate="{StaticResource validationTemplate}" Style="{StaticResource textBoxInError}" AllowDrop="False" AutoWordSelection="True" IsTabStop="True" MaxLines="1" BorderThickness="1" SnapsToDevicePixels="True" AutoMoveFocus="True" AutoSelectBehavior="OnFocus" FontSize="14" UseLayoutRounding="True">
+        <xctk:AutoSelectTextBox ContextMenu="{StaticResource MyContextMenu}" Grid.Column="2" Grid.Row="9" x:Name="textBoxAutoAugment" VerticalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Stretch" Margin="2" TabIndex="15" Validation.ErrorTemplate="{StaticResource validationTemplate}" Style="{StaticResource textBoxInError}" AllowDrop="False" AutoWordSelection="True" IsTabStop="True" MaxLines="1" BorderThickness="1" SnapsToDevicePixels="True" AutoMoveFocus="True" AutoSelectBehavior="OnFocus" FontSize="14" UseLayoutRounding="True">
             <TextBox.Text>
                 <Binding Path="AutoAugment"  Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
                     <Binding.ValidationRules>
@@ -127,7 +149,7 @@
             </TextBox.Text>
         </xctk:AutoSelectTextBox>
 
-        <xctk:AutoSelectTextBox ContextMenu="{StaticResource MyContextMenu}" Grid.Column="2" Grid.Row="9" Grid.RowSpan="1" HorizontalAlignment="Stretch" x:Name="textBoxDistortions" VerticalAlignment="Stretch" Margin="2" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" MaxLines="1" TabIndex="14" Validation.ErrorTemplate="{StaticResource validationTemplate}" Style="{StaticResource textBoxInError}" AutoWordSelection="True" AllowDrop="False" BorderThickness="1" SnapsToDevicePixels="True" AutoMoveFocus="True" AutoSelectBehavior="OnFocus" TextChanged="TextBoxDistortions_TextChanged" UseLayoutRounding="True" >
+        <xctk:AutoSelectTextBox ContextMenu="{StaticResource MyContextMenu}" Grid.Column="2" Grid.Row="10" Grid.RowSpan="1" HorizontalAlignment="Stretch" x:Name="textBoxDistortions" VerticalAlignment="Stretch" Margin="2" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" MaxLines="1" TabIndex="16" Validation.ErrorTemplate="{StaticResource validationTemplate}" Style="{StaticResource textBoxInError}" AutoWordSelection="True" AllowDrop="False" BorderThickness="1" SnapsToDevicePixels="True" AutoMoveFocus="True" AutoSelectBehavior="OnFocus" TextChanged="TextBoxDistortions_TextChanged" UseLayoutRounding="True" >
             <TextBox.Text>
                 <Binding Path="Distortion" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
                     <Binding.ValidationRules>
@@ -137,7 +159,7 @@
             </TextBox.Text>
         </xctk:AutoSelectTextBox>
 
-        <xctk:AutoSelectTextBox ContextMenu="{StaticResource MyContextMenu}" Grid.Column="2" Grid.Row="11" Grid.RowSpan="1" HorizontalAlignment="Stretch" x:Name="textBoxScaling" VerticalAlignment="Stretch" Margin="2" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" MaxLines="1" TabIndex="16" Validation.ErrorTemplate="{StaticResource validationTemplate}" Style="{StaticResource textBoxInError}" AutoWordSelection="True" AllowDrop="False" BorderThickness="1" SnapsToDevicePixels="True" AutoMoveFocus="True" AutoSelectBehavior="OnFocus">
+        <xctk:AutoSelectTextBox ContextMenu="{StaticResource MyContextMenu}" Grid.Column="2" Grid.Row="12" Grid.RowSpan="1" HorizontalAlignment="Stretch" x:Name="textBoxScaling" VerticalAlignment="Stretch" Margin="2" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" MaxLines="1" TabIndex="18" Validation.ErrorTemplate="{StaticResource validationTemplate}" Style="{StaticResource textBoxInError}" AutoWordSelection="True" AllowDrop="False" BorderThickness="1" SnapsToDevicePixels="True" AutoMoveFocus="True" AutoSelectBehavior="OnFocus">
             <TextBox.Text>
                 <Binding Path="Scaling" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged" StringFormat="{}{0:R}" >
                     <Binding.ValidationRules>
@@ -147,7 +169,7 @@
             </TextBox.Text>
         </xctk:AutoSelectTextBox>
 
-        <xctk:AutoSelectTextBox ContextMenu="{StaticResource MyContextMenu}" Grid.Column="2" Grid.Row="12" Grid.RowSpan="1" HorizontalAlignment="Stretch" x:Name="textBoxRotation" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" Margin="2" MaxLines="1" TabIndex="17" Validation.ErrorTemplate="{StaticResource validationTemplate}" Style="{StaticResource textBoxInError}" AutoWordSelection="True" AllowDrop="False" BorderThickness="1" SnapsToDevicePixels="True" AutoMoveFocus="True" AutoSelectBehavior="OnFocus">
+        <xctk:AutoSelectTextBox ContextMenu="{StaticResource MyContextMenu}" Grid.Column="2" Grid.Row="13" Grid.RowSpan="1" HorizontalAlignment="Stretch" x:Name="textBoxRotation" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" Margin="2" MaxLines="1" TabIndex="19" Validation.ErrorTemplate="{StaticResource validationTemplate}" Style="{StaticResource textBoxInError}" AutoWordSelection="True" AllowDrop="False" BorderThickness="1" SnapsToDevicePixels="True" AutoMoveFocus="True" AutoSelectBehavior="OnFocus">
             <TextBox.Text>
                 <Binding Path="Rotation" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged" StringFormat="{}{0:R}">
                     <Binding.ValidationRules>
@@ -157,18 +179,18 @@
             </TextBox.Text>
         </xctk:AutoSelectTextBox>
 
-        <RadioButton x:Name="radioButtonTestSet" GroupName="Dataset" Background="{DynamicResource TextBrush}" Foreground="{DynamicResource TextBrush}" Content="Test" Grid.Column="2" HorizontalAlignment="Left" Margin="3,3,3,3" Grid.Row="1" VerticalAlignment="Center" FontSize="14" TabIndex="3" />
-        <RadioButton x:Name="radioButtonTrainSet" GroupName="Dataset" Background="{DynamicResource TextBrush}" Foreground="{DynamicResource TextBrush}" Content="Train" Grid.Column="2" HorizontalAlignment="Left" Margin="54,3,3,3" Grid.Row="1" VerticalAlignment="Center" FontSize="14" TabIndex="4"/>
+        <RadioButton x:Name="radioButtonTestSet" GroupName="Dataset" Background="{DynamicResource TextBrush}" Foreground="{DynamicResource TextBrush}" Content="Test" Grid.Column="2" HorizontalAlignment="Left" Margin="3,3,3,3" Grid.Row="2" VerticalAlignment="Center" FontSize="14" TabIndex="5" />
+        <RadioButton x:Name="radioButtonTrainSet" GroupName="Dataset" Background="{DynamicResource TextBrush}" Foreground="{DynamicResource TextBrush}" Content="Train" Grid.Column="2" HorizontalAlignment="Left" Margin="54,3,3,3" Grid.Row="2" VerticalAlignment="Center" FontSize="14" TabIndex="6"/>
 
-        <CheckBox x:Name="checkBoxHorizontalFlip" Background="{DynamicResource TextBrush}"  Foreground="{DynamicResource TextBrush}" Content="" Grid.Column="2" HorizontalAlignment="Left" Margin="3" Grid.Row="2" VerticalAlignment="Center" IsChecked="{Binding Path=HorizontalFlip, Mode=TwoWay}" FontSize="14" TabIndex="5"/>
-        <CheckBox x:Name="checkBoxVerticalFlip" Background="{DynamicResource TextBrush}" Foreground="{DynamicResource TextBrush}" Content="" Grid.Column="2" HorizontalAlignment="Left" Margin="3" Grid.Row="3" VerticalAlignment="Center" IsChecked="{Binding Path=VerticalFlip, Mode=TwoWay}" FontSize="14" TabIndex="6"/>
+        <CheckBox x:Name="checkBoxHorizontalFlip" Background="{DynamicResource TextBrush}"  Foreground="{DynamicResource TextBrush}" Content="" Grid.Column="2" HorizontalAlignment="Left" Margin="3" Grid.Row="3" VerticalAlignment="Center" IsChecked="{Binding Path=HorizontalFlip, Mode=TwoWay}" FontSize="14" TabIndex="7"/>
+        <CheckBox x:Name="checkBoxVerticalFlip" Background="{DynamicResource TextBrush}" Foreground="{DynamicResource TextBrush}" Content="" Grid.Column="2" HorizontalAlignment="Left" Margin="3" Grid.Row="4" VerticalAlignment="Center" IsChecked="{Binding Path=VerticalFlip, Mode=TwoWay}" FontSize="14" TabIndex="8"/>
 
-        <RadioButton x:Name="radioButtonCutout" GroupName="CutMix" Background="{DynamicResource TextBrush}" Foreground="{DynamicResource TextBrush}" Content="Cutout" Grid.Column="1" HorizontalAlignment="Left" Margin="3" Grid.Row="7" TabIndex="10" VerticalAlignment="Center" IsChecked="{Binding Path=CutMix, Converter={StaticResource Inverter}, Mode=OneWay}" Width="Auto" FontSize="14"/>
-        <RadioButton x:Name="radioButtonCutMix" GroupName="CutMix" Background="{DynamicResource TextBrush}" Foreground="{DynamicResource TextBrush}" Content="CutMix" Grid.Column="1" HorizontalAlignment="Left" Margin="67,3,3,3" Grid.Row="7" TabIndex="11" VerticalAlignment="Center" IsChecked="{Binding Path=CutMix, Mode=TwoWay}" Width="Auto" FontSize="14"/>
+        <RadioButton x:Name="radioButtonCutout" GroupName="CutMix" Background="{DynamicResource TextBrush}" Foreground="{DynamicResource TextBrush}" Content="Cutout" Grid.Column="1" HorizontalAlignment="Left" Margin="3" Grid.Row="8" TabIndex="12" VerticalAlignment="Center" IsChecked="{Binding Path=CutMix, Converter={StaticResource Inverter}, Mode=OneWay}" Width="Auto" FontSize="14"/>
+        <RadioButton x:Name="radioButtonCutMix" GroupName="CutMix" Background="{DynamicResource TextBrush}" Foreground="{DynamicResource TextBrush}" Content="CutMix" Grid.Column="1" HorizontalAlignment="Left" Margin="67,3,3,3" Grid.Row="8" TabIndex="13" VerticalAlignment="Center" IsChecked="{Binding Path=CutMix, Mode=TwoWay}" Width="Auto" FontSize="14"/>
 
-        <ComboBox Name="comboBoInterpolation" Grid.Column="2" Grid.Row="10" HorizontalAlignment="Stretch" Margin="2" VerticalAlignment="Stretch" Width="Auto" FontSize="14" TabIndex="15" ItemsSource="{x:Static pvm:TestPageViewModel.GetInterpolations}" SelectedItem="{Binding Path=Interpolation, Mode=TwoWay}"/>
+        <ComboBox Name="comboBoInterpolation" Grid.Column="2" Grid.Row="11" HorizontalAlignment="Stretch" Margin="2" VerticalAlignment="Stretch" Width="Auto" FontSize="14" TabIndex="17" ItemsSource="{x:Static pvm:TestPageViewModel.GetInterpolations}" SelectedItem="{Binding Path=Interpolation, Mode=TwoWay}"/>
 
-        <Button Style="{StaticResource ButtonStyle}" Background="{DynamicResource BackgroundBrushLight}" Foreground="{DynamicResource TextBrush}" Content="Test" Grid.Column="1" Grid.Row="16" Margin="3"  Name="buttonTest" Click="ButtonTest_Click" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TabIndex="18" ClickMode="Release" FontSize="14"/>
-        <Button Style="{StaticResource ButtonStyle}" Background="{DynamicResource BackgroundBrushLight}" Foreground="{DynamicResource TextBrush}" Content="Cancel" Grid.Column="2" Grid.Row="16" Margin="3" Name="buttonCancel" Click="ButtonCancel_Click" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TabIndex="19" ClickMode="Release" IsCancel="True" IsDefault="True" FontSize="14"/>
+        <Button Style="{StaticResource ButtonStyle}" Background="{DynamicResource BackgroundBrushLight}" Foreground="{DynamicResource TextBrush}" Content="Test" Grid.Column="1" Grid.Row="17" Margin="3"  Name="buttonTest" Click="ButtonTest_Click" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TabIndex="20" ClickMode="Release" FontSize="14"/>
+        <Button Style="{StaticResource ButtonStyle}" Background="{DynamicResource BackgroundBrushLight}" Foreground="{DynamicResource TextBrush}" Content="Cancel" Grid.Column="2" Grid.Row="17" Margin="3" Name="buttonCancel" Click="ButtonCancel_Click" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TabIndex="21" ClickMode="Release" IsCancel="True" IsDefault="True" FontSize="14"/>
     </Grid>
 </Window>

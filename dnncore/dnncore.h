@@ -219,6 +219,8 @@ namespace dnn
 		UInt BatchSize;
 		UInt Height;
 		UInt Width;
+		UInt PadH;
+		UInt PadW;
 		UInt Cycles;
 		UInt Epochs;
 		UInt EpochMultiplier;
@@ -251,6 +253,8 @@ namespace dnn
 			BatchSize(1),
 			Height(32),
 			Width(32),
+			PadH(4),
+			PadW(4),
 			Cycles(1),
 			Epochs(200),
 			EpochMultiplier(1),
@@ -275,7 +279,7 @@ namespace dnn
 		{
 		}
 
-		TrainingRate::TrainingRate(const Optimizers optimizer, const Float momentum, const Float beta2, const Float l2penalty, const Float dropout, const Float eps, const UInt batchSize, const UInt height, const UInt width, const UInt cycles, const UInt epochs, const UInt epochMultiplier, const Float maximumRate, const Float minimumRate, const Float finalRate, const Float gamma, const UInt decayAfterEpochs, const Float decayFactor, const bool horizontalFlip, const bool verticalFlip, const Float inputDropout, const Float cutout, const bool cutMix, const Float autoAugment, const Float colorCast, const UInt colorAngle, const Float distortion, const dnn::Interpolations interpolation, const Float scaling, const Float rotation) :
+		TrainingRate::TrainingRate(const Optimizers optimizer, const Float momentum, const Float beta2, const Float l2penalty, const Float dropout, const Float eps, const UInt batchSize, const UInt height, const UInt width, const UInt padH, const UInt padW, const UInt cycles, const UInt epochs, const UInt epochMultiplier, const Float maximumRate, const Float minimumRate, const Float finalRate, const Float gamma, const UInt decayAfterEpochs, const Float decayFactor, const bool horizontalFlip, const bool verticalFlip, const Float inputDropout, const Float cutout, const bool cutMix, const Float autoAugment, const Float colorCast, const UInt colorAngle, const Float distortion, const dnn::Interpolations interpolation, const Float scaling, const Float rotation) :
 			Optimizer(optimizer),
 			Momentum(momentum),
 			Beta2(beta2),
@@ -285,6 +289,8 @@ namespace dnn
 			BatchSize(batchSize),
 			Height(height),
 			Width(width),
+			PadH(padH),
+			PadW(padW),
 			Cycles(cycles),
 			Epochs(epochs),
 			EpochMultiplier(epochMultiplier),
@@ -316,6 +322,8 @@ namespace dnn
 		UInt BatchSize;
 		UInt Height;
 		UInt Width;
+		UInt PadH;
+		UInt PadW;
 		Float Momentum;
 		Float Beta2;
 		Float Gamma;
@@ -339,6 +347,8 @@ namespace dnn
 			BatchSize(128),
 			Height(32),
 			Width(32),
+			PadH(4),
+			PadW(4),
 			Momentum(Float(0.9)),
 			Beta2(Float(0.999)),
 			Gamma(Float(0.003)),
@@ -359,11 +369,13 @@ namespace dnn
 		{
 		}
 
-		TrainingStrategy(const Float epochs, const UInt batchSize, const UInt height, const UInt width, const Float momentum, const Float beta2, const Float gamma, const Float l2penalty, const Float dropout, const bool horizontalFlip, const bool verticalFlip, const Float inputDropout, const Float cutout, const bool cutMix, const Float autoAugment, const Float colorCast, const UInt colorAngle, const Float distortion, const Interpolations interpolation, const Float scaling, const Float rotation) :
+		TrainingStrategy(const Float epochs, const UInt batchSize, const UInt height, const UInt width, const UInt padH, const UInt padW, const Float momentum, const Float beta2, const Float gamma, const Float l2penalty, const Float dropout, const bool horizontalFlip, const bool verticalFlip, const Float inputDropout, const Float cutout, const bool cutMix, const Float autoAugment, const Float colorCast, const UInt colorAngle, const Float distortion, const Interpolations interpolation, const Float scaling, const Float rotation) :
 			Epochs(epochs),
 			BatchSize(batchSize),
 			Height(height),
 			Width(width),
+			PadH(padH),
+			PadW(padW),
 			Momentum(momentum),
 			Beta2(beta2),
 			Gamma(gamma),
@@ -446,6 +458,8 @@ namespace dnn
 		UInt BatchSize;
 		UInt Height;
 		UInt Width;
+		UInt PadH;
+		UInt PadW;
 		bool HorizontalFlip;
 		bool VerticalFlip;
 		Float InputDropout;
@@ -479,6 +493,8 @@ namespace dnn
 		UInt BatchSize;
 		UInt Height;
 		UInt Width;
+		UInt PadH;
+		UInt PadW;
 		Float AvgTestLoss;
 		Float TestErrorPercentage;
 		UInt TestErrors;
@@ -964,6 +980,30 @@ namespace dnncore
 				OnPropertyChanged("Width");
 			}
 		}
+		property UInt PadH
+		{
+			UInt get() { return padH; }
+			void set(UInt value)
+			{
+				if (value == padH && value == 0)
+					return;
+
+				padH = value;
+				OnPropertyChanged("PadH");
+			}
+		}
+		property UInt PadW
+		{
+			UInt get() { return padW; }
+			void set(UInt value)
+			{
+				if (value == padW && value == 0)
+					return;
+
+				padW = value;
+				OnPropertyChanged("PadW");
+			}
+		}
 		property UInt Cycles
 		{
 			UInt get() { return cycles; }
@@ -1228,6 +1268,8 @@ namespace dnncore
 			batchSize = 128;
 			height = 32;
 			width = 32;
+			padH = 4;
+			padW = 4;
 			cycles = 1;
 			epochs = 200;
 			epochMultiplier = 1;
@@ -1251,7 +1293,7 @@ namespace dnncore
 			rotation = Float(12);
 		}
 
-		DNNTrainingRate(DNNOptimizers optimizer, Float momentum, Float beta2, Float l2penalty, Float dropout, Float eps, UInt batchSize, UInt height, UInt width, UInt cycles, UInt epochs, UInt epochMultiplier, Float maximumRate, Float minimumRate, Float finalRate, Float gamma, UInt decayAfterEpochs, Float decayFactor, bool horizontalFlip, bool verticalFlip, Float inputDropout, Float cutout, bool cutMix, Float autoAugment, Float colorCast, UInt colorAngle, Float distortion, DNNInterpolations interpolation, Float scaling, Float rotation)
+		DNNTrainingRate(DNNOptimizers optimizer, Float momentum, Float beta2, Float l2penalty, Float dropout, Float eps, UInt batchSize, UInt height, UInt width, UInt padH, UInt padW, UInt cycles, UInt epochs, UInt epochMultiplier, Float maximumRate, Float minimumRate, Float finalRate, Float gamma, UInt decayAfterEpochs, Float decayFactor, bool horizontalFlip, bool verticalFlip, Float inputDropout, Float cutout, bool cutMix, Float autoAugment, Float colorCast, UInt colorAngle, Float distortion, DNNInterpolations interpolation, Float scaling, Float rotation)
 		{
 			Optimizer = optimizer;
 			Momentum = momentum;
@@ -1262,6 +1304,8 @@ namespace dnncore
 			BatchSize = batchSize;
 			Height = height;
 			Width = width;
+			PadH = padH;
+			PadW = padW;
 			Cycles = cycles;
 			Epochs = epochs;
 			EpochMultiplier = epochMultiplier;
@@ -1300,6 +1344,8 @@ namespace dnncore
 			UInt batchSize = 128;
 			UInt height = 32;
 			UInt width = 32;
+			UInt padH = 4;
+			UInt padW = 4;
 			UInt cycles = 1;
 			UInt epochs = 200;
 			UInt epochMultiplier = 1;
@@ -1373,6 +1419,30 @@ namespace dnncore
 
 				width = value;
 				OnPropertyChanged("Width");
+			}
+		}
+		property UInt PadH
+		{
+			UInt get() { return padH; }
+			void set(UInt value)
+			{
+				if (value == padH && value == 0)
+					return;
+
+				padH = value;
+				OnPropertyChanged("PadH");
+			}
+		}
+		property UInt PadW
+		{
+			UInt get() { return padW; }
+			void set(UInt value)
+			{
+				if (value == padW && value == 0)
+					return;
+
+				padW = value;
+				OnPropertyChanged("PadW");
 			}
 		}
 		property Float Momentum
@@ -1586,6 +1656,8 @@ namespace dnncore
 			batchSize = 128;
 			height = 32;
 			width = 32;
+			padH = 4;
+			padW = 4;
 			momentum = Float(0.9);
 			beta2 = Float(0.999);
 			gamma = Float(0.003);
@@ -1605,12 +1677,14 @@ namespace dnncore
 			rotation = Float(12);
 		}
 
-		DNNTrainingStrategy(Float epochs, UInt batchSize, UInt height, UInt width, Float momentum, Float beta2, Float gamma, Float l2penalty, Float dropout, bool horizontalFlip, bool verticalFlip, Float inputDropout, Float cutout, bool cutMix, Float autoAugment, Float colorCast, UInt colorAngle, Float distortion, DNNInterpolations interpolation, Float scaling, Float rotation)
+		DNNTrainingStrategy(Float epochs, UInt batchSize, UInt height, UInt width, UInt padH, UInt padW, Float momentum, Float beta2, Float gamma, Float l2penalty, Float dropout, bool horizontalFlip, bool verticalFlip, Float inputDropout, Float cutout, bool cutMix, Float autoAugment, Float colorCast, UInt colorAngle, Float distortion, DNNInterpolations interpolation, Float scaling, Float rotation)
 		{
 			Epochs = epochs;
 			BatchSize = batchSize;
 			Height = height;
 			Width = width;
+			PadH = padH;
+			PadW = padW;
 			Momentum = momentum;
 			Beta2 = beta2;
 			Gamma = gamma;
@@ -1640,6 +1714,8 @@ namespace dnncore
 		UInt batchSize = 128;
 		UInt height = 32;
 		UInt width = 32;
+		UInt padH = 4;
+		UInt padW = 4;
 		Float momentum = Float(0.9);
 		Float beta2 = Float(0.999);
 		Float gamma = Float(0.003);
