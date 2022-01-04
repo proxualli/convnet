@@ -303,7 +303,7 @@
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
                     
-                    <GridViewColumn x:Name="dropout" Header="Dropout" Width="67">
+                    <GridViewColumn x:Name="dropout" Header="Dropout" Width="68">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding Dropout, StringFormat=0.#######}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextAlignment="Center" FontFamily="Consolas" FontSize="14"/>
@@ -319,7 +319,7 @@
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
                     
-                    <GridViewColumn x:Name="cutout" Header="Cutout" Width="60">
+                    <GridViewColumn x:Name="cutout" Header="Cutout" Width="59">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding Cutout, StringFormat=0.#####}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextAlignment="Center" FontFamily="Consolas" FontSize="14"/>
@@ -327,7 +327,7 @@
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
 
-                    <GridViewColumn x:Name="cutMix" Header="CutMix" Width="60">
+                    <GridViewColumn x:Name="cutMix" Header="CutMix" Width="59">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <CheckBox HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="Consolas" HorizontalContentAlignment="Center" FontSize="14" IsChecked="{Binding CutMix}" Foreground="White" Background="Transparent" BorderBrush="{DynamicResource {x:Static SystemColors.DesktopBrushKey}}" IsThreeState="False" IsHitTestVisible="False" Style="{Binding Mode=OneWay, Source={StaticResource KioskCheckBox}}"/>
