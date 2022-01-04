@@ -239,7 +239,7 @@
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
 
-                    <GridViewColumn x:Name="width" Header="Width" Width="56">
+                    <GridViewColumn x:Name="width" Header="Width" Width="55">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding Width, StringFormat=0.##}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextAlignment="Center" FontFamily="Consolas" FontSize="14"/>
@@ -303,7 +303,7 @@
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
                     
-                    <GridViewColumn x:Name="dropout" Header="Dropout" Width="68">
+                    <GridViewColumn x:Name="dropout" Header="Dropout" Width="67">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding Dropout, StringFormat=0.#######}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextAlignment="Center" FontFamily="Consolas" FontSize="14"/>
