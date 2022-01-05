@@ -357,7 +357,7 @@ namespace dnn
 
 				default:
 				{
-					for (auto i = 0ull; i < inputs; i++)
+					for (auto i = 0ull; i < Inputs.size(); i++)
 						for (auto cdhw = 0ull; cdhw < size; cdhw++)
 							Inputs[i]->NeuronsD1[cdhw] += NeuronsD1[cdhw] * scales[i];
 				}
