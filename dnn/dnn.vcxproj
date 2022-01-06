@@ -78,6 +78,7 @@
       <OpenMP>GenerateParallelCode</OpenMP>
       <CCppSupport>Cpp17Support</CCppSupport>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
     </ClCompile>
     <Link>
       <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -122,6 +123,7 @@
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <CCppSupport>Cpp17Support</CCppSupport>
       <AdditionalOptions>/bigobj /openmp:experimental /Qvec-report:1 /favor:AMD64 /d2vzeroupper /fp:contract</AdditionalOptions>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
     </ClCompile>
     <Link>
       <InterproceduralOptimization>true</InterproceduralOptimization>
