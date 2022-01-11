@@ -137,6 +137,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <ProjectReference Include="..\dnncore\dnncore.vcxproj" />
+    <ProjectReference Include="..\dnn\dnn.vcxproj" />
   </ItemGroup>
   
   <ItemGroup>
