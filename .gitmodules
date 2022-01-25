@@ -7,9 +7,6 @@
 [submodule "dnn/deps/libpng"]
 	path = dnn/deps/libpng
 	url = https://github.com/glennrp/libpng
-[submodule "dnn/deps/oneDNN"]
-	path = dnn/deps/oneDNN
-	url = https://github.com/oneapi-src/oneDNN
 [submodule "dnn/deps/CImg"]
 	path = dnn/deps/CImg
 	url = https://github.com/dtschump/CImg
