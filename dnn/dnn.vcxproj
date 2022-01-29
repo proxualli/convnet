@@ -92,7 +92,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>DNN_FAST_SEED;DNN_EXPORTS;DNN_DLL;NDEBUG;WIN32;DNN_OMP;DNN_CACHE_PRIMITIVES;DNN_AVX2;cimg_use_cpp11;cimg_use_openmp;cimg_use_jpeg;cimg_use_png;cimg_use_zlib;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>DNN_EXPORTS;DNN_CACHE_PRIMITIVES;DNN_DLL;NDEBUG;WIN32;DNN_OMP;DNN_AVX2;cimg_use_cpp11;cimg_use_openmp;cimg_use_jpeg;cimg_use_png;cimg_use_zlib;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <EnableEnhancedInstructionSet>AdvancedVectorExtensions2</EnableEnhancedInstructionSet>
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
