@@ -66,37 +66,37 @@ namespace dnn
 			return Data.data();
 		}
 
-		const auto C() const NOEXCEPT
+		auto C() const NOEXCEPT
 		{
 			return Data._spectrum;
 		}
 		
-		const auto D() const NOEXCEPT
+		auto D() const NOEXCEPT
 		{
 			return Data._depth;
 		}
 		
-		const auto H() const NOEXCEPT
+		auto H() const NOEXCEPT
 		{
 			return Data._height;
 		}
 
-		const auto W() const NOEXCEPT
+		auto W() const NOEXCEPT
 		{
 			return Data._width;
 		}
 
-		const auto Area() const NOEXCEPT
+		auto Area() const NOEXCEPT
 		{
 			return Data._height * Data._width;
 		}
 
-		const auto ChannelSize() const NOEXCEPT
+		auto ChannelSize() const NOEXCEPT
 		{
 			return Data._depth * Data._height * Data._width;
 		}
 
-		const auto Size() const NOEXCEPT
+		auto Size() const NOEXCEPT
 		{
 			return Data.size();
 		}
