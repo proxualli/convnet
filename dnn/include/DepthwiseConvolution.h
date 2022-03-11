@@ -107,18 +107,6 @@ namespace dnn
 			return Multiplier * KernelH * KernelW / StrideH * StrideW;
 		}
 
-		/*std::wstring s2ws(const std::string& s)
-		{
-			int len;
-			int slength = (int)s.length() + 1;
-			len = MultiByteToWideChar(CP_ACP, 0, s.c_str(), slength, 0, 0);
-			wchar_t* buf = new wchar_t[len];
-			MultiByteToWideChar(CP_ACP, 0, s.c_str(), slength, buf, len);
-			std::wstring r(buf);
-			delete[] buf;
-			return r;
-		}*/
-
 		void InitializeDescriptors(const UInt batchSize) final override
 		{
 			std::vector<dnnl::memory::desc> memDesc = std::vector<dnnl::memory::desc>({
@@ -132,8 +120,8 @@ namespace dnn
 				dnnl::convolution_forward::desc(dnnl::prop_kind::forward, dnnl::algorithm::convolution_auto, memDesc[0], memDesc[2], memDesc[1], strides, dilates, padding, padding), Device.engine));
 
 			bwdWeightsDesc = std::make_unique<dnnl::convolution_backward_weights::primitive_desc>(dnnl::convolution_backward_weights::primitive_desc(HasBias ?
-				dnnl::convolution_backward_weights::desc(dnnl::algorithm::convolution_direct, memDesc[0], memDesc[2], memDesc[3], memDesc[1], strides, dilates, padding, padding) :
-				dnnl::convolution_backward_weights::desc(dnnl::algorithm::convolution_direct, memDesc[0], memDesc[2], memDesc[1], strides, dilates, padding, padding), Device.engine, *fwdDesc));
+				dnnl::convolution_backward_weights::desc(dnnl::algorithm::convolution_auto, memDesc[0], memDesc[2], memDesc[3], memDesc[1], strides, dilates, padding, padding) :
+				dnnl::convolution_backward_weights::desc(dnnl::algorithm::convolution_auto, memDesc[0], memDesc[2], memDesc[1], strides, dilates, padding, padding), Device.engine, *fwdDesc));
 
 			bwdDataDesc = std::make_unique<dnnl::convolution_backward_data::primitive_desc>(dnnl::convolution_backward_data::primitive_desc(dnnl::convolution_backward_data::desc(dnnl::algorithm::convolution_auto, memDesc[0], memDesc[2], memDesc[1], strides, dilates, padding, padding), Device.engine, *fwdDesc));
 
@@ -165,12 +153,8 @@ namespace dnn
 			reorderBwdDiffWeights = bwdWeightsDesc->diff_weights_desc() != fwdDesc->weights_desc();
 			reorderBwdDiffSrc = bwdDataDesc->diff_src_desc() != *InputLayer->DiffDstMemDesc;
 			reorderBwdWeights = bwdDataDesc->weights_desc() != *WeightsMemDesc;
-			reorderBwdWeightsDiffDst = bwdWeightsDesc->diff_dst_desc() != fwdDesc->dst_desc();
-			/*std::wstring strf = s2ws(std::string(dnnl_fmt_tag2str(static_cast<dnnl_format_tag_t>(GetDataFmt(fwdDesc->dst_desc())))));
-			std::wstring strw = s2ws(std::string(dnnl_fmt_tag2str(static_cast<dnnl_format_tag_t>(GetDataFmt(bwdWeightsDesc->diff_dst_desc())))));
-			if (reorderBwdWeightsDiffDst)
-				MessageBox(NULL, strf.c_str(), strw.c_str(), 0);*/
-
+			reorderBwdWeightsDiffDst = bwdWeightsDesc->diff_dst_desc() != *DiffDstMemDesc;
+		
 #ifdef DNN_CACHE_PRIMITIVES
 			fwd = std::make_unique<dnnl::convolution_forward>(dnnl::convolution_forward(*fwdDesc));
 			bwdWeights = std::make_unique<dnnl::convolution_backward_weights>(dnnl::convolution_backward_weights(*bwdWeightsDesc));

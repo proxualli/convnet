@@ -148,7 +148,7 @@ namespace dnn
 			reorderBwdDiffSrc = bwdDataDesc->diff_src_desc() != *InputLayer->DiffDstMemDesc;
 			reorderBwdWeights = bwdDataDesc->weights_desc() != *WeightsMemDesc;
 			reorderBwdDiffWeights = bwdWeightsDesc->diff_weights_desc() != *WeightsMemDesc;
-			reorderBwdWeightsDiffDst = bwdWeightsDesc->diff_dst_desc() != fwdDesc->dst_desc();
+			reorderBwdWeightsDiffDst = bwdWeightsDesc->diff_dst_desc() != *DiffDstMemDesc;
 
 #ifdef DNN_CACHE_PRIMITIVES
 			fwd = std::make_unique<dnnl::deconvolution_forward>(dnnl::deconvolution_forward(*fwdDesc));
