@@ -174,7 +174,7 @@ namespace dnn
 			bwdAddDesc = std::make_unique<dnnl::binary::primitive_desc>(dnnl::binary::primitive_desc(dnnl::binary::desc(dnnl::algorithm::binary_add, *InputLayer->DiffDstMemDesc, *InputLayer->DiffDstMemDesc, *InputLayer->DiffDstMemDesc), Device.engine));
 
 			reorderBwdSrc = bwdWeightsDesc->src_desc() != *InputLayer->DstMemDesc;
-			reorderBwdDiffWeights = bwdWeightsDesc->diff_weights_desc() != fwdDesc->weights_desc();
+			reorderBwdDiffWeights = bwdWeightsDesc->diff_weights_desc() != *WeightsMemDesc;
 			reorderBwdDiffSrc = bwdDataDesc->diff_src_desc() != *InputLayer->DiffDstMemDesc;
 			reorderBwdWeights = bwdDataDesc->weights_desc() != *WeightsMemDesc;
 			reorderBwdWeightsDiffDst = bwdWeightsDesc->diff_dst_desc() != *DiffDstMemDesc;
