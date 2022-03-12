@@ -295,27 +295,32 @@
                     }
                     "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:Microsoft.NetCore.CoreRuntime.3.1.x64"
                     {
-                    "Name" = "8:.NET Core Runtime 3.1.22 (x64)"
+                    "Name" = "8:.NET Core Runtime 3.1.23 (x64)"
                     "ProductCode" = "8:Microsoft.NetCore.CoreRuntime.3.1.x64"
                     }
                     "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:Microsoft.NetCore.CoreRuntime.5.0.x64"
                     {
-                    "Name" = "8:.NET Runtime 5.0.14 (x64)"
+                    "Name" = "8:.NET Runtime 5.0.15 (x64)"
                     "ProductCode" = "8:Microsoft.NetCore.CoreRuntime.5.0.x64"
+                    }
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:Microsoft.NetCore.CoreRuntime.6.0.x64"
+                    {
+                    "Name" = "8:.NET Runtime 6.0.3 (x64)"
+                    "ProductCode" = "8:Microsoft.NetCore.CoreRuntime.6.0.x64"
                     }
                     "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:Microsoft.NetCore.DesktopRuntime.3.1.x64"
                     {
-                    "Name" = "8:.NET Desktop Runtime 3.1.22 (x64)"
+                    "Name" = "8:.NET Desktop Runtime 3.1.23 (x64)"
                     "ProductCode" = "8:Microsoft.NetCore.DesktopRuntime.3.1.x64"
                     }
                     "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:Microsoft.NetCore.DesktopRuntime.5.0.x64"
                     {
-                    "Name" = "8:.NET Desktop Runtime 5.0.14 (x64)"
+                    "Name" = "8:.NET Desktop Runtime 5.0.15 (x64)"
                     "ProductCode" = "8:Microsoft.NetCore.DesktopRuntime.5.0.x64"
                     }
                     "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:Microsoft.NetCore.DesktopRuntime.6.0.x64"
                     {
-                    "Name" = "8:.NET Desktop Runtime 6.0.2 (x64)"
+                    "Name" = "8:.NET Desktop Runtime 6.0.3 (x64)"
                     "ProductCode" = "8:Microsoft.NetCore.DesktopRuntime.6.0.x64"
                     }
                 }
@@ -341,7 +346,7 @@
                 {
                 "Name" = "8:.NET Core"
                 "Message" = "8:[VSDNETCOREMSG]"
-                "FrameworkVersion" = "8:3.1                         "
+                "FrameworkVersion" = "8:3.1                          "
                 "AllowLaterVersions" = "11:FALSE"
                 "InstallUrl" = "8:https://dotnet.microsoft.com/download/dotnet-core/[NetCoreVerMajorDotMinor]"
                 "IsNETCore" = "11:TRUE"
@@ -1168,7 +1173,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Convnet"
         "ProductCode" = "8:{D4B4AC62-642E-467C-85CB-CD72DA196999}"
-        "PackageCode" = "8:{A6C22D1F-40DF-4DBD-B8EE-FDA2CBF933FE}"
+        "PackageCode" = "8:{2A695E3F-9028-4D96-81B3-BC74D18145C6}"
         "UpgradeCode" = "8:{6AC0B11F-6D71-4203-ACC9-2E07A968F844}"
         "AspNetVersion" = "8:"
         "RestartWWWService" = "11:FALSE"
