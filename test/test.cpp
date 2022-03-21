@@ -13,8 +13,7 @@
 #include "Scripts.h"
 
 #ifdef _WIN32
-//std::string(getenv("USERPROFILE"))
-static std::string path = std::string("C:\\Users\\dhaen\\Documents\\convnet\\");
+static std::string path = std::string(getenv("USERPROFILE")) + std::string("\\Documents\\convnet\\");
 #else
 static std::string path = std::string(getenv("HOME")) + std::string("/convnet/");
 #endif

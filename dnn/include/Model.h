@@ -617,7 +617,7 @@ namespace dnn
 
 				if (GetTotalFreeMemory() + currentSize < requestedSize)
 				{
-					std::cout << std::string("Memory required: ") << std::to_string(requestedSize / 1024 / 1024) << " MB with resolution" << std::to_string(batchSize) + std::string("x") + std::to_string(h) + std::string("x") + std::to_string(w) << std::endl << std::endl;
+					std::cout << std::string("Memory required: ") << std::to_string(requestedSize / 1024 / 1024) << std::string(" MB with resolution") << std::to_string(batchSize) + std::string("x") + std::to_string(h) + std::string("x") + std::to_string(w) << std::endl << std::endl;
 
 					Layers[0]->H = H;
 					Layers[0]->W = W;
