@@ -76,13 +76,16 @@
       <Parallelization>true</Parallelization>
       <OpenMP>GenerateParallelCode</OpenMP>
       <CCppSupport>Cpp17Support</CCppSupport>
-      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <BasicRuntimeChecks>UninitializedLocalUsageCheck</BasicRuntimeChecks>
+      <SupportJustMyCode>false</SupportJustMyCode>
     </ClCompile>
     <Link>
       <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <IgnoreSpecificDefaultLibraries>MSVCRT.lib</IgnoreSpecificDefaultLibraries>
+      <IgnoreSpecificDefaultLibraries>
+      </IgnoreSpecificDefaultLibraries>
       <SubSystem>Console</SubSystem>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
       <AssemblyDebug>true</AssemblyDebug>
     </Link>
     <ProjectReference />
@@ -106,7 +109,6 @@
       <CallingConvention>Cdecl</CallingConvention>
       <OptimizationDiagnosticLevel>Level3</OptimizationDiagnosticLevel>
       <EnableNeonCodegen>false</EnableNeonCodegen>
-      <StringPooling>true</StringPooling>
       <WarningLevel>Level3</WarningLevel>
       <OpenMP>GenerateParallelCode</OpenMP>
       <DebugInformationFormat>None</DebugInformationFormat>
@@ -115,10 +117,11 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <CCppSupport>Cpp17Support</CCppSupport>
-      <AdditionalOptions>/bigobj /openmp:experimental /Qvec-report:1 /favor:AMD64 /fp:contract</AdditionalOptions>
+      <AdditionalOptions>/bigobj  /openmp:experimental /Qvec-report:1 /favor:AMD64 /fp:contract</AdditionalOptions>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <FunctionLevelLinking>true</FunctionLevelLinking>
+      <FloatingPointModel>Fast</FloatingPointModel>
     </ClCompile>
     <Link>
       <InterproceduralOptimization>true</InterproceduralOptimization>
@@ -128,7 +131,7 @@
       <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
       <OptimizeReferences>true</OptimizeReferences>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
-      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
     </Link>
   </ItemDefinitionGroup>

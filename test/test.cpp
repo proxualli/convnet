@@ -13,7 +13,8 @@
 #include "Scripts.h"
 
 #ifdef _WIN32
-static std::string path = std::string(getenv("USERPROFILE")) + std::string("\\Documents\\convnet\\");
+//std::string(getenv("USERPROFILE"))
+static std::string path = std::string("C:\\Users\\dhaen\\Documents\\convnet\\");
 #else
 static std::string path = std::string(getenv("HOME")) + std::string("/convnet/");
 #endif
@@ -30,6 +31,7 @@ DNN_API void DNNGetLayerInputs(const UInt layerIndex, std::vector<UInt>* inputs)
 DNN_API void DNNGetLayerInfo(const UInt layerIndex, dnn::LayerInfo* info);
 DNN_API void DNNSetNewEpochDelegate(void(*newEpoch)(UInt, UInt, UInt, UInt, Float, Float, Float, bool, bool, Float, Float, bool, Float, Float, UInt, Float, UInt, Float, Float, Float, UInt, UInt, UInt, Float, Float, Float, Float, Float, Float, UInt, Float, Float, Float, UInt));
 DNN_API void DNNModelDispose();
+DNN_API void DNNDataproviderDispose();
 DNN_API bool DNNBatchNormalizationUsed();
 DNN_API void DNNResetWeights();
 DNN_API void DNNResetLayerWeights(const UInt layerIndex);
@@ -119,7 +121,7 @@ void GetTrainingProgress(int seconds = 5, UInt trainingSamples = 50000, UInt tes
     while (info->State == States::Idle);
 
     int barWidth = 40;
-    float progress = 0.0;
+    float progress = 0.0f;
   
     while (info->State != States::Completed)
     {
@@ -175,7 +177,7 @@ int main(int argc, char* argv[])
 
     scripts::ScriptParameters p;
 
-    p.Script = scripts::Scripts::mobilenetv3;
+    p.Script = scripts::Scripts::shufflenetv2;
     p.Dataset = scripts::Datasets::cifar10;
     p.C = 3;
     p.H = 32;
@@ -185,7 +187,7 @@ int main(int argc, char* argv[])
     p.MirrorPad = false;
     p.Groups = 3;
     p.Iterations = 4;
-    p.Width = 4;
+    p.Width = 12;
     p.Activation = scripts::Activations::HardSwish;
     p.Dropout = Float(0);
     p.Bottleneck = false;
@@ -219,7 +221,7 @@ int main(int argc, char* argv[])
     rate.Cycles = 1;
     rate.Epochs = 200;
     rate.EpochMultiplier = 1;
-    rate.MaximumRate = 0.05;
+    rate.MaximumRate = 0.05f;
     rate.MinimumRate = 0.0001f;
     rate.FinalRate = 0.1f;
     rate.Gamma = 0.003f;
@@ -246,7 +248,7 @@ int main(int argc, char* argv[])
             auto info = new ModelInfo();
             DNNGetModelInfo(info);
 
-            std::cout << std::string("Training ") << info->Name << std::string(" on ") << std::string(magic_enum::enum_name<Datasets>(info->Dataset)) << std::string(" with " +  std::string(magic_enum::enum_name<Optimizers>(optimizer)) + " optimizer") << std::endl << std::endl;
+            std::cout << std::string("Training ") << info->Name << std::string(" on ") << std::string(magic_enum::enum_name<Datasets>(info->Dataset)) << (std::string(" with ") + std::string(magic_enum::enum_name<Optimizers>(optimizer)) + std::string(" optimizer")) << std::endl << std::endl;
             std::cout.flush();
 
             DNNSetNewEpochDelegate(&NewEpoch);
@@ -259,10 +261,13 @@ int main(int argc, char* argv[])
             delete info;
                    
             DNNStop();
+            DNNModelDispose();
         }
         else
-            std::cout << std::endl << "Could not load dataset" << std::endl;
+            std::cout << std::endl << std::string("Could not load dataset") << std::endl;
     }
     else
-        std::cout << std::endl << "Could not load model" << std::endl << msg.Message << std::endl << model << std::endl;
+        std::cout << std::endl << std::string("Could not load model") << std::endl << msg.Message << std::endl << model << std::endl;
+
+    DNNDataproviderDispose();
 }
