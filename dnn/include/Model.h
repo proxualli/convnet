@@ -606,11 +606,14 @@ namespace dnn
 
 			BatchSizeChanging.store(true);
 
-			Layers[0]->H = h;
-			Layers[0]->W = w;
-			for (auto& layer : Layers)
-				layer->UpdateResolution();
-			
+			if (Layers[0]->H != h && Layers[0]->W != w)
+			{
+				Layers[0]->H = h;
+				Layers[0]->W = w;
+				for (auto& layer : Layers)
+					layer->UpdateResolution();
+			}
+
 			if (batchSize * h * w > BatchSize * H * W)
 			{
 				auto requestedSize = GetNeuronsSize(batchSize) + GetWeightsSize(PersistOptimizer, Optimizer);
@@ -1328,7 +1331,7 @@ namespace dnn
 				}
 
 				if (!exists)
-					throw std::invalid_argument(std::string("Invalid input layer: " + name).c_str());
+					throw std::invalid_argument((std::string("Invalid input layer: ") + name).c_str());
 			}
 
 			return list;
