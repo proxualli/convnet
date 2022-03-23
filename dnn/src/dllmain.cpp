@@ -958,7 +958,6 @@ extern "C" DNN_API void DNNGetTestingInfo(TestingInfo* info)
 	}
 }
 
-
 extern "C" DNN_API Optimizers GetOptimizer()
 {
 	if (model)

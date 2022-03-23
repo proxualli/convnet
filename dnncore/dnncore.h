@@ -1710,7 +1710,7 @@ namespace dnncore
 		void OnPropertyChanged(String^ propertyName) { PropertyChanged(this, gcnew System::ComponentModel::PropertyChangedEventArgs(propertyName)); }
 
 	private:
-		float epochs = Float(1);
+		Float epochs = Float(1);
 		UInt batchSize = 128;
 		UInt height = 32;
 		UInt width = 32;
@@ -2055,7 +2055,8 @@ namespace dnncore
 		void Stop();
 		void Pause();
 		void Resume();
-		DNNLayerInfo^ GetLayerInfo(DNNLayerInfo^ info, UInt layerIndex);
+		DNNLayerInfo^ GetLayerInfo(UInt layerIndex);
+		void GetLayerInfoUpdate(DNNLayerInfo^ info, UInt layerIndex);
 		void UpdateLayerStatistics(DNNLayerInfo^ info, UInt layerIndex, bool updateUI);
 		void UpdateLayerInfo(UInt layerIndex, bool updateUI);
 		void SetCostIndex(UInt costIndex);

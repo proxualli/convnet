@@ -145,10 +145,9 @@ namespace dnncore
 		return DNNBatchNormalizationUsed();
 	}
 
-	DNNLayerInfo^ DNNModel::GetLayerInfo(DNNLayerInfo^ infoManaged, UInt layerIndex)
+	DNNLayerInfo^ DNNModel::GetLayerInfo(UInt layerIndex)
 	{
-		if (infoManaged == nullptr)
-			infoManaged = gcnew DNNLayerInfo();
+		DNNLayerInfo^ infoManaged = gcnew DNNLayerInfo();
 
 		auto infoNative = new dnn::LayerInfo();
 		DNNGetLayerInfo(layerIndex, infoNative);
@@ -224,6 +223,82 @@ namespace dnncore
 		delete infoNative;
 
 		return infoManaged;
+	}
+
+	void DNNModel::GetLayerInfoUpdate(DNNLayerInfo^ infoManaged, UInt layerIndex)
+	{
+		auto infoNative = new dnn::LayerInfo();
+		DNNGetLayerInfo(layerIndex, infoNative);
+
+		infoManaged->Name = ToManagedString(infoNative->Name);
+		infoManaged->Description = ToManagedString(infoNative->Description);
+
+		const auto layerType = static_cast<DNNLayerTypes>(infoNative->LayerType);
+		infoManaged->LayerType = layerType;
+		infoManaged->IsNormalizationLayer =
+			layerType == DNNLayerTypes::BatchNorm ||
+			layerType == DNNLayerTypes::BatchNormHardLogistic ||
+			layerType == DNNLayerTypes::BatchNormHardSwish ||
+			layerType == DNNLayerTypes::BatchNormHardSwishDropout ||
+			layerType == DNNLayerTypes::BatchNormMish ||
+			layerType == DNNLayerTypes::BatchNormMishDropout ||
+			layerType == DNNLayerTypes::BatchNormRelu ||
+			layerType == DNNLayerTypes::BatchNormReluDropout ||
+			layerType == DNNLayerTypes::BatchNormSwish ||
+			layerType == DNNLayerTypes::BatchNormSwishDropout ||
+			layerType == DNNLayerTypes::BatchNormTanhExp ||
+			layerType == DNNLayerTypes::BatchNormTanhExpDropout ||
+			layerType == DNNLayerTypes::LayerNorm;
+
+		infoManaged->Activation = static_cast<DNNActivations>(infoNative->Activation);
+		infoManaged->Algorithm = static_cast<DNNAlgorithms>(infoNative->Algorithm);
+		infoManaged->Cost = static_cast<DNNCosts>(infoNative->Cost);
+		infoManaged->NeuronCount = infoNative->NeuronCount;
+		infoManaged->WeightCount = infoNative->WeightCount;
+		infoManaged->BiasCount = infoNative->BiasesCount;
+		infoManaged->LayerIndex = layerIndex; // infoNative->LayerIndex;
+
+		infoManaged->InputCount = infoNative->InputsCount;
+		std::vector<UInt>* inputs = new std::vector<UInt>();
+		DNNGetLayerInputs(layerIndex, inputs);
+		infoManaged->Inputs = gcnew System::Collections::Generic::List<UInt>();
+		for each (UInt index in *inputs)
+			infoManaged->Inputs->Add(index);
+
+		infoManaged->C = infoNative->C;
+		infoManaged->D = infoNative->D;
+		infoManaged->H = infoNative->H;
+		infoManaged->W = infoNative->W;
+		infoManaged->PadD = infoNative->PadD;
+		infoManaged->PadH = infoNative->PadH;
+		infoManaged->PadW = infoNative->PadW;
+		infoManaged->KernelH = infoNative->KernelH;
+		infoManaged->KernelW = infoNative->KernelW;
+		infoManaged->StrideH = infoNative->StrideH;
+		infoManaged->StrideW = infoNative->StrideW;
+		infoManaged->DilationH = infoNative->DilationH;
+		infoManaged->DilationW = infoNative->DilationW;
+		infoManaged->Multiplier = infoNative->Multiplier;
+		infoManaged->Groups = infoNative->Groups;
+		infoManaged->Group = infoNative->Group;
+		infoManaged->LocalSize = infoNative->LocalSize;
+		infoManaged->Dropout = infoNative->Dropout;
+		infoManaged->Weight = infoNative->Weight;
+		infoManaged->GroupIndex = infoNative->GroupIndex;
+		infoManaged->LabelIndex = infoNative->LabelIndex;
+		infoManaged->InputC = infoNative->InputC;
+		infoManaged->Alpha = infoNative->Alpha;
+		infoManaged->Beta = infoNative->Beta;
+		infoManaged->K = infoNative->K;
+		infoManaged->FactorH = infoNative->fH;
+		infoManaged->FactorW = infoNative->fW;
+		infoManaged->HasBias = infoNative->HasBias;
+		infoManaged->Scaling = infoManaged->IsNormalizationLayer ? infoNative->Scaling : false;
+		infoManaged->AcrossChannels = infoNative->AcrossChannels;
+		infoManaged->LockUpdate = infoNative->Lockable ? Nullable<bool>(infoNative->Locked) : Nullable<bool>(false);
+		infoManaged->Lockable = infoNative->Lockable;
+
+		delete infoNative;
 	}
 
 	void DNNModel::UpdateLayerStatistics(DNNLayerInfo^ info, UInt layerIndex, bool updateUI)
@@ -387,7 +462,7 @@ namespace dnncore
 	void DNNModel::UpdateLayerInfo(UInt layerIndex, bool updateUI)
 	{
 		if (layerIndex == 0)
-			GetLayerInfo(Layers[0], false);
+			GetLayerInfoUpdate(Layers[layerIndex], layerIndex);
 		
 		UpdateLayerStatistics(Layers[layerIndex], layerIndex, updateUI);
 	}
@@ -719,7 +794,7 @@ namespace dnncore
 		UInt counter = 0;
 		for (UInt layer = 0; layer < LayerCount; layer++)
 		{
-			Layers->Add(GetLayerInfo(nullptr, layer));
+			Layers->Add(GetLayerInfo(layer));
 
 			if (Layers[layer]->LayerType == DNNLayerTypes::Cost)
 				CostLayers[counter++] = gcnew DNNCostLayer(Layers[layer]->Cost, Layers[layer]->LayerIndex, Layers[layer]->GroupIndex, Layers[layer]->LabelIndex, Layers[layer]->NeuronCount, Layers[layer]->Name, Layers[layer]->Weight);
