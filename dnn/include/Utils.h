@@ -123,7 +123,7 @@ namespace
 		const auto LIGHT =      MAXIMUM >= 32 ?  4ull : MAXIMUM >= 24 ?  4ull :  4ull;
 		const auto MEDIUM =     MAXIMUM >= 32 ?  8ull : MAXIMUM >= 24 ?  8ull :  8ull;
 		const auto HEAVY =      MAXIMUM >= 32 ? 16ull : MAXIMUM >= 24 ? 16ull :  8ull;
-		const auto ULTRAHEAVY = MAXIMUM >= 32 ? 32ull : MAXIMUM >= 24 ? 16ull : 16ull;
+		const auto ULTRAHEAVY = MAXIMUM >= 32 ? 16ull : MAXIMUM >= 24 ? 16ull : 16ull;
 
 		return 
 			elements < static_cast<UInt>(weight * Float(ULTRALIGHT_THRESHOLD)) ? ULTRALIGHT : 
