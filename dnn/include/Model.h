@@ -1654,7 +1654,7 @@ namespace dnn
 								// Backward
 								bpropTimeCount = std::chrono::duration<Float>(Float(0));
 								updateTimeCount = std::chrono::duration<Float>(Float(0));
-								if (UseInplace)
+								if constexpr (UseInplace)
 									SwitchInplaceBwd(true);
 								for (auto i = Layers.size() - 1; i >= FirstUnlockedLayer.load(); --i)
 								{
@@ -1682,7 +1682,7 @@ namespace dnn
 									}
 									bpropTimeCount += Layers[i]->bpropTime;
 								}
-								if (UseInplace)
+								if constexpr (UseInplace)
 									SwitchInplaceBwd(false);
 								bpropTime = bpropTimeCount;
 								updateTime = updateTimeCount;
@@ -1849,7 +1849,7 @@ namespace dnn
 
 				if (CheckTaskState())
 				{
-					if (UseInplace)
+					if constexpr (UseInplace)
 						SwitchInplaceBwd(false);
 
 					for (auto cost : CostLayers)
@@ -2350,7 +2350,7 @@ namespace dnn
 
 		void BackwardProp(const UInt batchSize)
 		{
-			if (UseInplace)
+			if constexpr (UseInplace)
 				SwitchInplaceBwd(true);
 
 			for (auto i = Layers.size() - 1; i > 0ull; --i)
@@ -2366,7 +2366,7 @@ namespace dnn
 					Layers[i]->BackwardProp(batchSize);
 			}
 
-			if (UseInplace)
+			if constexpr (UseInplace)
 				SwitchInplaceBwd(false);
 		}
 		
