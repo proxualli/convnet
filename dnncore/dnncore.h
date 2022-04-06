@@ -2026,6 +2026,7 @@ namespace dnncore
 		property Float Dropout;
 		property Float SampleRate;
 		property DNNStates State;
+		property DNNStates OldState;
 		property DNNTaskStates TaskState;
 		property Float fpropTime;
 		property Float bpropTime;
@@ -2078,7 +2079,6 @@ namespace dnncore
 	protected:
 		System::Timers::Timer^ WorkerTimer;
 		StringBuilder^ sb;
-		String^ oldWeightSaveFileName;
-		DNNStates OldState;
+		//String^ oldWeightSaveFileName;
 	};
 }
