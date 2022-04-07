@@ -181,8 +181,8 @@ int main(int argc, char* argv[])
     p.C = 3;
     p.H = 32;
     p.W = 32;
-    p.PadH = 8;
-    p.PadW = 8;
+    p.PadH = 4;
+    p.PadW = 4;
     p.MirrorPad = false;
     p.Groups = 3;
     p.Iterations = 4;

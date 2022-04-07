@@ -155,7 +155,7 @@ namespace dnncore
 		infoManaged->Name = ToManagedString(infoNative->Name);
 		infoManaged->Description = ToManagedString(infoNative->Description);
 
-		const auto layerType = static_cast<DNNLayerTypes>(infoNative->LayerType);
+		const auto layerType = safe_cast<DNNLayerTypes>(infoNative->LayerType);
 		infoManaged->LayerType = layerType;
 		infoManaged->IsNormalizationLayer =
 			layerType == DNNLayerTypes::BatchNorm ||
@@ -172,9 +172,9 @@ namespace dnncore
 			layerType == DNNLayerTypes::BatchNormTanhExpDropout ||
 			layerType == DNNLayerTypes::LayerNorm;
 
-		infoManaged->Activation = static_cast<DNNActivations>(infoNative->Activation);
-		infoManaged->Algorithm = static_cast<DNNAlgorithms>(infoNative->Algorithm);
-		infoManaged->Cost = static_cast<DNNCosts>(infoNative->Cost);
+		infoManaged->Activation = safe_cast<DNNActivations>(infoNative->Activation);
+		infoManaged->Algorithm = safe_cast<DNNAlgorithms>(infoNative->Algorithm);
+		infoManaged->Cost = safe_cast<DNNCosts>(infoNative->Cost);
 		infoManaged->NeuronCount = infoNative->NeuronCount;
 		infoManaged->WeightCount = infoNative->WeightCount;
 		infoManaged->BiasCount = infoNative->BiasesCount;
@@ -250,9 +250,9 @@ namespace dnncore
 			layerType == DNNLayerTypes::BatchNormTanhExpDropout ||
 			layerType == DNNLayerTypes::LayerNorm;
 
-		infoManaged->Activation = static_cast<DNNActivations>(infoNative->Activation);
-		infoManaged->Algorithm = static_cast<DNNAlgorithms>(infoNative->Algorithm);
-		infoManaged->Cost = static_cast<DNNCosts>(infoNative->Cost);
+		infoManaged->Activation = safe_cast<DNNActivations>(infoNative->Activation);
+		infoManaged->Algorithm = safe_cast<DNNAlgorithms>(infoNative->Algorithm);
+		infoManaged->Cost = safe_cast<DNNCosts>(infoNative->Cost);
 		infoManaged->NeuronCount = infoNative->NeuronCount;
 		infoManaged->WeightCount = infoNative->WeightCount;
 		infoManaged->BiasCount = infoNative->BiasesCount;
@@ -493,8 +493,8 @@ namespace dnncore
 			SampleIndex = info->SampleIndex;
 			
 			Rate = info->Rate;
-			if (Optimizer != static_cast<dnncore::DNNOptimizers>(info->Optimizer))
-				Optimizer = static_cast<dnncore::DNNOptimizers>(info->Optimizer);
+			if (Optimizer != safe_cast<dnncore::DNNOptimizers>(info->Optimizer))
+				Optimizer = safe_cast<dnncore::DNNOptimizers>(info->Optimizer);
 
 			Momentum = info->Momentum;
 			Beta2 = info->Beta2;
@@ -516,7 +516,7 @@ namespace dnncore
 			ColorCast = info->ColorCast;
 			ColorAngle = info->ColorAngle;
 			Distortion = info->Distortion;
-			Interpolation = static_cast<dnncore::DNNInterpolations>(info->Interpolation);
+			Interpolation = safe_cast<dnncore::DNNInterpolations>(info->Interpolation);
 			Scaling = info->Scaling;
 			Rotation = info->Rotation;
 			
@@ -529,8 +529,8 @@ namespace dnncore
 			
 			SampleRate = info->SampleSpeed;
 
-			State = static_cast<dnncore::DNNStates>(info->State);
-			TaskState = static_cast<dnncore::DNNTaskStates>(info->TaskState);
+			State = safe_cast<dnncore::DNNStates>(info->State);
+			TaskState = safe_cast<dnncore::DNNTaskStates>(info->TaskState);
 			
 			delete info;
 
@@ -559,8 +559,8 @@ namespace dnncore
 			AvgTestLoss = info->AvgTestLoss;
 			TestErrorPercentage = info->TestErrorPercentage;
 			TestErrors = info->TestErrors;
-			State = static_cast<dnncore::DNNStates>(info->State);
-			TaskState = static_cast<dnncore::DNNTaskStates>(info->TaskState);
+			State = safe_cast<dnncore::DNNStates>(info->State);
+			TaskState = safe_cast<dnncore::DNNTaskStates>(info->TaskState);
 			SampleRate = info->SampleSpeed;
 
 			delete info;
@@ -601,7 +601,7 @@ namespace dnncore
 	{
 		if (strategy != Optimizer)
 		{
-			DNNSetOptimizer(static_cast<dnn::Optimizers>(strategy));
+			DNNSetOptimizer(safe_cast<dnn::Optimizers>(strategy));
 			Optimizer = strategy;
 		}
 	}
@@ -619,39 +619,25 @@ namespace dnncore
 
 	cli::array<String^>^ DNNModel::GetTextLabels(String^ fileName)
 	{
+		StreamReader^ streamReader;
+		String^ str;
 		int lines = 0;
 		cli::array<String^>^ list;
+
 		try
 		{
-			StreamReader^ streamReader = File::OpenText(fileName);
-
-			try
-			{
-				String^ str;
-				while ((str = streamReader->ReadLine()) != nullptr)
-					lines++;
-			}
-			finally
-			{
-				delete streamReader;
-			}
-			list = gcnew cli::array<String^>(lines);
-
-			lines = 0;
 			streamReader = File::OpenText(fileName);
-			try
-			{
-				String^ str;
-				while ((str = streamReader->ReadLine()) != nullptr)
-				{
-					list[lines] = gcnew String(str);
-					lines++;
-				}
-			}
-			finally
-			{
-				delete streamReader;
-			}
+			while (str = streamReader->ReadLine())
+				lines++;
+			streamReader->Close();
+
+			list = gcnew cli::array<String^>(lines);
+			lines = 0;
+			
+			streamReader = File::OpenText(fileName);
+			while (str = streamReader->ReadLine())
+				list[lines++] = gcnew String(str);
+			streamReader->Close();
 		}
 		catch (Exception^)
 		{
@@ -659,10 +645,15 @@ namespace dnncore
 				Console::WriteLine("file '{0}' not found", fileName);
 			else
 				Console::WriteLine("problem reading file '{0}'", fileName);*/
+			streamReader->Close();
+		}
+		finally 
+		{
+			if (streamReader)
+				delete (IDisposable^)streamReader;
 		}
 
 		return list;
-
 	}
 
 	void DNNModel::SetCostIndex(UInt index)
@@ -804,19 +795,19 @@ namespace dnncore
 		LabelIndex = CostLayers[CostIndex]->LabelIndex;
 		ClassCount = CostLayers[CostIndex]->ClassCount;
 
-		Optimizer = static_cast<DNNOptimizers>(GetOptimizer());
+		Optimizer = safe_cast<DNNOptimizers>(GetOptimizer());
 	}
 
 	void DNNModel::AddTrainingRate(DNNTrainingRate^ rate, bool clear, UInt gotoEpoch, UInt trainSamples)
 	{
-		auto nativeRate = dnn::TrainingRate(static_cast<dnn::Optimizers>(rate->Optimizer), rate->Momentum, rate->Beta2, rate->L2Penalty, rate->Dropout, rate->Eps, rate->BatchSize, rate->Height, rate->Width, rate->PadH, rate->PadW, rate->Cycles, rate->Epochs, rate->EpochMultiplier,rate->MaximumRate, rate->MinimumRate, rate->FinalRate, rate->Gamma, rate->DecayAfterEpochs, rate->DecayFactor, rate->HorizontalFlip, rate->VerticalFlip, rate->InputDropout, rate->Cutout, rate->CutMix, rate->AutoAugment, rate->ColorCast, rate->ColorAngle, rate->Distortion, static_cast<dnn::Interpolations>(rate->Interpolation), rate->Scaling, rate->Rotation);
+		auto nativeRate = dnn::TrainingRate(safe_cast<dnn::Optimizers>(rate->Optimizer), rate->Momentum, rate->Beta2, rate->L2Penalty, rate->Dropout, rate->Eps, rate->BatchSize, rate->Height, rate->Width, rate->PadH, rate->PadW, rate->Cycles, rate->Epochs, rate->EpochMultiplier,rate->MaximumRate, rate->MinimumRate, rate->FinalRate, rate->Gamma, rate->DecayAfterEpochs, rate->DecayFactor, rate->HorizontalFlip, rate->VerticalFlip, rate->InputDropout, rate->Cutout, rate->CutMix, rate->AutoAugment, rate->ColorCast, rate->ColorAngle, rate->Distortion, safe_cast<dnn::Interpolations>(rate->Interpolation), rate->Scaling, rate->Rotation);
 
 		DNNAddTrainingRate(nativeRate, clear, gotoEpoch, trainSamples);
 	}
 
 	void DNNModel::AddTrainingRateSGDR(DNNTrainingRate^ rate, bool clear, UInt gotoEpoch, UInt trainSamples)
 	{
-		auto nativeRate = dnn::TrainingRate(static_cast<dnn::Optimizers>(rate->Optimizer), rate->Momentum, rate->Beta2, rate->L2Penalty, rate->Dropout, rate->Eps, rate->BatchSize, rate->Height, rate->Width, rate->PadH, rate->PadW, rate->Cycles, rate->Epochs, rate->EpochMultiplier, rate->MaximumRate, rate->MinimumRate, rate->FinalRate, rate->Gamma, rate->DecayAfterEpochs, rate->DecayFactor, rate->HorizontalFlip, rate->VerticalFlip, rate->InputDropout, rate->Cutout, rate->CutMix, rate->AutoAugment, rate->ColorCast, rate->ColorAngle, rate->Distortion, static_cast<dnn::Interpolations>(rate->Interpolation), rate->Scaling, rate->Rotation);
+		auto nativeRate = dnn::TrainingRate(safe_cast<dnn::Optimizers>(rate->Optimizer), rate->Momentum, rate->Beta2, rate->L2Penalty, rate->Dropout, rate->Eps, rate->BatchSize, rate->Height, rate->Width, rate->PadH, rate->PadW, rate->Cycles, rate->Epochs, rate->EpochMultiplier, rate->MaximumRate, rate->MinimumRate, rate->FinalRate, rate->Gamma, rate->DecayAfterEpochs, rate->DecayFactor, rate->HorizontalFlip, rate->VerticalFlip, rate->InputDropout, rate->Cutout, rate->CutMix, rate->AutoAugment, rate->ColorCast, rate->ColorAngle, rate->Distortion, safe_cast<dnn::Interpolations>(rate->Interpolation), rate->Scaling, rate->Rotation);
 
 		DNNAddTrainingRateSGDR(nativeRate, clear, gotoEpoch, trainSamples);
 	}
@@ -828,7 +819,7 @@ namespace dnncore
 
 	void DNNModel::AddTrainingStrategy(DNNTrainingStrategy^ strategy)
 	{
-		DNNAddTrainingStrategy(dnn::TrainingStrategy(strategy->Epochs, strategy->BatchSize, strategy->Height, strategy->Width, strategy->PadH, strategy->PadW, strategy->Momentum, strategy->Beta2, strategy->Gamma, strategy->L2Penalty, strategy->Dropout, strategy->HorizontalFlip, strategy->VerticalFlip, strategy->InputDropout, strategy->Cutout, strategy->CutMix, strategy->AutoAugment, strategy->ColorCast, strategy->ColorAngle, strategy->Distortion, static_cast<dnn::Interpolations>(strategy->Interpolation), strategy->Scaling, strategy->Rotation));
+		DNNAddTrainingStrategy(dnn::TrainingStrategy(strategy->Epochs, strategy->BatchSize, strategy->Height, strategy->Width, strategy->PadH, strategy->PadW, strategy->Momentum, strategy->Beta2, strategy->Gamma, strategy->L2Penalty, strategy->Dropout, strategy->HorizontalFlip, strategy->VerticalFlip, strategy->InputDropout, strategy->Cutout, strategy->CutMix, strategy->AutoAugment, strategy->ColorCast, strategy->ColorAngle, strategy->Distortion, safe_cast<dnn::Interpolations>(strategy->Interpolation), strategy->Scaling, strategy->Rotation));
 	}
 
 	void DNNModel::Start(bool training)
@@ -932,7 +923,7 @@ namespace dnncore
 	{
 		int ret = DNNLoadWeights(ToUnmanagedString(fileName), persist);
 
-		Optimizer = static_cast<DNNOptimizers>(GetOptimizer());
+		Optimizer = safe_cast<DNNOptimizers>(GetOptimizer());
 
 		if (ret == 0 && SelectedIndex > 0)
 			UpdateLayerStatistics(Layers[SelectedIndex], SelectedIndex, true);
