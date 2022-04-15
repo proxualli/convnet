@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.0.31912.275
+VisualStudioVersion = 17.1.32407.343
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Convnet", "Convnet\Convnet.csproj", "{45AAE32B-0D5D-4494-A0A7-C170F8DBCA8B}"
 EndProject
@@ -23,12 +23,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "dnnl_cpu_x64", "dnn\deps\on
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "dnnl", "dnn\deps\oneDNN\build\src\dnnl.vcxproj", "{2F09A747-18CB-3043-85BF-83BBA99C5137}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "simd-objs", "dnn\deps\libjpeg-turbo\build\simd\simd-objs.vcxproj", "{0F5384B2-3039-303B-94F5-3EA8E83C4D2C}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "simd", "dnn\deps\libjpeg-turbo\build\simd\simd.vcxproj", "{0266F3BD-3644-38FC-AD14-4F09D5E16FE2}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "jpeg-static", "dnn\deps\libjpeg-turbo\build\jpeg-static.vcxproj", "{CBDDF2DB-4407-3D56-87F9-0846EAA8C9D5}"
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "dnncore", "dnncore\dnncore.vcxproj", "{773B7924-852A-470B-9091-735E10BC67ED}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "zlib", "dnn\deps\libpng\projects\vstudio\zlib\zlib.vcxproj", "{60F89955-91C6-3A36-8000-13C592FEC2DF}"
@@ -44,6 +38,12 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "vectorclass", "dnn\deps\version2\build\vectorclass.vcxproj", "{3D71FA2C-B993-3172-9B1E-63FF8B886E84}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test", "test\test.vcxproj", "{42A112E4-E623-4F72-BDFA-1CE5AFE7DD9C}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "jpeg-static", "dnn\deps\libjpeg-turbo\build\jpeg-static.vcxproj", "{CBDDF2DB-4407-3D56-87F9-0846EAA8C9D5}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "simd-objs", "dnn\deps\libjpeg-turbo\build\simd\simd-objs.vcxproj", "{0F5384B2-3039-303B-94F5-3EA8E83C4D2C}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "simd", "dnn\deps\libjpeg-turbo\build\simd\simd.vcxproj", "{0266F3BD-3644-38FC-AD14-4F09D5E16FE2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -75,18 +75,6 @@ Global
 		{2F09A747-18CB-3043-85BF-83BBA99C5137}.Debug|x64.Build.0 = Debug|x64
 		{2F09A747-18CB-3043-85BF-83BBA99C5137}.Release|x64.ActiveCfg = Release|x64
 		{2F09A747-18CB-3043-85BF-83BBA99C5137}.Release|x64.Build.0 = Release|x64
-		{0F5384B2-3039-303B-94F5-3EA8E83C4D2C}.Debug|x64.ActiveCfg = Debug|x64
-		{0F5384B2-3039-303B-94F5-3EA8E83C4D2C}.Debug|x64.Build.0 = Debug|x64
-		{0F5384B2-3039-303B-94F5-3EA8E83C4D2C}.Release|x64.ActiveCfg = Release|x64
-		{0F5384B2-3039-303B-94F5-3EA8E83C4D2C}.Release|x64.Build.0 = Release|x64
-		{0266F3BD-3644-38FC-AD14-4F09D5E16FE2}.Debug|x64.ActiveCfg = Debug|x64
-		{0266F3BD-3644-38FC-AD14-4F09D5E16FE2}.Debug|x64.Build.0 = Debug|x64
-		{0266F3BD-3644-38FC-AD14-4F09D5E16FE2}.Release|x64.ActiveCfg = Release|x64
-		{0266F3BD-3644-38FC-AD14-4F09D5E16FE2}.Release|x64.Build.0 = Release|x64
-		{CBDDF2DB-4407-3D56-87F9-0846EAA8C9D5}.Debug|x64.ActiveCfg = Debug|x64
-		{CBDDF2DB-4407-3D56-87F9-0846EAA8C9D5}.Debug|x64.Build.0 = Debug|x64
-		{CBDDF2DB-4407-3D56-87F9-0846EAA8C9D5}.Release|x64.ActiveCfg = Release|x64
-		{CBDDF2DB-4407-3D56-87F9-0846EAA8C9D5}.Release|x64.Build.0 = Release|x64
 		{773B7924-852A-470B-9091-735E10BC67ED}.Debug|x64.ActiveCfg = Debug|x64
 		{773B7924-852A-470B-9091-735E10BC67ED}.Debug|x64.Build.0 = Debug|x64
 		{773B7924-852A-470B-9091-735E10BC67ED}.Release|x64.ActiveCfg = Release|x64
@@ -119,6 +107,18 @@ Global
 		{42A112E4-E623-4F72-BDFA-1CE5AFE7DD9C}.Debug|x64.Build.0 = Debug|x64
 		{42A112E4-E623-4F72-BDFA-1CE5AFE7DD9C}.Release|x64.ActiveCfg = Release|x64
 		{42A112E4-E623-4F72-BDFA-1CE5AFE7DD9C}.Release|x64.Build.0 = Release|x64
+		{CBDDF2DB-4407-3D56-87F9-0846EAA8C9D5}.Debug|x64.ActiveCfg = Debug|x64
+		{CBDDF2DB-4407-3D56-87F9-0846EAA8C9D5}.Debug|x64.Build.0 = Debug|x64
+		{CBDDF2DB-4407-3D56-87F9-0846EAA8C9D5}.Release|x64.ActiveCfg = Release|x64
+		{CBDDF2DB-4407-3D56-87F9-0846EAA8C9D5}.Release|x64.Build.0 = Release|x64
+		{0F5384B2-3039-303B-94F5-3EA8E83C4D2C}.Debug|x64.ActiveCfg = Debug|x64
+		{0F5384B2-3039-303B-94F5-3EA8E83C4D2C}.Debug|x64.Build.0 = Debug|x64
+		{0F5384B2-3039-303B-94F5-3EA8E83C4D2C}.Release|x64.ActiveCfg = Release|x64
+		{0F5384B2-3039-303B-94F5-3EA8E83C4D2C}.Release|x64.Build.0 = Release|x64
+		{0266F3BD-3644-38FC-AD14-4F09D5E16FE2}.Debug|x64.ActiveCfg = Debug|x64
+		{0266F3BD-3644-38FC-AD14-4F09D5E16FE2}.Debug|x64.Build.0 = Debug|x64
+		{0266F3BD-3644-38FC-AD14-4F09D5E16FE2}.Release|x64.ActiveCfg = Release|x64
+		{0266F3BD-3644-38FC-AD14-4F09D5E16FE2}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
