@@ -2056,8 +2056,7 @@ namespace dnncore
 		void Stop();
 		void Pause();
 		void Resume();
-		DNNLayerInfo^ GetLayerInfo(UInt layerIndex);
-		void GetLayerInfoUpdate(DNNLayerInfo^ info, UInt layerIndex);
+		DNNLayerInfo^ GetLayerInfo(DNNLayerInfo^ infoManaged, UInt layerIndex);
 		void UpdateLayerStatistics(DNNLayerInfo^ info, UInt layerIndex, bool updateUI);
 		void UpdateLayerInfo(UInt layerIndex, bool updateUI);
 		void SetCostIndex(UInt costIndex);
