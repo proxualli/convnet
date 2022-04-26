@@ -85,7 +85,6 @@ namespace dnn
 		Uniform = 7
 	};
 
-
 	enum class FillerModes
 	{
 		Avg = 0,
