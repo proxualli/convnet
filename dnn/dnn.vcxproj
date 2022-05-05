@@ -109,7 +109,6 @@
       <EnableNeonCodegen>false</EnableNeonCodegen>
       <WarningLevel>Level3</WarningLevel>
       <OpenMP>GenerateParallelCode</OpenMP>
-      <DebugInformationFormat>None</DebugInformationFormat>
       <Optimization>MaxSpeed</Optimization>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>

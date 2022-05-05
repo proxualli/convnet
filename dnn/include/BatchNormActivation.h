@@ -247,7 +247,6 @@ namespace dnn
 				}
 				else
 				{
-
 					for_i(PaddedC / VectorSize, threads, [=](UInt c)
 					{
 						const auto channelOffset = c * VectorSize;
