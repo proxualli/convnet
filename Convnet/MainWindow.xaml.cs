@@ -87,11 +87,11 @@ namespace Convnet
 
             var fileName = Path.Combine(StateDirectory, Settings.Default.ModelNameActive + ".txt");
             var backupModelName = "resnet-32-3-2-6-channelzeropad-relu";
-            if (!File.Exists(fileName) || File.GetCreationTime(Path.Combine(StateDirectory, backupModelName + ".txt")) != File.GetCreationTime(ApplicationPath + @"Resources\state\" + backupModelName))
+            if (!File.Exists(fileName) || File.GetCreationTime(Path.Combine(StateDirectory, backupModelName + ".txt")) != File.GetCreationTime(ApplicationPath + @"Resources\state\" + backupModelName + ".txt"))
             {
                 Directory.CreateDirectory(DefinitionsDirectory + backupModelName + @"\");
-                File.Copy(ApplicationPath + @"Resources\state\" + backupModelName, DefinitionsDirectory + backupModelName, true);
-                File.Copy(ApplicationPath + @"Resources\state\" + backupModelName, StateDirectory + backupModelName, true);
+                File.Copy(ApplicationPath + @"Resources\state\" + backupModelName + ".txt", DefinitionsDirectory + backupModelName + ".txt", true);
+                File.Copy(ApplicationPath + @"Resources\state\" + backupModelName + ".txt", StateDirectory + backupModelName + ".txt", true);
                 fileName = Path.Combine(StateDirectory, backupModelName + ".txt");
                 Settings.Default.ModelNameActive = backupModelName;
                 Settings.Default.DefinitionActive = File.ReadAllText(fileName);

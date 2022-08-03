@@ -1,4 +1,4 @@
-[resnet-32x32-3-2-6-channelzeropad-relu]
+[resnet-32-3-2-6-channelzeropad-relu]
 Dataset=cifar10
 Dim=3,32,32
 ZeroPad=4,4
