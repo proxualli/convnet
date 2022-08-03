@@ -217,7 +217,7 @@ namespace Convnet.Properties
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("[resnet-32-4-3-2-6-channelzeropad]\r\nDataset=CIFAR10\r\nDim=3,32,32\r\nZeroPad" +
+        [global::System.Configuration.DefaultSettingValueAttribute("[resnet-3-2-6-channelzeropad]\r\nDataset=CIFAR10\r\nDim=3,32,32\r\nZeroPad" +
             "=4,4\r\nRandomCrop=Yes\r\nWeightsFiller=HeNormal\r\nBiases=No\r\nMomentum=0.995\r\nScaling" +
             "=No\r\n\r\n[C1]\r\nType=Convolution\r\nInputs=Input\r\nChannels=96\r\nKernel=3,3\r\nPad=1,1\r\n\r" +
             "\n[B1]\r\nType=BatchNormRelu\r\nInputs=C1\r\n\r\n[C2]\r\nType=Convolution\r\nInputs=B1\r\nChann" +
@@ -261,7 +261,7 @@ namespace Convnet.Properties
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("[resnet-32-4-3-2-6-channelzeropad]\r\nDataset=CIFAR10\r\nDim=3,32,32\r\nZeroPad" +
+        [global::System.Configuration.DefaultSettingValueAttribute("[resnet-3-2-6-channelzeropad]\r\nDataset=CIFAR10\r\nDim=3,32,32\r\nZeroPad" +
             "=4,4\r\nRandomCrop=Yes\r\nWeightsFiller=HeNormal\r\nBiases=No\r\nMomentum=0.995\r\nScaling" +
             "=No\r\n\r\n[C1]\r\nType=Convolution\r\nInputs=Input\r\nChannels=96\r\nKernel=3,3\r\nPad=1,1\r\n\r" +
             "\n[B1]\r\nType=BatchNormRelu\r\nInputs=C1\r\n\r\n[C2]\r\nType=Convolution\r\nInputs=B1\r\nChann" +
@@ -305,7 +305,7 @@ namespace Convnet.Properties
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("resnet-32-4-3-2-6-channelzeropad")]
+        [global::System.Configuration.DefaultSettingValueAttribute("resnet-3-2-6-channelzeropad")]
         public string ModelNameActive {
             get {
                 return ((string)(this["ModelNameActive"]));

@@ -1,4 +1,4 @@
-[resnet-32-3-2-6-channelzeropad-relu]
+[resnet-3-2-6-channelzeropad-relu]
 Dataset=cifar10
 Dim=3,32,32
 ZeroPad=4,4
@@ -6,6 +6,8 @@ RandomCrop=Yes
 WeightsFiller=HeNormal(In,1)
 Biases=No
 Dropout=0
+DepthDrop=0
+FixedDepthDrop=Yes
 Scaling=No
 Momentum=0.995
 Eps=0.0001

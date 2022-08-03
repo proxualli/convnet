@@ -36,7 +36,7 @@
       <Value Profile="(Default)">1</Value>
     </Setting>
     <Setting Name="DefinitionEditing" Type="System.String" Scope="User">
-      <Value Profile="(Default)">[resnet-32-3-2-6-channelzeropad-relu]
+      <Value Profile="(Default)">[resnet-3-2-6-channelzeropad-relu]
 Dataset=cifar10
 Dim=3,32,32
 ZeroPad=4,4
@@ -44,6 +44,8 @@ RandomCrop=Yes
 WeightsFiller=HeNormal(In,1)
 Biases=No
 Dropout=0
+DepthDrop=0
+FixedDepthDrop=Yes
 Scaling=No
 Momentum=0.995
 Eps=0.0001
@@ -274,7 +276,7 @@ Channels=10
 Eps=0.125</Value>
     </Setting>
     <Setting Name="DefinitionActive" Type="System.String" Scope="User">
-      <Value Profile="(Default)">[resnet-32-3-2-6-channelzeropad-relu]
+      <Value Profile="(Default)">[resnet-3-2-6-channelzeropad-relu]
 Dataset=cifar10
 Dim=3,32,32
 ZeroPad=4,4
@@ -282,6 +284,8 @@ RandomCrop=Yes
 WeightsFiller=HeNormal(In,1)
 Biases=No
 Dropout=0
+DepthDrop=0
+FixedDepthDrop=Yes
 Scaling=No
 Momentum=0.995
 Eps=0.0001
@@ -512,7 +516,7 @@ Channels=10
 Eps=0.125</Value>
     </Setting>
     <Setting Name="ModelNameActive" Type="System.String" Scope="User">
-      <Value Profile="(Default)">resnet-32-3-2-6-channelzeropad-relu</Value>
+      <Value Profile="(Default)">resnet-3-2-6-channelzeropad-relu</Value>
     </Setting>
     <Setting Name="EditSplitPositionA" Type="System.Windows.GridLength" Scope="User">
       <Value Profile="(Default)">420</Value>

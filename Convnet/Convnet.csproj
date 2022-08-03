@@ -54,7 +54,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Key.png" />
-    <Content Include="Resources\state\resnet-32-3-2-6-channelzeropad-relu.txt">
+    <Content Include="Resources\state\resnet-3-2-6-channelzeropad-relu.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Resource Include="App.ico" />

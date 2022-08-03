@@ -86,7 +86,7 @@ namespace Convnet
             }
 
             var fileName = Path.Combine(StateDirectory, Settings.Default.ModelNameActive + ".txt");
-            var backupModelName = "resnet-32-3-2-6-channelzeropad-relu";
+            var backupModelName = "resnet-3-2-6-channelzeropad-relu";
             if (!File.Exists(fileName) || File.GetCreationTime(Path.Combine(StateDirectory, backupModelName + ".txt")) != File.GetCreationTime(ApplicationPath + @"Resources\state\" + backupModelName + ".txt"))
             {
                 Directory.CreateDirectory(DefinitionsDirectory + backupModelName + @"\");
