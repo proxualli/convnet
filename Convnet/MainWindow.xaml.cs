@@ -173,7 +173,7 @@ namespace Convnet
                 else
                 {
                     // try backup model
-                    File.Copy(ApplicationPath + @"Resources\state\" + backupModelName, StateDirectory + backupModelName, true);
+                    File.Copy(ApplicationPath + @"Resources\state\" + backupModelName + ".txt", StateDirectory + backupModelName + ".txt", true);
                     fileName = Path.Combine(StateDirectory, backupModelName + ".txt");
                     Settings.Default.ModelNameActive = backupModelName;
                     Settings.Default.DefinitionActive = File.ReadAllText(fileName);
