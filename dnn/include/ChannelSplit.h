@@ -146,10 +146,14 @@ namespace dnn
 			else
 			{
 #endif
+				auto thrds = threads;
+				while (batchSize % thrds != 0)
+					thrds--;
+
 				if (training)
 				{
 					if (!plain)
-						for_i(batchSize, threads, [=](UInt n)
+						for_i(batchSize, thrds, [=](UInt n)
 						{
 							const auto vecZero = VecFloat(0); 
 							VecFloat In;						
@@ -168,7 +172,7 @@ namespace dnn
 							}
 						});
 					else
-						for_i(batchSize, threads, [=](UInt n)
+						for_i(batchSize, thrds, [=](UInt n)
 						{
 							for (auto c = 0ull; c < C; c ++)
 							{
@@ -187,7 +191,7 @@ namespace dnn
 				else
 				{
 					if (!plain)
-						for_i(batchSize, threads, [=](UInt n)
+						for_i(batchSize, thrds, [=](UInt n)
 						{
 							VecFloat In;
 							for (auto c = 0ull; c < PaddedC; c += VectorSize)
@@ -202,7 +206,7 @@ namespace dnn
 							}
 						});
 					else
-						for_i(batchSize, threads, [=](UInt n)
+						for_i(batchSize, thrds, [=](UInt n)
 						{
 							for (auto c = 0ull; c < C; c ++)
 							{
@@ -260,8 +264,12 @@ namespace dnn
 			else
 			{
 #endif
+				auto thrds = threads;
+				while (batchSize % thrds != 0)
+					thrds--;
+
 				if (!plain)
-					for_i(batchSize, threads, [=](UInt n)
+					for_i(batchSize, thrds, [=](UInt n)
 					{
 						VecFloat inputD1, D1;
 						for (auto c = 0ull; c < PaddedC; c += VectorSize)
@@ -278,7 +286,7 @@ namespace dnn
 						}
 					});
 				else
-					for_i(batchSize, threads, [=](UInt n)
+					for_i(batchSize, thrds, [=](UInt n)
 					{
 						for (auto c = 0ull; c < C; c++)
 						{

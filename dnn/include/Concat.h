@@ -119,6 +119,10 @@ namespace dnn
 				const auto threads = GetThreads(batchSize * (plain ? CDHW() : PaddedCDHW()));
 				const auto strideHW = HW() * VectorSize;
 
+				auto thrds = threads;
+				while (batchSize % thrds != 0)
+					thrds--;
+
 #ifdef DNN_STOCHASTIC
 				if (batchSize == 1)
 				{
@@ -168,7 +172,7 @@ namespace dnn
 				{
 #endif
 					if (!plain)
-						for_i(batchSize, threads, [=](UInt n)
+						for_i(batchSize, thrds, [=](UInt n)
 						{
 							const auto outputSampleOffset = n * PaddedCDHW();
 							auto channelOffset = 0ull;
@@ -193,7 +197,7 @@ namespace dnn
 							}
 						});
 					else
-						for_i(batchSize, threads, [=](UInt n)
+						for_i(batchSize, thrds, [=](UInt n)
 						{
 							const auto outputSampleOffset = n * CDHW();
 							auto channelOffset = 0ull;
@@ -238,6 +242,10 @@ namespace dnn
 
 			const auto plain = IsPlainFormat();
 			const auto threads = GetThreads(batchSize * (plain ? CDHW() : PaddedCDHW()));
+
+			auto thrds = threads;
+			while (batchSize % thrds != 0)
+				thrds--;
 
 #ifdef DNN_STOCHASTIC
 			if (batchSize == 1)
@@ -288,7 +296,7 @@ namespace dnn
 				if (!plain)
 				{
 					const auto strideH = HW() * VectorSize;
-					for_i(batchSize, threads, [=](UInt n)
+					for_i(batchSize, thrds, [=](UInt n)
 					{
 						const auto outputSampleOffset = n * PaddedCDHW();
 						auto channelOffset = 0ull;
@@ -314,7 +322,7 @@ namespace dnn
 					});
 				}
 				else
-					for_i(batchSize, threads, [=](UInt n)
+					for_i(batchSize, thrds, [=](UInt n)
 					{
 						const auto outputSampleOffset = n * CDHW();
 						auto channelOffset = 0ull;

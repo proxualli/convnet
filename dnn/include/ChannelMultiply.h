@@ -112,6 +112,10 @@ namespace dnn
 			const auto threads = GetThreads(batchSize * (plain ? CDHW() : PaddedCDHW()));
 			const auto strideHW = HW() * VectorSize;
 
+			auto thrds = threads;
+			while (batchSize % thrds != 0)
+				thrds--;
+
 #ifdef DNN_STOCHASTIC
 			if (batchSize == 1)
 			{
@@ -147,7 +151,7 @@ namespace dnn
 #endif
 				if (!plain)
 				{
-					for_i(batchSize, threads, [=](UInt n)
+					for_i(batchSize, thrds, [=](UInt n)
 					{
 						VecFloat neuronsD1;
 						for (auto c = 0ull; c < PaddedC; c += VectorSize)
@@ -165,7 +169,7 @@ namespace dnn
 				}
 				else
 				{
-					for_i(batchSize, threads, [=](UInt n)
+					for_i(batchSize, thrds, [=](UInt n)
 					{
 						for (auto c = 0ull; c < C; c++)
 						{
