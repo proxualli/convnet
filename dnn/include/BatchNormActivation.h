@@ -117,11 +117,7 @@ namespace dnn
 				{
 					const auto partialHW = GetVectorPart(HW());
 
-					auto thrds = threads;
-					while (C % thrds != 0)
-						thrds--;
-
-					for_i(C, thrds, [=](UInt c)
+					for_i(C, threads, [=](UInt c)
 					{
 						const auto invStdDev = Float(1) / std::sqrt(RunningVariance[c] + Eps);
 						const auto weightedInvStdDev = Scaling ? invStdDev * Weights[c] : invStdDev;
@@ -140,11 +136,7 @@ namespace dnn
 				}
 				else
 				{
-					auto thrds = threads;
-					while ((PaddedC / VectorSize) % thrds != 0)
-						thrds--;
-
-					for_i(PaddedC / VectorSize, thrds, [=](UInt c)
+					for_i(PaddedC / VectorSize, threads, [=](UInt c)
 					{
 						const auto channelOffset = c * VectorSize;
 						const auto mapOffset = channelOffset * HW();
@@ -178,11 +170,7 @@ namespace dnn
 				{
 					const auto partialHW = GetVectorPart(HW());
 
-					auto thrds = threads;
-					while (C % thrds != 0)
-						thrds--;
-
-					for_i(C, thrds, [=](UInt c)
+					for_i(C, threads, [=](UInt c)
 					{
 						auto vecMean = VecFloat(0);
 						auto mean = Float(0);
@@ -259,11 +247,7 @@ namespace dnn
 				}
 				else
 				{
-					auto thrds = threads;
-					while ((PaddedC / VectorSize) % thrds != 0)
-						thrds--;
-
-					for_i(PaddedC / VectorSize, thrds, [=](UInt c)
+					for_i(PaddedC / VectorSize, threads, [=](UInt c)
 					{
 						const auto channelOffset = c * VectorSize;
 						const auto mapOffset = channelOffset * HW();
@@ -353,11 +337,7 @@ namespace dnn
 			{
 				const auto partialHW = GetVectorPart(HW());
 
-				auto thrds = threads;
-				while (C % thrds != 0)
-					thrds--;
-
-				for_i(C, thrds, [=](UInt c)
+				for_i(C, threads, [=](UInt c)
 				{
 					const auto weightedInvStdDev = Scaling ? InvStdDev[c] * Weights[c] : InvStdDev[c];
 					const auto biases = Scaling && HasBias ? Biases[c] : Float(0);
@@ -481,11 +461,7 @@ namespace dnn
 			}
 			else
 			{
-				auto thrds = threads;
-				while ((PaddedC / VectorSize) % thrds != 0)
-					thrds--;
-				
-				for_i(PaddedC / VectorSize, thrds, [=](UInt c)
+				for_i(PaddedC / VectorSize, threads, [=](UInt c)
 				{
 					const auto channelOffset = c * VectorSize;
 					const auto mapOffset = channelOffset * HW();

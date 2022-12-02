@@ -116,12 +116,14 @@ namespace dnn
 				Device.stream.wait();
 #else
 				const auto plain = IsPlainFormat();
-				const auto threads = GetThreads(batchSize * (plain ? CDHW() : PaddedCDHW()));
+				//const auto threads = GetThreads(batchSize * (plain ? CDHW() : PaddedCDHW()));
+				const auto elements = batchSize * (plain ? CDHW() : PaddedCDHW());
+				const auto threads = elements < 2097152ull ? 2ull : elements < 8338608ull ? 4ull : 8ull;
 				const auto strideHW = HW() * VectorSize;
 
-				auto thrds = threads;
+				/*auto thrds = threads;
 				while (batchSize % thrds != 0)
-					thrds--;
+					thrds--;*/
 
 #ifdef DNN_STOCHASTIC
 				if (batchSize == 1)
@@ -172,7 +174,7 @@ namespace dnn
 				{
 #endif
 					if (!plain)
-						for_i(batchSize, thrds, [=](UInt n)
+						for_i(batchSize, threads, [=](UInt n)
 						{
 							const auto outputSampleOffset = n * PaddedCDHW();
 							auto channelOffset = 0ull;
@@ -197,7 +199,7 @@ namespace dnn
 							}
 						});
 					else
-						for_i(batchSize, thrds, [=](UInt n)
+						for_i(batchSize, threads, [=](UInt n)
 						{
 							const auto outputSampleOffset = n * CDHW();
 							auto channelOffset = 0ull;
@@ -241,11 +243,13 @@ namespace dnn
 #endif // DNN_LEAN
 
 			const auto plain = IsPlainFormat();
-			const auto threads = GetThreads(batchSize * (plain ? CDHW() : PaddedCDHW()));
+			//const auto threads = GetThreads(batchSize * (plain ? CDHW() : PaddedCDHW()));
+			const auto elements = batchSize * (plain ? CDHW() : PaddedCDHW());
+			const auto threads = elements < 2097152ull ? 2ull : elements < 8338608ull ? 4ull : 8ull;
 
-			auto thrds = threads;
+			/*auto thrds = threads;
 			while (batchSize % thrds != 0)
-				thrds--;
+				thrds--;*/
 
 #ifdef DNN_STOCHASTIC
 			if (batchSize == 1)
@@ -296,7 +300,7 @@ namespace dnn
 				if (!plain)
 				{
 					const auto strideH = HW() * VectorSize;
-					for_i(batchSize, thrds, [=](UInt n)
+					for_i(batchSize, threads, [=](UInt n)
 					{
 						const auto outputSampleOffset = n * PaddedCDHW();
 						auto channelOffset = 0ull;
@@ -322,7 +326,7 @@ namespace dnn
 					});
 				}
 				else
-					for_i(batchSize, thrds, [=](UInt n)
+					for_i(batchSize, threads, [=](UInt n)
 					{
 						const auto outputSampleOffset = n * CDHW();
 						auto channelOffset = 0ull;

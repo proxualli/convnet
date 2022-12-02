@@ -75,7 +75,9 @@ namespace dnn
 		void ForwardProp(const UInt batchSize, const bool training) final override
 		{
 			const auto plain = IsPlainFormat();
-			const auto threads = GetThreads(batchSize * (plain ? CDHW() : PaddedCDHW()));
+			//const auto threads = GetThreads(batchSize * (plain ? CDHW() : PaddedCDHW()));
+			const auto elements = batchSize * (plain ? CDHW() : PaddedCDHW());
+			const auto threads = elements < 2097152ull ? 2ull : elements < 8338608ull ? 4ull : 8ull;
 			const auto groupC = (Group - 1) * C;
 			const auto strideHW = HW() * VectorSize;
 			
@@ -146,14 +148,14 @@ namespace dnn
 			else
 			{
 #endif
-				auto thrds = threads;
+				/*auto thrds = threads;
 				while (batchSize % thrds != 0)
-					thrds--;
+					thrds--;*/
 
 				if (training)
 				{
 					if (!plain)
-						for_i(batchSize, thrds, [=](UInt n)
+						for_i(batchSize, threads, [=](UInt n)
 						{
 							const auto vecZero = VecFloat(0); 
 							VecFloat In;						
@@ -172,7 +174,7 @@ namespace dnn
 							}
 						});
 					else
-						for_i(batchSize, thrds, [=](UInt n)
+						for_i(batchSize, threads, [=](UInt n)
 						{
 							for (auto c = 0ull; c < C; c ++)
 							{
@@ -191,7 +193,7 @@ namespace dnn
 				else
 				{
 					if (!plain)
-						for_i(batchSize, thrds, [=](UInt n)
+						for_i(batchSize, threads, [=](UInt n)
 						{
 							VecFloat In;
 							for (auto c = 0ull; c < PaddedC; c += VectorSize)
@@ -206,7 +208,7 @@ namespace dnn
 							}
 						});
 					else
-						for_i(batchSize, thrds, [=](UInt n)
+						for_i(batchSize, threads, [=](UInt n)
 						{
 							for (auto c = 0ull; c < C; c ++)
 							{
@@ -229,7 +231,9 @@ namespace dnn
 #endif // DNN_LEAN
 
 			const auto plain = IsPlainFormat();
-			const auto threads = GetThreads(batchSize * (plain ? CDHW() : PaddedCDHW()));
+			//const auto threads = GetThreads(batchSize * (plain ? CDHW() : PaddedCDHW()));
+			const auto elements = batchSize * (plain ? CDHW() : PaddedCDHW());
+			const auto threads = elements < 2097152ull ? 2ull : elements < 8338608ull ? 4ull : 8ull;
 			const auto groupC = (Group - 1) * C;
 			const auto strideHW = HW() * VectorSize;
 
@@ -264,12 +268,12 @@ namespace dnn
 			else
 			{
 #endif
-				auto thrds = threads;
+				/*auto thrds = threads;
 				while (batchSize % thrds != 0)
-					thrds--;
+					thrds--;*/
 
 				if (!plain)
-					for_i(batchSize, thrds, [=](UInt n)
+					for_i(batchSize, threads, [=](UInt n)
 					{
 						VecFloat inputD1, D1;
 						for (auto c = 0ull; c < PaddedC; c += VectorSize)
@@ -286,7 +290,7 @@ namespace dnn
 						}
 					});
 				else
-					for_i(batchSize, thrds, [=](UInt n)
+					for_i(batchSize, threads, [=](UInt n)
 					{
 						for (auto c = 0ull; c < C; c++)
 						{
