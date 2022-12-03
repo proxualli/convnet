@@ -103,23 +103,7 @@ namespace ScriptsDialog
 
             if (Settings.Default.Parameters == null)
             {
-                Settings.Default.Parameters = new ScriptParameters(Scripts.shufflenetv2, Datasets.cifar10, 32, 32, 4, 4, false, true, Fillers.HeNormal, FillerModes.In, 1f, 0.05f, 1f, 1f, false, Fillers.Constant, FillerModes.In, 1f, 0f, 1f, 1f, 0.995f, 0.0001f, false, 0f, 0f, 3, 4, 8, 12, false, 0.0f, 0.0f, false, true, Activations.Relu, 2, 2);
-
-                var efficientnetv2 = new ObservableCollection<EfficientNetRecord>();
-                efficientnetv2.Add(new EfficientNetRecord(1, 24, 2, 1, false));
-                efficientnetv2.Add(new EfficientNetRecord(4, 48, 4, 2, false));
-                efficientnetv2.Add(new EfficientNetRecord(4, 64, 4, 2, false));
-                efficientnetv2.Add(new EfficientNetRecord(4, 128, 6, 2, true));
-                efficientnetv2.Add(new EfficientNetRecord(6, 160, 9, 1, true));
-                efficientnetv2.Add(new EfficientNetRecord(6, 256, 15, 2, true));
-                Settings.Default.Parameters.EfficientNet = efficientnetv2;
-
-                var shufflenetv2 = new ObservableCollection<ShuffleNetRecord>();
-                shufflenetv2.Add(new ShuffleNetRecord(6, 3, 1, 2, false));
-                shufflenetv2.Add(new ShuffleNetRecord(7, 3, 1, 2, true));
-                shufflenetv2.Add(new ShuffleNetRecord(8, 3, 1, 2, true));
-                Settings.Default.Parameters.ShuffleNet = shufflenetv2;
-
+                Settings.Default.Parameters = new ScriptParameters(Scripts.shufflenetv2, Datasets.cifar10, 32, 32, 4, 4, false, true, Fillers.HeNormal, FillerModes.In, 1f, 0.05f, 1f, 1f, false, Fillers.Constant, FillerModes.In, 1f, 0f, 1f, 1f, 0.995f, 0.0001f, false, 0f, 0f, 3, 4, 12, 12, false, 0.0f, 0.0f, false, true, Activations.HardSwish, 1, 1);
                 Settings.Default.Save();
             }
 

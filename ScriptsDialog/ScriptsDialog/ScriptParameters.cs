@@ -245,7 +245,7 @@ namespace ScriptsDialog
         private Float beta = 0;
         private UInt groups = 3;
         private UInt iterations = 4;
-        private UInt width = 8;
+        private UInt width = 12;
         private UInt growthRate = 12;
         private bool bottleneck = false;
         private Float dropout = 0;
@@ -261,10 +261,9 @@ namespace ScriptsDialog
             new EfficientNetRecord(6, 256, 15, 2, true)};
 
         private ObservableCollection<ShuffleNetRecord> shufflenet = new ObservableCollection<ShuffleNetRecord>{
-            new ShuffleNetRecord(5, 3, 1, 2, false),
-            new ShuffleNetRecord(6, 3, 1, 2, false),
+            new ShuffleNetRecord(7, 3, 1, 2, false),
             new ShuffleNetRecord(7, 3, 1, 2, true),
-            new ShuffleNetRecord(8, 3, 1, 2, true)};
+            new ShuffleNetRecord(7, 3, 1, 2, true)};
         private UInt strideHFirstConv = 1;
         private UInt strideWFirstConv = 1;
         private Float depthDrop = (Float)0;
@@ -274,7 +273,7 @@ namespace ScriptsDialog
         {
         }
 
-        public ScriptParameters(Scripts script = Scripts.shufflenetv2, Datasets dataset = Datasets.cifar10, UInt h = 32, UInt w = 32, UInt padH = 4, UInt padW = 4, bool mirrorPad = false, bool meanStdNorm = true, Fillers weightsFiller = Fillers.HeNormal, FillerModes weightsFillerMode = FillerModes.In, Float weightsGain = (Float)1.0, Float weightsScale = (Float)0.05, Float weightsLRM = 1, Float weightsWDM = 1, bool hasBias = false, Fillers biasesFiller = Fillers.Constant, FillerModes biasesFillerMode = FillerModes.In, Float biasesGain = (Float)1.0, Float biasesScale = 0, Float biasesLRM = 1, Float biasesWDM = 1, Float batchNormMomentum = (Float)0.995, Float batchNormEps = (Float)1E-04, bool batchNormScaling = false, Float alpha = (Float)0, Float beta = (Float)0, UInt groups = 3, UInt iterations = 4, UInt width = 8, UInt growthRate = 12, bool bottleneck = false, Float dropout = 0, Float compression = 0, bool squeezeExcitation = false, bool channelZeroPad = true, Activations activation = Activations.HardLogistic, UInt strideHFirstConv = 1, UInt strideWFirstConv = 1, Float depthDrop = (Float)0, bool fixedDepthDrop = false)
+        public ScriptParameters(Scripts script = Scripts.shufflenetv2, Datasets dataset = Datasets.cifar10, UInt h = 32, UInt w = 32, UInt padH = 4, UInt padW = 4, bool mirrorPad = false, bool meanStdNorm = true, Fillers weightsFiller = Fillers.HeNormal, FillerModes weightsFillerMode = FillerModes.In, Float weightsGain = (Float)1.0, Float weightsScale = (Float)0.05, Float weightsLRM = 1, Float weightsWDM = 1, bool hasBias = false, Fillers biasesFiller = Fillers.Constant, FillerModes biasesFillerMode = FillerModes.In, Float biasesGain = (Float)1.0, Float biasesScale = 0, Float biasesLRM = 1, Float biasesWDM = 1, Float batchNormMomentum = (Float)0.995, Float batchNormEps = (Float)1E-04, bool batchNormScaling = false, Float alpha = (Float)0, Float beta = (Float)0, UInt groups = 3, UInt iterations = 4, UInt width = 12, UInt growthRate = 12, bool bottleneck = false, Float dropout = 0, Float compression = 0, bool squeezeExcitation = false, bool channelZeroPad = true, Activations activation = Activations.HardLogistic, UInt strideHFirstConv = 1, UInt strideWFirstConv = 1, Float depthDrop = (Float)0, bool fixedDepthDrop = false)
         {
             Script = script;
             Dataset = dataset;
