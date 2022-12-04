@@ -86,9 +86,6 @@
     <ClInclude Include="include\ChannelZeroPad.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\ChannelMultiply.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\Average.h">
       <Filter>Header Files</Filter>
     </ClInclude>

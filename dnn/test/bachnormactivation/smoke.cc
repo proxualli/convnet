@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include <include/Utils.h>
+#include <Utils.h>
 
 #include <testers/batchnormactivation.h>
 

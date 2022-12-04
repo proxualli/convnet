@@ -8,7 +8,6 @@
 * BatchNorm
 * BatchNormRelu
 * BatchNormReluDropout
-* ChannelMultiply
 * ChannelShuffle
 * ChannelSplit
 * ChannelZeroPad

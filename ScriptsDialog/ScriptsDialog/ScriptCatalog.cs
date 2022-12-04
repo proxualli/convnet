@@ -257,10 +257,10 @@ namespace ScriptsDialog
                "Inputs=" + inputs + nwl + nwl;
         }
 
-        public static string ChannelMultiply(string inputs, string group = "", string prefix = "CM")
+        public static string Multiply(string inputs, string group = "", string prefix = "CM")
         {
             return "[" + group + prefix + "]" + nwl +
-               "Type=ChannelMultiply" + nwl +
+               "Type=Multiply" + nwl +
                "Inputs=" + inputs + nwl + nwl;
         }
 
@@ -345,7 +345,7 @@ namespace ScriptsDialog
                     BatchNormActivation(1, group + "C1", (activation == Activations.FRelu ? Activations.HardSwish : activation), group) +
                     Convolution(2, group + "B1", hiddenDim, 1, 1, 1, 1, 0, 0, false, group) +
                     BatchNormActivation(2, group + "C2", Activations.HardLogistic, group) +
-                    ChannelMultiply(In("B", C) + "," + group + "B2", group) +
+                    Multiply(In("B", C) + "," + group + "B2", group) +
 
                     Convolution(C + 1, group + "CM", DIV8(outputChannels), 1, 1, 1, 1, 0, 0) +
                     BatchNorm(C + 1, In("C", C + 1)));
@@ -389,7 +389,7 @@ namespace ScriptsDialog
                     BatchNormActivation(1, group + "C1", (activation == Activations.FRelu ? Activations.HardSwish : activation), group) +
                     Convolution(2, group + "B1", hiddenDim, 1, 1, 1, 1, 0, 0, false, group) +
                     BatchNormActivation(2, group + "C2", Activations.HardLogistic, group) +
-                    ChannelMultiply(In("B", C + 1) + "," + group + "B2", group) +
+                    Multiply(In("B", C + 1) + "," + group + "B2", group) +
 
                     Convolution(C + 2, group + "CM", DIV8(outputChannels), 1, 1, 1, 1, 0, 0) +
                     BatchNorm(C + 2, In("C", C + 2)));
@@ -440,7 +440,7 @@ namespace ScriptsDialog
                     BatchNormActivation(1, group + "C1", (activation == Activations.FRelu ? Activations.HardSwish : activation), group) +
                     Convolution(2, group + "B1", channels, 1, 1, 1, 1, 0, 0, false, group) +
                     BatchNormActivation(2, group + "C2", Activations.HardLogistic, group) +
-                    ChannelMultiply(In("B", C + 3) + "," + group + "B2", group) +
+                    Multiply(In("B", C + 3) + "," + group + "B2", group) +
                     Concat(A + 1, In("LCS", A) + "," + group + "CM") :
                     Concat(A + 1, In("LCS", A) + "," + In("B", C + 3));
 
@@ -678,7 +678,7 @@ namespace ScriptsDialog
                                     BatchNormActivation(1, group + "C1", (p.Activation == Activations.FRelu ? Activations.HardSwish : p.Activation), group) +
                                     Convolution(2, group + "B1", DIV8(6 * W), 1, 1, 1, 1, 0, 0, false, group) +
                                     BatchNormActivation(2, group + "C2", Activations.HardLogistic, group) +
-                                    ChannelMultiply(In("B", C + 1) + "," + group + "B2", group) +
+                                    Multiply(In("B", C + 1) + "," + group + "B2", group) +
                                     Convolution(C + 2, group + "CM", DIV8(W), 1, 1, 1, 1, 0, 0) :
                                     Convolution(C + 2, In("B", C + 1), DIV8(W), 1, 1, 1, 1, 0, 0);
 
@@ -705,7 +705,7 @@ namespace ScriptsDialog
                                     BatchNormActivation(1, group + "C1", (p.Activation == Activations.FRelu ? Activations.HardSwish : p.Activation), group) +
                                     Convolution(2, group + "B1", DIV8(6 * W), 1, 1, 1, 1, 0, 0, false, group) +
                                     BatchNormActivation(2, group + "C2", Activations.HardLogistic, group) +
-                                    ChannelMultiply(In("B", C + 1) + "," + group + "B2", group) +
+                                    Multiply(In("B", C + 1) + "," + group + "B2", group) +
                                     Convolution(C + 2, group + "CM", DIV8(W), 1, 1, 1, 1, 0, 0) :
                                     Convolution(C + 2, In("B", C + 1), DIV8(W), 1, 1, 1, 1, 0, 0);
 
