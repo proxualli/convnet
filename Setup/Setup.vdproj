@@ -16,12 +16,6 @@
         "Entry"
         {
         "MsmKey" = "8:_02CF31A399422DE09D6630DDF8AA3F7C"
-        "OwnerKey" = "8:_82317365C6004F649D77A08876914C2E"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_02CF31A399422DE09D6630DDF8AA3F7C"
         "OwnerKey" = "8:_D4AE904DEC6C4C048C8234BF6A10B009"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -40,19 +34,7 @@
         "Entry"
         {
         "MsmKey" = "8:_1305B278C1BBEA622D2F7EEC5B60B213"
-        "OwnerKey" = "8:_82317365C6004F649D77A08876914C2E"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_1305B278C1BBEA622D2F7EEC5B60B213"
         "OwnerKey" = "8:_D4AE904DEC6C4C048C8234BF6A10B009"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_1FA509FA35FD9F3809AF6F71DD78F415"
-        "OwnerKey" = "8:_82317365C6004F649D77A08876914C2E"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -118,12 +100,6 @@
         "Entry"
         {
         "MsmKey" = "8:_6081D3AD96EA5514259A84612E2C9E63"
-        "OwnerKey" = "8:_82317365C6004F649D77A08876914C2E"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_6081D3AD96EA5514259A84612E2C9E63"
         "OwnerKey" = "8:_D4AE904DEC6C4C048C8234BF6A10B009"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -137,12 +113,6 @@
         {
         "MsmKey" = "8:_62A85C6C69404C0B86ECCB328F384CBD"
         "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_62D651BD5C6729DF9507D158E7F67D9A"
-        "OwnerKey" = "8:_82317365C6004F649D77A08876914C2E"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -172,12 +142,6 @@
         "Entry"
         {
         "MsmKey" = "8:_7CDAFA471C86EB3AA8E1CB9598190E1C"
-        "OwnerKey" = "8:_82317365C6004F649D77A08876914C2E"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_7CDAFA471C86EB3AA8E1CB9598190E1C"
         "OwnerKey" = "8:_D4AE904DEC6C4C048C8234BF6A10B009"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -190,12 +154,6 @@
         "Entry"
         {
         "MsmKey" = "8:_81B02BC548704B4DAF8064390362A3F9"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_82317365C6004F649D77A08876914C2E"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -262,12 +220,6 @@
         "Entry"
         {
         "MsmKey" = "8:_C99515BC9BDF26C25311744790C48211"
-        "OwnerKey" = "8:_82317365C6004F649D77A08876914C2E"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_C99515BC9BDF26C25311744790C48211"
         "OwnerKey" = "8:_D4AE904DEC6C4C048C8234BF6A10B009"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -281,12 +233,6 @@
         {
         "MsmKey" = "8:_CF70B6098765464FA7337C2BD4F643E6"
         "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_CF8D8C190BF1B2BB1AC379293F821A1B"
-        "OwnerKey" = "8:_82317365C6004F649D77A08876914C2E"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -352,19 +298,7 @@
         "Entry"
         {
         "MsmKey" = "8:_FFB3B5C9095E5E2D33B9ED036A9064D4"
-        "OwnerKey" = "8:_82317365C6004F649D77A08876914C2E"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_FFB3B5C9095E5E2D33B9ED036A9064D4"
         "OwnerKey" = "8:_D4AE904DEC6C4C048C8234BF6A10B009"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_FFEA73DB972A1AAAADF7BBE4D90D12F5"
-        "OwnerKey" = "8:_82317365C6004F649D77A08876914C2E"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -480,7 +414,7 @@
                 {
                 "Name" = "8:.NET Core"
                 "Message" = "8:[VSDNETCOREMSG]"
-                "FrameworkVersion" = "8:3.1                            "
+                "FrameworkVersion" = "8:3.1                             "
                 "AllowLaterVersions" = "11:FALSE"
                 "InstallUrl" = "8:https://dotnet.microsoft.com/download/dotnet-core/[NetCoreVerMajorDotMinor]"
                 "IsNETCore" = "11:TRUE"
@@ -1607,7 +1541,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Convnet"
         "ProductCode" = "8:{D4B4AC62-642E-467C-85CB-CD72DA196999}"
-        "PackageCode" = "8:{2A695E3F-9028-4D96-81B3-BC74D18145C6}"
+        "PackageCode" = "8:{E651D30B-49C6-43B2-A856-0DF20154BE92}"
         "UpgradeCode" = "8:{6AC0B11F-6D71-4203-ACC9-2E07A968F844}"
         "AspNetVersion" = "8:"
         "RestartWWWService" = "11:FALSE"
@@ -2154,34 +2088,6 @@
         }
         "ProjectOutput"
         {
-            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_82317365C6004F649D77A08876914C2E"
-            {
-            "SourcePath" = "8:..\\x64\\Release\\dnnl.dll"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_6AC6560B9ACC4F54A4DE534A0DB0B67E"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            "ProjectOutputGroupRegister" = "3:1"
-            "OutputConfiguration" = "8:"
-            "OutputGroupCanonicalName" = "8:Built"
-            "OutputProjectGuid" = "8:{2F09A747-18CB-3043-85BF-83BBA99C5137}"
-            "ShowKeyOutput" = "11:TRUE"
-                "ExcludeFilters"
-                {
-                }
-            }
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_A8084872AE5046948D4BE9C5379C2BE1"
             {
             "SourcePath" = "8:..\\Convnet\\obj\\x64\\Release\\netcoreapp3.1\\apphost.exe"
