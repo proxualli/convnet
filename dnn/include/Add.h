@@ -115,7 +115,7 @@ namespace dnn
 
 				if (plain)
 				{
-					if (EqualDimensions(Inputs))
+					if (EqualDimensions(InputsOriginal))
 					{
 						if (fullDepth)
 						{
@@ -330,7 +330,7 @@ namespace dnn
 #endif
 				const auto threads = GetThreads(batchSize * size, Float(0.25));
 
-				if (EqualDimensions(Inputs))
+				if (EqualDimensions(InputsOriginal))
 				{
 					if (plain)
 					{

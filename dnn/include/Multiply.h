@@ -126,7 +126,7 @@ namespace dnn
 			const auto elements = batchSize * (plain ? CDHW() : PaddedCDHW());
 			const auto threads = GetThreads(elements, Float(0.2));
 			
-			if (EqualDimensions(Inputs))
+			if (EqualDimensions(InputsOriginal))
 			{
 #ifdef DNN_STOCHASTIC
 				if (batchSize == 1)
@@ -212,7 +212,7 @@ namespace dnn
 							for (auto hw = 0ull; hw < HW(); hw++)
 							{
 								Inputs[first]->NeuronsD1[hw + outputOffset] += NeuronsD1[hw + outputOffset] * InputsOriginal[second]->Neurons[c];
-								Inputs[second]->NeuronsD1[c] += NeuronsD1[hw + outputOffset] * Inputs[first]->InputsOriginal[hw + outputOffset];
+								Inputs[second]->NeuronsD1[c] += NeuronsD1[hw + outputOffset] * InputsOriginal[first]->Neurons[hw + outputOffset];
 							}
 						}
 					}
