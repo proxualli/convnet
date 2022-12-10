@@ -366,30 +366,30 @@
             "ComponentsUrl" = "8:"
                 "Items"
                 {
-                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.8"
-                    {
-                    "Name" = "8:Microsoft .NET Framework 4.8 (x86 and x64)"
-                    "ProductCode" = "8:.NETFramework,Version=v4.8"
-                    }
                     "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:Microsoft.NetCore.CoreRuntime.3.1.x64"
                     {
-                    "Name" = "8:.NET Core Runtime 3.1.23 (x64)"
+                    "Name" = "8:.NET Core Runtime 3.1.31 (x64)"
                     "ProductCode" = "8:Microsoft.NetCore.CoreRuntime.3.1.x64"
                     }
                     "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:Microsoft.NetCore.CoreRuntime.5.0.x64"
                     {
-                    "Name" = "8:.NET Runtime 5.0.15 (x64)"
+                    "Name" = "8:.NET Runtime 5.0.17 (x64)"
                     "ProductCode" = "8:Microsoft.NetCore.CoreRuntime.5.0.x64"
                     }
                     "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:Microsoft.NetCore.DesktopRuntime.3.1.x64"
                     {
-                    "Name" = "8:.NET Desktop Runtime 3.1.23 (x64)"
+                    "Name" = "8:.NET Desktop Runtime 3.1.31 (x64)"
                     "ProductCode" = "8:Microsoft.NetCore.DesktopRuntime.3.1.x64"
                     }
                     "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:Microsoft.NetCore.DesktopRuntime.5.0.x64"
                     {
-                    "Name" = "8:.NET Desktop Runtime 5.0.15 (x64)"
+                    "Name" = "8:.NET Desktop Runtime 5.0.17 (x64)"
                     "ProductCode" = "8:Microsoft.NetCore.DesktopRuntime.5.0.x64"
+                    }
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:Microsoft.Visual.C++.14.0.x64"
+                    {
+                    "Name" = "8:Visual C++ \"14\" Runtime Libraries (x64)"
+                    "ProductCode" = "8:Microsoft.Visual.C++.14.0.x64"
                     }
                 }
             }
@@ -414,7 +414,7 @@
                 {
                 "Name" = "8:.NET Core"
                 "Message" = "8:[VSDNETCOREMSG]"
-                "FrameworkVersion" = "8:3.1                             "
+                "FrameworkVersion" = "8:3.1                              "
                 "AllowLaterVersions" = "11:FALSE"
                 "InstallUrl" = "8:https://dotnet.microsoft.com/download/dotnet-core/[NetCoreVerMajorDotMinor]"
                 "IsNETCore" = "11:TRUE"
@@ -1541,7 +1541,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Convnet"
         "ProductCode" = "8:{D4B4AC62-642E-467C-85CB-CD72DA196999}"
-        "PackageCode" = "8:{E651D30B-49C6-43B2-A856-0DF20154BE92}"
+        "PackageCode" = "8:{2E78C5C3-A10B-4607-8E87-510C691C6113}"
         "UpgradeCode" = "8:{6AC0B11F-6D71-4203-ACC9-2E07A968F844}"
         "AspNetVersion" = "8:"
         "RestartWWWService" = "11:FALSE"
