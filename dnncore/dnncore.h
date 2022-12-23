@@ -2036,6 +2036,7 @@ namespace dnncore
 		virtual ~DNNModel();
 			
 		bool LoadDataset();
+		bool SetShuffleCount(UInt count);
 		cli::array<String^>^ GetTextLabels(String^ fileName);
 		void OnElapsed(Object^ sender, System::Timers::ElapsedEventArgs^ e);
 		void SetPersistOptimizer(bool persist);

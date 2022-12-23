@@ -166,7 +166,22 @@ namespace Convnet.Properties
                 this["GotoEpoch"] = value;
             }
         }
-        
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("64")]
+        public double ShuffleSetter
+        {
+            get
+            {
+                return ((double)(this["ShuffleSetter"]));
+            }
+            set
+            {
+                this["ShuffleSetter"] = value;
+            }
+        }
+
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("Normal")]

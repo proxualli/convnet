@@ -1573,7 +1573,7 @@ namespace dnn
 					{
 						State.store(States::Training);
 
-						const auto shuffleCount = UniformInt<UInt>(16, 32);
+						const auto shuffleCount = UniformInt<UInt>(DataProv->ShuffleCount / 2ull, DataProv->ShuffleCount);
 						for (auto shuffle = 0ull; shuffle < shuffleCount; shuffle++)
 							std::shuffle(std::begin(RandomTrainingSamples), std::end(RandomTrainingSamples), std::mt19937(Seed<unsigned>()));
 

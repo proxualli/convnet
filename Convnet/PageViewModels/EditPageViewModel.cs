@@ -5,6 +5,7 @@ using ICSharpCode.AvalonEdit.Document;
 using Microsoft.Build.Evaluation;
 using Microsoft.Build.Execution;
 using Microsoft.Build.Framework;
+using OxyPlot;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -384,7 +385,8 @@ namespace Convnet.PageViewModels
                             Model.SetPersistOptimizer(Settings.Default.PersistOptimizer);
                             Model.SetUseTrainingStrategy(Settings.Default.UseTrainingStrategy);
                             Model.SetDisableLocking(Settings.Default.DisableLocking);
-                            
+                            Model.SetShuffleCount((ulong)Math.Round(Settings.Default.ShuffleSetter));
+
                             if (keepWeights == MessageBoxResult.Yes)
                                 Model.LoadWeights(pathWeights, Settings.Default.PersistOptimizer);
 
@@ -449,6 +451,7 @@ namespace Convnet.PageViewModels
                                 Model.SetOptimizer(Settings.Default.Optimizer);
                                 Model.SetPersistOptimizer(Settings.Default.PersistOptimizer);
                                 Model.SetDisableLocking(Settings.Default.DisableLocking);
+                                Model.SetShuffleCount((ulong)Math.Round(Settings.Default.ShuffleSetter));
                                 Settings.Default.Save();
                                 Model.BlockSize = (UInt64)Settings.Default.PixelSize;
 

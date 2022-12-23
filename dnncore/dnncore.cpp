@@ -46,6 +46,7 @@ DNN_API bool DNNCheck(std::string& definition, dnn::CheckMsg& checkMsg);
 DNN_API int DNNLoad(const std::string& fileName,dnn::CheckMsg& checkMsg);
 DNN_API int DNNRead(const std::string& definition, dnn::CheckMsg& checkMsg);
 DNN_API void DNNDataprovider(const std::string& directory);
+DNN_API bool DNNSetShuffleCount(const UInt count);
 DNN_API void DNNDataproviderDispose();
 DNN_API int DNNLoadWeights(const std::string& fileName, const bool persistOptimizer);
 DNN_API int DNNSaveWeights(const std::string& fileName, const bool persistOptimizer);
@@ -138,6 +139,11 @@ namespace dnncore
 	bool DNNModel::LoadDataset()
 	{
 		return DNNLoadDataset();
+	}
+
+	bool DNNModel::SetShuffleCount(UInt count)
+	{
+		return DNNSetShuffleCount(count);
 	}
 
 	bool DNNModel::BatchNormalizationUsed()

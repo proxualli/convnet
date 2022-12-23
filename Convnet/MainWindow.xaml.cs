@@ -125,6 +125,7 @@ namespace Convnet
                         model.SetPersistOptimizer(Settings.Default.PersistOptimizer);
                         model.SetUseTrainingStrategy(Settings.Default.UseTrainingStrategy);
                         model.SetDisableLocking(Settings.Default.DisableLocking);
+                        model.SetShuffleCount((ulong)Math.Round(Settings.Default.ShuffleSetter));
 
                         var dataset = PageVM.Model.Dataset.ToString().ToLower();
                         var optimizer = PageVM.Model.Optimizer.ToString().ToLower();
@@ -208,6 +209,7 @@ namespace Convnet
                         model.SetPersistOptimizer(Settings.Default.PersistOptimizer);
                         model.SetUseTrainingStrategy(Settings.Default.UseTrainingStrategy);
                         model.SetDisableLocking(Settings.Default.DisableLocking);
+                        model.SetShuffleCount((ulong)Math.Round(Settings.Default.ShuffleSetter));
 
                         var dataset = PageVM.Model.Dataset.ToString().ToLower();
                         var optimizer = PageVM.Model.Optimizer.ToString().ToLower();
@@ -928,11 +930,22 @@ namespace Convnet
                 e.CanExecute = PageVM.Model.TaskState == DNNTaskStates.Stopped;
         }
 
+        private void ShuffleSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            if (PageVM != null && PageVM.Model != null)
+            {
+                var temp = (ulong)Math.Round(Settings.Default.ShuffleSetter);
+                if (PageVM.Model.SetShuffleCount(temp))
+                    Settings.Default.Save();
+            }
+        }
+
         private void PrioritySlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             if (PageVM != null && PageVM.Model != null)
             {
                 var temp = (int)Math.Round(Settings.Default.PrioritySetter);
+
                 switch (temp)
                 {
                     case 1:

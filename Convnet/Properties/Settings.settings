@@ -1219,5 +1219,8 @@ namespace ScriptsDialog
     <Setting Name="Dataset" Type="System.String" Scope="User">
       <Value Profile="(Default)">cifar10</Value>
     </Setting>
+    <Setting Name="ShuffleSetter" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">96</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
