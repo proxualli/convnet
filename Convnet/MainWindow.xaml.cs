@@ -125,7 +125,7 @@ namespace Convnet
                         model.SetPersistOptimizer(Settings.Default.PersistOptimizer);
                         model.SetUseTrainingStrategy(Settings.Default.UseTrainingStrategy);
                         model.SetDisableLocking(Settings.Default.DisableLocking);
-                        model.SetShuffleCount((ulong)Math.Round(Settings.Default.ShuffleSetter));
+                        model.SetShuffleCount((ulong)Math.Round(Settings.Default.Shuffle));
 
                         var dataset = PageVM.Model.Dataset.ToString().ToLower();
                         var optimizer = PageVM.Model.Optimizer.ToString().ToLower();
@@ -209,7 +209,7 @@ namespace Convnet
                         model.SetPersistOptimizer(Settings.Default.PersistOptimizer);
                         model.SetUseTrainingStrategy(Settings.Default.UseTrainingStrategy);
                         model.SetDisableLocking(Settings.Default.DisableLocking);
-                        model.SetShuffleCount((ulong)Math.Round(Settings.Default.ShuffleSetter));
+                        model.SetShuffleCount((ulong)Math.Round(Settings.Default.Shuffle));
 
                         var dataset = PageVM.Model.Dataset.ToString().ToLower();
                         var optimizer = PageVM.Model.Optimizer.ToString().ToLower();
@@ -934,7 +934,7 @@ namespace Convnet
         {
             if (PageVM != null && PageVM.Model != null)
             {
-                var temp = (ulong)Math.Round(Settings.Default.ShuffleSetter);
+                var temp = (ulong)Math.Round(Settings.Default.Shuffle);
                 if (PageVM.Model.SetShuffleCount(temp))
                     Settings.Default.Save();
             }

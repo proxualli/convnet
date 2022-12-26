@@ -170,15 +170,15 @@ namespace Convnet.Properties
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("64")]
-        public double ShuffleSetter
+        public double Shuffle
         {
             get
             {
-                return ((double)(this["ShuffleSetter"]));
+                return ((double)(this["Shuffle"]));
             }
             set
             {
-                this["ShuffleSetter"] = value;
+                this["Shuffle"] = value;
             }
         }
 

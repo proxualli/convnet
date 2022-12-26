@@ -385,7 +385,7 @@ namespace Convnet.PageViewModels
                             Model.SetPersistOptimizer(Settings.Default.PersistOptimizer);
                             Model.SetUseTrainingStrategy(Settings.Default.UseTrainingStrategy);
                             Model.SetDisableLocking(Settings.Default.DisableLocking);
-                            Model.SetShuffleCount((ulong)Math.Round(Settings.Default.ShuffleSetter));
+                            Model.SetShuffleCount((ulong)Math.Round(Settings.Default.Shuffle));
 
                             if (keepWeights == MessageBoxResult.Yes)
                                 Model.LoadWeights(pathWeights, Settings.Default.PersistOptimizer);
@@ -451,7 +451,7 @@ namespace Convnet.PageViewModels
                                 Model.SetOptimizer(Settings.Default.Optimizer);
                                 Model.SetPersistOptimizer(Settings.Default.PersistOptimizer);
                                 Model.SetDisableLocking(Settings.Default.DisableLocking);
-                                Model.SetShuffleCount((ulong)Math.Round(Settings.Default.ShuffleSetter));
+                                Model.SetShuffleCount((ulong)Math.Round(Settings.Default.Shuffle));
                                 Settings.Default.Save();
                                 Model.BlockSize = (UInt64)Settings.Default.PixelSize;
 

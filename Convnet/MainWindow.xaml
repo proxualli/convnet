@@ -113,7 +113,7 @@
                     <MenuItem Header="Unlock All" Command="{x:Static main:MainWindow.UnlockAllCmd}"/>
                 </MenuItem>
                 <MenuItem Header="_Shuffle Dataset">
-                    <c:FormattedSlider x:Name="ShuffleSlider" Value="{Binding Default.ShuffleSetter, Mode=TwoWay, Source={StaticResource Settings}, UpdateSourceTrigger=PropertyChanged}" Minimum="8" Maximum="128" LargeChange="8" SmallChange="8" Width="80" ValueChanged="ShuffleSlider_ValueChanged" IsSnapToTickEnabled="True" AutoToolTipPlacement="TopLeft" Interval="10" ToolTipService.IsEnabled="True"/>
+                    <c:FormattedSlider x:Name="ShuffleSlider" Value="{Binding Default.Shuffle, Mode=TwoWay, Source={StaticResource Settings}, UpdateSourceTrigger=PropertyChanged}" Minimum="8" Maximum="128" LargeChange="8" SmallChange="8" Interval="8" Width="80" ValueChanged="ShuffleSlider_ValueChanged" IsSnapToTickEnabled="True" AutoToolTipPlacement="TopLeft" ToolTipService.IsEnabled="True"/>
                 </MenuItem>
                 <MenuItem x:Name="PersistOptimizer" Header="Persist _Optimizer" IsCheckable="True" IsChecked="{Binding Default.PersistOptimizer, Mode=TwoWay, Source={StaticResource Settings}, UpdateSourceTrigger=PropertyChanged}" Command="{x:Static main:MainWindow.PersistOptimizerCmd}"/>
                 <MenuItem Header="_Priority">
