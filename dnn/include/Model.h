@@ -1987,9 +1987,9 @@ namespace dnn
 				if (State.load() == States::Training && idx + SampleIndex < DataProv->TrainingSamplesCount)
 				{
 					*label = DataProv->TrainingLabels[RandomTrainingSamples[idx + SampleIndex]];
-
-					for (auto i = idx * Layers[0]->CDHW(); i < (idx + 1ull) * Layers[0]->CDHW(); i++)
-						(*snapshot)[i - (idx * Layers[0]->CDHW())] = Layers[0]->Neurons[i];
+					const auto offset = idx * Layers[0]->CDHW();
+					for (auto i = offset; i < offset + Layers[0]->CDHW(); i++)
+						(*snapshot)[i - offset] = Layers[0]->Neurons[i];
 
 					return true;
 				}
