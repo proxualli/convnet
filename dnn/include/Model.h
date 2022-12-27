@@ -1988,8 +1988,8 @@ namespace dnn
 				{
 					*label = DataProv->TrainingLabels[RandomTrainingSamples[idx + SampleIndex]];
 					const auto offset = idx * Layers[0]->CDHW();
-					for (auto i = offset; i < offset + Layers[0]->CDHW(); i++)
-						(*snapshot)[i - offset] = Layers[0]->Neurons[i];
+					for (auto i = 0ull; i < Layers[0]->CDHW(); i++)
+						(*snapshot)[i] = Layers[0]->Neurons[i + offset];
 
 					return true;
 				}
