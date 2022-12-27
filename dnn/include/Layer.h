@@ -557,10 +557,7 @@ namespace dnn
 			if (!RefreshingStats.load())
 			{
 				RefreshingStats.store(true);
-
-				
-				auto correctionMean = Float(0);
-				auto correctionVariance = Float(0);
+								
 				
 				if (!Neurons.empty())
 				{
@@ -571,12 +568,12 @@ namespace dnn
 					
 					if (elements % VectorSize == 0ull)
 					{
-						const auto maxThreads = GetThreads(batchSize * elements, Float(10));
+						const auto maxThreads = GetThreads(batchSize * elements, Float(4));
 						const auto threads = std::min<UInt>(maxThreads, batchSize);
 
-						auto mean = Float(0);
-						auto variance = Float(0);
-
+						auto vMean = FloatVector(batchSize, Float(0));
+						auto vVariance = FloatVector(batchSize, Float(0));
+	
 						for_i(batchSize, threads, [&](UInt n)
 						{ 
 							auto vecMean = VecFloat(0);
@@ -585,23 +582,29 @@ namespace dnn
 							auto vecCorrectionVariance = VecFloat(0);
 
 							VecFloat neurons;
-
-							const auto offset = n * batchSize;
 							for (auto i = 0ull; i < elements; i += VectorSize)
 							{
-								neurons.load_a(&Neurons[i + offset]);
+								neurons.load_a(&Neurons[i + n * batchSize]);
 								NeuronsStats.Min = std::min(NeuronsStats.Min, horizontal_min(neurons));
 								NeuronsStats.Max = std::max(NeuronsStats.Max, horizontal_max(neurons));
 								KahanSum<VecFloat>(neurons, vecMean, vecCorrectionMean);
 								KahanSum<VecFloat>(square(neurons), vecVariance, vecCorrectionVariance);
 							}			
 
-							mean += horizontal_add(vecMean) / elements;
-							variance += horizontal_add(vecVariance) / elements;
+							vMean[n] = horizontal_add(vecMean) / elements;
+							vVariance[n] = horizontal_add(vecVariance) / elements;
 						});
+
+						auto mean = Float(0);
+						auto variance = Float(0);
+						for (auto n = 0ull; n < batchSize; n++)
+						{
+							mean += vMean[n];
+							variance += vVariance[n];
+						}
 						mean /= batchSize;
 						variance /= batchSize;
-
+						variance -= Square<Float>(mean);
 
 						if ((NeuronsStats.Min < -NEURONS_LIMIT) || (NeuronsStats.Max > NEURONS_LIMIT))
 							goto FAIL;
@@ -609,7 +612,7 @@ namespace dnn
 						if (!std::isnan(mean) && !std::isinf(mean) && !std::isnan(variance) && !std::isinf(variance))
 						{
 							NeuronsStats.Mean = mean;
-							NeuronsStats.StdDev = std::sqrt(std::max(0.f, variance - Square<Float>(mean)));
+							NeuronsStats.StdDev = std::sqrt(std::max(Float(0), variance));
 						}
 						else
 							goto FAIL;
@@ -618,6 +621,8 @@ namespace dnn
 					{
 						auto mean = Float(0);
 						auto variance = Float(0);
+						auto correctionMean = Float(0);
+						auto correctionVariance = Float(0);
 
 						for (auto i = 0ull; i < ncdhw; i++)
 						{
