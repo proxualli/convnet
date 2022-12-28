@@ -204,7 +204,6 @@ int main(int argc, char* argv[])
     const auto persistOptimizer = true;
        
     dnn::TrainingRate rate;
-
     rate.Optimizer = dnn::Optimizers::NAG;
     rate.Momentum = 0.9f;
     rate.Beta2 = 0.999f;
