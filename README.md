@@ -35,6 +35,7 @@
 
 ### Activations
 * Abs
+* ASinh
 * BoundedRelu
 * Clip
 * ClipV2
@@ -52,7 +53,9 @@
 * Pow
 * Relu
 * Round
+* SoftPlus
 * SoftRelu
+* SoftSign
 * Sqrt
 * Square
 * Swish
