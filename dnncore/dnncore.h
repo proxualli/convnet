@@ -141,29 +141,30 @@ namespace dnn
 	enum class Activations
 	{
 		Abs = 0,
-		BoundedRelu = 1,
-		Clip = 2,
-		ClipV2 = 3,			//
-		Elu = 4,			//
-		Exp = 5,			//
-		Gelu = 6,
-		GeluErf = 7,
-		HardLogistic = 8,
-		HardSwish = 9,
-		Linear = 10,
-		Log = 11,
-		Logistic = 12,		//
-		LogLogistic = 13,
-		Mish = 14,
-		Pow = 15,
-		Relu = 16,			//
-		Round = 17,
-		SoftRelu = 18,
-		Sqrt = 19,			//
-		Square = 20,
-		Swish = 21,
-		Tanh = 22,			//
-		TanhExp = 23
+		ASinh = 1,
+		BoundedRelu = 2,
+		Clip = 3,
+		ClipV2 = 4,			//
+		Elu = 5,			//
+		Exp = 6,			//
+		Gelu = 7,
+		GeluErf = 8,
+		HardLogistic = 9,
+		HardSwish = 10,
+		Linear = 11,
+		Log = 12,
+		Logistic = 13,		//
+		LogLogistic = 14,
+		Mish = 15,
+		Pow = 16,
+		Relu = 17,			//
+		Round = 18,
+		SoftRelu = 19,
+		Sqrt = 20,			//
+		Square = 21,
+		Swish = 22,
+		Tanh = 23,			//
+		TanhExp = 24
 	};
 
 	enum class Algorithms
@@ -745,29 +746,30 @@ namespace dnncore
 	public enum class DNNActivations
 	{
 		Abs = 0,
-		BoundedRelu = 1,
-		Clip = 2,
-		ClipV2 = 3,			//
-		Elu = 4,			//
-		Exp = 5,			//
-		Gelu = 6,
-		GeluErf = 7,
-		HardLogistic = 8,
-		HardSwish = 9,
-		Linear = 10,
-		Log = 11,
-		Logistic = 12,		//
-		LogLogistic = 13,
-		Mish = 14,
-		Pow = 15,
-		Relu = 16,			//
-		Round = 17,
-		SoftRelu = 18,
-		Sqrt = 19,			//
-		Square = 20,
-		Swish = 21,
-		Tanh = 22,			//
-		TanhExp = 23
+		ASinh = 1,
+		BoundedRelu = 2,
+		Clip = 3,
+		ClipV2 = 4,			//
+		Elu = 5,			//
+		Exp = 6,			//
+		Gelu = 7,
+		GeluErf = 8,
+		HardLogistic = 9,
+		HardSwish = 10,
+		Linear = 11,
+		Log = 12,
+		Logistic = 13,		//
+		LogLogistic = 14,
+		Mish = 15,
+		Pow = 16,
+		Relu = 17,			//
+		Round = 18,
+		SoftRelu = 19,
+		Sqrt = 20,			//
+		Square = 21,
+		Swish = 22,
+		Tanh = 23,			//
+		TanhExp = 24
 	};
 
 	[Serializable()]
