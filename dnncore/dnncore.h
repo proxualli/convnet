@@ -159,12 +159,14 @@ namespace dnn
 		Pow = 16,
 		Relu = 17,			//
 		Round = 18,
-		SoftRelu = 19,
-		Sqrt = 20,			//
-		Square = 21,
-		Swish = 22,
-		Tanh = 23,			//
-		TanhExp = 24
+		SoftPlus = 19,
+		SoftRelu = 20,
+		SoftSign = 21,
+		Sqrt = 22,			//
+		Square = 23,
+		Swish = 24,
+		Tanh = 25,			//
+		TanhExp = 26
 	};
 
 	enum class Algorithms
@@ -764,12 +766,14 @@ namespace dnncore
 		Pow = 16,
 		Relu = 17,			//
 		Round = 18,
-		SoftRelu = 19,
-		Sqrt = 20,			//
-		Square = 21,
-		Swish = 22,
-		Tanh = 23,			//
-		TanhExp = 24
+		SoftPlus = 19,
+		SoftRelu = 20,
+		SoftSign = 21,
+		Sqrt = 22,			//
+		Square = 23,
+		Swish = 24,
+		Tanh = 25,			//
+		TanhExp = 26
 	};
 
 	[Serializable()]
