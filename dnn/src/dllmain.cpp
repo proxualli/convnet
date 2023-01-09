@@ -531,7 +531,9 @@ extern "C" DNN_API void DNNGetLayerInfo(const UInt layerIndex, LayerInfo* info)
 		{
 			auto bn = dynamic_cast<BatchNorm*>(model->Layers[layerIndex].get());
 			if (bn)
+			{
 				info->Scaling = bn->Scaling;
+			}
 		}
 		break;
 
