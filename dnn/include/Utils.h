@@ -100,7 +100,7 @@ using namespace dnn;
 namespace
 {
 	constexpr auto UseInplace = false;
-	constexpr auto Reference = false;
+	constexpr auto Reference = true;
 
 	typedef float Float;
 	typedef std::size_t UInt;
