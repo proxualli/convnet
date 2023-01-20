@@ -76,8 +76,12 @@ namespace dnn
 				DstMemDesc = std::make_unique<dnnl::memory::desc>(dnnl::memory::desc(dnnl::memory::dims({ dnnl::memory::dim(batchSize), dnnl::memory::dim(C), dnnl::memory::dim(H), dnnl::memory::dim(W) }), dnnl::memory::data_type::f32, ChosenFormat));
 				DiffDstMemDesc = std::make_unique<dnnl::memory::desc>(dnnl::memory::desc(dnnl::memory::dims({ dnnl::memory::dim(batchSize), dnnl::memory::dim(C), dnnl::memory::dim(H), dnnl::memory::dim(W) }), dnnl::memory::data_type::f32, ChosenFormat));
 			}
+			
+			dnnl::primitive_attr attr;
+			attr.set_scales_mask(DNNL_ARG_SRC_0, 0);
+			attr.set_scales_mask(DNNL_ARG_SRC_1, 0);
 
-			fwdDesc = std::make_unique<dnnl::binary::primitive_desc>(dnnl::binary::primitive_desc(Device.engine, dnnl::algorithm::binary_add, *Inputs[first]->DstMemDesc, *Inputs[second]->DstMemDesc, *DstMemDesc));
+			fwdDesc = std::make_unique<dnnl::binary::primitive_desc>(dnnl::binary::primitive_desc(Device.engine, dnnl::algorithm::binary_add, *Inputs[first]->DstMemDesc, *Inputs[second]->DstMemDesc, *DstMemDesc, attr));
 
 			DstMemDesc = std::make_unique<dnnl::memory::desc>(fwdDesc->dst_desc());
 			DiffDstMemDesc = std::make_unique<dnnl::memory::desc>(fwdDesc->dst_desc());
@@ -93,7 +97,7 @@ namespace dnn
 
 		void ForwardProp(const UInt batchSize, const bool training) final override
 		{
-			const auto fullDepth = SurvivalProbability[0] == Float(1) && SurvivalProbability[1] == Float(1);
+			const auto fullDepth = true; // SurvivalProbability[0] == Float(1) && SurvivalProbability[1] == Float(1);
 			scales[0] = fullDepth ? Float(1) : (Inputs[0]->Skip ? Float(0) : Float(1));
 			scales[1] = fullDepth ? Float(1) : (Inputs[1]->Skip ? Float(0) : Float(1));
 
@@ -307,7 +311,7 @@ namespace dnn
 			const auto size = plain ? CDHW() : PaddedCDHW();
 			const auto part = GetVectorPart(size);
 
-			const auto fullDepth = SurvivalProbability[0] == Float(1) && SurvivalProbability[1] == Float(1);
+			const auto fullDepth = true; // SurvivalProbability[0] == Float(1) && SurvivalProbability[1] == Float(1);
 			scales[0] = fullDepth ? Float(1) : (Inputs[0]->Skip ? Float(0) : Float(1));
 			scales[1] = fullDepth ? Float(1) : (Inputs[1]->Skip ? Float(0) : Float(1));
 
