@@ -792,9 +792,9 @@ extern "C" DNN_API void DNNGetLayerInfo(const UInt layerIndex, LayerInfo* info)
 		}
 		break;
 
-		case LayerTypes::ChannelShuffle:
+		case LayerTypes::Shuffle:
 		{
-			auto channel = dynamic_cast<ChannelShuffle*>(model->Layers[layerIndex].get());
+			auto channel = dynamic_cast<Shuffle*>(model->Layers[layerIndex].get());
 			if (channel)
 				info->Groups = channel->Groups;
 		}

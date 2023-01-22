@@ -8,7 +8,6 @@
 * BatchNorm
 * BatchNormRelu
 * BatchNormReluDropout
-* ChannelShuffle
 * ChannelSplit
 * ChannelZeroPad
 * Concat
@@ -30,6 +29,7 @@
 * Multiply
 * PRelu
 * Resampling
+* Shuffle
 * Softmax
 * Substract
 

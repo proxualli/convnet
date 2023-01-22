@@ -3,7 +3,7 @@
 
 namespace dnn
 {
-	class ChannelShuffle final : public Layer
+	class Shuffle final : public Layer
 	{
 	private:
 		std::unique_ptr<dnnl::shuffle_forward::primitive_desc> fwdDesc;
@@ -17,8 +17,8 @@ namespace dnn
 	    const UInt Groups;
 		const UInt GroupSize;
 
-		ChannelShuffle(const dnn::Device& device, const dnnl::memory::format_tag format, const std::string& name, const std::vector<Layer*>& inputs, const UInt groups) :
-			Layer(device, format, name, LayerTypes::ChannelShuffle, 0, 0, inputs[0]->C, inputs[0]->D, inputs[0]->H, inputs[0]->W, 0, 0, 0, inputs),
+		Shuffle(const dnn::Device& device, const dnnl::memory::format_tag format, const std::string& name, const std::vector<Layer*>& inputs, const UInt groups) :
+			Layer(device, format, name, LayerTypes::Shuffle, 0, 0, inputs[0]->C, inputs[0]->D, inputs[0]->H, inputs[0]->W, 0, 0, 0, inputs),
 			Groups(groups),
 			GroupSize(inputs[0]->C / groups)
 		{
@@ -80,6 +80,7 @@ namespace dnn
 
 			fwdDesc = std::make_unique<dnnl::shuffle_forward::primitive_desc>(dnnl::shuffle_forward::primitive_desc(Device.engine, dnnl::prop_kind::forward_training, *InputLayer->DstMemDesc, *DstMemDesc, 1, int(GroupSize)));
 			bwdDesc = std::make_unique<dnnl::shuffle_backward::primitive_desc>(dnnl::shuffle_backward::primitive_desc(Device.engine, *InputLayer->DiffDstMemDesc, *DiffDstMemDesc, 1, int(GroupSize), *fwdDesc));
+
 #ifdef DNN_CACHE_PRIMITIVES
 			fwd = std::make_unique<dnnl::shuffle_forward>(dnnl::shuffle_forward(*fwdDesc));
 			bwd = std::make_unique<dnnl::shuffle_backward>(dnnl::shuffle_backward(*bwdDesc));

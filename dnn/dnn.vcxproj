@@ -169,7 +169,7 @@
     <ClInclude Include="include\Model.h" />
     <ClInclude Include="include\ParallelFor.h" />
     <ClInclude Include="include\DepthwiseConvolution.h" />
-    <ClInclude Include="include\ChannelShuffle.h" />
+    <ClInclude Include="include\Shuffle.h" />
     <ClInclude Include="include\PRelu.h" />
     <ClInclude Include="include\Resampling.h" />
     <ClInclude Include="include\Scripts.h" />

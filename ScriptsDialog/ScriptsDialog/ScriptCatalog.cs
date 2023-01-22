@@ -208,10 +208,10 @@ namespace ScriptsDialog
                "Group=" + to_string(part) + nwl + nwl;
         }
 
-        public static string ChannelShuffle(UInt id, string inputs, UInt groups = 2, string group = "", string prefix = "CSH")
+        public static string Shuffle(UInt id, string inputs, UInt groups = 2, string group = "", string prefix = "SH")
         {
             return "[" + group + prefix + to_string(id) + "]" + nwl +
-               "Type=ChannelShuffle" + nwl +
+               "Type=Shuffle" + nwl +
                "Inputs=" + inputs + nwl +
                "Groups=" + to_string(groups) + nwl + nwl;
         }
@@ -445,8 +445,8 @@ namespace ScriptsDialog
                     Concat(A + 1, In("LCS", A) + "," + In("B", C + 3));
 
                 return
-                    ChannelShuffle(A, In("CC", A), shuffle) +
-                    ChannelSplit(A, In("CSH", A), 2, 1, "L") + ChannelSplit(A, In("CSH", A), 2, 2, "R") +
+                    Shuffle(A, In("CC", A), shuffle) +
+                    ChannelSplit(A, In("SH", A), 2, 1, "L") + ChannelSplit(A, In("SH", A), 2, 2, "R") +
                     Convolution(C, In("RCS", A), channels, 1, 1, 1, 1, 0, 0) +
                     BatchNormActivation(C + 1, In("C", C), activation) +
                     DepthwiseConvolution(C + 1, In("B", C + 1), 1, kernel, kernel, 1, 1, pad, pad) +
