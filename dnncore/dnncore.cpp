@@ -57,7 +57,7 @@ DNN_API void DNNSetCostIndex(const UInt index);
 DNN_API void DNNGetCostInfo(const UInt costIndex, dnn::CostInfo* info);
 DNN_API void DNNGetImage(const UInt layer, const dnn::Byte fillColor, dnn::Byte* image);
 DNN_API bool DNNSetFormat(const bool plain);
-DNN_API void DNNGetResolution(UInt* N, UInt* H, UInt* W);
+DNN_API void DNNGetResolution(UInt* N, UInt* C, UInt* D, UInt* H, UInt* W);
 DNN_API dnn::Optimizers GetOptimizer();
 
 namespace dnncore
