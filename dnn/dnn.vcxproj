@@ -115,12 +115,13 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <CCppSupport>Cpp17Support</CCppSupport>
-      <AdditionalOptions>/bigobj /openmp:llvm /Qvec-report:1 /favor:AMD64 /fp:precise /fp:contract</AdditionalOptions>
+      <AdditionalOptions>/bigobj /openmp:llvm /Qvec-report:1 /favor:AMD64 /fp:contract</AdditionalOptions>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
+      <FloatingPointModel>Fast</FloatingPointModel>
     </ClCompile>
     <Link>
       <InterproceduralOptimization>true</InterproceduralOptimization>

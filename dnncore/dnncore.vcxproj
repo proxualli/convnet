@@ -61,6 +61,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <AdditionalOptions>/bigobj /favor:AMD64 /fp:contract %(AdditionalOptions)</AdditionalOptions>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
+      <FloatingPointModel>Fast</FloatingPointModel>
     </ClCompile>
     <Link>
       <AdditionalDependencies />
