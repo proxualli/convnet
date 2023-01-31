@@ -400,7 +400,7 @@ namespace dnn
 								}
 
 								variance += horizontal_add(vecVariance);
-								unbiasedVariance = std::max(0.f, variance / Float(batchSize * HW() - 1));
+								unbiasedVariance = std::max(Float(0), variance / Float(batchSize * HW() - 1));
 								variance /= Float(batchSize * HW());
 								variance = std::max(Float(0), variance);
 								Variance[c] = variance;
