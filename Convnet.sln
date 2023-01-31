@@ -47,6 +47,12 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "pnglibconf", "dnn\deps\libp
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "zlib", "dnn\deps\libpng\projects\vstudio\zlib\zlib.vcxproj", "{60F89955-91C6-3A36-8000-13C592FEC2DF}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "jpeg12", "dnn\deps\libjpeg-turbo\build\jpeg12.vcxproj", "{9249ED94-6691-35AA-AACB-39F87ABE2251}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "djpeg16-static", "dnn\deps\libjpeg-turbo\build\djpeg16-static.vcxproj", "{09B3B845-E718-360B-803E-597B38E16D6A}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "jpeg16", "dnn\deps\libjpeg-turbo\build\jpeg16.vcxproj", "{397AB8D2-09D1-3F7B-9353-A7553E9B53EB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -121,6 +127,18 @@ Global
 		{60F89955-91C6-3A36-8000-13C592FEC2DF}.Debug|x64.Build.0 = Debug|x64
 		{60F89955-91C6-3A36-8000-13C592FEC2DF}.Release|x64.ActiveCfg = Release|x64
 		{60F89955-91C6-3A36-8000-13C592FEC2DF}.Release|x64.Build.0 = Release|x64
+		{9249ED94-6691-35AA-AACB-39F87ABE2251}.Debug|x64.ActiveCfg = Debug|x64
+		{9249ED94-6691-35AA-AACB-39F87ABE2251}.Debug|x64.Build.0 = Debug|x64
+		{9249ED94-6691-35AA-AACB-39F87ABE2251}.Release|x64.ActiveCfg = Release|x64
+		{9249ED94-6691-35AA-AACB-39F87ABE2251}.Release|x64.Build.0 = Release|x64
+		{09B3B845-E718-360B-803E-597B38E16D6A}.Debug|x64.ActiveCfg = Debug|x64
+		{09B3B845-E718-360B-803E-597B38E16D6A}.Debug|x64.Build.0 = Debug|x64
+		{09B3B845-E718-360B-803E-597B38E16D6A}.Release|x64.ActiveCfg = Release|x64
+		{09B3B845-E718-360B-803E-597B38E16D6A}.Release|x64.Build.0 = Release|x64
+		{397AB8D2-09D1-3F7B-9353-A7553E9B53EB}.Debug|x64.ActiveCfg = Debug|x64
+		{397AB8D2-09D1-3F7B-9353-A7553E9B53EB}.Debug|x64.Build.0 = Debug|x64
+		{397AB8D2-09D1-3F7B-9353-A7553E9B53EB}.Release|x64.ActiveCfg = Release|x64
+		{397AB8D2-09D1-3F7B-9353-A7553E9B53EB}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

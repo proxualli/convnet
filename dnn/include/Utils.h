@@ -103,7 +103,7 @@ namespace
 	constexpr auto Inplace = false;
 	constexpr auto Reference = false;
 	constexpr auto SingleMeanVariancePass = false;
-	constexpr auto DefaultDatasetMeanStdDev = false;
+	constexpr auto DefaultDatasetMeanStdDev = true;
 
 	typedef float Float;
 	typedef std::size_t UInt;
