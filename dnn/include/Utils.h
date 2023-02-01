@@ -99,11 +99,11 @@ using namespace dnn;
 
 namespace
 {
-	constexpr auto Kahan = false;
-	constexpr auto Inplace = false;
+	constexpr auto Kahan = true;
+	constexpr auto Inplace = true;
 	constexpr auto Reference = false;
 	constexpr auto SingleMeanVariancePass = false;
-	constexpr auto DefaultDatasetMeanStdDev = true;
+	constexpr auto DefaultDatasetMeanStdDev = false;
 
 	typedef float Float;
 	typedef std::size_t UInt;
@@ -490,7 +490,7 @@ namespace
 	
 	/* https://en.wikipedia.org/wiki/Kahan_summation_algorithm */
 	template<typename T>
-	inline static void KahanSum(const T& value, T& sum, T& correction) NOEXCEPT
+	inline void KahanSum(const T& value, T& sum, T& correction) NOEXCEPT
 	{
 		if constexpr (Kahan)
 		{

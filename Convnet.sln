@@ -49,8 +49,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "zlib", "dnn\deps\libpng\pro
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "jpeg12", "dnn\deps\libjpeg-turbo\build\jpeg12.vcxproj", "{9249ED94-6691-35AA-AACB-39F87ABE2251}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "djpeg16-static", "dnn\deps\libjpeg-turbo\build\djpeg16-static.vcxproj", "{09B3B845-E718-360B-803E-597B38E16D6A}"
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "jpeg16", "dnn\deps\libjpeg-turbo\build\jpeg16.vcxproj", "{397AB8D2-09D1-3F7B-9353-A7553E9B53EB}"
 EndProject
 Global
@@ -131,10 +129,6 @@ Global
 		{9249ED94-6691-35AA-AACB-39F87ABE2251}.Debug|x64.Build.0 = Debug|x64
 		{9249ED94-6691-35AA-AACB-39F87ABE2251}.Release|x64.ActiveCfg = Release|x64
 		{9249ED94-6691-35AA-AACB-39F87ABE2251}.Release|x64.Build.0 = Release|x64
-		{09B3B845-E718-360B-803E-597B38E16D6A}.Debug|x64.ActiveCfg = Debug|x64
-		{09B3B845-E718-360B-803E-597B38E16D6A}.Debug|x64.Build.0 = Debug|x64
-		{09B3B845-E718-360B-803E-597B38E16D6A}.Release|x64.ActiveCfg = Release|x64
-		{09B3B845-E718-360B-803E-597B38E16D6A}.Release|x64.Build.0 = Release|x64
 		{397AB8D2-09D1-3F7B-9353-A7553E9B53EB}.Debug|x64.ActiveCfg = Debug|x64
 		{397AB8D2-09D1-3F7B-9353-A7553E9B53EB}.Debug|x64.Build.0 = Debug|x64
 		{397AB8D2-09D1-3F7B-9353-A7553E9B53EB}.Release|x64.ActiveCfg = Release|x64
