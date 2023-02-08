@@ -45,7 +45,7 @@
     <None Include="global.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <PackageReference Include="WpfMath" Version="0.13.1" />
+    <PackageReference Include="WpfMath" Version="1.0.0" />
   </ItemGroup>
   <ItemGroup>
     <Compile Update="Properties\Resources.Designer.cs">
