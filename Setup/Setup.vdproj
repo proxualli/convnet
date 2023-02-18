@@ -117,12 +117,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_62D651BD5C6729DF9507D158E7F67D9A"
-        "OwnerKey" = "8:_D4AE904DEC6C4C048C8234BF6A10B009"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_6A2D321A03A848CCA8C3A684CFE5CCA6"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -279,6 +273,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_ECE7F2F99D16F044960FE948D20C1B20"
+        "OwnerKey" = "8:_D4AE904DEC6C4C048C8234BF6A10B009"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_EE6086CE4760C3DF264F7A1240D2DD38"
         "OwnerKey" = "8:_D4AE904DEC6C4C048C8234BF6A10B009"
         "MsmSig" = "8:_UNDEFINED"
@@ -287,6 +287,12 @@
         {
         "MsmKey" = "8:_F284850895904CFA96AFD83A54D02EE8"
         "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_F7C322AB276C165596555698C5556CCF"
+        "OwnerKey" = "8:_D4AE904DEC6C4C048C8234BF6A10B009"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -414,7 +420,7 @@
                 {
                 "Name" = "8:.NET Core"
                 "Message" = "8:[VSDNETCOREMSG]"
-                "FrameworkVersion" = "8:3.1                              "
+                "FrameworkVersion" = "8:3.1                               "
                 "AllowLaterVersions" = "11:FALSE"
                 "InstallUrl" = "8:https://dotnet.microsoft.com/download/dotnet-core/[NetCoreVerMajorDotMinor]"
                 "IsNETCore" = "11:TRUE"
@@ -763,26 +769,6 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_62D651BD5C6729DF9507D158E7F67D9A"
-            {
-            "SourcePath" = "8:VCOMP140.DLL"
-            "TargetName" = "8:VCOMP140.DLL"
-            "Tag" = "8:"
-            "Folder" = "8:_6AC6560B9ACC4F54A4DE534A0DB0B67E"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_6A2D321A03A848CCA8C3A684CFE5CCA6"
@@ -1285,6 +1271,26 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_ECE7F2F99D16F044960FE948D20C1B20"
+            {
+            "SourcePath" = "8:libomp140.x86_64.dll"
+            "TargetName" = "8:libomp140.x86_64.dll"
+            "Tag" = "8:"
+            "Folder" = "8:_6AC6560B9ACC4F54A4DE534A0DB0B67E"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_EE6086CE4760C3DF264F7A1240D2DD38"
             {
             "SourcePath" = "8:api-ms-win-crt-locale-l1-1-0.dll"
@@ -1323,6 +1329,26 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_F7C322AB276C165596555698C5556CCF"
+            {
+            "SourcePath" = "8:MSVCP140_ATOMIC_WAIT.dll"
+            "TargetName" = "8:MSVCP140_ATOMIC_WAIT.dll"
+            "Tag" = "8:"
+            "Folder" = "8:_6AC6560B9ACC4F54A4DE534A0DB0B67E"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_FBA83EA43831464EAF6E666208D5EA29"
@@ -1541,7 +1567,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Convnet"
         "ProductCode" = "8:{D4B4AC62-642E-467C-85CB-CD72DA196999}"
-        "PackageCode" = "8:{2E78C5C3-A10B-4607-8E87-510C691C6113}"
+        "PackageCode" = "8:{21B74973-CA19-441C-8A33-2FC5DB46DD07}"
         "UpgradeCode" = "8:{6AC0B11F-6D71-4203-ACC9-2E07A968F844}"
         "AspNetVersion" = "8:"
         "RestartWWWService" = "11:FALSE"
