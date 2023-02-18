@@ -59,8 +59,8 @@ namespace ScriptsDialog
     {
         FRelu = 1,
         HardSwish = 10,
-        HardLogistic = 11,
-        Logistic = 12,
+        HardSigmoid = 11,
+        Sigmoid = 12,
         Mish = 16,
         Relu = 19,
         Swish = 25,

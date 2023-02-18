@@ -166,7 +166,7 @@ namespace dnncore
 		infoManaged->LayerType = layerType;
 		infoManaged->IsNormalizationLayer =
 			layerType == DNNLayerTypes::BatchNorm ||
-			layerType == DNNLayerTypes::BatchNormHardLogistic ||
+			layerType == DNNLayerTypes::BatchNormHardSigmoid ||
 			layerType == DNNLayerTypes::BatchNormHardSwish ||
 			layerType == DNNLayerTypes::BatchNormHardSwishDropout ||
 			layerType == DNNLayerTypes::BatchNormMish ||
@@ -321,7 +321,7 @@ namespace dnncore
 			break;
 
 			case DNNLayerTypes::BatchNorm:
-			case DNNLayerTypes::BatchNormHardLogistic:
+			case DNNLayerTypes::BatchNormHardSigmoid:
 			case DNNLayerTypes::BatchNormHardSwish:
 			case DNNLayerTypes::BatchNormHardSwishDropout:
 			case DNNLayerTypes::BatchNormRelu:
