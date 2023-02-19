@@ -236,7 +236,6 @@ namespace dnn
 		bool test;
 	};
 
-	
 
 	class Activation final : public Layer
 	{
@@ -465,7 +464,7 @@ namespace dnn
 				act.beta = Float(0);
 				act.Enum = LogSigmoid::Enum();
 				act.algorithm = dnnl::algorithm::eltwise_soft_relu;
-				act.test = false;
+				act.test = true;
 				break;
 
 			case Activations::Mish:
