@@ -52,6 +52,7 @@
 * Pow
 * Relu
 * Round
+* Selu
 * Sigmoid
 * SoftPlus
 * SoftRelu
