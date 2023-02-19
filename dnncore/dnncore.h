@@ -153,20 +153,21 @@ namespace dnn
 		HardSwish = 10,
 		Linear = 11,
 		Log = 12,
-		LogSigmod = 13,
+		LogSigmoid = 13,
 		Mish = 14,
 		Pow = 15,
 		Relu = 16,			//
 		Round = 17,
-		Sigmoid = 18,		//
-		SoftPlus = 19,
-		SoftRelu = 20,
-		SoftSign = 21,
-		Sqrt = 22,			//
-		Square = 23,
-		Swish = 24,
-		Tanh = 25,			//
-		TanhExp = 26
+		Selu = 18,
+		Sigmoid = 19,		//
+		SoftPlus = 20,
+		SoftRelu = 21,
+		SoftSign = 22,
+		Sqrt = 23,			//
+		Square = 24,
+		Swish = 25,
+		Tanh = 26,			//
+		TanhExp = 27
 	};
 
 	enum class Algorithms
@@ -765,15 +766,16 @@ namespace dnncore
 		Pow = 15,
 		Relu = 16,			//
 		Round = 17,
-		Sigmoid = 18,		//
-		SoftPlus = 19,
-		SoftRelu = 20,
-		SoftSign = 21,
-		Sqrt = 22,			//
-		Square = 23,
-		Swish = 24,
-		Tanh = 25,			//
-		TanhExp = 26
+		Selu = 18,
+		Sigmoid = 19,		//
+		SoftPlus = 20,
+		SoftRelu = 21,
+		SoftSign = 22,
+		Sqrt = 23,			//
+		Square = 24,
+		Swish = 25,
+		Tanh = 26,			//
+		TanhExp = 27
 	};
 
 	[Serializable()]
