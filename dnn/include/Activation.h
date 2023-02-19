@@ -12,8 +12,8 @@ namespace dnn
 		ClipV2 = 4,			//
 		Elu = 5,			//
 		Exp = 6,			//
-		Gelu = 7,
-		GeluErf = 8,
+		GeluErf = 7,
+		GeluTanh = 8,
 		HardSigmoid = 9,
 		HardSwish = 10,
 		Linear = 11,
@@ -64,10 +64,10 @@ namespace dnn
 
 	struct Elu 
 	{
-		inline static Float f(const Float& x, const Float& alpha = Float(0), const Float& beta = Float(0)) NOEXCEPT { return x > Float(0) ? x : alpha * (std::exp(x) - Float(1)); }
-		inline static Float df(const Float& x, const Float& alpha = Float(0), const Float& beta = Float(0)) NOEXCEPT { return x > Float(0) ? Float(1) : alpha * std::exp(x); }
-		inline static VecFloat fVec(const VecFloat& x, const Float& alpha = Float(0), const Float& beta = Float(0)) NOEXCEPT { return select(x > Float(0), x, alpha * (exp(x) - Float(1))); }
-		inline static VecFloat dfVec(const VecFloat& x, const Float& alpha = Float(0), const Float& beta = Float(0)) NOEXCEPT { return select(x > Float(0), Float(1), alpha * exp(x)); }
+		inline static Float f(const Float& x, const Float& alpha = Float(1), const Float& beta = Float(0)) NOEXCEPT { return x > Float(0) ? x : alpha * (std::exp(x) - Float(1)); }
+		inline static Float df(const Float& x, const Float& alpha = Float(1), const Float& beta = Float(0)) NOEXCEPT { return x > Float(0) ? Float(1) : alpha * std::exp(x); }
+		inline static VecFloat fVec(const VecFloat& x, const Float& alpha = Float(1), const Float& beta = Float(0)) NOEXCEPT { return select(x > Float(0), x, alpha * (exp(x) - Float(1))); }
+		inline static VecFloat dfVec(const VecFloat& x, const Float& alpha = Float(1), const Float& beta = Float(0)) NOEXCEPT { return select(x > Float(0), Float(1), alpha * exp(x)); }
 		inline static Activations Enum() NOEXCEPT { return Activations::Elu; }
 	};
 
@@ -264,12 +264,13 @@ namespace dnn
 			case Activations::Clip:
 			case Activations::ClipV2:
 			case Activations::Exp:
-			case Activations::Gelu:
 			case Activations::GeluErf:
+			case Activations::GeluTanh:
 			case Activations::Log:
-			case Activations::Sigmoid:
 			case Activations::Mish:
 			case Activations::Round:
+			case Activations::Selu:
+			case Activations::Sigmoid:
 			case Activations::SoftSign:
 			case Activations::Sqrt:
 			case Activations::Square:
@@ -309,16 +310,17 @@ namespace dnn
 			case Activations::ClipV2:
 			case Activations::Elu:
 			case Activations::Exp:
-			case Activations::Gelu:
 			case Activations::GeluErf:
+			case Activations::GeluTanh:
 			case Activations::Linear:
 			case Activations::Log:
 			case Activations::LogSigmoid:
-			case Activations::Sigmoid:
 			case Activations::Mish:
 			case Activations::Pow:
 			case Activations::Relu:
 			case Activations::Round:
+			case Activations::Selu:
+			case Activations::Sigmoid:
 			case Activations::SoftRelu:
 			case Activations::SoftSign:
 			case Activations::Sqrt:
@@ -406,6 +408,16 @@ namespace dnn
 				act.beta = Float(0);
 				act.Enum = Exp::Enum();
 				act.algorithm = dnnl::algorithm::eltwise_exp;
+				act.test = true;
+				break;
+
+			case Activations::GeluTanh:
+				act.algorithm = dnnl::algorithm::eltwise_gelu_tanh;
+				act.test = false;
+				break;
+
+			case Activations::GeluErf:
+				act.algorithm = dnnl::algorithm::eltwise_gelu_erf;
 				act.test = false;
 				break;
 
@@ -606,6 +618,228 @@ namespace dnn
 			return act;
 		}
 
+		static bool CheckActivations(std::vector<std::string>& msg, const Float errorLimit = Float(0.0005))
+		{
+			msg = std::vector<std::string>();
+			std::atomic<bool> ret = true;
+			ret.store(true);
+
+			if constexpr (TestActivations)
+			{
+				const auto eng = dnnl::engine(dnnl::engine::kind::cpu, 0);
+				auto stream = dnnl::stream(eng);
+
+				auto activations = magic_enum::enum_names<Activations>();
+				std::for_each(std::execution::par, activations.begin(), activations.end(), [&msg, &errorLimit, &ret, &eng, &stream](const std::string_view& activation)
+				{
+					if (magic_enum::enum_cast<Activations>(activation).has_value())
+					{
+						auto act = Activation::GetActivation(magic_enum::enum_cast<Activations>(activation).value());
+
+						if (act.test)
+						{
+							const auto N = dnnl::memory::dim(64);
+							const auto C = dnnl::memory::dim(64);
+							const auto H = dnnl::memory::dim(64);
+							const auto W = dnnl::memory::dim(64);
+
+							auto memDesc = std::make_unique<dnnl::memory::desc>(dnnl::memory::desc(dnnl::memory::dims({ N, C, H, W }), dnnl::memory::data_type::f32, PlainFmt));
+
+							auto fwdDesc = std::make_unique<dnnl::eltwise_forward::primitive_desc>(dnnl::eltwise_forward::primitive_desc(eng, dnnl::prop_kind::forward, act.algorithm, *memDesc, *memDesc, (act.Enum == Activations::BoundedRelu) ? act.beta : act.alpha, (act.Enum == Activations::BoundedRelu) ? act.alpha : act.beta));
+							auto bwdDesc = std::make_unique<dnnl::eltwise_backward::primitive_desc>(dnnl::eltwise_backward::primitive_desc(eng, act.algorithm, *memDesc, *memDesc, *memDesc, (act.Enum == Activations::BoundedRelu) ? act.beta : act.alpha, (act.Enum == Activations::BoundedRelu) ? act.alpha : act.beta, *fwdDesc));
+#ifdef DNN_CACHE_PRIMITIVES
+							auto fwd = std::make_unique<dnnl::eltwise_forward>(dnnl::eltwise_forward(*fwdDesc));
+							auto bwd = std::make_unique<dnnl::eltwise_backward>(dnnl::eltwise_backward(*bwdDesc));
+#endif							
+							const auto size = UInt(N * C * H * W);
+							const auto part = (size / 2ull) + (size / 4ull);
+
+							const auto minLimit = (act.alpha != Float(0)) ? (-act.beta / act.alpha) : Float(-1.5);
+							const auto maxLimit = (act.alpha != Float(0)) ? ((Float(1) - act.beta) / act.alpha) : Float(1.5);
+
+							auto input = FloatVector(size);
+							for (auto i = 0ull; i < size; i += VectorSize)
+								UniformVecFloat(minLimit - Float(1.5), maxLimit + Float(1.5)).store_a(&input[i]);
+
+							input[0] = minLimit;
+							input[1] = maxLimit;
+							input[2] = minLimit - Float(0.0001);
+							input[3] = maxLimit - Float(0.0001);
+							input[4] = minLimit + Float(0.0001);
+							input[5] = maxLimit + Float(0.0001);
+							input[6] = Float(0);
+							input[7] = Float(1);
+
+							input[part + 0] = minLimit;
+							input[part + 1] = maxLimit;
+							input[part + 2] = minLimit - Float(0.0001);
+							input[part + 3] = maxLimit - Float(0.0001);
+							input[part + 4] = minLimit + Float(0.0001);
+							input[part + 5] = maxLimit + Float(0.0001);
+							input[part + 6] = Float(0);
+							input[part + 7] = Float(1);
+
+							auto outputFwd = FloatVector(size);
+							auto outputBwd = FloatVector(size);
+
+							try
+							{
+								for (auto i = 0ull; i < part; i += VectorSize)
+								{
+									act.fVec(VecFloat().load_a(&input[i]), act.alpha, act.beta).store_a(&outputFwd[i]);
+									act.dfVec(VecFloat().load_a(&input[i]), act.alpha, act.beta).store_a(&outputBwd[i]);
+								}
+								for (auto i = part; i < size; i++)
+								{
+									outputFwd[i] = act.f(input[i], act.alpha, act.beta);
+									outputBwd[i] = act.df(input[i], act.alpha, act.beta);
+								}
+							}
+							catch (const std::invalid_argument& e)
+							{
+								if (ret.load())
+								{
+									ret.store(false);
+									msg.push_back(e.what());
+								}
+							}
+							catch (const std::length_error& e)
+							{
+								if (ret.load())
+								{
+									ret.store(false);
+									msg.push_back(e.what());
+								}
+							}
+							catch (const std::logic_error& e)
+							{
+								if (ret.load())
+								{
+									ret.store(false);
+									msg.push_back(e.what());
+								}
+							}
+							catch (const std::underflow_error& e)
+							{
+								if (ret.load())
+								{
+									ret.store(false);
+									msg.push_back(e.what());
+								}
+							}
+							catch (const std::overflow_error& e)
+							{
+								if (ret.load())
+								{
+									ret.store(false);
+									msg.push_back(e.what());
+								}
+							}
+							catch (const std::range_error& e)
+							{
+								if (ret.load())
+								{
+									ret.store(false);
+									msg.push_back(e.what());
+								}
+							}
+							catch (const std::runtime_error& e)
+							{
+								if (ret.load())
+								{
+									ret.store(false);
+									msg.push_back(e.what());
+								}
+							}
+							catch (const std::exception& e)
+							{
+								if (ret.load())
+								{
+									ret.store(false);
+									msg.push_back(e.what());
+								}
+							}
+
+							if (ret.load())
+							{
+								auto outputFwdRef = FloatVector(size);
+								auto outputBwdRef = FloatVector(size, Float(1));
+
+								auto srcMem = dnnl::memory(*memDesc, eng, input.data());
+								auto dstMem = dnnl::memory(*memDesc, eng, outputFwdRef.data());
+#ifdef DNN_CACHE_PRIMITIVES
+								fwd->execute(stream, std::unordered_map<int, dnnl::memory>{ {DNNL_ARG_SRC, srcMem}, { DNNL_ARG_DST, dstMem } });
+#else
+								dnnl::eltwise_forward(*fwdDesc).execute(stream, std::unordered_map<int, dnnl::memory>{ {DNNL_ARG_SRC, srcMem}, { DNNL_ARG_DST, dstMem } });
+#endif
+								stream.wait();
+
+
+								auto diffSrcMem = dnnl::memory(*memDesc, eng, outputBwdRef.data());
+#ifdef DNN_CACHE_PRIMITIVES
+								bwd->execute(stream, std::unordered_map<int, dnnl::memory>{ {DNNL_ARG_SRC, srcMem}, { DNNL_ARG_DIFF_DST, diffSrcMem }, { DNNL_ARG_DIFF_SRC, diffSrcMem } });
+#else
+								dnnl::eltwise_backward(*bwdDesc).execute(stream, std::unordered_map<int, dnnl::memory>{ {DNNL_ARG_SRC, srcMem}, { DNNL_ARG_DIFF_DST, diffSrcMem }, { DNNL_ARG_DIFF_SRC, diffSrcMem } });
+#endif
+								stream.wait();
+
+								for (auto i = 0ull; i < size; i += VectorSize)
+								{
+									const auto fwdRef = VecFloat().load_a(&outputFwdRef[i]);
+									const auto fwd = VecFloat().load_a(&outputFwd[i]);
+									const auto fwdRet = ((fwdRef - errorLimit) > fwd) | ((fwdRef + errorLimit) < fwd);
+									const bool fwdErr = horizontal_or(fwdRet);
+
+									if (fwdErr)
+									{
+										const auto index = i + horizontal_find_first(fwdRet);
+										const auto in = input[index];
+										const auto ref = outputFwdRef[index];
+										const auto out = outputFwd[index];
+
+										msg.push_back(
+											std::string(activation) + std::string(" forward pass not passed") + nwl +
+											std::string("In:") + tab + std::to_string(in) + nwl +
+											std::string("Ref:") + tab + std::to_string(ref) + nwl +
+											std::string("Out:") + tab + std::to_string(out));
+									}
+
+									const auto bwdRef = VecFloat().load_a(&outputBwdRef[i]);
+									const auto bwd = VecFloat().load_a(&outputBwd[i]);
+									const auto bwdRet = ((bwdRef - errorLimit) > bwd) | ((bwdRef + errorLimit) < bwd);
+									const bool bwdErr = horizontal_or(fwdRet);
+
+									if (bwdErr)
+									{
+										const auto index = i + horizontal_find_first(bwdRet);
+										const auto in = input[index];
+										const auto ref = outputBwdRef[index];
+										const auto out = outputBwd[index];
+
+										msg.push_back(
+											std::string(activation) + std::string(" backward pass not passed") + nwl +
+											std::string("In:") + tab + std::to_string(in) + nwl +
+											std::string("Ref:") + tab + std::to_string(ref) + nwl +
+											std::string("Out:") + tab + std::to_string(out));
+									}
+
+									if (fwdErr || bwdErr)
+									{
+										if (ret.load())
+											ret.store(false);
+
+										break;
+									}
+								}
+							}
+						}
+					}
+				});
+			}
+
+			return ret.load();
+		}
+
 		Activation(const dnn::Device& device, const dnnl::memory::format_tag format, const std::string& name, const Activations activation, const std::vector<Layer*>& inputs, const Float alpha = Float(0), const Float beta = Float(0)) :
 			Layer(device, format, name, LayerTypes::Activation, 0, 0, inputs[0]->C, inputs[0]->D, inputs[0]->H, inputs[0]->W, 0, 0, 0, inputs, false),
 			ActivationFunction(activation),
@@ -655,6 +889,7 @@ namespace dnn
 			switch (ActivationFunction)
 			{
 				case Activations::ASinh:
+				case Activations::Selu:
 				case Activations::SoftPlus:
 				case Activations::SoftSign:
 				case Activations::TanhExp:
@@ -680,11 +915,11 @@ namespace dnn
 				case Activations::Exp:
 					algorithm = dnnl::algorithm::eltwise_exp;
 					break;
-				case Activations::Gelu:
-					algorithm = dnnl::algorithm::eltwise_gelu_tanh;
-					break;
 				case Activations::GeluErf:
 					algorithm = dnnl::algorithm::eltwise_gelu_erf;
+					break;
+				case Activations::GeluTanh:
+					algorithm = dnnl::algorithm::eltwise_gelu_tanh;
 					break;
 				case Activations::HardSigmoid:
 					algorithm = dnnl::algorithm::eltwise_hardsigmoid;

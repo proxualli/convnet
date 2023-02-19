@@ -147,8 +147,8 @@ namespace dnn
 		ClipV2 = 4,			//
 		Elu = 5,			//
 		Exp = 6,			//
-		Gelu = 7,
-		GeluErf = 8,
+		GeluErf = 7,
+		GeluTanh = 8,
 		HardSigmoid = 9,
 		HardSwish = 10,
 		Linear = 11,
@@ -755,8 +755,8 @@ namespace dnncore
 		ClipV2 = 4,			//
 		Elu = 5,			//
 		Exp = 6,			//
-		Gelu = 7,
-		GeluErf = 8,
+		GeluErf = 7,
+		GeluTanh = 8,
 		HardSigmoid = 9,
 		HardSwish = 10,
 		Linear = 11,
