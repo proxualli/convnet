@@ -6,8 +6,9 @@
 * Average
 * AvgPooling
 * BatchNorm
+* BatchNormActivation
+* BatchNormActivationDropout
 * BatchNormRelu
-* BatchNormReluDropout
 * ChannelSplit
 * ChannelZeroPad
 * Concat
