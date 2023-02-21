@@ -166,17 +166,9 @@ namespace dnncore
 		infoManaged->LayerType = layerType;
 		infoManaged->IsNormalizationLayer =
 			layerType == DNNLayerTypes::BatchNorm ||
-			layerType == DNNLayerTypes::BatchNormHardSigmoid ||
-			layerType == DNNLayerTypes::BatchNormHardSwish ||
-			layerType == DNNLayerTypes::BatchNormHardSwishDropout ||
-			layerType == DNNLayerTypes::BatchNormMish ||
-			layerType == DNNLayerTypes::BatchNormMishDropout ||
+			layerType == DNNLayerTypes::BatchNormActivation ||
+			layerType == DNNLayerTypes::BatchNormActivationDropout ||
 			layerType == DNNLayerTypes::BatchNormRelu ||
-			layerType == DNNLayerTypes::BatchNormReluDropout ||
-			layerType == DNNLayerTypes::BatchNormSwish ||
-			layerType == DNNLayerTypes::BatchNormSwishDropout ||
-			layerType == DNNLayerTypes::BatchNormTanhExp ||
-			layerType == DNNLayerTypes::BatchNormTanhExpDropout ||
 			layerType == DNNLayerTypes::LayerNorm;
 
 		infoManaged->Activation = safe_cast<DNNActivations>(infoNative->Activation);
@@ -321,15 +313,9 @@ namespace dnncore
 			break;
 
 			case DNNLayerTypes::BatchNorm:
-			case DNNLayerTypes::BatchNormHardSigmoid:
-			case DNNLayerTypes::BatchNormHardSwish:
-			case DNNLayerTypes::BatchNormHardSwishDropout:
+			case DNNLayerTypes::BatchNormActivation:
+			case DNNLayerTypes::BatchNormActivationDropout:
 			case DNNLayerTypes::BatchNormRelu:
-			case DNNLayerTypes::BatchNormReluDropout:
-			case DNNLayerTypes::BatchNormSwish:
-			case DNNLayerTypes::BatchNormSwishDropout:
-			case DNNLayerTypes::BatchNormTanhExp:
-			case DNNLayerTypes::BatchNormTanhExpDropout:
 			case DNNLayerTypes::Dense:
 			case DNNLayerTypes::LayerNorm:
 			{

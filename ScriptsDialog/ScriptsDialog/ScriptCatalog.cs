@@ -71,9 +71,17 @@ namespace ScriptsDialog
 
         public static string BatchNormActivation(UInt id, string inputs, string activation = "Relu", string group = "", string prefix = "B")
         {
-            return "[" + group + prefix + to_string(id) + "]" + nwl +
-              "Type=BatchNorm" + activation + nwl +
-              "Inputs=" + inputs + nwl + nwl;
+            if (activation == "Relu")
+                return 
+                    "[" + group + prefix + to_string(id) + "]" + nwl +
+                    "Type=BatchNormRelu" + nwl +
+                    "Inputs=" + inputs + nwl + nwl;
+            else
+                return 
+                    "[" + group + prefix + to_string(id) + "]" + nwl +
+                    "Type=BatchNormActivation" + nwl +
+                    "Inputs=" + inputs + nwl + 
+                    "Activation=" + activation + nwl + nwl;
         }
 
         public static string BatchNormActivation(UInt id, string inputs, Activations activation = Activations.Relu, string group = "", string prefix = "B")
@@ -83,14 +91,15 @@ namespace ScriptsDialog
                 if (activation == Activations.Relu)
                 {
                     return "[" + group + prefix + to_string(id) + "]" + nwl +
-                        "Type=BatchNorm" + activation.ToString() + nwl +
+                        "Type=BatchNormRelu" + nwl +
                         "Inputs=" + inputs + nwl + nwl;
                 }
                 else
                 {
                     return "[" + group + prefix + to_string(id) + "]" + nwl +
-                        "Type=BatchNorm" + activation.ToString() + nwl +
-                        "Inputs=" + inputs + nwl + nwl;
+                        "Type=BatchNormActivation" + nwl +
+                        "Inputs=" + inputs + nwl + 
+                        "Activation=" + activation.ToString() + nwl + nwl;
 
                     //return "[" + group + "BN" + to_string(id) + "]" + nwl +
                     //   "Type=BatchNorm" + nwl +
@@ -127,17 +136,21 @@ namespace ScriptsDialog
         {
             if (activation != Activations.FRelu)
             {
-                return "[" + group + prefix + to_string(id) + "]" + nwl +
-                    "Type=BatchNorm" + activation.ToString() + "Dropout" + nwl +
+                return 
+                    "[" + group + prefix + to_string(id) + "]" + nwl +
+                    "Type=BatchNormActivationDropout" + nwl +
                     "Inputs=" + inputs + nwl +
+                    "Activation=" + activation.ToString() + nwl +
                     (dropout > 0f ? "Dropout=" + to_string(dropout) + nwl + nwl : nwl);
             }
             else
             {
-                return "[" + group + prefix + to_string(id) + "]" + nwl +
-                   "Type=BatchNormHardSwishDropout" + nwl +
-                   "Inputs=" + inputs + nwl +
-                     (dropout > 0f ? "Dropout=" + to_string(dropout) + nwl + nwl : nwl);
+                return 
+                    "[" + group + prefix + to_string(id) + "]" + nwl +
+                    "Type=BatchNormActivationDropout" + nwl +
+                    "Inputs=" + inputs + nwl +
+                    "Activation=HardSwish" + nwl +
+                    (dropout > 0f ? "Dropout=" + to_string(dropout) + nwl + nwl : nwl);
             }
         }
 
