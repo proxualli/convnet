@@ -1,4 +1,4 @@
-## Convnet Explorer (Microsoft Windows 10 x64)
+## Convnet Explorer (Microsoft Windows x64)
 
 ### Layers
 * Activation

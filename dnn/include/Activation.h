@@ -687,7 +687,6 @@ namespace dnn
 
 							const auto margin = Float(1.5);
 							const auto minLimit = ((act.Enum == Activations::Exp) || (act.Enum == Activations::Elu) || (act.Enum == Activations::Log) || (act.Enum == Activations::Mish)) ? margin + Float(0.1): ((act.alpha != Float(0)) ? (-act.beta / act.alpha) : -margin);
-							//const auto minLimit = (act.alpha != Float(0)) ? (-act.beta / act.alpha) : -margin;
 							const auto maxLimit = (act.alpha != Float(0)) ? ((Float(1) - act.beta) / act.alpha) : margin;
 														
 							auto input = FloatVector(size);
@@ -1264,7 +1263,7 @@ namespace dnn
 #endif // DNN_LEAN
 
 			const auto plain = IsPlainFormat();
-			const auto threads = batchSize == 1 ? 1ull : GetThreads(batchSize * (plain ? CDHW() : PaddedCDHW()), Float(10));
+			const auto threads = batchSize == 1ull ? 1ull : GetThreads(batchSize * (plain ? CDHW() : PaddedCDHW()), Float(10));
 			const auto strideHW = HW() * VectorSize;
 
 			switch (ActivationFunction)

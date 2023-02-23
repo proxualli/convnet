@@ -888,7 +888,7 @@ namespace
 		return std::abs(reference - actual) / std::max(std::numeric_limits<Float>().min(), std::abs(reference));
 	}
 	
-	auto Float Median(FloatVector& array)
+	auto auto Median(FloatVector& array)
 	{
 		std::nth_element(array.begin(), array.begin() + array.size() / 2, array.end());
 		return array[array.size() / 2];
