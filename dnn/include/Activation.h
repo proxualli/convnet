@@ -254,11 +254,17 @@ namespace dnn
 		bool reorderFwdSrc;
 		bool reorderBwdSrc;
 		bool reorderBwdDiffSrc;
-		
-		auto GetAlpha(const Activations activation, const Float alpha, const Float beta) const
-		{ 
+	
+	public:
+		const Activations ActivationFunction;
+		const Float Alpha;
+		const Float Beta;
+		const Act Func;
+
+		static auto GetAlpha(const Activations activation, const Float alpha, const Float beta)
+		{
 			switch (activation)
-			{			
+			{
 			case Activations::Abs:
 			case Activations::ASinh:
 			case Activations::Clip:
@@ -291,7 +297,7 @@ namespace dnn
 			case Activations::HardSigmoid:
 				return alpha == Float(0) ? Float(0.2) : alpha;
 			case Activations::HardSwish:
-				return alpha == Float(0) ? (Float(1) / Float(6)) : alpha;			
+				return alpha == Float(0) ? (Float(1) / Float(6)) : alpha;
 			case Activations::LogSigmoid:
 				return Float(-1);
 			}
@@ -299,13 +305,12 @@ namespace dnn
 			return alpha;
 		}
 
-		auto GetBeta(const Activations activation, const Float alpha, const Float beta) const
+		static auto GetBeta(const Activations activation, const Float alpha, const Float beta)
 		{
 			switch (activation)
 			{
 			case Activations::Abs:
 			case Activations::ASinh:
-			case Activations::BoundedRelu:
 			case Activations::Clip:
 			case Activations::ClipV2:
 			case Activations::Elu:
@@ -329,6 +334,8 @@ namespace dnn
 			case Activations::Tanh:
 			case Activations::TanhExp:
 				break;
+			case Activations::BoundedRelu:
+				return Float(0);
 			case Activations::HardSigmoid:
 			case Activations::HardSwish:
 				return beta == Float(0) ? Float(0.5) : beta;
@@ -339,15 +346,9 @@ namespace dnn
 			return beta;
 		}
 
-	public:
-		const Activations ActivationFunction;
-		const Float Alpha;
-		const Float Beta;
-		const Act Func;
-
 		static auto GetActivation(Activations activation)
 		{
-			Act act;
+			Act act = {};
 
 			switch (activation)
 			{
@@ -841,9 +842,9 @@ namespace dnn
 		Activation(const dnn::Device& device, const dnnl::memory::format_tag format, const std::string& name, const Activations activation, const std::vector<Layer*>& inputs, const Float alpha = Float(0), const Float beta = Float(0)) :
 			Layer(device, format, name, LayerTypes::Activation, 0, 0, inputs[0]->C, inputs[0]->D, inputs[0]->H, inputs[0]->W, 0, 0, 0, inputs, false),
 			ActivationFunction(activation),
-			Alpha(GetAlpha(activation, alpha, beta)),
-			Beta(GetBeta(activation, alpha, beta)),
-			Func(GetActivation(activation)),
+			Alpha(Activation::GetAlpha(activation, alpha, beta)),
+			Beta(Activation::GetBeta(activation, alpha, beta)),
+			Func(Activation::GetActivation(activation)),
 			algorithm(dnnl::algorithm::eltwise_linear),
 			reorderFwdSrc(false),
 			reorderBwdSrc(false),
