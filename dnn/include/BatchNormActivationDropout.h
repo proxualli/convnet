@@ -23,9 +23,9 @@ namespace dnn
 
 	public:
 		const bool LocalValue;
+		const Activations ActivationFunction;
 		const Float Alpha;
 		const Float Beta;
-		const Activations ActivationFunction;
 		const Act Func;
 		const Float Eps;
 		const Float Momentum;
