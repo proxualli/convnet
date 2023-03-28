@@ -130,7 +130,6 @@ namespace dnn
 				{
 					const auto plain = IsPlainFormat();
 					const auto threads = GetThreads(batchSize * (plain ? CDHW() : PaddedCDHW()), Float(10));
-
 					const auto strideHW = HW() * VectorSize;
 
 #ifdef DNN_STOCHASTIC
