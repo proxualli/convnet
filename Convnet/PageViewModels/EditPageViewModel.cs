@@ -580,6 +580,20 @@ namespace Convnet.PageViewModels
                 Mouse.OverrideCursor = Cursors.Wait;
                 IsValid = false;
 
+                var processInfo = new ProcessStartInfo("dotnet", @"add package WpfMath --version 0.13.1")
+                {
+                    WorkingDirectory = ScriptsDirectory + @"ScriptsDialog\",
+                    UseShellExecute = true,
+                    CreateNoWindow = true,
+                    WindowStyle = ProcessWindowStyle.Hidden,
+                    Verb = "runas"
+                };
+
+                using (var process = Process.Start(processInfo))
+                {
+                    process.WaitForExit();
+                }
+
                 var projectFilePath = ScriptsDirectory + @"ScriptsDialog\ScriptsDialog.csproj";
 
                 Dictionary<string, string> GlobalProperty = new()

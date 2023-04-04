@@ -984,19 +984,6 @@ namespace Convnet
                 Directory.Delete(ScriptsDirectory, true);
                 Directory.CreateDirectory(ScriptsDirectory);
                 Copy(ApplicationPath.Replace(@"Convnet\bin\x64\" + Mode + @"\" + Framework + @"\", "") + @"ScriptsDialog\", ScriptsDirectory);
-                var processInfo = new ProcessStartInfo("dotnet", @"add package WpfMath --version 0.13.1")
-                {
-                    WorkingDirectory = ScriptsDirectory + @"ScriptsDialog\",
-                    UseShellExecute = true,
-                    CreateNoWindow = true,
-                    WindowStyle = ProcessWindowStyle.Hidden,
-                    Verb = "runas"
-                };
-
-                using (var process = Process.Start(processInfo))
-                {
-                    process.WaitForExit();
-                }
             }
         }
 
