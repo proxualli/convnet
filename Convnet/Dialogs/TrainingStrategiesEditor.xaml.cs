@@ -13,6 +13,7 @@ using Cursors = System.Windows.Input.Cursors;
 
 namespace Convnet.Dialogs
 {
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Interoperability", "CA1416:Validate platform compatibility", Justification = "<Pending>")]
     public partial class TrainingStrategiesEditor : Window
     {
         public string Path { get; set; }

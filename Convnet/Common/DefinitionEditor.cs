@@ -18,11 +18,13 @@ namespace Convnet.Common
             this.editor = editor;
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Interoperability", "CA1416:Validate platform compatibility", Justification = "<Pending>")]
         public KnownLayer Layer
         {
             get { return KnownLayer.Background; }
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Interoperability", "CA1416:Validate platform compatibility", Justification = "<Pending>")]
         public void Draw(TextView textView, DrawingContext drawingContext)
         {
             if (editor.Document == null)
@@ -38,6 +40,7 @@ namespace Convnet.Common
         }
     }
 
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Interoperability", "CA1416:Validate platform compatibility", Justification = "<Pending>")]
     public class DefinitionEditor : TextEditor, INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
@@ -235,6 +238,7 @@ namespace Convnet.Common
         #endregion // INotifyPropertyChanged Members
     }
 
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Interoperability", "CA1416:Validate platform compatibility", Justification = "<Pending>")]
     public class CodeEditor : TextEditor, INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;

@@ -123,12 +123,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_6D68A2097C83D01284285F0E157DD07A"
-        "OwnerKey" = "8:_D4AE904DEC6C4C048C8234BF6A10B009"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_790F7C93E62349BF87E7727D1D8DBF2E"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -291,12 +285,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_F7C322AB276C165596555698C5556CCF"
-        "OwnerKey" = "8:_D4AE904DEC6C4C048C8234BF6A10B009"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_FBA83EA43831464EAF6E666208D5EA29"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -374,23 +362,13 @@
                 {
                     "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:Microsoft.NetCore.CoreRuntime.3.1.x64"
                     {
-                    "Name" = "8:.NET Core Runtime 3.1.31 (x64)"
+                    "Name" = "8:.NET Core Runtime 3.1.32 (x64)"
                     "ProductCode" = "8:Microsoft.NetCore.CoreRuntime.3.1.x64"
-                    }
-                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:Microsoft.NetCore.CoreRuntime.5.0.x64"
-                    {
-                    "Name" = "8:.NET Runtime 5.0.17 (x64)"
-                    "ProductCode" = "8:Microsoft.NetCore.CoreRuntime.5.0.x64"
                     }
                     "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:Microsoft.NetCore.DesktopRuntime.3.1.x64"
                     {
-                    "Name" = "8:.NET Desktop Runtime 3.1.31 (x64)"
+                    "Name" = "8:.NET Desktop Runtime 3.1.32 (x64)"
                     "ProductCode" = "8:Microsoft.NetCore.DesktopRuntime.3.1.x64"
-                    }
-                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:Microsoft.NetCore.DesktopRuntime.5.0.x64"
-                    {
-                    "Name" = "8:.NET Desktop Runtime 5.0.17 (x64)"
-                    "ProductCode" = "8:Microsoft.NetCore.DesktopRuntime.5.0.x64"
                     }
                     "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:Microsoft.Visual.C++.14.0.x64"
                     {
@@ -420,12 +398,12 @@
                 {
                 "Name" = "8:.NET Core"
                 "Message" = "8:[VSDNETCOREMSG]"
-                "FrameworkVersion" = "8:3.1                               "
+                "FrameworkVersion" = "8:3.1"
                 "AllowLaterVersions" = "11:FALSE"
                 "InstallUrl" = "8:https://dotnet.microsoft.com/download/dotnet-core/[NetCoreVerMajorDotMinor]"
                 "IsNETCore" = "11:TRUE"
                 "Architecture" = "2:2"
-                "Runtime" = "2:2"
+                "Runtime" = "2:1"
                 }
             }
         }
@@ -789,26 +767,6 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_6D68A2097C83D01284285F0E157DD07A"
-            {
-            "SourcePath" = "8:libpng16.dll"
-            "TargetName" = "8:libpng16.dll"
-            "Tag" = "8:"
-            "Folder" = "8:_6AC6560B9ACC4F54A4DE534A0DB0B67E"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_790F7C93E62349BF87E7727D1D8DBF2E"
@@ -1331,26 +1289,6 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_F7C322AB276C165596555698C5556CCF"
-            {
-            "SourcePath" = "8:MSVCP140_ATOMIC_WAIT.dll"
-            "TargetName" = "8:MSVCP140_ATOMIC_WAIT.dll"
-            "Tag" = "8:"
-            "Folder" = "8:_6AC6560B9ACC4F54A4DE534A0DB0B67E"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_FBA83EA43831464EAF6E666208D5EA29"
             {
             "SourcePath" = "8:..\\ScriptsDialog\\ScriptsDialog\\WeightsInitializers.xaml.cs"
@@ -1567,7 +1505,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Convnet"
         "ProductCode" = "8:{D4B4AC62-642E-467C-85CB-CD72DA196999}"
-        "PackageCode" = "8:{21B74973-CA19-441C-8A33-2FC5DB46DD07}"
+        "PackageCode" = "8:{CCAB8ADB-6BEE-4757-9A43-1C9E9FE3B179}"
         "UpgradeCode" = "8:{6AC0B11F-6D71-4203-ACC9-2E07A968F844}"
         "AspNetVersion" = "8:"
         "RestartWWWService" = "11:FALSE"

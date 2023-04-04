@@ -45,6 +45,8 @@
     <None Include="global.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="WpfMath" Version="0.13.1" />
   </ItemGroup>
   <ItemGroup>

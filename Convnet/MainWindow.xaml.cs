@@ -20,9 +20,12 @@ using System.Windows.Threading;
 
 namespace Convnet
 {
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Interoperability", "CA1416:Validate platform compatibility", Justification = "<Pending>")]
     public partial class MainWindow : Window, IDisposable
     {
         const string Framework = "netcoreapp3.1";
+        //const string Framework = "net7.0-windows";
+
 #if DEBUG
         const string Mode = "Debug";
 #else

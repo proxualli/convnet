@@ -81,6 +81,7 @@ namespace Convnet.Dialogs
             return true;
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Interoperability", "CA1416:Validate platform compatibility", Justification = "<Pending>")]
         private void ButtonTest_Click(object sender, RoutedEventArgs e)
         {
             if (IsValid(this))

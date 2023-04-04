@@ -26,6 +26,7 @@ namespace Convnet.Common
     /// <summary>
     /// Finds the word 'AvalonEdit' and makes it bold and italic.
     /// </summary>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Interoperability", "CA1416:Validate platform compatibility", Justification = "<Pending>")]
     public class ColorizeCodeEditor : DocumentColorizingTransformer
     {
         protected override void ColorizeLine(DocumentLine line)

@@ -17,6 +17,7 @@ using UInt = System.UInt64;
 
 namespace Convnet.PageViewModels
 {
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Interoperability", "CA1416:Validate platform compatibility", Justification = "<Pending>")]
     public class TestPageViewModel : PageViewModelBase, IDisposable
     {
         private string progressText;

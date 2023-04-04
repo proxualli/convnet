@@ -11,6 +11,7 @@ using System.Windows.Markup;
 
 namespace Convnet
 {
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Interoperability", "CA1416:Validate platform compatibility", Justification = "<Pending>")]
     public partial class App : Application, IDisposable
     {
         public static readonly bool SingleInstanceApp = true;
@@ -54,7 +55,7 @@ namespace Convnet
                     Current.Shutdown();
                     return;
                 }
-            }            
+            }
 
             try
             {

@@ -45,7 +45,7 @@ namespace Convnet.Common
             this.OpeningBrace = '[';
             this.ClosingBrace = ']';
         }
-
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Interoperability", "CA1416:Validate platform compatibility", Justification = "<Pending>")]
         public void UpdateFoldings(FoldingManager manager, TextDocument document)
         {
             int firstErrorOffset;
@@ -65,6 +65,8 @@ namespace Convnet.Common
         /// <summary>
         /// Create <see cref="NewFolding"/>s for the specified document.
         /// </summary>
+        /// 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Interoperability", "CA1416:Validate platform compatibility", Justification = "<Pending>")]
         public IEnumerable<NewFolding> CreateNewFoldings(ITextSource document)
         {
             List<NewFolding> newFoldings = new List<NewFolding>();

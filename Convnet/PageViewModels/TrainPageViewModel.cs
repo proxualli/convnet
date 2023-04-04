@@ -31,6 +31,7 @@ namespace Convnet.PageViewModels
         Loss = 2
     };
 
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Interoperability", "CA1416:Validate platform compatibility", Justification = "<Pending>")]
     public class TrainPageViewModel : PageViewModelBase
     {
         private string progressText;
@@ -1639,6 +1640,7 @@ namespace Convnet.PageViewModels
             }
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Interoperability", "CA1416:Validate platform compatibility", Justification = "<Pending>")]
         private void ForgetButtonClick(object sender, RoutedEventArgs e)
         {
             if (Xceed.Wpf.Toolkit.MessageBox.Show("Do you really want to forget all weights?", "Forget Model Weights", MessageBoxButton.YesNo, MessageBoxImage.None, MessageBoxResult.No) == MessageBoxResult.Yes)
@@ -1653,6 +1655,7 @@ namespace Convnet.PageViewModels
             }
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Interoperability", "CA1416:Validate platform compatibility", Justification = "<Pending>")]
         private void ClearButtonClick(object sender, RoutedEventArgs e)
         {
             if (TrainingLog.Count > 0)

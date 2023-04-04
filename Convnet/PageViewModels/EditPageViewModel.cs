@@ -23,6 +23,7 @@ using System.Windows.Threading;
 
 namespace Convnet.PageViewModels
 {
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Interoperability", "CA1416:Validate platform compatibility", Justification = "<Pending>")]
     public class EditPageViewModel : PageViewModelBase
     {
 #if DEBUG
@@ -325,6 +326,7 @@ namespace Convnet.PageViewModels
             DefinitionStatus = CheckDefinition();
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Interoperability", "CA1416:Validate platform compatibility", Justification = "<Pending>")]
         private void SynchronizeButtonClick(object sender, RoutedEventArgs e)
         {
             Mouse.OverrideCursor = null;

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:controls="clr-namespace:WpfMath.Controls;assembly=WpfMath"
         mc:Ignorable="d"
-        Title="Weights Initialization Formulas" Height="680" Width="580"  Background="{DynamicResource BackgroundBrush}" Foreground="{DynamicResource TextBrush}">
+        Title="Weights Initialization Formulas" Height="680" Width="580"  Background="{DynamicResource BackgroundBrush}" Foreground="{DynamicResource TextBrush}" SizeToContent="Width" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" ShowInTaskbar="False" Topmost="True">
     <Window.Resources>
         <Style x:Key="ClearTypeFormula" TargetType="controls:FormulaControl">
             <Setter Property="TextOptions.TextRenderingMode" Value="ClearType" />

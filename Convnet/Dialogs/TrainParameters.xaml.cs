@@ -9,6 +9,7 @@ using System.Windows.Input;
 
 namespace Convnet.Dialogs
 {
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Interoperability", "CA1416:Validate platform compatibility", Justification = "<Pending>")]
     public partial class TrainParameters : Window
     {
         public DNNTrainingRate Rate { get; set; }
