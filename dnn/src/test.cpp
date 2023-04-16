@@ -175,17 +175,17 @@ int main(int argc, char* argv[])
 
     scripts::ScriptParameters p;
 
-    p.Script = scripts::Scripts::mobilenetv3;
+    p.Script = scripts::Scripts::shufflenetv2;
     p.Dataset = scripts::Datasets::cifar10;
     p.C = 3;
     p.H = 32;
     p.W = 32;
-    p.PadH = 8;
-    p.PadW = 8;
+    p.PadH = 4;
+    p.PadW = 4;
     p.MirrorPad = false;
     p.Groups = 3;
-    p.Iterations = 4;
-    p.Width = 4;
+    p.Iterations = 7;
+    p.Width = 12;
     p.Activation = scripts::Activations::HardSwish;
     p.Dropout = Float(0);
     p.Bottleneck = false;

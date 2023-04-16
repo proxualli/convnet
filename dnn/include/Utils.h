@@ -114,7 +114,7 @@ namespace
 	constexpr auto Inplace = true;
 	constexpr auto Kahan = true;
 	constexpr auto Reference = false;
-	constexpr auto SingleMeanVariancePass = false;
+	constexpr auto SingleMeanVariancePass = true;
 	constexpr auto TestActivations = false;
 	constexpr auto TestBatchNormalization = false;
 	constexpr auto TestConcat = false;
