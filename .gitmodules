@@ -25,3 +25,6 @@
 [submodule "dnn/deps/libpng"]
 	path = dnn/deps/libpng
 	url = https://github.com/glennrp/libpng
+[submodule "dnn/deps/bitsery"]
+	path = dnn/deps/bitsery
+	url = https://github.com/fraillt/bitsery.git

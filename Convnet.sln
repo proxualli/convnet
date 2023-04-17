@@ -12,7 +12,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.gitmodules = .gitmodules
 		dnn\build.cmd = dnn\build.cmd
 		dnn\build.sh = dnn\build.sh
-		dnn\CMakeLists.txt = dnn\CMakeLists.txt
+		..\dnn\CMakeLists.txt = ..\dnn\CMakeLists.txt
 		ScriptsDialog\ScriptsDialog\global.json = ScriptsDialog\ScriptsDialog\global.json
 		README.md = README.md
 	EndProjectSection
