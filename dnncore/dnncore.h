@@ -562,7 +562,7 @@ namespace dnn
 	{
 		std::string Name;
 		Datasets Dataset;
-		Costs LossFunction;
+		Costs CostFunction;
 		UInt LayerCount;
 		UInt CostLayerCount;
 		UInt CostIndex;

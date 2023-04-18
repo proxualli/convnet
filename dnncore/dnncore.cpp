@@ -610,7 +610,7 @@ namespace dnncore
 
 		Name = ToManagedString(info->Name);
 		Dataset = safe_cast<DNNDatasets>(info->Dataset);
-		CostFunction = safe_cast<DNNCosts>(info->LossFunction);
+		CostFunction = safe_cast<DNNCosts>(info->CostFunction);
 		LayerCount = info->LayerCount;
 		CostLayerCount = info->CostLayerCount;
 		CostIndex = info->CostIndex;
