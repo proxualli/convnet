@@ -102,6 +102,7 @@
 
 ### Dependencies & Licenses
 * AvalonEdit WPF Text Editor - MIT License (https://github.com/icsharpcode/AvalonEdit)
+* Bitsery Binary Serialization Library - MIT License (https://github.com/fraillt/bitsery)
 * C++ Vector Class Library - Apache License 2.0 (https://github.com/vectorclass)
 * CImg Library - CeCILL License (https://github.com/dtschump/CImg)
 * CsvHelper - Apache License 2.0 (https://github.com/joshclose/csvhelper)
