@@ -146,6 +146,9 @@
     <ClInclude Include="include\BatchNormActivationDropout.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\CsvFile.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\dllmain.cpp">
