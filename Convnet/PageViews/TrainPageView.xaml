@@ -79,6 +79,9 @@
                     <ColumnDefinition Width="{Binding ActualWidth, ElementName=depth}" />
                     <ColumnDefinition Width="{Binding ActualWidth, ElementName=height}" />
                     <ColumnDefinition Width="{Binding ActualWidth, ElementName=width}" />
+                    <ColumnDefinition Width="{Binding ActualWidth, ElementName=padD}" />
+                    <ColumnDefinition Width="{Binding ActualWidth, ElementName=padH}" />
+                    <ColumnDefinition Width="{Binding ActualWidth, ElementName=padW}" />
                     <ColumnDefinition Width="{Binding ActualWidth, ElementName=optimizer}" />
                     <ColumnDefinition Width="{Binding ActualWidth, ElementName=rate}" />
                     <ColumnDefinition Width="{Binding ActualWidth, ElementName=eps}" />
@@ -110,19 +113,19 @@
                     <ColumnDefinition Width="{Binding ActualWidth, ElementName=duration}" />
                 </Grid.ColumnDefinitions>
 
-                <Border Grid.Column="2" Grid.ColumnSpan="4" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  BorderThickness="1,1,0,0" BorderBrush="{StaticResource TextBrush}" Margin="1,0,-1,0" Background="{StaticResource BackgroundBrush}">
+                <Border Grid.Column="2" Grid.ColumnSpan="7" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  BorderThickness="1,1,0,0" BorderBrush="{StaticResource TextBrush}" Margin="1,0,-1,0" Background="{StaticResource BackgroundBrush}">
                     <TextBlock Text="Resolution" HorizontalAlignment="Stretch" VerticalAlignment="Center" TextAlignment="Center" Foreground="{StaticResource TextBrush}" FontFamily="Consolas" FontSize="14" />
                 </Border>
-                <Border Grid.Column="6" Grid.ColumnSpan="8" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  BorderThickness="1,1,0,0" BorderBrush="{StaticResource TextBrush}" Margin="1,0,-1,0" Background="{StaticResource BackgroundBrush}">
+                <Border Grid.Column="9" Grid.ColumnSpan="8" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  BorderThickness="1,1,0,0" BorderBrush="{StaticResource TextBrush}" Margin="1,0,-1,0" Background="{StaticResource BackgroundBrush}">
                     <TextBlock Text="Regularization" HorizontalAlignment="Stretch" VerticalAlignment="Center" TextAlignment="Center" Foreground="{StaticResource TextBrush}" FontFamily="Consolas" FontSize="14" />
                 </Border>
-                <Border Grid.Column="14" Grid.ColumnSpan="12" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  BorderThickness="1,1,0,0" BorderBrush="{StaticResource TextBrush}" Margin="1,0,-1,0" Background="{StaticResource BackgroundBrush}">
+                <Border Grid.Column="17" Grid.ColumnSpan="12" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  BorderThickness="1,1,0,0" BorderBrush="{StaticResource TextBrush}" Margin="1,0,-1,0" Background="{StaticResource BackgroundBrush}">
                     <TextBlock Text="Augmentation" HorizontalAlignment="Stretch" VerticalAlignment="Center" TextAlignment="Center" Foreground="{StaticResource TextBrush}" FontFamily="Consolas" FontSize="14" />
                 </Border>
-                <Border Grid.Column="26" Grid.ColumnSpan="4" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  BorderThickness="1,1,0,0" BorderBrush="{StaticResource TextBrush}" Margin="1,0,-1,0" Background="{StaticResource BackgroundBrush}">
+                <Border Grid.Column="29" Grid.ColumnSpan="4" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  BorderThickness="1,1,0,0" BorderBrush="{StaticResource TextBrush}" Margin="1,0,-1,0" Background="{StaticResource BackgroundBrush}">
                     <TextBlock Text="Train" HorizontalAlignment="Stretch" VerticalAlignment="Center" TextAlignment="Center" Foreground="{StaticResource TextBrush}" FontFamily="Consolas" FontSize="14" />
                 </Border>
-                <Border Grid.Column="30" Grid.ColumnSpan="4" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  BorderThickness="1,1,1,0" BorderBrush="{StaticResource TextBrush}" Margin="1,0,-1,0" Background="{StaticResource BackgroundBrush}">
+                <Border Grid.Column="34" Grid.ColumnSpan="4" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  BorderThickness="1,1,1,0" BorderBrush="{StaticResource TextBrush}" Margin="1,0,-1,0" Background="{StaticResource BackgroundBrush}">
                     <TextBlock Text="Test" HorizontalAlignment="Stretch" VerticalAlignment="Center" TextAlignment="Center" Foreground="{StaticResource TextBrush}" FontFamily="Consolas" FontSize="14" />
                 </Border>
             </Grid>
@@ -224,7 +227,7 @@
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
 
-                    <GridViewColumn x:Name="batchSize" Header="N" Width="48">
+                    <GridViewColumn x:Name="batchSize" Header="N" Width="46">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding N, StringFormat=0.##}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextAlignment="Center" FontFamily="Consolas" FontSize="14"/>
@@ -232,7 +235,7 @@
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
 
-                    <GridViewColumn x:Name="depth" Header="D" Width="48">
+                    <GridViewColumn x:Name="depth" Header="D" Width="30">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding D, StringFormat=0.##}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextAlignment="Center" FontFamily="Consolas" FontSize="14"/>
@@ -240,7 +243,7 @@
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
 
-                    <GridViewColumn x:Name="height" Header="H" Width="48">
+                    <GridViewColumn x:Name="height" Header="H" Width="46">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding H, StringFormat=0.##}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextAlignment="Center" FontFamily="Consolas" FontSize="14"/>
@@ -248,10 +251,34 @@
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
 
-                    <GridViewColumn x:Name="width" Header="W" Width="48">
+                    <GridViewColumn x:Name="width" Header="W" Width="46">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding W, StringFormat=0.##}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextAlignment="Center" FontFamily="Consolas" FontSize="14"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+
+                    <GridViewColumn x:Name="padD" Header="PadD" Width="40">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding PadD, StringFormat=0.##}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextAlignment="Center" FontFamily="Consolas" FontSize="14"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+
+                    <GridViewColumn x:Name="padH" Header="PadH" Width="40">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding PadH, StringFormat=0.##}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextAlignment="Center" FontFamily="Consolas" FontSize="14"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+
+                    <GridViewColumn x:Name="padW" Header="PadW" Width="40">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding PadW, StringFormat=0.##}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextAlignment="Center" FontFamily="Consolas" FontSize="14"/>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>

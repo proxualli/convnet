@@ -1845,7 +1845,7 @@ namespace dnncore
 		{
 		}
 
-		DNNTrainingResult::DNNTrainingResult(UInt cycle, UInt epoch, UInt groupIndex, UInt costIndex, String^ costName, DNNOptimizers optimizer, Float momentum, Float beta2, Float gamma, Float l2Penalty, Float dropout, Float eps, Float rate, UInt n, UInt d, UInt h, UInt w, UInt padD, UInt padH, UInt padW, Float inputDropout, Float cutout, bool cutMix, Float autoAugment, bool horizontalFlip, bool verticalFlip, Float colorCast, UInt colorAngle, Float distortion, DNNInterpolations interpolation, Float scaling, Float rotation, Float avgTrainLoss, UInt trainErrors, Float trainErrorPercentage, Float trainAccuracy, Float avgTestLoss, UInt testErrors, Float testErrorPercentage, Float testAccuracy, long long elapsedTicks)
+		DNNTrainingResult::DNNTrainingResult(UInt cycle, UInt epoch, UInt groupIndex, UInt costIndex, String^ costName, DNNOptimizers optimizer, Float momentum, Float beta2, Float gamma, Float l2Penalty, Float dropout, Float eps, Float rate, UInt n, UInt d, UInt h, UInt w, UInt padD, UInt padH, UInt padW, Float inputDropout, Float cutout, bool cutMix, Float autoAugment, bool horizontalFlip, bool verticalFlip, Float colorCast, UInt colorAngle, Float distortion, DNNInterpolations interpolation, Float scaling, Float rotation, Float avgTrainLoss, UInt trainErrors, Float trainErrorPercentage, Float trainAccuracy, Float avgTestLoss, UInt testErrors, Float testErrorPercentage, Float testAccuracy, long long elapsedTicks, TimeSpan elapsedTime)
 		{
 			Cycle = cycle;
 			Epoch = epoch;
@@ -1888,7 +1888,7 @@ namespace dnncore
 			TestErrorPercentage = testErrorPercentage;
 			TestAccuracy = testAccuracy;
 			ElapsedTicks = elapsedTicks;
-			ElapsedTime = TimeSpan(elapsedTicks);
+			ElapsedTime = elapsedTime;
 		}
 	};
 
