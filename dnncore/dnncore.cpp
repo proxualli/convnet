@@ -140,12 +140,7 @@ namespace dnncore
 				ConfusionMatrix[i][j] = confusionMatrix[i][j];
 		}
 	}
-
-	bool DNNModel::LoadDataset()
-	{
-		return DNNLoadDataset();
-	}
-
+	
 	bool DNNModel::SetShuffleCount(UInt count)
 	{
 		return DNNSetShuffleCount(count);
@@ -504,16 +499,6 @@ namespace dnncore
 		}
 	}
 
-	void DNNModel::ResetWeights()
-	{
-		DNNResetWeights();
-	}
-
-	void DNNModel::ResetLayerWeights(UInt layerIndex)
-	{
-		DNNResetLayerWeights(layerIndex);
-	}
-
 	bool DNNModel::SetFormat(bool plain)
 	{
 		bool ret = DNNSetFormat(plain);
@@ -533,15 +518,15 @@ namespace dnncore
 		}
 	}
 
+	void DNNModel::ResetOptimizer()
+	{
+		DNNResetOptimizer();
+	}
+
 	void DNNModel::SetUseTrainingStrategy(bool enable)
 	{
 		DNNSetUseTrainingStrategy(enable);
 		UseTrainingStrategy = enable;
-	}
-
-	void DNNModel::ResetOptimizer()
-	{
-		DNNResetOptimizer();
 	}
 
 	cli::array<String^>^ DNNModel::GetTextLabels(String^ fileName)
@@ -846,6 +831,11 @@ namespace dnncore
 		return 1;
 	}
 
+	bool DNNModel::LoadDataset()
+	{
+		return DNNLoadDataset();
+	}
+
 	bool DNNModel::LoadModel(String^ fileName)
 	{
 		return DNNLoadModel(ToUnmanagedString(fileName));
@@ -888,6 +878,11 @@ namespace dnncore
 		return DNNSaveWeights(ToUnmanagedString(fileName), persist);
 	}
 
+	void DNNModel::ResetWeights()
+	{
+		DNNResetWeights();
+	}
+
 	int DNNModel::LoadLayerWeights(String^ fileName, UInt layerIndex)
 	{
 		int ret = DNNLoadLayerWeights(ToUnmanagedString(fileName), layerIndex, false);
@@ -901,5 +896,10 @@ namespace dnncore
 	int DNNModel::SaveLayerWeights(String^ fileName, UInt layerIndex)
 	{
 		return DNNSaveLayerWeights(ToUnmanagedString(fileName), layerIndex, false);
+	}
+
+	void DNNModel::ResetLayerWeights(UInt layerIndex)
+	{
+		DNNResetLayerWeights(layerIndex);
 	}
 }
