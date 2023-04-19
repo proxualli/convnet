@@ -271,7 +271,7 @@ namespace Convnet.PageViewModels
                             CommandToolBar[6].Visibility = Visibility.Visible;
                             CommandToolBar[7].Visibility = Visibility.Visible;
                                                         
-                            if (Model.Layers[layersComboBox.SelectedIndex].WeightCount > 0 || Model.Layers[layersComboBox.SelectedIndex].IsNormalizationLayer)
+                            if (Model.Layers[layersComboBox.SelectedIndex].WeightCount > 0 || Model.Layers[layersComboBox.SelectedIndex].IsNormLayer)
                             {
                                 CommandToolBar[16].Visibility = !Settings.Default.DisableLocking ? Visibility.Visible : Visibility.Collapsed;
                                 CommandToolBar[17].Visibility = !Settings.Default.DisableLocking ? Visibility.Visible : Visibility.Collapsed;
@@ -1392,7 +1392,7 @@ namespace Convnet.PageViewModels
 
                         if (Model.Layers[layersComboBox.SelectedIndex].WeightCount > 0)
                         {
-                            if ((Model.Layers[layersComboBox.SelectedIndex].IsNormalizationLayer && Model.Layers[layersComboBox.SelectedIndex].Scaling) || !Model.Layers[layersComboBox.SelectedIndex].IsNormalizationLayer)
+                            if ((Model.Layers[layersComboBox.SelectedIndex].IsNormLayer && Model.Layers[layersComboBox.SelectedIndex].Scaling) || !Model.Layers[layersComboBox.SelectedIndex].IsNormLayer)
                             {
                                 CommandToolBar[17].Visibility = !Settings.Default.DisableLocking ? Visibility.Visible : Visibility.Collapsed;
                                 CommandToolBar[18].Visibility = !Settings.Default.DisableLocking ? Visibility.Visible : Visibility.Collapsed;
@@ -1451,7 +1451,7 @@ namespace Convnet.PageViewModels
 
                         if (Model.Layers[layersComboBox.SelectedIndex].WeightCount > 0)
                         {
-                            if ((Model.Layers[layersComboBox.SelectedIndex].IsNormalizationLayer && Model.Layers[layersComboBox.SelectedIndex].Scaling) || !Model.Layers[layersComboBox.SelectedIndex].IsNormalizationLayer)
+                            if ((Model.Layers[layersComboBox.SelectedIndex].IsNormLayer && Model.Layers[layersComboBox.SelectedIndex].Scaling) || !Model.Layers[layersComboBox.SelectedIndex].IsNormLayer)
                             {
                                 CommandToolBar[17].Visibility = !Settings.Default.DisableLocking ? Visibility.Visible : Visibility.Collapsed;
                                 CommandToolBar[18].Visibility = !Settings.Default.DisableLocking ? Visibility.Visible : Visibility.Collapsed;
@@ -1550,7 +1550,7 @@ namespace Convnet.PageViewModels
                     if (layersComboBox.SelectedIndex >= 0 && Model.Layers[layersComboBox.SelectedIndex].WeightCount > 0)
                     {
                         DNNLayerInfo info = Model.Layers[layersComboBox.SelectedIndex];
-                        if (info.IsNormalizationLayer)
+                        if (info.IsNormLayer)
                         {
                             if (info.Scaling)
                             {
@@ -1788,7 +1788,7 @@ namespace Convnet.PageViewModels
 
                     ShowSample = Model.TaskState == DNNTaskStates.Running;
                     ShowWeights = Model.Layers[index].WeightCount > 0 || Settings.Default.Timings;
-                    ShowWeightsSnapshot = (Model.Layers[index].IsNormalizationLayer && Model.Layers[index].Scaling) || Model.Layers[index].LayerType == DNNLayerTypes.PartialDepthwiseConvolution || Model.Layers[index].LayerType == DNNLayerTypes.DepthwiseConvolution || Model.Layers[index].LayerType == DNNLayerTypes.ConvolutionTranspose || Model.Layers[index].LayerType == DNNLayerTypes.Convolution || Model.Layers[index].LayerType == DNNLayerTypes.Dense || (Model.Layers[index].LayerType == DNNLayerTypes.Activation && Model.Layers[index].WeightCount > 0);
+                    ShowWeightsSnapshot = (Model.Layers[index].IsNormLayer && Model.Layers[index].Scaling) || Model.Layers[index].LayerType == DNNLayerTypes.PartialDepthwiseConvolution || Model.Layers[index].LayerType == DNNLayerTypes.DepthwiseConvolution || Model.Layers[index].LayerType == DNNLayerTypes.ConvolutionTranspose || Model.Layers[index].LayerType == DNNLayerTypes.Convolution || Model.Layers[index].LayerType == DNNLayerTypes.Dense || (Model.Layers[index].LayerType == DNNLayerTypes.Activation && Model.Layers[index].WeightCount > 0);
 
                     if (ShowSample)
                     {

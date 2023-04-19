@@ -793,8 +793,6 @@ namespace dnncore
 		Stopped = 2
 	};
 
-	struct Stats;
-
 	[Serializable()]
 	public ref class DNNStats
 	{
@@ -1774,7 +1772,7 @@ namespace dnncore
 		UInt d = 1;
 		UInt h = 32;
 		UInt w = 32;
-		UInt padD = 1;
+		UInt padD = 0;
 		UInt padH = 4;
 		UInt padW = 4;
 		Float momentum = Float(0.9);
@@ -1943,7 +1941,7 @@ namespace dnncore
 				OnPropertyChanged("LockUpdate");
 			}
 		};
-		property bool IsNormalizationLayer;
+		property bool IsNormLayer;
 		property bool HasBias;
 		property bool MirrorPad;
 		property bool RandomCrop;

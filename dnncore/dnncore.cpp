@@ -169,7 +169,7 @@ namespace dnncore
 
 		const auto layerType = safe_cast<DNNLayerTypes>(infoNative->LayerType);
 		infoManaged->LayerType = layerType;
-		infoManaged->IsNormalizationLayer =
+		infoManaged->IsNormLayer =
 			layerType == DNNLayerTypes::BatchNorm ||
 			layerType == DNNLayerTypes::BatchNormActivation ||
 			layerType == DNNLayerTypes::BatchNormActivationDropout ||
@@ -219,7 +219,7 @@ namespace dnncore
 		infoManaged->FactorH = infoNative->fH;
 		infoManaged->FactorW = infoNative->fW;
 		infoManaged->HasBias = infoNative->HasBias;
-		infoManaged->Scaling = infoManaged->IsNormalizationLayer ? infoNative->Scaling : false;
+		infoManaged->Scaling = infoManaged->IsNormLayer ? infoNative->Scaling : false;
 		infoManaged->AcrossChannels = infoNative->AcrossChannels;
 		infoManaged->LockUpdate = infoNative->Lockable ? Nullable<bool>(infoNative->Locked) : Nullable<bool>(false);
 		infoManaged->Lockable = infoNative->Lockable;
