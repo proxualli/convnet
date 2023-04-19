@@ -132,6 +132,112 @@ namespace Convnet
                         model.SetDisableLocking(Settings.Default.DisableLocking);
                         model.SetShuffleCount((ulong)Math.Round(Settings.Default.Shuffle));
 
+                        try
+                        {
+                            const string delim = ";";
+                            var sb = new StringBuilder();
+                            sb.AppendLine(
+                                    "Cycle" + delim +
+                                    "Epoch" + delim +
+                                    "GroupIndex" + delim +
+                                    "CostIndex" + delim +
+                                    "CostName" + delim +
+                                    "Optimizer" + delim +
+                                    "Momentum" + delim +
+                                    "Beta2" + delim +
+                                    "Gamma" + delim +
+                                    "L2Penalty" + delim +
+                                    "Dropout" + delim +
+                                    "Eps" + delim +
+                                    "Rate" + delim +
+                                    "N" + delim +
+                                    "D" + delim +
+                                    "H" + delim +
+                                    "W" + delim +
+                                    "PadD" + delim +
+                                    "PadH" + delim +
+                                    "PadW" + delim +
+                                    "InputDropout" + delim +
+                                    "Cutout" + delim +
+                                    "CutMix" + delim +
+                                    "AutoAugment" + delim +
+                                    "HorizontalFlip" + delim +
+                                    "VerticalFlip" + delim +
+                                    "ColorCast" + delim +
+                                    "ColorAngle" + delim +
+                                    "Distortion" + delim +
+                                    "Interpolation" + delim +
+                                    "Scaling" + delim +
+                                    "Rotation" + delim +
+                                    "AvgTrainLoss" + delim +
+                                    "TrainErrors" + delim +
+                                    "TrainErrorPercentage" + delim +
+                                    "TrainAccuracy" + delim +
+                                    "AvgTestLoss" + delim +
+                                    "TestErrors" + delim +
+                                    "TestErrorPercentage" + delim +
+                                    "TestAccuracy" + delim +
+                                    "ElapsedTicks" + delim +
+                                    "ElapsedTime");
+
+                            foreach (var row in Settings.Default.TrainingLog)
+                                sb.AppendLine(
+                                    row.Cycle.ToString() + delim +
+                                    row.Epoch.ToString() + delim +
+                                    row.GroupIndex.ToString() + delim +
+                                    row.CostIndex.ToString() + delim +
+                                    row.CostName.ToString() + delim +
+                                    row.Optimizer.ToString() + delim +
+                                    row.Momentum.ToString() + delim +
+                                    row.Beta2.ToString() + delim +
+                                    row.Gamma.ToString() + delim +
+                                    row.L2Penalty.ToString() + delim +
+                                    row.Dropout.ToString() + delim +
+                                    row.Eps.ToString() + delim +
+                                    row.Rate.ToString() + delim +
+                                    row.N.ToString() + delim +
+                                    row.D.ToString() + delim +
+                                    row.H.ToString() + delim +
+                                    row.W.ToString() + delim +
+                                    row.PadD.ToString() + delim +
+                                    row.PadH.ToString() + delim +
+                                    row.PadW.ToString() + delim +
+                                    row.InputDropout.ToString() + delim +
+                                    row.Cutout.ToString() + delim +
+                                    row.CutMix.ToString() + delim +
+                                    row.AutoAugment.ToString() + delim +
+                                    row.HorizontalFlip.ToString() + delim +
+                                    row.VerticalFlip.ToString() + delim +
+                                    row.ColorCast.ToString() + delim +
+                                    row.ColorAngle.ToString() + delim +
+                                    row.Distortion.ToString() + delim +
+                                    row.Interpolation.ToString() + delim +
+                                    row.Scaling.ToString() + delim +
+                                    row.Rotation.ToString() + delim +
+                                    row.AvgTrainLoss.ToString() + delim +
+                                    row.TrainErrors.ToString() + delim +
+                                    row.TrainErrorPercentage.ToString() + delim +
+                                    row.TrainAccuracy.ToString() + delim +
+                                    row.AvgTestLoss.ToString() + delim +
+                                    row.TestErrors.ToString() + delim +
+                                    row.TestErrorPercentage.ToString() + delim +
+                                    row.TestAccuracy.ToString() + delim +
+                                    row.ElapsedTicks.ToString() + delim +
+                                    row.ElapsedTime.ToString());
+
+                            //Clipboard.SetText(sb.ToString());
+                            string tmpFileName = System.IO.Path.GetTempPath() + Guid.NewGuid().ToString() + ".csv";
+                            File.WriteAllText(tmpFileName, sb.ToString());
+                            PageVM.Model.LoadLog(tmpFileName);
+                            File.Delete(tmpFileName);
+                        }
+                        catch (Exception ex)
+                        {
+                            Mouse.OverrideCursor = null;
+                            Xceed.Wpf.Toolkit.MessageBox.Show(ex.ToString(), "Exception occured", MessageBoxButton.OK);
+                        }
+
+
                         var dataset = PageVM.Model.Dataset.ToString().ToLower();
                         var optimizer = PageVM.Model.Optimizer.ToString().ToLower();
 
@@ -215,6 +321,111 @@ namespace Convnet
                         model.SetUseTrainingStrategy(Settings.Default.UseTrainingStrategy);
                         model.SetDisableLocking(Settings.Default.DisableLocking);
                         model.SetShuffleCount((ulong)Math.Round(Settings.Default.Shuffle));
+
+                        try
+                        {
+                            const string delim = ";";
+                            var sb = new StringBuilder();
+                            sb.AppendLine(
+                                    "Cycle" + delim +
+                                    "Epoch" + delim +
+                                    "GroupIndex" + delim +
+                                    "CostIndex" + delim +
+                                    "CostName" + delim +
+                                    "Optimizer" + delim +
+                                    "Momentum" + delim +
+                                    "Beta2" + delim +
+                                    "Gamma" + delim +
+                                    "L2Penalty" + delim +
+                                    "Dropout" + delim +
+                                    "Eps" + delim +
+                                    "Rate" + delim +
+                                    "N" + delim +
+                                    "D" + delim +
+                                    "H" + delim +
+                                    "W" + delim +
+                                    "PadD" + delim +
+                                    "PadH" + delim +
+                                    "PadW" + delim +
+                                    "InputDropout" + delim +
+                                    "Cutout" + delim +
+                                    "CutMix" + delim +
+                                    "AutoAugment" + delim +
+                                    "HorizontalFlip" + delim +
+                                    "VerticalFlip" + delim +
+                                    "ColorCast" + delim +
+                                    "ColorAngle" + delim +
+                                    "Distortion" + delim +
+                                    "Interpolation" + delim +
+                                    "Scaling" + delim +
+                                    "Rotation" + delim +
+                                    "AvgTrainLoss" + delim +
+                                    "TrainErrors" + delim +
+                                    "TrainErrorPercentage" + delim +
+                                    "TrainAccuracy" + delim +
+                                    "AvgTestLoss" + delim +
+                                    "TestErrors" + delim +
+                                    "TestErrorPercentage" + delim +
+                                    "TestAccuracy" + delim +
+                                    "ElapsedTicks" + delim +
+                                    "ElapsedTime");
+
+                            foreach (var row in Settings.Default.TrainingLog)
+                                sb.AppendLine(
+                                    row.Cycle.ToString() + delim +
+                                    row.Epoch.ToString() + delim +
+                                    row.GroupIndex.ToString() + delim +
+                                    row.CostIndex.ToString() + delim +
+                                    row.CostName.ToString() + delim +
+                                    row.Optimizer.ToString() + delim +
+                                    row.Momentum.ToString() + delim +
+                                    row.Beta2.ToString() + delim +
+                                    row.Gamma.ToString() + delim +
+                                    row.L2Penalty.ToString() + delim +
+                                    row.Dropout.ToString() + delim +
+                                    row.Eps.ToString() + delim +
+                                    row.Rate.ToString() + delim +
+                                    row.N.ToString() + delim +
+                                    row.D.ToString() + delim +
+                                    row.H.ToString() + delim +
+                                    row.W.ToString() + delim +
+                                    row.PadD.ToString() + delim +
+                                    row.PadH.ToString() + delim +
+                                    row.PadW.ToString() + delim +
+                                    row.InputDropout.ToString() + delim +
+                                    row.Cutout.ToString() + delim +
+                                    row.CutMix.ToString() + delim +
+                                    row.AutoAugment.ToString() + delim +
+                                    row.HorizontalFlip.ToString() + delim +
+                                    row.VerticalFlip.ToString() + delim +
+                                    row.ColorCast.ToString() + delim +
+                                    row.ColorAngle.ToString() + delim +
+                                    row.Distortion.ToString() + delim +
+                                    row.Interpolation.ToString() + delim +
+                                    row.Scaling.ToString() + delim +
+                                    row.Rotation.ToString() + delim +
+                                    row.AvgTrainLoss.ToString() + delim +
+                                    row.TrainErrors.ToString() + delim +
+                                    row.TrainErrorPercentage.ToString() + delim +
+                                    row.TrainAccuracy.ToString() + delim +
+                                    row.AvgTestLoss.ToString() + delim +
+                                    row.TestErrors.ToString() + delim +
+                                    row.TestErrorPercentage.ToString() + delim +
+                                    row.TestAccuracy.ToString() + delim +
+                                    row.ElapsedTicks.ToString() + delim +
+                                    row.ElapsedTime.ToString());
+
+                            //Clipboard.SetText(sb.ToString());
+                            string tmpFileName = System.IO.Path.GetTempPath() + Guid.NewGuid().ToString() + ".csv";
+                            File.WriteAllText(tmpFileName, sb.ToString());
+                            PageVM.Model.LoadLog(tmpFileName);
+                            File.Delete(tmpFileName);
+                        }
+                        catch (Exception ex)
+                        {
+                            Mouse.OverrideCursor = null;
+                            Xceed.Wpf.Toolkit.MessageBox.Show(ex.ToString(), "Exception occured", MessageBoxButton.OK);
+                        }
 
                         var dataset = PageVM.Model.Dataset.ToString().ToLower();
                         var optimizer = PageVM.Model.Optimizer.ToString().ToLower();

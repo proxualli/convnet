@@ -1320,7 +1320,10 @@ namespace Convnet.PageViewModels
         public override void Reset()
         {
             if (TrainingLog != null)
+            {
                 TrainingLog.Clear();
+                Model.ClearLog();
+            }
             SelectedIndex = -1;
             ProgressText = String.Empty;
             Label = String.Empty;
