@@ -4,6 +4,7 @@ using Convnet.PageViewModels;
 using Convnet.Properties;
 using CsvHelper;
 using dnncore;
+using OxyPlot;
 using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -148,9 +149,9 @@ namespace Convnet
                                 PageVM.Model.SetPersistOptimizer(Settings.Default.PersistOptimizer);
                             }
 
-                        for (int i = 0; i < Settings.Default.TrainingLog.Count; i++)
-                            Settings.Default.TrainingLog[i].ElapsedTime = new TimeSpan(Settings.Default.TrainingLog[i].ElapsedTicks);
-                        Settings.Default.Save();
+                        //for (int i = 0; i < Settings.Default.TrainingLog.Count; i++)
+                        //    Settings.Default.TrainingLog[i].ElapsedTime = TimeSpan.FromMilliseconds((double)Settings.Default.TrainingLog[i].ElapsedTicks);
+                        //Settings.Default.Save();
 
                         Title = PageVM.Model.Name + " - Convnet Explorer";
                         DataContext = PageVM;
@@ -232,9 +233,9 @@ namespace Convnet
                                 PageVM.Model.SetPersistOptimizer(Settings.Default.PersistOptimizer);
                             }
 
-                        for (int i = 0; i < Settings.Default.TrainingLog.Count; i++)
-                            Settings.Default.TrainingLog[i].ElapsedTime = new TimeSpan(Settings.Default.TrainingLog[i].ElapsedTicks);
-                        Settings.Default.Save();
+                        //for (int i = 0; i < Settings.Default.TrainingLog.Count; i++)
+                        //    Settings.Default.TrainingLog[i].ElapsedTime = TimeSpan.FromMilliseconds((double)Settings.Default.TrainingLog[i].ElapsedTicks);
+                        //Settings.Default.Save();
 
                         Title = PageVM.Model.Name + " - Convnet Explorer";
                         DataContext = PageVM;
@@ -543,12 +544,16 @@ namespace Convnet
                                         {
                                             Mouse.OverrideCursor = null;
                                             if (Xceed.Wpf.Toolkit.MessageBox.Show("Do you want to clear the existing log?", "Clear Log", MessageBoxButton.YesNo, MessageBoxImage.None, MessageBoxResult.No) == MessageBoxResult.Yes)
+                                            {
                                                 Settings.Default.TrainingLog.Clear();
+                                                PageVM.Model.ClearLog();
+                                            }
                                         }
 
                                         foreach (var record in records)
                                             Settings.Default.TrainingLog.Add(record);
-                                        
+
+                                        PageVM.Model.LoadLog(openFileDialog.FileName);
                                     }
                                 }
                                 catch (Exception ex)
@@ -751,6 +756,7 @@ namespace Convnet
                                     //Clipboard.SetText(sb.ToString());
 
                                     File.WriteAllText(saveFileDialog.FileName, sb.ToString());
+                                    PageVM.Model.LoadLog(saveFileDialog.FileName);
                                 }
                                 catch (Exception ex)
                                 {

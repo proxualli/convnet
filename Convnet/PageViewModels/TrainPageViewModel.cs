@@ -1668,6 +1668,7 @@ namespace Convnet.PageViewModels
                 if (Xceed.Wpf.Toolkit.MessageBox.Show("Do you really want to clear the log?", "Clear Log", MessageBoxButton.YesNo, MessageBoxImage.None, MessageBoxResult.No) == MessageBoxResult.Yes)
                 {
                     TrainingLog.Clear();
+                    Model.ClearLog();
                     RefreshTrainingPlot();
                 }
             }

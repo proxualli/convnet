@@ -5,7 +5,6 @@ using ICSharpCode.AvalonEdit.Document;
 using Microsoft.Build.Evaluation;
 using Microsoft.Build.Execution;
 using Microsoft.Build.Framework;
-using OxyPlot;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
