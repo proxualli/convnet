@@ -177,7 +177,7 @@ namespace Convnet.PageViewModels
                 for (uint c = 0; c < Model.CostLayerCount; c++)
                 {
                     Model.UpdateCostInfo(c);
-                    TrainingLog.Add(new DNNTrainingResult(Cycle, Epoch, Model.CostLayers[c].GroupIndex, c, Model.CostLayers[c].Name, (DNNOptimizers)Optimizer, Momentum, Beta2, Gamma, L2Penalty, Dropout, Eps, Rate, N, D, H, W, PadD, PadH, PadW, InputDropout, Cutout, CutMix, AutoAugment, HorizontalFlip, VerticalFlip, ColorCast, ColorAngle, Distortion, (DNNInterpolations)Interpolation, Scaling, Rotation, Model.CostLayers[c].AvgTrainLoss, Model.CostLayers[c].TrainErrors, Model.CostLayers[c].TrainErrorPercentage, Model.CostLayers[c].TrainAccuracy, Model.CostLayers[c].AvgTestLoss, Model.CostLayers[c].TestErrors, Model.CostLayers[c].TestErrorPercentage, Model.CostLayers[c].TestAccuracy, (System.Int64)span.TotalMilliseconds, new TimeSpan(span.Ticks)));
+                    TrainingLog.Add(new DNNTrainingResult(Cycle, Epoch, Model.CostLayers[c].GroupIndex, c, Model.CostLayers[c].Name, (DNNOptimizers)Optimizer, Momentum, Beta2, Gamma, L2Penalty, Dropout, Eps, Rate, N, D, H, W, PadD, PadH, PadW, InputDropout, Cutout, CutMix, AutoAugment, HorizontalFlip, VerticalFlip, ColorCast, ColorAngle, Distortion, (DNNInterpolations)Interpolation, Scaling, Rotation, Model.CostLayers[c].AvgTrainLoss, Model.CostLayers[c].TrainErrors, Model.CostLayers[c].TrainErrorPercentage, Model.CostLayers[c].TrainAccuracy, Model.CostLayers[c].AvgTestLoss, Model.CostLayers[c].TestErrors, Model.CostLayers[c].TestErrorPercentage, Model.CostLayers[c].TestAccuracy, (System.Int64)span.TotalMilliseconds, span));
                 }
 
                 SelectedIndex = TrainingLog.Count - 1;

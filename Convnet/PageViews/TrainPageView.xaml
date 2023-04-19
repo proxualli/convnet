@@ -363,7 +363,7 @@
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
 
-                    <GridViewColumn x:Name="cutMix" Header="CutMix" Width="56">
+                    <GridViewColumn x:Name="cutMix" Header="CutMix" Width="54">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <CheckBox HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="Consolas" HorizontalContentAlignment="Center" FontSize="14" IsChecked="{Binding CutMix}" Foreground="White" Background="Transparent" BorderBrush="{DynamicResource {x:Static SystemColors.DesktopBrushKey}}" IsThreeState="False" IsHitTestVisible="False" Style="{Binding Mode=OneWay, Source={StaticResource KioskCheckBox}}"/>
