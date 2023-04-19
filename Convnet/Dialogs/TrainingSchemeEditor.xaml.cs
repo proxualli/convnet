@@ -113,7 +113,7 @@ namespace Convnet.Dialogs
 
                 foreach (DNNTrainingRate rate in tpvm.TrainRates)
                 {
-                    if (rate.BatchSize == 1)
+                    if (rate.N == 1)
                     {
                         stochastic = true;
                         break;

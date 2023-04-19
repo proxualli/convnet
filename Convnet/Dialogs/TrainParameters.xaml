@@ -219,7 +219,7 @@
 
         <xctk:AutoSelectTextBox ContextMenu="{StaticResource MyContextMenu}" Grid.Column="5" Grid.Row="0" HorizontalAlignment="Left" x:Name="textBoxBatchSize" Width="42" VerticalAlignment="Stretch" TabIndex="17" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" Validation.ErrorTemplate="{StaticResource validationTemplate}" Style="{StaticResource textBoxInError}" AllowDrop="False" MaxLines="1" AutoWordSelection="True" BorderThickness="1" SnapsToDevicePixels="True" BorderBrush="DarkGray" Margin="2" AutoSelectBehavior="OnFocus" AutoMoveFocus="True" FontSize="14">
             <TextBox.Text>
-                <Binding Path="BatchSize" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                <Binding Path="N" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
                     <Binding.ValidationRules>
                         <c:UIntBatchSizeRangeRule/>
                     </Binding.ValidationRules>
@@ -229,7 +229,7 @@
 
         <xctk:AutoSelectTextBox ContextMenu="{StaticResource MyContextMenu}" Grid.Column="5" Grid.Row="0" Grid.RowSpan="1" HorizontalAlignment="Center" Width="42" x:Name="textBoxHeight" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" Margin="2" MaxLines="1" TabIndex="18" Validation.ErrorTemplate="{StaticResource validationTemplate}" Style="{StaticResource textBoxInError}" AutoWordSelection="True" AllowDrop="False" BorderThickness="1" SnapsToDevicePixels="True" AutoMoveFocus="True" AutoSelectBehavior="OnFocus" FontSize="14">
             <TextBox.Text>
-                <Binding Path="Height" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                <Binding Path="H" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
                     <Binding.ValidationRules>
                         <c:UIntRangeRule Min="4" Max="10000"/>
                     </Binding.ValidationRules>
@@ -239,7 +239,7 @@
 
         <xctk:AutoSelectTextBox ContextMenu="{StaticResource MyContextMenu}" Grid.Column="5" Grid.Row="0" Grid.RowSpan="1" HorizontalAlignment="Right" Width="42" x:Name="textBoxWidth" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" Margin="2" MaxLines="1" TabIndex="19" Validation.ErrorTemplate="{StaticResource validationTemplate}" Style="{StaticResource textBoxInError}" AutoWordSelection="True" AllowDrop="False" BorderThickness="1" SnapsToDevicePixels="True" AutoMoveFocus="True" AutoSelectBehavior="OnFocus" FontSize="14">
             <TextBox.Text>
-                <Binding Path="Width" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                <Binding Path="W" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
                     <Binding.ValidationRules>
                         <c:UIntRangeRule Min="4" Max="10000"/>
                     </Binding.ValidationRules>

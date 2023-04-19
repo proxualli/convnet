@@ -673,9 +673,13 @@ namespace Convnet
                                             "Dropout" + delim +
                                             "Eps" + delim +
                                             "Rate" + delim +
-                                            "BatchSize" + delim +
-                                            "Height" + delim +
-                                            "Width" + delim +
+                                            "N" + delim +
+                                            "D" + delim +
+                                            "H" + delim +
+                                            "W" + delim +
+                                            "PadD" + delim +
+                                            "PadH" + delim +
+                                            "PadW" + delim +
                                             "InputDropout" + delim +
                                             "Cutout" + delim +
                                             "CutMix" + delim +
@@ -714,9 +718,13 @@ namespace Convnet
                                             row.Dropout.ToString() + delim +
                                             row.Eps.ToString() + delim +
                                             row.Rate.ToString() + delim +
-                                            row.BatchSize.ToString() + delim +
-                                            row.Height.ToString() + delim +
-                                            row.Width.ToString() + delim +
+                                            row.N.ToString() + delim +
+                                            row.D.ToString() + delim +
+                                            row.H.ToString() + delim +
+                                            row.W.ToString() + delim +
+                                            row.PadD.ToString() + delim +
+                                            row.PadH.ToString() + delim +
+                                            row.PadW.ToString() + delim +
                                             row.InputDropout.ToString() + delim +
                                             row.Cutout.ToString() + delim +
                                             row.CutMix.ToString() + delim +

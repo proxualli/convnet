@@ -93,7 +93,7 @@ namespace Convnet.Dialogs
         {
             if (IsValid(this))
             {
-                if (Model.BatchNormUsed() && Rate.BatchSize == 1)
+                if (Model.BatchNormUsed() && Rate.N == 1)
                 {
                     Xceed.Wpf.Toolkit.MessageBox.Show("Your model uses batch normalization.\r\nThe batch size cannot be equal to 1 in this case.", "Warning", MessageBoxButton.OK);
                     return;
@@ -308,7 +308,7 @@ namespace Convnet.Dialogs
             if (Settings.Default.TrainingStrategies == null)
             {
                 var rate = Rate;
-                var strategy = new DNNTrainingStrategy(1.0f, rate.BatchSize, rate.Height, rate.Width, rate.PadH, rate.PadW, rate.Momentum, rate.Beta2, rate.Gamma, rate.L2Penalty, rate.Dropout, rate.HorizontalFlip, rate.VerticalFlip, rate.InputDropout, rate.Cutout, rate.CutMix, rate.AutoAugment, rate.ColorCast, rate.ColorAngle, rate.Distortion, rate.Interpolation, rate.Scaling, rate.Rotation);
+                var strategy = new DNNTrainingStrategy(1.0f, rate.N, rate.H, rate.W, rate.PadH, rate.PadW, rate.Momentum, rate.Beta2, rate.Gamma, rate.L2Penalty, rate.Dropout, rate.HorizontalFlip, rate.VerticalFlip, rate.InputDropout, rate.Cutout, rate.CutMix, rate.AutoAugment, rate.ColorCast, rate.ColorAngle, rate.Distortion, rate.Interpolation, rate.Scaling, rate.Rotation);
                 Settings.Default.TrainingStrategies = new ObservableCollection<DNNTrainingStrategy> { strategy };
                 Settings.Default.Save();
             }
