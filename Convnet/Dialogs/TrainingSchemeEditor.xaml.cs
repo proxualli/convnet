@@ -120,7 +120,7 @@ namespace Convnet.Dialogs
                     }
                 }
 
-                if (tpvm.Model.BatchNormalizationUsed() && stochastic)
+                if (tpvm.Model.BatchNormUsed() && stochastic)
                 {
                     Xceed.Wpf.Toolkit.MessageBox.Show("Your model uses batch normalization.\r\nThe batch size cannot be equal to 1 in this case.", "Warning", MessageBoxButton.OK);
                     return;

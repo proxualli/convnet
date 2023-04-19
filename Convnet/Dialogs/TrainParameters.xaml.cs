@@ -93,7 +93,7 @@ namespace Convnet.Dialogs
         {
             if (IsValid(this))
             {
-                if (Model.BatchNormalizationUsed() && Rate.BatchSize == 1)
+                if (Model.BatchNormUsed() && Rate.BatchSize == 1)
                 {
                     Xceed.Wpf.Toolkit.MessageBox.Show("Your model uses batch normalization.\r\nThe batch size cannot be equal to 1 in this case.", "Warning", MessageBoxButton.OK);
                     return;

@@ -2056,9 +2056,14 @@ namespace dnncore
 		void SetLayerLocked(UInt layerIndex, bool locked);
 		void GetConfusionMatrix();
 		void UpdateCostInfo(UInt costIndex);
-		bool BatchNormalizationUsed();
+		bool BatchNormUsed();
 		DNNCheckMsg^ Check(String^ definition);
 		int Load(String^ fileName);
+		bool LoadModel(String^ fileName);
+		bool SaveModel(String^ fileName);
+		bool ClearLog();
+		bool LoadLog(String^ fileName);
+		bool SaveLog(String^ fileName);
 		int LoadWeights(String^ fileName, bool persistOptimizer);
 		int SaveWeights(String^ fileName, bool persistOptimizer);
 		int LoadLayerWeights(String^ fileName, UInt layerIndex);

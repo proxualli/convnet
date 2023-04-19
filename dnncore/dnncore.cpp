@@ -21,7 +21,7 @@ DNN_API void DNNGetLayerInputs(const UInt layerIndex, std::vector<UInt>* inputs)
 DNN_API void DNNGetLayerInfo(const UInt layerIndex, dnn::LayerInfo* info);
 DNN_API void DNNSetNewEpochDelegate(void(*newEpoch)(UInt, UInt, UInt, UInt, Float, Float, Float, bool, bool, Float, Float, bool, Float, Float, UInt, Float, UInt, Float, Float, Float, UInt, UInt, UInt, Float, Float, Float, Float, Float, Float, UInt, Float, Float, Float, UInt));
 DNN_API void DNNModelDispose();
-DNN_API bool DNNBatchNormalizationUsed();
+DNN_API bool DNNBatchNormUsed();
 DNN_API void DNNResetWeights();
 DNN_API void DNNResetLayerWeights(const UInt layerIndex);
 DNN_API void DNNAddTrainingRate(const dnn::TrainingRate& rate, const bool clear, const UInt gotoEpoch, const UInt trainSamples);
@@ -48,6 +48,11 @@ DNN_API int DNNRead(const std::string& definition, dnn::CheckMsg& checkMsg);
 DNN_API void DNNDataprovider(const std::string& directory);
 DNN_API bool DNNSetShuffleCount(const UInt count);
 DNN_API void DNNDataproviderDispose();
+DNN_API bool DNNLoadModel(const std::string& fileName);
+DNN_API bool DNNSaveModel(const std::string& fileName);
+DNN_API bool DNNClearLog();
+DNN_API bool DNNLoadLog(const std::string& fileName);
+DNN_API bool DNNSaveLog(const std::string& fileName);
 DNN_API int DNNLoadWeights(const std::string& fileName, const bool persistOptimizer);
 DNN_API int DNNSaveWeights(const std::string& fileName, const bool persistOptimizer);
 DNN_API int DNNLoadLayerWeights(const std::string& fileName, const UInt layerIndex, const bool persistOptimizer);
@@ -146,9 +151,14 @@ namespace dnncore
 		return DNNSetShuffleCount(count);
 	}
 
-	bool DNNModel::BatchNormalizationUsed()
+	bool DNNModel::BatchNormUsed()
 	{
-		return DNNBatchNormalizationUsed();
+		return DNNBatchNormUsed();
+	}
+
+	bool DNNModel::StochasticEnabled()
+	{
+		return DNNStochasticEnabled();
 	}
 
 	DNNLayerInfo^ DNNModel::GetLayerInfo(DNNLayerInfo^ infoManaged, UInt layerIndex)
@@ -783,13 +793,26 @@ namespace dnncore
 		TaskState = DNNTaskStates::Running;
 	}
 
+	void DNNModel::SetLocked(bool locked)
+	{
+		DNNSetLocked(locked);
+		for (int i = 0; i < LayerCount; i++)
+			if (Layers[i]->Lockable)
+				Layers[i]->LockUpdate = locked;
+	}
+
+	void DNNModel::SetLayerLocked(UInt layerIndex, bool locked)
+	{
+		DNNSetLayerLocked(layerIndex, locked);
+	}
+
 	DNNCheckMsg^ DNNModel::Check(String^ definition)
 	{
 		dnn::CheckMsg checkMsg;
-		
+
 		auto def = ToUnmanagedString(definition);
 		DNNCheck(def, checkMsg);
-				
+
 		definition = ToManagedString(def);
 
 		return gcnew DNNCheckMsg(checkMsg.Row, checkMsg.Column, ToManagedString(checkMsg.Message), checkMsg.Error, definition);
@@ -823,17 +846,29 @@ namespace dnncore
 		return 1;
 	}
 
-	void DNNModel::SetLocked(bool locked)
+	bool DNNModel::LoadModel(String^ fileName)
 	{
-		DNNSetLocked(locked);
-		for (int i = 0; i < LayerCount; i++)
-			if (Layers[i]->Lockable)
-				Layers[i]->LockUpdate = locked;
+		return DNNLoadModel(ToUnmanagedString(fileName));
 	}
 
-	void DNNModel::SetLayerLocked(UInt layerIndex, bool locked)
+	bool DNNModel::SaveModel(String^ fileName)
 	{
-		DNNSetLayerLocked(layerIndex, locked);
+		return DNNSaveModel(ToUnmanagedString(fileName));
+	}
+
+	bool DNNModel::ClearLog()
+	{
+		return DNNClearLog();
+	}
+
+	bool DNNModel::LoadLog(String^ fileName)
+	{
+		return DNNLoadLog(ToUnmanagedString(fileName));
+	}
+
+	bool DNNModel::SaveLog(String^ fileName)
+	{
+		return DNNSaveLog(ToUnmanagedString(fileName));
 	}
 
 	int DNNModel::LoadWeights(String^ fileName, bool persist)
@@ -866,10 +901,5 @@ namespace dnncore
 	int DNNModel::SaveLayerWeights(String^ fileName, UInt layerIndex)
 	{
 		return DNNSaveLayerWeights(ToUnmanagedString(fileName), layerIndex, false);
-	}
-
-	bool DNNModel::StochasticEnabled()
-	{
-		return DNNStochasticEnabled();
 	}
 }
