@@ -43,6 +43,8 @@ namespace Convnet.Dialogs
                     break;
             }
 
+            Rate.D = 1;
+            Rate.PadD = 0;
             DataContext = Rate;
            
             textBoxGotoEpoch.Text = tpvm.GotoEpoch.ToString();
@@ -308,7 +310,7 @@ namespace Convnet.Dialogs
             if (Settings.Default.TrainingStrategies == null)
             {
                 var rate = Rate;
-                var strategy = new DNNTrainingStrategy(1.0f, rate.N, rate.H, rate.W, rate.PadH, rate.PadW, rate.Momentum, rate.Beta2, rate.Gamma, rate.L2Penalty, rate.Dropout, rate.HorizontalFlip, rate.VerticalFlip, rate.InputDropout, rate.Cutout, rate.CutMix, rate.AutoAugment, rate.ColorCast, rate.ColorAngle, rate.Distortion, rate.Interpolation, rate.Scaling, rate.Rotation);
+                var strategy = new DNNTrainingStrategy(1.0f, rate.N, rate.D, rate.H, rate.W, rate.PadD, rate.PadH, rate.PadW, rate.Momentum, rate.Beta2, rate.Gamma, rate.L2Penalty, rate.Dropout, rate.HorizontalFlip, rate.VerticalFlip, rate.InputDropout, rate.Cutout, rate.CutMix, rate.AutoAugment, rate.ColorCast, rate.ColorAngle, rate.Distortion, rate.Interpolation, rate.Scaling, rate.Rotation);
                 Settings.Default.TrainingStrategies = new ObservableCollection<DNNTrainingStrategy> { strategy };
                 Settings.Default.Save();
             }

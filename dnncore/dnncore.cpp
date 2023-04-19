@@ -731,7 +731,7 @@ namespace dnncore
 
 	void DNNModel::AddTrainingStrategy(DNNTrainingStrategy^ strategy)
 	{
-		DNNAddTrainingStrategy(dnn::TrainingStrategy(strategy->Epochs, strategy->BatchSize, strategy->Height, strategy->Width, strategy->PadH, strategy->PadW, strategy->Momentum, strategy->Beta2, strategy->Gamma, strategy->L2Penalty, strategy->Dropout, strategy->HorizontalFlip, strategy->VerticalFlip, strategy->InputDropout, strategy->Cutout, strategy->CutMix, strategy->AutoAugment, strategy->ColorCast, strategy->ColorAngle, strategy->Distortion, safe_cast<dnn::Interpolations>(strategy->Interpolation), strategy->Scaling, strategy->Rotation));
+		DNNAddTrainingStrategy(dnn::TrainingStrategy(strategy->Epochs, strategy->N, strategy->D, strategy->H, strategy->W, strategy->PadD, strategy->PadH, strategy->PadW, strategy->Momentum, strategy->Beta2, strategy->Gamma, strategy->L2Penalty, strategy->Dropout, strategy->HorizontalFlip, strategy->VerticalFlip, strategy->InputDropout, strategy->Cutout, strategy->CutMix, strategy->AutoAugment, strategy->ColorCast, strategy->ColorAngle, strategy->Distortion, safe_cast<dnn::Interpolations>(strategy->Interpolation), strategy->Scaling, strategy->Rotation));
 	}
 
 	void DNNModel::Start(bool training)
