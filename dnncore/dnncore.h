@@ -1803,14 +1803,6 @@ namespace dnncore
 		property UInt GroupIndex;
 		property UInt CostIndex;
 		property String^ CostName;
-		property DNNOptimizers Optimizer;
-		property Float Momentum;
-		property Float Beta2;
-		property Float Gamma;
-		property Float L2Penalty;
-		property Float Dropout;
-		property Float Eps;
-		property Float Rate;
 		property UInt N;
 		property UInt D;
 		property UInt H;
@@ -1818,6 +1810,14 @@ namespace dnncore
 		property UInt PadD;
 		property UInt PadH;
 		property UInt PadW;
+		property DNNOptimizers Optimizer;
+		property Float Rate;
+		property Float Eps;
+		property Float Momentum;
+		property Float Beta2;
+		property Float Gamma;
+		property Float L2Penalty;
+		property Float Dropout;
 		property Float InputDropout;
 		property Float Cutout;
 		property bool CutMix;
@@ -1845,21 +1845,13 @@ namespace dnncore
 		{
 		}
 
-		DNNTrainingResult::DNNTrainingResult(UInt cycle, UInt epoch, UInt groupIndex, UInt costIndex, String^ costName, DNNOptimizers optimizer, Float momentum, Float beta2, Float gamma, Float l2Penalty, Float dropout, Float eps, Float rate, UInt n, UInt d, UInt h, UInt w, UInt padD, UInt padH, UInt padW, Float inputDropout, Float cutout, bool cutMix, Float autoAugment, bool horizontalFlip, bool verticalFlip, Float colorCast, UInt colorAngle, Float distortion, DNNInterpolations interpolation, Float scaling, Float rotation, Float avgTrainLoss, UInt trainErrors, Float trainErrorPercentage, Float trainAccuracy, Float avgTestLoss, UInt testErrors, Float testErrorPercentage, Float testAccuracy, long long elapsedTicks, TimeSpan elapsedTime)
+		DNNTrainingResult::DNNTrainingResult(UInt cycle, UInt epoch, UInt groupIndex, UInt costIndex, String^ costName, UInt n, UInt d, UInt h, UInt w, UInt padD, UInt padH, UInt padW, DNNOptimizers optimizer, Float rate, Float eps, Float momentum, Float beta2, Float gamma, Float l2Penalty, Float dropout, Float inputDropout, Float cutout, bool cutMix, Float autoAugment, bool horizontalFlip, bool verticalFlip, Float colorCast, UInt colorAngle, Float distortion, DNNInterpolations interpolation, Float scaling, Float rotation, Float avgTrainLoss, UInt trainErrors, Float trainErrorPercentage, Float trainAccuracy, Float avgTestLoss, UInt testErrors, Float testErrorPercentage, Float testAccuracy, long long elapsedTicks, TimeSpan elapsedTime)
 		{
 			Cycle = cycle;
 			Epoch = epoch;
 			GroupIndex = groupIndex;
 			CostIndex = costIndex;
 			CostName = costName;
-			Optimizer = optimizer;
-			Momentum = momentum;
-			Beta2 = beta2;
-			Gamma = gamma;
-			L2Penalty = l2Penalty;
-			Dropout = dropout;
-			Eps = eps;
-			Rate = rate;
 			N = n;
 			D = d;
 			H = h;
@@ -1867,6 +1859,14 @@ namespace dnncore
 			PadD = padD;
 			PadH = padH;
 			PadW = padW;
+			Optimizer = optimizer;
+			Rate = rate;
+			Eps = eps;
+			Momentum = momentum;
+			Beta2 = beta2;
+			Gamma = gamma;
+			L2Penalty = l2Penalty;
+			Dropout = dropout;
 			InputDropout = inputDropout;
 			Cutout = cutout;
 			CutMix = cutMix;

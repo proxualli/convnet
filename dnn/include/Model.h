@@ -370,7 +370,7 @@ namespace dnn
 		UInt GroupIndex;
 		UInt CostIndex;
 		std::string CostName;
-
+		// Resolution
 		UInt N;
 		UInt D;
 		UInt H;
@@ -378,7 +378,7 @@ namespace dnn
 		UInt PadD;
 		UInt PadH;
 		UInt PadW;
-
+		// Regularization
 		Optimizers Optimizer;
 		Float Rate;
 		Float Eps;
@@ -387,7 +387,7 @@ namespace dnn
 		Float Gamma;
 		Float L2Penalty;
 		Float Dropout;
-		
+		// Augmentation
 		Float InputDropout;
 		Float Cutout;
 		bool CutMix;
@@ -400,16 +400,17 @@ namespace dnn
 		Interpolations Interpolation;
 		Float Scaling;
 		Float Rotation;
-
+		// Train
 		Float AvgTrainLoss;
 		UInt TrainErrors;
 		Float TrainErrorPercentage;
 		Float TrainAccuracy;
+		// Test
 		Float AvgTestLoss;
 		UInt TestErrors;
 		Float TestErrorPercentage;
 		Float TestAccuracy;
-
+		// Duration
 		long long ElapsedTicks;
 		std::string ElapsedTime;
 	};
