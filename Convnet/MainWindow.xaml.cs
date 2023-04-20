@@ -142,14 +142,6 @@ namespace Convnet
                                     "GroupIndex" + delim +
                                     "CostIndex" + delim +
                                     "CostName" + delim +
-                                    "Optimizer" + delim +
-                                    "Momentum" + delim +
-                                    "Beta2" + delim +
-                                    "Gamma" + delim +
-                                    "L2Penalty" + delim +
-                                    "Dropout" + delim +
-                                    "Eps" + delim +
-                                    "Rate" + delim +
                                     "N" + delim +
                                     "D" + delim +
                                     "H" + delim +
@@ -157,6 +149,14 @@ namespace Convnet
                                     "PadD" + delim +
                                     "PadH" + delim +
                                     "PadW" + delim +
+                                    "Optimizer" + delim +
+                                    "Rate" + delim +
+                                    "Eps" + delim +
+                                    "Momentum" + delim +
+                                    "Beta2" + delim +
+                                    "Gamma" + delim +
+                                    "L2Penalty" + delim +
+                                    "Dropout" + delim +
                                     "InputDropout" + delim +
                                     "Cutout" + delim +
                                     "CutMix" + delim +
@@ -187,14 +187,6 @@ namespace Convnet
                                     row.GroupIndex.ToString() + delim +
                                     row.CostIndex.ToString() + delim +
                                     row.CostName.ToString() + delim +
-                                    row.Optimizer.ToString() + delim +
-                                    row.Momentum.ToString() + delim +
-                                    row.Beta2.ToString() + delim +
-                                    row.Gamma.ToString() + delim +
-                                    row.L2Penalty.ToString() + delim +
-                                    row.Dropout.ToString() + delim +
-                                    row.Eps.ToString() + delim +
-                                    row.Rate.ToString() + delim +
                                     row.N.ToString() + delim +
                                     row.D.ToString() + delim +
                                     row.H.ToString() + delim +
@@ -202,6 +194,14 @@ namespace Convnet
                                     row.PadD.ToString() + delim +
                                     row.PadH.ToString() + delim +
                                     row.PadW.ToString() + delim +
+                                    row.Optimizer.ToString() + delim +
+                                    row.Rate.ToString() + delim +
+                                    row.Eps.ToString() + delim +
+                                    row.Momentum.ToString() + delim +
+                                    row.Beta2.ToString() + delim +
+                                    row.Gamma.ToString() + delim +
+                                    row.L2Penalty.ToString() + delim +
+                                    row.Dropout.ToString() + delim +
                                     row.InputDropout.ToString() + delim +
                                     row.Cutout.ToString() + delim +
                                     row.CutMix.ToString() + delim +
@@ -332,14 +332,6 @@ namespace Convnet
                                     "GroupIndex" + delim +
                                     "CostIndex" + delim +
                                     "CostName" + delim +
-                                    "Optimizer" + delim +
-                                    "Momentum" + delim +
-                                    "Beta2" + delim +
-                                    "Gamma" + delim +
-                                    "L2Penalty" + delim +
-                                    "Dropout" + delim +
-                                    "Eps" + delim +
-                                    "Rate" + delim +
                                     "N" + delim +
                                     "D" + delim +
                                     "H" + delim +
@@ -347,6 +339,14 @@ namespace Convnet
                                     "PadD" + delim +
                                     "PadH" + delim +
                                     "PadW" + delim +
+                                    "Optimizer" + delim +
+                                    "Rate" + delim +
+                                    "Eps" + delim +
+                                    "Momentum" + delim +
+                                    "Beta2" + delim +
+                                    "Gamma" + delim +
+                                    "L2Penalty" + delim +
+                                    "Dropout" + delim +
                                     "InputDropout" + delim +
                                     "Cutout" + delim +
                                     "CutMix" + delim +
@@ -377,14 +377,6 @@ namespace Convnet
                                     row.GroupIndex.ToString() + delim +
                                     row.CostIndex.ToString() + delim +
                                     row.CostName.ToString() + delim +
-                                    row.Optimizer.ToString() + delim +
-                                    row.Momentum.ToString() + delim +
-                                    row.Beta2.ToString() + delim +
-                                    row.Gamma.ToString() + delim +
-                                    row.L2Penalty.ToString() + delim +
-                                    row.Dropout.ToString() + delim +
-                                    row.Eps.ToString() + delim +
-                                    row.Rate.ToString() + delim +
                                     row.N.ToString() + delim +
                                     row.D.ToString() + delim +
                                     row.H.ToString() + delim +
@@ -392,6 +384,14 @@ namespace Convnet
                                     row.PadD.ToString() + delim +
                                     row.PadH.ToString() + delim +
                                     row.PadW.ToString() + delim +
+                                    row.Optimizer.ToString() + delim +
+                                    row.Rate.ToString() + delim +
+                                    row.Eps.ToString() + delim +
+                                    row.Momentum.ToString() + delim +
+                                    row.Beta2.ToString() + delim +
+                                    row.Gamma.ToString() + delim +
+                                    row.L2Penalty.ToString() + delim +
+                                    row.Dropout.ToString() + delim +
                                     row.InputDropout.ToString() + delim +
                                     row.Cutout.ToString() + delim +
                                     row.CutMix.ToString() + delim +
@@ -881,14 +881,6 @@ namespace Convnet
                                             "GroupIndex" + delim +
                                             "CostIndex" + delim +
                                             "CostName" + delim +
-                                            "Optimizer" + delim +
-                                            "Momentum" + delim +
-                                            "Beta2" + delim +
-                                            "Gamma" + delim +
-                                            "L2Penalty" + delim +
-                                            "Dropout" + delim +
-                                            "Eps" + delim +
-                                            "Rate" + delim +
                                             "N" + delim +
                                             "D" + delim +
                                             "H" + delim +
@@ -896,6 +888,14 @@ namespace Convnet
                                             "PadD" + delim +
                                             "PadH" + delim +
                                             "PadW" + delim +
+                                            "Optimizer" + delim +
+                                            "Rate" + delim +
+                                            "Eps" + delim +
+                                            "Momentum" + delim +
+                                            "Beta2" + delim +
+                                            "Gamma" + delim +
+                                            "L2Penalty" + delim +
+                                            "Dropout" + delim +
                                             "InputDropout" + delim +
                                             "Cutout" + delim +
                                             "CutMix" + delim +
@@ -926,14 +926,6 @@ namespace Convnet
                                             row.GroupIndex.ToString() + delim +
                                             row.CostIndex.ToString() + delim +
                                             row.CostName.ToString() + delim +
-                                            row.Optimizer.ToString() + delim +
-                                            row.Momentum.ToString() + delim +
-                                            row.Beta2.ToString() + delim +
-                                            row.Gamma.ToString() + delim +
-                                            row.L2Penalty.ToString() + delim +
-                                            row.Dropout.ToString() + delim +
-                                            row.Eps.ToString() + delim +
-                                            row.Rate.ToString() + delim +
                                             row.N.ToString() + delim +
                                             row.D.ToString() + delim +
                                             row.H.ToString() + delim +
@@ -941,6 +933,14 @@ namespace Convnet
                                             row.PadD.ToString() + delim +
                                             row.PadH.ToString() + delim +
                                             row.PadW.ToString() + delim +
+                                            row.Optimizer.ToString() + delim +
+                                            row.Rate.ToString() + delim +
+                                            row.Eps.ToString() + delim +
+                                            row.Momentum.ToString() + delim +
+                                            row.Beta2.ToString() + delim +
+                                            row.Gamma.ToString() + delim +
+                                            row.L2Penalty.ToString() + delim +
+                                            row.Dropout.ToString() + delim +
                                             row.InputDropout.ToString() + delim +
                                             row.Cutout.ToString() + delim +
                                             row.CutMix.ToString() + delim +

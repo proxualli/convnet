@@ -106,14 +106,15 @@
 #define MAGIC_ENUM_RANGE_MAX 255
 #include "magic_enum.hpp"
 
-#include <bitsery/bitsery.h>
-#include <bitsery/adapter/stream.h>
-#include <bitsery/traits/string.h>
-#include <bitsery/traits/vector.h>
-//#include <bitsery/ext/std_atomic.h>
-//#include <bitsery/ext/growable.h>
+#include "bitsery/bitsery.h"
+#include "bitsery/adapter/stream.h"
+#include "bitsery/traits/string.h"
+#include "bitsery/traits/vector.h"
+//#include "bitsery/ext/std_atomic.h"
+//#include "bitsery/ext/growable.h"
 
 #include "CsvFile.h"
+
 
 using namespace dnn;
 
@@ -123,7 +124,7 @@ namespace
 	constexpr auto Inplace = true;
 	constexpr auto Kahan = true;
 	constexpr auto Reference = false;
-	constexpr auto SingleMeanVariancePass = true;
+	constexpr auto SingleMeanVariancePass = false;
 	constexpr auto TestActivations = false;
 	constexpr auto TestBatchNormalization = false;
 	constexpr auto TestConcat = false;
