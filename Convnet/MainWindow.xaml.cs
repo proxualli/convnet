@@ -228,35 +228,7 @@ namespace Convnet
 
                             //Clipboard.SetText(sb.ToString());
                             string path = System.IO.Path.GetTempPath() + Guid.NewGuid().ToString() + ".csv";
-                            //if (!File.Exists(path))
                             File.WriteAllText(path, sb.ToString());
-
-                            //FileAttributes attributes = File.GetAttributes(path);
-                            //if ((attributes & FileAttributes.Hidden) == FileAttributes.Hidden)
-                            //{
-                            //    attributes = attributes & ~FileAttributes.Hidden;
-                            //    File.SetAttributes(path, attributes);
-                            //}
-                            //if ((attributes & FileAttributes.ReadOnly) == FileAttributes.ReadOnly)
-                            //{
-                            //    attributes = attributes & ~FileAttributes.ReadOnly;
-                            //    File.SetAttributes(path, attributes);
-                            //}
-                            //if ((attributes & FileAttributes.ReadOnly) != FileAttributes.Temporary)
-                            //{
-                            //    attributes = attributes | FileAttributes.Temporary;
-                            //    File.SetAttributes(path, attributes);
-                            //}
-
-                            //var fileInfo = new FileInfo(path);
-                            //if (!fileInfo.Directory.Exists)
-                            //    fileInfo.Directory.Create();
-                            //var streamWriter = fileInfo.CreateText();
-                            //streamWriter.AutoFlush = true;
-                            //streamWriter.Write(sb.ToString());
-                            //streamWriter.Close();
-                            //streamWriter.Dispose();
-
                             PageVM.Model.LoadLog(path);
                             File.Delete(path);
                         }
@@ -283,10 +255,6 @@ namespace Convnet
                                 Settings.Default.Save();
                                 PageVM.Model.SetPersistOptimizer(Settings.Default.PersistOptimizer);
                             }
-
-                        //for (int i = 0; i < Settings.Default.TrainingLog.Count; i++)
-                        //    Settings.Default.TrainingLog[i].ElapsedTime = TimeSpan.FromMilliseconds((double)Settings.Default.TrainingLog[i].ElapsedTicks);
-                        //Settings.Default.Save();
 
                         Title = PageVM.Model.Name + " - Convnet Explorer";
                         DataContext = PageVM;
@@ -446,15 +414,6 @@ namespace Convnet
 
                             //Clipboard.SetText(sb.ToString());
                             string path = System.IO.Path.GetTempPath() + Guid.NewGuid().ToString() + ".csv";
-                            //var fileInfo = new FileInfo(path);
-                            //if (!fileInfo.Directory.Exists)
-                            //    fileInfo.Directory.Create();
-                            //var streamWriter = fileInfo.CreateText();
-                            //streamWriter.AutoFlush = true;
-                            //streamWriter.Write(sb.ToString());
-                            //streamWriter.Close();
-                            //streamWriter.Dispose();
-
                             File.WriteAllText(path, sb.ToString());
                             PageVM.Model.LoadLog(path);
                             File.Delete(path);
@@ -481,10 +440,6 @@ namespace Convnet
                                 Settings.Default.Save();
                                 PageVM.Model.SetPersistOptimizer(Settings.Default.PersistOptimizer);
                             }
-
-                        //for (int i = 0; i < Settings.Default.TrainingLog.Count; i++)
-                        //    Settings.Default.TrainingLog[i].ElapsedTime = TimeSpan.FromMilliseconds((double)Settings.Default.TrainingLog[i].ElapsedTicks);
-                        //Settings.Default.Save();
 
                         Title = PageVM.Model.Name + " - Convnet Explorer";
                         DataContext = PageVM;
