@@ -10,14 +10,15 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
+using System.Text;
 using System.IO.Packaging;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Threading;
+using System.Windows.Shapes;
 
 
 namespace Convnet
@@ -33,7 +34,7 @@ namespace Convnet
 #else
         const string Mode = "Release";
 #endif
-        public static string ApplicationPath { get; } = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + @"\";
+        public static string ApplicationPath { get; } = System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + @"\";
         public static string StorageDirectory { get; } = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\convnet\";
         public static string StateDirectory { get; } = StorageDirectory + @"state\";
         public static string DefinitionsDirectory { get; } = StorageDirectory + @"definitions\";
@@ -66,7 +67,7 @@ namespace Convnet
             foreach (var fi in source.GetFiles())
             {
                 //Console.WriteLine(@"Copying {0}\{1}", target.FullName, fi.Name);
-                fi.CopyTo(Path.Combine(target.FullName, fi.Name), true);
+                fi.CopyTo(System.IO.Path.Combine(target.FullName, fi.Name), true);
             }
 
             // Copy each subdirectory using recursion.
@@ -91,18 +92,18 @@ namespace Convnet
                 Copy(ApplicationPath.Replace(@"Convnet\bin\x64\" + Mode + @"\" + Framework + @"\", "") + @"ScriptsDialog\", ScriptsDirectory);
             }
 
-            var fileName = Path.Combine(StateDirectory, Settings.Default.ModelNameActive + ".txt");
+            var fileName = System.IO.Path.Combine(StateDirectory, Settings.Default.ModelNameActive + ".txt");
             var backupModelName = "resnet-3-2-6-channelzeropad-relu";
                         
-            if (!File.Exists(Path.Combine(StateDirectory, backupModelName + ".txt")))
+            if (!File.Exists(System.IO.Path.Combine(StateDirectory, backupModelName + ".txt")))
                 File.Copy(ApplicationPath + @"Resources\state\" + backupModelName + ".txt", StateDirectory + backupModelName + ".txt", true);
             
-            if (!File.Exists(fileName) || !File.ReadLines(Path.Combine(StateDirectory, backupModelName + ".txt")).SequenceEqual(File.ReadLines(ApplicationPath + @"Resources\state\" + backupModelName + ".txt")))
+            if (!File.Exists(fileName) || !File.ReadLines(System.IO.Path.Combine(StateDirectory, backupModelName + ".txt")).SequenceEqual(File.ReadLines(ApplicationPath + @"Resources\state\" + backupModelName + ".txt")))
             {
                 Directory.CreateDirectory(DefinitionsDirectory + backupModelName + @"\");
                 File.Copy(ApplicationPath + @"Resources\state\" + backupModelName + ".txt", DefinitionsDirectory + backupModelName + ".txt", true);
                 
-                fileName = Path.Combine(StateDirectory, backupModelName + ".txt");
+                fileName = System.IO.Path.Combine(StateDirectory, backupModelName + ".txt");
                 Settings.Default.ModelNameActive = backupModelName;
                 Settings.Default.DefinitionActive = File.ReadAllText(fileName);
                 Settings.Default.Optimizer = DNNOptimizers.NAG;
@@ -226,10 +227,38 @@ namespace Convnet
                                     row.ElapsedTime.ToString());
 
                             //Clipboard.SetText(sb.ToString());
-                            string tmpFileName = System.IO.Path.GetTempPath() + Guid.NewGuid().ToString() + ".csv";
-                            File.WriteAllText(tmpFileName, sb.ToString());
-                            PageVM.Model.LoadLog(tmpFileName);
-                            File.Delete(tmpFileName);
+                            string path = System.IO.Path.GetTempPath() + Guid.NewGuid().ToString() + ".csv";
+                            //if (!File.Exists(path))
+                            File.WriteAllText(path, sb.ToString());
+
+                            //FileAttributes attributes = File.GetAttributes(path);
+                            //if ((attributes & FileAttributes.Hidden) == FileAttributes.Hidden)
+                            //{
+                            //    attributes = attributes & ~FileAttributes.Hidden;
+                            //    File.SetAttributes(path, attributes);
+                            //}
+                            //if ((attributes & FileAttributes.ReadOnly) == FileAttributes.ReadOnly)
+                            //{
+                            //    attributes = attributes & ~FileAttributes.ReadOnly;
+                            //    File.SetAttributes(path, attributes);
+                            //}
+                            //if ((attributes & FileAttributes.ReadOnly) != FileAttributes.Temporary)
+                            //{
+                            //    attributes = attributes | FileAttributes.Temporary;
+                            //    File.SetAttributes(path, attributes);
+                            //}
+
+                            //var fileInfo = new FileInfo(path);
+                            //if (!fileInfo.Directory.Exists)
+                            //    fileInfo.Directory.Create();
+                            //var streamWriter = fileInfo.CreateText();
+                            //streamWriter.AutoFlush = true;
+                            //streamWriter.Write(sb.ToString());
+                            //streamWriter.Close();
+                            //streamWriter.Dispose();
+
+                            PageVM.Model.LoadLog(path);
+                            File.Delete(path);
                         }
                         catch (Exception ex)
                         {
@@ -241,8 +270,8 @@ namespace Convnet
                         var dataset = PageVM.Model.Dataset.ToString().ToLower();
                         var optimizer = PageVM.Model.Optimizer.ToString().ToLower();
 
-                        var fileNamePersistOptimizer = Path.Combine(StateDirectory, Settings.Default.ModelNameActive + "-(" + dataset + ")(" + optimizer + @").bin");
-                        var fileNameNoOptimizer = Path.Combine(StateDirectory, Settings.Default.ModelNameActive + "-(" + dataset + ").bin");
+                        var fileNamePersistOptimizer = System.IO.Path.Combine(StateDirectory, Settings.Default.ModelNameActive + "-(" + dataset + ")(" + optimizer + @").bin");
+                        var fileNameNoOptimizer = System.IO.Path.Combine(StateDirectory, Settings.Default.ModelNameActive + "-(" + dataset + ").bin");
 
                         var fileNameOptimizer = Settings.Default.PersistOptimizer ? fileNamePersistOptimizer : fileNameNoOptimizer;
                         var fileNameOptimizerInverse = Settings.Default.PersistOptimizer ? fileNameNoOptimizer : fileNamePersistOptimizer;
@@ -291,7 +320,7 @@ namespace Convnet
                 {
                     // try backup model
                     File.Copy(ApplicationPath + @"Resources\state\" + backupModelName + ".txt", StateDirectory + backupModelName + ".txt", true);
-                    fileName = Path.Combine(StateDirectory, backupModelName + ".txt");
+                    fileName = System.IO.Path.Combine(StateDirectory, backupModelName + ".txt");
                     Settings.Default.ModelNameActive = backupModelName;
                     Settings.Default.DefinitionActive = File.ReadAllText(fileName);
                     Settings.Default.Optimizer = DNNOptimizers.NAG;
@@ -416,10 +445,19 @@ namespace Convnet
                                     row.ElapsedTime.ToString());
 
                             //Clipboard.SetText(sb.ToString());
-                            string tmpFileName = System.IO.Path.GetTempPath() + Guid.NewGuid().ToString() + ".csv";
-                            File.WriteAllText(tmpFileName, sb.ToString());
-                            PageVM.Model.LoadLog(tmpFileName);
-                            File.Delete(tmpFileName);
+                            string path = System.IO.Path.GetTempPath() + Guid.NewGuid().ToString() + ".csv";
+                            //var fileInfo = new FileInfo(path);
+                            //if (!fileInfo.Directory.Exists)
+                            //    fileInfo.Directory.Create();
+                            //var streamWriter = fileInfo.CreateText();
+                            //streamWriter.AutoFlush = true;
+                            //streamWriter.Write(sb.ToString());
+                            //streamWriter.Close();
+                            //streamWriter.Dispose();
+
+                            File.WriteAllText(path, sb.ToString());
+                            PageVM.Model.LoadLog(path);
+                            File.Delete(path);
                         }
                         catch (Exception ex)
                         {
@@ -430,8 +468,8 @@ namespace Convnet
                         var dataset = PageVM.Model.Dataset.ToString().ToLower();
                         var optimizer = PageVM.Model.Optimizer.ToString().ToLower();
 
-                        var fileNamePersistOptimizer = Path.Combine(StateDirectory, Settings.Default.ModelNameActive + "-(" + dataset + ")(" + optimizer + @").bin");
-                        var fileNameNoOptimizer = Path.Combine(StateDirectory, Settings.Default.ModelNameActive + "-(" + dataset + ").bin");
+                        var fileNamePersistOptimizer = System.IO.Path.Combine(StateDirectory, Settings.Default.ModelNameActive + "-(" + dataset + ")(" + optimizer + @").bin");
+                        var fileNameNoOptimizer = System.IO.Path.Combine(StateDirectory, Settings.Default.ModelNameActive + "-(" + dataset + ").bin");
 
                         var fileNameOptimizer = Settings.Default.PersistOptimizer ? fileNamePersistOptimizer : fileNameNoOptimizer;
                         var fileNameOptimizerInverse = Settings.Default.PersistOptimizer ? fileNameNoOptimizer : fileNamePersistOptimizer;
@@ -763,9 +801,9 @@ namespace Convnet
 
                                         foreach (var record in records)
                                             Settings.Default.TrainingLog.Add(record);
-
-                                        PageVM.Model.LoadLog(openFileDialog.FileName);
                                     }
+
+                                    PageVM.Model.LoadLog(openFileDialog.FileName);
                                 }
                                 catch (Exception ex)
                                 {
