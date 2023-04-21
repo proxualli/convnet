@@ -4,21 +4,18 @@ using Convnet.PageViewModels;
 using Convnet.Properties;
 using CsvHelper;
 using dnncore;
-using OxyPlot;
 using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
-using System.Text;
-using System.IO.Packaging;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Threading;
-using System.Windows.Shapes;
 
 
 namespace Convnet
