@@ -77,6 +77,7 @@ namespace Convnet
                 CopyAll(diSourceSubDir, nextTargetSubDir);
             }
         }
+
         private bool PersistLog(string path)
         {
             try
