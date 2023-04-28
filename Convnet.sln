@@ -59,6 +59,10 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "dnnl_graph_backend_fake", "
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "dnnl_graph_utils", "dnn\deps\oneDNN\build\src\graph\utils\dnnl_graph_utils.vcxproj", "{1E84CA25-6391-3BA5-A1BF-B00D0E0269ED}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "minizip", "dnn\deps\zlib\contrib\vstudio\vc14\minizip.vcxproj", "{48CDD9DC-E09F-4135-9C0C-4FE50C3C654B}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "miniunz", "dnn\deps\zlib\contrib\vstudio\vc14\miniunz.vcxproj", "{C52F9E7B-498A-42BE-8DB4-85A15694382A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -157,6 +161,14 @@ Global
 		{1E84CA25-6391-3BA5-A1BF-B00D0E0269ED}.Debug|x64.Build.0 = Debug|x64
 		{1E84CA25-6391-3BA5-A1BF-B00D0E0269ED}.Release|x64.ActiveCfg = Release|x64
 		{1E84CA25-6391-3BA5-A1BF-B00D0E0269ED}.Release|x64.Build.0 = Release|x64
+		{48CDD9DC-E09F-4135-9C0C-4FE50C3C654B}.Debug|x64.ActiveCfg = Debug|x64
+		{48CDD9DC-E09F-4135-9C0C-4FE50C3C654B}.Debug|x64.Build.0 = Debug|x64
+		{48CDD9DC-E09F-4135-9C0C-4FE50C3C654B}.Release|x64.ActiveCfg = Release|x64
+		{48CDD9DC-E09F-4135-9C0C-4FE50C3C654B}.Release|x64.Build.0 = Release|x64
+		{C52F9E7B-498A-42BE-8DB4-85A15694382A}.Debug|x64.ActiveCfg = Debug|x64
+		{C52F9E7B-498A-42BE-8DB4-85A15694382A}.Debug|x64.Build.0 = Debug|x64
+		{C52F9E7B-498A-42BE-8DB4-85A15694382A}.Release|x64.ActiveCfg = Release|x64
+		{C52F9E7B-498A-42BE-8DB4-85A15694382A}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
