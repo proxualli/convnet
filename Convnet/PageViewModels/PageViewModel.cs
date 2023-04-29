@@ -87,13 +87,13 @@ namespace Convnet.PageViewModels
             switch (NetworkState)
             {
                 case DNNStates.Training:
-                    ProgressValue = (double)(SampleIndex + 1ul) / Model.AdjustedTrainingSamplesCount;
-                    ProgressBarMaximum = Model.AdjustedTrainingSamplesCount;
+                    ProgressValue = (double)(SampleIndex + 1ul) / Model.AdjustedTrainSamplesCount;
+                    ProgressBarMaximum = Model.AdjustedTrainSamplesCount;
                     break;
 
                 case DNNStates.Testing:
-                    ProgressValue = (double)(SampleIndex + 1ul) / Model.AdjustedTestingSamplesCount;
-                    ProgressBarMaximum = Model.AdjustedTestingSamplesCount;
+                    ProgressValue = (double)(SampleIndex + 1ul) / Model.AdjustedTestSamplesCount;
+                    ProgressBarMaximum = Model.AdjustedTestSamplesCount;
                     break;
 
                 default:
@@ -111,8 +111,8 @@ namespace Convnet.PageViewModels
         {
             if (NetworkState == DNNStates.Testing)
             {
-                ProgressValue = (double)(SampleIndex + 1ul) / Model.AdjustedTestingSamplesCount;
-                ProgressBarMaximum = Model.AdjustedTestingSamplesCount;
+                ProgressValue = (double)(SampleIndex + 1ul) / Model.AdjustedTestSamplesCount;
+                ProgressBarMaximum = Model.AdjustedTestSamplesCount;
             }
             else
             {

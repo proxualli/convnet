@@ -456,8 +456,8 @@ namespace dnncore
 			
 			delete info;
 
-			AdjustedTrainingSamplesCount = TrainingSamples % BatchSize == 0 ? TrainingSamples : ((TrainingSamples / BatchSize) + 1) * BatchSize;
-			AdjustedTestingSamplesCount = TestingSamples % BatchSize == 0 ? TestingSamples : ((TestingSamples / BatchSize) + 1) * BatchSize;
+			AdjustedTrainSamplesCount = TrainingSamples % BatchSize == 0 ? TrainingSamples : ((TrainingSamples / BatchSize) + 1) * BatchSize;
+			AdjustedTestSamplesCount = TestingSamples % BatchSize == 0 ? TestingSamples : ((TestingSamples / BatchSize) + 1) * BatchSize;
 
 			TrainProgress(Optimizer, BatchSize, Cycle, TotalCycles, Epoch, TotalEpochs, HorizontalFlip, VerticalFlip, InputDropout, Cutout, CutMix, AutoAugment, ColorCast, ColorAngle, Distortion, Interpolation, Scaling, Rotation, SampleIndex, Rate, Momentum, Beta2, Gamma, L2Penalty, Dropout, AvgTrainLoss, TrainErrorPercentage, Float(100) - TrainErrorPercentage, TrainErrors, AvgTestLoss, TestErrorPercentage, Float(100) - TestErrorPercentage, TestErrors, State, TaskState);
 
@@ -487,7 +487,7 @@ namespace dnncore
 
 			delete info;
 
-			AdjustedTestingSamplesCount = TestingSamples % BatchSize == 0 ? TestingSamples : ((TestingSamples / BatchSize) + 1) * BatchSize;
+			AdjustedTestSamplesCount = TestingSamples % BatchSize == 0 ? TestingSamples : ((TestingSamples / BatchSize) + 1) * BatchSize;
 			
 			TestProgress(BatchSize, SampleIndex, AvgTestLoss, TestErrorPercentage, Float(100) - TestErrorPercentage, TestErrors, State, TaskState);
 
@@ -612,8 +612,8 @@ namespace dnncore
 		GroupIndex = info->GroupIndex;
 		LabelIndex = info->LabelIndex;
 		Hierarchies = info->Hierarchies;
-		TrainingSamples = info->TrainingSamplesCount;
-		TestingSamples = info->TestingSamplesCount;
+		TrainingSamples = info->TrainSamplesCount;
+		TestingSamples = info->TestSamplesCount;
 		MeanStdNormalization = info->MeanStdNormalization;
 	
 		LabelsCollection = gcnew cli::array<cli::array<String^>^>(int(Hierarchies));

@@ -257,10 +257,10 @@ int main(int argc, char* argv[])
 
             DNNSetNewEpochDelegate(&NewEpoch);
             DNNPersistOptimizer(persistOptimizer);
-            DNNAddTrainingRateSGDR(rate, true, 1, info->TrainingSamplesCount);
+            DNNAddTrainingRateSGDR(rate, true, 1, info->TrainSamplesCount);
             DNNTraining();
 
-            GetTrainingProgress(5, info->TrainingSamplesCount, info->TestingSamplesCount);
+            GetTrainingProgress(5, info->TrainSamplesCount, info->TestSamplesCount);
             
             delete info;
                    

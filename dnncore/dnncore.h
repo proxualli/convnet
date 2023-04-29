@@ -581,8 +581,8 @@ namespace dnn
 		UInt GroupIndex;
 		UInt LabelIndex;
 		UInt Hierarchies;
-		UInt TrainingSamplesCount;
-		UInt TestingSamplesCount;
+		UInt TrainSamplesCount;
+		UInt TestSamplesCount;
 		bool MeanStdNormalization;
 		std::vector<Float> MeanTrainSet;
 		std::vector<Float> StdTrainSet;
@@ -2060,9 +2060,9 @@ namespace dnncore
 		property UInt Multiplier;
 		property UInt CostLayerCount;
 		property UInt TrainingSamples;
-		property UInt AdjustedTrainingSamplesCount;
+		property UInt AdjustedTrainSamplesCount;
 		property UInt TestingSamples;
-		property UInt AdjustedTestingSamplesCount;
+		property UInt AdjustedTestSamplesCount;
 		property UInt Cycle;
 		property UInt TotalCycles;
 		property UInt Epoch;
