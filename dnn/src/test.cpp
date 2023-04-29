@@ -30,6 +30,7 @@ DNN_API void DNNGetLayerInputs(const UInt layerIndex, std::vector<UInt>* inputs)
 DNN_API void DNNGetLayerInfo(const UInt layerIndex, dnn::LayerInfo* info);
 DNN_API void DNNSetNewEpochDelegate(void(*newEpoch)(UInt, UInt, UInt, UInt, Float, Float, Float, bool, bool, Float, Float, bool, Float, Float, UInt, Float, UInt, Float, Float, Float, UInt, UInt, UInt, UInt, UInt, UInt, UInt, Float, Float, Float, Float, Float, Float, UInt, Float, Float, Float, UInt));
 DNN_API void DNNModelDispose();
+DNN_API void DNNDataproviderDispose();
 DNN_API bool DNNBatchNormUsed();
 DNN_API void DNNResetWeights();
 DNN_API void DNNResetLayerWeights(const UInt layerIndex);
@@ -68,9 +69,9 @@ DNN_API dnn::Optimizers GetOptimizer();
 //DNN_API void DNNPrintModel(const std::string& fileName);
 
 
-void NewEpoch(UInt CurrentCycle, UInt CurrentEpoch, UInt TotalEpochs, UInt Optimizer, Float Beta2, Float Gamma, Float Eps, bool HorizontalFlip, bool VerticalFlip, Float InputDropout, Float Cutout, bool CutMix, Float AutoAugment, Float ColorCast, UInt ColorAngle, Float Distortion, UInt Interpolation, Float Scaling, Float Rotation, Float MaximumRate, UInt BatchSize, UInt Depth, UInt Height, UInt Width, UInt PadD, UInt PadH, UInt PadW, Float Momentum, Float L2Penalty, Float Dropout, Float AvgTrainLoss, Float TrainErrorPercentage, Float TrainAccuracy, UInt TrainErrors, Float AvgTestLoss, Float TestErrorPercentage, Float TestAccuracy, UInt TestErrors)
+void NewEpoch(UInt CurrentCycle, UInt CurrentEpoch, UInt TotalEpochs, UInt Optimizer, Float Beta2, Float Gamma, Float Eps, bool HorizontalFlip, bool VerticalFlip, Float InputDropout, Float Cutout, bool CutMix, Float AutoAugment, Float ColorCast, UInt ColorAngle, Float Distortion, UInt Interpolation, Float Scaling, Float Rotation, Float MaximumRate, UInt N, UInt D, UInt H, UInt W, UInt PadD, UInt PadH, UInt PadW, Float Momentum, Float L2Penalty, Float Dropout, Float AvgTrainLoss, Float TrainErrorPercentage, Float TrainAccuracy, UInt TrainErrors, Float AvgTestLoss, Float TestErrorPercentage, Float TestAccuracy, UInt TestErrors)
 {
-    std::cout << std::string("Cycle: ") << std::to_string(CurrentCycle) << std::string("  Epoch: ") << std::to_string(CurrentEpoch) << std::string("  Test Accuracy: ") << FloatToStringFixed(TestAccuracy, 2) << std::string("%                                                                           ") << std::endl;
+    std::cout << std::string("Cycle: ") << std::to_string(CurrentCycle) << std::string("  Epoch: ") << std::to_string(CurrentEpoch) << std::string("  Train Accuracy: ") << FloatToStringFixed(TrainAccuracy, 2) << std::string("%  Test Accuracy: ") << FloatToStringFixed(TestAccuracy, 2) << std::string("%                                                                           ") << std::endl;
     std::cout.flush();
 
     DNN_UNREF_PAR(TotalEpochs);
@@ -90,10 +91,14 @@ void NewEpoch(UInt CurrentCycle, UInt CurrentEpoch, UInt TotalEpochs, UInt Optim
     DNN_UNREF_PAR(Scaling);
     DNN_UNREF_PAR(Rotation);
     DNN_UNREF_PAR(MaximumRate);
-    DNN_UNREF_PAR(BatchSize);
+    DNN_UNREF_PAR(N);
+    DNN_UNREF_PAR(D);
+    DNN_UNREF_PAR(H);
+    DNN_UNREF_PAR(W);
+    DNN_UNREF_PAR(PadD);
+    DNN_UNREF_PAR(PadH);
+    DNN_UNREF_PAR(PadW);
     DNN_UNREF_PAR(Momentum);
-    DNN_UNREF_PAR(Height);
-    DNN_UNREF_PAR(Width);
     DNN_UNREF_PAR(L2Penalty);
     DNN_UNREF_PAR(Gamma);
     DNN_UNREF_PAR(Dropout);
@@ -119,7 +124,7 @@ void GetTrainingProgress(int seconds = 5, UInt trainingSamples = 50000, UInt tes
     while (info->State == States::Idle);
 
     int barWidth = 40;
-    float progress = 0.0;
+    float progress = 0.0f;
   
     while (info->State != States::Completed)
     {
@@ -220,7 +225,7 @@ int main(int argc, char* argv[])
     rate.Cycles = 1;
     rate.Epochs = 200;
     rate.EpochMultiplier = 1;
-    rate.MaximumRate = 0.05;
+    rate.MaximumRate = 0.05f;
     rate.MinimumRate = 0.0001f;
     rate.FinalRate = 0.1f;
     rate.Gamma = 0.003f;
@@ -252,18 +257,21 @@ int main(int argc, char* argv[])
 
             DNNSetNewEpochDelegate(&NewEpoch);
             DNNPersistOptimizer(persistOptimizer);
-            DNNAddTrainingRateSGDR(rate, true, 1, info->TrainingSamplesCount);
+            DNNAddTrainingRateSGDR(rate, true, 1, info->TrainSamplesCount);
             DNNTraining();
 
-            GetTrainingProgress(5, info->TrainingSamplesCount, info->TestingSamplesCount);
+            GetTrainingProgress(5, info->TrainSamplesCount, info->TestSamplesCount);
             
             delete info;
                    
             DNNStop();
+            DNNModelDispose();
         }
         else
-            std::cout << std::endl << "Could not load dataset" << std::endl;
+            std::cout << std::endl << std::string("Could not load dataset") << std::endl;
     }
     else
-        std::cout << std::endl << "Could not load model" << std::endl << msg.Message << std::endl << model << std::endl;
+        std::cout << std::endl << std::string("Could not load model") << std::endl << msg.Message << std::endl << model << std::endl;
+
+    DNNDataproviderDispose();
 }
