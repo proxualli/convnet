@@ -1651,18 +1651,8 @@ namespace dnn
 						if (CurrentTrainingRate.Optimizer != Optimizer)
 						{
 							SetOptimizer(CurrentTrainingRate.Optimizer);
-							if (!PersistOptimizer)
-								for (auto& layer : Layers)
-									layer->ResetOptimizer(Optimizer);
-							else
-								for (auto& layer : Layers)
-									if (layer->CheckOptimizer(Optimizer))
-									{
-										for (auto& l : Layers)
-											l->ResetOptimizer(Optimizer);
-										State.store(States::Completed);
-										return;
-									}
+							for (auto& layer : Layers)
+								layer->ResetOptimizer(Optimizer);
 						}
 					}
 
@@ -3137,7 +3127,7 @@ namespace dnn
 			return true;
 		}
 
-		int SaveWeights(std::string fileName, const bool persistOptimizer = false) const
+		int SaveWeights(const std::string& fileName, const bool persistOptimizer = false) const
 		{
 			auto os = std::ofstream(fileName, std::ios::out | std::ios::binary | std::ios::trunc);
 
@@ -3154,7 +3144,7 @@ namespace dnn
 			return -1;
 		}
 
-		int LoadWeights(std::string fileName, const bool persistOptimizer = false)
+		int LoadWeights(const std::string& fileName, const bool persistOptimizer = false)
 		{
 			const auto& optimizers = magic_enum::enum_entries<Optimizers>();
 			
@@ -3186,7 +3176,7 @@ namespace dnn
 			return -1;
 		}
 
-		int SaveLayerWeights(std::string fileName, const UInt layerIndex, const bool persistOptimizer = false) const
+		int SaveLayerWeights(const std::string& fileName, const UInt layerIndex, const bool persistOptimizer = false) const
 		{
 			auto os = std::ofstream(fileName, std::ios::out | std::ios::binary | std::ios::trunc);
 
@@ -3202,7 +3192,7 @@ namespace dnn
 			return -1;
 		}
 
-		int LoadLayerWeights(std::string fileName, const UInt layerIndex, const bool persistOptimizer = false)
+		int LoadLayerWeights(const std::string& fileName, const UInt layerIndex, const bool persistOptimizer = false)
 		{
 			if (GetFileSize(fileName) == Layers[layerIndex]->GetWeightsSize(persistOptimizer, Optimizer))
 			{
