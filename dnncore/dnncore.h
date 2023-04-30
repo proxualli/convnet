@@ -1838,14 +1838,14 @@ namespace dnncore
 		property UInt TestErrors;
 		property Float TestErrorPercentage;
 		property Float TestAccuracy;
-		property long long ElapsedTicks;
+		property long long ElapsedMilliSeconds;
 		property TimeSpan ElapsedTime;
 
 		DNNTrainingResult::DNNTrainingResult()
 		{
 		}
 
-		DNNTrainingResult::DNNTrainingResult(UInt cycle, UInt epoch, UInt groupIndex, UInt costIndex, String^ costName, UInt n, UInt d, UInt h, UInt w, UInt padD, UInt padH, UInt padW, DNNOptimizers optimizer, Float rate, Float eps, Float momentum, Float beta2, Float gamma, Float l2Penalty, Float dropout, Float inputDropout, Float cutout, bool cutMix, Float autoAugment, bool horizontalFlip, bool verticalFlip, Float colorCast, UInt colorAngle, Float distortion, DNNInterpolations interpolation, Float scaling, Float rotation, Float avgTrainLoss, UInt trainErrors, Float trainErrorPercentage, Float trainAccuracy, Float avgTestLoss, UInt testErrors, Float testErrorPercentage, Float testAccuracy, long long elapsedTicks, TimeSpan elapsedTime)
+		DNNTrainingResult::DNNTrainingResult(UInt cycle, UInt epoch, UInt groupIndex, UInt costIndex, String^ costName, UInt n, UInt d, UInt h, UInt w, UInt padD, UInt padH, UInt padW, DNNOptimizers optimizer, Float rate, Float eps, Float momentum, Float beta2, Float gamma, Float l2Penalty, Float dropout, Float inputDropout, Float cutout, bool cutMix, Float autoAugment, bool horizontalFlip, bool verticalFlip, Float colorCast, UInt colorAngle, Float distortion, DNNInterpolations interpolation, Float scaling, Float rotation, Float avgTrainLoss, UInt trainErrors, Float trainErrorPercentage, Float trainAccuracy, Float avgTestLoss, UInt testErrors, Float testErrorPercentage, Float testAccuracy, long long elapsedMilliSeconds, TimeSpan elapsedTime)
 		{
 			Cycle = cycle;
 			Epoch = epoch;
@@ -1887,7 +1887,7 @@ namespace dnncore
 			TestErrors = testErrors;
 			TestErrorPercentage = testErrorPercentage;
 			TestAccuracy = testAccuracy;
-			ElapsedTicks = elapsedTicks;
+			ElapsedMilliSeconds = elapsedMilliSeconds;
 			ElapsedTime = elapsedTime;
 		}
 	};

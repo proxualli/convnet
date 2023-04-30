@@ -122,7 +122,7 @@ namespace Convnet
                         "TestErrors" + delim +
                         "TestErrorPercentage" + delim +
                         "TestAccuracy" + delim +
-                        "ElapsedTicks" + delim +
+                        "ElapsedMilliSeconds" + delim +
                         "ElapsedTime");
 
                 foreach (var row in Settings.Default.TrainingLog)
@@ -167,7 +167,7 @@ namespace Convnet
                         row.TestErrors.ToString() + delim +
                         row.TestErrorPercentage.ToString() + delim +
                         row.TestAccuracy.ToString() + delim +
-                        row.ElapsedTicks.ToString() + delim +
+                        row.ElapsedMilliSeconds.ToString() + delim +
                         row.ElapsedTime.ToString());
 
                 File.WriteAllText(path, sb.ToString());
