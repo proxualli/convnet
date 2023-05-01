@@ -362,7 +362,7 @@ namespace ScriptsDialog
                             string name = "";
                             foreach (var rec in ShuffleNet)
                                 name += rec.ToString();
-                            return Script.ToString() + "-" + Width.ToString() + name;
+                            return Script.ToString() + (DepthDrop > 0 ? (FixedDepthDrop ? "-fixeddepthdrop-" : "-depthdrop-") : "") + Width.ToString() + name;
                         }
                     default:
                         return Script.ToString() + "-" + Groups.ToString() + "-" + Iterations.ToString();
@@ -1088,7 +1088,7 @@ namespace ScriptsDialog
         public bool WidthVisible { get { return Script == Scripts.convnext || Script == Scripts.mobilenetv3 || Script == Scripts.resnet || Script == Scripts.shufflenetv2; } }
         public bool GrowthRateVisible { get { return Script == Scripts.densenet; } }
         public bool DropoutVisible { get { return Script == Scripts.densenet || Script == Scripts.resnet || Script == Scripts.efficientnetv2; } }
-        public bool DepthDropVisible { get { return Script == Scripts.convnext || Script == Scripts.efficientnetv2 || Script == Scripts.mobilenetv3 || Script == Scripts.resnet || Script == Scripts.densenet; } }
+        public bool DepthDropVisible { get { return Script == Scripts.convnext || Script == Scripts.efficientnetv2 || Script == Scripts.mobilenetv3 || Script == Scripts.resnet || Script == Scripts.densenet || Script == Scripts.shufflenetv2; } }
         public bool CompressionVisible { get { return Script == Scripts.densenet; } }
         public bool BottleneckVisible { get { return Script == Scripts.densenet || Script == Scripts.resnet; } }
         public bool SqueezeExcitationVisible { get { return Script == Scripts.mobilenetv3; } }
