@@ -520,63 +520,6 @@ namespace ScriptsDialog
 
             switch (p.Script)
             {
-                case Scripts.convnext:
-                    {
-                        var W = p.Width * 16;
-                        var A = 1ul;
-                        var C = 5ul;
-
-                        net +=
-                            Convolution(1, "Input", DIV8(W), 3, 3, p.StrideHFirstConv, p.StrideWFirstConv, 1, 1);
-
-                        blocks.Add(
-                            BatchNormActivation(1, "C1", p.Activation) +
-                            Convolution(2, "B1", DIV8(W), 3, 3, 1, 1, 1, 1) +
-                            BatchNormActivation(2, "C2", p.Activation) +
-                            Convolution(3, "B2", DIV8(W), 3, 3, 1, 1, 1, 1) +
-                            Convolution(4, "B1", DIV8(W), 1, 1, 1, 1, 0, 0) +
-                            Add(1, "C3,C4"));
-
-                        for (var g = 0ul; g < p.Groups; g++)
-                        {
-                            if (g > 0)
-                            {
-                                W *= 2;
-
-                                blocks.Add(
-                                    BatchNorm(C, In("A", A)) +
-                                    Convolution(C, In("B", C), DIV8(W), 2, 2, 2, 2, 0, 0));
-
-                                C += 1;
-                            }
-
-                            for (var i = 1ul; i < p.Iterations; i++)
-                            {
-                                blocks.Add(
-                                    DepthwiseConvolution(C, (i == 1ul && g > 0 ? In("C", C - 1ul) : In("A", A)), 1, 7, 7, 1, 1, 3, 3) +
-                                    BatchNorm(C, In("DC", C)) +
-                                    Convolution(C + 1, In("B", C), DIV8(W * 4), 1, 1, 1, 1, 0, 0) +
-                                    Activation(C + 1, In("C", C + 1), "Gelu") +
-                                    Convolution(C + 2, In("ACT", C + 1), DIV8(W), 1, 1, 1, 1, 0, 0) +
-                                    Add(A + 1, In("C", C + 2) + "," + (i == 1ul && g > 0 ? In("C", C - 1ul) : In("A", A))));
-
-                                C += 3;
-                                A++;
-                            }
-                        }
-
-                        foreach (var block in blocks)
-                            net += block;
-
-                        net +=
-                            Convolution(C, In("A", A), p.Classes, 1, 1, 1, 1, 0, 0) +
-                            BatchNorm(C + 1, In("C", C)) +
-                            GlobalAvgPooling(In("B", C + 1)) +
-                            LogSoftmax("GAP") +
-                            Cost("LSM", p.Dataset, p.Classes, "CategoricalCrossEntropy", 0.125f);
-                    }
-                    break;
-
                 case Scripts.densenet:
                     {
                         var channels = DIV8(p.GrowthRate);
