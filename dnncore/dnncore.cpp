@@ -19,7 +19,7 @@ DNN_API void DNNDisableLocking(const bool disable);
 DNN_API void DNNGetConfusionMatrix(const UInt costLayerIndex, std::vector<std::vector<UInt>>* confusionMatrix);
 DNN_API void DNNGetLayerInputs(const UInt layerIndex, std::vector<UInt>* inputs);
 DNN_API void DNNGetLayerInfo(const UInt layerIndex, dnn::LayerInfo* info);
-DNN_API void DNNSetNewEpochDelegate(void(*newEpoch)(UInt, UInt, UInt, UInt, Float, Float, Float, bool, bool, Float, Float, bool, Float, Float, UInt, Float, UInt, Float, Float, Float, UInt, UInt, UInt, UInt, UInt, UInt, UInt, Float, Float, Float, Float, Float, Float, UInt, Float, Float, Float, UInt));
+DNN_API void DNNSetNewEpochDelegate(void(*newEpoch)(UInt, UInt, UInt, UInt, Float, Float, Float, bool, bool, Float, Float, bool, Float, Float, UInt, Float, UInt, Float, Float, Float, UInt, UInt, UInt, UInt, UInt, UInt, UInt, Float, Float, Float, Float, Float, Float, UInt, Float, Float, Float, UInt, UInt));
 DNN_API void DNNModelDispose();
 DNN_API bool DNNBatchNormUsed();
 DNN_API void DNNResetWeights();
@@ -737,7 +737,7 @@ namespace dnncore
 	void DNNModel::Start(bool training)
 	{
 		if (NewEpoch != nullptr)
-			DNNSetNewEpochDelegate((void(*)(UInt, UInt, UInt, UInt, Float, Float, Float, bool, bool, Float, Float, bool, Float, Float, UInt, Float, UInt, Float, Float, Float, UInt, UInt, UInt, UInt, UInt, UInt, UInt, Float, Float, Float, Float, Float, Float, UInt, Float, Float, Float, UInt))(Marshal::GetFunctionPointerForDelegate(NewEpoch).ToPointer()));
+			DNNSetNewEpochDelegate((void(*)(UInt, UInt, UInt, UInt, Float, Float, Float, bool, bool, Float, Float, bool, Float, Float, UInt, Float, UInt, Float, Float, Float, UInt, UInt, UInt, UInt, UInt, UInt, UInt, Float, Float, Float, Float, Float, Float, UInt, Float, Float, Float, UInt, UInt))(Marshal::GetFunctionPointerForDelegate(NewEpoch).ToPointer()));
 		SampleRate = Float(0);
 		State = DNNStates::Idle;
 

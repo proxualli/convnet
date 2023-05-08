@@ -47,13 +47,13 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)dnn\deps\oneDNN\include;$(SolutionDir)dnn\deps\oneDNN\build\include;$(SolutionDir)dnn\deps\version2\add-on\random;$(SolutionDir)dnn\deps\version2;$(SolutionDir)dnn\deps\zlib-1.2.11;$(SolutionDir)dnn\deps\libpng;$(SolutionDir)dnn\deps\magic_enum\include;$(SolutionDir)dnn\deps\libjpeg-turbo\build;$(SolutionDir)dnn\deps\libjpeg-turbo;$(SolutionDir)dnn\deps\CImg;$(SolutionDir)dnn\deps\CImg\plugins;$(IncludePath)</IncludePath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)dnn\deps\oneDNN\include;$(SolutionDir)dnn\deps\oneDNN\build\include;$(SolutionDir)dnn\deps\version2\add-on\random;$(SolutionDir)dnn\deps\version2;$(SolutionDir)dnn\deps\zlib-1.2.11;$(SolutionDir)dnn\deps\libpng;$(SolutionDir)dnn\deps\magic_enum\include;$(SolutionDir)dnn\deps\libjpeg-turbo\build;$(SolutionDir)dnn\deps\libjpeg-turbo;$(SolutionDir)dnn\deps\CImg;$(SolutionDir)dnn\deps\CImg\plugins;$(SolutionDir)dnn\deps\bitsery\include;$(IncludePath)</IncludePath>
     <LibraryPath>$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);$(NETFXKitsDir)Lib\um\x64;$(SolutionDir)libjpeg-turbo</LibraryPath>
     <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)dnn\deps\oneDNN\include;$(SolutionDir)dnn\deps\oneDNN\build\include;$(SolutionDir)dnn\deps\version2\add-on\random;$(SolutionDir)dnn\deps\version2;$(SolutionDir)dnn\deps\zlib-1.2.11;$(SolutionDir)dnn\deps\libpng;$(SolutionDir)dnn\deps\magic_enum\include;$(SolutionDir)dnn\deps\libjpeg-turbo\build;$(SolutionDir)dnn\deps\libjpeg-turbo;$(SolutionDir)dnn\deps\CImg;$(SolutionDir)dnn\deps\CImg\plugins;$(IncludePath)</IncludePath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)dnn\deps\oneDNN\include;$(SolutionDir)dnn\deps\oneDNN\build\include;$(SolutionDir)dnn\deps\version2\add-on\random;$(SolutionDir)dnn\deps\version2;$(SolutionDir)dnn\deps\zlib-1.2.11;$(SolutionDir)dnn\deps\libpng;$(SolutionDir)dnn\deps\magic_enum\include;$(SolutionDir)dnn\deps\libjpeg-turbo\build;$(SolutionDir)dnn\deps\libjpeg-turbo;$(SolutionDir)dnn\deps\CImg;$(SolutionDir)dnn\deps\CImg\plugins;$(SolutionDir)dnn\deps\bitsery\include;$(IncludePath)</IncludePath>
     <LibraryPath>$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);$(NETFXKitsDir)Lib\um\x64;$(SolutionDir)libjpeg-turbo</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">

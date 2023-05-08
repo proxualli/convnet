@@ -28,7 +28,7 @@ DNN_API void DNNDisableLocking(const bool disable);
 DNN_API void DNNGetConfusionMatrix(const UInt costLayerIndex, std::vector<std::vector<UInt>>* confusionMatrix);
 DNN_API void DNNGetLayerInputs(const UInt layerIndex, std::vector<UInt>* inputs);
 DNN_API void DNNGetLayerInfo(const UInt layerIndex, dnn::LayerInfo* info);
-DNN_API void DNNSetNewEpochDelegate(void(*newEpoch)(UInt, UInt, UInt, UInt, Float, Float, Float, bool, bool, Float, Float, bool, Float, Float, UInt, Float, UInt, Float, Float, Float, UInt, UInt, UInt, UInt, UInt, UInt, UInt, Float, Float, Float, Float, Float, Float, UInt, Float, Float, Float, UInt));
+DNN_API void DNNSetNewEpochDelegate(void(*newEpoch)(UInt, UInt, UInt, UInt, Float, Float, Float, bool, bool, Float, Float, bool, Float, Float, UInt, Float, UInt, Float, Float, Float, UInt, UInt, UInt, UInt, UInt, UInt, UInt, Float, Float, Float, Float, Float, Float, UInt, Float, Float, Float, UInt, UInt));
 DNN_API void DNNModelDispose();
 DNN_API void DNNDataproviderDispose();
 DNN_API bool DNNBatchNormUsed();
@@ -68,10 +68,19 @@ DNN_API bool DNNSetFormat(const bool plain);
 DNN_API dnn::Optimizers GetOptimizer();
 //DNN_API void DNNPrintModel(const std::string& fileName);
 
-
-void NewEpoch(UInt CurrentCycle, UInt CurrentEpoch, UInt TotalEpochs, UInt Optimizer, Float Beta2, Float Gamma, Float Eps, bool HorizontalFlip, bool VerticalFlip, Float InputDropout, Float Cutout, bool CutMix, Float AutoAugment, Float ColorCast, UInt ColorAngle, Float Distortion, UInt Interpolation, Float Scaling, Float Rotation, Float MaximumRate, UInt N, UInt D, UInt H, UInt W, UInt PadD, UInt PadH, UInt PadW, Float Momentum, Float L2Penalty, Float Dropout, Float AvgTrainLoss, Float TrainErrorPercentage, Float TrainAccuracy, UInt TrainErrors, Float AvgTestLoss, Float TestErrorPercentage, Float TestAccuracy, UInt TestErrors)
+std::string ToTime(UInt nanoseconds)
 {
-    std::cout << std::string("Cycle: ") << std::to_string(CurrentCycle) << std::string("  Epoch: ") << std::to_string(CurrentEpoch) << std::string("  Train Accuracy: ") << FloatToStringFixed(TrainAccuracy, 2) << std::string("%  Test Accuracy: ") << FloatToStringFixed(TestAccuracy, 2) << std::string("%                                                                           ") << std::endl;
+    auto seconds = nanoseconds / 1000000000ull;
+    auto hours = seconds / 3600ull;
+    auto minutes = (seconds - (hours * 3600ull)) / 60ull;
+    seconds = (seconds - (hours * 3600ull)) - (minutes * 60ull);
+
+    return  ((hours <  10ull ? std::string("0") : std::string("")) + std::to_string(hours) + std::string(":") + (minutes < 10ull ? std::string("0") : std::string("")) + std::to_string(minutes) + std::string(":") + (seconds < 10ull ? std::string("0") : std::string("")) + std::to_string(seconds));
+}
+
+void NewEpoch(UInt CurrentCycle, UInt CurrentEpoch, UInt TotalEpochs, UInt Optimizer, Float Beta2, Float Gamma, Float Eps, bool HorizontalFlip, bool VerticalFlip, Float InputDropout, Float Cutout, bool CutMix, Float AutoAugment, Float ColorCast, UInt ColorAngle, Float Distortion, UInt Interpolation, Float Scaling, Float Rotation, Float MaximumRate, UInt N, UInt D, UInt H, UInt W, UInt PadD, UInt PadH, UInt PadW, Float Momentum, Float L2Penalty, Float Dropout, Float AvgTrainLoss, Float TrainErrorPercentage, Float TrainAccuracy, UInt TrainErrors, Float AvgTestLoss, Float TestErrorPercentage, Float TestAccuracy, UInt TestErrors, UInt ElapsedNanoSeconds)
+{
+    std::cout << std::string("Cycle: ") << std::to_string(CurrentCycle) << std::string("  Epoch: ") << std::to_string(CurrentEpoch) << std::string("  Train Accuracy: ") << FloatToStringFixed(TrainAccuracy, 2) << std::string("%  Test Accuracy: ") << FloatToStringFixed(TestAccuracy, 2) << std::string("Duration: ") + ToTime(ElapsedNanoSeconds) + std::string("%                                                                           ") << std::endl;
     std::cout.flush();
 
     DNN_UNREF_PAR(TotalEpochs);
