@@ -480,7 +480,7 @@ namespace Convnet
 
         private void HelpCmdExecuted(object target, ExecutedRoutedEventArgs e)
         {
-            ApplicationHelper.OpenBrowser("https://github.com/zamir1002/convnet.git");
+            ApplicationHelper.OpenBrowser("https://github.com/proxualli/convnet.git");
         }
 
         private void HelpCmdCanExecute(object sender, CanExecuteRoutedEventArgs e)
