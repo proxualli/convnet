@@ -131,9 +131,6 @@
 	<PackageReference Include="OxyPlot.Wpf" Version="2.1.2" />
 	<PackageReference Include="DotNetProjects.Extended.Wpf.Toolkit" Version="5.0.103" />
 	<PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="6.0.0" />
-	<PackageReference Include="System.Resources.Extensions" Version="7.0.0" />
-	<PackageReference Include="System.Threading.Tasks.Dataflow" Version="7.0.0" />
-	<PackageReference Include="System.Collections.Immutable" Version="7.0.0" />
 	<PackageReference Include="Microsoft.VisualStudio.Setup.Configuration.Interop" Version="3.6.2115">
 	  <PrivateAssets>all</PrivateAssets>
 	  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
