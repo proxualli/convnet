@@ -152,6 +152,7 @@
     <ClInclude Include="include\Cost.h" />
     <ClInclude Include="include\ConvolutionTranspose.h" />
     <ClInclude Include="include\Dataprovider.h" />
+    <ClInclude Include="include\GroupNorm.h" />
     <ClInclude Include="include\LayerNorm.h" />
     <ClInclude Include="include\LogSoftmax.h" />
     <ClInclude Include="include\Max.h" />

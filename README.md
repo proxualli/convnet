@@ -21,6 +21,7 @@
 * Dropout
 * GlobalAvgPooling
 * GlobalMaxPooling
+* GroupNorm
 * LayerNorm
 * LocalResponseNorm
 * LogSoftmax
