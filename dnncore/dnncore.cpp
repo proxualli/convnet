@@ -322,6 +322,7 @@ namespace dnncore
 			case DNNLayerTypes::BatchNormActivationDropout:
 			case DNNLayerTypes::BatchNormRelu:
 			case DNNLayerTypes::Dense:
+			case DNNLayerTypes::GroupNorm:
 			case DNNLayerTypes::LayerNorm:
 			{
 				const auto width = info->BiasCount;
