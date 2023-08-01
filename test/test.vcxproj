@@ -62,7 +62,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>DNN_DLL;_DEBUG;_CONSOLE;WIN32;DNN_OMP;DNN_CACHE_PRIMITIVES;DNN_AVX2;cimg_use_cpp11;cimg_use_openmp;cimg_use_jpeg;cimg_use_png;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(SolutionDir)dnn\deps\version2\add-on\random;$(SolutionDir)dnn\deps\magic_enum\include;$(SolutionDir)dnn\include;$(SolutionDir)dnn\deps\version2;$(SolutionDir)dnn\deps\libpng;$(SolutionDir)dnn\deps\libjpeg-turbo;$(SolutionDir)dnn\deps\oneDNN\include;$(SolutionDir)dnn\deps\oneDNN\build\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <EnableEnhancedInstructionSet>AdvancedVectorExtensions2</EnableEnhancedInstructionSet>
+      <EnableEnhancedInstructionSet>AdvancedVectorExtensions512</EnableEnhancedInstructionSet>
       <AdditionalOptions>/bigobj /openmp:experimental /Qvec-report:1 /favor:AMD64 /fp:contract %(AdditionalOptions)</AdditionalOptions>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <BasicRuntimeChecks>UninitializedLocalUsageCheck</BasicRuntimeChecks>
@@ -84,7 +84,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;WIN32;DNN_OMP;DNN_CACHE_PRIMITIVES;DNN_AVX2;cimg_use_cpp11;cimg_use_openmp;cimg_use_jpeg;cimg_use_png;_CONSOLE;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(SolutionDir)dnn\deps\version2\add-on\random;$(SolutionDir)dnn\deps\magic_enum\include;$(SolutionDir)dnn\include;$(SolutionDir)dnn\deps\version2;$(SolutionDir)dnn\deps\libpng;$(SolutionDir)dnn\deps\libjpeg-turbo;$(SolutionDir)dnn\deps\oneDNN\include;$(SolutionDir)dnn\deps\oneDNN\build\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <EnableEnhancedInstructionSet>AdvancedVectorExtensions2</EnableEnhancedInstructionSet>
+      <EnableEnhancedInstructionSet>AdvancedVectorExtensions512</EnableEnhancedInstructionSet>
       <FloatingPointModel>Fast</FloatingPointModel>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
