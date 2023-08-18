@@ -326,27 +326,31 @@ namespace dnncore
 			case DNNLayerTypes::LayerNorm:
 			{
 				const auto width = info->BiasCount;
-				const auto height = (info->WeightCount / info->BiasCount) + 3;
-				const auto totalSize = width * height;
-				auto pixelFormat = PixelFormats::Gray8;
 
-				if (totalSize > 0 && totalSize <= INT_MAX)
+				if (width > 0)
 				{
-					auto img = gcnew cli::array<Byte>(int(totalSize));
-					pin_ptr<Byte> p = &img[0];
-					Byte* np = p;
+					const auto height = (info->WeightCount / width) + 3;
+					const auto totalSize = width * height;
+					auto pixelFormat = PixelFormats::Gray8;
 
-					DNNGetImage(info->LayerIndex, BackgroundColor, np);
+					if (totalSize > 0 && totalSize <= INT_MAX)
+					{
+						auto img = gcnew cli::array<Byte>(int(totalSize));
+						pin_ptr<Byte> p = &img[0];
+						Byte* np = p;
 
-					auto outputImage = System::Windows::Media::Imaging::BitmapSource::Create(int(width), int(height), 96.0, 96.0, pixelFormat, nullptr, img, int(width) * ((pixelFormat.BitsPerPixel + 7) / 8));
-					if (outputImage->CanFreeze)
-						outputImage->Freeze();
+						DNNGetImage(info->LayerIndex, BackgroundColor, np);
 
-					info->WeightsSnapshotX = int(width * BlockSize);
-					info->WeightsSnapshotY = int(height * BlockSize);
-					info->WeightsSnapshot = outputImage;
+						auto outputImage = System::Windows::Media::Imaging::BitmapSource::Create(int(width), int(height), 96.0, 96.0, pixelFormat, nullptr, img, int(width) * ((pixelFormat.BitsPerPixel + 7) / 8));
+						if (outputImage->CanFreeze)
+							outputImage->Freeze();
 
-					GC::Collect(GC::MaxGeneration, GCCollectionMode::Forced, true, true);
+						info->WeightsSnapshotX = int(width * BlockSize);
+						info->WeightsSnapshotY = int(height * BlockSize);
+						info->WeightsSnapshot = outputImage;
+
+						GC::Collect(GC::MaxGeneration, GCCollectionMode::Forced, true, true);
+					}
 				}
 			}
 			break;
