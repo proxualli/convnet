@@ -325,10 +325,9 @@ namespace dnncore
 			case DNNLayerTypes::GroupNorm:
 			case DNNLayerTypes::LayerNorm:
 			{
-				const auto width = info->BiasCount;
-
-				if (width > 0)
+				if (info->BiasCount > 0)
 				{
+					const auto width = info->BiasCount;
 					const auto height = (info->WeightCount / width) + 3;
 					const auto totalSize = width * height;
 					auto pixelFormat = PixelFormats::Gray8;
