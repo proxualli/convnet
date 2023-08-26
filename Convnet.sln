@@ -49,14 +49,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "jpeg12-static", "dnn\deps\l
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "jpeg16-static", "dnn\deps\libjpeg-turbo\build\jpeg16-static.vcxproj", "{331C2C47-E961-3C48-B9B6-ED0ED70108AB}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "dnnl_graph_interface", "dnn\deps\oneDNN\build\src\graph\interface\dnnl_graph_interface.vcxproj", "{757407CF-B60F-3B9D-9B37-F55ACA236F65}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "dnnl_graph_backend_dnnl", "dnn\deps\oneDNN\build\src\graph\backend\dnnl\dnnl_graph_backend_dnnl.vcxproj", "{F625DF63-47FB-3FAF-AD77-CEB0F70113C2}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "dnnl_graph_backend_fake", "dnn\deps\oneDNN\build\src\graph\backend\fake\dnnl_graph_backend_fake.vcxproj", "{C06FE985-ED8D-3003-BFAA-F22E1C3203D7}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "dnnl_graph_utils", "dnn\deps\oneDNN\build\src\graph\utils\dnnl_graph_utils.vcxproj", "{1E84CA25-6391-3BA5-A1BF-B00D0E0269ED}"
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "minizip", "dnn\deps\zlib\contrib\vstudio\vc14\minizip.vcxproj", "{48CDD9DC-E09F-4135-9C0C-4FE50C3C654B}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "miniunz", "dnn\deps\zlib\contrib\vstudio\vc14\miniunz.vcxproj", "{C52F9E7B-498A-42BE-8DB4-85A15694382A}"
@@ -143,22 +135,6 @@ Global
 		{331C2C47-E961-3C48-B9B6-ED0ED70108AB}.Debug|x64.Build.0 = Debug|x64
 		{331C2C47-E961-3C48-B9B6-ED0ED70108AB}.Release|x64.ActiveCfg = Release|x64
 		{331C2C47-E961-3C48-B9B6-ED0ED70108AB}.Release|x64.Build.0 = Release|x64
-		{757407CF-B60F-3B9D-9B37-F55ACA236F65}.Debug|x64.ActiveCfg = Debug|x64
-		{757407CF-B60F-3B9D-9B37-F55ACA236F65}.Debug|x64.Build.0 = Debug|x64
-		{757407CF-B60F-3B9D-9B37-F55ACA236F65}.Release|x64.ActiveCfg = Release|x64
-		{757407CF-B60F-3B9D-9B37-F55ACA236F65}.Release|x64.Build.0 = Release|x64
-		{F625DF63-47FB-3FAF-AD77-CEB0F70113C2}.Debug|x64.ActiveCfg = Debug|x64
-		{F625DF63-47FB-3FAF-AD77-CEB0F70113C2}.Debug|x64.Build.0 = Debug|x64
-		{F625DF63-47FB-3FAF-AD77-CEB0F70113C2}.Release|x64.ActiveCfg = Release|x64
-		{F625DF63-47FB-3FAF-AD77-CEB0F70113C2}.Release|x64.Build.0 = Release|x64
-		{C06FE985-ED8D-3003-BFAA-F22E1C3203D7}.Debug|x64.ActiveCfg = Debug|x64
-		{C06FE985-ED8D-3003-BFAA-F22E1C3203D7}.Debug|x64.Build.0 = Debug|x64
-		{C06FE985-ED8D-3003-BFAA-F22E1C3203D7}.Release|x64.ActiveCfg = Release|x64
-		{C06FE985-ED8D-3003-BFAA-F22E1C3203D7}.Release|x64.Build.0 = Release|x64
-		{1E84CA25-6391-3BA5-A1BF-B00D0E0269ED}.Debug|x64.ActiveCfg = Debug|x64
-		{1E84CA25-6391-3BA5-A1BF-B00D0E0269ED}.Debug|x64.Build.0 = Debug|x64
-		{1E84CA25-6391-3BA5-A1BF-B00D0E0269ED}.Release|x64.ActiveCfg = Release|x64
-		{1E84CA25-6391-3BA5-A1BF-B00D0E0269ED}.Release|x64.Build.0 = Release|x64
 		{48CDD9DC-E09F-4135-9C0C-4FE50C3C654B}.Debug|x64.ActiveCfg = Debug|x64
 		{48CDD9DC-E09F-4135-9C0C-4FE50C3C654B}.Debug|x64.Build.0 = Debug|x64
 		{48CDD9DC-E09F-4135-9C0C-4FE50C3C654B}.Release|x64.ActiveCfg = Release|x64
