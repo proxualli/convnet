@@ -3,22 +3,20 @@
 
 namespace dnn
 {
-	class ChannelSplit final : public Layer
+	class ChannelSplitRatioRight final : public Layer
 	{
 	public:
-		const UInt Group;
-		const UInt Groups;
+		const Float Ratio;
+		const UInt ChannelsLeft;
 
-		ChannelSplit(const dnn::Device& device, const dnnl::memory::format_tag format, const std::string& name, const std::vector<Layer*>& inputs, const UInt group, const UInt groups) :
-			Layer(device, format, name, LayerTypes::ChannelSplit, 0, 0, inputs[0]->C / groups, inputs[0]->D, inputs[0]->H, inputs[0]->W, 0, 0, 0, inputs),
-			Group(group),
-			Groups(groups)
+		ChannelSplitRatioRight(const dnn::Device& device, const dnnl::memory::format_tag format, const std::string& name, const std::vector<Layer*>& inputs, const Float ratio = Float(0.375)) :
+			Layer(device, format, name, LayerTypes::ChannelSplitRatioRight, 0, 0, UInt(std::roundf(Float(inputs[0]->C)) * ratio), inputs[0]->D, inputs[0]->H, inputs[0]->W, 0, 0, 0, inputs),
+			Ratio(ratio),
+			ChannelsLeft(UInt(std::roundf(Float(inputs[0]->C)) * (std::roundf(Float(1)) - ratio)))
 		{
 			assert(Inputs.size() == 1);
-			assert(InputLayer->C % Groups == 0);
-
-			if (InputLayer->C % Groups != 0)
-				throw std::invalid_argument("input not splittable in " + std::string(magic_enum::enum_name<LayerTypes>(LayerType)) + " layer " + InputLayer->Name + "  " + std::to_string(InputLayer->C));
+			assert(Ratio > Float(0));
+			assert(Ratio < Float(1));
 		}
 
 		void UpdateResolution() final override
@@ -31,9 +29,8 @@ namespace dnn
 		{
 			auto description = GetDescriptionHeader();
 
-			description.append(nwl + std::string(" Groups:") + tab + std::to_string(Groups));
-			description.append(nwl + std::string(" Group:") + dtab + std::to_string(Group));
-
+			description.append(nwl + std::string(" Ratio:") + tab + FloatToString(Ratio));
+			
 			return description;
 		}
 
@@ -76,7 +73,6 @@ namespace dnn
 		{
 			const auto plain = IsPlainFormat();
 			const auto threads = GetThreads(batchSize * (plain ? CDHW() : PaddedCDHW()), Float(10));
-			const auto groupC = (Group - 1) * C;
 			const auto strideHW = HW() * VectorSize;
 			
 #ifdef DNN_STOCHASTIC
@@ -89,7 +85,7 @@ namespace dnn
 						VecFloat In;		
 						for (auto c = 0ull; c < PaddedC; c += VectorSize)
 						{
-							const auto inputOffset = (c + groupC) * HW();
+							const auto inputOffset = (c + ChannelsLeft) * HW();
 							const auto outputOffset = c * HW();
 							for (auto hw = 0ull; hw < strideHW; hw += VectorSize)
 							{
@@ -105,7 +101,7 @@ namespace dnn
 					{
 						for (auto c = 0ull; c < C; c++)
 						{
-							const auto inputOffset = (c + groupC) * HW();
+							const auto inputOffset = (c + ChannelsLeft) * HW();
 							const auto outputOffset = c * HW();
 							PRAGMA_OMP_SIMD()
 							for (auto hw = 0ull; hw < HW(); hw++)
@@ -125,7 +121,7 @@ namespace dnn
 						VecFloat In;
 						for (auto c = 0ull; c < PaddedC; c += VectorSize)
 						{
-							const auto inputOffset = (c + groupC) * HW();
+							const auto inputOffset = (c + ChannelsLeft) * HW();
 							const auto outputOffset = c * HW();
 							for (auto hw = 0ull; hw < strideHW; hw += VectorSize)
 							{
@@ -138,7 +134,7 @@ namespace dnn
 					{
 						for (auto c = 0ull; c < C; c++)
 						{
-							const auto inputOffset = (c + groupC) * HW();
+							const auto inputOffset = (c + ChannelsLeft) * HW();
 							const auto outputOffset = c * HW();
 							PRAGMA_OMP_SIMD()
 							for (auto hw = 0ull; hw < HW(); hw++)
@@ -159,7 +155,7 @@ namespace dnn
 							VecFloat In;						
  							for (auto c = 0ull; c < PaddedC; c += VectorSize)
 							{
-								const auto inputOffset = n * InputLayer->PaddedCDHW() + (c + groupC) * HW();
+								const auto inputOffset = n * InputLayer->PaddedCDHW() + (c + ChannelsLeft) * HW();
 								const auto outputOffset = n * PaddedCDHW() + c * HW();
 								for (auto hw = 0ull; hw < strideHW; hw += VectorSize)
 								{
@@ -176,7 +172,7 @@ namespace dnn
 						{
 							for (auto c = 0ull; c < C; c ++)
 							{
-								const auto inputOffset = n * InputLayer->CDHW() + (c + groupC) * HW();
+								const auto inputOffset = n * InputLayer->CDHW() + (c + ChannelsLeft) * HW();
 								const auto outputOffset = n * CDHW() + c * HW();
 								PRAGMA_OMP_SIMD()
 								for (auto hw = 0ull; hw < HW(); hw++)
@@ -197,7 +193,7 @@ namespace dnn
 							VecFloat In;
 							for (auto c = 0ull; c < PaddedC; c += VectorSize)
 							{
-								const auto inputOffset = n * InputLayer->PaddedCDHW() + (c + groupC) * HW();
+								const auto inputOffset = n * InputLayer->PaddedCDHW() + (c + ChannelsLeft) * HW();
 								const auto outputOffset = n * PaddedCDHW() + c * HW();
 								for (auto hw = 0ull; hw < strideHW; hw += VectorSize)
 								{
@@ -211,7 +207,7 @@ namespace dnn
 						{
 							for (auto c = 0ull; c < C; c ++)
 							{
-								const auto inputOffset = n * InputLayer->CDHW() + (c + groupC) * HW();
+								const auto inputOffset = n * InputLayer->CDHW() + (c + ChannelsLeft) * HW();
 								const auto outputOffset = n * CDHW() + c * HW();
 								PRAGMA_OMP_SIMD()
 								for (auto hw = 0ull; hw < HW(); hw++)
@@ -232,7 +228,6 @@ namespace dnn
 
 			const auto plain = IsPlainFormat();
 			const auto threads = GetThreads(batchSize * (plain ? CDHW() : PaddedCDHW()), Float(10));
-			const auto groupC = (Group - 1) * C;
 			const auto strideHW = HW() * VectorSize;
 
 #ifdef DNN_STOCHASTIC
@@ -243,7 +238,7 @@ namespace dnn
 					VecFloat inputD1, D1;
 					for (auto c = 0ull; c < PaddedC; c += VectorSize)
 					{
-						const auto inputOffset = (c + groupC) * HW();
+						const auto inputOffset = (c + ChannelsLeft) * HW();
 						const auto outputOffset = c * HW();
 						for (auto hw = 0ull; hw < strideHW; hw += VectorSize)
 						{
@@ -257,7 +252,7 @@ namespace dnn
 				else
 					for (auto c = 0ull; c < C; c++)
 					{
-						const auto inputOffset = (c + groupC) * HW();
+						const auto inputOffset = (c + ChannelsLeft) * HW();
 						const auto outputOffset = c * HW();
 						PRAGMA_OMP_SIMD()
 						for (auto hw = 0ull; hw < HW(); hw++)
@@ -273,7 +268,7 @@ namespace dnn
 						VecFloat inputD1, D1;
 						for (auto c = 0ull; c < PaddedC; c += VectorSize)
 						{
-							const auto inputOffset = n * InputLayer->PaddedCDHW() + (c + groupC) * HW();
+							const auto inputOffset = n * InputLayer->PaddedCDHW() + (c + ChannelsLeft) * HW();
 							const auto outputOffset = n * PaddedCDHW() + c * HW();
 							for (auto hw = 0ull; hw < strideHW; hw += VectorSize)
 							{
@@ -289,7 +284,7 @@ namespace dnn
 					{
 						for (auto c = 0ull; c < C; c++)
 						{
-							const auto inputOffset = n * InputLayer->CDHW() + (c + groupC) * HW();
+							const auto inputOffset = n * InputLayer->CDHW() + (c + ChannelsLeft) * HW();
 							const auto outputOffset = n * CDHW() + c * HW();
 							PRAGMA_OMP_SIMD()
 							for (auto hw = 0ull; hw < HW(); hw++)

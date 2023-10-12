@@ -152,6 +152,12 @@
     <ClInclude Include="include\GroupNorm.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\ChannelSplitRatioLeft.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ChannelSplitRatioRight.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\dllmain.cpp">

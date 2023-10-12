@@ -49,6 +49,14 @@ namespace ScriptsDialog
             return ((channels / 8ul) + 1ul) * 8ul;
         }
 
+        public static UInt DIV16(UInt channels)
+        {
+            if (channels % 16ul == 0ul)
+                return channels;
+
+            return ((channels / 16ul) + 1ul) * 16ul;
+        }
+
         public static string In(string prefix, UInt id)
         {
             return prefix + to_string(id);
@@ -235,6 +243,22 @@ namespace ScriptsDialog
                         PartialDepthwiseConvolution(id, inputs, 3, 4, 7, 7, strideX, strideY, 3, 3, biases, "C") + PartialDepthwiseConvolution(id, inputs, 4, 4, 9, 9, strideX, strideY, 4, 4, biases, "D") +
                         Concat(id, In("ADC", id) + "," + In("BDC", id) + "," + In("CDC", id) + "," + In("DDC", id), group, prefix);
             }
+        }
+
+        public static string ChannelSplitRatioLeft(UInt id, string inputs, Float ratio = 0.375f, string group = "", string prefix = "CSRL")
+        {
+            return "[" + group + prefix + to_string(id) + "]" + nwl +
+               "Type=ChannelSplitRatioLeft" + nwl +
+               "Inputs=" + inputs + nwl +
+               "Ratio=" + to_string(ratio) + nwl + nwl;
+        }
+
+        public static string ChannelSplitRatioRight(UInt id, string inputs, Float ratio = 0.375f, string group = "", string prefix = "CSRR")
+        {
+            return "[" + group + prefix + to_string(id) + "]" + nwl +
+               "Type=ChannelSplitRatioRight" + nwl +
+               "Inputs=" + inputs + nwl +
+               "Ratio=" + to_string(ratio) + nwl + nwl;
         }
 
         public static string ChannelSplit(UInt id, string inputs, UInt groups, UInt part, string group = "", string prefix = "CS")
@@ -495,6 +519,53 @@ namespace ScriptsDialog
             }
         }
 
+        public static string AugmentedInvertedResidual(UInt A, UInt C, UInt channels, UInt kernel = 3, UInt pad = 1, bool subsample = false, UInt shuffle = 2, bool se = false, Activations activation = Activations.HardSwish)
+        {
+            if (subsample)
+            {
+                return
+                    Convolution(C, In("CC", A), channels, 1, 1, 1, 1, 0, 0) +
+                    BatchNormActivation(C + 1, In("C", C), activation) +
+                    DepthwiseConvolution(C + 1, In("B", C + 1), 1, kernel, kernel, 2, 2, pad, pad) +
+                    BatchNorm(C + 2, In("DC", C + 1)) +
+                    Convolution(C + 2, In("B", C + 2), channels, 1, 1, 1, 1, 0, 0) +
+                    BatchNormActivation(C + 3, In("C", C + 2), activation) +
+                    DepthwiseConvolution(C + 3, In("CC", A), 1, kernel, kernel, 2, 2, pad, pad) +
+                    BatchNorm(C + 4, In("DC", C + 3)) +
+                    Convolution(C + 4, In("B", C + 4), channels, 1, 1, 1, 1, 0, 0) +
+                    BatchNormActivation(C + 5, In("C", C + 4), activation) +
+                    Concat(A + 1, In("B", C + 5) + "," + In("B", C + 3));
+            }
+            else
+            {
+                var group = In("SE", C + 3);
+                var strSE =
+                    se ? GlobalAvgPooling(In("B", C + 3), group) +
+                    Convolution(1, group + "GAP", DIV8(channels / 4), 1, 1, 1, 1, 0, 0, false, group) +
+                    BatchNormActivation(1, group + "C1", (activation == Activations.FRelu ? Activations.HardSwish : activation), group) +
+                    Convolution(2, group + "B1", channels, 1, 1, 1, 1, 0, 0, false, group) +
+                    BatchNormActivation(2, group + "C2", Activations.HardSigmoid, group) +
+                    Multiply(In("B", C + 3) + "," + group + "B2", group) +
+                    Concat(A + 1, In("LCC", A) + "," + group + "CM") :
+                    Concat(A + 1, In("LCC", A) + "," + In("B", C + 3));
+
+                return
+                    Shuffle(A, In("CC", A), shuffle) +
+                    ChannelSplitRatioLeft(A, In("SH", A), 0.375f) + ChannelSplitRatioRight(A, In("SH", A), 0.375f) +
+                    Convolution(C, In("CSRR", A), DIV8((UInt)((2 * channels) * 0.375f)), 1, 1, 1, 1, 0, 0) +
+                    BatchNormActivation(C + 1, In("C", C), activation) +
+                    DepthwiseConvolution(C + 1, In("B", C + 1), 1, kernel, kernel, 1, 1, pad, pad) +
+                    BatchNorm(C + 2, In("DC", C + 1)) +
+                    ChannelSplit(A, In("B", C + 2), 2, 1, "L1") + ChannelSplit(A, In("B", C + 2), 2, 2, "R1") +
+                    ChannelSplit(A, In("CSRL", A), 2, 1, "L2") + ChannelSplit(A, In("CSRL", A), 2, 2, "R2") +
+                    Concat(A, In("L1CS", A) + "," + In("L2CS", A), "L") +
+                    Concat(A, In("R1CS", A) + "," + In("R2CS", A), "R") +
+                    Convolution(C + 2, In("RCC", A), channels, 1, 1, 1, 1, 0, 0) +
+                    BatchNormActivation(C + 3, In("C", C + 2), activation) +
+                    strSE;
+            }
+        }
+
         internal static string Generate(ScriptParameters p)
         {
             var net =
@@ -520,6 +591,50 @@ namespace ScriptsDialog
 
             switch (p.Script)
             {
+                case Scripts.augshufflenetv2:
+                    {
+                        var channels = DIV8(p.Width * 16);
+
+                        net +=
+                            Convolution(1, "Input", channels, 3, 3, p.StrideHFirstConv, p.StrideWFirstConv, 1, 1) +
+                            BatchNormActivation(1, "C1", p.Activation) +
+                            Convolution(2, "B1", channels, 1, 1, 1, 1, 0, 0) +
+                            BatchNormActivation(2, "C2", p.Activation) +
+                            DepthwiseConvolution(3, "B2", 1, 3, 3, 1, 1, 1, 1) +
+                            BatchNorm(3, "DC3") +
+                            Convolution(4, "B3", channels, 1, 1, 1, 1, 0, 0) +
+                            BatchNormActivation(4, "C4", p.Activation) +
+                            Convolution(5, "B1", channels, 1, 1, 1, 1, 0, 0) +
+                            Concat(1, "C5,B4");
+
+                        var C = 6ul;
+                        var A = 1ul;
+                        var subsample = false;
+                        foreach (var rec in p.ShuffleNet)
+                        {
+                            if (subsample)
+                            {
+                                channels *= 2;
+                                net += AugmentedInvertedResidual(A++, C, channels, rec.Kernel, rec.Pad, true, rec.Shuffle, rec.SE, p.Activation);
+                                C += 5;
+                            }
+                            for (var n = 0ul; n < rec.Iterations; n++)
+                            {
+                                net += AugmentedInvertedResidual(A++, C, channels, rec.Kernel, rec.Pad, false, rec.Shuffle, rec.SE, p.Activation);
+                                C += 3;
+                            }
+                            subsample = true;
+                        }
+
+                        net +=
+                            Convolution(C, In("CC", A), p.Classes, 1, 1, 1, 1, 0, 0) +
+                            BatchNorm(C + 1, In("C", C)) +
+                            GlobalAvgPooling(In("B", C + 1)) +
+                            LogSoftmax("GAP") +
+                            Cost("LSM", p.Dataset, p.Classes, "CategoricalCrossEntropy", 0.125f);
+                    }
+                    break;
+
                 case Scripts.densenet:
                     {
                         var channels = DIV8(p.GrowthRate);

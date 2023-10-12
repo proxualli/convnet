@@ -145,6 +145,8 @@
     <ClInclude Include="include\BatchNormActivationDropout.h" />
     <ClInclude Include="include\BatchNormRelu.h" />
     <ClInclude Include="include\ChannelSplit.h" />
+    <ClInclude Include="include\ChannelSplitRatioLeft.h" />
+    <ClInclude Include="include\ChannelSplitRatioRight.h" />
     <ClInclude Include="include\CsvFile.h" />
     <ClInclude Include="include\Definition.h" />
     <ClInclude Include="include\Concat.h" />

@@ -301,6 +301,7 @@ namespace ScriptsDialog
                     break;
                 case Scripts.mobilenetv3:
                 case Scripts.shufflenetv2:
+                case Scripts.augshufflenetv2:
                     removeRows += 9;
                     break;
             }
