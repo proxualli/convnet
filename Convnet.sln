@@ -57,6 +57,14 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "zlibvc", "dnn\deps\zlib\con
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "zlib", "dnn\deps\libpng\projects\vstudio\zlib\zlib.vcxproj", "{60F89955-91C6-3A36-8000-13C592FEC2DF}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "dnnl_graph_backend_dnnl", "dnn\deps\oneDNN\build\src\graph\backend\dnnl\dnnl_graph_backend_dnnl.vcxproj", "{F625DF63-47FB-3FAF-AD77-CEB0F70113C2}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "dnnl_graph_backend_fake", "dnn\deps\oneDNN\build\src\graph\backend\fake\dnnl_graph_backend_fake.vcxproj", "{C06FE985-ED8D-3003-BFAA-F22E1C3203D7}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "dnnl_graph_interface", "dnn\deps\oneDNN\build\src\graph\interface\dnnl_graph_interface.vcxproj", "{757407CF-B60F-3B9D-9B37-F55ACA236F65}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "dnnl_graph_utils", "dnn\deps\oneDNN\build\src\graph\utils\dnnl_graph_utils.vcxproj", "{1E84CA25-6391-3BA5-A1BF-B00D0E0269ED}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -151,6 +159,22 @@ Global
 		{60F89955-91C6-3A36-8000-13C592FEC2DF}.Debug|x64.Build.0 = Debug|x64
 		{60F89955-91C6-3A36-8000-13C592FEC2DF}.Release|x64.ActiveCfg = Release|x64
 		{60F89955-91C6-3A36-8000-13C592FEC2DF}.Release|x64.Build.0 = Release|x64
+		{F625DF63-47FB-3FAF-AD77-CEB0F70113C2}.Debug|x64.ActiveCfg = Debug|x64
+		{F625DF63-47FB-3FAF-AD77-CEB0F70113C2}.Debug|x64.Build.0 = Debug|x64
+		{F625DF63-47FB-3FAF-AD77-CEB0F70113C2}.Release|x64.ActiveCfg = Release|x64
+		{F625DF63-47FB-3FAF-AD77-CEB0F70113C2}.Release|x64.Build.0 = Release|x64
+		{C06FE985-ED8D-3003-BFAA-F22E1C3203D7}.Debug|x64.ActiveCfg = Debug|x64
+		{C06FE985-ED8D-3003-BFAA-F22E1C3203D7}.Debug|x64.Build.0 = Debug|x64
+		{C06FE985-ED8D-3003-BFAA-F22E1C3203D7}.Release|x64.ActiveCfg = Release|x64
+		{C06FE985-ED8D-3003-BFAA-F22E1C3203D7}.Release|x64.Build.0 = Release|x64
+		{757407CF-B60F-3B9D-9B37-F55ACA236F65}.Debug|x64.ActiveCfg = Debug|x64
+		{757407CF-B60F-3B9D-9B37-F55ACA236F65}.Debug|x64.Build.0 = Debug|x64
+		{757407CF-B60F-3B9D-9B37-F55ACA236F65}.Release|x64.ActiveCfg = Release|x64
+		{757407CF-B60F-3B9D-9B37-F55ACA236F65}.Release|x64.Build.0 = Release|x64
+		{1E84CA25-6391-3BA5-A1BF-B00D0E0269ED}.Debug|x64.ActiveCfg = Debug|x64
+		{1E84CA25-6391-3BA5-A1BF-B00D0E0269ED}.Debug|x64.Build.0 = Debug|x64
+		{1E84CA25-6391-3BA5-A1BF-B00D0E0269ED}.Release|x64.ActiveCfg = Release|x64
+		{1E84CA25-6391-3BA5-A1BF-B00D0E0269ED}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

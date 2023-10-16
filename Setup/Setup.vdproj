@@ -249,6 +249,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_DA0EFC7D36904330CDE595E42FAC9DD8"
+        "OwnerKey" = "8:_D4AE904DEC6C4C048C8234BF6A10B009"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_E2CAC971603347D5AC675692AE8239DD"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -398,7 +404,7 @@
                 {
                 "Name" = "8:.NET Core"
                 "Message" = "8:[VSDNETCOREMSG]"
-                "FrameworkVersion" = "8:3.1 "
+                "FrameworkVersion" = "8:3.1  "
                 "AllowLaterVersions" = "11:FALSE"
                 "InstallUrl" = "8:https://dotnet.microsoft.com/download/dotnet-core/[NetCoreVerMajorDotMinor]"
                 "IsNETCore" = "11:TRUE"
@@ -1169,6 +1175,26 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_DA0EFC7D36904330CDE595E42FAC9DD8"
+            {
+            "SourcePath" = "8:dnnl.dll"
+            "TargetName" = "8:dnnl.dll"
+            "Tag" = "8:"
+            "Folder" = "8:_6AC6560B9ACC4F54A4DE534A0DB0B67E"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_E2CAC971603347D5AC675692AE8239DD"
             {
             "SourcePath" = "8:..\\ScriptsDialog\\ScriptsDialog\\App.config"
@@ -1505,7 +1531,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Convnet"
         "ProductCode" = "8:{D4B4AC62-642E-467C-85CB-CD72DA196999}"
-        "PackageCode" = "8:{20126DFA-227C-4002-9F80-482560243BF8}"
+        "PackageCode" = "8:{89F3BB01-8345-44CE-9B5D-5301E966D661}"
         "UpgradeCode" = "8:{6AC0B11F-6D71-4203-ACC9-2E07A968F844}"
         "AspNetVersion" = "8:"
         "RestartWWWService" = "11:FALSE"
@@ -2052,34 +2078,6 @@
         }
         "ProjectOutput"
         {
-            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_9EB3511B88FA479A8281D9A1B55C0D14"
-            {
-            "SourcePath" = "8:"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_6AC6560B9ACC4F54A4DE534A0DB0B67E"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            "ProjectOutputGroupRegister" = "3:1"
-            "OutputConfiguration" = "8:"
-            "OutputGroupCanonicalName" = "8:Built"
-            "OutputProjectGuid" = "8:{2F09A747-18CB-3043-85BF-83BBA99C5137}"
-            "ShowKeyOutput" = "11:TRUE"
-                "ExcludeFilters"
-                {
-                }
-            }
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_A8084872AE5046948D4BE9C5379C2BE1"
             {
             "SourcePath" = "8:..\\Convnet\\obj\\x64\\Release\\netcoreapp3.1\\apphost.exe"
