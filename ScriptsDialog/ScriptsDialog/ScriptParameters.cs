@@ -13,7 +13,7 @@ namespace ScriptsDialog
     [Serializable()]
     public enum Scripts
     {
-        augshufflenetv2 = 0,
+        augshufflenet = 0,
         densenet = 1,
         efficientnetv2 = 2,
         mobilenetv3 = 3,
@@ -355,7 +355,7 @@ namespace ScriptsDialog
                         return Script.ToString() + "-" + Groups.ToString() + "-" + Iterations.ToString() + "-" + Width.ToString() + "-" + Activation.ToString().ToLower() + (SqueezeExcitation ? " -se" : "") + (DepthDrop > 0 ? (FixedDepthDrop ? "-fixeddepthdrop" : "-depthdrop") : "");
                     case Scripts.resnet:
                         return Script.ToString() + "-" + Groups.ToString() + "-" + Iterations.ToString() + "-" + Width.ToString() + (Dropout > 0 ? "-dropout" : "") + (DepthDrop > 0 ? (FixedDepthDrop ? "-fixeddepthdrop" : "-depthdrop") : "") + (Bottleneck ? "-bottleneck" : "") + (ChannelZeroPad ? "-channelzeropad" : "") + "-" + Activation.ToString().ToLower();
-                    case Scripts.augshufflenetv2:
+                    case Scripts.augshufflenet:
                     case Scripts.shufflenetv2:
                         {
                             string name = "";
@@ -1080,9 +1080,9 @@ namespace ScriptsDialog
             }
         }
 
-        public bool GroupsVisible { get { return Script != Scripts.efficientnetv2 && Script != Scripts.shufflenetv2 && Script != Scripts.augshufflenetv2; } }
-        public bool IterationsVisible { get { return Script != Scripts.efficientnetv2 && Script != Scripts.shufflenetv2 && Script != Scripts.augshufflenetv2; } }
-        public bool WidthVisible { get { return Script == Scripts.mobilenetv3 || Script == Scripts.resnet || Script == Scripts.shufflenetv2 || Script == Scripts.augshufflenetv2; } }
+        public bool GroupsVisible { get { return Script != Scripts.efficientnetv2 && Script != Scripts.shufflenetv2 && Script != Scripts.augshufflenet; } }
+        public bool IterationsVisible { get { return Script != Scripts.efficientnetv2 && Script != Scripts.shufflenetv2 && Script != Scripts.augshufflenet; } }
+        public bool WidthVisible { get { return Script == Scripts.mobilenetv3 || Script == Scripts.resnet || Script == Scripts.shufflenetv2 || Script == Scripts.augshufflenet; } }
         public bool GrowthRateVisible { get { return Script == Scripts.densenet; } }
         public bool DropoutVisible { get { return Script == Scripts.densenet || Script == Scripts.resnet || Script == Scripts.efficientnetv2; } }
         public bool DepthDropVisible { get { return Script == Scripts.efficientnetv2 || Script == Scripts.mobilenetv3 || Script == Scripts.resnet || Script == Scripts.densenet; } }
@@ -1091,7 +1091,7 @@ namespace ScriptsDialog
         public bool SqueezeExcitationVisible { get { return Script == Scripts.mobilenetv3; } }
         public bool ChannelZeroPadVisible { get { return Script == Scripts.resnet; } }
         public bool EfficientNetVisible { get { return Script == Scripts.efficientnetv2; } }
-        public bool ShuffleNetVisible { get { return Script == Scripts.shufflenetv2 || Script == Scripts.augshufflenetv2; } }
+        public bool ShuffleNetVisible { get { return Script == Scripts.shufflenetv2 || Script == Scripts.augshufflenet; } }
 
         protected virtual void OnPropertyChanged(string propertyName)
         {

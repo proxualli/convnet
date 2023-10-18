@@ -109,6 +109,7 @@
 * [tinyimagenet](http://cs231n.stanford.edu/reports/2017/pdfs/930.pdf)
 
 ### Scripts
+* [augshufflenet](https://arxiv.org/abs/2203.06589)
 * [densenet](https://arxiv.org/abs/1608.06993)
 * [efficientnetv2](https://arxiv.org/abs/2104.00298)
 * [mobilenetv3](https://arxiv.org/abs/1905.02244)

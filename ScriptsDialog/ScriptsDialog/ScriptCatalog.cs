@@ -591,7 +591,7 @@ namespace ScriptsDialog
 
             switch (p.Script)
             {
-                case Scripts.augshufflenetv2:
+                case Scripts.augshufflenet:
                     {
                         var channels = DIV8(p.Width * 16);
 

@@ -401,6 +401,20 @@ namespace dnn
 					{
 						for_i(batchSize, threads, [=](UInt n)
 						{
+							auto channelOffset = 0ull;
+							for (auto i = 0ull; i < Inputs.size(); i++)
+							{
+								for (auto c = 0ull; c < Inputs[i]->C; c++)
+									for (auto h = 0ull; h < H; h++)
+										for (auto w = 0ull; w < W; w++)
+											Inputs[i]->NeuronsD1[Inputs[i]->OffsetPaddedMem(n, c, h, w)] += NeuronsD1[OffsetPaddedMem(n, c + channelOffset, h, w)];
+
+								channelOffset += Inputs[i]->C;
+							}
+						});
+
+						/*for_i(batchSize, threads, [=](UInt n)
+						{
 							const auto outputSampleOffset = n * PaddedCDHW();
 							auto channelOffset = 0ull;
 							UInt inputIndex, outputIndex;
@@ -435,7 +449,7 @@ namespace dnn
 								}
 								channelOffset += Inputs[inputLayer]->C;
 							}
-						});
+						});*/
 					}
 				}
 				else
