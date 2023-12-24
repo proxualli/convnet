@@ -184,7 +184,7 @@ extern "C" DNN_API bool DNNLoadModel(const std::string& fileName)
 	return false;
 }
 
-extern "C" DNN_API bool DNNSaveModel(const std::string & fileName)
+extern "C" DNN_API bool DNNSaveModel(const std::string& fileName)
 {
 	if (model)
 		return model->SaveModel(fileName);
@@ -203,7 +203,7 @@ extern "C" DNN_API bool DNNClearLog()
 	return false;
 }
 
-extern "C" DNN_API bool DNNLoadLog(const std::string & fileName)
+extern "C" DNN_API bool DNNLoadLog(const std::string& fileName)
 {
 	if (model)
 		return model->LoadLog(fileName);
@@ -211,7 +211,7 @@ extern "C" DNN_API bool DNNLoadLog(const std::string & fileName)
 	return false;
 }
 
-extern "C" DNN_API bool DNNSaveLog(const std::string & fileName)
+extern "C" DNN_API bool DNNSaveLog(const std::string& fileName)
 {
 	if (model)
 		return model->SaveLog(fileName);
