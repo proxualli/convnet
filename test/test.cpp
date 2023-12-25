@@ -271,17 +271,24 @@ int main(int argc, char* argv[])
     {
         if (DNNLoadDataset())
         {
+            DNNResetWeights();
+
             //DNNPrintModel(path + "Normal.txt");
             auto info = new ModelInfo();
             DNNGetModelInfo(info);
             
             DNNSetNewEpochDelegate(&NewEpoch);
+            
+            DNNSetFormat(false);
             DNNPersistOptimizer(persistOptimizer);
+            DNNSetOptimizer(optimizer);
+            DNNSetUseTrainingStrategy(false);
+            DNNSetLocked(false);
 
             if (gotoEpoch == 1ull)
                 DNNClearLog();
             else
-                for (auto const& dir_entry : std::filesystem::directory_iterator{ std::filesystem::path(std::filesystem::u8path(path)) / std::string("definitions") / p.GetName()})
+                for (auto const& dir_entry : std::filesystem::directory_iterator{ std::filesystem::path(std::filesystem::u8path(path)) / std::string("definitions") / p.GetName() })
                     if (dir_entry.is_directory())
                     {
                         auto subdir = dir_entry.path().string();

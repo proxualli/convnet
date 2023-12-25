@@ -73,7 +73,7 @@ namespace dnn
         CsvFile& operator << (const float& val)
         {
             auto ss = std::stringstream();
-            ss.imbue(newLocale);
+            ss.imbue(oldLocale);
             ss.precision(std::streamsize(10));
             ss << std::defaultfloat << val;
             os << ss.str() << Separator;
@@ -83,7 +83,7 @@ namespace dnn
         CsvFile& operator << (const double& val)
         {
             auto ss = std::stringstream();
-            ss.imbue(newLocale);
+            ss.imbue(oldLocale);
             ss.precision(std::streamsize(16));
             ss << std::defaultfloat << val;
             os << ss.str() << Separator;
@@ -117,17 +117,14 @@ namespace dnn
 
         if (!file.bad() && file.is_open())
         {
-            const std::locale newLocale = std::locale(std::locale(""), new no_separator());
-            
             auto oss = std::ostringstream{};
-            oss.imbue(newLocale);
             oss << file.rdbuf();
             file.close();
             return oss.str();
         }
 
 #ifndef NDEBUG
-        std::cerr << NAMEOF(ReadFileToString) << std::string("  -  '") << fileName << std::string("')  -  Could not open the file") << std::endl;
+        std::cerr << std::string("CsvFile::") << NAMEOF(ReadFileToString) << std::string("(const std::string& fileName)  -  ") << fileName << std::string("  -  Could not open the file") << std::endl;
 #endif
 
         return std::string("");
