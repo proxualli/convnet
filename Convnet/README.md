@@ -111,6 +111,7 @@
 * libjpeg-tubo - BSD Licenses (https://github.com/libjpeg-turbo/libjpeg-turbo)
 * libpng - PNG Reference Library License version 2 (https://github.com/glennrp/libpng)
 * Magic Enum C++ - MIT License (https://github.com/Neargye/magic_enum)
+* Nameof C++ - MIT License (https://github.com/Neargye/nameof)
 * OxyPlot .NET Plotting Library - MIT License (https://github.com/oxyplot/oxyplot/tree/master)
 
 ### Screenshots
