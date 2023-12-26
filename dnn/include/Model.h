@@ -3408,6 +3408,7 @@ namespace dnn
 		s.value8b(o.CurrentEpoch);
 		s.value8b(o.SampleIndex);
 		s.value8b(o.GoToEpoch);
+		s.value8b(o.GoToCycle);
 		s.value8b(o.AdjustedTrainSamplesCount);
 		s.value8b(o.AdjustedTestSamplesCount);
 		s.value8b(o.TrainSkipCount);
