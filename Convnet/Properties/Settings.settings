@@ -1531,5 +1531,8 @@ namespace ScriptsDialog
     <Setting Name="Shuffle" Type="System.String" Scope="User">
       <Value Profile="(Default)">64</Value>
     </Setting>
+    <Setting Name="GoToCycle" Type="System.UInt32" Scope="User">
+      <Value Profile="(Default)">1</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

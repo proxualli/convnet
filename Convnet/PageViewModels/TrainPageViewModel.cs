@@ -102,6 +102,7 @@ namespace Convnet.PageViewModels
 
             sgdr = Settings.Default.SGDR;
             gotoEpoch = Settings.Default.GotoEpoch;
+            gotoCycle = Settings.Default.GotoCycle;
             showTrainingPlot = Settings.Default.ShowTrainingPlot;
             currentPlotType = (PlotType)Settings.Default.PlotType;
             currentLegendPosition = currentPlotType == PlotType.Accuracy ? LegendPosition.BottomRight : LegendPosition.TopRight;
@@ -1380,7 +1381,7 @@ namespace Convnet.PageViewModels
                         TrainRate = dialog.Rate;
 
                         if (SGDR)
-                            Model.AddTrainingRateSGDR(TrainRate, true, GotoEpoch, GotoCycle, Model.TrainingSamples);
+                            Model.AddTrainingRateSGDR(TrainRate, true, GotoEpoch, GotoCycle-1, Model.TrainingSamples);
                         else
                             Model.AddTrainingRate(TrainRate, true, GotoEpoch, Model.TrainingSamples);
 

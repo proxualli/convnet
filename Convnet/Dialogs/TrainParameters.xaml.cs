@@ -45,6 +45,7 @@ namespace Convnet.Dialogs
 
             Rate.D = 1;
             Rate.PadD = 0;
+            Rate.Cycles = 1;
             DataContext = Rate;
            
             textBoxGotoEpoch.Text = tpvm.GotoEpoch.ToString();
@@ -108,6 +109,7 @@ namespace Convnet.Dialogs
                     return;
                 }
                 tpvm.GotoEpoch = gotoEpoch;
+                tpvm.GotoCycle = 1;
 
                 Settings.Default.TraininingRate = Rate;
                 Settings.Default.Optimizer = Rate.Optimizer;
