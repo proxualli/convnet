@@ -25,7 +25,7 @@ DNN_API bool DNNBatchNormUsed();
 DNN_API void DNNResetWeights();
 DNN_API void DNNResetLayerWeights(const UInt layerIndex);
 DNN_API void DNNAddTrainingRate(const dnn::TrainingRate& rate, const bool clear, const UInt gotoEpoch, const UInt trainSamples);
-DNN_API void DNNAddTrainingRateSGDR(const dnn::TrainingRate& rate, const bool clear, const UInt gotoEpoch, const UInt trainSamples);
+DNN_API void DNNAddTrainingRateSGDR(const dnn::TrainingRate& rate, const bool clear, const UInt gotoEpoch, const UInt gotoCycle, const UInt trainSamples);
 DNN_API void DNNClearTrainingStrategies();
 DNN_API void DNNSetUseTrainingStrategy(const bool enable);
 DNN_API void DNNAddTrainingStrategy(const dnn::TrainingStrategy& strategy);
@@ -721,11 +721,11 @@ namespace dnncore
 		DNNAddTrainingRate(nativeRate, clear, gotoEpoch, trainSamples);
 	}
 
-	void DNNModel::AddTrainingRateSGDR(DNNTrainingRate^ rate, bool clear, UInt gotoEpoch, UInt trainSamples)
+	void DNNModel::AddTrainingRateSGDR(DNNTrainingRate^ rate, bool clear, UInt gotoEpoch, const UInt gotoCycle, UInt trainSamples)
 	{
 		auto nativeRate = dnn::TrainingRate(safe_cast<dnn::Optimizers>(rate->Optimizer), rate->Momentum, rate->Beta2, rate->L2Penalty, rate->Dropout, rate->Eps, rate->N, rate->D, rate->H, rate->W, rate->PadD, rate->PadH, rate->PadW, rate->Cycles, rate->Epochs, rate->EpochMultiplier, rate->MaximumRate, rate->MinimumRate, rate->FinalRate, rate->Gamma, rate->DecayAfterEpochs, rate->DecayFactor, rate->HorizontalFlip, rate->VerticalFlip, rate->InputDropout, rate->Cutout, rate->CutMix, rate->AutoAugment, rate->ColorCast, rate->ColorAngle, rate->Distortion, safe_cast<dnn::Interpolations>(rate->Interpolation), rate->Scaling, rate->Rotation);
 
-		DNNAddTrainingRateSGDR(nativeRate, clear, gotoEpoch, trainSamples);
+		DNNAddTrainingRateSGDR(nativeRate, clear, gotoEpoch, gotoCycle, trainSamples);
 	}
 
 	void DNNModel::ClearTrainingStrategies()

@@ -2123,7 +2123,7 @@ namespace dnncore
 		void ResetLayerWeights(UInt layerIndex);
 		void ResetWeights();
 		void AddTrainingRate(DNNTrainingRate^ rate, bool clear, UInt gotoEpoch, UInt trainSamples);
-		void AddTrainingRateSGDR(DNNTrainingRate^ rate, bool clear, UInt gotoEpoch, UInt trainSamples);
+		void AddTrainingRateSGDR(DNNTrainingRate^ rate, bool clear, UInt gotoEpoch, UInt gotoCycle, UInt trainSamples);
 		void ClearTrainingStrategies();
 		void AddTrainingStrategy(DNNTrainingStrategy^ strategy);
 		void Start(bool training);

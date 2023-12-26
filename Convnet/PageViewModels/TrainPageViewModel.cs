@@ -45,6 +45,7 @@ namespace Convnet.PageViewModels
         private int selectedIndex = -1;
         private bool sgdr;
         private uint gotoEpoch = 1;
+        private uint gotoCycle = 1;
         private int selectedCostIndex = 0;
         private ComboBox optimizerComboBox;
         private ComboBox costLayersComboBox;
@@ -933,6 +934,22 @@ namespace Convnet.PageViewModels
             }
         }
 
+        public uint GotoCycle
+        {
+            get { return gotoCycle; }
+            set
+            {
+                if (gotoCycle == value)
+                    return;
+
+                gotoCycle = value;
+
+                Settings.Default.GotoCycle = gotoCycle;
+                Settings.Default.Save();
+
+                OnPropertyChanged(nameof(GotoCycle));
+            }
+        }
         public LegendPosition CurrentLegendPosition
         {
             get { return currentLegendPosition; }
@@ -1363,7 +1380,7 @@ namespace Convnet.PageViewModels
                         TrainRate = dialog.Rate;
 
                         if (SGDR)
-                            Model.AddTrainingRateSGDR(TrainRate, true, GotoEpoch, Model.TrainingSamples);
+                            Model.AddTrainingRateSGDR(TrainRate, true, GotoEpoch, GotoCycle, Model.TrainingSamples);
                         else
                             Model.AddTrainingRate(TrainRate, true, GotoEpoch, Model.TrainingSamples);
 
@@ -1524,7 +1541,7 @@ namespace Convnet.PageViewModels
                     foreach (DNNTrainingRate rate in TrainRates)
                     {
                         if (SGDR)
-                            Model.AddTrainingRateSGDR(rate, first, GotoEpoch, Model.TrainingSamples);
+                            Model.AddTrainingRateSGDR(rate, first, GotoEpoch, GotoCycle, Model.TrainingSamples);
                         else
                             Model.AddTrainingRate(rate, first, GotoEpoch, Model.TrainingSamples);
 
