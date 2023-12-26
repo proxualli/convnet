@@ -170,6 +170,7 @@ namespace Convnet.PageViewModels
 
             Application.Current.Dispatcher.Invoke(() => RefreshTrainingPlot(), DispatcherPriority.Render);
         }
+
         private void NewEpoch(UInt Cycle, UInt Epoch, UInt TotalEpochs, UInt Optimizer, Float Beta2, Float Gamma, Float Eps, bool HorizontalFlip, bool VerticalFlip, Float InputDropout, Float Cutout, bool CutMix, Float AutoAugment, Float ColorCast, UInt ColorAngle, Float Distortion, UInt Interpolation, Float Scaling, Float Rotation, Float Rate, UInt N, UInt D, UInt H, UInt W, UInt PadD, UInt PadH, UInt PadW, Float Momentum, Float L2Penalty, Float Dropout, Float AvgTrainLoss, Float TrainErrorPercentage, Float TrainAccuracy, UInt TrainErrors, Float AvgTestLoss, Float TestErrorPercentage, Float TestAccuracy, UInt TestErrors, UInt ElapsedNanoSecondes)
         {
             Application.Current.Dispatcher.Invoke(() =>
@@ -1381,7 +1382,7 @@ namespace Convnet.PageViewModels
                         TrainRate = dialog.Rate;
 
                         if (SGDR)
-                            Model.AddTrainingRateSGDR(TrainRate, true, GotoEpoch, GotoCycle-1, Model.TrainingSamples);
+                            Model.AddTrainingRateSGDR(TrainRate, true, GotoEpoch, GotoCycle, Model.TrainingSamples);
                         else
                             Model.AddTrainingRate(TrainRate, true, GotoEpoch, Model.TrainingSamples);
 

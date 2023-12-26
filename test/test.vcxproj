@@ -47,13 +47,13 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)dnn\deps\oneDNN\include;$(SolutionDir)dnn\deps\oneDNN\build\include;$(SolutionDir)dnn\deps\version2\add-on\random;$(SolutionDir)dnn\deps\version2;$(SolutionDir)dnn\deps\zlib-1.2.11;$(SolutionDir)dnn\deps\libpng;$(SolutionDir)dnn\deps\magic_enum\include;$(SolutionDir)dnn\deps\libjpeg-turbo\build;$(SolutionDir)dnn\deps\libjpeg-turbo;$(SolutionDir)dnn\deps\CImg;$(SolutionDir)dnn\deps\CImg\plugins;$(SolutionDir)dnn\deps\bitsery\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)dnn\deps\oneDNN\include;$(SolutionDir)dnn\deps\oneDNN\build\include;$(SolutionDir)dnn\deps\version2\add-on\random;$(SolutionDir)dnn\deps\version2;$(SolutionDir)dnn\deps\zlib-1.2.11;$(SolutionDir)dnn\deps\libpng;$(SolutionDir)dnn\deps\nameof\include;$(SolutionDir)dnn\deps\magic_enum\include;$(SolutionDir)dnn\deps\libjpeg-turbo\build;$(SolutionDir)dnn\deps\libjpeg-turbo;$(SolutionDir)dnn\deps\CImg;$(SolutionDir)dnn\deps\CImg\plugins;$(SolutionDir)dnn\deps\bitsery\include;$(IncludePath)</IncludePath>
     <LibraryPath>$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);$(NETFXKitsDir)Lib\um\x64;$(SolutionDir)libjpeg-turbo</LibraryPath>
     <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)dnn\deps\oneDNN\include;$(SolutionDir)dnn\deps\oneDNN\build\include;$(SolutionDir)dnn\deps\version2\add-on\random;$(SolutionDir)dnn\deps\version2;$(SolutionDir)dnn\deps\zlib-1.2.11;$(SolutionDir)dnn\deps\libpng;$(SolutionDir)dnn\deps\magic_enum\include;$(SolutionDir)dnn\deps\libjpeg-turbo\build;$(SolutionDir)dnn\deps\libjpeg-turbo;$(SolutionDir)dnn\deps\CImg;$(SolutionDir)dnn\deps\CImg\plugins;$(SolutionDir)dnn\deps\bitsery\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)dnn\deps\oneDNN\include;$(SolutionDir)dnn\deps\oneDNN\build\include;$(SolutionDir)dnn\deps\version2\add-on\random;$(SolutionDir)dnn\deps\version2;$(SolutionDir)dnn\deps\zlib-1.2.11;$(SolutionDir)dnn\deps\libpng;$(SolutionDir)dnn\deps\nameof\include;$(SolutionDir)dnn\deps\magic_enum\include;$(SolutionDir)dnn\deps\libjpeg-turbo\build;$(SolutionDir)dnn\deps\libjpeg-turbo;$(SolutionDir)dnn\deps\CImg;$(SolutionDir)dnn\deps\CImg\plugins;$(SolutionDir)dnn\deps\bitsery\include;$(IncludePath)</IncludePath>
     <LibraryPath>$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);$(NETFXKitsDir)Lib\um\x64;$(SolutionDir)libjpeg-turbo</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -61,7 +61,7 @@
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>DNN_DLL;_DEBUG;_CONSOLE;WIN32;DNN_OMP;DNN_CACHE_PRIMITIVES;DNN_AVX2;cimg_use_cpp11;cimg_use_openmp;cimg_use_jpeg;cimg_use_png;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)dnn\deps\version2\add-on\random;$(SolutionDir)dnn\deps\magic_enum\include;$(SolutionDir)dnn\include;$(SolutionDir)dnn\deps\version2;$(SolutionDir)dnn\deps\libpng;$(SolutionDir)dnn\deps\libjpeg-turbo;$(SolutionDir)dnn\deps\oneDNN\include;$(SolutionDir)dnn\deps\oneDNN\build\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)dnn\deps\version2\add-on\random;$(SolutionDir)dnn\deps\nameof\include;$(SolutionDir)dnn\deps\magic_enum\include;$(SolutionDir)dnn\include;$(SolutionDir)dnn\deps\version2;$(SolutionDir)dnn\deps\libpng;$(SolutionDir)dnn\deps\libjpeg-turbo;$(SolutionDir)dnn\deps\oneDNN\include;$(SolutionDir)dnn\deps\oneDNN\build\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <EnableEnhancedInstructionSet>AdvancedVectorExtensions512</EnableEnhancedInstructionSet>
       <AdditionalOptions>/bigobj /openmp:experimental /Qvec-report:1 /favor:AMD64 /fp:contract %(AdditionalOptions)</AdditionalOptions>
       <LanguageStandard>stdcpp17</LanguageStandard>
@@ -83,7 +83,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;WIN32;DNN_OMP;DNN_CACHE_PRIMITIVES;DNN_AVX2;cimg_use_cpp11;cimg_use_openmp;cimg_use_jpeg;cimg_use_png;_CONSOLE;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)dnn\deps\version2\add-on\random;$(SolutionDir)dnn\deps\magic_enum\include;$(SolutionDir)dnn\include;$(SolutionDir)dnn\deps\version2;$(SolutionDir)dnn\deps\libpng;$(SolutionDir)dnn\deps\libjpeg-turbo;$(SolutionDir)dnn\deps\oneDNN\include;$(SolutionDir)dnn\deps\oneDNN\build\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)dnn\deps\version2\add-on\random;$(SolutionDir)dnn\deps\nameof\include;$(SolutionDir)dnn\deps\magic_enum\include;$(SolutionDir)dnn\include;$(SolutionDir)dnn\deps\version2;$(SolutionDir)dnn\deps\libpng;$(SolutionDir)dnn\deps\libjpeg-turbo;$(SolutionDir)dnn\deps\oneDNN\include;$(SolutionDir)dnn\deps\oneDNN\build\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <EnableEnhancedInstructionSet>AdvancedVectorExtensions512</EnableEnhancedInstructionSet>
       <FloatingPointModel>Fast</FloatingPointModel>
       <LanguageStandard>stdcpp17</LanguageStandard>
@@ -101,12 +101,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="test.cpp" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\dnn\dnn.vcxproj">
       <Project>{78f1bb71-c716-48f5-9429-4537f1ae6319}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\dnn\src\test.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
