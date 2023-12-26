@@ -736,7 +736,7 @@ namespace Convnet.PageViewModels
                 TextLocation = new TextLocation((int)msg.Row, (int)msg.Column);
                 Xceed.Wpf.Toolkit.MessageBox.Show(msg.Message, "Check Information", MessageBoxButton.OK);
             }
-
+            
             return !msg.Error;
         }
     }
