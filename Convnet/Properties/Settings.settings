@@ -20,7 +20,7 @@
     <Setting Name="PersistOptimizer" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
-    <Setting Name="GoToEpoch" Type="System.UInt32" Scope="User">
+    <Setting Name="GotoEpoch" Type="System.UInt32" Scope="User">
       <Value Profile="(Default)">1</Value>
     </Setting>
     <Setting Name="Priority" Type="System.Diagnostics.ProcessPriorityClass" Scope="User">
@@ -1602,7 +1602,7 @@ namespace ScriptsDialog
     <Setting Name="Shuffle" Type="System.String" Scope="User">
       <Value Profile="(Default)">64</Value>
     </Setting>
-    <Setting Name="GoToCycle" Type="System.UInt32" Scope="User">
+    <Setting Name="GotoCycle" Type="System.UInt32" Scope="User">
       <Value Profile="(Default)">1</Value>
     </Setting>
   </Settings>
