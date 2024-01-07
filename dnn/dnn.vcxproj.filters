@@ -158,6 +158,12 @@
     <ClInclude Include="include\ChannelSplitRatioRight.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\ReductionAvg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ReductionMax.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\dllmain.cpp">
