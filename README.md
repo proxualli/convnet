@@ -30,6 +30,8 @@
 * Min
 * Multiply
 * PRelu
+* ReductionAvg
+* ReductionMax
 * Resampling
 * Shuffle
 * Softmax
