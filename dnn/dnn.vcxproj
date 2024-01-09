@@ -176,6 +176,8 @@
     <ClInclude Include="include\DepthwiseConvolution.h" />
     <ClInclude Include="include\ReductionAvg.h" />
     <ClInclude Include="include\ReductionMax.h" />
+    <ClInclude Include="include\ReductionMin.h" />
+    <ClInclude Include="include\ReductionSum.h" />
     <ClInclude Include="include\Shuffle.h" />
     <ClInclude Include="include\PRelu.h" />
     <ClInclude Include="include\Resampling.h" />
