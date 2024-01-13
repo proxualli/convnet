@@ -158,7 +158,7 @@
     <ClInclude Include="include\ChannelSplitRatioRight.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\ReductionAvg.h">
+    <ClInclude Include="include\Reduction.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\ReductionMax.h">

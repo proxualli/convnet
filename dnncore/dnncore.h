@@ -127,14 +127,11 @@ namespace dnn
 		Multiply = 30,
 		PartialDepthwiseConvolution = 31,
 		PRelu = 32,
-		ReductionAvg = 33,
-		ReductionMax = 34,
-		ReductionMin = 35,
-		ReductionSum = 36,
-		Resampling = 37,
-		Shuffle = 38,
-		Softmax = 39,
-		Substract = 40
+		Reduction = 33,
+		Resampling = 34,
+		Shuffle = 35,
+		Softmax = 36,
+		Substract = 37
 	};
 
 	enum class Activations
@@ -745,14 +742,11 @@ namespace dnncore
 		Multiply = 30,
 		PartialDepthwiseConvolution = 31,
 		PRelu = 32,
-		ReductionAvg = 33,
-		ReductionMax = 34,
-		ReductionMin = 35,
-		ReductionSum = 36,
-		Resampling = 37,
-		Shuffle = 38,
-		Softmax = 39,
-		Substract = 40
+		Reduction = 33,
+		Resampling = 34,
+		Shuffle = 35,
+		Softmax = 36,
+		Substract = 37
 	};
 
 	[Serializable()]
