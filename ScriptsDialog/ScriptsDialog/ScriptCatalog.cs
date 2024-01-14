@@ -171,6 +171,22 @@ namespace ScriptsDialog
                "Algorithm=Linear" + nwl + nwl;
         }
 
+        public static string ReductionAvg(UInt id, string inputs, string group = "", string prefix = "RAVG")
+        {
+            return "[" + group + prefix + to_string(id) + "]" + nwl +
+               "Type=Reduction" + nwl +
+               "Inputs=" + inputs + nwl +
+               "Operation=Avg" + nwl + nwl;
+        }
+
+        public static string ReductionMax(UInt id, string inputs, string group = "", string prefix = "RMAX")
+        {
+            return "[" + group + prefix + to_string(id) + "]" + nwl +
+               "Type=Reduction" + nwl +
+               "Inputs=" + inputs + nwl +
+               "Operation=Max" + nwl + nwl;
+        }
+
         public static string Convolution(UInt id, string inputs, UInt channels, UInt kernelX = 3, UInt kernelY = 3, UInt strideX = 1, UInt strideY = 1, UInt padX = 1, UInt padY = 1, bool biases = false, string group = "", string prefix = "C", string weightsFiller = "")
         {
             return "[" + group + prefix + to_string(id) + "]" + nwl +
@@ -299,6 +315,13 @@ namespace ScriptsDialog
         {
             return "[" + group + prefix + "]" + nwl +
                 "Type=GlobalAvgPooling" + nwl +
+                "Inputs=" + input + nwl + nwl;
+        }
+
+        public static string GlobalMaxPooling(string input, string group = "", string prefix = "GMP")
+        {
+            return "[" + group + prefix + "]" + nwl +
+                "Type=GlobalMaxPooling" + nwl +
                 "Inputs=" + input + nwl + nwl;
         }
 
@@ -495,15 +518,22 @@ namespace ScriptsDialog
             }
             else
             {
-                var group = In("SE", C + 3);
-                var strSE =
-                    se ? GlobalAvgPooling(In("B", C + 3), group) +
-                    Convolution(1, group + "GAP", DIV8(channels / 4), 1, 1, 1, 1, 0, 0, false, group) +
-                    BatchNormActivation(1, group + "C1", (activation == Activations.FRelu ? Activations.HardSwish : activation), group) +
-                    Convolution(2, group + "B1", channels, 1, 1, 1, 1, 0, 0, false, group) +
-                    BatchNormActivation(2, group + "C2", Activations.HardSigmoid, group) +
-                    Multiply(In("B", C + 3) + "," + group + "B2", group) +
-                    Concat(A + 1, In("LCS", A) + "," + group + "CM") :
+                var groupCH = In("CHATT", C + 3); // Channel Attention
+                var groupSP = In("SPATT", C + 3); // Spatial Attention
+                var strSE = se ?
+                    GlobalAvgPooling(In("B", C + 3), groupCH) +
+                    GlobalMaxPooling(In("B", C + 3), groupCH) +
+                    Concat(A + 1, groupCH + "GAP" + "," + groupCH + "GMP", groupCH) +
+                    Convolution(1, In(groupCH + "CC", A + 1), DIV8(channels), 1, 1, 1, 1, 0, 0, false, groupCH) +
+                    BatchNormActivation(A + 1, groupCH + In("C", 1), Activations.HardSigmoid, groupCH) +
+                    Multiply(In("B", C + 3) + "," + In(groupCH + "B", A + 1), groupCH) +
+                    ReductionAvg(1, groupCH + "CM", groupSP) +
+                    ReductionMax(1, groupCH + "CM", groupSP) +
+                    Concat(1, In(groupSP + "RAVG", 1) + "," + In(groupSP + "RMAX", 1), groupSP) +
+                    Convolution(1, In(groupSP + "CC", 1), 1, 7, 7, 1, 1, 3, 3, false, groupSP) +
+                    BatchNormActivation(1, groupSP + In("C", 1), Activations.HardSigmoid, groupSP) +
+                    Multiply(groupCH + "CM," + groupSP + In("B", 1), groupSP) +
+                    Concat(A + 1, In("LCS", A) + "," + groupSP + "CM") :
                     Concat(A + 1, In("LCS", A) + "," + In("B", C + 3));
 
                 return
@@ -538,15 +568,22 @@ namespace ScriptsDialog
             }
             else
             {
-                var group = In("SE", C + 3);
-                var strSE =
-                    se ? GlobalAvgPooling(In("B", C + 3), group) +
-                    Convolution(1, group + "GAP", DIV8(channels / 4), 1, 1, 1, 1, 0, 0, false, group) +
-                    BatchNormActivation(1, group + "C1", (activation == Activations.FRelu ? Activations.HardSwish : activation), group) +
-                    Convolution(2, group + "B1", channels, 1, 1, 1, 1, 0, 0, false, group) +
-                    BatchNormActivation(2, group + "C2", Activations.HardSigmoid, group) +
-                    Multiply(In("B", C + 3) + "," + group + "B2", group) +
-                    Concat(A + 1, In("LCC", A) + "," + group + "CM") :
+                var groupCH = In("CHATT", C + 3); // Channel Attention
+                var groupSP = In("SPATT", C + 3); // Spatial Attention
+                var strSE = se ?
+                    GlobalAvgPooling(In("B", C + 3), groupCH) +
+                    GlobalMaxPooling(In("B", C + 3), groupCH) +
+                    Concat(A + 1, groupCH + "GAP" + "," + groupCH + "GMP", groupCH) +
+                    Convolution(1, In(groupCH + "CC", A + 1), DIV8(channels), 1, 1, 1, 1, 0, 0, false, groupCH) +
+                    BatchNormActivation(A + 1, groupCH + In("C", 1), Activations.HardSigmoid, groupCH) +
+                    Multiply(In("B", C + 3) + "," + In(groupCH + "B", A + 1), groupCH) +
+                    ReductionAvg(1, groupCH + "CM", groupSP) +
+                    ReductionMax(1, groupCH + "CM", groupSP) +
+                    Concat(1, In(groupSP + "RAVG", 1) + "," + In(groupSP + "RMAX", 1), groupSP) +
+                    Convolution(1, In(groupSP + "CC", 1), 1, 7, 7, 1, 1, 3, 3, false, groupSP) +
+                    BatchNormActivation(1, groupSP + In("C", 1), Activations.HardSigmoid, groupSP) +
+                    Multiply(groupCH + "CM," + groupSP + In("B", 1), groupSP) +
+                    Concat(A + 1, In("LCC", A) + "," + groupSP + "CM") :
                     Concat(A + 1, In("LCC", A) + "," + In("B", C + 3));
 
                 return
@@ -884,7 +921,7 @@ namespace ScriptsDialog
                             Convolution(C + 1, In("B", C), p.Classes, 1, 1, 1, 1, 0, 0) +
                             BatchNorm(C + 1, In("C", C + 1)) +
                             GlobalAvgPooling(In("B", C + 1)) +
-                            LogSoftmax("GAP") +
+                               LogSoftmax("GAP") +
                             Cost("LSM", p.Dataset, p.Classes, "CategoricalCrossEntropy", 0.125f);
                     }
                     break;
@@ -998,11 +1035,11 @@ namespace ScriptsDialog
                             net += block;
 
                         net +=
-                            BatchNormActivation(C, In("A", A), p.Activation) +
+                               BatchNormActivation(C, In("A", A), p.Activation) +
                             Convolution(C + 1, In("B", C), p.Classes, 1, 1, 1, 1, 0, 0) +
                             BatchNorm(C + 1, In("C", C + 1)) +
                             GlobalAvgPooling(In("B", C + 1)) +
-                            LogSoftmax("GAP") +
+                               LogSoftmax("GAP") +
                             Cost("LSM", p.Dataset, p.Classes, "CategoricalCrossEntropy", 0.125f);
                     }
                     break;
