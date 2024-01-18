@@ -290,10 +290,15 @@ namespace dnncore
 			case DNNLayerTypes::DepthwiseConvolution:
 			case DNNLayerTypes::PartialDepthwiseConvolution:
 			{
+				const auto border = (info->InputC != 3ull && info->KernelH == 1ull && info->KernelW == 1ull) ? 0ull : 1ull;
 				const auto depthwise = info->LayerType == DNNLayerTypes::DepthwiseConvolution || info->LayerType == DNNLayerTypes::PartialDepthwiseConvolution;
-				const auto width = (info->C * info->KernelH) + info->C + 1;
-				const auto height = depthwise ? 2 + info->KernelW + 1 : (info->InputC == 3 ? info->KernelW + 4 : 2 + (info->InputC / info->Groups) * (info->KernelW + 1));
-				const auto totalSize = (!depthwise && info->InputC == 3) ? 3 * width * height : width * height;
+				const auto pitchH = info->KernelH + border;
+				const auto pitchW = info->KernelW + border;
+				const auto width = info->C * pitchH + border;
+				const auto height = info->InputC == 3 ? (pitchW + 3 * border) : depthwise ? (pitchW + border) : ((info->InputC / info->Groups) * pitchW + border);
+				const auto biasOffset = height * width + width;
+
+				const auto totalSize = (!depthwise && info->InputC == 3) ? 3 * biasOffset : biasOffset;
 				auto pixelFormat = (!depthwise && info->InputC == 3) ? PixelFormats::Rgb24 : PixelFormats::Gray8;
 
 				if (totalSize > 0 && totalSize <= INT_MAX)
