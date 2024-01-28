@@ -159,6 +159,7 @@
     <ClInclude Include="include\LogSoftmax.h" />
     <ClInclude Include="include\Max.h" />
     <ClInclude Include="include\Min.h" />
+    <ClInclude Include="include\Multiply.h" />
     <ClInclude Include="include\PartialDepthwiseConvolution.h" />
     <ClInclude Include="include\Divide.h" />
     <ClInclude Include="include\Dropout.h" />
@@ -170,7 +171,6 @@
     <ClInclude Include="include\Layer.h" />
     <ClInclude Include="include\LocalResponseNorm.h" />
     <ClInclude Include="include\MaxPooling.h" />
-    <ClInclude Include="include\Multiply.h" />
     <ClInclude Include="include\Model.h" />
     <ClInclude Include="include\ParallelFor.h" />
     <ClInclude Include="include\DepthwiseConvolution.h" />

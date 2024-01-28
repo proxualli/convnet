@@ -522,22 +522,21 @@ namespace ScriptsDialog
                 var groupSP = In("SPATT", C + 3); // Spatial Attention
                 var strSE = se ?
                     GlobalAvgPooling(In("B", C + 3), groupCH) +
+                    Convolution(1, groupCH + "GAP", DIV8(channels), 1, 1, 1, 1, 0, 0, false, groupCH) +
+                    BatchNormActivation(1, groupCH + In("C", 1), Activations.HardSigmoid, groupCH) +
                     GlobalMaxPooling(In("B", C + 3), groupCH) +
-                    // Concat(A + 1, groupCH + "GAP" + "," + groupCH + "GMP", groupCH) +
-                    Convolution(1, groupCH + "GAP", DIV8(channels / 4), 1, 1, 1, 1, 0, 0, false, groupCH) +
-                    Convolution(2, groupCH + "GMP", DIV8(channels / 4), 1, 1, 1, 1, 0, 0, false, groupCH) +
-                    BatchNormActivation(1, groupCH + In("C", 1), activation, groupCH) +
-                    BatchNormActivation(2, groupCH + In("C", 2), activation, groupCH) +
-                    Add(A + 1, In(groupCH + "B", 1) + "," + In(groupCH + "B", 2), groupCH) +
-                    Convolution(3, groupCH + In("A", A + 1), DIV8(channels), 1, 1, 1, 1, 0, 0, false, groupCH) +
-                    BatchNormActivation(A + 1, groupCH + In("C", 3), Activations.HardSigmoid, groupCH) +
-                    Multiply(In("B", C + 3) + "," + In(groupCH + "B", A + 1), groupCH) +
+                    Convolution(2, groupCH + "GMP", DIV8(channels), 1, 1, 1, 1, 0, 0, false, groupCH) +
+                    BatchNormActivation(2, groupCH + In("C", 2), Activations.HardSigmoid, groupCH) +
+                    Add(1, In(groupCH + "B", 1) + "," + In(groupCH + "B", 2), groupCH) +
+                    Multiply(In("B", C + 3) + "," + In(groupCH + "A", 1), groupCH) +
                     ReductionAvg(1, groupCH + "CM", groupSP) +
-                    ReductionMax(1, groupCH + "CM", groupSP) +
-                    Concat(1, In(groupSP + "RAVG", 1) + "," + In(groupSP + "RMAX", 1), groupSP) +
-                    Convolution(1, In(groupSP + "CC", 1), 1, 7, 7, 1, 1, 3, 3, false, groupSP) +
+                    Convolution(1, In(groupSP + "RAVG", 1), 1, 7, 7, 1, 1, 3, 3, false, groupSP) +
                     BatchNormActivation(1, groupSP + In("C", 1), Activations.HardSigmoid, groupSP) +
-                    Multiply(groupCH + "CM," + groupSP + In("B", 1), groupSP) +
+                    ReductionMax(1, groupCH + "CM", groupSP) +
+                    Convolution(2, In(groupSP + "RMAX", 1), 1, 7, 7, 1, 1, 3, 3, false, groupSP) +
+                    BatchNormActivation(2, groupSP + In("C", 2), Activations.HardSigmoid, groupSP) +
+                    Add(1, In(groupSP + "B", 1) + "," + In(groupSP + "B", 2), groupSP) +
+                    Multiply(groupCH + "CM," + groupSP + In("A", 1), groupSP) +
                     Concat(A + 1, In("LCS", A) + "," + groupSP + "CM") :
                     Concat(A + 1, In("LCS", A) + "," + In("B", C + 3));
 
@@ -577,22 +576,21 @@ namespace ScriptsDialog
                 var groupSP = In("SPATT", C + 3); // Spatial Attention
                 var strSE = se ?
                     GlobalAvgPooling(In("B", C + 3), groupCH) +
+                    Convolution(1, groupCH + "GAP", DIV8(channels), 1, 1, 1, 1, 0, 0, false, groupCH) +
+                    BatchNormActivation(1, groupCH + In("C", 1), Activations.HardSigmoid, groupCH) +
                     GlobalMaxPooling(In("B", C + 3), groupCH) +
-                    // Concat(A + 1, groupCH + "GAP" + "," + groupCH + "GMP", groupCH) +
-                    Convolution(1, groupCH + "GAP", DIV8(channels / 4), 1, 1, 1, 1, 0, 0, false, groupCH) +
-                    Convolution(2, groupCH + "GMP", DIV8(channels / 4), 1, 1, 1, 1, 0, 0, false, groupCH) +
-                    BatchNormActivation(1, groupCH + In("C", 1), activation, groupCH) +
-                    BatchNormActivation(2, groupCH + In("C", 2), activation, groupCH) +
-                    Add(A + 1, In(groupCH + "B", 1) + "," + In(groupCH + "B", 2), groupCH) +
-                    Convolution(3, groupCH + In("A", A + 1), DIV8(channels), 1, 1, 1, 1, 0, 0, false, groupCH) +
-                    BatchNormActivation(3, groupCH + In("C", 3), Activations.HardSigmoid, groupCH) +
-                    Multiply(In("B", C + 3) + "," + In(groupCH + "B", 3), groupCH) +
+                    Convolution(2, groupCH + "GMP", DIV8(channels), 1, 1, 1, 1, 0, 0, false, groupCH) +
+                    BatchNormActivation(2, groupCH + In("C", 2), Activations.HardSigmoid, groupCH) +
+                    Add(1, In(groupCH + "B", 1) + "," + In(groupCH + "B", 2), groupCH) +
+                    Multiply(In("B", C + 3) + "," + In(groupCH + "A", 1), groupCH) +
                     ReductionAvg(1, groupCH + "CM", groupSP) +
-                    ReductionMax(1, groupCH + "CM", groupSP) +
-                    Concat(1, In(groupSP + "RAVG", 1) + "," + In(groupSP + "RMAX", 1), groupSP) +
-                    Convolution(1, In(groupSP + "CC", 1), 1, 7, 7, 1, 1, 3, 3, false, groupSP) +
+                    Convolution(1, In(groupSP + "RAVG", 1), 1, 7, 7, 1, 1, 3, 3, false, groupSP) +
                     BatchNormActivation(1, groupSP + In("C", 1), Activations.HardSigmoid, groupSP) +
-                    Multiply(groupCH + "CM," + groupSP + In("B", 1), groupSP) +
+                    ReductionMax(1, groupCH + "CM", groupSP) +
+                    Convolution(2, In(groupSP + "RMAX", 1), 1, 7, 7, 1, 1, 3, 3, false, groupSP) +
+                    BatchNormActivation(2, groupSP + In("C", 2), Activations.HardSigmoid, groupSP) +
+                    Add(1, In(groupSP + "B", 1) + "," + In(groupSP + "B", 2), groupSP) +
+                    Multiply(groupCH + "CM," + groupSP + In("A", 1), groupSP) +
                     Concat(A + 1, In("LCC", A) + "," + groupSP + "CM") :
                     Concat(A + 1, In("LCC", A) + "," + In("B", C + 3));
 
@@ -600,7 +598,6 @@ namespace ScriptsDialog
                     Shuffle(A, In("CC", A), shuffle) +
                     ChannelSplitRatioLeft(A, In("SH", A), 0.375f) + ChannelSplitRatioRight(A, In("SH", A), 0.375f) +
                     Convolution(C, In("CSRR", A), DIV8((UInt)((2 * channels) * 0.375f)), 1, 1, 1, 1, 0, 0) +
-                    //BatchNorm(C + 1, In("C", C)) +
                     BatchNormActivation(C + 1, In("C", C), activation) +
                     DepthwiseConvolution(C + 1, In("B", C + 1), 1, kernel, kernel, 1, 1, pad, pad) +
                     BatchNorm(C + 2, In("DC", C + 1)) +
