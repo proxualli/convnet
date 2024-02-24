@@ -170,15 +170,15 @@ namespace ScriptsDialog
                "Factor=0.5,0.5" + nwl +
                "Algorithm=Linear" + nwl + nwl;
         }
-
+        
         public static string ReductionAvg(UInt id, string inputs, string group = "", string prefix = "RAVG")
         {
             return "[" + group + prefix + to_string(id) + "]" + nwl +
                "Type=Reduction" + nwl +
-               "Inputs=" + inputs + nwl +
+               "Inputs=" + inputs + nwl + 
                "Operation=Avg" + nwl + nwl;
         }
-
+        
         public static string ReductionMax(UInt id, string inputs, string group = "", string prefix = "RMAX")
         {
             return "[" + group + prefix + to_string(id) + "]" + nwl +
@@ -186,7 +186,7 @@ namespace ScriptsDialog
                "Inputs=" + inputs + nwl +
                "Operation=Max" + nwl + nwl;
         }
-
+        
         public static string Convolution(UInt id, string inputs, UInt channels, UInt kernelX = 3, UInt kernelY = 3, UInt strideX = 1, UInt strideY = 1, UInt padX = 1, UInt padY = 1, bool biases = false, string group = "", string prefix = "C", string weightsFiller = "")
         {
             return "[" + group + prefix + to_string(id) + "]" + nwl +
@@ -317,7 +317,7 @@ namespace ScriptsDialog
                 "Type=GlobalAvgPooling" + nwl +
                 "Inputs=" + input + nwl + nwl;
         }
-
+        
         public static string GlobalMaxPooling(string input, string group = "", string prefix = "GMP")
         {
             return "[" + group + prefix + "]" + nwl +
@@ -498,8 +498,8 @@ namespace ScriptsDialog
 
             return blocks;
         }
-
-        public static string InvertedResidual(UInt A, UInt C, UInt channels, UInt kernel = 3, UInt pad = 1, bool subsample = false, UInt shuffle = 2, bool se = false, Activations activation = Activations.HardSwish)
+		
+		public static string InvertedResidual(UInt A, UInt C, UInt channels, UInt kernel = 3, UInt pad = 1, bool subsample = false, UInt shuffle = 2, bool se = false, Activations activation = Activations.HardSwish)
         {
             if (subsample)
             {
@@ -520,25 +520,25 @@ namespace ScriptsDialog
             }
             else
             {
-                var groupCH = In("CHATT", C + 3); // Channel Attention
+            	var groupCH = In("CHATT", C + 3); // Channel Attention
                 var groupSP = In("SPATT", C + 3); // Spatial Attention
-                var strSE = se ?
-                    GlobalAvgPooling(In("B", C + 3), groupCH) +
-                    Convolution(1, groupCH + "GAP", DIV8(channels), 1, 1, 1, 1, 0, 0, false, groupCH) +
-                    BatchNormActivation(1, groupCH + In("C", 1), Activations.HardSigmoid, groupCH) +
-                    GlobalMaxPooling(In("B", C + 3), groupCH) +
-                    Convolution(2, groupCH + "GMP", DIV8(channels), 1, 1, 1, 1, 0, 0, false, groupCH) +
-                    BatchNormActivation(2, groupCH + In("C", 2), Activations.HardSigmoid, groupCH) +
+                var strSE =	se ? 
+                	GlobalAvgPooling(In("B", C + 3), groupCH) +
+                	Convolution(1, groupCH + "GAP", DIV8(channels/4), 1, 1, 1, 1, 0, 0, false, groupCH) +
+                	BatchNormActivation(1, groupCH + In("C", 1), activation, groupCH) +
+                    GlobalMaxPooling(In("B", C + 3), groupCH) + 
+                    Convolution(2, groupCH + "GMP", DIV8(channels/4), 1, 1, 1, 1, 0, 0, false, groupCH) +
+                    BatchNormActivation(2, groupCH + In("C", 2), activation, groupCH) +
                     Add(1, In(groupCH + "B", 1) + "," + In(groupCH + "B", 2), groupCH) +
-                    Multiply(In("B", C + 3) + "," + In(groupCH + "A", 1), groupCH) +
+                    Convolution(3, groupCH + "A1", DIV8(channels), 1, 1, 1, 1, 0, 0, false, groupCH) +
+                    BatchNormActivation(3, groupCH + In("C", 3), Activations.HardSigmoid, groupCH) +
+                    Multiply(In("B", C + 3) + "," + In(groupCH + "B", 3), groupCH) +
                     ReductionAvg(1, groupCH + "CM", groupSP) +
-                    Convolution(1, In(groupSP + "RAVG", 1), 1, 7, 7, 1, 1, 3, 3, false, groupSP) +
-                    BatchNormActivation(1, groupSP + In("C", 1), Activations.HardSigmoid, groupSP) +
                     ReductionMax(1, groupCH + "CM", groupSP) +
-                    Convolution(2, In(groupSP + "RMAX", 1), 1, 7, 7, 1, 1, 3, 3, false, groupSP) +
-                    BatchNormActivation(2, groupSP + In("C", 2), Activations.HardSigmoid, groupSP) +
-                    Add(1, In(groupSP + "B", 1) + "," + In(groupSP + "B", 2), groupSP) +
-                    Multiply(groupCH + "CM," + groupSP + In("A", 1), groupSP) +
+                    Concat(1, In(groupSP + "RAVG", 1) + "," + In(groupSP + "RMAX", 1), groupSP) +
+                    Convolution(1, groupSP + In("CC", 1), 1, 7, 7, 1, 1, 3, 3, false, groupSP) +
+                    BatchNormActivation(1, groupSP + In("C", 1), Activations.HardSigmoid, groupSP) +
+                    Multiply(groupCH + "CM,"  + groupSP + In("B", 1), groupSP) +
                     Concat(A + 1, In("LCS", A) + "," + groupSP + "CM") :
                     Concat(A + 1, In("LCS", A) + "," + In("B", C + 3));
 
@@ -567,7 +567,7 @@ namespace ScriptsDialog
                     BatchNorm(C + 2, In("R", C + 1)) +
                     Convolution(C + 2, In("B", C + 2), channels, 1, 1, 1, 1, 0, 0) +
                     BatchNormActivation(C + 3, In("C", C + 2), activation) +
-                     DepthwiseConvolution(C + 3, In("CC", A), 1, kernel, kernel, 1, 1, pad, pad) +
+                    DepthwiseConvolution(C + 3, In("CC", A), 1, kernel, kernel, 1, 1, pad, pad) +
                     Resampling(C + 3, In("DC", C + 3)) +
                     BatchNorm(C + 4, In("R", C + 3)) +
                     Convolution(C + 4, In("B", C + 4), channels, 1, 1, 1, 1, 0, 0) +
@@ -578,32 +578,32 @@ namespace ScriptsDialog
             {
                 var groupCH = In("CHATT", C + 3); // Channel Attention
                 var groupSP = In("SPATT", C + 3); // Spatial Attention
-                var strSE = se ?
-                    GlobalAvgPooling(In("B", C + 3), groupCH) +
-                    Convolution(1, groupCH + "GAP", DIV8(channels), 1, 1, 1, 1, 0, 0, false, groupCH) +
-                    BatchNormActivation(1, groupCH + In("C", 1), Activations.HardSigmoid, groupCH) +
-                    GlobalMaxPooling(In("B", C + 3), groupCH) +
-                    Convolution(2, groupCH + "GMP", DIV8(channels), 1, 1, 1, 1, 0, 0, false, groupCH) +
-                    BatchNormActivation(2, groupCH + In("C", 2), Activations.HardSigmoid, groupCH) +
+                var strSE =	se ? 
+                	GlobalAvgPooling(In("B", C + 3), groupCH) +
+                	Convolution(1, groupCH + "GAP", DIV8(channels/4), 1, 1, 1, 1, 0, 0, false, groupCH) +
+                	BatchNormActivation(1, groupCH + In("C", 1), activation, groupCH) +
+                    GlobalMaxPooling(In("B", C + 3), groupCH) + 
+                    Convolution(2, groupCH + "GMP", DIV8(channels/4), 1, 1, 1, 1, 0, 0, false, groupCH) +
+                    BatchNormActivation(2, groupCH + In("C", 2), activation, groupCH) +
                     Add(1, In(groupCH + "B", 1) + "," + In(groupCH + "B", 2), groupCH) +
-                    Multiply(In("B", C + 3) + "," + In(groupCH + "A", 1), groupCH) +
+                    Convolution(3, groupCH + "A1", DIV8(channels), 1, 1, 1, 1, 0, 0, false, groupCH) +
+                    BatchNormActivation(3, groupCH + In("C", 3), Activations.HardSigmoid, groupCH) +
+                    Multiply(In("B", C + 3) + "," + In(groupCH + "B", 3), groupCH) +
                     ReductionAvg(1, groupCH + "CM", groupSP) +
-                    Convolution(1, In(groupSP + "RAVG", 1), 1, 7, 7, 1, 1, 3, 3, false, groupSP) +
-                    BatchNormActivation(1, groupSP + In("C", 1), Activations.HardSigmoid, groupSP) +
                     ReductionMax(1, groupCH + "CM", groupSP) +
-                    Convolution(2, In(groupSP + "RMAX", 1), 1, 7, 7, 1, 1, 3, 3, false, groupSP) +
-                    BatchNormActivation(2, groupSP + In("C", 2), Activations.HardSigmoid, groupSP) +
-                    Add(1, In(groupSP + "B", 1) + "," + In(groupSP + "B", 2), groupSP) +
-                    Multiply(groupCH + "CM," + groupSP + In("A", 1), groupSP) +
+                    Concat(1, In(groupSP + "RAVG", 1) + "," + In(groupSP + "RMAX", 1), groupSP) +
+                    Convolution(1, groupSP + In("CC", 1), 1, 7, 7, 1, 1, 3, 3, false, groupSP) +
+                    BatchNormActivation(1, groupSP + In("C", 1), Activations.HardSigmoid, groupSP) +
+                    Multiply(groupCH + "CM,"  + groupSP + In("B", 1), groupSP) +
                     Concat(A + 1, In("LCC", A) + "," + groupSP + "CM") :
                     Concat(A + 1, In("LCC", A) + "," + In("B", C + 3));
-
+                    
                 return
                     Shuffle(A, In("CC", A), shuffle) +
                     ChannelSplitRatioLeft(A, In("SH", A), 0.375f) + ChannelSplitRatioRight(A, In("SH", A), 0.375f) +
                     Convolution(C, In("CSRR", A), DIV8((UInt)((2 * channels) * 0.375f)), 1, 1, 1, 1, 0, 0) +
-                    BatchNorm(C + 1, In("C", C)) +
-                    // BatchNormActivation(C + 1, In("C", C), activation) +
+                    // BatchNorm(C + 1, In("C", C)) +
+                    BatchNormActivation(C + 1, In("C", C), activation) +
                     DepthwiseConvolution(C + 1, In("B", C + 1), 1, kernel, kernel, 1, 1, pad, pad) +
                     BatchNorm(C + 2, In("DC", C + 1)) +
                     ChannelSplit(A, In("B", C + 2), 2, 1, "L1") + ChannelSplit(A, In("B", C + 2), 2, 2, "R1") +
@@ -810,7 +810,7 @@ namespace ScriptsDialog
                         var input = In("B", C++);
                         foreach (var rec in p.EfficientNet)
                         {
-                            var beginStage = stage < 3ul;
+                        	var beginStage = stage < 3ul;
                             var outputChannels = DIV8((UInt)((Float)rec.Channels * width));
                             for (var n = 0ul; n < rec.Iterations; n++)
                             {
@@ -841,7 +841,7 @@ namespace ScriptsDialog
                             BatchNormActivationDropout(C, In("C", C), p.Activation) +
                             GlobalAvgPooling(In("B", C)) +
                             LogSoftmax("GAP") +
-                            Cost("LSM", p.Dataset, p.Classes, "CategoricalCrossEntropy", 0.125f);
+                            Cost("LSM", p.Dataset, p.Classes, "CategoricalCrossEntropy", 0.125f);                            
                     }
                     break;
 
@@ -933,7 +933,7 @@ namespace ScriptsDialog
                             Convolution(C + 1, In("B", C), p.Classes, 1, 1, 1, 1, 0, 0) +
                             BatchNorm(C + 1, In("C", C + 1)) +
                             GlobalAvgPooling(In("B", C + 1)) +
-                               LogSoftmax("GAP") +
+                           	LogSoftmax("GAP") +
                             Cost("LSM", p.Dataset, p.Classes, "CategoricalCrossEntropy", 0.125f);
                     }
                     break;
@@ -1047,13 +1047,13 @@ namespace ScriptsDialog
                             net += block;
 
                         net +=
-                               BatchNormActivation(C, In("A", A), p.Activation) +
+                       		BatchNormActivation(C, In("A", A), p.Activation) +
                             Convolution(C + 1, In("B", C), p.Classes, 1, 1, 1, 1, 0, 0) +
                             BatchNorm(C + 1, In("C", C + 1)) +
                             GlobalAvgPooling(In("B", C + 1)) +
-                               LogSoftmax("GAP") +
+                           	LogSoftmax("GAP") +
                             Cost("LSM", p.Dataset, p.Classes, "CategoricalCrossEntropy", 0.125f);
-                    }
+                       }
                     break;
 
                 case Scripts.shufflenetv2:
