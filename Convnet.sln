@@ -51,8 +51,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "minizip", "dnn\deps\zlib\co
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "miniunz", "dnn\deps\zlib\contrib\vstudio\vc14\miniunz.vcxproj", "{C52F9E7B-498A-42BE-8DB4-85A15694382A}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "zlibvc", "dnn\deps\zlib\contrib\vstudio\vc14\zlibvc.vcxproj", "{8FD826F8-3739-44E6-8CC8-997122E53B8D}"
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "zlib", "dnn\deps\libpng\projects\vstudio\zlib\zlib.vcxproj", "{60F89955-91C6-3A36-8000-13C592FEC2DF}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "dnnl_graph_backend_dnnl", "dnn\deps\oneDNN\build\src\graph\backend\dnnl\dnnl_graph_backend_dnnl.vcxproj", "{F625DF63-47FB-3FAF-AD77-CEB0F70113C2}"
@@ -147,10 +145,6 @@ Global
 		{C52F9E7B-498A-42BE-8DB4-85A15694382A}.Debug|x64.Build.0 = Debug|x64
 		{C52F9E7B-498A-42BE-8DB4-85A15694382A}.Release|x64.ActiveCfg = Release|x64
 		{C52F9E7B-498A-42BE-8DB4-85A15694382A}.Release|x64.Build.0 = Release|x64
-		{8FD826F8-3739-44E6-8CC8-997122E53B8D}.Debug|x64.ActiveCfg = Debug|x64
-		{8FD826F8-3739-44E6-8CC8-997122E53B8D}.Debug|x64.Build.0 = Debug|x64
-		{8FD826F8-3739-44E6-8CC8-997122E53B8D}.Release|x64.ActiveCfg = Release|x64
-		{8FD826F8-3739-44E6-8CC8-997122E53B8D}.Release|x64.Build.0 = Release|x64
 		{60F89955-91C6-3A36-8000-13C592FEC2DF}.Debug|x64.ActiveCfg = Debug|x64
 		{60F89955-91C6-3A36-8000-13C592FEC2DF}.Debug|x64.Build.0 = Debug|x64
 		{60F89955-91C6-3A36-8000-13C592FEC2DF}.Release|x64.ActiveCfg = Release|x64
