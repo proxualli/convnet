@@ -6,7 +6,7 @@ namespace Convnet.Properties
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase
     {
         [global::System.Configuration.UserScopedSetting()]
-        [global::System.Configuration.SettingsSerializeAs(global::System.Configuration.SettingsSerializeAs.Binary)]
+        [global::System.Configuration.SettingsSerializeAs(global::System.Configuration.SettingsSerializeAs.Xml)]
         [global::System.Configuration.DefaultSettingValue("")]
         public ObservableCollection<DNNTrainingResult> TrainingLog
         {
@@ -21,7 +21,7 @@ namespace Convnet.Properties
         }
 
         [global::System.Configuration.UserScopedSetting()]
-        [global::System.Configuration.SettingsSerializeAs(global::System.Configuration.SettingsSerializeAs.Binary)]
+        [global::System.Configuration.SettingsSerializeAs(global::System.Configuration.SettingsSerializeAs.Xml)]
         [global::System.Configuration.DefaultSettingValue("")]
         public ObservableCollection<DNNTrainingStrategy> TrainingStrategies
         {
@@ -36,7 +36,7 @@ namespace Convnet.Properties
         }
 
         [global::System.Configuration.UserScopedSetting()]
-        [global::System.Configuration.SettingsSerializeAs(global::System.Configuration.SettingsSerializeAs.Binary)]
+        [global::System.Configuration.SettingsSerializeAs(global::System.Configuration.SettingsSerializeAs.Xml)]
         [global::System.Configuration.DefaultSettingValue("")]
         public ObservableCollection<DNNTrainingRate> TrainingRates
         {
@@ -51,7 +51,7 @@ namespace Convnet.Properties
         }
 
         [global::System.Configuration.UserScopedSetting()]
-        [global::System.Configuration.SettingsSerializeAs(global::System.Configuration.SettingsSerializeAs.Binary)]
+        [global::System.Configuration.SettingsSerializeAs(global::System.Configuration.SettingsSerializeAs.Xml)]
         [global::System.Configuration.DefaultSettingValue("")]
         public DNNTrainingRate TraininingRate
         {
@@ -66,7 +66,7 @@ namespace Convnet.Properties
         }
 
         [global::System.Configuration.UserScopedSetting()]
-        [global::System.Configuration.SettingsSerializeAs(global::System.Configuration.SettingsSerializeAs.Binary)]
+        [global::System.Configuration.SettingsSerializeAs(global::System.Configuration.SettingsSerializeAs.Xml)]
         [global::System.Configuration.DefaultSettingValue("")]
         public DNNTrainingRate TestRate
         {

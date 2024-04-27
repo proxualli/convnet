@@ -40,7 +40,7 @@ namespace Convnet.PageViewModels
         private bool canSynchronize = false;
         private int selectionStart = 0;
         private int selectionLength = 0;
-        private TextLocation textLocation = new TextLocation(1, 1);
+        private TextLocation textLocation = new(1, 1);
         private string filePath;
         private bool wordWrap = false;
         private bool showLineNumbers = true;
@@ -48,19 +48,19 @@ namespace Convnet.PageViewModels
         private string parameters = File.ReadAllText(ScriptsDirectory + @"ScriptsDialog\ScriptParameters.cs");
         private bool dirty = true;
         private static bool initAction = true;
-        private DispatcherTimer clickWaitTimer;
+        private readonly DispatcherTimer clickWaitTimer;
        
         public EditPageViewModel(DNNModel model) : base(model)
         {
             initAction = true;
-            clickWaitTimer = new DispatcherTimer(new TimeSpan(0, 0, 0, 0, 500), DispatcherPriority.Background, mouseWaitTimer_Tick, Dispatcher.CurrentDispatcher);
+            clickWaitTimer = new DispatcherTimer(new TimeSpan(0, 0, 0, 0, 500), DispatcherPriority.Background, MouseWaitTimer_Tick, Dispatcher.CurrentDispatcher);
         
             AddCommandButtons();
         }
 
         private void AddCommandButtons()
         {
-            Button openButton = new Button
+            var openButton = new Button
             {
                 Name = "ButtonOpen",
                 ToolTip = "Open",
@@ -69,7 +69,7 @@ namespace Convnet.PageViewModels
             };
             openButton.Click += new RoutedEventHandler(OpenButtonClick);
 
-            Button saveButton = new Button
+            var saveButton = new Button
             {
                 Name = "ButtonSave",
                 ToolTip = "Save",
@@ -78,7 +78,7 @@ namespace Convnet.PageViewModels
             };
             saveButton.Click += new RoutedEventHandler(SaveButtonClick);
 
-            Button checkButton = new Button
+            var checkButton = new Button
             {
                 Name = "ButtonCheck",
                 ToolTip = "Check",
@@ -95,7 +95,7 @@ namespace Convnet.PageViewModels
                 ClickMode = ClickMode.Release
             };
             synchronizeButton.Click += new RoutedEventHandler(SynchronizeButtonClick);
-            Binding binding = new Binding("CanSynchronize")
+            var binding = new Binding("CanSynchronize")
             {
                 Converter = new Converters.BooleanToVisibilityConverter(),
                 Source = this
@@ -310,6 +310,8 @@ namespace Convnet.PageViewModels
             }
         }
 
+        private static readonly string[] separator = ["\r\n"];
+
         private void OpenButtonClick(object sender, RoutedEventArgs e)
         {
             Open?.Invoke(this, EventArgs.Empty);
@@ -373,11 +375,12 @@ namespace Convnet.PageViewModels
                         try
                         {
                             Model.Dispose();
-                            Model = new DNNModel(Definition);
-
-                            Model.BackgroundColor = Settings.Default.BackgroundColor;
-                            Model.BlockSize = (UInt64)Settings.Default.PixelSize;
-                            Model.TrainingStrategies = Settings.Default.TrainingStrategies;
+                            Model = new DNNModel(Definition)
+                            {
+                                BackgroundColor = Settings.Default.BackgroundColor,
+                                BlockSize = (UInt64)Settings.Default.PixelSize,
+                                TrainingStrategies = Settings.Default.TrainingStrategies
+                            };
                             Model.ClearTrainingStrategies();
                             foreach (DNNTrainingStrategy strategy in Settings.Default.TrainingStrategies)
                                 Model.AddTrainingStrategy(strategy);
@@ -493,7 +496,7 @@ namespace Convnet.PageViewModels
             }
         }
 
-        private void mouseWaitTimer_Tick(object sender, EventArgs e)
+        private void MouseWaitTimer_Tick(object sender, EventArgs e)
         {
             clickWaitTimer.Stop();
 
@@ -558,110 +561,19 @@ namespace Convnet.PageViewModels
 
             if (fileInfo.Exists)
             {
-                #pragma warning disable CA1416 // Validate platform compatibility
+                //#pragma warning disable CA1416 // Validate platform compatibility
                 var security = new FileSecurity(fileInfo.FullName, AccessControlSections.Owner | AccessControlSections.Group | AccessControlSections.Access);
                 //var authorizationRules = security.GetAccessRules(true, true, typeof(NTAccount));
                 var owner = security.GetOwner(typeof(NTAccount));
                 security.ModifyAccessRule(AccessControlModification.Add, new FileSystemAccessRule(owner, FileSystemRights.Modify, AccessControlType.Allow), out bool modified);
-                #pragma warning restore CA1416 // Validate platform compatibility
+                //#pragma warning restore CA1416 // Validate platform compatibility
 
                 Definition = File.ReadAllText(fileName);
-                ModelName = Definition.Split(new string[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries)[0].Replace("[", "").Replace("]", "");
+                ModelName = Definition.Split(separator, StringSplitOptions.RemoveEmptyEntries)[0].Replace("[", "").Replace("]", "");
 
                 fileInfo.Delete();
             }
         }
-
-        private void ScriptDialog()
-        {
-            if (dirty)
-            {
-                Mouse.OverrideCursor = Cursors.Wait;
-                IsValid = false;
-
-                var processInfo = new ProcessStartInfo("dotnet", @"add package WpfMath --version 0.13.1")
-                {
-                    WorkingDirectory = ScriptsDirectory + @"ScriptsDialog\",
-                    UseShellExecute = true,
-                    CreateNoWindow = true,
-                    WindowStyle = ProcessWindowStyle.Hidden,
-                    Verb = "runas"
-                };
-
-                using (var process = Process.Start(processInfo))
-                {
-                    process.WaitForExit();
-                }
-
-                var projectFilePath = ScriptsDirectory + @"ScriptsDialog\ScriptsDialog.csproj";
-
-                Dictionary<string, string> GlobalProperty = new()
-                {
-                    { "Configuration", Mode },
-                    { "Platform", "AnyCPU" },
-                };
-
-                int repeat = 0;
-                FileInfo fileInfo;
-                BuildResult buildResult;
-                do
-                {
-                    ProjectCollection pc = new ProjectCollection(GlobalProperty, null, ToolsetDefinitionLocations.Default);
-                    BuildParameters bp = new(pc)
-                    {
-                        OnlyLogCriticalEvents = true,
-                        DetailedSummary = true,
-                        MaxNodeCount = 1
-                    };
-
-                    var tempFilePath = Path.GetTempFileName();
-                    fileInfo = new FileInfo(tempFilePath)
-                    {
-                        Attributes = FileAttributes.Temporary
-                    };
-                    bp.Loggers = new List<ILogger>() { new BasicFileLogger() { Parameters = fileInfo.FullName } };
-                    bp.Loggers.FirstOrDefault().Verbosity = LoggerVerbosity.Diagnostic;
-
-                    BuildRequestData buildRequest = new BuildRequestData(projectFilePath, GlobalProperty, null, new string[] { "Build" }, null);
-                    buildResult = BuildManager.DefaultBuildManager.Build(bp, buildRequest);
-                    BuildManager.DefaultBuildManager.ResetCaches();
-                    BuildManager.DefaultBuildManager.ShutdownAllNodes();
-
-                    pc.UnloadAllProjects();
-                    pc.UnregisterAllLoggers();
-                    pc.Dispose();
-                    BuildManager.DefaultBuildManager.Dispose();
-
-                    repeat++;
-                }
-                while (buildResult.OverallResult != BuildResultCode.Success && repeat <= 1);
-
-                Mouse.OverrideCursor = null;
-                IsValid = true;
-
-                if (buildResult.OverallResult == BuildResultCode.Success)
-                    dirty = false;
-                else
-                {
-                    Xceed.Wpf.Toolkit.MessageBox.Show(File.ReadAllText(fileInfo.FullName), "Compiler Result", MessageBoxButton.OK);
-                    fileInfo.Delete();
-                }
-            }
-
-            try
-            {
-                if (!dirty)
-                {
-                    File.Delete(ScriptPath + @"ScriptsDialog.deps.json");
-                    var task = ScriptsDialogAsync();
-                }
-            }
-            catch (Exception exception)
-            {
-                Xceed.Wpf.Toolkit.MessageBox.Show(exception.Message, "Load Assembly", MessageBoxButton.OK);
-            }
-        }
-
 
         //private void ScriptDialog()
         //{
@@ -670,40 +582,72 @@ namespace Convnet.PageViewModels
         //        Mouse.OverrideCursor = Cursors.Wait;
         //        IsValid = false;
 
-        //        try
+        //        var processInfo = new ProcessStartInfo("dotnet", @"add package WpfMath --version 2.1.0")
         //        {
-        //            var processInfo = new ProcessStartInfo("dotnet", @"build ScriptsDialog.csproj -p:Platform=AnyCPU -p:nugetinteractive=true -c Release -fl -flp:logfile=msbuild.log;verbosity=quiet")
+        //            WorkingDirectory = ScriptsDirectory + @"ScriptsDialog\",
+        //            UseShellExecute = true,
+        //            CreateNoWindow = true,
+        //            WindowStyle = ProcessWindowStyle.Hidden,
+        //            Verb = "runas"
+        //        };
+
+        //        using (var process = Process.Start(processInfo))
+        //        {
+        //            process.WaitForExit();
+        //        }
+
+        //        var projectFilePath = ScriptsDirectory + @"ScriptsDialog\ScriptsDialog.csproj";
+
+        //        Dictionary<string, string> GlobalProperty = new()
+        //        {
+        //            { "Configuration", Mode },
+        //            { "Platform", "AnyCPU" },
+        //        };
+
+        //        int repeat = 0;
+        //        FileInfo fileInfo;
+        //        BuildResult buildResult;
+        //        do
+        //        {
+        //            var pc = new ProjectCollection(GlobalProperty, null, ToolsetDefinitionLocations.Default);
+        //            BuildParameters bp = new(pc)
         //            {
-        //                WorkingDirectory = ScriptsDirectory + @"ScriptsDialog\",
-        //                UseShellExecute = true,
-        //                CreateNoWindow = true,
-        //                WindowStyle = ProcessWindowStyle.Hidden,
-        //                Verb = "runas"
+        //                OnlyLogCriticalEvents = true,
+        //                DetailedSummary = true,
+        //                MaxNodeCount = 1
         //            };
 
-        //            File.Delete(ScriptsDirectory + @"ScriptsDialog\msbuild.log");
-
-        //            using (var process = Process.Start(processInfo))
+        //            var tempFilePath = Path.GetTempFileName();
+        //            fileInfo = new FileInfo(tempFilePath)
         //            {
-        //                process.WaitForExit();
-        //            }
+        //                Attributes = FileAttributes.Temporary
+        //            };
+        //            bp.Loggers = [new BasicFileLogger() { Parameters = fileInfo.FullName }];
+        //            bp.Loggers.FirstOrDefault().Verbosity = LoggerVerbosity.Diagnostic;
 
-        //            var log = File.ReadAllText(ScriptsDirectory + @"ScriptsDialog\msbuild.log");
+        //            var buildRequest = new BuildRequestData(projectFilePath, GlobalProperty, null, ["Build"], null);
+        //            buildResult = BuildManager.DefaultBuildManager.Build(bp, buildRequest);
+        //            BuildManager.DefaultBuildManager.ResetCaches();
+        //            BuildManager.DefaultBuildManager.ShutdownAllNodes();
 
-        //            Mouse.OverrideCursor = null;
-        //            IsValid = true;
+        //            pc.UnloadAllProjects();
+        //            pc.UnregisterAllLoggers();
+        //            pc.Dispose();
+        //            BuildManager.DefaultBuildManager.Dispose();
 
-        //            dirty = log.Length > 0;
-
-        //            if (dirty)
-        //                Xceed.Wpf.Toolkit.MessageBox.Show(log, "Build error", MessageBoxButton.OK);
+        //            repeat++;
         //        }
-        //        catch (Exception ex)
-        //        {
-        //            Mouse.OverrideCursor = null;
-        //            IsValid = true;
+        //        while (buildResult.OverallResult != BuildResultCode.Success && repeat <= 1);
 
-        //            Xceed.Wpf.Toolkit.MessageBox.Show(ex.Message, "Build failed", MessageBoxButton.OK);
+        //        Mouse.OverrideCursor = null;
+        //        IsValid = true;
+
+        //        if (buildResult.OverallResult == BuildResultCode.Success)
+        //            dirty = false;
+        //        else
+        //        {
+        //            Xceed.Wpf.Toolkit.MessageBox.Show(File.ReadAllText(fileInfo.FullName), "Compiler Result", MessageBoxButton.OK);
+        //            fileInfo.Delete();
         //        }
         //    }
 
@@ -717,12 +661,71 @@ namespace Convnet.PageViewModels
         //    }
         //    catch (Exception exception)
         //    {
-        //        Mouse.OverrideCursor = null;
-        //        IsValid = true;
-
         //        Xceed.Wpf.Toolkit.MessageBox.Show(exception.Message, "Load Assembly", MessageBoxButton.OK);
         //    }
         //}
+
+
+        private void ScriptDialog()
+        {
+            if (dirty)
+            {
+                Mouse.OverrideCursor = Cursors.Wait;
+                IsValid = false;
+
+                try
+                {
+                    var processInfo = new ProcessStartInfo("dotnet", @"build ScriptsDialog.csproj -p:Platform=AnyCPU -p:nugetinteractive=true -c Release -fl -flp:logfile=msbuild.log;verbosity=quiet")
+                    {
+                        WorkingDirectory = ScriptsDirectory + @"ScriptsDialog\",
+                        UseShellExecute = true,
+                        CreateNoWindow = true,
+                        WindowStyle = ProcessWindowStyle.Hidden,
+                        Verb = "runas"
+                    };
+
+                    File.Delete(ScriptsDirectory + @"ScriptsDialog\msbuild.log");
+
+                    using (var process = Process.Start(processInfo))
+                    {
+                        process.WaitForExit();
+                    }
+
+                    var log = File.ReadAllText(ScriptsDirectory + @"ScriptsDialog\msbuild.log");
+
+                    Mouse.OverrideCursor = null;
+                    IsValid = true;
+
+                    dirty = log.Length > 0;
+
+                    if (dirty)
+                        Xceed.Wpf.Toolkit.MessageBox.Show(log, "Build error", MessageBoxButton.OK);
+                }
+                catch (Exception ex)
+                {
+                    Mouse.OverrideCursor = null;
+                    IsValid = true;
+
+                    Xceed.Wpf.Toolkit.MessageBox.Show(ex.Message, "Build failed", MessageBoxButton.OK);
+                }
+            }
+
+            try
+            {
+                if (!dirty)
+                {
+                    File.Delete(ScriptPath + @"ScriptsDialog.deps.json");
+                    var task = ScriptsDialogAsync();
+                }
+            }
+            catch (Exception exception)
+            {
+                Mouse.OverrideCursor = null;
+                IsValid = true;
+
+                Xceed.Wpf.Toolkit.MessageBox.Show(exception.Message, "Load Assembly", MessageBoxButton.OK);
+            }
+        }
 
         private bool CheckDefinition()
         {

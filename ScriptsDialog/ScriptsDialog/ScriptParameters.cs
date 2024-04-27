@@ -361,7 +361,7 @@ namespace ScriptsDialog
                             string name = "";
                             foreach (var rec in ShuffleNet)
                                 name += rec.ToString();
-                            return Script.ToString() + Width.ToString() + name;
+                            return Script.ToString() + "-" + Width.ToString() + name;
                         }
                     default:
                         return Script.ToString() + "-" + Groups.ToString() + "-" + Iterations.ToString();

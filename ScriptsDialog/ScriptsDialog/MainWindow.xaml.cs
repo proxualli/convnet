@@ -73,8 +73,8 @@ namespace ScriptsDialog
     /// </summary>
     public partial class MainWindow : Window, IDisposable
     {
-        const string Framework = "netcoreapp3.1";
-        //const string Framework = "net7.0-windows";
+        //const string Framework = "netcoreapp3.1";
+        const string Framework = "net8.0-windows7.0";
 #if DEBUG
         const string Mode = "Debug";
 #else
