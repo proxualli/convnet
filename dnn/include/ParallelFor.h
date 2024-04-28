@@ -28,6 +28,7 @@
 #if DNNL_CPU_THREADING_RUNTIME == DNNL_RUNTIME_OMP
 #define PRAGMA_OMP(...) PRAGMA_MACRO(CHAIN2(omp, __VA_ARGS__))
 #define PRAGMA_OMP_PARALLEL_FOR_COLLAPSE(n) PRAGMA_MACRO(omp parallel for collapse(n))
+#define PRAGMA_OMP_PARALLEL PRAGMA_MACRO(omp parallel)
 #define PRAGMA_OMP_PARALLEL_THREADS(n) PRAGMA_MACRO(omp parallel num_threads(n))
 #define PRAGMA_OMP_FOR_SCHEDULE_STATIC(n) PRAGMA_MACRO(omp for schedule(static,n))
 #define PRAGMA_OMP_FOR_SCHEDULE_DYNAMIC(n) PRAGMA_MACRO(omp for schedule(dynamic,n))
@@ -36,6 +37,7 @@
 #else
 #define PRAGMA_OMP(...)
 #define PRAGMA_OMP_PARALLEL_FOR_COLLAPSE(n)
+#define PRAGMA_OMP_PARALLEL()
 #define PRAGMA_OMP_PARALLEL_THREADS(n)
 #define PRAGMA_OMP_FOR_SCHEDULE_STATIC(n)
 #define PRAGMA_OMP_FOR_SCHEDULE_DYNAMIC(n)
@@ -143,17 +145,23 @@ namespace dnn
 	inline void for_i(const size_t range, const Func& f)
 	{
 #if DNNL_CPU_RUNTIME == DNNL_RUNTIME_OMP
+	#if defined(_MSC_VER) && !defined(__clang__) && !defined(__INTEL_COMPILER)
 		PRAGMA_OMP_PARALLEL_THREADS(omp_get_max_threads())
 		{
 			PRAGMA_OMP_FOR_SCHEDULE_STATIC(1)
-#if defined(_MSC_VER) && !defined(__clang__) && !defined(__INTEL_COMPILER)
 			for (auto i = 0ll; i < static_cast<long long>(range); i++)
 				f(i);
-#else
-			for (auto i = 0ull; i < range; i++)
-				f(i);
-#endif
 		}
+	#else
+		omp_set_num_threads(omp_get_max_threads());
+		PRAGMA_OMP_PARALLEL
+		{
+			PRAGMA_OMP_FOR_SCHEDULE_STATIC(1)
+				for (auto i = 0ull; i < range; i++)
+					f(i);
+		}
+	#endif
+	
 #else
 		for_(0ull, range, [&](const blocked_range& r)
 		{
@@ -169,17 +177,22 @@ namespace dnn
 		if (threads > 1)
 		{
 #if DNNL_CPU_RUNTIME == DNNL_RUNTIME_OMP
+	#if defined(_MSC_VER) && !defined(__clang__) && !defined(__INTEL_COMPILER)
 			PRAGMA_OMP_PARALLEL_THREADS(static_cast<int>(threads))
 			{
 				PRAGMA_OMP_FOR_SCHEDULE_STATIC(1)
-#if defined(_MSC_VER) && !defined(__clang__) && !defined(__INTEL_COMPILER)
 				for (auto i = 0ll; i < static_cast<long long>(range); i++)
 					f(i);
-#else
+			}
+	#else
+			omp_set_num_threads(threads);
+			PRAGMA_OMP_PARALLEL
+			{
+				PRAGMA_OMP_FOR_SCHEDULE_STATIC(1)
 				for (auto i = 0ull; i < range; i++)
 					f(i);
-#endif
 			}
+	#endif
 #else
 			DNN_UNREF_PAR(threads);
 			for_(0ull, range, [&](const blocked_range& r)
@@ -198,17 +211,22 @@ namespace dnn
 	inline void for_i_dynamic(const size_t range, const Func& f)
 	{
 #if DNNL_CPU_RUNTIME == DNNL_RUNTIME_OMP
+	#if defined(_MSC_VER) && !defined(__clang__) && !defined(__INTEL_COMPILER)
 		PRAGMA_OMP_PARALLEL_THREADS(omp_get_max_threads())
 		{
 			PRAGMA_OMP_FOR_SCHEDULE_DYNAMIC(1)
-#if defined(_MSC_VER) && !defined(__clang__) && !defined(__INTEL_COMPILER)
 			for (auto i = 0ll; i < static_cast<long long>(range); i++)
 				f(i);
-#else
+		}
+	#else
+		omp_set_num_threads(omp_get_max_threads());
+		PRAGMA_OMP_PARALLEL
+		{
+			PRAGMA_OMP_FOR_SCHEDULE_DYNAMIC(1)
 			for (auto i = 0ull; i < range; i++)
 				f(i);
-#endif
 		}
+	#endif
 #else
 		for_(0ull, range, [&](const blocked_range& r)
 		{
@@ -224,17 +242,22 @@ namespace dnn
 		if (threads > 1)
 		{
 #if DNNL_CPU_RUNTIME == DNNL_RUNTIME_OMP
+	#if defined(_MSC_VER) && !defined(__clang__) && !defined(__INTEL_COMPILER)
 			PRAGMA_OMP_PARALLEL_THREADS(static_cast<int>(threads))
 			{
 				PRAGMA_OMP_FOR_SCHEDULE_DYNAMIC(1)
-#if defined(_MSC_VER) && !defined(__clang__) && !defined(__INTEL_COMPILER)
 				for (auto i = 0ll; i < static_cast<long long>(range); i++)
 					f(i);
-#else
+			}
+	#else
+			omp_set_num_threads(threads);
+			PRAGMA_OMP_PARALLEL
+			{
+				PRAGMA_OMP_FOR_SCHEDULE_DYNAMIC(1)
 				for (auto i = 0ull; i < range; i++)
 					f(i);
-#endif
 			}
+	#endif
 #else
 			DNN_UNREF_PAR(threads);
 			for_(0ull, range, [&](const blocked_range& r)
