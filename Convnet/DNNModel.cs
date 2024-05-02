@@ -1,4 +1,6 @@
-﻿using Microsoft.Build.Tasks;
+﻿#nullable enable
+
+using Microsoft.Build.Tasks;
 using NuGet.Protocol.Plugins;
 using System;
 using System.Collections.Generic;
@@ -14,10 +16,12 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Documents;
 using System.Windows.Media.Imaging;
+using System.Xml.Linq;
 using static NuGet.Client.ManagedCodeConventions;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 using Float = System.Single;
 using UInt = System.UInt64;
+
 
 namespace Convnet.dnncores
 {
@@ -577,7 +581,7 @@ namespace Convnet.dnncores
         public Float Min;
         public Float Max;
 
-        public DNNStats(Stats stats)
+        public DNNStats(ref Stats stats)
         {
             Mean = stats.Mean;
             StdDev = stats.StdDev;
@@ -644,7 +648,7 @@ namespace Convnet.dnncores
     public class DNNTrainingRate : System.ComponentModel.INotifyPropertyChanged
     {
         [field: NonSerializedAttribute()]
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        public event System.ComponentModel.PropertyChangedEventHandler? PropertyChanged;
 
         private DNNOptimizers optimizer = DNNOptimizers.NAG;
         private Float momentum = (Float)0.9;
@@ -1166,9 +1170,9 @@ namespace Convnet.dnncores
             Rotation = rotation;
         }
 
-        private void OnPropertyChanged(string propertyName)
+        private void OnPropertyChanged(string name)
         {
-            PropertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
     };
 
@@ -1176,7 +1180,7 @@ namespace Convnet.dnncores
     public class DNNTrainingStrategy : System.ComponentModel.INotifyPropertyChanged
     {
         [field: NonSerializedAttribute()]
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        public event System.ComponentModel.PropertyChangedEventHandler? PropertyChanged;
 
         private Float epochs = (Float)1;
         private UInt n = 128;
@@ -1565,131 +1569,76 @@ namespace Convnet.dnncores
             Rotation = rotation;
         }
 
-        private void OnPropertyChanged(string propertyName)
+        private void OnPropertyChanged(string name)
         {
-            PropertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
     };
 
     [Serializable()]
-    public struct DNNTrainingResult
+    public struct DNNTrainingResult(UInt cycle, UInt epoch, UInt groupIndex, UInt costIndex, string costName, UInt n, UInt d, UInt h, UInt w, UInt padD, UInt padH, UInt padW, DNNOptimizers optimizer, Float rate, Float eps, Float momentum, Float beta2, Float gamma, Float l2Penalty, Float dropout, Float inputDropout, Float cutout, bool cutMix, Float autoAugment, bool horizontalFlip, bool verticalFlip, Float colorCast, UInt colorAngle, Float distortion, DNNInterpolations interpolation, Float scaling, Float rotation, Float avgTrainLoss, UInt trainErrors, Float trainErrorPercentage, Float trainAccuracy, Float avgTestLoss, UInt testErrors, Float testErrorPercentage, Float testAccuracy, long elapsedMilliSeconds, TimeSpan elapsedTime)
     {
-        UInt Cycle;
-        UInt Epoch;
-        UInt GroupIndex;
-        UInt CostIndex;
-        string CostName;
-        UInt N;
-        UInt D;
-        UInt H;
-        UInt W;
-        UInt PadD;
-        UInt PadH;
-        UInt PadW;
-        DNNOptimizers Optimizer;
-        Float Rate;
-        Float Eps;
-        Float Momentum;
-        Float Beta2;
-        Float Gamma;
-        Float L2Penalty;
-        Float Dropout;
-        Float InputDropout;
-        Float Cutout;
-        bool CutMix;
-        Float AutoAugment;
-        bool HorizontalFlip;
-        bool VerticalFlip;
-        Float ColorCast;
-        UInt ColorAngle;
-        Float Distortion;
-        DNNInterpolations Interpolation;
-        Float Scaling;
-        Float Rotation;
-        Float AvgTrainLoss;
-        UInt TrainErrors;
-        Float TrainErrorPercentage;
-        Float TrainAccuracy;
-        Float AvgTestLoss;
-        UInt TestErrors;
-        Float TestErrorPercentage;
-        Float TestAccuracy;
-        long ElapsedMilliSeconds;
-        TimeSpan ElapsedTime;
-
-        DNNTrainingResult(UInt cycle, UInt epoch, UInt groupIndex, UInt costIndex, string costName, UInt n, UInt d, UInt h, UInt w, UInt padD, UInt padH, UInt padW, DNNOptimizers optimizer, Float rate, Float eps, Float momentum, Float beta2, Float gamma, Float l2Penalty, Float dropout, Float inputDropout, Float cutout, bool cutMix, Float autoAugment, bool horizontalFlip, bool verticalFlip, Float colorCast, UInt colorAngle, Float distortion, DNNInterpolations interpolation, Float scaling, Float rotation, Float avgTrainLoss, UInt trainErrors, Float trainErrorPercentage, Float trainAccuracy, Float avgTestLoss, UInt testErrors, Float testErrorPercentage, Float testAccuracy, long elapsedMilliSeconds, TimeSpan elapsedTime)
-        {
-            Cycle = cycle;
-            Epoch = epoch;
-            GroupIndex = groupIndex;
-            CostIndex = costIndex;
-            CostName = costName;
-            N = n;
-            D = d;
-            H = h;
-            W = w;
-            PadD = padD;
-            PadH = padH;
-            PadW = padW;
-            Optimizer = optimizer;
-            Rate = rate;
-            Eps = eps;
-            Momentum = momentum;
-            Beta2 = beta2;
-            Gamma = gamma;
-            L2Penalty = l2Penalty;
-            Dropout = dropout;
-            InputDropout = inputDropout;
-            Cutout = cutout;
-            CutMix = cutMix;
-            AutoAugment = autoAugment;
-            HorizontalFlip = horizontalFlip;
-            VerticalFlip = verticalFlip;
-            ColorCast = colorCast;
-            ColorAngle = colorAngle;
-            Distortion = distortion;
-            Interpolation = interpolation;
-            Scaling = scaling;
-            Rotation = rotation;
-            AvgTrainLoss = avgTrainLoss;
-            TrainErrors = trainErrors;
-            TrainErrorPercentage = trainErrorPercentage;
-            TrainAccuracy = trainAccuracy;
-            AvgTestLoss = avgTestLoss;
-            TestErrors = testErrors;
-            TestErrorPercentage = testErrorPercentage;
-            TestAccuracy = testAccuracy;
-            ElapsedMilliSeconds = elapsedMilliSeconds;
-            ElapsedTime = elapsedTime;
-        }
+        public UInt Cycle = cycle;
+        public UInt Epoch = epoch;
+        public UInt GroupIndex = groupIndex;
+        public UInt CostIndex = costIndex;
+        public string CostName = costName;
+        public UInt N = n;
+        public UInt D = d;
+        public UInt H = h;
+        public UInt W = w;
+        public UInt PadD = padD;
+        public UInt PadH = padH;
+        public UInt PadW = padW;
+        public DNNOptimizers Optimizer = optimizer;
+        public Float Rate = rate;
+        public Float Eps = eps;
+        public Float Momentum = momentum;
+        public Float Beta2 = beta2;
+        public Float Gamma = gamma;
+        public Float L2Penalty = l2Penalty;
+        public Float Dropout = dropout;
+        public Float InputDropout = inputDropout;
+        public Float Cutout = cutout;
+        public bool CutMix = cutMix;
+        public Float AutoAugment = autoAugment;
+        public bool HorizontalFlip = horizontalFlip;
+        public bool VerticalFlip = verticalFlip;
+        public Float ColorCast = colorCast;
+        public UInt ColorAngle = colorAngle;
+        public Float Distortion = distortion;
+        public DNNInterpolations Interpolation = interpolation;
+        public Float Scaling = scaling;
+        public Float Rotation = rotation;
+        public Float AvgTrainLoss = avgTrainLoss;
+        public UInt TrainErrors = trainErrors;
+        public Float TrainErrorPercentage = trainErrorPercentage;
+        public Float TrainAccuracy = trainAccuracy;
+        public Float AvgTestLoss = avgTestLoss;
+        public UInt TestErrors = testErrors;
+        public Float TestErrorPercentage = testErrorPercentage;
+        public Float TestAccuracy = testAccuracy;
+        public long ElapsedMilliSeconds = elapsedMilliSeconds;
+        public TimeSpan ElapsedTime = elapsedTime;
     };
 
     [Serializable()]
-    public struct DNNCheckMsg
+    public struct DNNCheckMsg(UInt row, UInt column, string message, bool error, string definition)
     {
-        UInt Row;
-        UInt Column;
-        bool Error;
-        string Message;
-        string Definition;
-
-        DNNCheckMsg(UInt row, UInt column, string message, bool error, string definition)
-        {
-            Row = row;
-            Column = column;
-            Message = message;
-            Error = error;
-            Definition = definition;
-        }
+        public UInt Row = row;
+        public UInt Column = column;
+        public bool Error = error;
+        public string Message = message;
+        public string Definition = definition;
     };
 
     [Serializable()]
     public class DNNLayerInfo : System.ComponentModel.INotifyPropertyChanged
     {
         [field: NonSerializedAttribute()]
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        public event System.ComponentModel.PropertyChangedEventHandler? PropertyChanged;
 
-        private Nullable<bool> lockUpdate;
+        private bool? lockUpdate = false;
 
         public string Name;
         public string Description;
@@ -1700,7 +1649,7 @@ namespace Convnet.dnncores
         public System.Collections.Generic.List<string> InputsNames;
         public System.Windows.Media.Imaging.BitmapSource WeightsSnapshot;
         public bool Lockable;
-        public Nullable<bool> LockUpdate
+        public bool? LockUpdate
         {
             get { return lockUpdate; }
             set
@@ -1769,9 +1718,9 @@ namespace Convnet.dnncores
             BiasesStats = new DNNStats((Float)0, (Float)0, (Float)0, (Float)0);
         }
 
-        private void OnPropertyChanged(string propertyName)
+        private void OnPropertyChanged(string name)
         {
-            PropertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
     }
 
@@ -1780,19 +1729,19 @@ namespace Convnet.dnncores
         [DllImport("dnn.dll", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         private static extern void DNNDataprovider(string directory);
         [DllImport("dnn.dll", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        private static extern int DNNRead(string definition, out CheckMsg checkMsg);
+        private static extern int DNNRead(string definition, ref CheckMsg checkMsg);
         [DllImport("dnn.dll", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         private static extern bool DNNLoadDataset();
         [DllImport("dnn.dll", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        private static extern void DNNGetTrainingInfo(out TrainingInfo info);
+        private static extern void DNNGetTrainingInfo(ref TrainingInfo info);
         [DllImport("dnn.dll", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        private static extern void DNNGetTestingInfo(out TestingInfo info);
+        private static extern void DNNGetTestingInfo(ref TestingInfo info);
         [DllImport("dnn.dll", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        private static extern void DNNGetModelInfo(out ModelInfo info);
+        private static extern void DNNGetModelInfo(ref ModelInfo info);
         [DllImport("dnn.dll", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        private static extern void DNNGetLayerInfo(UInt layerIndex, out LayerInfo info);
+        private static extern void DNNGetLayerInfo(UInt layerIndex, ref LayerInfo info);
         [DllImport("dnn.dll", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        private static extern void DNNGetLayerInputs(UInt layerIndex, out UInt[] inputs);
+        private static extern void DNNGetLayerInputs(UInt layerIndex, ref UInt[] inputs);
         [DllImport("dnn.dll", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         private static extern Optimizers GetOptimizer();
 
@@ -1895,7 +1844,7 @@ namespace Convnet.dnncores
         public bool DisableLocking;
         public bool PlainFormat;
 
-        void OnElapsed(object sender, System.Timers.ElapsedEventArgs e)
+        void OnElapsed(object? sender, System.Timers.ElapsedEventArgs e)
         {
             sb.Length = 0;
             if (Duration.Elapsed.Days > 0)
@@ -1912,7 +1861,7 @@ namespace Convnet.dnncores
             if (IsTraining)
             {
                 var info = new TrainingInfo();
-                DNNGetTrainingInfo(out info);
+                DNNGetTrainingInfo(ref info);
 
                 TotalCycles = info.TotalCycles;
                 TotalEpochs = info.TotalEpochs;
@@ -1974,7 +1923,7 @@ namespace Convnet.dnncores
             else
             {
                 var info = new TestingInfo();
-                DNNGetTestingInfo(out info);
+                DNNGetTestingInfo(ref info);
 
                 SampleIndex = info.SampleIndex;
                 BatchSize = info.BatchSize;
@@ -2002,50 +1951,50 @@ namespace Convnet.dnncores
             }
         }
 
-        string[] GetTextLabels(string fileName)
-	    {
-	        StreamReader streamReader;
-		    string? str;
-		    int lines = 0;
+        static string[] GetTextLabels(string fileName)
+	    {	         
+            int lines = 0;
             string[] list = new string[1];
 
             try
             {
-                streamReader = File.OpenText(fileName);
-                str = streamReader.ReadLine();
-                while (str != null)
+                using (var streamReader = File.OpenText(fileName))
                 {
-                    lines++;
-                    str = streamReader.ReadLine();
+                    string? str = streamReader.ReadLine();
+                    while (str != null)
+                    {
+                        lines++;
+                        str = streamReader.ReadLine();
+                    }
                 }
-                streamReader.Close();
-
+               
                 list = new string[lines];
                 lines = 0;
 
-                streamReader = File.OpenText(fileName);
-                str = streamReader.ReadLine();
-                while (str != null)
-                { 
-                    list[lines++] = new string(str);
-                    str = streamReader.ReadLine();
+                using (var streamReader = File.OpenText(fileName))
+                {
+                    string? str = streamReader.ReadLine();
+                    while (str != null)
+                    {
+                        list[lines++] = new string(str);
+                        str = streamReader.ReadLine();
+                    }
                 }
-                streamReader.Close();
             }
-		    catch (Exception)
+		    catch (IOException)
 		    {
             }
 		
             return list;
 	    }
 
-        DNNLayerInfo GetLayerInfo(DNNLayerInfo infoManaged, UInt layerIndex)
+        DNNLayerInfo GetLayerInfo(DNNLayerInfo? infoManaged, UInt layerIndex)
 	    {
 		    if (infoManaged == null)
 			    infoManaged = new DNNLayerInfo();
 
             var infoNative = new LayerInfo();
-            DNNGetLayerInfo(layerIndex, out infoNative);
+            DNNGetLayerInfo(layerIndex, ref infoNative);
 
             infoManaged.Name = (string)infoNative.Name;
             infoManaged.Description = (string)infoNative.Description;
@@ -2069,7 +2018,7 @@ namespace Convnet.dnncores
 
             infoManaged.InputCount = infoNative.InputsCount;
             UInt[] inputs = new UInt[infoNative.InputsCount];
-            DNNGetLayerInputs(layerIndex, out inputs);
+            DNNGetLayerInputs(layerIndex, ref inputs);
             infoManaged.Inputs = new System.Collections.Generic.List<UInt>();
             foreach(UInt index in inputs)
                infoManaged.Inputs.Add(index);
@@ -2113,7 +2062,7 @@ namespace Convnet.dnncores
         void ApplyParameters()
         {
             var info = new ModelInfo();
-            DNNGetModelInfo(out info);
+            DNNGetModelInfo(ref info);
 
             Name = info.Name;
             Dataset = (DNNDatasets)info.Dataset;
@@ -2240,7 +2189,7 @@ namespace Convnet.dnncores
 		    DNNDataprovider(StorageDirectory);
 
             var checkMsg = new CheckMsg();
-		    if (DNNRead(definition, out checkMsg) == 1)
+		    if (DNNRead(definition, ref checkMsg) == 1)
 		    {
 			    DNNLoadDataset();
                 Definition = definition;
