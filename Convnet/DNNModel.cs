@@ -2028,8 +2028,48 @@ namespace Convnet.dnncores
         private static extern void DNNClearTrainingStrategies();
         [DllImport("dnn.dll", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         private static extern void DNNAddTrainingStrategy(ref TrainingStrategy strategy);
-
-
+        [DllImport("dnn.dll", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        private static extern void DNNSetNewEpochDelegate(ref (UInt, UInt, UInt, UInt, Float, Float, Float, bool, bool, Float, Float, bool, Float, Float, UInt, Float, UInt, Float, Float, Float, UInt, UInt, UInt, UInt, UInt, UInt, UInt, Float, Float, Float, Float, Float, Float, UInt, Float, Float, Float, UInt, UInt));
+        [DllImport("dnn.dll", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        private static extern void DNNTraining();
+        [DllImport("dnn.dll", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        private static extern void DNNTesting();
+        [DllImport("dnn.dll", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        private static extern void DNNStop();
+        [DllImport("dnn.dll", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        private static extern void DNNPause();
+        [DllImport("dnn.dll", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        private static extern void DNNResume();
+        [DllImport("dnn.dll", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        private static extern void DNNSetLocked(bool locked);
+        [DllImport("dnn.dll", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        private static extern void DNNSetLayerLocked(UInt layerIndex, bool locked);
+        [DllImport("dnn.dll", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        private static extern bool DNNCheck(ref string definition, ref CheckMsg checkMsg);
+        [DllImport("dnn.dll", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        private static extern int DNNLoad(string fileName, ref CheckMsg checkMsg);
+        [DllImport("dnn.dll", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        private static extern void DNNResetWeights();
+        [DllImport("dnn.dll", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        private static extern bool DNNLoadModel(string fileName);
+        [DllImport("dnn.dll", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        private static extern bool DNNSaveModel(string fileName);
+        [DllImport("dnn.dll", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        private static extern bool DNNClearLog();
+        [DllImport("dnn.dll", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        private static extern bool DNNLoadLog(string fileName);
+        [DllImport("dnn.dll", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        private static extern bool DNNSaveLog(string fileName);
+        [DllImport("dnn.dll", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        private static extern int DNNLoadWeights(string fileName, bool persistOptimizer);
+        [DllImport("dnn.dll", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        private static extern int DNNSaveWeights(string fileName, bool persistOptimizer);
+        [DllImport("dnn.dll", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        private static extern int DNNLoadLayerWeights(string fileName, UInt layerIndex, bool persistOptimizer);
+        [DllImport("dnn.dll", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        private static extern int DNNSaveLayerWeights(string fileName, UInt layerIndex, bool persistOptimizer);
+        [DllImport("dnn.dll", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        private static extern void DNNResetLayerWeights(UInt layerIndex);
 
         static Byte FloatSaturate(Float value) => value > (Float)255 ? (Byte)255 : value < (Float)0 ? (Byte)0 : (Byte)value;
 
@@ -2784,6 +2824,180 @@ namespace Convnet.dnncores
             DNNAddTrainingStrategy(ref nativeStrategy);
         }
 
-    };
+        void Start(bool training)
+        {
+           // if (NewEpoch != null)
+           //     DNNSetNewEpochDelegate(ref (UInt, UInt, UInt, UInt, Float, Float, Float, bool, bool, Float, Float, bool, Float, Float, UInt, Float, UInt, Float, Float, Float, UInt, UInt, UInt, UInt, UInt, UInt, UInt, Float, Float, Float, Float, Float, Float, UInt, Float, Float, Float, UInt, UInt))(Marshal::GetFunctionPointerForDelegate(NewEpoch).ToPointer()));
+            
+            SampleRate = (Float)0;
+            State = DNNStates.Idle;
 
+            IsTraining = training;
+            if (IsTraining)
+                DNNTraining();
+            else
+                DNNTesting();
+
+            TaskState = DNNTaskStates.Running;
+            WorkerTimer.Start();
+            Duration.Start();
+        }
+
+        void Stop()
+        {
+            SampleRate = (Float)0;
+            Duration.Reset();
+            DNNStop();
+            WorkerTimer.Stop();
+            State = DNNStates.Completed;
+            TaskState = DNNTaskStates.Stopped;
+        }
+
+        void Pause()
+        {
+            WorkerTimer.Stop();
+            Duration.Stop();
+            DNNPause();
+            TaskState = DNNTaskStates.Paused;
+        }
+
+        void Resume()
+        {
+            DNNResume();
+            Duration.Start();
+            WorkerTimer.Start();
+            TaskState = DNNTaskStates.Running;
+        }
+
+        void SetLocked(bool locked)
+        {
+            DNNSetLocked(locked);
+            for (var i = (UInt)0; i < LayerCount; i++)
+                if (Layers[(int)i].Lockable)
+                    Layers[(int)i].LockUpdate = locked;
+        }
+
+        void SetLayerLocked(UInt layerIndex, bool locked)
+        {
+            DNNSetLayerLocked(layerIndex, locked);
+        }
+
+        DNNCheckMsg Check(string definition)
+	    {
+		    CheckMsg checkMsg = new CheckMsg();
+
+            var def = (string)definition;
+            DNNCheck(ref def, ref checkMsg);
+
+            definition = (string)def;
+
+		    return new DNNCheckMsg(checkMsg.Row, checkMsg.Column, (string)checkMsg.Message, checkMsg.Error, definition);
+        }
+
+        int Load(string fileName)
+        {
+            CheckMsg checkMsg = new CheckMsg();
+
+            DNNModelDispose();
+            DNNDataprovider((string)StorageDirectory);
+
+            GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, true, true);
+
+            if (DNNLoad(fileName, ref checkMsg) == 1)
+            {
+                DNNLoadDataset();
+
+                var reader = new System.IO.StreamReader(fileName, true);
+                Definition = reader.ReadToEnd();
+                reader.Close();
+
+                DNNResetWeights();
+                ApplyParameters();
+            }
+            else
+                throw new Exception(checkMsg.Message);
+
+            GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, true, true);
+
+            return 1;
+        }
+
+        bool LoadDataset()
+        {
+            return DNNLoadDataset();
+        }
+
+        bool LoadModel(string fileName)
+        {
+            return DNNLoadModel(fileName);
+        }
+
+        bool SaveModel(string fileName)
+        {
+            return DNNSaveModel(fileName);
+        }
+
+        bool ClearLog()
+        {
+            return DNNClearLog();
+        }
+
+        bool LoadLog(string fileName)
+        {
+            return DNNLoadLog(fileName);
+        }
+
+        bool SaveLog(string fileName)
+        {
+            return DNNSaveLog(fileName);
+        }
+
+        int LoadWeights(string fileName, bool persist)
+        {
+            int ret = DNNLoadWeights(fileName, persist);
+
+            Optimizer = (DNNOptimizers)GetOptimizer();
+
+            if (ret == 0 && SelectedIndex > 0)
+            {
+                DNNLayerInfo? layerInfo = Layers[(int)SelectedIndex];
+                UpdateLayerStatistics(ref layerInfo, (UInt)SelectedIndex, true);
+            }
+
+            return ret;
+        }
+
+        int SaveWeights(string fileName, bool persist)
+        {
+            return DNNSaveWeights(fileName, persist);
+        }
+
+        void ResetWeights()
+        {
+            DNNResetWeights();
+        }
+
+        int LoadLayerWeights(string fileName, UInt layerIndex)
+        {
+            int ret = DNNLoadLayerWeights(fileName, layerIndex, false);
+
+            if (ret == 0 && SelectedIndex > 0)
+            {
+                DNNLayerInfo? layerInfo = Layers[(int)layerIndex];
+                UpdateLayerStatistics(ref layerInfo, layerIndex, layerIndex == (UInt)SelectedIndex);
+            }
+
+            return ret;
+        }
+
+        int SaveLayerWeights(string fileName, UInt layerIndex)
+        {
+            return DNNSaveLayerWeights(fileName, layerIndex, false);
+        }
+
+        void ResetLayerWeights(UInt layerIndex)
+        {
+            DNNResetLayerWeights(layerIndex);
+        }
+    };
 }
