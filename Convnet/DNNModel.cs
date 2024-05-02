@@ -229,6 +229,7 @@ namespace Convnet.dnncores
     {
         public UInt Row;
         public UInt Column;
+        [MarshalAs(UnmanagedType.U1)]
         public bool Error;
         [MarshalAs(UnmanagedType.LPStr)] // Unicode: LPWStr
         public string Message;
@@ -257,6 +258,7 @@ namespace Convnet.dnncores
         public UInt Hierarchies;
         public UInt TrainSamplesCount;
         public UInt TestSamplesCount;
+        [MarshalAs(UnmanagedType.U1)]
         public bool MeanStdNormalization;
         public Float[] MeanTrainSet;
         public Float[] StdTrainSet;
@@ -282,10 +284,13 @@ namespace Convnet.dnncores
         public UInt Width;
         public UInt PadH;
         public UInt PadW;
+        [MarshalAs(UnmanagedType.U1)]
         public bool HorizontalFlip;
+        [MarshalAs(UnmanagedType.U1)]
         public bool VerticalFlip;
         public Float InputDropout;
         public Float Cutout;
+        [MarshalAs(UnmanagedType.U1)]
         public bool CutMix;
         public Float AutoAugment;
         public Float ColorCast;
@@ -329,7 +334,9 @@ namespace Convnet.dnncores
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
     struct LayerInfo
     {
+        [MarshalAs(UnmanagedType.LPStr)] // Unicode: LPWStr
         public string Name;
+        [MarshalAs(UnmanagedType.LPStr)] // Unicode: LPWStr
         public string Description;
         public LayerTypes LayerType;
         public Activations Activation;
@@ -369,10 +376,15 @@ namespace Convnet.dnncores
         public Float K;
         public Float fH;
         public Float fW;
+        [MarshalAs(UnmanagedType.U1)]
         public bool HasBias;
+        [MarshalAs(UnmanagedType.U1)]
         public bool Scaling;
+        [MarshalAs(UnmanagedType.U1)]
         public bool AcrossChannels;
+        [MarshalAs(UnmanagedType.U1)]
         public bool Locked;
+        [MarshalAs(UnmanagedType.U1)]
         public bool Lockable;
     };
 
@@ -565,13 +577,13 @@ namespace Convnet.dnncores
         public Float Min;
         public Float Max;
 
-        //DNNStats(dnn::Stats& stats)
-        //{
-        // Mean = stats.Mean;
-        // StdDev = stats.StdDev;
-        // Min = stats.Min;
-        // Max = stats.Max;
-        //}
+        public DNNStats(Stats stats)
+        {
+            Mean = stats.Mean;
+            StdDev = stats.StdDev;
+            Min = stats.Min;
+            Max = stats.Max;
+        }
 
         public DNNStats(Float mean, Float stddev, Float min, Float max)
         {
@@ -590,6 +602,7 @@ namespace Convnet.dnncores
         public UInt GroupIndex;
         public UInt LabelIndex;
         public UInt ClassCount;
+        [MarshalAs(UnmanagedType.LPStr)] // Unicode: LPWStr
         public string Name;
         public Float Weight;
         public UInt TrainErrors;
