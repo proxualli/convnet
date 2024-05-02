@@ -439,7 +439,7 @@ namespace Convnet.dnn
         }
     };
 
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
     struct CheckMsg
     {
         public UInt Row;
@@ -458,7 +458,7 @@ namespace Convnet.dnn
         }
     };
 
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
     struct ModelInfo
     {
         [MarshalAs(UnmanagedType.LPWStr)]
@@ -479,7 +479,7 @@ namespace Convnet.dnn
         public Float[] StdTrainSet;
     };
 
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
     public struct TrainingInfo
     {
         public UInt TotalCycles;
@@ -525,7 +525,7 @@ namespace Convnet.dnn
         public TaskStates TaskState;
     };
 
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
     public struct TestingInfo
     {
         public UInt TotalCycles;
@@ -546,7 +546,7 @@ namespace Convnet.dnn
         public TaskStates TaskState;
     };
 
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
     struct LayerInfo
     {
         [MarshalAs(UnmanagedType.LPWStr)]
@@ -603,7 +603,7 @@ namespace Convnet.dnn
         public bool Lockable;
     };
 
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
     struct CostInfo
     {
         public UInt TrainErrors;
@@ -616,7 +616,7 @@ namespace Convnet.dnn
         public Float TestErrorPercentage;
     };
 
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
     struct StatsInfo
     {
         [MarshalAs(UnmanagedType.LPWStr)]
