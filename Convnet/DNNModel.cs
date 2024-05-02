@@ -11,10 +11,12 @@ using System.IO;
 using System.Linq;
 using System.Numerics;
 using System.Printing;
+using System.Runtime.ConstrainedExecution;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Documents;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Xml.Linq;
 using static NuGet.Client.ManagedCodeConventions;
@@ -204,6 +206,215 @@ namespace Convnet.dnncores
 	};
 
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
+    public struct TrainingRate
+    {
+        public Optimizers Optimizer;
+        public Float Momentum;
+        public Float Beta2;
+        public Float L2Penalty;
+        public Float Dropout;
+        public Float Eps;
+        public UInt N;
+        public UInt D;
+        public UInt H;
+        public UInt W;
+        public UInt PadD;
+        public UInt PadH;
+        public UInt PadW;
+        public UInt Cycles;
+        public UInt Epochs;
+        public UInt EpochMultiplier;
+        public Float MaximumRate;
+        public Float MinimumRate;
+        public Float FinalRate;
+        public Float Gamma;
+        public UInt DecayAfterEpochs;
+        public Float DecayFactor;
+        [MarshalAs(UnmanagedType.U1)]
+        public bool HorizontalFlip;
+        [MarshalAs(UnmanagedType.U1)]
+        public bool VerticalFlip;
+        public Float InputDropout;
+        public Float Cutout;
+        [MarshalAs(UnmanagedType.U1)]
+        public bool CutMix;
+        public Float AutoAugment;
+        public Float ColorCast;
+        public UInt ColorAngle;
+        public Float Distortion;
+        public Interpolations Interpolation;
+        public Float Scaling;
+        public Float Rotation;
+
+        public TrainingRate() 
+        { 
+			Optimizer = Optimizers.NAG;
+            Momentum = (Float)0.9;
+            Beta2 = (Float)0.999;
+            L2Penalty = (Float)0.0005;
+            Dropout = (Float)0;
+            Eps = (Float)1E-08;
+            N = 1;
+            D = 1;
+            H = 32;
+            W = 32;
+            PadD = 0;
+            PadH = 4;
+            PadW = 4;
+            Cycles = 1;
+            Epochs = 200;
+            EpochMultiplier = 1;
+            MaximumRate = (Float)0.05;
+            MinimumRate = (Float)0.0001;
+            FinalRate = (Float)0.1;
+            Gamma = (Float)0.003;
+            DecayAfterEpochs = 1;
+            DecayFactor = (Float)1;
+            HorizontalFlip = false;
+            VerticalFlip = false;
+            InputDropout = (Float)0;
+            Cutout = (Float)0;
+            CutMix = false;
+            AutoAugment = (Float)0;
+            ColorCast = (Float)0;
+            ColorAngle = 0;
+            Distortion = (Float)0;
+            Interpolation = Interpolations.Cubic;
+            Scaling = (Float)10.0;
+            Rotation = (Float)10.0;
+		}
+
+        public TrainingRate(Optimizers optimizer, Float momentum, Float beta2, Float l2penalty, Float dropout, Float eps, UInt n, UInt d, UInt h, UInt w, UInt padD, UInt padH, UInt padW, UInt cycles, UInt epochs, UInt epochMultiplier, Float maximumRate, Float minimumRate, Float finalRate, Float gamma, UInt decayAfterEpochs, Float decayFactor, bool horizontalFlip, bool verticalFlip, Float inputDropout, Float cutout, bool cutMix, Float autoAugment, Float colorCast, UInt colorAngle, Float distortion, Interpolations interpolation, Float scaling, Float rotation)
+        {
+            Optimizer = optimizer;
+            Momentum = momentum;
+            Beta2 = beta2;
+            L2Penalty = l2penalty;
+            Dropout = dropout;
+            Eps = eps;
+            N = n;
+            D = d;
+            H = h;
+            W = w;
+            PadD = padD;
+            PadH = padH;
+            PadW = padW;
+            Cycles = cycles;
+            Epochs = epochs;
+            EpochMultiplier = epochMultiplier;
+            MaximumRate = maximumRate;
+            MinimumRate = minimumRate;
+            FinalRate = finalRate;
+            Gamma = gamma;
+            DecayAfterEpochs = decayAfterEpochs;
+            DecayFactor = decayFactor;
+            HorizontalFlip = horizontalFlip;
+            VerticalFlip =verticalFlip;
+            InputDropout =inputDropout;
+            Cutout = cutout;
+            CutMix = cutMix;
+            AutoAugment = autoAugment;
+            ColorCast = colorCast;
+            ColorAngle = colorAngle;
+            Distortion = distortion;
+            Interpolation = interpolation;
+            Scaling = scaling;
+            Rotation = rotation;
+        }
+    };
+
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
+    public struct TrainingStrategy
+    {
+        public Float Epochs;
+        public UInt N;
+        public UInt D;
+        public UInt H;
+        public UInt W;
+        public UInt PadD;
+        public UInt PadH;
+        public UInt PadW;
+        public Float Momentum;
+        public Float Beta2;
+        public Float Gamma;
+        public Float L2Penalty;
+        public Float Dropout;
+        [MarshalAs(UnmanagedType.U1)]
+        public bool HorizontalFlip;
+        [MarshalAs(UnmanagedType.U1)]
+        public bool VerticalFlip;
+        public Float InputDropout;
+        public Float Cutout;
+        [MarshalAs(UnmanagedType.U1)]
+        public bool CutMix;
+        public Float AutoAugment;
+        public Float ColorCast;
+        public UInt ColorAngle;
+        public Float Distortion;
+        public Interpolations Interpolation;
+        public Float Scaling;
+        public Float Rotation;
+
+        public TrainingStrategy()
+        {
+            Epochs = 1;
+            N = 128;
+            D = 1;
+            H = 32;
+            W = 32;
+            PadD = 0;
+            PadH = 4;
+            PadW = 4;
+            Momentum = (Float)0.9;
+            Beta2 = (Float)0.999;
+            Gamma = (Float)0.003;
+            L2Penalty = (Float)0.0005;
+            Dropout = (Float)0;
+            HorizontalFlip = false;
+            VerticalFlip = false;
+            InputDropout = (Float)0;
+            Cutout = (Float)0;
+            CutMix = false;
+            AutoAugment = (Float)0;
+            ColorCast = (Float)0;
+            ColorAngle = 0;
+            Distortion = (Float)0;
+            Interpolation = Interpolations.Cubic;
+            Scaling = (Float)10.0;
+            Rotation = (Float)10.0;
+		}
+
+		public TrainingStrategy(Float epochs, UInt n, UInt d, UInt h, UInt w, UInt padD, UInt padH, UInt padW, Float momentum, Float beta2, Float gamma, Float l2penalty, Float dropout, bool horizontalFlip, bool verticalFlip, Float inputDropout, Float cutout, bool cutMix, Float autoAugment, Float colorCast, UInt colorAngle, Float distortion, Interpolations interpolation, Float scaling, Float rotation)
+        {
+            Epochs = epochs;
+            N = n;
+            D = d;
+            H = h;
+            W = w;
+            PadD = padD;
+            PadH = padH;
+            PadW = padW;
+            Momentum = momentum;
+            Beta2 = beta2;
+            Gamma = gamma;
+            L2Penalty = l2penalty;
+            Dropout = dropout;
+            HorizontalFlip = horizontalFlip;
+            VerticalFlip = verticalFlip;
+            InputDropout = inputDropout;
+            Cutout = cutout;
+            CutMix = cutMix;
+            AutoAugment = autoAugment;
+            ColorCast = colorCast;
+            ColorAngle = colorAngle;
+            Distortion = distortion;
+            Interpolation = interpolation;
+            Scaling = scaling;
+            Rotation = rotation;
+        }
+    };
+
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
     public struct Stats
     {
         public Float Mean;
@@ -391,6 +602,38 @@ namespace Convnet.dnncores
         [MarshalAs(UnmanagedType.U1)]
         public bool Lockable;
     };
+
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
+    struct CostInfo
+    {
+        public UInt TrainErrors;
+        public Float TrainLoss;
+        public Float AvgTrainLoss;
+        public Float TrainErrorPercentage;
+        public UInt TestErrors;
+        public Float TestLoss;
+        public Float AvgTestLoss;
+        public Float TestErrorPercentage;
+    };
+
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
+    struct StatsInfo
+    {
+        [MarshalAs(UnmanagedType.LPStr)] // Unicode: LPWStr
+        public string Description;
+        public Stats NeuronsStats;
+        public Stats WeightsStats;
+        public Stats BiasesStats;
+        public Float FPropLayerTime;
+        public Float BPropLayerTime;
+        public Float UpdateLayerTime;
+        public Float FPropTime;
+        public Float BPropTime;
+        public Float UpdateTime;
+        [MarshalAs(UnmanagedType.U1)]
+        public bool Locked;
+    };
+
 
     [Serializable()]
     public enum DNNAlgorithms
@@ -1723,6 +1966,7 @@ namespace Convnet.dnncores
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
     }
+        
 
     public class DNNModel
     {
@@ -1744,7 +1988,50 @@ namespace Convnet.dnncores
         private static extern void DNNGetLayerInputs(UInt layerIndex, ref UInt[] inputs);
         [DllImport("dnn.dll", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         private static extern Optimizers GetOptimizer();
+        [DllImport("dnn.dll", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        private static extern void DNNModelDispose();
+        [DllImport("dnn.dll", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        private static extern void DNNDataproviderDispose();
+        [DllImport("dnn.dll", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        private static extern void DNNPersistOptimizer(bool persistOptimizer);
+        [DllImport("dnn.dll", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        private static extern void DNNDisableLocking(bool disable);
+        [DllImport("dnn.dll", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        private static extern bool DNNSetShuffleCount(UInt count);
+        [DllImport("dnn.dll", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        private static extern bool DNNBatchNormUsed();
+        [DllImport("dnn.dll", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        private static extern bool DNNStochasticEnabled();
+        [DllImport("dnn.dll", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        private static extern void DNNRefreshStatistics(UInt layerIndex, ref StatsInfo info);
+        [DllImport("dnn.dll", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        private static extern bool DNNGetInputSnapShot(ref Float[] snapshot, ref UInt[] label);
+        [DllImport("dnn.dll", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        private static extern void DNNGetImage(UInt layerIndex, Byte fillColor, ref Byte[] image);
+        [DllImport("dnn.dll", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        private static extern bool DNNSetFormat(bool plain);
+        [DllImport("dnn.dll", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        private static extern void DNNSetOptimizer(Optimizers optimizer);
+        [DllImport("dnn.dll", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        private static extern void DNNResetOptimizer();
+        [DllImport("dnn.dll", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        private static extern void DNNSetUseTrainingStrategy(bool enable);
+        [DllImport("dnn.dll", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        private static extern void DNNSetCostIndex(UInt costLayerIndex);
+        [DllImport("dnn.dll", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        private static extern void DNNGetCostInfo(UInt index, ref CostInfo info);
+        [DllImport("dnn.dll", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        private static extern void DNNAddTrainingRate(ref TrainingRate rate, bool clear, UInt gotoEpoch, UInt trainSamples);
+        [DllImport("dnn.dll", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        private static extern void DNNAddTrainingRateSGDR(ref TrainingRate rate, bool clear, UInt gotoEpoch, UInt gotoCycle, UInt trainSamples);
+        [DllImport("dnn.dll", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        private static extern void DNNClearTrainingStrategies();
+        [DllImport("dnn.dll", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        private static extern void DNNAddTrainingStrategy(ref TrainingStrategy strategy);
 
+
+
+        static Byte FloatSaturate(Float value) => value > (Float)255 ? (Byte)255 : value < (Float)0 ? (Byte)0 : (Byte)value;
 
         static readonly bool IsWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
 
@@ -1752,8 +2039,8 @@ namespace Convnet.dnncores
         public delegate void TestProgressEventDelegate(UInt BatchSize, UInt SampleIndex, Float AvgTestLoss, Float TestErrorPercentage, Float TestAccuracy, UInt TestErrors, DNNStates State, DNNTaskStates TaskState);
         public delegate void NewEpochEventDelegate(UInt Cycle, UInt Epoch, UInt TotalEpochs, UInt Optimizer, Float Beta2, Float Gamma, Float Eps, bool HorizontalFlip, bool VerticalFlip, Float InputDropout, Float Cutout, bool CutMix, Float AutoAugment, Float ColorCast, UInt ColorAngle, Float Distortion, UInt Interpolation, Float Scaling, Float Rotation, Float Rate, UInt N, UInt D, UInt H, UInt W, UInt PadD, UInt PadH, UInt PadW, Float Momentum, Float L2Penalty, Float Dropout, Float AvgTrainLoss, Float TrainErrorPercentage, Float TrainAccuracy, UInt TrainErrors, Float AvgTestLoss, Float TestErrorPercentage, Float TestAccuracy, UInt TestErrors, UInt ElapsedNanoSecondes);
         
-		private System.Timers.Timer WorkerTimer;
-		private StringBuilder sb;
+		private readonly System.Timers.Timer WorkerTimer;
+		private readonly StringBuilder sb;
 		// private string oldWeightSaveFileName;
 
         public TrainProgressEventDelegate TrainProgress;
@@ -1988,9 +2275,9 @@ namespace Convnet.dnncores
             return list;
 	    }
 
-        DNNLayerInfo GetLayerInfo(DNNLayerInfo? infoManaged, UInt layerIndex)
+        static DNNLayerInfo GetLayerInfo(ref DNNLayerInfo? infoManaged, UInt layerIndex)
 	    {
-		    if (infoManaged == null)
+            if (infoManaged == null)
 			    infoManaged = new DNNLayerInfo();
 
             var infoNative = new LayerInfo();
@@ -2019,9 +2306,7 @@ namespace Convnet.dnncores
             infoManaged.InputCount = infoNative.InputsCount;
             UInt[] inputs = new UInt[infoNative.InputsCount];
             DNNGetLayerInputs(layerIndex, ref inputs);
-            infoManaged.Inputs = new System.Collections.Generic.List<UInt>();
-            foreach(UInt index in inputs)
-               infoManaged.Inputs.Add(index);
+            infoManaged.Inputs = [.. inputs];
 
             infoManaged.C = infoNative.C;
             infoManaged.D = infoNative.D;
@@ -2053,7 +2338,7 @@ namespace Convnet.dnncores
             infoManaged.HasBias = infoNative.HasBias;
             infoManaged.Scaling = infoManaged.IsNormLayer ? infoNative.Scaling : false;
             infoManaged.AcrossChannels = infoNative.AcrossChannels;
-            infoManaged.LockUpdate = infoNative.Lockable ? (Nullable<bool>)infoNative.Locked : (Nullable<bool>)false;
+            infoManaged.LockUpdate = infoNative.Lockable ? (bool?)infoNative.Locked : (bool?)false;
             infoManaged.Lockable = infoNative.Lockable;
 
             return infoManaged;
@@ -2152,10 +2437,11 @@ namespace Convnet.dnncores
             TrainingStrategies = new System.Collections.ObjectModel.ObservableCollection< DNNTrainingStrategy>();
             CostLayers = new DNNCostLayer[CostLayerCount];
 
+            DNNLayerInfo? inf = null;
             UInt counter = 0;
             for (UInt layer = 0; layer < LayerCount; layer++)
             {
-                Layers.Add(GetLayerInfo(null, layer));
+                Layers.Add(GetLayerInfo(ref inf, layer));
 
                 if (Layers[(int)layer].LayerType == DNNLayerTypes.Cost)
                     CostLayers[counter++] = new DNNCostLayer(Layers[(int)layer].Cost, Layers[(int)layer].LayerIndex, Layers[(int)layer].GroupIndex, Layers[(int)layer].LabelIndex, Layers[(int)layer].NeuronCount, Layers[(int)layer].Name, Layers[(int)layer].Weight);
@@ -2175,7 +2461,7 @@ namespace Convnet.dnncores
             State = DNNStates.Idle;
 		    OldState = DNNStates.Idle;
 		    TaskState = DNNTaskStates.Stopped;
-		    MeanTrainSet = new Float []{ (Float)0, (Float)0, (Float)0 };
+            MeanTrainSet = new Float[] { (Float)0, (Float)0, (Float)0 };
             StdTrainSet = new Float[] { (Float)0, (Float)0, (Float)0 };
             StorageDirectory = string.Concat(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "\\convnet\\");
 		    DatasetsDirectory = string.Concat(StorageDirectory, "datasets\\");
@@ -2203,6 +2489,301 @@ namespace Convnet.dnncores
 			    throw new Exception(checkMsg.Message);
 		    }
 	    }
+
+        ~DNNModel()
+        {
+            DNNModelDispose();
+            WorkerTimer.Close();
+            DNNDataproviderDispose();
+        }
+
+        void SetPersistOptimizer(bool persist)
+        {
+            DNNPersistOptimizer(persist);
+            PersistOptimizer = persist;
+        }
+
+        void SetDisableLocking(bool disable)
+        {
+            DNNDisableLocking(disable);
+            DisableLocking = disable;
+        }
+
+        void GetConfusionMatrix()
+        { 
+        }
+
+        bool SetShuffleCount(UInt count)
+        {
+            return DNNSetShuffleCount(count);
+        }
+
+        bool BatchNormUsed()
+        {
+            return DNNBatchNormUsed();
+        }
+
+        bool StochasticEnabled()
+        {
+            return DNNStochasticEnabled();
+        }
+
+        void UpdateLayerStatistics(ref DNNLayerInfo? info, UInt layerIndex, bool updateUI)
+        {
+            if (info != null)
+            {
+                var statsInfo = new StatsInfo();
+                DNNRefreshStatistics(layerIndex, ref statsInfo);
+
+                info.Description = (string)statsInfo.Description;
+                info.NeuronsStats = new DNNStats(ref statsInfo.NeuronsStats);
+                info.WeightsStats = new DNNStats(ref statsInfo.WeightsStats);
+                info.BiasesStats = new DNNStats(ref statsInfo.BiasesStats);
+                info.FPropLayerTime = statsInfo.FPropLayerTime;
+                info.BPropLayerTime = statsInfo.BPropLayerTime;
+                info.UpdateLayerTime = statsInfo.UpdateLayerTime;
+                fpropTime = statsInfo.FPropTime;
+                bpropTime = statsInfo.BPropTime;
+                updateTime = statsInfo.UpdateTime;
+                info.LockUpdate = info.Lockable ? (bool?)statsInfo.Locked : (bool?)false;
+
+                if (updateUI)
+                {
+                    switch (info.LayerType)
+                    {
+                        case DNNLayerTypes.Input:
+                            {
+                                var totalSize = info.C * info.H * info.W;
+                                var snapshot = new Float[totalSize];
+                                var labelVector = new UInt64[Hierarchies];
+
+                                var pictureLoaded = DNNGetInputSnapShot(ref snapshot, ref labelVector);
+
+                                if (totalSize > 0)
+                                {
+                                    var img = new Byte[(int)totalSize];
+                                    var pixelFormat = info.C == 3 ? PixelFormats.Rgb24 : PixelFormats.Gray8;
+                                    var HW = info.H * info.W;
+
+                                    if (MeanStdNormalization)
+                                        for (UInt channel = 0; channel < info.C; channel++)
+                                            for (UInt hw = 0; hw < HW; hw++)
+                                                img[(int)((hw * info.C) + channel)] = pictureLoaded ? FloatSaturate((snapshot[hw + channel * HW] * StdTrainSet[channel]) + MeanTrainSet[channel]) : FloatSaturate(MeanTrainSet[channel]);
+                                    else
+                                        for (UInt channel = 0; channel < info.C; channel++)
+                                            for (UInt hw = 0; hw < HW; hw++)
+                                                img[(int)((hw * info.C) + channel)] = pictureLoaded ? FloatSaturate((snapshot[hw + channel * HW] + (Float)(2)) * 64) : FloatSaturate(128);
+
+                                    var outputImage = System.Windows.Media.Imaging.BitmapSource.Create((int)info.W, (int)info.H, 96.0, 96.0, pixelFormat, null, img, (int)info.W * ((pixelFormat.BitsPerPixel + 7) / 8));
+                                    if (outputImage.CanFreeze)
+                                        outputImage.Freeze();
+
+                                    InputSnapshot = outputImage;
+                                    Label = pictureLoaded ? LabelsCollection[(int)(LabelIndex)][(int)(labelVector[LabelIndex])] : System.String.Empty;
+                                }
+                            }
+                            break;
+
+                        case DNNLayerTypes.Convolution:
+                        case DNNLayerTypes.ConvolutionTranspose:
+                        case DNNLayerTypes.DepthwiseConvolution:
+                        case DNNLayerTypes.PartialDepthwiseConvolution:
+                            {
+                                var border = (info.InputC != 3 && info.KernelH == 1 && info.KernelW == 1) ? (UInt)0 : (UInt)1;
+                                var depthwise = info.LayerType == DNNLayerTypes.DepthwiseConvolution || info.LayerType == DNNLayerTypes.PartialDepthwiseConvolution;
+                                var pitchH = info.KernelH + border;
+                                var pitchW = info.KernelW + border;
+                                var width = info.C * pitchH + border;
+                                var height = info.InputC == 3 ? (pitchW + 3 * border) : depthwise ? (pitchW + border) : ((info.InputC / info.Groups) * pitchW + border);
+                                var biasOffset = height * width + width;
+
+                                var totalSize = (!depthwise && info.InputC == 3) ? 3 * biasOffset : biasOffset;
+                                var pixelFormat = (!depthwise && info.InputC == 3) ? PixelFormats.Rgb24 : PixelFormats.Gray8;
+
+                                if (totalSize > 0 && totalSize <= int.MaxValue)
+                                {
+                                    var img = new Byte[(int)(totalSize)];
+                                    //pin_ptr<Byte> p = &img[0];
+                                    //ref Byte np = p;
+
+                                    DNNGetImage(info.LayerIndex, BackgroundColor, ref img);
+
+                                    var outputImage = System.Windows.Media.Imaging.BitmapSource.Create((int)width, (int)height, 96.0, 96.0, pixelFormat, null, img, (int)width * ((pixelFormat.BitsPerPixel + 7) / 8));
+                                    if (outputImage.CanFreeze)
+                                        outputImage.Freeze();
+
+                                    info.WeightsSnapshotX = (int)(width * BlockSize);
+                                    info.WeightsSnapshotY = (int)(height * BlockSize);
+                                    info.WeightsSnapshot = outputImage;
+
+                                    GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, true, true);
+                                }
+                            }
+                            break;
+
+                        case DNNLayerTypes.BatchNorm:
+                        case DNNLayerTypes.BatchNormActivation:
+                        case DNNLayerTypes.BatchNormActivationDropout:
+                        case DNNLayerTypes.BatchNormRelu:
+                        case DNNLayerTypes.Dense:
+                        case DNNLayerTypes.GroupNorm:
+                        case DNNLayerTypes.LayerNorm:
+                            {
+                                if (info.BiasCount > 0)
+                                {
+                                    var width = info.BiasCount;
+                                    var height = (info.WeightCount / width) + 3;
+                                    var totalSize = width * height;
+                                    var pixelFormat = PixelFormats.Gray8;
+
+                                    if (totalSize > 0 && totalSize <= int.MaxValue)
+                                    {
+                                        var img = new Byte[(int)(totalSize)];
+                                        //pin_ptr<Byte> p = &img[0];
+                                        //ref Byte np = p;
+
+                                        DNNGetImage(info.LayerIndex, BackgroundColor, ref img);
+
+                                        var outputImage = System.Windows.Media.Imaging.BitmapSource.Create((int)width, (int)height, 96.0, 96.0, pixelFormat, null, img, (int)width * ((pixelFormat.BitsPerPixel + 7) / 8));
+                                        if (outputImage.CanFreeze)
+                                            outputImage.Freeze();
+
+                                        info.WeightsSnapshotX = (int)(width * BlockSize);
+                                        info.WeightsSnapshotY = (int)(height * BlockSize);
+                                        info.WeightsSnapshot = outputImage;
+
+                                        GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, true, true);
+                                    }
+                                }
+                            }
+                            break;
+
+                        case DNNLayerTypes.PRelu:
+                            {
+                                var width = info.WeightCount;
+                                var height = (UInt)4;
+                                var totalSize = width * height;
+                                var pixelFormat = PixelFormats.Gray8;
+
+                                if (totalSize > 0 && totalSize <= int.MaxValue)
+                                {
+                                    var img = new Byte[(int)(totalSize)];
+                                    //pin_ptr<Byte> p = &img[0];
+                                    //ref Byte np = p;
+
+                                    DNNGetImage(info.LayerIndex, BackgroundColor, ref img);
+
+                                    var outputImage = System.Windows.Media.Imaging.BitmapSource.Create((int)width, (int)height, 96.0, 96.0, pixelFormat, null, img, (int)width * ((pixelFormat.BitsPerPixel + 7) / 8));
+                                    if (outputImage.CanFreeze)
+                                        outputImage.Freeze();
+
+                                    info.WeightsSnapshotX = (int)(width * BlockSize);
+                                    info.WeightsSnapshotY = (int)(height * BlockSize);
+                                    info.WeightsSnapshot = outputImage;
+
+                                    GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, true, true);
+                                }
+                            }
+                            break;
+                    }
+                }
+            }
+        }
+
+        void UpdateLayerInfo(UInt layerIndex, bool updateUI)
+        {
+           var layer = Layers[(int)layerIndex];
+
+            if (layerIndex == 0)
+                GetLayerInfo(ref layer, layerIndex);
+
+            UpdateLayerStatistics(ref layer, layerIndex, updateUI);
+        }
+
+        bool SetFormat(bool plain)
+        {
+            bool ret = DNNSetFormat(plain);
+
+            if (ret)
+                PlainFormat = plain;
+
+            return ret;
+        }
+
+        void SetOptimizer(DNNOptimizers strategy)
+        {
+            if (strategy != Optimizer)
+            {
+                DNNSetOptimizer((Optimizers)strategy);
+                Optimizer = strategy;
+            }
+        }
+
+        void ResetOptimizer()
+        {
+            DNNResetOptimizer();
+        }
+
+        void SetUseTrainingStrategy(bool enable)
+        {
+            DNNSetUseTrainingStrategy(enable);
+            UseTrainingStrategy = enable;
+        }
+
+        void SetCostIndex(UInt index)
+        {
+            DNNSetCostIndex(index);
+
+            CostIndex = index;
+            GroupIndex = CostLayers[CostIndex].GroupIndex;
+            LabelIndex = CostLayers[CostIndex].LabelIndex;
+            ClassCount = CostLayers[CostIndex].ClassCount;
+        }
+
+        void UpdateCostInfo(UInt index)
+        {
+            var info = new CostInfo();
+            DNNGetCostInfo(index, ref info);
+
+            CostLayers[index].TrainErrors = info.TrainErrors;
+            CostLayers[index].TrainLoss = info.TrainLoss;
+            CostLayers[index].AvgTrainLoss = info.AvgTrainLoss;
+            CostLayers[index].TrainErrorPercentage = info.TrainErrorPercentage;
+            CostLayers[index].TrainAccuracy = (Float)100 - info.TrainErrorPercentage;
+
+            CostLayers[index].TestErrors = info.TestErrors;
+            CostLayers[index].TestLoss = info.TestLoss;
+            CostLayers[index].AvgTestLoss = info.AvgTestLoss;
+            CostLayers[index].TestErrorPercentage = info.TestErrorPercentage;
+            CostLayers[index].TestAccuracy = (Float)100 - info.TestErrorPercentage;
+        }
+
+        void AddTrainingRate(DNNTrainingRate rate, bool clear, UInt gotoEpoch, UInt trainSamples)
+        {
+            var nativeRate = new TrainingRate((Optimizers)rate.Optimizer, rate.Momentum, rate.Beta2, rate.L2Penalty, rate.Dropout, rate.Eps, rate.N, rate.D, rate.H, rate.W, rate.PadD, rate.PadH, rate.PadW, rate.Cycles, rate.Epochs, rate.EpochMultiplier, rate.MaximumRate, rate.MinimumRate, rate.FinalRate, rate.Gamma, rate.DecayAfterEpochs, rate.DecayFactor, rate.HorizontalFlip, rate.VerticalFlip, rate.InputDropout, rate.Cutout, rate.CutMix, rate.AutoAugment, rate.ColorCast, rate.ColorAngle, rate.Distortion, (Interpolations)rate.Interpolation, rate.Scaling, rate.Rotation);
+
+            DNNAddTrainingRate(ref nativeRate, clear, gotoEpoch, trainSamples);
+        }
+
+        void AddTrainingRateSGDR(DNNTrainingRate rate, bool clear, UInt gotoEpoch, UInt gotoCycle, UInt trainSamples)
+	    {
+		    var nativeRate = new TrainingRate((Optimizers)rate.Optimizer, rate.Momentum, rate.Beta2, rate.L2Penalty, rate.Dropout, rate.Eps, rate.N, rate.D, rate.H, rate.W, rate.PadD, rate.PadH, rate.PadW, rate.Cycles, rate.Epochs, rate.EpochMultiplier, rate.MaximumRate, rate.MinimumRate, rate.FinalRate, rate.Gamma, rate.DecayAfterEpochs, rate.DecayFactor, rate.HorizontalFlip, rate.VerticalFlip, rate.InputDropout, rate.Cutout, rate.CutMix, rate.AutoAugment, rate.ColorCast, rate.ColorAngle, rate.Distortion, (Interpolations)rate.Interpolation, rate.Scaling, rate.Rotation);
+
+            DNNAddTrainingRateSGDR(ref nativeRate, clear, gotoEpoch, gotoCycle, trainSamples);
+        }
+
+        void ClearTrainingStrategies()
+        {
+            DNNClearTrainingStrategies();
+        }
+
+        void AddTrainingStrategy(DNNTrainingStrategy strategy)
+        {
+            var nativeStrategy = new TrainingStrategy(strategy.Epochs, strategy.N, strategy.D, strategy.H, strategy.W, strategy.PadD, strategy.PadH, strategy.PadW, strategy.Momentum, strategy.Beta2, strategy.Gamma, strategy.L2Penalty, strategy.Dropout, strategy.HorizontalFlip, strategy.VerticalFlip, strategy.InputDropout, strategy.Cutout, strategy.CutMix, strategy.AutoAugment, strategy.ColorCast, strategy.ColorAngle, strategy.Distortion, (Interpolations)strategy.Interpolation, strategy.Scaling, strategy.Rotation);
+
+            DNNAddTrainingStrategy(ref nativeStrategy);
+        }
+
     };
 
 }
