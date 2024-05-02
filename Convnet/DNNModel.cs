@@ -2742,7 +2742,7 @@ namespace Convnet.dnncores
 
         bool SetFormat(bool plain)
         {
-            bool ret = DNNSetFormat(plain);
+            var ret = DNNSetFormat(plain);
 
             if (ret)
                 PlainFormat = plain;
@@ -2884,7 +2884,7 @@ namespace Convnet.dnncores
 
         DNNCheckMsg Check(string definition)
 	    {
-		    CheckMsg checkMsg = new CheckMsg();
+		    var checkMsg = new CheckMsg();
 
             var def = (string)definition;
             DNNCheck(ref def, ref checkMsg);
@@ -2896,7 +2896,7 @@ namespace Convnet.dnncores
 
         int Load(string fileName)
         {
-            CheckMsg checkMsg = new CheckMsg();
+            var checkMsg = new CheckMsg();
 
             DNNModelDispose();
             DNNDataprovider((string)StorageDirectory);
@@ -2954,13 +2954,13 @@ namespace Convnet.dnncores
 
         int LoadWeights(string fileName, bool persist)
         {
-            int ret = DNNLoadWeights(fileName, persist);
+            var ret = DNNLoadWeights(fileName, persist);
 
             Optimizer = (DNNOptimizers)GetOptimizer();
 
             if (ret == 0 && SelectedIndex > 0)
             {
-                DNNLayerInfo? layerInfo = Layers[(int)SelectedIndex];
+                var layerInfo = Layers[SelectedIndex];
                 UpdateLayerStatistics(ref layerInfo, (UInt)SelectedIndex, true);
             }
 
@@ -2979,11 +2979,11 @@ namespace Convnet.dnncores
 
         int LoadLayerWeights(string fileName, UInt layerIndex)
         {
-            int ret = DNNLoadLayerWeights(fileName, layerIndex, false);
+            var ret = DNNLoadLayerWeights(fileName, layerIndex, false);
 
             if (ret == 0 && SelectedIndex > 0)
             {
-                DNNLayerInfo? layerInfo = Layers[(int)layerIndex];
+                var layerInfo = Layers[(int)layerIndex];
                 UpdateLayerStatistics(ref layerInfo, layerIndex, layerIndex == (UInt)SelectedIndex);
             }
 
