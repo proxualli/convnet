@@ -205,7 +205,7 @@ namespace Convnet.dnn
 		Nearest = 2
 	};
 
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
     public struct TrainingRate
     {
         public Optimizers Optimizer;
@@ -323,7 +323,7 @@ namespace Convnet.dnn
         }
     };
 
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
     public struct TrainingStrategy
     {
         public Float Epochs;
@@ -414,7 +414,7 @@ namespace Convnet.dnn
         }
     };
 
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
     public struct Stats
     {
         public Float Mean;
@@ -446,7 +446,7 @@ namespace Convnet.dnn
         public UInt Column;
         [MarshalAs(UnmanagedType.U1)]
         public bool Error;
-        [MarshalAs(UnmanagedType.LPStr)] // Unicode: LPWStr
+        [MarshalAs(UnmanagedType.LPWStr)]
         public string Message;
 
         public CheckMsg(UInt row = 0, UInt column = 0, string message = "", bool error = true)
@@ -461,7 +461,7 @@ namespace Convnet.dnn
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
     struct ModelInfo
     {
-        [MarshalAs(UnmanagedType.LPStr)] // Unicode: LPWStr
+        [MarshalAs(UnmanagedType.LPWStr)]
         public string Name;
         public Datasets Dataset;
         public Costs CostFunction;
@@ -549,9 +549,9 @@ namespace Convnet.dnn
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
     struct LayerInfo
     {
-        [MarshalAs(UnmanagedType.LPStr)] // Unicode: LPWStr
+        [MarshalAs(UnmanagedType.LPWStr)]
         public string Name;
-        [MarshalAs(UnmanagedType.LPStr)] // Unicode: LPWStr
+        [MarshalAs(UnmanagedType.LPWStr)]
         public string Description;
         public LayerTypes LayerType;
         public Activations Activation;
@@ -619,7 +619,7 @@ namespace Convnet.dnn
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
     struct StatsInfo
     {
-        [MarshalAs(UnmanagedType.LPStr)] // Unicode: LPWStr
+        [MarshalAs(UnmanagedType.LPWStr)]
         public string Description;
         public Stats NeuronsStats;
         public Stats WeightsStats;
@@ -849,7 +849,6 @@ namespace Convnet.dnn
         public UInt GroupIndex;
         public UInt LabelIndex;
         public UInt ClassCount;
-        [MarshalAs(UnmanagedType.LPStr)] // Unicode: LPWStr
         public string Name;
         public Float Weight;
         public UInt TrainErrors;
@@ -1970,105 +1969,105 @@ namespace Convnet.dnn
 
     public class DNNModel
     {
-        [DllImport("dnn.dll", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        [DllImport("dnn", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
         private static extern void DNNDataprovider(string directory);
-        [DllImport("dnn.dll", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        [DllImport("dnn", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
         private static extern int DNNRead(string definition, ref CheckMsg checkMsg);
-        [DllImport("dnn.dll", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        [DllImport("dnn", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
         private static extern bool DNNLoadDataset();
-        [DllImport("dnn.dll", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        [DllImport("dnn", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
         private static extern void DNNGetTrainingInfo(ref TrainingInfo info);
-        [DllImport("dnn.dll", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        [DllImport("dnn", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
         private static extern void DNNGetTestingInfo(ref TestingInfo info);
-        [DllImport("dnn.dll", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        [DllImport("dnn", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
         private static extern void DNNGetModelInfo(ref ModelInfo info);
-        [DllImport("dnn.dll", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        [DllImport("dnn", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
         private static extern void DNNGetLayerInfo(UInt layerIndex, ref LayerInfo info);
-        [DllImport("dnn.dll", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        [DllImport("dnn", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
         private static extern void DNNGetLayerInputs(UInt layerIndex, ref UInt[] inputs);
-        [DllImport("dnn.dll", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        [DllImport("dnn", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
         private static extern Optimizers GetOptimizer();
-        [DllImport("dnn.dll", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        [DllImport("dnn", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
         private static extern void DNNModelDispose();
-        [DllImport("dnn.dll", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        [DllImport("dnn", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
         private static extern void DNNDataproviderDispose();
-        [DllImport("dnn.dll", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        [DllImport("dnn", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
         private static extern void DNNPersistOptimizer(bool persistOptimizer);
-        [DllImport("dnn.dll", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        [DllImport("dnn", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
         private static extern void DNNDisableLocking(bool disable);
-        [DllImport("dnn.dll", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        [DllImport("dnn", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
         private static extern bool DNNSetShuffleCount(UInt count);
-        [DllImport("dnn.dll", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        [DllImport("dnn", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
         private static extern bool DNNBatchNormUsed();
-        [DllImport("dnn.dll", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        [DllImport("dnn", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
         private static extern bool DNNStochasticEnabled();
-        [DllImport("dnn.dll", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        [DllImport("dnn", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
         private static extern void DNNRefreshStatistics(UInt layerIndex, ref StatsInfo info);
-        [DllImport("dnn.dll", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        [DllImport("dnn", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
         private static extern bool DNNGetInputSnapShot(ref Float[] snapshot, ref UInt[] label);
-        [DllImport("dnn.dll", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        [DllImport("dnn", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
         private static extern void DNNGetImage(UInt layerIndex, Byte fillColor, ref Byte[] image);
-        [DllImport("dnn.dll", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        [DllImport("dnn", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
         private static extern bool DNNSetFormat(bool plain);
-        [DllImport("dnn.dll", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        [DllImport("dnn", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
         private static extern void DNNSetOptimizer(Optimizers optimizer);
-        [DllImport("dnn.dll", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        [DllImport("dnn", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
         private static extern void DNNResetOptimizer();
-        [DllImport("dnn.dll", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        [DllImport("dnn", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
         private static extern void DNNSetUseTrainingStrategy(bool enable);
-        [DllImport("dnn.dll", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        [DllImport("dnn", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
         private static extern void DNNSetCostIndex(UInt costLayerIndex);
-        [DllImport("dnn.dll", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        [DllImport("dnn", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
         private static extern void DNNGetCostInfo(UInt index, ref CostInfo info);
-        [DllImport("dnn.dll", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        [DllImport("dnn", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
         private static extern void DNNAddTrainingRate(ref TrainingRate rate, bool clear, UInt gotoEpoch, UInt trainSamples);
-        [DllImport("dnn.dll", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        [DllImport("dnn", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
         private static extern void DNNAddTrainingRateSGDR(ref TrainingRate rate, bool clear, UInt gotoEpoch, UInt gotoCycle, UInt trainSamples);
-        [DllImport("dnn.dll", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        [DllImport("dnn", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
         private static extern void DNNClearTrainingStrategies();
-        [DllImport("dnn.dll", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        [DllImport("dnn", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
         private static extern void DNNAddTrainingStrategy(ref TrainingStrategy strategy);
-        [DllImport("dnn.dll", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        [DllImport("dnn", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
         private static extern void DNNSetNewEpochDelegate(ref (UInt, UInt, UInt, UInt, Float, Float, Float, bool, bool, Float, Float, bool, Float, Float, UInt, Float, UInt, Float, Float, Float, UInt, UInt, UInt, UInt, UInt, UInt, UInt, Float, Float, Float, Float, Float, Float, UInt, Float, Float, Float, UInt, UInt) newEpoch);
-        [DllImport("dnn.dll", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        [DllImport("dnn", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
         private static extern void DNNTraining();
-        [DllImport("dnn.dll", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        [DllImport("dnn", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
         private static extern void DNNTesting();
-        [DllImport("dnn.dll", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        [DllImport("dnn", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
         private static extern void DNNStop();
-        [DllImport("dnn.dll", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        [DllImport("dnn", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
         private static extern void DNNPause();
-        [DllImport("dnn.dll", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        [DllImport("dnn", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
         private static extern void DNNResume();
-        [DllImport("dnn.dll", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        [DllImport("dnn", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
         private static extern void DNNSetLocked(bool locked);
-        [DllImport("dnn.dll", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        [DllImport("dnn", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
         private static extern void DNNSetLayerLocked(UInt layerIndex, bool locked);
-        [DllImport("dnn.dll", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        [DllImport("dnn", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
         private static extern bool DNNCheck(ref string definition, ref CheckMsg checkMsg);
-        [DllImport("dnn.dll", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        [DllImport("dnn", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
         private static extern int DNNLoad(string fileName, ref CheckMsg checkMsg);
-        [DllImport("dnn.dll", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        [DllImport("dnn", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
         private static extern void DNNResetWeights();
-        [DllImport("dnn.dll", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        [DllImport("dnn", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
         private static extern bool DNNLoadModel(string fileName);
-        [DllImport("dnn.dll", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        [DllImport("dnn", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
         private static extern bool DNNSaveModel(string fileName);
-        [DllImport("dnn.dll", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        [DllImport("dnn", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
         private static extern bool DNNClearLog();
-        [DllImport("dnn.dll", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        [DllImport("dnn", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
         private static extern bool DNNLoadLog(string fileName);
-        [DllImport("dnn.dll", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        [DllImport("dnn", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
         private static extern bool DNNSaveLog(string fileName);
-        [DllImport("dnn.dll", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        [DllImport("dnn", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
         private static extern int DNNLoadWeights(string fileName, bool persistOptimizer);
-        [DllImport("dnn.dll", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        [DllImport("dnn", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
         private static extern int DNNSaveWeights(string fileName, bool persistOptimizer);
-        [DllImport("dnn.dll", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        [DllImport("dnn", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
         private static extern int DNNLoadLayerWeights(string fileName, UInt layerIndex, bool persistOptimizer);
-        [DllImport("dnn.dll", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        [DllImport("dnn", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
         private static extern int DNNSaveLayerWeights(string fileName, UInt layerIndex, bool persistOptimizer);
-        [DllImport("dnn.dll", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        [DllImport("dnn", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
         private static extern void DNNResetLayerWeights(UInt layerIndex);
 
         static Byte FloatSaturate(Float value) => value > (Float)255 ? (Byte)255 : value < (Float)0 ? (Byte)0 : (Byte)value;
