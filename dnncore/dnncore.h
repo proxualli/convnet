@@ -1232,7 +1232,7 @@ namespace dnncore
 			UInt get() { return colorAngle; }
 			void set(UInt value)
 			{
-				if (value == colorAngle || value < Float(-360) || value > Float(360))
+				if (value == colorAngle || value > Float(360))
 					return;
 
 				colorAngle = value;
