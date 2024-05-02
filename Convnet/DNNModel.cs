@@ -25,7 +25,7 @@ using Float = System.Single;
 using UInt = System.UInt64;
 
 
-namespace Convnet.dnncores
+namespace Convnet.dnn
 {
     public enum TaskStates
     {
@@ -2029,7 +2029,7 @@ namespace Convnet.dnncores
         [DllImport("dnn.dll", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         private static extern void DNNAddTrainingStrategy(ref TrainingStrategy strategy);
         [DllImport("dnn.dll", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        private static extern void DNNSetNewEpochDelegate(ref (UInt, UInt, UInt, UInt, Float, Float, Float, bool, bool, Float, Float, bool, Float, Float, UInt, Float, UInt, Float, Float, Float, UInt, UInt, UInt, UInt, UInt, UInt, UInt, Float, Float, Float, Float, Float, Float, UInt, Float, Float, Float, UInt, UInt));
+        private static extern void DNNSetNewEpochDelegate(ref (UInt, UInt, UInt, UInt, Float, Float, Float, bool, bool, Float, Float, bool, Float, Float, UInt, Float, UInt, Float, Float, Float, UInt, UInt, UInt, UInt, UInt, UInt, UInt, Float, Float, Float, Float, Float, Float, UInt, Float, Float, Float, UInt, UInt) newEpoch);
         [DllImport("dnn.dll", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         private static extern void DNNTraining();
         [DllImport("dnn.dll", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
