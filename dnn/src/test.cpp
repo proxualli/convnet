@@ -239,7 +239,7 @@ int main(int argc, char* argv[])
     p.MirrorPad = false;
     p.Groups = 3;
     p.Iterations = 4;
-    p.Width = 4;
+    p.Width = 12;
     p.Activation = scripts::Activations::HardSwish;
     p.Dropout = Float(0);
     p.Bottleneck = false;
@@ -306,7 +306,7 @@ int main(int argc, char* argv[])
             auto info = new ModelInfo();
             DNNGetModelInfo(info);
             
-            DNNSetNewEpochDelegate(&NewEpoch);
+            DNNSetNewEpochDelegate(reinterpret_cast<void*>(&NewEpoch));
             
             DNNSetFormat(false);
             DNNPersistOptimizer(persistOptimizer);
