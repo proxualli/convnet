@@ -13,6 +13,7 @@ using System.IO;
 using System.Linq;
 using System.Security.AccessControl;
 using System.Security.Principal;
+using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -729,7 +730,8 @@ namespace Convnet.PageViewModels
 
         private bool CheckDefinition()
         {
-            var msg = Model.Check(Definition);
+            var definition = new StringBuilder(Definition);
+            var msg = Model.Check(ref definition);
 
             Definition = msg.Definition;
 

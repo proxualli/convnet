@@ -1,31 +1,17 @@
-﻿#nullable enable
-
-using Microsoft.Build.Tasks;
-using NuGet.Protocol.Plugins;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.ComponentModel;
-using System.Data.Common;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Numerics;
-using System.Printing;
-using System.Runtime.ConstrainedExecution;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Documents;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Xml.Linq;
-using static NuGet.Client.ManagedCodeConventions;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 using Float = System.Single;
 using UInt = System.UInt64;
 
 
-namespace Convnet.dnn
+namespace dnncore
 {
     public enum TaskStates
     {
@@ -205,7 +191,7 @@ namespace Convnet.dnn
 		Nearest = 2
 	};
 
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
     public struct TrainingRate
     {
         public Optimizers Optimizer;
@@ -323,7 +309,7 @@ namespace Convnet.dnn
         }
     };
 
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
     public struct TrainingStrategy
     {
         public Float Epochs;
@@ -414,7 +400,7 @@ namespace Convnet.dnn
         }
     };
 
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
     public struct Stats
     {
         public Float Mean;
@@ -439,14 +425,14 @@ namespace Convnet.dnn
         }
     };
 
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
     struct CheckMsg
     {
         public UInt Row;
         public UInt Column;
         [MarshalAs(UnmanagedType.U1)]
         public bool Error;
-        [MarshalAs(UnmanagedType.LPWStr)]
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 512)]
         public string Message;
 
         public CheckMsg(UInt row = 0, UInt column = 0, string message = "", bool error = true)
@@ -458,10 +444,10 @@ namespace Convnet.dnn
         }
     };
 
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
     struct ModelInfo
     {
-        [MarshalAs(UnmanagedType.LPWStr)]
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 512)]
         public string Name;
         public Datasets Dataset;
         public Costs CostFunction;
@@ -475,11 +461,13 @@ namespace Convnet.dnn
         public UInt TestSamplesCount;
         [MarshalAs(UnmanagedType.U1)]
         public bool MeanStdNormalization;
+        [MarshalAs(UnmanagedType.ByValArray, ArraySubType = UnmanagedType.R4, SizeConst = 3)]
         public Float[] MeanTrainSet;
+        [MarshalAs(UnmanagedType.ByValArray, ArraySubType = UnmanagedType.R4, SizeConst = 3)]
         public Float[] StdTrainSet;
     };
 
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
     public struct TrainingInfo
     {
         public UInt TotalCycles;
@@ -525,7 +513,7 @@ namespace Convnet.dnn
         public TaskStates TaskState;
     };
 
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
     public struct TestingInfo
     {
         public UInt TotalCycles;
@@ -546,12 +534,12 @@ namespace Convnet.dnn
         public TaskStates TaskState;
     };
 
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
     struct LayerInfo
     {
-        [MarshalAs(UnmanagedType.LPWStr)]
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 512)]
         public string Name;
-        [MarshalAs(UnmanagedType.LPWStr)]
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 2048)]
         public string Description;
         public LayerTypes LayerType;
         public Activations Activation;
@@ -603,7 +591,7 @@ namespace Convnet.dnn
         public bool Lockable;
     };
 
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
     struct CostInfo
     {
         public UInt TrainErrors;
@@ -616,11 +604,9 @@ namespace Convnet.dnn
         public Float TestErrorPercentage;
     };
 
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
-    struct StatsInfo
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
+    public struct StatsInfo
     {
-        [MarshalAs(UnmanagedType.LPWStr)]
-        public string Description;
         public Stats NeuronsStats;
         public Stats WeightsStats;
         public Stats BiasesStats;
@@ -632,8 +618,16 @@ namespace Convnet.dnn
         public Float UpdateTime;
         [MarshalAs(UnmanagedType.U1)]
         public bool Locked;
-    };
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 2048)]
+        public string Description;
 
+        public StatsInfo()
+        {
+            NeuronsStats = new Stats();
+            WeightsStats = new Stats();
+            BiasesStats = new Stats();
+        }
+    };
 
     [Serializable()]
     public enum DNNAlgorithms
@@ -890,7 +884,7 @@ namespace Convnet.dnn
     public class DNNTrainingRate : System.ComponentModel.INotifyPropertyChanged
     {
         [field: NonSerializedAttribute()]
-        public event System.ComponentModel.PropertyChangedEventHandler? PropertyChanged;
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
 
         private DNNOptimizers optimizer = DNNOptimizers.NAG;
         private Float momentum = (Float)0.9;
@@ -926,6 +920,7 @@ namespace Convnet.dnn
         private DNNInterpolations interpolation = DNNInterpolations.Linear;
         private Float scaling = (Float)10;
         private Float rotation = (Float)12;
+
 
         public DNNOptimizers Optimizer
         {
@@ -1336,6 +1331,7 @@ namespace Convnet.dnn
             }
         }
 
+
         public DNNTrainingRate()
         {
             optimizer = DNNOptimizers.NAG;
@@ -1412,9 +1408,11 @@ namespace Convnet.dnn
             Rotation = rotation;
         }
 
-        private void OnPropertyChanged(string name)
+        public void OnPropertyChanged([CallerMemberName] string name = null)
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+            PropertyChangedEventHandler handler = PropertyChanged;
+            if (handler != null)
+                handler.Invoke(this, new PropertyChangedEventArgs(name));
         }
     };
 
@@ -1422,7 +1420,7 @@ namespace Convnet.dnn
     public class DNNTrainingStrategy : System.ComponentModel.INotifyPropertyChanged
     {
         [field: NonSerializedAttribute()]
-        public event System.ComponentModel.PropertyChangedEventHandler? PropertyChanged;
+        public virtual event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
 
         private Float epochs = (Float)1;
         private UInt n = 128;
@@ -1810,58 +1808,625 @@ namespace Convnet.dnn
             Scaling = scaling;
             Rotation = rotation;
         }
-
-        private void OnPropertyChanged(string name)
+        
+        protected virtual void OnPropertyChanged(string propertyName)
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+            PropertyChangedEventHandler handler = PropertyChanged;
+            if (handler != null) 
+                handler(this, new PropertyChangedEventArgs(propertyName));
         }
     };
 
     [Serializable()]
-    public struct DNNTrainingResult(UInt cycle, UInt epoch, UInt groupIndex, UInt costIndex, string costName, UInt n, UInt d, UInt h, UInt w, UInt padD, UInt padH, UInt padW, DNNOptimizers optimizer, Float rate, Float eps, Float momentum, Float beta2, Float gamma, Float l2Penalty, Float dropout, Float inputDropout, Float cutout, bool cutMix, Float autoAugment, bool horizontalFlip, bool verticalFlip, Float colorCast, UInt colorAngle, Float distortion, DNNInterpolations interpolation, Float scaling, Float rotation, Float avgTrainLoss, UInt trainErrors, Float trainErrorPercentage, Float trainAccuracy, Float avgTestLoss, UInt testErrors, Float testErrorPercentage, Float testAccuracy, long elapsedMilliSeconds, TimeSpan elapsedTime)
+    public class DNNTrainingResult : System.ComponentModel.INotifyPropertyChanged
     {
-        public UInt Cycle = cycle;
-        public UInt Epoch = epoch;
-        public UInt GroupIndex = groupIndex;
-        public UInt CostIndex = costIndex;
-        public string CostName = costName;
-        public UInt N = n;
-        public UInt D = d;
-        public UInt H = h;
-        public UInt W = w;
-        public UInt PadD = padD;
-        public UInt PadH = padH;
-        public UInt PadW = padW;
-        public DNNOptimizers Optimizer = optimizer;
-        public Float Rate = rate;
-        public Float Eps = eps;
-        public Float Momentum = momentum;
-        public Float Beta2 = beta2;
-        public Float Gamma = gamma;
-        public Float L2Penalty = l2Penalty;
-        public Float Dropout = dropout;
-        public Float InputDropout = inputDropout;
-        public Float Cutout = cutout;
-        public bool CutMix = cutMix;
-        public Float AutoAugment = autoAugment;
-        public bool HorizontalFlip = horizontalFlip;
-        public bool VerticalFlip = verticalFlip;
-        public Float ColorCast = colorCast;
-        public UInt ColorAngle = colorAngle;
-        public Float Distortion = distortion;
-        public DNNInterpolations Interpolation = interpolation;
-        public Float Scaling = scaling;
-        public Float Rotation = rotation;
-        public Float AvgTrainLoss = avgTrainLoss;
-        public UInt TrainErrors = trainErrors;
-        public Float TrainErrorPercentage = trainErrorPercentage;
-        public Float TrainAccuracy = trainAccuracy;
-        public Float AvgTestLoss = avgTestLoss;
-        public UInt TestErrors = testErrors;
-        public Float TestErrorPercentage = testErrorPercentage;
-        public Float TestAccuracy = testAccuracy;
-        public long ElapsedMilliSeconds = elapsedMilliSeconds;
-        public TimeSpan ElapsedTime = elapsedTime;
+        [field: NonSerializedAttribute()]
+        public virtual event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+
+        public UInt Cycle
+        {
+            get { return cycle; }
+            set
+            {
+                if (value == cycle)
+                    return;
+
+                cycle = value;
+                OnPropertyChanged(nameof(Cycle));
+            }
+        }
+        public UInt Epoch
+        {
+            get { return epoch; }
+            set
+            {
+                if (value == epoch)
+                    return;
+
+                epoch = value;
+                OnPropertyChanged(nameof(Epoch));
+            }
+        }
+        public UInt GroupIndex
+        {
+            get { return groupIndex; }
+            set
+            {
+                if (value == groupIndex)
+                    return;
+
+                groupIndex = value;
+                OnPropertyChanged(nameof(GroupIndex));
+            }
+        }
+        public UInt CostIndex
+        {
+            get { return costIndex; }
+            set
+            {
+                if (value == costIndex)
+                    return;
+
+                costIndex = value;
+                OnPropertyChanged(nameof(CostIndex));
+            }
+        }
+        public string CostName
+        {
+            get { return costName; }
+            set
+            {
+                if (value == costName)
+                    return;
+
+                costName = value;
+                OnPropertyChanged(nameof(CostName));
+            }
+        }
+        public UInt N
+        {
+            get { return n; }
+            set
+            {
+                if (value == n)
+                    return;
+
+                n = value;
+                OnPropertyChanged(nameof(N));
+            }
+        }
+        public UInt D
+        {
+            get { return d; }
+            set
+            {
+                if (value == d && value == 0)
+                    return;
+
+                d = value;
+                OnPropertyChanged(nameof(D));
+            }
+        }
+        public UInt H
+        {
+            get { return h; }
+            set
+            {
+                if (value == h && value == 0)
+                    return;
+
+                h = value;
+                OnPropertyChanged(nameof(H));
+            }
+        }
+        public UInt W
+        {
+            get { return w; }
+            set
+            {
+                if (value == w && value == 0)
+                    return;
+
+                w = value;
+                OnPropertyChanged(nameof(W));
+            }
+        }
+        public UInt PadD
+        {
+            get { return padD; }
+            set
+            {
+                if (value == padD && value == 0)
+                    return;
+
+                padD = value;
+                OnPropertyChanged(nameof(PadD));
+            }
+        }
+        public UInt PadH
+        {
+            get { return padH; }
+            set
+            {
+                if (value == padH && value == 0)
+                    return;
+
+                padH = value;
+                OnPropertyChanged(nameof(PadH));
+            }
+        }
+        public UInt PadW
+        {
+            get { return padW; }
+            set
+            {
+                if (value == padW && value == 0)
+                    return;
+
+                padW = value;
+                OnPropertyChanged(nameof(PadW));
+            }
+        }
+        public DNNOptimizers Optimizer
+        {
+            get { return optimizer; }
+            set
+            {
+                if (value == optimizer)
+                    return;
+
+                optimizer = value;
+                OnPropertyChanged(nameof(Optimizer));
+            }
+        }
+        public Float Rate
+        {
+            get { return rate; }
+            set
+            {
+                if (value == rate)
+                    return;
+
+                rate = value;
+                OnPropertyChanged(nameof(Rate));
+            }
+        }
+        public Float Eps
+        {
+            get { return eps; }
+            set
+            {
+                if (value == eps || value < (Float)0 || value > (Float)1)
+                    return;
+
+                eps = value;
+                OnPropertyChanged(nameof(Eps));
+            }
+        }
+        public Float Momentum
+        {
+            get { return momentum; }
+            set
+            {
+                if (value == momentum || value < (Float)0 || value > (Float)1)
+                    return;
+
+                momentum = value;
+                OnPropertyChanged(nameof(Momentum));
+            }
+        }
+        public Float Beta2
+        {
+            get { return beta2; }
+            set
+            {
+                if (value == beta2 || value < (Float)0 || value > (Float)1)
+                    return;
+
+                beta2 = value;
+                OnPropertyChanged(nameof(Beta2));
+            }
+        }
+        public Float Gamma
+        {
+            get { return gamma; }
+            set
+            {
+                if (value == gamma || value < (Float)0 || value > (Float)1)
+                    return;
+
+                gamma = value;
+                OnPropertyChanged(nameof(Gamma));
+            }
+        }
+        public Float L2Penalty
+        {
+            get { return l2Penalty; }
+            set
+            {
+                if (value == l2Penalty || value < (Float)0 || value > (Float)1)
+                    return;
+
+                l2Penalty = value;
+                OnPropertyChanged(nameof(L2Penalty));
+            }
+        }
+        public Float Dropout
+        {
+            get { return dropout; }
+            set
+            {
+                if (value == dropout || value < (Float)0 || value > (Float)1)
+                    return;
+
+                dropout = value;
+                OnPropertyChanged(nameof(Dropout));
+            }
+        }
+        public Float InputDropout
+        {
+            get { return inputDropout; }
+            set
+            {
+                if (value == inputDropout || value < (Float)0 || value > (Float)1)
+                    return;
+
+                inputDropout = value;
+                OnPropertyChanged(nameof(InputDropout));
+            }
+        }
+        public Float Cutout
+        {
+            get { return cutout; }
+            set
+            {
+                if (value == cutout || value < (Float)0 || value > (Float)1)
+                    return;
+
+                cutout = value;
+                OnPropertyChanged(nameof(Cutout));
+            }
+        }
+        public bool CutMix
+        {
+            get { return cutMix; }
+            set
+            {
+                if (value == cutMix)
+                    return;
+
+                cutMix = value;
+                OnPropertyChanged(nameof(CutMix));
+            }
+        }
+        public Float AutoAugment
+        {
+            get { return autoAugment; }
+            set
+            {
+                if (value == autoAugment || value < (Float)0 || value > (Float)1)
+                    return;
+
+                autoAugment = value;
+                OnPropertyChanged(nameof(AutoAugment));
+            }
+        }
+        public bool HorizontalFlip
+        {
+            get { return horizontalFlip; }
+            set
+            {
+                if (value == horizontalFlip)
+                    return;
+
+                horizontalFlip = value;
+                OnPropertyChanged(nameof(HorizontalFlip));
+            }
+        }
+        public bool VerticalFlip
+        {
+            get { return verticalFlip; }
+            set
+            {
+                if (value == verticalFlip)
+                    return;
+
+                verticalFlip = value;
+                OnPropertyChanged(nameof(VerticalFlip));
+            }
+        }
+        public Float ColorCast
+        {
+            get { return colorCast; }
+            set
+            {
+                if (value == colorCast || value < (Float)0 || value > (Float)1)
+                    return;
+
+                colorCast = value;
+                OnPropertyChanged(nameof(ColorCast));
+            }
+        }
+        public UInt ColorAngle
+        {
+            get { return colorAngle; }
+            set
+            {
+                if (value == colorAngle || value > (Float)360)
+                    return;
+
+                colorAngle = value;
+                OnPropertyChanged(nameof(ColorAngle));
+            }
+        }
+        public Float Distortion
+        {
+            get { return distortion; }
+            set
+            {
+                if (value == distortion || value < (Float)0 || value > (Float)1)
+                    return;
+
+                distortion = value;
+                OnPropertyChanged(nameof(Distortion));
+            }
+        }
+        public DNNInterpolations Interpolation
+        {
+            get { return interpolation; }
+            set
+            {
+                if (value == interpolation)
+                    return;
+
+                interpolation = value;
+                OnPropertyChanged(nameof(Interpolation));
+            }
+        }
+        public Float Scaling
+        {
+            get { return scaling; }
+            set
+            {
+                if (value == scaling || value <= (Float)0 || value > (Float)200)
+                    return;
+
+                scaling = value;
+                OnPropertyChanged(nameof(Scaling));
+            }
+        }
+        public Float Rotation
+        {
+            get { return rotation; }
+            set
+            {
+                if (value == rotation || value < (Float)0 || value > (Float)360)
+                    return;
+
+                rotation = value;
+                OnPropertyChanged(nameof(Rotation));
+            }
+        }
+        public Float AvgTrainLoss
+        {
+            get { return avgTrainLoss; }
+            set
+            {
+                if (value == avgTrainLoss)
+                    return;
+
+                avgTrainLoss = value;
+                OnPropertyChanged(nameof(AvgTrainLoss));
+            }
+        }
+        public UInt TrainErrors
+        {
+            get { return trainErrors; }
+            set
+            {
+                if (value == trainErrors)
+                    return;
+
+                trainErrors = value;
+                OnPropertyChanged(nameof(TrainErrors));
+            }
+        }
+        public Float TrainErrorPercentage
+        {
+            get { return trainErrorPercentage; }
+            set
+            {
+                if (value == trainErrorPercentage)
+                    return;
+
+                trainErrorPercentage = value;
+                OnPropertyChanged(nameof(TrainErrorPercentage));
+            }
+        }
+        public Float TrainAccuracy
+        {
+            get { return trainAccuracy; }
+            set
+            {
+                if (value == trainAccuracy)
+                    return;
+
+                trainAccuracy = value;
+                OnPropertyChanged(nameof(TrainAccuracy));
+            }
+        }
+        public Float AvgTestLoss
+        {
+            get { return avgTestLoss; }
+            set
+            {
+                if (value == avgTestLoss)
+                    return;
+
+                avgTestLoss = value;
+                OnPropertyChanged(nameof(AvgTestLoss));
+            }
+        }
+        public UInt TestErrors
+        {
+            get { return testErrors; }
+            set
+            {
+                if (value == testErrors)
+                    return;
+
+                testErrors = value;
+                OnPropertyChanged(nameof(TestErrors));
+            }
+        }
+        public Float TestErrorPercentage
+        {
+            get { return testErrorPercentage; }
+            set
+            {
+                if (value == testErrorPercentage)
+                    return;
+
+                testErrorPercentage = value;
+                OnPropertyChanged(nameof(TestErrorPercentage));
+            }
+        }
+        public Float TestAccuracy
+        {
+            get { return testAccuracy; }
+            set
+            {
+                if (value == testAccuracy)
+                    return;
+
+                testAccuracy = value;
+                OnPropertyChanged(nameof(TestAccuracy));
+            }
+        }
+        public long ElapsedMilliSeconds
+        {
+            get { return elapsedMilliSeconds; }
+            set
+            {
+                if (value == elapsedMilliSeconds)
+                    return;
+
+                elapsedMilliSeconds = value;
+                OnPropertyChanged(nameof(ElapsedMilliSeconds));
+            }
+        }
+        public TimeSpan ElapsedTime
+        {
+            get { return elapsedTime; }
+            set
+            {
+                if (value == elapsedTime)
+                    return;
+
+                elapsedTime = value;
+                OnPropertyChanged(nameof(ElapsedTime));
+            }
+        }
+
+        public DNNTrainingResult() 
+        { 
+        }
+
+        public DNNTrainingResult(UInt cycle, UInt epoch, UInt groupIndex, UInt costIndex, string costName, UInt n, UInt d, UInt h, UInt w, UInt padD, UInt padH, UInt padW, DNNOptimizers optimizer, Float rate, Float eps, Float momentum, Float beta2, Float gamma, Float l2Penalty, Float dropout, Float inputDropout, Float cutout, bool cutMix, Float autoAugment, bool horizontalFlip, bool verticalFlip, Float colorCast, UInt colorAngle, Float distortion, DNNInterpolations interpolation, Float scaling, Float rotation, Float avgTrainLoss, UInt trainErrors, Float trainErrorPercentage, Float trainAccuracy, Float avgTestLoss, UInt testErrors, Float testErrorPercentage, Float testAccuracy, long elapsedMilliSeconds, TimeSpan elapsedTime)
+        {
+             Cycle = cycle;
+            Epoch = epoch;
+            GroupIndex = groupIndex;
+            CostIndex = costIndex;
+            CostName = costName;
+            N = n;
+            D = d;
+            H = h;
+            W = w;
+            PadD = padD;
+            PadH = padH;
+            PadW = padW;
+            Optimizer = optimizer;
+            Rate = rate;
+            Eps = eps;
+            Momentum = momentum;
+            Beta2 = beta2;
+            Gamma = gamma;
+            L2Penalty = l2Penalty;
+            Dropout = dropout;
+            InputDropout = inputDropout;
+            Cutout = cutout;
+            CutMix = cutMix;
+            AutoAugment = autoAugment;
+            HorizontalFlip = horizontalFlip;
+            VerticalFlip = verticalFlip;
+            ColorCast = colorCast;
+            ColorAngle = colorAngle;
+            Distortion = distortion;
+            Interpolation = interpolation;
+            Scaling = scaling;
+            Rotation = rotation;
+            AvgTrainLoss = avgTrainLoss;
+            TrainErrors = trainErrors;
+            TrainErrorPercentage = trainErrorPercentage;
+            TrainAccuracy = trainAccuracy;
+            AvgTestLoss = avgTestLoss;
+            TestErrors = testErrors;
+            TestErrorPercentage = testErrorPercentage;
+            TestAccuracy = testAccuracy;
+            ElapsedMilliSeconds = elapsedMilliSeconds;
+            ElapsedTime = elapsedTime;
+        }
+
+        private UInt cycle;
+        private UInt epoch;
+        private UInt groupIndex;
+        private UInt costIndex;
+        private string costName;
+        private UInt n;
+        private UInt d;
+        private UInt h;
+        private UInt w;
+        private UInt padD;
+        private UInt padH;
+        private UInt padW;
+        private DNNOptimizers optimizer;
+        private Float rate;
+        private Float eps;
+        private Float momentum;
+        private Float beta2;
+        private Float gamma;
+        private Float l2Penalty;
+        private Float dropout;
+        private Float inputDropout;
+        private Float cutout;
+        private bool cutMix;
+        private Float autoAugment;
+        private bool horizontalFlip;
+        private bool verticalFlip;
+        private Float colorCast;
+        private UInt colorAngle;
+        private Float distortion;
+        private DNNInterpolations interpolation;
+        private Float scaling;
+        private Float rotation;
+        private Float avgTrainLoss;
+        private UInt trainErrors;
+        private Float trainErrorPercentage;
+        private Float trainAccuracy;
+        private Float avgTestLoss;
+        private UInt testErrors;
+        private Float testErrorPercentage;
+        private Float testAccuracy;
+        private long elapsedMilliSeconds;
+        private TimeSpan elapsedTime;
+
+        protected virtual void OnPropertyChanged([CallerMemberName] string name = null)
+        {
+            PropertyChangedEventHandler handler = PropertyChanged;
+            if (handler != null)
+                handler.Invoke(this, new PropertyChangedEventArgs(name));
+        }
     };
 
     [Serializable()]
@@ -1878,19 +2443,165 @@ namespace Convnet.dnn
     public class DNNLayerInfo : System.ComponentModel.INotifyPropertyChanged
     {
         [field: NonSerializedAttribute()]
-        public event System.ComponentModel.PropertyChangedEventHandler? PropertyChanged;
+        public virtual event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
 
+        private string name;
+        private string description;
+        private DNNLayerTypes layerType;
+        private DNNActivations activation;
+        private DNNCosts cost;
+        private System.Collections.Generic.List<UInt> inputs;
+        //private System.Collections.Generic.List<string> InputsNames;
+        private System.Windows.Media.Imaging.BitmapSource weightsSnapshot;
+        private bool lockable;
         private bool? lockUpdate = false;
+        private bool isNormLayer;
+        private bool hasBias;
+        private bool mirrorPad;
+        private bool randomCrop;
+        private bool scaling;
+        private bool acrossChannels;
+        private int weightsSnapshotX;
+        private int weightsSnapshotY;
+        private UInt inputCount;
+        private UInt layerIndex;
+        private UInt neuronCount;
+        private UInt c;
+        private UInt d;
+        private UInt w;
+        private UInt h;
+        private UInt kernelH;
+        private UInt kernelW;
+        private UInt dilationH;
+        private UInt dilationW;
+        private UInt strideH;
+        private UInt strideW;
+        private UInt padD;
+        private UInt padH;
+        private UInt padW;
+        private UInt multiplier;
+        private UInt groups;
+        private UInt group;
+        private UInt localSize;
+        private UInt weightCount;
+        private UInt biasCount;
+        private UInt groupSize;
+        private UInt inputC;
+        private UInt groupIndex;
+        private UInt labelIndex;
+        private Float dropout;
+        private Float cutout;
+        private DNNStats neuronsStats;
+        private DNNStats weightsStats;
+        private DNNStats biasesStats;
+        private Float weight;
+        private Float alpha;
+        private Float beta;
+        private Float k;
+        private DNNAlgorithms algorithm;
+        private Float factorH;
+        private Float factorW;
+        private Float fPropLayerTime;
+        private Float bPropLayerTime;
+        private Float updateLayerTime;
 
-        public string Name;
-        public string Description;
-        public DNNLayerTypes LayerType;
-        public DNNActivations Activation;
-        public DNNCosts Cost;
-        public System.Collections.Generic.List<UInt> Inputs;
-        public System.Collections.Generic.List<string> InputsNames;
-        public System.Windows.Media.Imaging.BitmapSource WeightsSnapshot;
-        public bool Lockable;
+        public string Name
+        {
+            get { return name; }
+            set
+            {
+                if (value == name)
+                    return;
+
+                name = value;
+                OnPropertyChanged(nameof(Name));
+            }
+        }
+        public string Description
+        {
+            get { return description; }
+            set
+            {
+                if (value == description)
+                    return;
+
+                description = value;
+                OnPropertyChanged(nameof(Description));
+            }
+        }
+        public DNNLayerTypes LayerType
+        {
+            get { return layerType; }
+            set
+            {
+                if (value == layerType)
+                    return;
+
+                layerType = value;
+                OnPropertyChanged(nameof(LayerType));
+            }
+        }
+        public DNNActivations Activation
+        {
+            get { return activation; }
+            set
+            {
+                if (value == activation)
+                    return;
+
+                activation = value;
+                OnPropertyChanged(nameof(Activation));
+            }
+        }
+        public DNNCosts Cost
+        {
+            get { return cost; }
+            set
+            {
+                if (value == cost)
+                    return;
+
+                cost = value;
+                OnPropertyChanged(nameof(Cost));
+            }
+        }
+        public System.Collections.Generic.List<UInt> Inputs
+        {
+            get { return inputs; }
+            set
+            {
+                if (value == inputs)
+                    return;
+
+                inputs = value;
+                OnPropertyChanged(nameof(Inputs));
+            }
+        }
+        //public System.Collections.Generic.List<string> InputsNames;
+        public System.Windows.Media.Imaging.BitmapSource WeightsSnapshot
+        {
+            get { return weightsSnapshot; }
+            set
+            {
+                if (value == weightsSnapshot)
+                    return;
+
+                weightsSnapshot = value;
+                OnPropertyChanged(nameof(WeightsSnapshot));
+            }
+        }
+        public bool Lockable
+        {
+            get { return lockable; }
+            set
+            {
+                if (value == lockable)
+                    return;
+
+                lockable = value;
+                OnPropertyChanged(nameof(Lockable));
+            }
+        }
         public bool? LockUpdate
         {
             get { return lockUpdate; }
@@ -1903,55 +2614,594 @@ namespace Convnet.dnn
                 OnPropertyChanged(nameof(LockUpdate));
             }
         }
-        public bool IsNormLayer;
-        public bool HasBias;
-        public bool MirrorPad;
-        public bool RandomCrop;
-        public bool Scaling;
-        public bool AcrossChannels;
-        public int WeightsSnapshotX;
-        public int WeightsSnapshotY;
-        public UInt InputCount;
-        public UInt LayerIndex;
-        public UInt NeuronCount;
-        public UInt C;
-        public UInt D;
-        public UInt W;
-        public UInt H;
-        public UInt KernelH;
-        public UInt KernelW;
-        public UInt DilationH;
-        public UInt DilationW;
-        public UInt StrideH;
-        public UInt StrideW;
-        public UInt PadD;
-        public UInt PadH;
-        public UInt PadW;
-        public UInt Multiplier;
-        public UInt Groups;
-        public UInt Group;
-        public UInt LocalSize;
-        public UInt WeightCount;
-        public UInt BiasCount;
-        public UInt GroupSize;
-        public UInt InputC;
-        public UInt GroupIndex;
-        public UInt LabelIndex;
-        public Float Dropout;
-        public Float Cutout;
-        public DNNStats NeuronsStats;
-        public DNNStats WeightsStats;
-        public DNNStats BiasesStats;
-        public Float Weight;
-        public Float Alpha;
-        public Float Beta;
-        public Float K;
-        public DNNAlgorithms Algorithm;
-        public Float FactorH;
-        public Float FactorW;
-        public Float FPropLayerTime;
-        public Float BPropLayerTime;
-        public Float UpdateLayerTime;
+        public bool IsNormLayer
+        {
+            get { return isNormLayer; }
+            set
+            {
+                if (value == isNormLayer)
+                    return;
+
+                isNormLayer = value;
+                OnPropertyChanged(nameof(IsNormLayer));
+            }
+        }
+        public bool HasBias
+        {
+            get { return hasBias; }
+            set
+            {
+                if (value == hasBias)
+                    return;
+
+                hasBias = value;
+                OnPropertyChanged(nameof(HasBias));
+            }
+        }
+        public bool MirrorPad
+        {
+            get { return mirrorPad; }
+            set
+            {
+                if (value == mirrorPad)
+                    return;
+
+                mirrorPad = value;
+                OnPropertyChanged(nameof(MirrorPad));
+            }
+        }
+        public bool RandomCrop
+        {
+            get { return randomCrop; }
+            set
+            {
+                if (value == randomCrop)
+                    return;
+
+                randomCrop = value;
+                OnPropertyChanged(nameof(RandomCrop));
+            }
+        }
+        public bool Scaling
+        {
+            get { return scaling; }
+            set
+            {
+                if (value == scaling)
+                    return;
+
+                scaling = value;
+                OnPropertyChanged(nameof(Scaling));
+            }
+        }
+        public bool AcrossChannels
+        {
+            get { return acrossChannels; }
+            set
+            {
+                if (value == acrossChannels)
+                    return;
+
+                acrossChannels = value;
+                OnPropertyChanged(nameof(AcrossChannels));
+            }
+        }
+        public int WeightsSnapshotX
+        {
+            get { return weightsSnapshotX; }
+            set
+            {
+                if (value == weightsSnapshotX)
+                    return;
+
+                weightsSnapshotX = value;
+                OnPropertyChanged(nameof(WeightsSnapshotX));
+            }
+        }
+        public int WeightsSnapshotY
+        {
+            get { return weightsSnapshotY; }
+            set
+            {
+                if (value == weightsSnapshotY)
+                    return;
+
+                weightsSnapshotY = value;
+                OnPropertyChanged(nameof(WeightsSnapshotY));
+            }
+        }
+        public UInt InputCount
+        {
+            get { return inputCount; }
+            set
+            {
+                if (value == inputCount)
+                    return;
+
+                inputCount = value;
+                OnPropertyChanged(nameof(InputCount));
+            }
+        }
+        public UInt LayerIndex
+        {
+            get { return layerIndex; }
+            set
+            {
+                if (value == layerIndex)
+                    return;
+
+                c = value;
+                OnPropertyChanged(nameof(LayerIndex));
+            }
+        }
+        public UInt NeuronCount
+        {
+            get { return neuronCount; }
+            set
+            {
+                if (value == neuronCount)
+                    return;
+
+                neuronCount = value;
+                OnPropertyChanged(nameof(NeuronCount));
+            }
+        }
+        public UInt C
+        {
+            get { return c; }
+            set
+            {
+                if (value == c)
+                    return;
+
+                c = value;
+                OnPropertyChanged(nameof(C));
+            }
+        }
+        public UInt D
+        {
+            get { return d; }
+            set
+            {
+                if (value == d && value == 0)
+                    return;
+
+                d = value;
+                OnPropertyChanged(nameof(D));
+            }
+        }
+        public UInt H
+        {
+            get { return h; }
+            set
+            {
+                if (value == h && value == 0)
+                    return;
+
+                h = value;
+                OnPropertyChanged(nameof(H));
+            }
+        }
+        public UInt W
+        {
+            get { return w; }
+            set
+            {
+                if (value == w && value == 0)
+                    return;
+
+                w = value;
+                OnPropertyChanged(nameof(W));
+            }
+        }
+        public UInt KernelW
+        {
+            get { return kernelW; }
+            set
+            {
+                if (value == kernelW)
+                    return;
+
+                kernelW = value;
+                OnPropertyChanged(nameof(KernelW));
+            }
+        }
+        public UInt KernelH
+        {
+            get { return kernelH; }
+            set
+            {
+                if (value == kernelH)
+                    return;
+
+                kernelH = value;
+                OnPropertyChanged(nameof(KernelH));
+            }
+        }
+        public UInt DilationW
+        {
+            get { return dilationW; }
+            set
+            {
+                if (value == dilationW)
+                    return;
+
+                dilationW = value;
+                OnPropertyChanged(nameof(DilationW));
+            }
+        }
+        public UInt DilationH
+        {
+            get { return dilationH; }
+            set
+            {
+                if (value == dilationH)
+                    return;
+
+                dilationH = value;
+                OnPropertyChanged(nameof(DilationH));
+            }
+        }
+        public UInt StrideW
+        {
+            get { return strideW; }
+            set
+            {
+                if (value == strideW)
+                    return;
+
+                strideW = value;
+                OnPropertyChanged(nameof(StrideW));
+            }
+        }
+        public UInt StrideH
+        {
+            get { return strideH; }
+            set
+            {
+                if (value == strideH)
+                    return;
+
+                strideH = value;
+                OnPropertyChanged(nameof(StrideH));
+            }
+        }
+        public UInt PadD
+        {
+            get { return padD; }
+            set
+            {
+                if (value == padD && value == 0)
+                    return;
+
+                padD = value;
+                OnPropertyChanged(nameof(PadD));
+            }
+        }
+        public UInt PadH
+        {
+            get { return padH; }
+            set
+            {
+                if (value == padH && value == 0)
+                    return;
+
+                padH = value;
+                OnPropertyChanged(nameof(PadH));
+            }
+        }
+        public UInt PadW
+        {
+            get { return padW; }
+            set
+            {
+                if (value == padW && value == 0)
+                    return;
+
+                padW = value;
+                OnPropertyChanged(nameof(PadW));
+            }
+        }
+        public UInt Multiplier
+        {
+            get { return multiplier; }
+            set
+            {
+                if (value == multiplier)
+                    return;
+
+                multiplier = value;
+                OnPropertyChanged(nameof(Multiplier));
+            }
+        }
+        public UInt Groups
+        {
+            get { return groups; }
+            set
+            {
+                if (value == groups)
+                    return;
+
+                groups = value;
+                OnPropertyChanged(nameof(Groups));
+            }
+        }
+        public UInt Group
+        {
+            get { return group; }
+            set
+            {
+                if (value == group)
+                    return;
+
+                group = value;
+                OnPropertyChanged(nameof(C));
+            }
+        }
+        public UInt LocalSize
+        {
+            get { return localSize; }
+            set
+            {
+                if (value == localSize)
+                    return;
+
+                localSize = value;
+                OnPropertyChanged(nameof(LocalSize));
+            }
+        }
+        public UInt WeightCount
+        {
+            get { return weightCount; }
+            set
+            {
+                if (value == weightCount)
+                    return;
+
+                weightCount = value;
+                OnPropertyChanged(nameof(WeightCount));
+            }
+        }
+        public UInt BiasCount
+        {
+            get { return biasCount; }
+            set
+            {
+                if (value == biasCount)
+                    return;
+
+                biasCount = value;
+                OnPropertyChanged(nameof(BiasCount));
+            }
+        }
+        public UInt GroupSize
+        {
+            get { return groupSize; }
+            set
+            {
+                if (value == groupSize)
+                    return;
+
+                groupSize = value;
+                OnPropertyChanged(nameof(GroupSize));
+            }
+        }
+        public UInt InputC
+        {
+            get { return inputC; }
+            set
+            {
+                if (value == inputC)
+                    return;
+
+                inputC = value;
+                OnPropertyChanged(nameof(InputC));
+            }
+        }
+        public UInt GroupIndex
+        {
+            get { return groupIndex; }
+            set
+            {
+                if (value == groupIndex)
+                    return;
+
+                groupIndex = value;
+                OnPropertyChanged(nameof(GroupIndex));
+            }
+        }
+        public UInt LabelIndex
+        {
+            get { return labelIndex; }
+            set
+            {
+                if (value == labelIndex)
+                    return;
+
+                labelIndex = value;
+                OnPropertyChanged(nameof(LabelIndex));
+            }
+        }
+        public Float Dropout
+        {
+            get { return dropout; }
+            set
+            {
+                if (value == dropout)
+                    return;
+
+                dropout = value;
+                OnPropertyChanged(nameof(Dropout));
+            }
+        }
+        public Float Cutout
+        {
+            get { return cutout; }
+            set
+            {
+                if (value == cutout)
+                    return;
+
+                cutout = value;
+                OnPropertyChanged(nameof(Cutout));
+            }
+        }
+        public DNNStats NeuronsStats
+        {
+            get { return neuronsStats; }
+            set
+            {
+                if (value == neuronsStats)
+                    return;
+
+                neuronsStats = value;
+                OnPropertyChanged(nameof(NeuronsStats));
+            }
+        }
+        public DNNStats WeightsStats
+        {
+            get { return weightsStats; }
+            set
+            {
+                if (value == weightsStats)
+                    return;
+
+                weightsStats = value;
+                OnPropertyChanged(nameof(WeightsStats));
+            }
+        }
+        public DNNStats BiasesStats
+        {
+            get { return biasesStats; }
+            set
+            {
+                if (value == biasesStats)
+                    return;
+
+                biasesStats = value;
+                OnPropertyChanged(nameof(BiasesStats));
+            }
+        }
+        public Float Weight
+        {
+            get { return weight; }
+            set
+            {
+                if (value == weight)
+                    return;
+
+                weight = value;
+                OnPropertyChanged(nameof(Weight));
+            }
+        }
+        public Float Alpha
+        {
+            get { return alpha; }
+            set
+            {
+                if (value == alpha)
+                    return;
+
+                alpha = value;
+                OnPropertyChanged(nameof(Alpha));
+            }
+        }
+        public Float Beta
+        {
+            get { return beta; }
+            set
+            {
+                if (value == beta)
+                    return;
+
+                beta = value;
+                OnPropertyChanged(nameof(Beta));
+            }
+        }
+        public Float K
+        {
+            get { return k; }
+            set
+            {
+                if (value == k)
+                    return;
+
+                k = value;
+                OnPropertyChanged(nameof(K));
+            }
+        }
+        public DNNAlgorithms Algorithm
+        {
+            get { return algorithm; }
+            set
+            {
+                if (value == algorithm)
+                    return;
+
+                algorithm = value;
+                OnPropertyChanged(nameof(Algorithm));
+            }
+        }
+        public Float FactorH
+        {
+            get { return factorH; }
+            set
+            {
+                if (value == factorH)
+                    return;
+
+                factorH = value;
+                OnPropertyChanged(nameof(FactorH));
+            }
+        }
+        public Float FactorW
+        {
+            get { return factorW; }
+            set
+            {
+                if (value == factorW)
+                    return;
+
+                factorW = value;
+                OnPropertyChanged(nameof(FactorW));
+            }
+        }
+        public Float FPropLayerTime
+        {
+            get { return fPropLayerTime; }
+            set
+            {
+                if (value == fPropLayerTime)
+                    return;
+
+                fPropLayerTime = value;
+                OnPropertyChanged(nameof(FPropLayerTime));
+            }
+        }
+        public Float BPropLayerTime
+        {
+            get { return bPropLayerTime; }
+            set
+            {
+                if (value == bPropLayerTime)
+                    return;
+
+                bPropLayerTime = value;
+                OnPropertyChanged(nameof(BPropLayerTime));
+            }
+        }
+        public Float UpdateLayerTime
+        {
+            get { return updateLayerTime; }
+            set
+            {
+                if (value == updateLayerTime)
+                    return;
+
+                updateLayerTime = value;
+                OnPropertyChanged(nameof(UpdateLayerTime));
+            }
+        }
 
         public DNNLayerInfo()
         {
@@ -1960,119 +3210,129 @@ namespace Convnet.dnn
             BiasesStats = new DNNStats((Float)0, (Float)0, (Float)0, (Float)0);
         }
 
-        private void OnPropertyChanged(string name)
+        protected virtual void OnPropertyChanged([CallerMemberName] string name = null)
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+            PropertyChangedEventHandler handler = PropertyChanged;
+            if (handler != null)
+                handler.Invoke(this, new PropertyChangedEventArgs(name));
         }
     }
-        
 
-    public class DNNModel
+    public class DNNModel : IDisposable
     {
-        [DllImport("dnn", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
-        private static extern void DNNDataprovider(string directory);
-        [DllImport("dnn", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
-        private static extern int DNNRead(string definition, ref CheckMsg checkMsg);
-        [DllImport("dnn", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
+        private const string library = "dnn";
+        private const CharSet charSet = CharSet.Ansi;
+        private const UnmanagedType stringType = UnmanagedType.LPStr;
+        private const CallingConvention CC = CallingConvention.Cdecl;
+
+        [DllImport(library, BestFitMapping = true, CallingConvention = CC, CharSet = charSet, ExactSpelling = true)]
+        private static extern void DNNDataprovider([MarshalAs(stringType)] string directory);
+
+        [DllImport(library, BestFitMapping = true, CallingConvention = CC, CharSet = charSet, ExactSpelling = true)]
+        private static extern int DNNRead([MarshalAs(stringType)] string definition, [In, Out] ref CheckMsg checkMsg);
+        [DllImport(library, BestFitMapping = true, CallingConvention = CC, CharSet = charSet, ExactSpelling = true)]
         private static extern bool DNNLoadDataset();
-        [DllImport("dnn", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
-        private static extern void DNNGetTrainingInfo(ref TrainingInfo info);
-        [DllImport("dnn", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
-        private static extern void DNNGetTestingInfo(ref TestingInfo info);
-        [DllImport("dnn", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
-        private static extern void DNNGetModelInfo(ref ModelInfo info);
-        [DllImport("dnn", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
-        private static extern void DNNGetLayerInfo(UInt layerIndex, ref LayerInfo info);
-        [DllImport("dnn", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
-        private static extern void DNNGetLayerInputs(UInt layerIndex, ref UInt[] inputs);
-        [DllImport("dnn", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
+        [DllImport(library, BestFitMapping = true, CallingConvention = CC, CharSet = charSet, ExactSpelling = true)]
+        private static extern void DNNGetTrainingInfo([In, Out] ref TrainingInfo info);
+        [DllImport(library, BestFitMapping = true, CallingConvention = CC, CharSet = charSet, ExactSpelling = true)]
+        private static extern void DNNGetTestingInfo([In, Out] ref TestingInfo info);
+        [DllImport(library, BestFitMapping = true, CallingConvention = CC, CharSet = charSet, ExactSpelling = true)]
+        private static extern void DNNGetModelInfo([In, Out] ref ModelInfo info);
+        [DllImport(library, BestFitMapping = true, CallingConvention = CC, CharSet = charSet, ExactSpelling = true)]
+        private static extern void DNNGetLayerInfo(UInt layerIndex, [In, Out] ref LayerInfo info);
+        [DllImport(library, BestFitMapping = true, CallingConvention = CC, CharSet = charSet, ExactSpelling = true)]
+        private static extern void DNNGetLayerInputs(UInt layerIndex, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.U8, SizeConst = 10, SizeParamIndex = 0)][In,Out] UInt[] inputs);
+        [DllImport(library, BestFitMapping = true, CallingConvention = CC, CharSet = charSet, ExactSpelling = true)]
         private static extern Optimizers GetOptimizer();
-        [DllImport("dnn", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
+        [DllImport(library, BestFitMapping = true, CallingConvention = CC, CharSet = charSet, ExactSpelling = true)]
         private static extern void DNNModelDispose();
-        [DllImport("dnn", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
+        [DllImport(library, BestFitMapping = true, CallingConvention = CC, CharSet = charSet, ExactSpelling = true)]
         private static extern void DNNDataproviderDispose();
-        [DllImport("dnn", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
+        [DllImport(library, BestFitMapping = true, CallingConvention = CC, CharSet = charSet, ExactSpelling = true)]
         private static extern void DNNPersistOptimizer(bool persistOptimizer);
-        [DllImport("dnn", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
+        [DllImport(library, BestFitMapping = true, CallingConvention = CC, CharSet = charSet, ExactSpelling = true)]
         private static extern void DNNDisableLocking(bool disable);
-        [DllImport("dnn", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
+        [DllImport(library, BestFitMapping = true, CallingConvention = CC, CharSet = charSet, ExactSpelling = true)]
         private static extern bool DNNSetShuffleCount(UInt count);
-        [DllImport("dnn", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
+        [DllImport(library, BestFitMapping = true, CallingConvention = CC, CharSet = charSet, ExactSpelling = true)]
         private static extern bool DNNBatchNormUsed();
-        [DllImport("dnn", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
+        [DllImport(library, BestFitMapping = true, CallingConvention = CC, CharSet = charSet, ExactSpelling = true)]
         private static extern bool DNNStochasticEnabled();
-        [DllImport("dnn", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
-        private static extern void DNNRefreshStatistics(UInt layerIndex, ref StatsInfo info);
-        [DllImport("dnn", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
-        private static extern bool DNNGetInputSnapShot(ref Float[] snapshot, ref UInt[] label);
-        [DllImport("dnn", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
-        private static extern void DNNGetImage(UInt layerIndex, Byte fillColor, ref Byte[] image);
-        [DllImport("dnn", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
+        [DllImport(library, BestFitMapping = true, CallingConvention = CC, CharSet = charSet, ExactSpelling = true)]
+        private static extern void DNNRefreshStatistics(UInt layerIndex, [In,Out] ref StatsInfo info);
+        [DllImport(library, BestFitMapping = true, CallingConvention = CC, CharSet = charSet, ExactSpelling = true)]
+        private static extern bool DNNGetInputSnapShot([MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.R4, SizeParamIndex = 0, SizeConst = 10000000)][In,Out] Float[] snapshot, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.U8, SizeParamIndex = 0, SizeConst = 10)][In,Out] UInt[] label);
+        [DllImport(library, BestFitMapping = true, CallingConvention = CC, CharSet = charSet, ExactSpelling = true)]
+        private static extern void DNNGetImage(UInt layerIndex, Byte fillColor, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.U1, SizeConst = 500000000, SizeParamIndex = 0)][In,Out] Byte[] image);
+        [DllImport(library, BestFitMapping = true, CallingConvention = CC, CharSet = charSet, ExactSpelling = true)]
         private static extern bool DNNSetFormat(bool plain);
-        [DllImport("dnn", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
+        [DllImport(library, BestFitMapping = true, CallingConvention = CC, CharSet = charSet, ExactSpelling = true)]
         private static extern void DNNSetOptimizer(Optimizers optimizer);
-        [DllImport("dnn", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
+        [DllImport(library, BestFitMapping = true, CallingConvention = CC, CharSet = charSet, ExactSpelling = true)]
         private static extern void DNNResetOptimizer();
-        [DllImport("dnn", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
+        [DllImport(library, BestFitMapping = true, CallingConvention = CC, CharSet = charSet, ExactSpelling = true)]
         private static extern void DNNSetUseTrainingStrategy(bool enable);
-        [DllImport("dnn", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
+        [DllImport(library, BestFitMapping = true, CallingConvention = CC, CharSet = charSet, ExactSpelling = true)]
         private static extern void DNNSetCostIndex(UInt costLayerIndex);
-        [DllImport("dnn", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
-        private static extern void DNNGetCostInfo(UInt index, ref CostInfo info);
-        [DllImport("dnn", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
+        [DllImport(library, BestFitMapping = true, CallingConvention = CC, CharSet = charSet, ExactSpelling = true)]
+        private static extern void DNNGetCostInfo(UInt index, [In, Out] ref CostInfo info);
+        [DllImport(library, BestFitMapping = true, CallingConvention = CC, CharSet = charSet, ExactSpelling = true)]
         private static extern void DNNAddTrainingRate(ref TrainingRate rate, bool clear, UInt gotoEpoch, UInt trainSamples);
-        [DllImport("dnn", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
+        [DllImport(library, BestFitMapping = true, CallingConvention = CC, CharSet = charSet, ExactSpelling = true)]
         private static extern void DNNAddTrainingRateSGDR(ref TrainingRate rate, bool clear, UInt gotoEpoch, UInt gotoCycle, UInt trainSamples);
-        [DllImport("dnn", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
+        [DllImport(library, BestFitMapping = true, CallingConvention = CC, CharSet = charSet, ExactSpelling = true)]
         private static extern void DNNClearTrainingStrategies();
-        [DllImport("dnn", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
+        [DllImport(library, BestFitMapping = true, CallingConvention = CC, CharSet = charSet, ExactSpelling = true)]
         private static extern void DNNAddTrainingStrategy(ref TrainingStrategy strategy);
-        [DllImport("dnn", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
-        private static extern void DNNSetNewEpochDelegate(ref (UInt, UInt, UInt, UInt, Float, Float, Float, bool, bool, Float, Float, bool, Float, Float, UInt, Float, UInt, Float, Float, Float, UInt, UInt, UInt, UInt, UInt, UInt, UInt, Float, Float, Float, Float, Float, Float, UInt, Float, Float, Float, UInt, UInt) newEpoch);
-        [DllImport("dnn", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
+        [DllImport(library, BestFitMapping = true, CallingConvention = CC, CharSet = charSet, ExactSpelling = true)]
+        unsafe private static extern void DNNSetNewEpochDelegate(void* newEpoch);
+        [DllImport(library, BestFitMapping = true, CallingConvention = CC, CharSet = charSet, ExactSpelling = true)]
         private static extern void DNNTraining();
-        [DllImport("dnn", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
+        [DllImport(library, BestFitMapping = true, CallingConvention = CC, CharSet = charSet, ExactSpelling = true)]
         private static extern void DNNTesting();
-        [DllImport("dnn", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
+        [DllImport(library, BestFitMapping = true, CallingConvention = CC, CharSet = charSet, ExactSpelling = true)]
         private static extern void DNNStop();
-        [DllImport("dnn", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
+        [DllImport(library, BestFitMapping = true, CallingConvention = CC, CharSet = charSet, ExactSpelling = true)]
         private static extern void DNNPause();
-        [DllImport("dnn", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
+        [DllImport(library, BestFitMapping = true, CallingConvention = CC, CharSet = charSet, ExactSpelling = true)]
         private static extern void DNNResume();
-        [DllImport("dnn", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
+        [DllImport(library, BestFitMapping = true, CallingConvention = CC, CharSet = charSet, ExactSpelling = true)]
         private static extern void DNNSetLocked(bool locked);
-        [DllImport("dnn", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
+        [DllImport(library, BestFitMapping = true, CallingConvention = CC, CharSet = charSet, ExactSpelling = true)]
         private static extern void DNNSetLayerLocked(UInt layerIndex, bool locked);
-        [DllImport("dnn", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
-        private static extern bool DNNCheck(ref string definition, ref CheckMsg checkMsg);
-        [DllImport("dnn", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
-        private static extern int DNNLoad(string fileName, ref CheckMsg checkMsg);
-        [DllImport("dnn", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
+        [DllImport(library, BestFitMapping = true, CallingConvention = CC, CharSet = charSet, ExactSpelling = true)]
+        private static extern bool DNNCheck([MarshalAs(stringType)][In, Out] StringBuilder definition, [In, Out] ref CheckMsg checkMsg);
+        [DllImport(library, BestFitMapping = true, CallingConvention = CC, CharSet = charSet, ExactSpelling = true)]
+        private static extern int DNNLoad([MarshalAs(stringType)] string fileName, [In, Out] ref CheckMsg checkMsg);
+        [DllImport(library, BestFitMapping = true, CallingConvention = CC, CharSet = charSet, ExactSpelling = true)]
         private static extern void DNNResetWeights();
-        [DllImport("dnn", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
-        private static extern bool DNNLoadModel(string fileName);
-        [DllImport("dnn", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
-        private static extern bool DNNSaveModel(string fileName);
-        [DllImport("dnn", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
+        [DllImport(library, BestFitMapping = true, CallingConvention = CC, CharSet = charSet, ExactSpelling = true)]
+        private static extern bool DNNLoadModel([MarshalAs(stringType)] string fileName);
+        [DllImport(library, BestFitMapping = true, CallingConvention = CC, CharSet = charSet, ExactSpelling = true)]
+        private static extern bool DNNSaveModel([MarshalAs(stringType)] string fileName);
+        [DllImport(library, BestFitMapping = true, CallingConvention = CC, CharSet = charSet, ExactSpelling = true)]
         private static extern bool DNNClearLog();
-        [DllImport("dnn", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
-        private static extern bool DNNLoadLog(string fileName);
-        [DllImport("dnn", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
-        private static extern bool DNNSaveLog(string fileName);
-        [DllImport("dnn", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
-        private static extern int DNNLoadWeights(string fileName, bool persistOptimizer);
-        [DllImport("dnn", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
-        private static extern int DNNSaveWeights(string fileName, bool persistOptimizer);
-        [DllImport("dnn", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
-        private static extern int DNNLoadLayerWeights(string fileName, UInt layerIndex, bool persistOptimizer);
-        [DllImport("dnn", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
-        private static extern int DNNSaveLayerWeights(string fileName, UInt layerIndex, bool persistOptimizer);
-        [DllImport("dnn", EntryPoint = "DllMain", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
+        [DllImport(library, BestFitMapping = true, CallingConvention = CC, CharSet = charSet, ExactSpelling = true)]
+        private static extern bool DNNLoadLog([MarshalAs(stringType)] string fileName);
+        [DllImport(library, BestFitMapping = true, CallingConvention = CC, CharSet = charSet, ExactSpelling = true)]
+        private static extern bool DNNSaveLog([MarshalAs(stringType)] string fileName);
+        [DllImport(library, BestFitMapping = true, CallingConvention = CC, CharSet = charSet, ExactSpelling = true)]
+        private static extern int DNNLoadWeights([MarshalAs(stringType)] string fileName, bool persistOptimizer);
+        [DllImport(library, BestFitMapping = true, CallingConvention = CC, CharSet = charSet, ExactSpelling = true)]
+        private static extern int DNNSaveWeights([MarshalAs(stringType)] string fileName, bool persistOptimizer);
+        [DllImport(library, BestFitMapping = true, CallingConvention = CC, CharSet = charSet, ExactSpelling = true)]
+        private static extern int DNNLoadLayerWeights([MarshalAs(stringType)] string fileName, UInt layerIndex, bool persistOptimizer);
+        [DllImport(library, BestFitMapping = true, CallingConvention = CC, CharSet = charSet, ExactSpelling = true)]
+        private static extern int DNNSaveLayerWeights([MarshalAs(stringType)] string fileName, UInt layerIndex, bool persistOptimizer);
+        [DllImport(library, BestFitMapping = true, CallingConvention = CC, CharSet = charSet, ExactSpelling = true)]
         private static extern void DNNResetLayerWeights(UInt layerIndex);
+        [DllImport(library, BestFitMapping = true, CallingConvention = CC, CharSet = charSet, ExactSpelling = true)]
+        private static extern void DNNGetConfusionMatrix(UInt costLayerIndex, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.U8, SizeParamIndex = 0, SizeConst = 10000000)][In, Out] UInt[] confusionMatrix);
+        [DllImport(library, BestFitMapping = true, CallingConvention = CC, CharSet = charSet, ExactSpelling = true)]
+        private static extern void DNNGetLayerWeights(UInt layerIndex, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.R4, SizeConst = 500000000, SizeParamIndex = 0)] [In,Out] Float[] weights, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.R4, SizeConst = 5000000, SizeParamIndex = 0)][In, Out] Float[] biases);
 
-        static Byte FloatSaturate(Float value) => value > (Float)255 ? (Byte)255 : value < (Float)0 ? (Byte)0 : (Byte)value;
-
-        static readonly bool IsWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
+        private static Byte FloatSaturate(Float value) => value > (Float)255 ? (Byte)255 : value < (Float)0 ? (Byte)0 : (Byte)value;
+        private static readonly bool IsWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
 
         public delegate void TrainProgressEventDelegate(DNNOptimizers Optim, UInt BatchSize, UInt Cycle, UInt TotalCycles, UInt Epoch, UInt TotalEpochs, bool HorizontalFlip, bool VerticalFlip, Float InputDropout, Float Cutout, bool CutMix, Float AutoAugment, Float ColorCast, UInt ColorAngle, Float Distortion, DNNInterpolations Interpolation, Float Scaling, Float Rotation, UInt SampleIndex, Float Rate, Float Momentum, Float Beta2, Float Gamma, Float L2Penalty, Float Dropout, Float AvgTrainLoss, Float TrainErrorPercentage, Float TrainAccuracy, UInt TrainErrors, Float AvgTestLoss, Float TestErrorPercentage, Float TestAccuracy, UInt TestErrors, DNNStates State, DNNTaskStates TaskState);
         public delegate void TestProgressEventDelegate(UInt BatchSize, UInt SampleIndex, Float AvgTestLoss, Float TestErrorPercentage, Float TestAccuracy, UInt TestErrors, DNNStates State, DNNTaskStates TaskState);
@@ -2094,7 +3354,7 @@ namespace Convnet.dnn
 		public DNNCostLayer[] CostLayers;
         public Float[] MeanTrainSet;
         public Float[] StdTrainSet;
-        public UInt[][] ConfusionMatrix;
+        public UInt[] ConfusionMatrix;
         public string[][] LabelsCollection;
         public bool UseTrainingStrategy;
         public System.Collections.ObjectModel.ObservableCollection<DNNTrainingStrategy> TrainingStrategies;
@@ -2169,8 +3429,9 @@ namespace Convnet.dnn
 		public bool PersistOptimizer;
         public bool DisableLocking;
         public bool PlainFormat;
+        private bool disposedValue;
 
-        void OnElapsed(object? sender, System.Timers.ElapsedEventArgs e)
+        public void OnElapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
             sb.Length = 0;
             if (Duration.Elapsed.Days > 0)
@@ -2277,7 +3538,7 @@ namespace Convnet.dnn
             }
         }
 
-        static string[] GetTextLabels(string fileName)
+        static public string[] GetTextLabels(string fileName)
 	    {	         
             int lines = 0;
             string[] list = new string[1];
@@ -2286,7 +3547,7 @@ namespace Convnet.dnn
             {
                 using (var streamReader = File.OpenText(fileName))
                 {
-                    string? str = streamReader.ReadLine();
+                    var str = streamReader.ReadLine();
                     while (str != null)
                     {
                         lines++;
@@ -2299,7 +3560,7 @@ namespace Convnet.dnn
 
                 using (var streamReader = File.OpenText(fileName))
                 {
-                    string? str = streamReader.ReadLine();
+                    var str = streamReader.ReadLine();
                     while (str != null)
                     {
                         list[lines++] = new string(str);
@@ -2314,7 +3575,7 @@ namespace Convnet.dnn
             return list;
 	    }
 
-        static DNNLayerInfo GetLayerInfo(ref DNNLayerInfo? infoManaged, UInt layerIndex)
+        static public ref DNNLayerInfo GetLayerInfo(ref DNNLayerInfo infoManaged, UInt layerIndex)
 	    {
             if (infoManaged == null)
 			    infoManaged = new DNNLayerInfo();
@@ -2341,12 +3602,10 @@ namespace Convnet.dnn
             infoManaged.WeightCount = infoNative.WeightCount;
             infoManaged.BiasCount = infoNative.BiasesCount;
             infoManaged.LayerIndex = layerIndex; // infoNative.LayerIndex;
-
             infoManaged.InputCount = infoNative.InputsCount;
             UInt[] inputs = new UInt[infoNative.InputsCount];
-            DNNGetLayerInputs(layerIndex, ref inputs);
+            DNNGetLayerInputs(layerIndex, inputs);
             infoManaged.Inputs = [.. inputs];
-
             infoManaged.C = infoNative.C;
             infoManaged.D = infoNative.D;
             infoManaged.H = infoNative.H;
@@ -2380,15 +3639,23 @@ namespace Convnet.dnn
             infoManaged.LockUpdate = infoNative.Lockable ? (bool?)infoNative.Locked : (bool?)false;
             infoManaged.Lockable = infoNative.Lockable;
 
-            return infoManaged;
+            //infoManaged.InputsNames = new System.Collections.Generic.List<string>();
+            //foreach (var index in infoManaged.Inputs)
+            //{
+            //    var infoNativ = new LayerInfo();
+            //    DNNGetLayerInfo(index, ref infoNativ);
+            //    infoManaged.InputsNames.Add(infoNativ.Name);
+            //}
+
+            return ref infoManaged;
 	    }
 
-        void ApplyParameters()
+        public void ApplyParameters()
         {
             var info = new ModelInfo();
             DNNGetModelInfo(ref info);
 
-            Name = info.Name;
+            Name = new string(info.Name);
             Dataset = (DNNDatasets)info.Dataset;
             CostFunction = (DNNCosts)info.CostFunction;
             LayerCount = info.LayerCount;
@@ -2475,15 +3742,19 @@ namespace Convnet.dnn
             Layers = new System.Collections.ObjectModel.ObservableCollection< DNNLayerInfo>();
             TrainingStrategies = new System.Collections.ObjectModel.ObservableCollection< DNNTrainingStrategy>();
             CostLayers = new DNNCostLayer[CostLayerCount];
-
-            DNNLayerInfo? inf = null;
+                        
             UInt counter = 0;
             for (UInt layer = 0; layer < LayerCount; layer++)
             {
-                Layers.Add(GetLayerInfo(ref inf, layer));
+                DNNLayerInfo inf = null;
+                inf = GetLayerInfo(ref inf, layer);
+                if (inf != null)
+                {
+                    Layers.Add(inf);
 
-                if (Layers[(int)layer].LayerType == DNNLayerTypes.Cost)
-                    CostLayers[counter++] = new DNNCostLayer(Layers[(int)layer].Cost, Layers[(int)layer].LayerIndex, Layers[(int)layer].GroupIndex, Layers[(int)layer].LabelIndex, Layers[(int)layer].NeuronCount, Layers[(int)layer].Name, Layers[(int)layer].Weight);
+                    if (Layers[(int)layer].LayerType == DNNLayerTypes.Cost)
+                        CostLayers[counter++] = new DNNCostLayer(Layers[(int)layer].Cost, Layers[(int)layer].LayerIndex, Layers[(int)layer].GroupIndex, Layers[(int)layer].LabelIndex, Layers[(int)layer].NeuronCount, Layers[(int)layer].Name, Layers[(int)layer].Weight);
+                }
             }
 
             GroupIndex = CostLayers[CostIndex].GroupIndex;
@@ -2494,7 +3765,7 @@ namespace Convnet.dnn
         }
 
         public DNNModel(string definition)
-	    {
+        {
 		    Duration = new System.Diagnostics.Stopwatch();
             sb = new System.Text.StringBuilder();
             State = DNNStates.Idle;
@@ -2513,12 +3784,12 @@ namespace Convnet.dnn
 
 		    DNNDataprovider(StorageDirectory);
 
-            var checkMsg = new CheckMsg();
+            CheckMsg checkMsg = new CheckMsg();
 		    if (DNNRead(definition, ref checkMsg) == 1)
 		    {
 			    DNNLoadDataset();
                 Definition = definition;
-			    ApplyParameters();
+                ApplyParameters();
 
                 WorkerTimer = new System.Timers.Timer(1000.0);
                 WorkerTimer.Elapsed += new System.Timers.ElapsedEventHandler(OnElapsed);
@@ -2529,52 +3800,48 @@ namespace Convnet.dnn
 		    }
 	    }
 
-        ~DNNModel()
-        {
-            DNNModelDispose();
-            WorkerTimer.Close();
-            DNNDataproviderDispose();
-        }
-
-        void SetPersistOptimizer(bool persist)
+        public void SetPersistOptimizer(bool persist)
         {
             DNNPersistOptimizer(persist);
             PersistOptimizer = persist;
         }
 
-        void SetDisableLocking(bool disable)
+        public void SetDisableLocking(bool disable)
         {
             DNNDisableLocking(disable);
             DisableLocking = disable;
         }
 
-        void GetConfusionMatrix()
-        { 
+        public void GetConfusionMatrix()
+        {
+            var classCount = CostLayers[CostIndex].ClassCount;
+            ConfusionMatrix = new UInt[classCount * classCount];
+            DNNGetConfusionMatrix(CostIndex, ConfusionMatrix);
         }
 
-        bool SetShuffleCount(UInt count)
+        public bool SetShuffleCount(UInt count)
         {
             return DNNSetShuffleCount(count);
         }
 
-        bool BatchNormUsed()
+        public bool BatchNormUsed()
         {
             return DNNBatchNormUsed();
         }
 
-        bool StochasticEnabled()
+        public static bool StochasticEnabled()
         {
             return DNNStochasticEnabled();
         }
 
-        void UpdateLayerStatistics(ref DNNLayerInfo? info, UInt layerIndex, bool updateUI)
+        public void UpdateLayerStatistics(ref DNNLayerInfo info, UInt layerIndex, bool updateUI)
         {
             if (info != null)
             {
                 var statsInfo = new StatsInfo();
                 DNNRefreshStatistics(layerIndex, ref statsInfo);
 
-                info.Description = (string)statsInfo.Description;
+                info.Description = statsInfo.Description;
                 info.NeuronsStats = new DNNStats(ref statsInfo.NeuronsStats);
                 info.WeightsStats = new DNNStats(ref statsInfo.WeightsStats);
                 info.BiasesStats = new DNNStats(ref statsInfo.BiasesStats);
@@ -2595,8 +3862,8 @@ namespace Convnet.dnn
                                 var totalSize = info.C * info.H * info.W;
                                 var snapshot = new Float[totalSize];
                                 var labelVector = new UInt64[Hierarchies];
-
-                                var pictureLoaded = DNNGetInputSnapShot(ref snapshot, ref labelVector);
+                                
+                                var pictureLoaded = DNNGetInputSnapShot(snapshot, labelVector);
 
                                 if (totalSize > 0)
                                 {
@@ -2641,12 +3908,10 @@ namespace Convnet.dnn
 
                                 if (totalSize > 0 && totalSize <= int.MaxValue)
                                 {
+                                    
                                     var img = new Byte[(int)(totalSize)];
-                                    //pin_ptr<Byte> p = &img[0];
-                                    //ref Byte np = p;
-
-                                    DNNGetImage(info.LayerIndex, BackgroundColor, ref img);
-
+                                    DNNGetImage(layerIndex, BackgroundColor, img);
+                                        
                                     var outputImage = System.Windows.Media.Imaging.BitmapSource.Create((int)width, (int)height, 96.0, 96.0, pixelFormat, null, img, (int)width * ((pixelFormat.BitsPerPixel + 7) / 8));
                                     if (outputImage.CanFreeze)
                                         outputImage.Freeze();
@@ -2654,8 +3919,8 @@ namespace Convnet.dnn
                                     info.WeightsSnapshotX = (int)(width * BlockSize);
                                     info.WeightsSnapshotY = (int)(height * BlockSize);
                                     info.WeightsSnapshot = outputImage;
-
-                                    GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, true, true);
+                                   
+                                    GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, true, true); 
                                 }
                             }
                             break;
@@ -2678,10 +3943,7 @@ namespace Convnet.dnn
                                     if (totalSize > 0 && totalSize <= int.MaxValue)
                                     {
                                         var img = new Byte[(int)(totalSize)];
-                                        //pin_ptr<Byte> p = &img[0];
-                                        //ref Byte np = p;
-
-                                        DNNGetImage(info.LayerIndex, BackgroundColor, ref img);
+                                        DNNGetImage(info.LayerIndex, BackgroundColor, img);
 
                                         var outputImage = System.Windows.Media.Imaging.BitmapSource.Create((int)width, (int)height, 96.0, 96.0, pixelFormat, null, img, (int)width * ((pixelFormat.BitsPerPixel + 7) / 8));
                                         if (outputImage.CanFreeze)
@@ -2707,10 +3969,7 @@ namespace Convnet.dnn
                                 if (totalSize > 0 && totalSize <= int.MaxValue)
                                 {
                                     var img = new Byte[(int)(totalSize)];
-                                    //pin_ptr<Byte> p = &img[0];
-                                    //ref Byte np = p;
-
-                                    DNNGetImage(info.LayerIndex, BackgroundColor, ref img);
+                                    DNNGetImage(info.LayerIndex, BackgroundColor, img);
 
                                     var outputImage = System.Windows.Media.Imaging.BitmapSource.Create((int)width, (int)height, 96.0, 96.0, pixelFormat, null, img, (int)width * ((pixelFormat.BitsPerPixel + 7) / 8));
                                     if (outputImage.CanFreeze)
@@ -2729,7 +3988,7 @@ namespace Convnet.dnn
             }
         }
 
-        void UpdateLayerInfo(UInt layerIndex, bool updateUI)
+        public void UpdateLayerInfo(UInt layerIndex, bool updateUI)
         {
            var layer = Layers[(int)layerIndex];
 
@@ -2739,7 +3998,7 @@ namespace Convnet.dnn
             UpdateLayerStatistics(ref layer, layerIndex, updateUI);
         }
 
-        bool SetFormat(bool plain)
+        public bool SetFormat(bool plain)
         {
             var ret = DNNSetFormat(plain);
 
@@ -2749,7 +4008,7 @@ namespace Convnet.dnn
             return ret;
         }
 
-        void SetOptimizer(DNNOptimizers strategy)
+        public void SetOptimizer(DNNOptimizers strategy)
         {
             if (strategy != Optimizer)
             {
@@ -2758,18 +4017,18 @@ namespace Convnet.dnn
             }
         }
 
-        void ResetOptimizer()
+        public void ResetOptimizer()
         {
             DNNResetOptimizer();
         }
 
-        void SetUseTrainingStrategy(bool enable)
+        public void SetUseTrainingStrategy(bool enable)
         {
             DNNSetUseTrainingStrategy(enable);
             UseTrainingStrategy = enable;
         }
 
-        void SetCostIndex(UInt index)
+        public void SetCostIndex(UInt index)
         {
             DNNSetCostIndex(index);
 
@@ -2779,7 +4038,7 @@ namespace Convnet.dnn
             ClassCount = CostLayers[CostIndex].ClassCount;
         }
 
-        void UpdateCostInfo(UInt index)
+        public void UpdateCostInfo(UInt index)
         {
             var info = new CostInfo();
             DNNGetCostInfo(index, ref info);
@@ -2797,40 +4056,42 @@ namespace Convnet.dnn
             CostLayers[index].TestAccuracy = (Float)100 - info.TestErrorPercentage;
         }
 
-        void AddTrainingRate(DNNTrainingRate rate, bool clear, UInt gotoEpoch, UInt trainSamples)
+        public void AddTrainingRate(DNNTrainingRate rate, bool clear, UInt gotoEpoch, UInt trainSamples)
         {
             var nativeRate = new TrainingRate((Optimizers)rate.Optimizer, rate.Momentum, rate.Beta2, rate.L2Penalty, rate.Dropout, rate.Eps, rate.N, rate.D, rate.H, rate.W, rate.PadD, rate.PadH, rate.PadW, rate.Cycles, rate.Epochs, rate.EpochMultiplier, rate.MaximumRate, rate.MinimumRate, rate.FinalRate, rate.Gamma, rate.DecayAfterEpochs, rate.DecayFactor, rate.HorizontalFlip, rate.VerticalFlip, rate.InputDropout, rate.Cutout, rate.CutMix, rate.AutoAugment, rate.ColorCast, rate.ColorAngle, rate.Distortion, (Interpolations)rate.Interpolation, rate.Scaling, rate.Rotation);
 
             DNNAddTrainingRate(ref nativeRate, clear, gotoEpoch, trainSamples);
         }
 
-        void AddTrainingRateSGDR(DNNTrainingRate rate, bool clear, UInt gotoEpoch, UInt gotoCycle, UInt trainSamples)
+        public void AddTrainingRateSGDR(DNNTrainingRate rate, bool clear, UInt gotoEpoch, UInt gotoCycle, UInt trainSamples)
 	    {
 		    var nativeRate = new TrainingRate((Optimizers)rate.Optimizer, rate.Momentum, rate.Beta2, rate.L2Penalty, rate.Dropout, rate.Eps, rate.N, rate.D, rate.H, rate.W, rate.PadD, rate.PadH, rate.PadW, rate.Cycles, rate.Epochs, rate.EpochMultiplier, rate.MaximumRate, rate.MinimumRate, rate.FinalRate, rate.Gamma, rate.DecayAfterEpochs, rate.DecayFactor, rate.HorizontalFlip, rate.VerticalFlip, rate.InputDropout, rate.Cutout, rate.CutMix, rate.AutoAugment, rate.ColorCast, rate.ColorAngle, rate.Distortion, (Interpolations)rate.Interpolation, rate.Scaling, rate.Rotation);
 
             DNNAddTrainingRateSGDR(ref nativeRate, clear, gotoEpoch, gotoCycle, trainSamples);
         }
 
-        void ClearTrainingStrategies()
+        public void ClearTrainingStrategies()
         {
             DNNClearTrainingStrategies();
         }
 
-        void AddTrainingStrategy(DNNTrainingStrategy strategy)
+        public void AddTrainingStrategy(DNNTrainingStrategy strategy)
         {
             var nativeStrategy = new TrainingStrategy(strategy.Epochs, strategy.N, strategy.D, strategy.H, strategy.W, strategy.PadD, strategy.PadH, strategy.PadW, strategy.Momentum, strategy.Beta2, strategy.Gamma, strategy.L2Penalty, strategy.Dropout, strategy.HorizontalFlip, strategy.VerticalFlip, strategy.InputDropout, strategy.Cutout, strategy.CutMix, strategy.AutoAugment, strategy.ColorCast, strategy.ColorAngle, strategy.Distortion, (Interpolations)strategy.Interpolation, strategy.Scaling, strategy.Rotation);
 
             DNNAddTrainingStrategy(ref nativeStrategy);
         }
 
-        void Start(bool training)
+        public void Start(bool training)
         {
-           // if (NewEpoch != null)
-           //     DNNSetNewEpochDelegate(ref (UInt, UInt, UInt, UInt, Float, Float, Float, bool, bool, Float, Float, bool, Float, Float, UInt, Float, UInt, Float, Float, Float, UInt, UInt, UInt, UInt, UInt, UInt, UInt, Float, Float, Float, Float, Float, Float, UInt, Float, Float, Float, UInt, UInt))(Marshal::GetFunctionPointerForDelegate(NewEpoch).ToPointer()));
-            
+            unsafe
+            {
+                if (NewEpoch != null)
+                    DNNSetNewEpochDelegate(Marshal.GetFunctionPointerForDelegate(NewEpoch).ToPointer());
+            }          
+
             SampleRate = (Float)0;
             State = DNNStates.Idle;
-
             IsTraining = training;
             if (IsTraining)
                 DNNTraining();
@@ -2842,7 +4103,7 @@ namespace Convnet.dnn
             Duration.Start();
         }
 
-        void Stop()
+        public void Stop()
         {
             SampleRate = (Float)0;
             Duration.Reset();
@@ -2852,7 +4113,7 @@ namespace Convnet.dnn
             TaskState = DNNTaskStates.Stopped;
         }
 
-        void Pause()
+        public void Pause()
         {
             WorkerTimer.Stop();
             Duration.Stop();
@@ -2860,7 +4121,7 @@ namespace Convnet.dnn
             TaskState = DNNTaskStates.Paused;
         }
 
-        void Resume()
+        public void Resume()
         {
             DNNResume();
             Duration.Start();
@@ -2868,7 +4129,7 @@ namespace Convnet.dnn
             TaskState = DNNTaskStates.Running;
         }
 
-        void SetLocked(bool locked)
+        public void SetLocked(bool locked)
         {
             DNNSetLocked(locked);
             for (var i = (UInt)0; i < LayerCount; i++)
@@ -2876,29 +4137,26 @@ namespace Convnet.dnn
                     Layers[(int)i].LockUpdate = locked;
         }
 
-        void SetLayerLocked(UInt layerIndex, bool locked)
+        public void SetLayerLocked(UInt layerIndex, bool locked)
         {
             DNNSetLayerLocked(layerIndex, locked);
         }
 
-        DNNCheckMsg Check(string definition)
+        public DNNCheckMsg Check(ref StringBuilder definition)
 	    {
 		    var checkMsg = new CheckMsg();
 
-            var def = (string)definition;
-            DNNCheck(ref def, ref checkMsg);
+            DNNCheck(definition, ref checkMsg);
 
-            definition = (string)def;
-
-		    return new DNNCheckMsg(checkMsg.Row, checkMsg.Column, (string)checkMsg.Message, checkMsg.Error, definition);
+            return new DNNCheckMsg(checkMsg.Row, checkMsg.Column, checkMsg.Message, checkMsg.Error, definition.ToString());
         }
-
-        int Load(string fileName)
+            
+        public int Load(string fileName)
         {
             var checkMsg = new CheckMsg();
 
             DNNModelDispose();
-            DNNDataprovider((string)StorageDirectory);
+            DNNDataprovider(StorageDirectory);
 
             GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, true, true);
 
@@ -2921,37 +4179,37 @@ namespace Convnet.dnn
             return 1;
         }
 
-        bool LoadDataset()
+        public bool LoadDataset()
         {
             return DNNLoadDataset();
         }
 
-        bool LoadModel(string fileName)
+        public bool LoadModel(string fileName)
         {
             return DNNLoadModel(fileName);
         }
 
-        bool SaveModel(string fileName)
+        public bool SaveModel(string fileName)
         {
             return DNNSaveModel(fileName);
         }
 
-        bool ClearLog()
+        public bool ClearLog()
         {
             return DNNClearLog();
         }
 
-        bool LoadLog(string fileName)
+        public bool LoadLog(string fileName)
         {
             return DNNLoadLog(fileName);
         }
 
-        bool SaveLog(string fileName)
+        public bool SaveLog(string fileName)
         {
             return DNNSaveLog(fileName);
         }
 
-        int LoadWeights(string fileName, bool persist)
+        public int LoadWeights(string fileName, bool persist)
         {
             var ret = DNNLoadWeights(fileName, persist);
 
@@ -2966,17 +4224,17 @@ namespace Convnet.dnn
             return ret;
         }
 
-        int SaveWeights(string fileName, bool persist)
+        public int SaveWeights(string fileName, bool persist)
         {
             return DNNSaveWeights(fileName, persist);
         }
 
-        void ResetWeights()
+        public void ResetWeights()
         {
             DNNResetWeights();
         }
 
-        int LoadLayerWeights(string fileName, UInt layerIndex)
+        public int LoadLayerWeights(string fileName, UInt layerIndex)
         {
             var ret = DNNLoadLayerWeights(fileName, layerIndex, false);
 
@@ -2989,14 +4247,45 @@ namespace Convnet.dnn
             return ret;
         }
 
-        int SaveLayerWeights(string fileName, UInt layerIndex)
+        public int SaveLayerWeights(string fileName, UInt layerIndex)
         {
             return DNNSaveLayerWeights(fileName, layerIndex, false);
         }
 
-        void ResetLayerWeights(UInt layerIndex)
+        public void ResetLayerWeights(UInt layerIndex)
         {
             DNNResetLayerWeights(layerIndex);
+        }
+      
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    // TODO: dispose managed state (managed objects)
+                    WorkerTimer.Close();
+                }
+                DNNModelDispose();
+                DNNDataproviderDispose();
+                // TODO: free unmanaged resources (unmanaged objects) and override finalizer
+                // TODO: set large fields to null
+                disposedValue = true;
+            }
+        }
+
+        // // TODO: override finalizer only if 'Dispose(bool disposing)' has code to free unmanaged resources
+        // ~DNNModel()
+        // {
+        //     // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+        //     Dispose(disposing: false);
+        // }
+
+        public void Dispose()
+        {
+            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
         }
     };
 }

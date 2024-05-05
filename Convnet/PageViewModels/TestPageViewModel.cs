@@ -267,7 +267,7 @@ namespace Convnet.PageViewModels
                     rowCollection[0] = Model.LabelsCollection[labelIndex][r].ToString().Replace("_", "__");
                     for (uint c = 0; c < classCount; c++)
                     {
-                        rowCollection[c + 1] = Model.ConfusionMatrix[r][c];
+                        rowCollection[c + 1] = Model.ConfusionMatrix[r*classCount+c];
                     }
 
                     row.ItemArray = rowCollection;

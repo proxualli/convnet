@@ -30,7 +30,7 @@
   </PropertyGroup>
  
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-    <Exec Command="xcopy /Y $(SolutionDir)$(PlatformName)\$(ConfigurationName)\dnncore.dll $(TargetDir)" />
+    <Exec Command="xcopy /Y $(SolutionDir)$(PlatformName)\$(ConfigurationName)\dnn.dll $(TargetDir)" />
     <Exec Command="xcopy /Y $(SolutionDir)$(PlatformName)\$(ConfigurationName)\dnn.dll $(TargetDir)" />
     <Exec Command="xcopy /Y $(SolutionDir)$(PlatformName)\$(ConfigurationName)\dnnl.dll $(TargetDir)" />
 	<!--<Exec Command="xcopy /Y $(SolutionDir)\dnn\deps\oneDNN\build\src\$(ConfigurationName)\dnnl.dll $(TargetDir)" />-->
@@ -138,7 +138,6 @@
 	  <PrivateAssets>all</PrivateAssets>
 	  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 	</PackageReference>
-    <ProjectReference Include="..\dnncore\dnncore.vcxproj" />
   </ItemGroup>
   
   <ItemGroup>
@@ -150,7 +149,7 @@
   </ItemGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <PlatformTarget>x64</PlatformTarget>
-    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <PlatformTarget>x64</PlatformTarget>

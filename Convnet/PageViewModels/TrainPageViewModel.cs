@@ -952,6 +952,7 @@ namespace Convnet.PageViewModels
                 OnPropertyChanged(nameof(GotoCycle));
             }
         }
+
         public LegendPosition CurrentLegendPosition
         {
             get { return currentLegendPosition; }
