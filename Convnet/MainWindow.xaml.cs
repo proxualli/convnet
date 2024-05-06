@@ -23,9 +23,7 @@ namespace Convnet
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Interoperability", "CA1416:Validate platform compatibility", Justification = "<Pending>")]
     public partial class MainWindow : Window, IDisposable
     {
-        //const string Framework = "netcoreapp3.1";
         const string Framework = "net8.0-windows7.0";
-
 #if DEBUG
         const string Mode = "Debug";
 #else

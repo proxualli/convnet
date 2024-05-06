@@ -1411,13 +1411,6 @@ namespace Interop
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-
-        //public void OnPropertyChanged([CallerMemberName] string name = null)
-        //{
-        //    PropertyChangedEventHandler handler = PropertyChanged;
-        //    if (handler != null)
-        //        handler.Invoke(this, new PropertyChangedEventArgs(name));
-        //}
     };
 
     [Serializable()]
@@ -2425,11 +2418,9 @@ namespace Interop
         private long elapsedMilliSeconds;
         private TimeSpan elapsedTime;
 
-        protected virtual void OnPropertyChanged([CallerMemberName] string name = null)
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
-            PropertyChangedEventHandler handler = PropertyChanged;
-            if (handler != null)
-                handler.Invoke(this, new PropertyChangedEventArgs(name));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     };
 
@@ -3214,11 +3205,9 @@ namespace Interop
             BiasesStats = new DNNStats((Float)0, (Float)0, (Float)0, (Float)0);
         }
 
-        protected virtual void OnPropertyChanged([CallerMemberName] string name = null)
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
-            PropertyChangedEventHandler handler = PropertyChanged;
-            if (handler != null)
-                handler.Invoke(this, new PropertyChangedEventArgs(name));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 
@@ -4270,6 +4259,7 @@ namespace Interop
                     // TODO: dispose managed state (managed objects)
                     WorkerTimer.Close();
                 }
+
                 DNNModelDispose();
                 DNNDataproviderDispose();
                 // TODO: free unmanaged resources (unmanaged objects) and override finalizer
@@ -4278,12 +4268,12 @@ namespace Interop
             }
         }
 
-        // // TODO: override finalizer only if 'Dispose(bool disposing)' has code to free unmanaged resources
-        // ~DNNModel()
-        // {
-        //     // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
-        //     Dispose(disposing: false);
-        // }
+        // TODO: override finalizer only if 'Dispose(bool disposing)' has code to free unmanaged resources
+        ~DNNModel()
+        {
+            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+            Dispose(disposing: false);
+        }
 
         public void Dispose()
         {

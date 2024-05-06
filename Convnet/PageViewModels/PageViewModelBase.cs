@@ -15,13 +15,12 @@ namespace Convnet.PageViewModels
 {
     public abstract class PageViewModelBase : INotifyPropertyChanged
     {
+        const string Framework = @"\net8.0-windows7.0\";
 #if DEBUG
         const string Mode = "Debug";
 #else
         const string Mode = @"Release";
 #endif
-        //const string Framework = @"\netcoreapp3.1\";
-        const string Framework = @"\net8.0-windows7.0\";
 
         public static string ApplicationPath { get; } = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + @"\";
         public static string StorageDirectory { get; } = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\convnet\";
