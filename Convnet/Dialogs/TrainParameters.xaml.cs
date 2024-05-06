@@ -1,7 +1,7 @@
 ﻿using Convnet.Common;
 using Convnet.PageViewModels;
 using Convnet.Properties;
-using dnncore;
+using Interop;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;

@@ -1,7 +1,7 @@
 ﻿using Convnet.Common;
 using Convnet.Dialogs;
 using Convnet.Properties;
-using dnncore;
+using Interop;
 using System;
 using System.Data;
 using System.Linq;
@@ -52,7 +52,7 @@ namespace Convnet.PageViewModels
             }
         }
 
-        public TestPageViewModel(DNNModel model) : base(model)
+        public TestPageViewModel(Interop.DNNModel model) : base(model)
         {
             AddCommandButtons();
 

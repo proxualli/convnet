@@ -64,9 +64,9 @@ namespace Convnet.Properties
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("4")]
-        public dnncore.DNNOptimizers Optimizer {
+        public Interop.DNNOptimizers Optimizer {
             get {
-                return ((dnncore.DNNOptimizers)(this["Optimizer"]));
+                return ((Interop.DNNOptimizers)(this["Optimizer"]));
             }
             set {
                 this["Optimizer"] = value;

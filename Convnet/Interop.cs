@@ -10,7 +10,7 @@ using Float = System.Single;
 using UInt = System.UInt64;
 
 
-namespace dnncore
+namespace Interop
 {
     public enum TaskStates
     {
@@ -1407,12 +1407,17 @@ namespace dnncore
             Rotation = rotation;
         }
 
-        public void OnPropertyChanged([CallerMemberName] string name = null)
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
-            PropertyChangedEventHandler handler = PropertyChanged;
-            if (handler != null)
-                handler.Invoke(this, new PropertyChangedEventArgs(name));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        //public void OnPropertyChanged([CallerMemberName] string name = null)
+        //{
+        //    PropertyChangedEventHandler handler = PropertyChanged;
+        //    if (handler != null)
+        //        handler.Invoke(this, new PropertyChangedEventArgs(name));
+        //}
     };
 
     [Serializable()]

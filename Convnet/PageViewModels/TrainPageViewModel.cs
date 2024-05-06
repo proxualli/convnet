@@ -1,7 +1,7 @@
 ﻿using Convnet.Common;
 using Convnet.Dialogs;
 using Convnet.Properties;
-using dnncore;
+using Interop;
 using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Legends;

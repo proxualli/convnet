@@ -1,4 +1,4 @@
-﻿using dnncore;
+﻿using Interop;
 using System.Collections.ObjectModel;
 
 namespace Convnet.Properties

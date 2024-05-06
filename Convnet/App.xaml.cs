@@ -1,5 +1,5 @@
 ﻿using Convnet.Properties;
-using dnncore;
+using Interop;
 using Microsoft.Build.Locator;
 using System;
 using System.ComponentModel;

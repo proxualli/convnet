@@ -2,7 +2,7 @@
 using Convnet.PageViewModels;
 using Convnet.Properties;
 using CsvHelper;
-using dnncore;
+using Interop;
 using System;
 using System.Globalization;
 using System.IO;

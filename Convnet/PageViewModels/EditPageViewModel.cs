@@ -1,6 +1,6 @@
 ﻿using Convnet.Common;
 using Convnet.Properties;
-using dnncore;
+using Interop;
 using ICSharpCode.AvalonEdit.Document;
 using Microsoft.Build.Evaluation;
 using Microsoft.Build.Execution;
