@@ -38,6 +38,7 @@ namespace ConvnetAvalonia.ViewModels
 
         public abstract void Reset();
 
+
         private ObservableCollection<Control> commandToolBar;
         public ObservableCollection<Control> CommandToolBar
         {
