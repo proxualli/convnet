@@ -46,7 +46,6 @@ namespace Convnet.PageViews
 
             EditorDefinition.SyntaxHighlighting = HighlightingManager.Instance.GetDefinitionByExtension(".txt");
             EditorScript.SyntaxHighlighting = HighlightingManager.Instance.GetDefinitionByExtension(".cs");
-            EditorParameters.SyntaxHighlighting = HighlightingManager.Instance.GetDefinitionByExtension(".cs");
         }
 
         private void GridSplitter_DragCompleted(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)

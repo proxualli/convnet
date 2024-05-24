@@ -23,7 +23,8 @@ namespace Convnet
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Interoperability", "CA1416:Validate platform compatibility", Justification = "<Pending>")]
     public partial class MainWindow : Window, IDisposable
     {
-        const string Framework = "net8.0-windows7.0";
+        //const string Framework = "net8.0-windows7.0";
+        const string Framework = "net8.0";
 #if DEBUG
         const string Mode = "Debug";
 #else
@@ -193,7 +194,7 @@ namespace Convnet
             if (!Directory.Exists(ScriptsDirectory))
             {
                 Directory.CreateDirectory(ScriptsDirectory);
-                Copy(ApplicationPath.Replace(@"Convnet\bin\x64\" + Mode + @"\" + Framework + @"\", "") + @"ScriptsDialog\", ScriptsDirectory);
+                Copy(ApplicationPath.Replace(@"Convnet\bin\x64\" + Mode + @"\" + Framework + @"\", "") + @"Scripts\", ScriptsDirectory);
             }
 
             var fileName = System.IO.Path.Combine(StateDirectory, Settings.Default.ModelNameActive + ".txt");

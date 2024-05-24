@@ -15,7 +15,7 @@ namespace Convnet.PageViewModels
 {
     public abstract class PageViewModelBase : INotifyPropertyChanged
     {
-        const string Framework = @"\net8.0-windows7.0\";
+        const string Framework = @"\net8.0\";
 #if DEBUG
         const string Mode = "Debug";
 #else
@@ -27,7 +27,7 @@ namespace Convnet.PageViewModels
         public static string StateDirectory { get; } = StorageDirectory + @"state\";
         public static string DefinitionsDirectory { get; } = StorageDirectory + @"definitions\";
         public static string ScriptsDirectory { get; } = StorageDirectory + @"scripts\";
-        public static string ScriptPath { get; } = ScriptsDirectory + @"ScriptsDialog\bin\" + Mode + Framework;
+        public static string ScriptPath { get; } = ScriptsDirectory + @"Scripts\bin\" + Mode + Framework;
 
         public static IEnumerable<DNNOptimizers> GetOptimizers => Enum.GetValues(typeof(DNNOptimizers)).Cast<DNNOptimizers>();
         public static IEnumerable<DNNInterpolations> GetInterpolations => Enum.GetValues(typeof(DNNInterpolations)).Cast<DNNInterpolations>();

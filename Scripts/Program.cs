@@ -1,540 +1,6 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<configuration>
-    <configSections>
-        <sectionGroup name="userSettings" type="System.Configuration.UserSettingsGroup, System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-            <section name="Convnet.Properties.Settings" type="System.Configuration.ClientSettingsSection, System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" allowExeDefinition="MachineToLocalUser" requirePermission="false" />
-        </sectionGroup>
-    </configSections>
-    <startup> 
-        <supportedRuntime version="v4.0" sku=".NETFramework,Version=v4.8" />
-    </startup>
-    <userSettings>
-        <Convnet.Properties.Settings>
-            <setting name="PixelSize" serializeAs="String">
-                <value>3</value>
-            </setting>
-            <setting name="RefreshInterval" serializeAs="String">
-                <value>60</value>
-            </setting>
-            <setting name="Optimizer" serializeAs="String">
-                <value>9</value>
-            </setting>
-            <setting name="CurrentPage" serializeAs="String">
-                <value>0</value>
-            </setting>
-            <setting name="Timings" serializeAs="String">
-                <value>True</value>
-            </setting>
-            <setting name="PersistOptimizer" serializeAs="String">
-                <value>True</value>
-            </setting>
-            <setting name="GotoEpoch" serializeAs="String">
-                <value>1</value>
-            </setting>
-            <setting name="Priority" serializeAs="String">
-                <value>Normal</value>
-            </setting>
-            <setting name="PrioritySetter" serializeAs="String">
-                <value>3</value>
-            </setting>
-            <setting name="ShowTrainingPlot" serializeAs="String">
-                <value>False</value>
-            </setting>
-            <setting name="PlotType" serializeAs="String">
-                <value>1</value>
-            </setting>
-            <setting name="DefinitionEditing" serializeAs="String">
-                <value>[resnet-3-2-6-channelzeropad-relu]
-Dataset=cifar10
-Dim=3,32,32
-ZeroPad=4,4
-RandomCrop=Yes
-WeightsFiller=HeNormal(In,1)
-Biases=No
-Dropout=0
-DepthDrop=0
-FixedDepthDrop=Yes
-Scaling=No
-Momentum=0.995
-Eps=0.0001
-
-[C1]
-Type=Convolution
-Inputs=Input
-Channels=96
-Kernel=3,3
-Pad=1,1
-
-[B1]
-Type=BatchNormRelu
-Inputs=C1
-
-[C2]
-Type=Convolution
-Inputs=B1
-Channels=96
-Kernel=3,3
-Pad=1,1
-
-[B2]
-Type=BatchNormRelu
-Inputs=C2
-
-[C3]
-Type=Convolution
-Inputs=B2
-Channels=96
-Kernel=3,3
-Pad=1,1
-
-[C4]
-Type=Convolution
-Inputs=B1
-Channels=96
-Kernel=1,1
-
-[A1]
-Type=Add
-Inputs=C3,C4
-
-[B5]
-Type=BatchNormRelu
-Inputs=A1
-
-[C5]
-Type=Convolution
-Inputs=B5
-Channels=96
-Kernel=3,3
-Pad=1,1
-
-[B6]
-Type=BatchNormRelu
-Inputs=C5
-
-[C6]
-Type=Convolution
-Inputs=B6
-Channels=96
-Kernel=3,3
-Pad=1,1
-
-[A2]
-Type=Add
-Inputs=C6,A1
-
-[B7]
-Type=BatchNormRelu
-Inputs=A2
-
-[C7]
-Type=Convolution
-Inputs=B7
-Channels=192
-Kernel=3,3
-Stride=2,2
-Pad=1,1
-
-[B8]
-Type=BatchNormRelu
-Inputs=C7
-
-[C8]
-Type=Convolution
-Inputs=B8
-Channels=192
-Kernel=3,3
-Pad=1,1
-
-[P1]
-Type=AvgPooling
-Inputs=A2
-Kernel=3,3
-Stride=2,2
-Pad=1,1
-
-[CZP1]
-Type=ChannelZeroPad
-Inputs=P1
-Channels=192
-
-[A3]
-Type=Add
-Inputs=C8,CZP1
-
-[B9]
-Type=BatchNormRelu
-Inputs=A3
-
-[C9]
-Type=Convolution
-Inputs=B9
-Channels=192
-Kernel=3,3
-Pad=1,1
-
-[B10]
-Type=BatchNormRelu
-Inputs=C9
-
-[C10]
-Type=Convolution
-Inputs=B10
-Channels=192
-Kernel=3,3
-Pad=1,1
-
-[A4]
-Type=Add
-Inputs=C10,A3
-
-[B11]
-Type=BatchNormRelu
-Inputs=A4
-
-[C11]
-Type=Convolution
-Inputs=B11
-Channels=384
-Kernel=3,3
-Stride=2,2
-Pad=1,1
-
-[B12]
-Type=BatchNormRelu
-Inputs=C11
-
-[C12]
-Type=Convolution
-Inputs=B12
-Channels=384
-Kernel=3,3
-Pad=1,1
-
-[P2]
-Type=AvgPooling
-Inputs=A4
-Kernel=3,3
-Stride=2,2
-Pad=1,1
-
-[CZP2]
-Type=ChannelZeroPad
-Inputs=P2
-Channels=384
-
-[A5]
-Type=Add
-Inputs=C12,CZP2
-
-[B13]
-Type=BatchNormRelu
-Inputs=A5
-
-[C13]
-Type=Convolution
-Inputs=B13
-Channels=384
-Kernel=3,3
-Pad=1,1
-
-[B14]
-Type=BatchNormRelu
-Inputs=C13
-
-[C14]
-Type=Convolution
-Inputs=B14
-Channels=384
-Kernel=3,3
-Pad=1,1
-
-[A6]
-Type=Add
-Inputs=C14,A5
-
-[B15]
-Type=BatchNormRelu
-Inputs=A6
-
-[C15]
-Type=Convolution
-Inputs=B15
-Channels=10
-Kernel=1,1
-
-[B16]
-Type=BatchNorm
-Inputs=C15
-
-[GAP]
-Type=GlobalAvgPooling
-Inputs=B16
-
-[LSM]
-Type=LogSoftmax
-Inputs=GAP
-
-[Cost]
-Type=Cost
-Inputs=LSM
-Cost=CategoricalCrossEntropy
-LabelIndex=0
-Channels=10
-Eps=0.125</value>
-            </setting>
-            <setting name="DefinitionActive" serializeAs="String">
-                <value>[resnet-3-2-6-channelzeropad-relu]
-Dataset=cifar10
-Dim=3,32,32
-ZeroPad=4,4
-RandomCrop=Yes
-WeightsFiller=HeNormal(In,1)
-Biases=No
-Dropout=0
-DepthDrop=0
-FixedDepthDrop=Yes
-Scaling=No
-Momentum=0.995
-Eps=0.0001
-
-[C1]
-Type=Convolution
-Inputs=Input
-Channels=96
-Kernel=3,3
-Pad=1,1
-
-[B1]
-Type=BatchNormRelu
-Inputs=C1
-
-[C2]
-Type=Convolution
-Inputs=B1
-Channels=96
-Kernel=3,3
-Pad=1,1
-
-[B2]
-Type=BatchNormRelu
-Inputs=C2
-
-[C3]
-Type=Convolution
-Inputs=B2
-Channels=96
-Kernel=3,3
-Pad=1,1
-
-[C4]
-Type=Convolution
-Inputs=B1
-Channels=96
-Kernel=1,1
-
-[A1]
-Type=Add
-Inputs=C3,C4
-
-[B5]
-Type=BatchNormRelu
-Inputs=A1
-
-[C5]
-Type=Convolution
-Inputs=B5
-Channels=96
-Kernel=3,3
-Pad=1,1
-
-[B6]
-Type=BatchNormRelu
-Inputs=C5
-
-[C6]
-Type=Convolution
-Inputs=B6
-Channels=96
-Kernel=3,3
-Pad=1,1
-
-[A2]
-Type=Add
-Inputs=C6,A1
-
-[B7]
-Type=BatchNormRelu
-Inputs=A2
-
-[C7]
-Type=Convolution
-Inputs=B7
-Channels=192
-Kernel=3,3
-Stride=2,2
-Pad=1,1
-
-[B8]
-Type=BatchNormRelu
-Inputs=C7
-
-[C8]
-Type=Convolution
-Inputs=B8
-Channels=192
-Kernel=3,3
-Pad=1,1
-
-[P1]
-Type=AvgPooling
-Inputs=A2
-Kernel=3,3
-Stride=2,2
-Pad=1,1
-
-[CZP1]
-Type=ChannelZeroPad
-Inputs=P1
-Channels=192
-
-[A3]
-Type=Add
-Inputs=C8,CZP1
-
-[B9]
-Type=BatchNormRelu
-Inputs=A3
-
-[C9]
-Type=Convolution
-Inputs=B9
-Channels=192
-Kernel=3,3
-Pad=1,1
-
-[B10]
-Type=BatchNormRelu
-Inputs=C9
-
-[C10]
-Type=Convolution
-Inputs=B10
-Channels=192
-Kernel=3,3
-Pad=1,1
-
-[A4]
-Type=Add
-Inputs=C10,A3
-
-[B11]
-Type=BatchNormRelu
-Inputs=A4
-
-[C11]
-Type=Convolution
-Inputs=B11
-Channels=384
-Kernel=3,3
-Stride=2,2
-Pad=1,1
-
-[B12]
-Type=BatchNormRelu
-Inputs=C11
-
-[C12]
-Type=Convolution
-Inputs=B12
-Channels=384
-Kernel=3,3
-Pad=1,1
-
-[P2]
-Type=AvgPooling
-Inputs=A4
-Kernel=3,3
-Stride=2,2
-Pad=1,1
-
-[CZP2]
-Type=ChannelZeroPad
-Inputs=P2
-Channels=384
-
-[A5]
-Type=Add
-Inputs=C12,CZP2
-
-[B13]
-Type=BatchNormRelu
-Inputs=A5
-
-[C13]
-Type=Convolution
-Inputs=B13
-Channels=384
-Kernel=3,3
-Pad=1,1
-
-[B14]
-Type=BatchNormRelu
-Inputs=C13
-
-[C14]
-Type=Convolution
-Inputs=B14
-Channels=384
-Kernel=3,3
-Pad=1,1
-
-[A6]
-Type=Add
-Inputs=C14,A5
-
-[B15]
-Type=BatchNormRelu
-Inputs=A6
-
-[C15]
-Type=Convolution
-Inputs=B15
-Channels=10
-Kernel=1,1
-
-[B16]
-Type=BatchNorm
-Inputs=C15
-
-[GAP]
-Type=GlobalAvgPooling
-Inputs=B16
-
-[LSM]
-Type=LogSoftmax
-Inputs=GAP
-
-[Cost]
-Type=Cost
-Inputs=LSM
-Cost=CategoricalCrossEntropy
-LabelIndex=0
-Channels=10
-Eps=0.125</value>
-            </setting>
-            <setting name="ModelNameActive" serializeAs="String">
-                <value>resnet-3-2-6-channelzeropad-relu</value>
-            </setting>
-            <setting name="SelectedLayer" serializeAs="String">
-                <value>0</value>
-            </setting>
-            <setting name="DisableLocking" serializeAs="String">
-                <value>True</value>
-            </setting>
-            <setting name="Script" serializeAs="String">
-                <value>using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Globalization;
 
 using Float = System.Single;
@@ -639,38 +105,73 @@ namespace Scripts
         public UInt ExpandRatio
         {
             get { return expandRatio; }
-            set { expandRatio = value; OnPropertyChanged("ExpandRatio"); }
+            set { expandRatio = value; OnPropertyChanged(nameof(ExpandRatio)); }
         }
 
         public UInt Channels
         {
             get { return channels; }
-            set { channels = value; OnPropertyChanged("Channels"); }
+            set { channels = value; OnPropertyChanged(nameof(Channels)); }
         }
 
         public UInt Iterations
         {
             get { return iterations; }
-            set { iterations = value; OnPropertyChanged("Iterations"); }
+            set { iterations = value; OnPropertyChanged(nameof(Iterations)); }
         }
 
         public UInt Stride
         {
             get { return stride; }
-            set { stride = value; OnPropertyChanged("Stride"); }
+            set { stride = value; OnPropertyChanged(nameof(Stride)); }
         }
 
         public bool SE
         {
             get { return se; }
-            set { se = value; OnPropertyChanged("SE"); }
+            set { se = value; OnPropertyChanged(nameof(SE)); }
         }
 
         protected virtual void OnPropertyChanged(string propertyName)
         {
-            if (PropertyChanged != null)
-                PropertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            this.VerifyPropertyName(propertyName);
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        /// <summary>
+        /// Warns the developer if this object does not have
+        /// a public property with the specified name. This 
+        /// method does not exist in a Release build.
+        /// </summary>
+        [Conditional("DEBUG")]
+        [DebuggerStepThrough]
+        public void VerifyPropertyName(string propertyName)
+        {
+            // If you raise PropertyChanged and do not specify a property name,
+            // all properties on the object are considered to be changed by the binding system.
+            if (String.IsNullOrEmpty(propertyName))
+                return;
+
+            // Verify that the property name matches a real,  
+            // public, instance property on this object.
+            if (TypeDescriptor.GetProperties(this)[propertyName] == null)
+            {
+                string msg = "Invalid property name: " + propertyName;
+
+                if (this.ThrowOnInvalidPropertyName)
+                    throw new ArgumentException(msg);
+                else
+                    Debug.Fail(msg);
+            }
+        }
+
+        /// <summary>
+        /// Returns whether an exception is thrown, or if a Debug.Fail() is used
+        /// when an invalid property name is passed to the VerifyPropertyName method.
+        /// The default value is false, but subclasses used by unit tests might 
+        /// override this property's getter to return true.
+        /// </summary>
+        protected virtual bool ThrowOnInvalidPropertyName { get; private set; }
     }
 
     [Serializable()]
@@ -711,38 +212,73 @@ namespace Scripts
         public UInt Iterations
         {
             get { return iterations; }
-            set { iterations = value; OnPropertyChanged("Iterations"); }
+            set { iterations = value; OnPropertyChanged(nameof(Iterations)); }
         }
 
         public UInt Kernel
         {
             get { return kernel; }
-            set { kernel = value; OnPropertyChanged("Kernel"); }
+            set { kernel = value; OnPropertyChanged(nameof(Kernel)); }
         }
 
         public UInt Pad
         {
             get { return pad; }
-            set { pad = value; OnPropertyChanged("Pad"); }
+            set { pad = value; OnPropertyChanged(nameof(Pad)); }
         }
 
         public UInt Shuffle
         {
             get { return shuffle; }
-            set { shuffle = value; OnPropertyChanged("Shuffle"); }
+            set { shuffle = value; OnPropertyChanged(nameof(Shuffle)); }
         }
 
         public bool SE
         {
             get { return se; }
-            set { se = value; OnPropertyChanged("SE"); }
+            set { se = value; OnPropertyChanged(nameof(SE)); }
         }
 
         protected virtual void OnPropertyChanged(string propertyName)
         {
-            if (PropertyChanged != null)
-                PropertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            this.VerifyPropertyName(propertyName);
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        /// <summary>
+        /// Warns the developer if this object does not have
+        /// a public property with the specified name. This 
+        /// method does not exist in a Release build.
+        /// </summary>
+        [Conditional("DEBUG")]
+        [DebuggerStepThrough]
+        public void VerifyPropertyName(string propertyName)
+        {
+            // If you raise PropertyChanged and do not specify a property name,
+            // all properties on the object are considered to be changed by the binding system.
+            if (String.IsNullOrEmpty(propertyName))
+                return;
+
+            // Verify that the property name matches a real,  
+            // public, instance property on this object.
+            if (TypeDescriptor.GetProperties(this)[propertyName] == null)
+            {
+                string msg = "Invalid property name: " + propertyName;
+
+                if (this.ThrowOnInvalidPropertyName)
+                    throw new ArgumentException(msg);
+                else
+                    Debug.Fail(msg);
+            }
+        }
+
+        /// <summary>
+        /// Returns whether an exception is thrown, or if a Debug.Fail() is used
+        /// when an invalid property name is passed to the VerifyPropertyName method.
+        /// The default value is false, but subclasses used by unit tests might 
+        /// override this property's getter to return true.
+        /// </summary>
+        protected virtual bool ThrowOnInvalidPropertyName { get; private set; }
     }
 
     [Serializable()]
@@ -788,8 +324,8 @@ namespace Scripts
         private bool squeezeExcitation = false;
         private bool channelZeroPad = true;
         private Activations activation = Activations.Relu;
-        private ObservableCollection&lt;EfficientNetRecord&gt; efficientnet = new ObservableCollection&lt;EfficientNetRecord&gt;();
-        private ObservableCollection&lt;ShuffleNetRecord&gt; shufflenet = new ObservableCollection&lt;ShuffleNetRecord&gt;();
+        private ObservableCollection<EfficientNetRecord> efficientnet = new ObservableCollection<EfficientNetRecord>();
+        private ObservableCollection<ShuffleNetRecord> shufflenet = new ObservableCollection<ShuffleNetRecord>();
         private UInt strideHFirstConv = 2;
         private UInt strideWFirstConv = 2;
         private Float depthDrop = (Float)0.2;
@@ -842,7 +378,7 @@ namespace Scripts
             DepthDrop = depthDrop;
             FixedDepthDrop = fixedDepthDrop;
 
-            var efficientnetv2 = new ObservableCollection&lt;EfficientNetRecord&gt;();
+            var efficientnetv2 = new ObservableCollection<EfficientNetRecord>();
             efficientnetv2.Add(new EfficientNetRecord(1, 24, 2, 1, false));
             efficientnetv2.Add(new EfficientNetRecord(4, 48, 4, 2, false));
             efficientnetv2.Add(new EfficientNetRecord(4, 64, 4, 2, false));
@@ -851,7 +387,7 @@ namespace Scripts
             efficientnetv2.Add(new EfficientNetRecord(6, 256, 15, 2, true));
             EfficientNet = efficientnetv2;
 
-            var shufflenetv2 = new ObservableCollection&lt;ShuffleNetRecord&gt;();
+            var shufflenetv2 = new ObservableCollection<ShuffleNetRecord>();
             shufflenetv2.Add(new ShuffleNetRecord(5, 3, 1, 2, false));
             shufflenetv2.Add(new ShuffleNetRecord(6, 3, 1, 2, false));
             shufflenetv2.Add(new ShuffleNetRecord(7, 3, 1, 2, true));
@@ -859,15 +395,15 @@ namespace Scripts
             ShuffleNet = shufflenetv2;
         }
 
-        public IEnumerable&lt;Scripts&gt; ScriptsList { get { return Enum.GetValues(typeof(Scripts)).Cast&lt;Scripts&gt;(); } }
+        public IEnumerable<Scripts> ScriptsList { get { return Enum.GetValues(typeof(Scripts)).Cast<Scripts>(); } }
 
-        public IEnumerable&lt;Datasets&gt; DatasetsList { get { return Enum.GetValues(typeof(Datasets)).Cast&lt;Datasets&gt;(); } }
+        public IEnumerable<Datasets> DatasetsList { get { return Enum.GetValues(typeof(Datasets)).Cast<Datasets>(); } }
 
-        public IEnumerable&lt;Activations&gt; ActivationsList { get { return Enum.GetValues(typeof(Activations)).Cast&lt;Activations&gt;(); } }
+        public IEnumerable<Activations> ActivationsList { get { return Enum.GetValues(typeof(Activations)).Cast<Activations>(); } }
 
-        public IEnumerable&lt;Fillers&gt; FillersList { get { return Enum.GetValues(typeof(Fillers)).Cast&lt;Fillers&gt;(); } }
+        public IEnumerable<Fillers> FillersList { get { return Enum.GetValues(typeof(Fillers)).Cast<Fillers>(); } }
 
-        public IEnumerable&lt;FillerModes&gt; FillerModesList { get { return Enum.GetValues(typeof(FillerModes)).Cast&lt;FillerModes&gt;(); } }
+        public IEnumerable<FillerModes> FillerModesList { get { return Enum.GetValues(typeof(FillerModes)).Cast<FillerModes>(); } }
 
         public string ModelName
         {
@@ -876,18 +412,18 @@ namespace Scripts
                 switch (Script)
                 {
                     case Scripts.densenet:
-                        return Script.ToString() + "-" + Groups.ToString() + "-" + Iterations.ToString() + "-" + GrowthRate.ToString() + (Dropout &gt; 0 ? "-dropout" : "") + (DepthDrop &gt; 0 ? (FixedDepthDrop ? "-fixeddepthdrop" : "-depthdrop") : "") + (Compression &gt; 0 ? "-compression" : "") + (Bottleneck ? "-bottleneck" : "") + "-" + Activation.ToString().ToLower();
+                        return Script.ToString() + "-" + Groups.ToString() + "-" + Iterations.ToString() + "-" + GrowthRate.ToString() + (Dropout > 0 ? "-dropout" : "") + (DepthDrop > 0 ? (FixedDepthDrop ? "-fixeddepthdrop" : "-depthdrop") : "") + (Compression > 0 ? "-compression" : "") + (Bottleneck ? "-bottleneck" : "") + "-" + Activation.ToString().ToLower();
                     case Scripts.efficientnetv2:
                         {
                             string name = "";
                             foreach (var rec in EfficientNet)
                                 name += rec.ToString();
-                            return Script.ToString() + (DepthDrop &gt; 0 ? (FixedDepthDrop ? "-fixeddepthdrop-" : "-depthdrop-") : "") + name;
+                            return Script.ToString() + (DepthDrop > 0 ? (FixedDepthDrop ? "-fixeddepthdrop-" : "-depthdrop-") : "") + name;
                         }
                     case Scripts.mobilenetv3:
-                        return Script.ToString() + "-" + Groups.ToString() + "-" + Iterations.ToString() + "-" + Width.ToString() + "-" + Activation.ToString().ToLower() + (SqueezeExcitation ? " -se" : "") + (DepthDrop &gt; 0 ? (FixedDepthDrop ? "-fixeddepthdrop" : "-depthdrop") : "");
+                        return Script.ToString() + "-" + Groups.ToString() + "-" + Iterations.ToString() + "-" + Width.ToString() + "-" + Activation.ToString().ToLower() + (SqueezeExcitation ? " -se" : "") + (DepthDrop > 0 ? (FixedDepthDrop ? "-fixeddepthdrop" : "-depthdrop") : "");
                     case Scripts.resnet:
-                        return Script.ToString() + "-" + Groups.ToString() + "-" + Iterations.ToString() + "-" + Width.ToString() + (Dropout &gt; 0 ? "-dropout" : "") + (DepthDrop &gt; 0 ? (FixedDepthDrop ? "-fixeddepthdrop" : "-depthdrop") : "") + (Bottleneck ? "-bottleneck" : "") + (ChannelZeroPad ? "-channelzeropad" : "") + "-" + Activation.ToString().ToLower();
+                        return Script.ToString() + "-" + Groups.ToString() + "-" + Iterations.ToString() + "-" + Width.ToString() + (Dropout > 0 ? "-dropout" : "") + (DepthDrop > 0 ? (FixedDepthDrop ? "-fixeddepthdrop" : "-depthdrop") : "") + (Bottleneck ? "-bottleneck" : "") + (ChannelZeroPad ? "-channelzeropad" : "") + "-" + Activation.ToString().ToLower();
                     case Scripts.augshufflenet:
                     case Scripts.shufflenetv2:
                         {
@@ -910,20 +446,20 @@ namespace Scripts
                 if (value != script)
                 {
                     script = value;
-                    OnPropertyChanged("Script");
-                    OnPropertyChanged("Classes");
-                    OnPropertyChanged("Depth");
-                    OnPropertyChanged("WidthVisible");
-                    OnPropertyChanged("GrowthRateVisible");
-                    OnPropertyChanged("DropoutVisible");
-                    OnPropertyChanged("CompressionVisible");
-                    OnPropertyChanged("BottleneckVisible");
-                    OnPropertyChanged("ChannelZeroPadVisible");
-                    OnPropertyChanged("SqueezeExcitationVisible");
-                    OnPropertyChanged("BottleneckVisible");
-                    OnPropertyChanged("EfficientNetVisible");
-                    OnPropertyChanged("ShuffleNetVisible");
-                    OnPropertyChanged("DepthDropVisible");
+                    OnPropertyChanged(nameof(Script));
+                    OnPropertyChanged(nameof(Classes));
+                    OnPropertyChanged(nameof(Depth));
+                    OnPropertyChanged(nameof(WidthVisible));
+                    OnPropertyChanged(nameof(GrowthRateVisible));
+                    OnPropertyChanged(nameof(DropoutVisible));
+                    OnPropertyChanged(nameof(CompressionVisible));
+                    OnPropertyChanged(nameof(BottleneckVisible));
+                    OnPropertyChanged(nameof(ChannelZeroPadVisible));
+                    OnPropertyChanged(nameof(SqueezeExcitationVisible));
+                    OnPropertyChanged(nameof(BottleneckVisible));
+                    OnPropertyChanged(nameof(EfficientNetVisible));
+                    OnPropertyChanged(nameof(ShuffleNetVisible));
+                    OnPropertyChanged(nameof(DepthDropVisible));
                 }
             }
         }
@@ -952,8 +488,8 @@ namespace Scripts
                 if (value != dataset)
                 {
                     dataset = value;
-                    OnPropertyChanged("Dataset");
-                    OnPropertyChanged("C");
+                    OnPropertyChanged(nameof(Dataset));
+                    OnPropertyChanged(nameof(C));
                 }
             }
         }
@@ -980,7 +516,7 @@ namespace Scripts
                 if (value != c)
                 {
                     c = value;
-                    OnPropertyChanged("C");
+                    OnPropertyChanged(nameof(C));
                 }
             }
         }
@@ -995,10 +531,10 @@ namespace Scripts
             get { return h; }
             set
             {
-                if (value &gt;= 14 &amp;&amp; value &lt;= 4096 &amp;&amp; value != h)
+                if (value >= 14 && value <= 4096 && value != h)
                 {
                     h = value;
-                    OnPropertyChanged("H");
+                    OnPropertyChanged(nameof(H));
                 }
             }
         }
@@ -1008,10 +544,10 @@ namespace Scripts
             get { return w; }
             set
             {
-                if (value &gt;= 14 &amp;&amp; value &lt;= 4096 &amp;&amp; value != w)
+                if (value >= 14 && value <= 4096 && value != w)
                 {
                     w = value;
-                    OnPropertyChanged("W");
+                    OnPropertyChanged(nameof(W));
                 }
             }
         }
@@ -1026,11 +562,11 @@ namespace Scripts
             get { return padH; }
             set
             {
-                if (value &gt;= 0 &amp;&amp; value &lt;= H &amp;&amp; value != padH)
+                if (value >= 0 && value <= H && value != padH)
                 {
                     padH = value;
-                    OnPropertyChanged("PadH");
-                    OnPropertyChanged("RandomCrop");
+                    OnPropertyChanged(nameof(PadH));
+                    OnPropertyChanged(nameof(RandomCrop));
                 }
             }
         }
@@ -1040,11 +576,11 @@ namespace Scripts
             get { return padW; }
             set
             {
-                if (value &gt;= 0 &amp;&amp; value &lt;= W &amp;&amp; value != padW)
+                if (value >= 0 && value <= W && value != padW)
                 {
                     padW = value;
-                    OnPropertyChanged("PadW");
-                    OnPropertyChanged("RandomCrop");
+                    OnPropertyChanged(nameof(PadW));
+                    OnPropertyChanged(nameof(RandomCrop));
                 }
             }
         }
@@ -1057,14 +593,14 @@ namespace Scripts
                 if (value != mirrorPad)
                 {
                     mirrorPad = value;
-                    OnPropertyChanged("MirrorPad");
+                    OnPropertyChanged(nameof(MirrorPad));
                 }
             }
         }
 
         public bool RandomCrop
         {
-            get { return padH &gt; 0 || padW &gt; 0; }
+            get { return padH > 0 || padW > 0; }
         }
 
         public bool MeanStdNormalization
@@ -1075,7 +611,7 @@ namespace Scripts
                 if (value != meanStdNormalization)
                 {
                     meanStdNormalization = value;
-                    OnPropertyChanged("MeanStdNormalization");
+                    OnPropertyChanged(nameof(MeanStdNormalization));
                 }
             }
         }
@@ -1088,7 +624,7 @@ namespace Scripts
                 if (value != fixedDepthDrop)
                 {
                     fixedDepthDrop = value;
-                    OnPropertyChanged("FixedDepthDrop");
+                    OnPropertyChanged(nameof(FixedDepthDrop));
                 }
             }
         }
@@ -1098,10 +634,10 @@ namespace Scripts
             get { return depthDrop; }
             set
             {
-                if (value &gt;= 0 &amp;&amp; value &lt;= 1 &amp;&amp; value != depthDrop)
+                if (value >= 0 && value <= 1 && value != depthDrop)
                 {
                     depthDrop = value;
-                    OnPropertyChanged("DepthDrop");
+                    OnPropertyChanged(nameof(DepthDrop));
                 }
             }
         }
@@ -1114,10 +650,10 @@ namespace Scripts
                 if (value != weightsFiller)
                 {
                     weightsFiller = value;
-                    OnPropertyChanged("WeightsFiller");
-                    OnPropertyChanged("WeightsFillerModeVisible");
-                    OnPropertyChanged("WeightsGainVisible");
-                    OnPropertyChanged("WeightsScaleVisible");
+                    OnPropertyChanged(nameof(WeightsFiller));
+                    OnPropertyChanged(nameof(WeightsFillerModeVisible));
+                    OnPropertyChanged(nameof(WeightsGainVisible));
+                    OnPropertyChanged(nameof(WeightsScaleVisible));
                 }
             }
         }
@@ -1130,7 +666,7 @@ namespace Scripts
                 if (value != weightsFillerMode)
                 {
                     weightsFillerMode = value;
-                    OnPropertyChanged("WeightsFillerMode");
+                    OnPropertyChanged(nameof(WeightsFillerMode));
                 }
             }
         }
@@ -1143,7 +679,7 @@ namespace Scripts
                 if (value != weightsGain)
                 {
                     weightsGain = value;
-                    OnPropertyChanged("WeightsGain");
+                    OnPropertyChanged(nameof(WeightsGain));
                 }
             }
         }
@@ -1180,7 +716,7 @@ namespace Scripts
                 if (value != weightsScale)
                 {
                     weightsScale = value;
-                    OnPropertyChanged("WeightsScale");
+                    OnPropertyChanged(nameof(WeightsScale));
                 }
             }
         }
@@ -1193,7 +729,7 @@ namespace Scripts
                 if (value != weightsLRM)
                 {
                     weightsLRM = value;
-                    OnPropertyChanged("WeightsLRM");
+                    OnPropertyChanged(nameof(WeightsLRM));
                 }
             }
         }
@@ -1206,7 +742,7 @@ namespace Scripts
                 if (value != weightsWDM)
                 {
                     weightsWDM = value;
-                    OnPropertyChanged("WeightsWDM");
+                    OnPropertyChanged(nameof(WeightsWDM));
                 }
             }
         }
@@ -1219,7 +755,7 @@ namespace Scripts
                 if (value != hasBias)
                 {
                     hasBias = value;
-                    OnPropertyChanged("HasBias");
+                    OnPropertyChanged(nameof(HasBias));
                 }
             }
         }
@@ -1232,10 +768,10 @@ namespace Scripts
                 if (value != biasesFiller)
                 {
                     biasesFiller = value;
-                    OnPropertyChanged("BiasesFiller");
-                    OnPropertyChanged("BiasesFillerModeVisible");
-                    OnPropertyChanged("BiasesGainVisible");
-                    OnPropertyChanged("BiasesScaleVisible");
+                    OnPropertyChanged(nameof(BiasesFiller));
+                    OnPropertyChanged(nameof(BiasesFillerModeVisible));
+                    OnPropertyChanged(nameof(BiasesGainVisible));
+                    OnPropertyChanged(nameof(BiasesScaleVisible));
                 }
             }
         }
@@ -1248,7 +784,7 @@ namespace Scripts
                 if (value != biasesFillerMode)
                 {
                     biasesFillerMode = value;
-                    OnPropertyChanged("BiasesFillerMode");
+                    OnPropertyChanged(nameof(BiasesFillerMode));
                 }
             }
         }
@@ -1261,7 +797,7 @@ namespace Scripts
                 if (value != biasesGain)
                 {
                     biasesGain = value;
-                    OnPropertyChanged("BiasesGain");
+                    OnPropertyChanged(nameof(BiasesGain));
                 }
             }
         }
@@ -1274,7 +810,7 @@ namespace Scripts
                 if (value != biasesScale)
                 {
                     biasesScale = value;
-                    OnPropertyChanged("BiasesScale");
+                    OnPropertyChanged(nameof(BiasesScale));
                 }
             }
         }
@@ -1311,7 +847,7 @@ namespace Scripts
                 if (value != biasesLRM)
                 {
                     biasesLRM = value;
-                    OnPropertyChanged("BiasesLRM");
+                    OnPropertyChanged(nameof(BiasesLRM));
                 }
             }
         }
@@ -1324,7 +860,7 @@ namespace Scripts
                 if (value != biasesWDM)
                 {
                     biasesWDM = value;
-                    OnPropertyChanged("BiasesWDM");
+                    OnPropertyChanged(nameof(BiasesWDM));
                 }
             }
         }
@@ -1337,7 +873,7 @@ namespace Scripts
                 if (value != batchNormMomentum)
                 {
                     batchNormMomentum = value;
-                    OnPropertyChanged("BatchNormMomentum");
+                    OnPropertyChanged(nameof(BatchNormMomentum));
                 }
             }
         }
@@ -1350,7 +886,7 @@ namespace Scripts
                 if (value != batchNormEps)
                 {
                     batchNormEps = value;
-                    OnPropertyChanged("BatchNormEps");
+                    OnPropertyChanged(nameof(BatchNormEps));
                 }
             }
         }
@@ -1363,7 +899,7 @@ namespace Scripts
                 if (value != batchNormScaling)
                 {
                     batchNormScaling = value;
-                    OnPropertyChanged("BatchNormScaling");
+                    OnPropertyChanged(nameof(BatchNormScaling));
                 }
             }
         }
@@ -1375,10 +911,10 @@ namespace Scripts
             {
                 if (value != alpha)
                 {
-                    if (value &gt;= 0 &amp;&amp; value &lt;= 1)
+                    if (value >= 0 && value <= 1)
                     {
                         alpha = value;
-                        OnPropertyChanged("Alpha");
+                        OnPropertyChanged(nameof(Alpha));
                     }
                 }
             }
@@ -1391,10 +927,10 @@ namespace Scripts
             {
                 if (value != beta)
                 {
-                    if (value &gt;= 0 &amp;&amp; value &lt;= 1)
+                    if (value >= 0 && value <= 1)
                     {
                         beta = value;
-                        OnPropertyChanged("Beta");
+                        OnPropertyChanged(nameof(Beta));
                     }
                 }
             }
@@ -1405,11 +941,11 @@ namespace Scripts
             get { return groups; }
             set
             {
-                if (value &gt;= 1 &amp;&amp; value &lt;= 6 &amp;&amp; value != groups)
+                if (value >= 1 && value <= 6 && value != groups)
                 {
                     groups = value;
-                    OnPropertyChanged("Groups");
-                    OnPropertyChanged("Depth");
+                    OnPropertyChanged(nameof(Groups));
+                    OnPropertyChanged(nameof(Depth));
                 }
             }
         }
@@ -1418,11 +954,11 @@ namespace Scripts
             get { return iterations; }
             set
             {
-                if (value &gt;= 2 &amp;&amp; value &lt;= 100 &amp;&amp; value != iterations)
+                if (value >= 2 && value <= 100 && value != iterations)
                 {
                     iterations = value;
-                    OnPropertyChanged("Iterations");
-                    OnPropertyChanged("Depth");
+                    OnPropertyChanged(nameof(Iterations));
+                    OnPropertyChanged(nameof(Depth));
                 }
             }
         }
@@ -1453,7 +989,7 @@ namespace Scripts
                 if (value != width)
                 {
                     width = value;
-                    OnPropertyChanged("Width");
+                    OnPropertyChanged(nameof(Width));
                 }
             }
         }
@@ -1466,7 +1002,7 @@ namespace Scripts
                 if (value != growthRate)
                 {
                     growthRate = value;
-                    OnPropertyChanged("GrowthRate");
+                    OnPropertyChanged(nameof(GrowthRate));
                 }
             }
         }
@@ -1479,8 +1015,8 @@ namespace Scripts
                 if (value != bottleneck)
                 {
                     bottleneck = value;
-                    OnPropertyChanged("Bottleneck");
-                    OnPropertyChanged("Depth");
+                    OnPropertyChanged(nameof(Bottleneck));
+                    OnPropertyChanged(nameof(Depth));
                 }
             }
         }
@@ -1492,10 +1028,10 @@ namespace Scripts
             {
                 if (value != dropout)
                 {
-                    if (value &gt;= 0 &amp;&amp; value &lt; 1)
+                    if (value >= 0 && value < 1)
                     {
                         dropout = value;
-                        OnPropertyChanged("Dropout");
+                        OnPropertyChanged(nameof(Dropout));
                     }
                 }
             }
@@ -1508,16 +1044,16 @@ namespace Scripts
             {
                 if (value != compression)
                 {
-                    if (value &gt;= 0 &amp;&amp; value &lt;= 1)
+                    if (value >= 0 && value <= 1)
                     {
                         compression = value;
-                        OnPropertyChanged("Compression");
+                        OnPropertyChanged(nameof(Compression));
                     }
                 }
             }
         }
 
-        public ObservableCollection&lt;EfficientNetRecord&gt; EfficientNet
+        public ObservableCollection<EfficientNetRecord> EfficientNet
         {
             get { return efficientnet; }
             set
@@ -1525,12 +1061,12 @@ namespace Scripts
                 if (value != efficientnet)
                 {
                     efficientnet = value;
-                    OnPropertyChanged("EfficientNet");
+                    OnPropertyChanged(nameof(EfficientNet));
                 }
             }
         }
 
-        public ObservableCollection&lt;ShuffleNetRecord&gt; ShuffleNet
+        public ObservableCollection<ShuffleNetRecord> ShuffleNet
         {
             get { return shufflenet; }
             set
@@ -1538,14 +1074,14 @@ namespace Scripts
                 if (value != shufflenet)
                 {
                     shufflenet = value;
-                    OnPropertyChanged("ShuffleNet");
+                    OnPropertyChanged(nameof(ShuffleNet));
                 }
             }
         }
 
         public bool DropoutUsed
         {
-            get { return (dropout &gt; 0 &amp;&amp; dropout &lt; 1); }
+            get { return (dropout > 0 && dropout < 1); }
         }
 
         public bool SqueezeExcitation
@@ -1556,7 +1092,7 @@ namespace Scripts
                 if (value != squeezeExcitation)
                 {
                     squeezeExcitation = value;
-                    OnPropertyChanged("SqueezeExcitation");
+                    OnPropertyChanged(nameof(SqueezeExcitation));
                 }
             }
         }
@@ -1569,7 +1105,7 @@ namespace Scripts
                 if (value != channelZeroPad)
                 {
                     channelZeroPad = value;
-                    OnPropertyChanged("ChannelZeroPad");
+                    OnPropertyChanged(nameof(ChannelZeroPad));
                 }
             }
         }
@@ -1582,7 +1118,7 @@ namespace Scripts
                 if (value != activation)
                 {
                     activation = value;
-                    OnPropertyChanged("Activation");
+                    OnPropertyChanged(nameof(Activation));
                 }
             }
         }
@@ -1592,10 +1128,10 @@ namespace Scripts
             get { return strideHFirstConv; }
             set
             {
-                if (value != strideHFirstConv &amp;&amp; value &gt; 0)
+                if (value != strideHFirstConv && value > 0)
                 {
                     strideHFirstConv = value;
-                    OnPropertyChanged("StrideHFirstConv");
+                    OnPropertyChanged(nameof(StrideHFirstConv));
                 }
             }
         }
@@ -1605,16 +1141,16 @@ namespace Scripts
             get { return strideWFirstConv; }
             set
             {
-                if (value != strideWFirstConv &amp;&amp; value &gt; 0)
+                if (value != strideWFirstConv && value > 0)
                 {
                     strideWFirstConv = value;
-                    OnPropertyChanged("StrideWFirstConv");
+                    OnPropertyChanged(nameof(StrideWFirstConv));
                 }
             }
         }
 
-        public bool GroupsVisible { get { return Script != Scripts.efficientnetv2 &amp;&amp; Script != Scripts.shufflenetv2 &amp;&amp; Script != Scripts.augshufflenet; } }
-        public bool IterationsVisible { get { return Script != Scripts.efficientnetv2 &amp;&amp; Script != Scripts.shufflenetv2 &amp;&amp; Script != Scripts.augshufflenet; } }
+        public bool GroupsVisible { get { return Script != Scripts.efficientnetv2 && Script != Scripts.shufflenetv2 && Script != Scripts.augshufflenet; } }
+        public bool IterationsVisible { get { return Script != Scripts.efficientnetv2 && Script != Scripts.shufflenetv2 && Script != Scripts.augshufflenet; } }
         public bool WidthVisible { get { return Script == Scripts.mobilenetv3 || Script == Scripts.resnet || Script == Scripts.shufflenetv2 || Script == Scripts.augshufflenet; } }
         public bool GrowthRateVisible { get { return Script == Scripts.densenet; } }
         public bool DropoutVisible { get { return Script == Scripts.densenet || Script == Scripts.resnet || Script == Scripts.efficientnetv2; } }
@@ -1628,9 +1164,44 @@ namespace Scripts
 
         protected virtual void OnPropertyChanged(string propertyName)
         {
-            if (PropertyChanged != null)
-                PropertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            this.VerifyPropertyName(propertyName);
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        /// <summary>
+        /// Warns the developer if this object does not have
+        /// a public property with the specified name. This 
+        /// method does not exist in a Release build.
+        /// </summary>
+        [Conditional("DEBUG")]
+        [DebuggerStepThrough]
+        public void VerifyPropertyName(string propertyName)
+        {
+            // If you raise PropertyChanged and do not specify a property name,
+            // all properties on the object are considered to be changed by the binding system.
+            if (String.IsNullOrEmpty(propertyName))
+                return;
+
+            // Verify that the property name matches a real,  
+            // public, instance property on this object.
+            if (TypeDescriptor.GetProperties(this)[propertyName] == null)
+            {
+                string msg = "Invalid property name: " + propertyName;
+
+                if (this.ThrowOnInvalidPropertyName)
+                    throw new ArgumentException(msg);
+                else
+                    Debug.Fail(msg);
+            }
+        }
+
+        /// <summary>
+        /// Returns whether an exception is thrown, or if a Debug.Fail() is used
+        /// when an invalid property name is passed to the VerifyPropertyName method.
+        /// The default value is false, but subclasses used by unit tests might 
+        /// override this property's getter to return true.
+        /// </summary>
+        protected virtual bool ThrowOnInvalidPropertyName { get; private set; }
     }
 
     public class ScriptCatalog
@@ -1775,7 +1346,7 @@ namespace Scripts
                     "Type=BatchNormActivationDropout" + nwl +
                     "Inputs=" + inputs + nwl +
                     "Activation=" + activation.ToString() + nwl +
-                    (dropout &gt; 0f ? "Dropout=" + to_string(dropout) + nwl + nwl : nwl);
+                    (dropout > 0f ? "Dropout=" + to_string(dropout) + nwl + nwl : nwl);
             }
             else
             {
@@ -1784,7 +1355,7 @@ namespace Scripts
                     "Type=BatchNormActivationDropout" + nwl +
                     "Inputs=" + inputs + nwl +
                     "Activation=HardSwish" + nwl +
-                    (dropout &gt; 0f ? "Dropout=" + to_string(dropout) + nwl + nwl : nwl);
+                    (dropout > 0f ? "Dropout=" + to_string(dropout) + nwl + nwl : nwl);
             }
         }
 
@@ -1831,7 +1402,7 @@ namespace Scripts
             return "[" + group + prefix + to_string(id) + "]" + nwl +
                 "Type=DepthwiseConvolution" + nwl +
                 "Inputs=" + inputs + nwl +
-                (multiplier &gt; 1 ? "Multiplier=" + to_string(multiplier) + nwl : "") +
+                (multiplier > 1 ? "Multiplier=" + to_string(multiplier) + nwl : "") +
                 "Kernel=" + to_string(kernelX) + "," + to_string(kernelY) + nwl +
                 (strideX != 1 || strideY != 1 ? "Stride=" + to_string(strideX) + "," + to_string(strideY) + nwl : "") +
                 (padX != 0 || padY != 0 ? "Pad=" + to_string(padX) + "," + to_string(padY) + nwl : "") +
@@ -2032,16 +1603,16 @@ namespace Scripts
                "Type=Cost" + nwl +
                "Inputs=" + inputs + nwl +
                "Cost=" + cost + nwl +
-               "LabelIndex=" + ((dataset == Datasets.cifar100 &amp;&amp; channels == 100) ? "1" : "0") + nwl +
+               "LabelIndex=" + ((dataset == Datasets.cifar100 && channels == 100) ? "1" : "0") + nwl +
                "Channels=" + to_string(channels) + nwl +
                "Eps=" + to_string(eps);
         }
 
-        public static List&lt;string&gt; FusedMBConv(UInt A, UInt C, string inputs, UInt inputChannels, UInt outputChannels, UInt stride = 1, UInt expandRatio = 4, bool se = false, Activations activation = Activations.HardSwish)
+        public static List<string> FusedMBConv(UInt A, UInt C, string inputs, UInt inputChannels, UInt outputChannels, UInt stride = 1, UInt expandRatio = 4, bool se = false, Activations activation = Activations.HardSwish)
         {
-            var blocks = new List&lt;string&gt;();
+            var blocks = new List<string>();
             var hiddenDim = DIV8(inputChannels * expandRatio);
-            var identity = stride == 1 &amp;&amp; inputChannels == outputChannels;
+            var identity = stride == 1 && inputChannels == outputChannels;
 
             if (se)
             {
@@ -2049,7 +1620,7 @@ namespace Scripts
 
                 blocks.Add(
                     Convolution(C, inputs, hiddenDim, 3, 3, stride, stride, 1, 1) +
-                    (expandRatio &gt; 1 ? BatchNormActivationDropout(C, In("C", C), activation) : BatchNormActivation(C, In("C", C), activation)) +
+                    (expandRatio > 1 ? BatchNormActivationDropout(C, In("C", C), activation) : BatchNormActivation(C, In("C", C), activation)) +
 
                     GlobalAvgPooling(In("B", C), group) +
                     Convolution(1, group + "GAP", DIV8(hiddenDim / expandRatio), 1, 1, 1, 1, 0, 0, false, group) +
@@ -2065,7 +1636,7 @@ namespace Scripts
             {
                 blocks.Add(
                     Convolution(C, inputs, hiddenDim, 3, 3, stride, stride, 1, 1) +
-                    (expandRatio &gt; 1 ? BatchNormActivationDropout(C, In("C", C), activation) : BatchNormActivation(C, In("C", C), activation)) +
+                    (expandRatio > 1 ? BatchNormActivationDropout(C, In("C", C), activation) : BatchNormActivation(C, In("C", C), activation)) +
                     Convolution(C + 1, In("B", C), DIV8(outputChannels), 1, 1, 1, 1, 0, 0) +
                     BatchNorm(C + 1, In("C", C + 1)));
             }
@@ -2079,11 +1650,11 @@ namespace Scripts
             return blocks;
         }
 
-        public static List&lt;string&gt; MBConv(UInt A, UInt C, string inputs, UInt inputChannels, UInt outputChannels, UInt stride = 1, UInt expandRatio = 4, bool se = false, Activations activation = Activations.HardSwish)
+        public static List<string> MBConv(UInt A, UInt C, string inputs, UInt inputChannels, UInt outputChannels, UInt stride = 1, UInt expandRatio = 4, bool se = false, Activations activation = Activations.HardSwish)
         {
-            var blocks = new List&lt;string&gt;();
+            var blocks = new List<string>();
             var hiddenDim = DIV8(inputChannels * expandRatio);
-            var identity = stride == 1 &amp;&amp; inputChannels == outputChannels;
+            var identity = stride == 1 && inputChannels == outputChannels;
 
             if (se)
             {
@@ -2093,7 +1664,7 @@ namespace Scripts
                     Convolution(C, inputs, hiddenDim, 1, 1, 1, 1, 0, 0) +
                     BatchNormActivation(C, In("C", C), activation) +
                     DepthwiseConvolution(C + 1, In("B", C), 1, 3, 3, stride, stride, 1, 1) +
-                    (expandRatio &gt; 1 ? BatchNormActivationDropout(C + 1, In("DC", C + 1), activation) : BatchNormActivation(C + 1, In("DC", C + 1), activation)) +
+                    (expandRatio > 1 ? BatchNormActivationDropout(C + 1, In("DC", C + 1), activation) : BatchNormActivation(C + 1, In("DC", C + 1), activation)) +
 
                     GlobalAvgPooling(In("B", C + 1), group) +
                     Convolution(1, group + "GAP", DIV8(hiddenDim / expandRatio), 1, 1, 1, 1, 0, 0, false, group) +
@@ -2111,7 +1682,7 @@ namespace Scripts
                     Convolution(C, inputs, hiddenDim, 1, 1, 1, 1, 0, 0) +
                     BatchNormActivation(C, In("C", C), activation) +
                     DepthwiseConvolution(C + 1, In("B", C), 1, 3, 3, stride, stride, 1, 1) +
-                    (expandRatio &gt; 1 ? BatchNormActivationDropout(C + 1, In("DC", C + 1), activation) : BatchNormActivation(C + 1, In("DC", C + 1), activation)) +
+                    (expandRatio > 1 ? BatchNormActivationDropout(C + 1, In("DC", C + 1), activation) : BatchNormActivation(C + 1, In("DC", C + 1), activation)) +
                     Convolution(C + 2, In("B", C + 1), DIV8(outputChannels), 1, 1, 1, 1, 0, 0) +
                     BatchNorm(C + 2, In("C", C + 2)));
             }
@@ -2248,12 +1819,12 @@ namespace Scripts
                 "[" + p.ModelName + "]" + nwl +
                 "Dataset=" + to_string(p.Dataset) + nwl +
                 "Dim=" + to_string(p.C) + "," + to_string(p.H) + "," + to_string(p.W) + nwl +
-                ((p.PadH &gt; 0 || p.PadW &gt; 0) ? (!p.MirrorPad ? "ZeroPad=" + to_string(p.PadH) + "," + to_string(p.PadW) + nwl : "MirrorPad=" + to_string(p.PadH) + "," + to_string(p.PadW) + nwl) : "") +
-                ((p.PadH &gt; 0 || p.PadW &gt; 0) ? "RandomCrop=Yes" + nwl : "") +
-                "WeightsFiller=" + to_string(p.WeightsFiller) + (p.WeightsFillerModeVisible ? "(" + p.WeightsFillerMode.ToString() + "," + to_string(p.WeightsGain) + ")" : "") + (p.WeightsGainVisible &amp;&amp; !p.WeightsFillerModeVisible ? "(" + to_string(p.WeightsGain) + ")" : "") + (p.WeightsScaleVisible ? "(" + to_string(p.WeightsScale) + ")" : "") + nwl +
+                ((p.PadH > 0 || p.PadW > 0) ? (!p.MirrorPad ? "ZeroPad=" + to_string(p.PadH) + "," + to_string(p.PadW) + nwl : "MirrorPad=" + to_string(p.PadH) + "," + to_string(p.PadW) + nwl) : "") +
+                ((p.PadH > 0 || p.PadW > 0) ? "RandomCrop=Yes" + nwl : "") +
+                "WeightsFiller=" + to_string(p.WeightsFiller) + (p.WeightsFillerModeVisible ? "(" + p.WeightsFillerMode.ToString() + "," + to_string(p.WeightsGain) + ")" : "") + (p.WeightsGainVisible && !p.WeightsFillerModeVisible ? "(" + to_string(p.WeightsGain) + ")" : "") + (p.WeightsScaleVisible ? "(" + to_string(p.WeightsScale) + ")" : "") + nwl +
                 (p.WeightsLRM != 1 ? "WeightsLRM=" + to_string(p.WeightsLRM) + nwl : "") +
                 (p.WeightsWDM != 1 ? "WeightsWDM=" + to_string(p.WeightsWDM) + nwl : "") +
-                (p.HasBias ? "BiasesFiller=" + to_string(p.BiasesFiller) + (p.BiasesFillerModeVisible ? "(" + p.BiasesFillerMode.ToString() + "," + to_string(p.BiasesGain) + ")" : "") + (p.BiasesGainVisible &amp;&amp; !p.BiasesFillerModeVisible ? "(" + to_string(p.BiasesGain) + ")" : "") + (p.BiasesScaleVisible ? "(" + to_string(p.BiasesScale) + ")" : "") + nwl +
+                (p.HasBias ? "BiasesFiller=" + to_string(p.BiasesFiller) + (p.BiasesFillerModeVisible ? "(" + p.BiasesFillerMode.ToString() + "," + to_string(p.BiasesGain) + ")" : "") + (p.BiasesGainVisible && !p.BiasesFillerModeVisible ? "(" + to_string(p.BiasesGain) + ")" : "") + (p.BiasesScaleVisible ? "(" + to_string(p.BiasesScale) + ")" : "") + nwl +
                 (p.BiasesLRM != 1 ? "BiasesLRM=" + to_string(p.BiasesLRM) + nwl : "") +
                 (p.BiasesWDM != 1 ? "BiasesWDM=" + to_string(p.BiasesWDM) + nwl : "") : "Biases=No" + nwl) +
                 (p.DropoutVisible ? "Dropout=" + to_string(p.Dropout) + nwl : "") +
@@ -2263,7 +1834,7 @@ namespace Scripts
                 "Momentum=" + to_string(p.BatchNormMomentum) + nwl +
                 "Eps=" + to_string(p.BatchNormEps) + nwl + nwl;
 
-            var blocks = new List&lt;string&gt;();
+            var blocks = new List<string>();
 
             switch (p.Script)
             {
@@ -2294,7 +1865,7 @@ namespace Scripts
                                 net += AugmentedInvertedResidual(A++, C, channels, rec.Kernel, rec.Pad, true, rec.Shuffle, rec.SE, p.Activation);
                                 C += 5;
                             }
-                            for (var n = 0ul; n &lt; rec.Iterations; n++)
+                            for (var n = 0ul; n < rec.Iterations; n++)
                             {
                                 net += AugmentedInvertedResidual(A++, C, channels, rec.Kernel, rec.Pad, false, rec.Shuffle, rec.SE, p.Activation);
                                 C += 3;
@@ -2324,14 +1895,14 @@ namespace Scripts
                                 Convolution(2, "B1", DIV8(4 * p.GrowthRate), 1, 1, 1, 1, 0, 0) +
                                 BatchNormActivation(2, "C2", p.Activation) +
                                 Convolution(3, "B2", DIV8(p.GrowthRate), 3, 3, 1, 1, 1, 1) +
-                                (p.Dropout &gt; 0 ? Dropout(3, "C3") + Concat(1, "C1,D3") : Concat(1, "C1,C3")));
+                                (p.Dropout > 0 ? Dropout(3, "C3") + Concat(1, "C1,D3") : Concat(1, "C1,C3")));
                         }
                         else
                         {
                             blocks.Add(
                                 BatchNormActivation(1, "C1", p.Activation) +
                                 Convolution(2, "B1", DIV8(p.GrowthRate), 3, 3, 1, 1, 1, 1) +
-                                (p.Dropout &gt; 0 ? Dropout(2, "C2") + Concat(1, "C1,D2") : Concat(1, "C1,C2")));
+                                (p.Dropout > 0 ? Dropout(2, "C2") + Concat(1, "C1,D2") : Concat(1, "C1,C2")));
                         }
 
                         var CC = 1ul;
@@ -2339,9 +1910,9 @@ namespace Scripts
 
                         channels += DIV8(p.GrowthRate);
 
-                        for (var g = 1ul; g &lt;= p.Groups; g++)
+                        for (var g = 1ul; g <= p.Groups; g++)
                         {
-                            for (var i = 1ul; i &lt; p.Iterations; i++)
+                            for (var i = 1ul; i < p.Iterations; i++)
                             {
                                 if (p.Bottleneck)
                                 {
@@ -2350,7 +1921,7 @@ namespace Scripts
                                         Convolution(C, In("B", C), DIV8(4 * p.GrowthRate), 1, 1, 1, 1, 0, 0) +
                                         BatchNormActivation(C + 1, In("C", C), p.Activation) +
                                         Convolution(C + 1, In("B", C + 1), DIV8(p.GrowthRate), 3, 3, 1, 1, 1, 1) +
-                                        (p.Dropout &gt; 0 ? Dropout(C + 1, In("C", C + 1)) + Concat(CC + 1, In("CC", CC) + "," + In("D", C + 1)) : Concat(CC + 1, In("CC", CC) + "," + In("C", C + 1))));
+                                        (p.Dropout > 0 ? Dropout(C + 1, In("C", C + 1)) + Concat(CC + 1, In("CC", CC) + "," + In("D", C + 1)) : Concat(CC + 1, In("CC", CC) + "," + In("C", C + 1))));
 
                                     C += 2;
                                 }
@@ -2359,7 +1930,7 @@ namespace Scripts
                                     blocks.Add(
                                         BatchNormActivation(C, In("CC", CC), p.Activation) +
                                         Convolution(C, In("B", C), DIV8(p.GrowthRate), 3, 3, 1, 1, 1, 1) +
-                                        (p.Dropout &gt; 0 ? Dropout(C, In("C", C)) + Concat(CC + 1, In("CC", CC) + "," + In("D", C)) : Concat(CC + 1, In("CC", CC) + "," + In("C", C))));
+                                        (p.Dropout > 0 ? Dropout(C, In("C", C)) + Concat(CC + 1, In("CC", CC) + "," + In("D", C)) : Concat(CC + 1, In("CC", CC) + "," + In("C", C))));
 
                                     C++;
                                 }
@@ -2368,11 +1939,11 @@ namespace Scripts
                                 channels += DIV8(p.GrowthRate);
                             }
 
-                            if (g &lt; p.Groups)
+                            if (g < p.Groups)
                             {
                                 channels = DIV8((UInt)System.Math.Floor(2.0 * channels * p.Compression));
 
-                                if (p.Dropout &gt; 0)
+                                if (p.Dropout > 0)
                                     blocks.Add(
                                         Convolution(C, In("CC", CC), channels, 1, 1, 1, 1, 0, 0) +
                                         Dropout(C, In("C", C)) +
@@ -2391,7 +1962,7 @@ namespace Scripts
                                         Convolution(C, In("B", C), DIV8(4 * p.GrowthRate), 1, 1, 1, 1, 0, 0) +
                                         BatchNormActivation(C + 1, In("C", C), p.Activation) +
                                         Convolution(C + 1, In("B", C + 1), DIV8(p.GrowthRate), 3, 3, 1, 1, 1, 1) +
-                                        (p.Dropout &gt; 0 ? Dropout(C + 1, In("C", C + 1)) + Concat(CC, In("B", C) + "," + In("D", C + 1)) : Concat(CC, In("B", C) + "," + In("C", C + 1))));
+                                        (p.Dropout > 0 ? Dropout(C + 1, In("C", C + 1)) + Concat(CC, In("B", C) + "," + In("D", C + 1)) : Concat(CC, In("B", C) + "," + In("C", C + 1))));
 
                                     C += 2;
                                 }
@@ -2400,7 +1971,7 @@ namespace Scripts
                                     blocks.Add(
                                         BatchNormActivation(C, In("P", g), p.Activation) +
                                         Convolution(C, In("B", C), DIV8(p.GrowthRate), 3, 3, 1, 1, 1, 1) +
-                                        (p.Dropout &gt; 0 ? Dropout(C, In("C", C)) + Concat(CC, In("B", C) + "," + In("D", C)) : Concat(CC, In("B", C) + "," + In("C", C))));
+                                        (p.Dropout > 0 ? Dropout(C, In("C", C)) + Concat(CC, In("B", C) + "," + In("D", C)) : Concat(CC, In("B", C) + "," + In("C", C))));
 
                                     C++;
                                 }
@@ -2436,12 +2007,12 @@ namespace Scripts
                         var input = In("B", C++);
                         foreach (var rec in p.EfficientNet)
                         {
-                            var beginStage = stage &lt; 3ul;
+                            var beginStage = stage < 3ul;
                             var outputChannels = DIV8((UInt)((Float)rec.Channels * width));
-                            for (var n = 0ul; n &lt; rec.Iterations; n++)
+                            for (var n = 0ul; n < rec.Iterations; n++)
                             {
                                 var stride = n == 0ul ? rec.Stride : 1ul;
-                                var identity = stride == 1ul &amp;&amp; inputChannels == outputChannels;
+                                var identity = stride == 1ul && inputChannels == outputChannels;
 
                                 var subblocks = beginStage ? FusedMBConv(A, C, input, inputChannels, outputChannels, stride, rec.ExpandRatio, rec.SE, p.Activation) :
                                                                    MBConv(A, C, input, inputChannels, outputChannels, stride, rec.ExpandRatio, rec.SE, p.Activation);
@@ -2491,11 +2062,11 @@ namespace Scripts
 
                         var A = 1ul;
                         var C = 5ul;
-                        for (var g = 1ul; g &lt;= p.Groups; g++)
+                        for (var g = 1ul; g <= p.Groups; g++)
                         {
                             var mix = g - 1ul;
 
-                            if (g &gt; 1)
+                            if (g > 1)
                             {
                                 W *= 2;
 
@@ -2521,9 +2092,9 @@ namespace Scripts
                                 C += 3;
                             }
 
-                            for (var i = 1ul; i &lt; p.Iterations; i++)
+                            for (var i = 1ul; i < p.Iterations; i++)
                             {
-                                var strOutputLayer = (i == 1 &amp;&amp; g &gt; 1) ? In("B", C - 1) : (i == 1 &amp;&amp; g == 1) ? In("B", 4) : In("A", A);
+                                var strOutputLayer = (i == 1 && g > 1) ? In("B", C - 1) : (i == 1 && g == 1) ? In("B", 4) : In("A", A);
 
                                 var group = In("SE", C + 1);
 
@@ -2582,7 +2153,7 @@ namespace Scripts
                                 Convolution(2, "B1", DIV8(W), 1, 1, 1, 1, 0, 0) +
                                 BatchNormActivation(2, "C2", p.Activation) +
                                 Convolution(3, "B2", DIV8((UInt)(K * W / 4)), 3, 3, 1, 1, 1, 1) +
-                                (p.Dropout &gt; 0 ? BatchNormActivationDropout(3, "C3", p.Activation) : BatchNormActivation(3, "C3", p.Activation)) +
+                                (p.Dropout > 0 ? BatchNormActivationDropout(3, "C3", p.Activation) : BatchNormActivation(3, "C3", p.Activation)) +
                                 Convolution(4, "B3", DIV8(W), 1, 1, 1, 1, 0, 0) +
                                 Convolution(5, "B1", DIV8(W), 1, 1, 1, 1, 0, 0) +
                                 Add(1, "C4,C5"));
@@ -2594,15 +2165,15 @@ namespace Scripts
                             blocks.Add(
                                 BatchNormActivation(1, "C1", p.Activation) +
                                 Convolution(2, "B1", DIV8(W), 3, 3, 1, 1, 1, 1) +
-                                (p.Dropout &gt; 0 ? BatchNormActivationDropout(2, "C2", p.Activation) : BatchNormActivation(2, "C2", p.Activation)) +
+                                (p.Dropout > 0 ? BatchNormActivationDropout(2, "C2", p.Activation) : BatchNormActivation(2, "C2", p.Activation)) +
                                 Convolution(3, "B2", DIV8(W), 3, 3, 1, 1, 1, 1) +
                                 Convolution(4, "B1", DIV8(W), 1, 1, 1, 1, 0, 0) +
                                 Add(1, "C3,C4"));
                         }
 
-                        for (var g = 0ul; g &lt; p.Groups; g++)
+                        for (var g = 0ul; g < p.Groups; g++)
                         {
-                            if (g &gt; 0)
+                            if (g > 0)
                             {
                                 W *= 2;
 
@@ -2621,7 +2192,7 @@ namespace Scripts
                                         Convolution(C, In("B", C), DIV8(W), 1, 1, 1, 1, 0, 0) +
                                         BatchNormActivation(C + 1, In("C", C), p.Activation) +
                                         Convolution(C + 1, In("B", C + 1), DIV8(W), 3, 3, 2, 2, 1, 1) +
-                                        (p.Dropout &gt; 0 ? BatchNormActivationDropout(C + 2, In("C", C + 1), p.Activation) : BatchNormActivation(C + 2, In("C", C + 1), p.Activation)) +
+                                        (p.Dropout > 0 ? BatchNormActivationDropout(C + 2, In("C", C + 1), p.Activation) : BatchNormActivation(C + 2, In("C", C + 1), p.Activation)) +
                                         Convolution(C + 2, In("B", C + 2), DIV8(W), 1, 1, 1, 1, 0, 0) +
                                         strChannelZeroPad);
                                 }
@@ -2630,7 +2201,7 @@ namespace Scripts
                                     blocks.Add(
                                         BatchNormActivation(C, In("A", A), p.Activation) +
                                         Convolution(C, In("B", C), DIV8(W), 3, 3, 2, 2, 1, 1) +
-                                        (p.Dropout &gt; 0 ? BatchNormActivationDropout(C + 1, In("C", C), p.Activation) : BatchNormActivation(C + 1, In("C", C), p.Activation)) +
+                                        (p.Dropout > 0 ? BatchNormActivationDropout(C + 1, In("C", C), p.Activation) : BatchNormActivation(C + 1, In("C", C), p.Activation)) +
                                         Convolution(C + 1, In("B", C + 1), DIV8(W), 3, 3, 1, 1, 1, 1) +
                                         strChannelZeroPad);
                                 }
@@ -2639,7 +2210,7 @@ namespace Scripts
                                 C += p.ChannelZeroPad ? 2 + bn : 3 + bn;
                             }
 
-                            for (var i = 1ul; i &lt; p.Iterations; i++)
+                            for (var i = 1ul; i < p.Iterations; i++)
                             {
                                 if (p.Bottleneck)
                                 {
@@ -2648,7 +2219,7 @@ namespace Scripts
                                         Convolution(C, In("B", C), DIV8(W), 1, 1, 1, 1, 0, 0) +
                                         BatchNormActivation(C + 1, In("C", C), p.Activation) +
                                         Convolution(C + 1, In("B", C + 1), DIV8((UInt)(K * W / 4)), 3, 3, 1, 1, 1, 1) +
-                                        (p.Dropout &gt; 0 ? BatchNormActivationDropout(C + 2, In("C", C + 1), p.Activation) : BatchNormActivation(C + 2, In("C", C + 1), p.Activation)) +
+                                        (p.Dropout > 0 ? BatchNormActivationDropout(C + 2, In("C", C + 1), p.Activation) : BatchNormActivation(C + 2, In("C", C + 1), p.Activation)) +
                                         Convolution(C + 2, In("B", C + 2), DIV8(W), 1, 1, 1, 1, 0, 0) +
                                         Add(A + 1, In("C", C + 2) + "," + In("A", A)));
 
@@ -2659,7 +2230,7 @@ namespace Scripts
                                     blocks.Add(
                                         BatchNormActivation(C, In("A", A), p.Activation) +
                                         Convolution(C, In("B", C), DIV8(W), 3, 3, 1, 1, 1, 1) +
-                                        (p.Dropout &gt; 0 ? BatchNormActivationDropout(C + 1, In("C", C), p.Activation) : BatchNormActivation(C + 1, In("C", C), p.Activation)) +
+                                        (p.Dropout > 0 ? BatchNormActivationDropout(C + 1, In("C", C), p.Activation) : BatchNormActivation(C + 1, In("C", C), p.Activation)) +
                                         Convolution(C + 1, In("B", C + 1), DIV8(W), 3, 3, 1, 1, 1, 1) +
                                         Add(A + 1, In("C", C + 1) + "," + In("A", A)));
 
@@ -2709,7 +2280,7 @@ namespace Scripts
                                 net += InvertedResidual(A++, C, channels, rec.Kernel, rec.Pad, true, rec.Shuffle, rec.SE, p.Activation);
                                 C += 5;
                             }
-                            for (var n = 0ul; n &lt; rec.Iterations; n++)
+                            for (var n = 0ul; n < rec.Iterations; n++)
                             {
                                 net += InvertedResidual(A++, C, channels, rec.Kernel, rec.Pad, false, rec.Shuffle, rec.SE, p.Activation);
                                 C += 3;
@@ -2741,14 +2312,15 @@ namespace Scripts
         public static string ScriptsDirectory { get; } = StorageDirectory + @"scripts\";
         public static string ScriptPath { get; } = ScriptsDirectory + @"Scripts\bin\" + Mode + @"\" + Framework + @"\";
 
-        static void Main() 
+        static void Main()
         {
             var param = new ScriptParameters(Scripts.shufflenetv2, Datasets.cifar10, 32, 32, 4, 4, false, true, Fillers.HeNormal, FillerModes.In, 1f, 0.05f, 1f, 1f, false, Fillers.Constant, FillerModes.In, 1f, 0f, 1f, 1f, 0.995f, 0.0001f, false, 0f, 0f, 3, 4, 12, 12, false, 0.0f, 0.0f, false, true, Activations.HardSwish, 1, 1, 0.0f, false)
             {
-                ShuffleNet = [new(7, 3, 1, 2, false) , new(7, 3, 1, 2, true), new(7, 3, 1, 2, true)] 
+                ShuffleNet = [new(7, 3, 1, 2, false), new(7, 3, 1, 2, true), new(7, 3, 1, 2, true)]
             };
-                        
+
             var script = Generate(param);
+
             var fileInfo = new FileInfo(ScriptPath + @"script.txt");
             if (fileInfo.Directory != null)
             {
@@ -2764,113 +2336,3 @@ namespace Scripts
         }
     }
 }
-</value>
-            </setting>
-            <setting name="PlainFormat" serializeAs="String">
-                <value>False</value>
-            </setting>
-            <setting name="Dataset" serializeAs="String">
-                <value>cifar10</value>
-            </setting>
-            <setting name="ShuffleSetter" serializeAs="String">
-                <value>96</value>
-            </setting>
-            <setting name="Shuffle" serializeAs="String">
-                <value>64</value>
-            </setting>
-            <setting name="GotoCycle" serializeAs="String">
-                <value>1</value>
-            </setting>
-        </Convnet.Properties.Settings>
-    </userSettings>
-  <runtime>
-    <AppContextSwitchOverrides value="Switch.System.IO.UseLegacyPathHandling=false" />
-    <loadFromRemoteSources enabled="true"/>
-    <assemblyBinding xmlns="urn:schemas-microsoft-com:asm.v1">
-      <dependentAssembly>
-        <assemblyIdentity name="System.Buffers" publicKeyToken="cc7b13ffcd2ddd51" culture="neutral" />
-        <bindingRedirect oldVersion="0.0.0.0-4.0.3.0" newVersion="4.0.3.0" />
-      </dependentAssembly>
-      <dependentAssembly>
-        <assemblyIdentity name="System.Collections.Immutable" publicKeyToken="b03f5f7f11d50a3a" culture="neutral" />
-        <bindingRedirect oldVersion="0.0.0.0-1.2.5.0" newVersion="1.2.5.0" />
-      </dependentAssembly>
-      <dependentAssembly>
-        <assemblyIdentity name="System.Threading.Tasks.Dataflow" publicKeyToken="b03f5f7f11d50a3a" culture="neutral" />
-        <bindingRedirect oldVersion="0.0.0.0-4.6.5.0" newVersion="4.6.5.0" />
-      </dependentAssembly>
-      <dependentAssembly>
-        <assemblyIdentity name="System.Runtime.CompilerServices.Unsafe" publicKeyToken="b03f5f7f11d50a3a" culture="neutral" />
-        <bindingRedirect oldVersion="0.0.0.0-4.0.6.0" newVersion="4.0.6.0" />
-      </dependentAssembly>
-      <dependentAssembly>
-        <assemblyIdentity name="System.Resources.Extensions" publicKeyToken="cc7b13ffcd2ddd51" culture="neutral" />
-        <bindingRedirect oldVersion="0.0.0.0-4.0.1.0" newVersion="4.0.1.0" />
-      </dependentAssembly>
-      <dependentAssembly>
-        <assemblyIdentity name="System.Numerics.Vectors" publicKeyToken="b03f5f7f11d50a3a" culture="neutral" />
-        <bindingRedirect oldVersion="0.0.0.0-4.1.4.0" newVersion="4.1.4.0" />
-      </dependentAssembly>
-      <dependentAssembly>
-        <assemblyIdentity name="System.Threading.Tasks.Extensions" publicKeyToken="cc7b13ffcd2ddd51" culture="neutral" />
-        <bindingRedirect oldVersion="0.0.0.0-4.2.0.1" newVersion="4.2.0.1" />
-      </dependentAssembly>
-      <dependentAssembly>
-        <assemblyIdentity name="Humanizer" publicKeyToken="979442b78dfc278e" culture="neutral" />
-        <bindingRedirect oldVersion="0.0.0.0-2.8.0.0" newVersion="2.8.0.0" />
-      </dependentAssembly>
-      <dependentAssembly>
-        <assemblyIdentity name="System.Text.Encoding.CodePages" publicKeyToken="b03f5f7f11d50a3a" culture="neutral" />
-        <bindingRedirect oldVersion="0.0.0.0-4.1.3.0" newVersion="4.1.3.0" />
-      </dependentAssembly>
-      <dependentAssembly>
-        <assemblyIdentity name="System.Composition.AttributedModel" publicKeyToken="b03f5f7f11d50a3a" culture="neutral" />
-        <bindingRedirect oldVersion="0.0.0.0-1.0.35.0" newVersion="1.0.35.0" />
-      </dependentAssembly>
-      <dependentAssembly>
-        <assemblyIdentity name="System.Composition.Runtime" publicKeyToken="b03f5f7f11d50a3a" culture="neutral" />
-        <bindingRedirect oldVersion="0.0.0.0-1.0.35.0" newVersion="1.0.35.0" />
-      </dependentAssembly>
-      <dependentAssembly>
-        <assemblyIdentity name="System.Composition.TypedParts" publicKeyToken="b03f5f7f11d50a3a" culture="neutral" />
-        <bindingRedirect oldVersion="0.0.0.0-1.0.35.0" newVersion="1.0.35.0" />
-      </dependentAssembly>
-      <dependentAssembly>
-        <assemblyIdentity name="System.Composition.Hosting" publicKeyToken="b03f5f7f11d50a3a" culture="neutral" />
-        <bindingRedirect oldVersion="0.0.0.0-1.0.35.0" newVersion="1.0.35.0" />
-      </dependentAssembly>
-      <dependentAssembly>
-        <assemblyIdentity name="System.Reflection.Metadata" publicKeyToken="b03f5f7f11d50a3a" culture="neutral" />
-        <bindingRedirect oldVersion="0.0.0.0-1.4.5.0" newVersion="1.4.5.0" />
-      </dependentAssembly>
-      <dependentAssembly>
-        <assemblyIdentity name="Microsoft.CodeAnalysis" publicKeyToken="31bf3856ad364e35" culture="neutral" />
-        <bindingRedirect oldVersion="0.0.0.0-3.6.0.0" newVersion="3.6.0.0" />
-      </dependentAssembly>
-      <dependentAssembly>
-        <assemblyIdentity name="Microsoft.CodeAnalysis.AnalyzerUtilities" publicKeyToken="31bf3856ad364e35" culture="neutral" />
-        <bindingRedirect oldVersion="0.0.0.0-3.3.2.30504" newVersion="3.3.2.30504" />
-      </dependentAssembly>
-      <dependentAssembly>
-        <assemblyIdentity name="Microsoft.Build" culture="neutral" publicKeyToken="b03f5f7f11d50a3a" />
-        <bindingRedirect oldVersion="0.0.0.0-99.9.9.9" newVersion="15.1.0.0" />
-      </dependentAssembly>
-      <dependentAssembly>
-        <assemblyIdentity name="Microsoft.Build.Utilities.Core" culture="neutral" publicKeyToken="b03f5f7f11d50a3a" />
-        <bindingRedirect oldVersion="0.0.0.0-99.9.9.9" newVersion="15.1.0.0" />
-      </dependentAssembly>
-      <dependentAssembly>
-        <assemblyIdentity name="Microsoft.Build.Framework" culture="neutral" publicKeyToken="b03f5f7f11d50a3a" />
-        <bindingRedirect oldVersion="0.0.0.0-99.9.9.9" newVersion="15.1.0.0" />
-      </dependentAssembly>
-      <dependentAssembly>
-        <assemblyIdentity name="Microsoft.Build.Tasks.Core" publicKeyToken="b03f5f7f11d50a3a" culture="neutral" />
-        <bindingRedirect oldVersion="0.0.0.0-99.9.9.9" newVersion="15.1.0.0" />
-      </dependentAssembly>
-      <dependentAssembly>
-        <assemblyIdentity name="Microsoft.Build.Engine" publicKeyToken="b03f5f7f11d50a3a" culture="neutral" />
-        <bindingRedirect oldVersion="0.0.0.0-99.9.9.9" newVersion="15.1.0.0" />
-      </dependentAssembly>
-    </assemblyBinding>
-  </runtime>
-</configuration>

@@ -128,11 +128,15 @@ namespace
 	constexpr auto PlainOptimizerWeights = true;
 	constexpr auto Reference = false;
 	constexpr auto SingleMeanVariancePass = false;
-		
+
 	constexpr auto TestActivations = false;
 	constexpr auto TestBatchNormalization = false;
 	constexpr auto TestConcat = false;
 	constexpr auto TestMultiply = false;
+
+	constexpr auto ReferenceBatchNormalization = false;
+	constexpr auto ReferenceConcat = true;
+	constexpr auto ReferenceMultiply = true;
 
 	typedef float Float;
 	typedef double Double;

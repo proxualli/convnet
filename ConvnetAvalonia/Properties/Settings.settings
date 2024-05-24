@@ -1,50 +1,42 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<configuration>
-    <configSections>
-        <sectionGroup name="userSettings" type="System.Configuration.UserSettingsGroup, System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-            <section name="Convnet.Properties.Settings" type="System.Configuration.ClientSettingsSection, System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" allowExeDefinition="MachineToLocalUser" requirePermission="false" />
-        </sectionGroup>
-    </configSections>
-    <startup> 
-        <supportedRuntime version="v4.0" sku=".NETFramework,Version=v4.8" />
-    </startup>
-    <userSettings>
-        <Convnet.Properties.Settings>
-            <setting name="PixelSize" serializeAs="String">
-                <value>3</value>
-            </setting>
-            <setting name="RefreshInterval" serializeAs="String">
-                <value>60</value>
-            </setting>
-            <setting name="Optimizer" serializeAs="String">
-                <value>9</value>
-            </setting>
-            <setting name="CurrentPage" serializeAs="String">
-                <value>0</value>
-            </setting>
-            <setting name="Timings" serializeAs="String">
-                <value>True</value>
-            </setting>
-            <setting name="PersistOptimizer" serializeAs="String">
-                <value>True</value>
-            </setting>
-            <setting name="GotoEpoch" serializeAs="String">
-                <value>1</value>
-            </setting>
-            <setting name="Priority" serializeAs="String">
-                <value>Normal</value>
-            </setting>
-            <setting name="PrioritySetter" serializeAs="String">
-                <value>3</value>
-            </setting>
-            <setting name="ShowTrainingPlot" serializeAs="String">
-                <value>False</value>
-            </setting>
-            <setting name="PlotType" serializeAs="String">
-                <value>1</value>
-            </setting>
-            <setting name="DefinitionEditing" serializeAs="String">
-                <value>[resnet-3-2-6-channelzeropad-relu]
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="ConvnetAvalonia.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="PixelSize" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">3</Value>
+    </Setting>
+    <Setting Name="RefreshInterval" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">60</Value>
+    </Setting>
+    <Setting Name="Optimizer" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">9</Value>
+    </Setting>
+    <Setting Name="CurrentPage" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="Timings" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="PersistOptimizer" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="GotoEpoch" Type="System.UInt32" Scope="User">
+      <Value Profile="(Default)">1</Value>
+    </Setting>
+    <Setting Name="Priority" Type="System.Diagnostics.ProcessPriorityClass" Scope="User">
+      <Value Profile="(Default)">Normal</Value>
+    </Setting>
+    <Setting Name="PrioritySetter" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">3</Value>
+    </Setting>
+    <Setting Name="ShowTrainingPlot" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="PlotType" Type="System.UInt32" Scope="User">
+      <Value Profile="(Default)">1</Value>
+    </Setting>
+    <Setting Name="DefinitionEditing" Type="System.String" Scope="User">
+      <Value Profile="(Default)">[resnet-3-2-6-channelzeropad-relu]
 Dataset=cifar10
 Dim=3,32,32
 ZeroPad=4,4
@@ -281,10 +273,10 @@ Inputs=LSM
 Cost=CategoricalCrossEntropy
 LabelIndex=0
 Channels=10
-Eps=0.125</value>
-            </setting>
-            <setting name="DefinitionActive" serializeAs="String">
-                <value>[resnet-3-2-6-channelzeropad-relu]
+Eps=0.125</Value>
+    </Setting>
+    <Setting Name="DefinitionActive" Type="System.String" Scope="User">
+      <Value Profile="(Default)">[resnet-3-2-6-channelzeropad-relu]
 Dataset=cifar10
 Dim=3,32,32
 ZeroPad=4,4
@@ -521,19 +513,22 @@ Inputs=LSM
 Cost=CategoricalCrossEntropy
 LabelIndex=0
 Channels=10
-Eps=0.125</value>
-            </setting>
-            <setting name="ModelNameActive" serializeAs="String">
-                <value>resnet-3-2-6-channelzeropad-relu</value>
-            </setting>
-            <setting name="SelectedLayer" serializeAs="String">
-                <value>0</value>
-            </setting>
-            <setting name="DisableLocking" serializeAs="String">
-                <value>True</value>
-            </setting>
-            <setting name="Script" serializeAs="String">
-                <value>using System.Collections.ObjectModel;
+Eps=0.125</Value>
+    </Setting>
+    <Setting Name="ModelNameActive" Type="System.String" Scope="User">
+      <Value Profile="(Default)">resnet-3-2-6-channelzeropad-relu</Value>
+    </Setting>
+    <Setting Name="EditSplitPositionA" Type="Avalonia.Controls.GridLength" Scope="User">
+      <Value Profile="(Default)">420</Value>
+    </Setting>
+    <Setting Name="SelectedLayer" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="DisableLocking" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="Script" Type="System.String" Scope="User">
+      <Value Profile="(Default)">using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Globalization;
 
@@ -2764,113 +2759,22 @@ namespace Scripts
         }
     }
 }
-</value>
-            </setting>
-            <setting name="PlainFormat" serializeAs="String">
-                <value>False</value>
-            </setting>
-            <setting name="Dataset" serializeAs="String">
-                <value>cifar10</value>
-            </setting>
-            <setting name="ShuffleSetter" serializeAs="String">
-                <value>96</value>
-            </setting>
-            <setting name="Shuffle" serializeAs="String">
-                <value>64</value>
-            </setting>
-            <setting name="GotoCycle" serializeAs="String">
-                <value>1</value>
-            </setting>
-        </Convnet.Properties.Settings>
-    </userSettings>
-  <runtime>
-    <AppContextSwitchOverrides value="Switch.System.IO.UseLegacyPathHandling=false" />
-    <loadFromRemoteSources enabled="true"/>
-    <assemblyBinding xmlns="urn:schemas-microsoft-com:asm.v1">
-      <dependentAssembly>
-        <assemblyIdentity name="System.Buffers" publicKeyToken="cc7b13ffcd2ddd51" culture="neutral" />
-        <bindingRedirect oldVersion="0.0.0.0-4.0.3.0" newVersion="4.0.3.0" />
-      </dependentAssembly>
-      <dependentAssembly>
-        <assemblyIdentity name="System.Collections.Immutable" publicKeyToken="b03f5f7f11d50a3a" culture="neutral" />
-        <bindingRedirect oldVersion="0.0.0.0-1.2.5.0" newVersion="1.2.5.0" />
-      </dependentAssembly>
-      <dependentAssembly>
-        <assemblyIdentity name="System.Threading.Tasks.Dataflow" publicKeyToken="b03f5f7f11d50a3a" culture="neutral" />
-        <bindingRedirect oldVersion="0.0.0.0-4.6.5.0" newVersion="4.6.5.0" />
-      </dependentAssembly>
-      <dependentAssembly>
-        <assemblyIdentity name="System.Runtime.CompilerServices.Unsafe" publicKeyToken="b03f5f7f11d50a3a" culture="neutral" />
-        <bindingRedirect oldVersion="0.0.0.0-4.0.6.0" newVersion="4.0.6.0" />
-      </dependentAssembly>
-      <dependentAssembly>
-        <assemblyIdentity name="System.Resources.Extensions" publicKeyToken="cc7b13ffcd2ddd51" culture="neutral" />
-        <bindingRedirect oldVersion="0.0.0.0-4.0.1.0" newVersion="4.0.1.0" />
-      </dependentAssembly>
-      <dependentAssembly>
-        <assemblyIdentity name="System.Numerics.Vectors" publicKeyToken="b03f5f7f11d50a3a" culture="neutral" />
-        <bindingRedirect oldVersion="0.0.0.0-4.1.4.0" newVersion="4.1.4.0" />
-      </dependentAssembly>
-      <dependentAssembly>
-        <assemblyIdentity name="System.Threading.Tasks.Extensions" publicKeyToken="cc7b13ffcd2ddd51" culture="neutral" />
-        <bindingRedirect oldVersion="0.0.0.0-4.2.0.1" newVersion="4.2.0.1" />
-      </dependentAssembly>
-      <dependentAssembly>
-        <assemblyIdentity name="Humanizer" publicKeyToken="979442b78dfc278e" culture="neutral" />
-        <bindingRedirect oldVersion="0.0.0.0-2.8.0.0" newVersion="2.8.0.0" />
-      </dependentAssembly>
-      <dependentAssembly>
-        <assemblyIdentity name="System.Text.Encoding.CodePages" publicKeyToken="b03f5f7f11d50a3a" culture="neutral" />
-        <bindingRedirect oldVersion="0.0.0.0-4.1.3.0" newVersion="4.1.3.0" />
-      </dependentAssembly>
-      <dependentAssembly>
-        <assemblyIdentity name="System.Composition.AttributedModel" publicKeyToken="b03f5f7f11d50a3a" culture="neutral" />
-        <bindingRedirect oldVersion="0.0.0.0-1.0.35.0" newVersion="1.0.35.0" />
-      </dependentAssembly>
-      <dependentAssembly>
-        <assemblyIdentity name="System.Composition.Runtime" publicKeyToken="b03f5f7f11d50a3a" culture="neutral" />
-        <bindingRedirect oldVersion="0.0.0.0-1.0.35.0" newVersion="1.0.35.0" />
-      </dependentAssembly>
-      <dependentAssembly>
-        <assemblyIdentity name="System.Composition.TypedParts" publicKeyToken="b03f5f7f11d50a3a" culture="neutral" />
-        <bindingRedirect oldVersion="0.0.0.0-1.0.35.0" newVersion="1.0.35.0" />
-      </dependentAssembly>
-      <dependentAssembly>
-        <assemblyIdentity name="System.Composition.Hosting" publicKeyToken="b03f5f7f11d50a3a" culture="neutral" />
-        <bindingRedirect oldVersion="0.0.0.0-1.0.35.0" newVersion="1.0.35.0" />
-      </dependentAssembly>
-      <dependentAssembly>
-        <assemblyIdentity name="System.Reflection.Metadata" publicKeyToken="b03f5f7f11d50a3a" culture="neutral" />
-        <bindingRedirect oldVersion="0.0.0.0-1.4.5.0" newVersion="1.4.5.0" />
-      </dependentAssembly>
-      <dependentAssembly>
-        <assemblyIdentity name="Microsoft.CodeAnalysis" publicKeyToken="31bf3856ad364e35" culture="neutral" />
-        <bindingRedirect oldVersion="0.0.0.0-3.6.0.0" newVersion="3.6.0.0" />
-      </dependentAssembly>
-      <dependentAssembly>
-        <assemblyIdentity name="Microsoft.CodeAnalysis.AnalyzerUtilities" publicKeyToken="31bf3856ad364e35" culture="neutral" />
-        <bindingRedirect oldVersion="0.0.0.0-3.3.2.30504" newVersion="3.3.2.30504" />
-      </dependentAssembly>
-      <dependentAssembly>
-        <assemblyIdentity name="Microsoft.Build" culture="neutral" publicKeyToken="b03f5f7f11d50a3a" />
-        <bindingRedirect oldVersion="0.0.0.0-99.9.9.9" newVersion="15.1.0.0" />
-      </dependentAssembly>
-      <dependentAssembly>
-        <assemblyIdentity name="Microsoft.Build.Utilities.Core" culture="neutral" publicKeyToken="b03f5f7f11d50a3a" />
-        <bindingRedirect oldVersion="0.0.0.0-99.9.9.9" newVersion="15.1.0.0" />
-      </dependentAssembly>
-      <dependentAssembly>
-        <assemblyIdentity name="Microsoft.Build.Framework" culture="neutral" publicKeyToken="b03f5f7f11d50a3a" />
-        <bindingRedirect oldVersion="0.0.0.0-99.9.9.9" newVersion="15.1.0.0" />
-      </dependentAssembly>
-      <dependentAssembly>
-        <assemblyIdentity name="Microsoft.Build.Tasks.Core" publicKeyToken="b03f5f7f11d50a3a" culture="neutral" />
-        <bindingRedirect oldVersion="0.0.0.0-99.9.9.9" newVersion="15.1.0.0" />
-      </dependentAssembly>
-      <dependentAssembly>
-        <assemblyIdentity name="Microsoft.Build.Engine" publicKeyToken="b03f5f7f11d50a3a" culture="neutral" />
-        <bindingRedirect oldVersion="0.0.0.0-99.9.9.9" newVersion="15.1.0.0" />
-      </dependentAssembly>
-    </assemblyBinding>
-  </runtime>
-</configuration>
+</Value>
+    </Setting>
+    <Setting Name="PlainFormat" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="Dataset" Type="System.String" Scope="User">
+      <Value Profile="(Default)">cifar10</Value>
+    </Setting>
+    <Setting Name="ShuffleSetter" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">96</Value>
+    </Setting>
+    <Setting Name="Shuffle" Type="System.String" Scope="User">
+      <Value Profile="(Default)">64</Value>
+    </Setting>
+    <Setting Name="GotoCycle" Type="System.UInt32" Scope="User">
+      <Value Profile="(Default)">1</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

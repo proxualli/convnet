@@ -528,15 +528,1106 @@ Eps=0.125</Value>
       <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="Script" Type="System.String" Scope="User">
-      <Value Profile="(Default)">using System.Collections.Generic;
+      <Value Profile="(Default)">using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Globalization;
-using System;
 
 using Float = System.Single;
 using UInt = System.UInt64;
 
-namespace ScriptsDialog
+
+namespace Scripts
 {
+    [Serializable()]
+    public enum Scripts
+    {
+        augshufflenet = 0,
+        densenet = 1,
+        efficientnetv2 = 2,
+        mobilenetv3 = 3,
+        resnet = 4,
+        shufflenetv2 = 5
+    }
+
+    [Serializable()]
+    public enum Datasets
+    {
+        cifar10 = 0,
+        cifar100 = 1,
+        fashionmnist = 2,
+        mnist = 3,
+        tinyimagenet = 4
+    }
+
+    [Serializable()]
+    public enum Fillers
+    {
+        Constant = 0,
+        HeNormal = 1,
+        HeUniform = 2,
+        LeCunNormal = 3,
+        LeCunUniform = 4,
+        Normal = 5,
+        TruncatedNormal = 6,
+        Uniform = 7,
+        XavierNormal = 8,
+        XavierUniform = 9
+    }
+
+    [Serializable()]
+    public enum FillerModes
+    {
+        Avg = 0,
+        In = 1,
+        Out = 2
+    }
+
+    [Serializable()]
+    public enum Activations
+    {
+        FRelu = 1,
+        HardSwish = 10,
+        HardSigmoid = 11,
+        Sigmoid = 12,
+        Mish = 16,
+        Relu = 19,
+        Swish = 25,
+        TanhExp = 27,
+        Gelu = 28
+    }
+
+    [Serializable()]
+    public class EfficientNetRecord : INotifyPropertyChanged
+    {
+        private UInt expandRatio;
+        private UInt channels;
+        private UInt iterations;
+        private UInt stride;
+        private bool se;
+
+        [field: NonSerializedAttribute()]
+        public event PropertyChangedEventHandler? PropertyChanged;
+
+        public EfficientNetRecord()
+        {
+            ExpandRatio = 4;
+            Channels = 24;
+            Iterations = 2;
+            Stride = 1;
+            SE = false;
+        }
+
+        public EfficientNetRecord(UInt expandRatio = 4, UInt channels = 24, UInt iterations = 2, UInt stride = 1, bool se = false)
+        {
+            this.expandRatio = expandRatio;
+            this.channels = channels;
+            this.iterations = iterations;
+            this.stride = stride;
+            this.se = se;
+        }
+
+        public override string ToString()
+        {
+            return "(" + ExpandRatio.ToString() + "-" + Channels.ToString() + "-" + Iterations.ToString() + "-" + Stride.ToString() + (SE ? "-se" : "") + ")";
+        }
+
+        public UInt ExpandRatio
+        {
+            get { return expandRatio; }
+            set { expandRatio = value; OnPropertyChanged("ExpandRatio"); }
+        }
+
+        public UInt Channels
+        {
+            get { return channels; }
+            set { channels = value; OnPropertyChanged("Channels"); }
+        }
+
+        public UInt Iterations
+        {
+            get { return iterations; }
+            set { iterations = value; OnPropertyChanged("Iterations"); }
+        }
+
+        public UInt Stride
+        {
+            get { return stride; }
+            set { stride = value; OnPropertyChanged("Stride"); }
+        }
+
+        public bool SE
+        {
+            get { return se; }
+            set { se = value; OnPropertyChanged("SE"); }
+        }
+
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            if (PropertyChanged != null)
+                PropertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+    }
+
+    [Serializable()]
+    public class ShuffleNetRecord : INotifyPropertyChanged
+    {
+        private UInt iterations;
+        private UInt kernel;
+        private UInt pad;
+        private UInt shuffle;
+        private bool se;
+
+        [field: NonSerializedAttribute()]
+        public event PropertyChangedEventHandler? PropertyChanged;
+
+        public ShuffleNetRecord()
+        {
+            Iterations = 6ul;
+            Kernel = 3ul;
+            Pad = 1ul;
+            Shuffle = 2ul;
+            SE = false;
+        }
+
+        public ShuffleNetRecord(UInt iterations = 6ul, UInt kernel = 3ul, UInt pad = 1ul, UInt shuffle = 2ul, bool se = false)
+        {
+            this.iterations = iterations;
+            this.kernel = kernel;
+            this.pad = pad;
+            this.shuffle = shuffle;
+            this.se = se;
+        }
+
+        public override string ToString()
+        {
+            return "(" + Iterations.ToString() + "-" + Kernel.ToString() + "-" + Pad.ToString() + "-" + Shuffle.ToString() + (SE ? "-se" : "") + ")";
+        }
+
+        public UInt Iterations
+        {
+            get { return iterations; }
+            set { iterations = value; OnPropertyChanged("Iterations"); }
+        }
+
+        public UInt Kernel
+        {
+            get { return kernel; }
+            set { kernel = value; OnPropertyChanged("Kernel"); }
+        }
+
+        public UInt Pad
+        {
+            get { return pad; }
+            set { pad = value; OnPropertyChanged("Pad"); }
+        }
+
+        public UInt Shuffle
+        {
+            get { return shuffle; }
+            set { shuffle = value; OnPropertyChanged("Shuffle"); }
+        }
+
+        public bool SE
+        {
+            get { return se; }
+            set { se = value; OnPropertyChanged("SE"); }
+        }
+
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            if (PropertyChanged != null)
+                PropertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+    }
+
+    [Serializable()]
+    public class ScriptParameters : INotifyPropertyChanged
+    {
+        [field: NonSerializedAttribute()]
+        public event PropertyChangedEventHandler? PropertyChanged;
+
+        private Scripts script = Scripts.shufflenetv2;
+        private Datasets dataset = Datasets.cifar10;
+        private UInt c = 3;
+        private UInt h = 32;
+        private UInt w = 32;
+        private UInt padH = 0;
+        private UInt padW = 0;
+        private bool mirrorPad = false;
+        private bool meanStdNormalization = true;
+        private Fillers weightsFiller = Fillers.HeNormal;
+        private FillerModes weightsFillerMode = FillerModes.In;
+        private Float weightsGain = 1;
+        private Float weightsScale = (Float)0.05;
+        private Float weightsLRM = 1;
+        private Float weightsWDM = 1;
+        private bool hasBias = false;
+        private Fillers biasesFiller = Fillers.Constant;
+        private FillerModes biasesFillerMode = FillerModes.In;
+        private Float biasesGain = 1;
+        private Float biasesScale = 0;
+        private Float biasesLRM = 1;
+        private Float biasesWDM = 1;
+        private Float batchNormMomentum = (Float)0.995;
+        private Float batchNormEps = (Float)1E-04;
+        private bool batchNormScaling = false;
+        private Float alpha = 0;
+        private Float beta = 0;
+        private UInt groups = 3;
+        private UInt iterations = 4;
+        private UInt width = 8;
+        private UInt growthRate = 12;
+        private bool bottleneck = false;
+        private Float dropout = 0;
+        private Float compression = 0;
+        private bool squeezeExcitation = false;
+        private bool channelZeroPad = true;
+        private Activations activation = Activations.Relu;
+        private ObservableCollection&lt;EfficientNetRecord&gt; efficientnet = new ObservableCollection&lt;EfficientNetRecord&gt;();
+        private ObservableCollection&lt;ShuffleNetRecord&gt; shufflenet = new ObservableCollection&lt;ShuffleNetRecord&gt;();
+        private UInt strideHFirstConv = 2;
+        private UInt strideWFirstConv = 2;
+        private Float depthDrop = (Float)0.2;
+        private bool fixedDepthDrop = false;
+
+        public ScriptParameters()
+        {
+        }
+
+        public ScriptParameters(Scripts script = Scripts.shufflenetv2, Datasets dataset = Datasets.cifar10, UInt h = 32, UInt w = 32, UInt padH = 4, UInt padW = 4, bool mirrorPad = false, bool meanStdNorm = true, Fillers weightsFiller = Fillers.HeNormal, FillerModes weightsFillerMode = FillerModes.In, Float weightsGain = (Float)1.0, Float weightsScale = (Float)0.05, Float weightsLRM = 1, Float weightsWDM = 1, bool hasBias = false, Fillers biasesFiller = Fillers.Constant, FillerModes biasesFillerMode = FillerModes.In, Float biasesGain = (Float)1.0, Float biasesScale = 0, Float biasesLRM = 1, Float biasesWDM = 1, Float batchNormMomentum = (Float)0.995, Float batchNormEps = (Float)1E-04, bool batchNormScaling = false, Float alpha = (Float)0, Float beta = (Float)0, UInt groups = 3, UInt iterations = 4, UInt width = 8, UInt growthRate = 12, bool bottleneck = false, Float dropout = 0, Float compression = 0, bool squeezeExcitation = false, bool channelZeroPad = true, Activations activation = Activations.Relu, UInt strideHFirstConv = 2, UInt strideWFirstConv = 2, Float depthDrop = (Float)0.2, bool fixedDepthDrop = false)
+        {
+            Script = script;
+            Dataset = dataset;
+            H = h;
+            W = w;
+            PadH = padH;
+            PadW = padW;
+            MirrorPad = mirrorPad;
+            MeanStdNormalization = meanStdNorm;
+            WeightsFiller = weightsFiller;
+            WeightsFillerMode = weightsFillerMode;
+            WeightsGain = weightsGain;
+            WeightsScale = weightsScale;
+            WeightsLRM = weightsLRM;
+            WeightsWDM = weightsWDM;
+            HasBias = hasBias;
+            BiasesFiller = biasesFiller;
+            BiasesFillerMode = biasesFillerMode;
+            BiasesGain = biasesGain;
+            BiasesScale = biasesScale;
+            BiasesLRM = biasesLRM;
+            BiasesWDM = biasesWDM;
+            BatchNormMomentum = batchNormMomentum;
+            BatchNormEps = batchNormEps;
+            BatchNormScaling = batchNormScaling;
+            Alpha = alpha;
+            Beta = beta;
+            Groups = groups;
+            Iterations = iterations;
+            Width = width;
+            GrowthRate = growthRate;
+            Bottleneck = bottleneck;
+            Dropout = dropout;
+            Compression = compression;
+            SqueezeExcitation = squeezeExcitation;
+            ChannelZeroPad = channelZeroPad;
+            Activation = activation;
+            StrideHFirstConv = strideHFirstConv;
+            StrideWFirstConv = strideWFirstConv;
+            DepthDrop = depthDrop;
+            FixedDepthDrop = fixedDepthDrop;
+
+            var efficientnetv2 = new ObservableCollection&lt;EfficientNetRecord&gt;();
+            efficientnetv2.Add(new EfficientNetRecord(1, 24, 2, 1, false));
+            efficientnetv2.Add(new EfficientNetRecord(4, 48, 4, 2, false));
+            efficientnetv2.Add(new EfficientNetRecord(4, 64, 4, 2, false));
+            efficientnetv2.Add(new EfficientNetRecord(4, 128, 6, 2, true));
+            efficientnetv2.Add(new EfficientNetRecord(6, 160, 9, 1, true));
+            efficientnetv2.Add(new EfficientNetRecord(6, 256, 15, 2, true));
+            EfficientNet = efficientnetv2;
+
+            var shufflenetv2 = new ObservableCollection&lt;ShuffleNetRecord&gt;();
+            shufflenetv2.Add(new ShuffleNetRecord(5, 3, 1, 2, false));
+            shufflenetv2.Add(new ShuffleNetRecord(6, 3, 1, 2, false));
+            shufflenetv2.Add(new ShuffleNetRecord(7, 3, 1, 2, true));
+            shufflenetv2.Add(new ShuffleNetRecord(8, 3, 1, 2, true));
+            ShuffleNet = shufflenetv2;
+        }
+
+        public IEnumerable&lt;Scripts&gt; ScriptsList { get { return Enum.GetValues(typeof(Scripts)).Cast&lt;Scripts&gt;(); } }
+
+        public IEnumerable&lt;Datasets&gt; DatasetsList { get { return Enum.GetValues(typeof(Datasets)).Cast&lt;Datasets&gt;(); } }
+
+        public IEnumerable&lt;Activations&gt; ActivationsList { get { return Enum.GetValues(typeof(Activations)).Cast&lt;Activations&gt;(); } }
+
+        public IEnumerable&lt;Fillers&gt; FillersList { get { return Enum.GetValues(typeof(Fillers)).Cast&lt;Fillers&gt;(); } }
+
+        public IEnumerable&lt;FillerModes&gt; FillerModesList { get { return Enum.GetValues(typeof(FillerModes)).Cast&lt;FillerModes&gt;(); } }
+
+        public string ModelName
+        {
+            get
+            {
+                switch (Script)
+                {
+                    case Scripts.densenet:
+                        return Script.ToString() + "-" + Groups.ToString() + "-" + Iterations.ToString() + "-" + GrowthRate.ToString() + (Dropout &gt; 0 ? "-dropout" : "") + (DepthDrop &gt; 0 ? (FixedDepthDrop ? "-fixeddepthdrop" : "-depthdrop") : "") + (Compression &gt; 0 ? "-compression" : "") + (Bottleneck ? "-bottleneck" : "") + "-" + Activation.ToString().ToLower();
+                    case Scripts.efficientnetv2:
+                        {
+                            string name = "";
+                            foreach (var rec in EfficientNet)
+                                name += rec.ToString();
+                            return Script.ToString() + (DepthDrop &gt; 0 ? (FixedDepthDrop ? "-fixeddepthdrop-" : "-depthdrop-") : "") + name;
+                        }
+                    case Scripts.mobilenetv3:
+                        return Script.ToString() + "-" + Groups.ToString() + "-" + Iterations.ToString() + "-" + Width.ToString() + "-" + Activation.ToString().ToLower() + (SqueezeExcitation ? " -se" : "") + (DepthDrop &gt; 0 ? (FixedDepthDrop ? "-fixeddepthdrop" : "-depthdrop") : "");
+                    case Scripts.resnet:
+                        return Script.ToString() + "-" + Groups.ToString() + "-" + Iterations.ToString() + "-" + Width.ToString() + (Dropout &gt; 0 ? "-dropout" : "") + (DepthDrop &gt; 0 ? (FixedDepthDrop ? "-fixeddepthdrop" : "-depthdrop") : "") + (Bottleneck ? "-bottleneck" : "") + (ChannelZeroPad ? "-channelzeropad" : "") + "-" + Activation.ToString().ToLower();
+                    case Scripts.augshufflenet:
+                    case Scripts.shufflenetv2:
+                        {
+                            string name = "";
+                            foreach (var rec in ShuffleNet)
+                                name += rec.ToString();
+                            return Script.ToString() + "-" + Width.ToString() + name;
+                        }
+                    default:
+                        return Script.ToString() + "-" + Groups.ToString() + "-" + Iterations.ToString();
+                }
+            }
+        }
+
+        public Scripts Script
+        {
+            get { return script; }
+            set
+            {
+                if (value != script)
+                {
+                    script = value;
+                    OnPropertyChanged("Script");
+                    OnPropertyChanged("Classes");
+                    OnPropertyChanged("Depth");
+                    OnPropertyChanged("WidthVisible");
+                    OnPropertyChanged("GrowthRateVisible");
+                    OnPropertyChanged("DropoutVisible");
+                    OnPropertyChanged("CompressionVisible");
+                    OnPropertyChanged("BottleneckVisible");
+                    OnPropertyChanged("ChannelZeroPadVisible");
+                    OnPropertyChanged("SqueezeExcitationVisible");
+                    OnPropertyChanged("BottleneckVisible");
+                    OnPropertyChanged("EfficientNetVisible");
+                    OnPropertyChanged("ShuffleNetVisible");
+                    OnPropertyChanged("DepthDropVisible");
+                }
+            }
+        }
+
+        public UInt Classes
+        {
+            get
+            {
+                switch (Dataset)
+                {
+                    case Datasets.cifar100:
+                        return 100;
+                    case Datasets.tinyimagenet:
+                        return 200;
+                    default:
+                        return 10;
+                }
+            }
+        }
+
+        public Datasets Dataset
+        {
+            get { return dataset; }
+            set
+            {
+                if (value != dataset)
+                {
+                    dataset = value;
+                    OnPropertyChanged("Dataset");
+                    OnPropertyChanged("C");
+                }
+            }
+        }
+
+        public UInt C
+        {
+            get
+            {
+                switch (dataset)
+                {
+                    case Datasets.cifar10:
+                    case Datasets.cifar100:
+                    case Datasets.tinyimagenet:
+                        return 3;
+                    case Datasets.fashionmnist:
+                    case Datasets.mnist:
+                        return 1;
+                    default:
+                        return 1;
+                }
+            }
+            set
+            {
+                if (value != c)
+                {
+                    c = value;
+                    OnPropertyChanged("C");
+                }
+            }
+        }
+
+        public UInt D
+        {
+            get { return 1; }
+        }
+
+        public UInt H
+        {
+            get { return h; }
+            set
+            {
+                if (value &gt;= 14 &amp;&amp; value &lt;= 4096 &amp;&amp; value != h)
+                {
+                    h = value;
+                    OnPropertyChanged("H");
+                }
+            }
+        }
+
+        public UInt W
+        {
+            get { return w; }
+            set
+            {
+                if (value &gt;= 14 &amp;&amp; value &lt;= 4096 &amp;&amp; value != w)
+                {
+                    w = value;
+                    OnPropertyChanged("W");
+                }
+            }
+        }
+
+        public UInt PadD
+        {
+            get { return 0; }
+        }
+
+        public UInt PadH
+        {
+            get { return padH; }
+            set
+            {
+                if (value &gt;= 0 &amp;&amp; value &lt;= H &amp;&amp; value != padH)
+                {
+                    padH = value;
+                    OnPropertyChanged("PadH");
+                    OnPropertyChanged("RandomCrop");
+                }
+            }
+        }
+
+        public UInt PadW
+        {
+            get { return padW; }
+            set
+            {
+                if (value &gt;= 0 &amp;&amp; value &lt;= W &amp;&amp; value != padW)
+                {
+                    padW = value;
+                    OnPropertyChanged("PadW");
+                    OnPropertyChanged("RandomCrop");
+                }
+            }
+        }
+
+        public bool MirrorPad
+        {
+            get { return mirrorPad; }
+            set
+            {
+                if (value != mirrorPad)
+                {
+                    mirrorPad = value;
+                    OnPropertyChanged("MirrorPad");
+                }
+            }
+        }
+
+        public bool RandomCrop
+        {
+            get { return padH &gt; 0 || padW &gt; 0; }
+        }
+
+        public bool MeanStdNormalization
+        {
+            get { return meanStdNormalization; }
+            set
+            {
+                if (value != meanStdNormalization)
+                {
+                    meanStdNormalization = value;
+                    OnPropertyChanged("MeanStdNormalization");
+                }
+            }
+        }
+
+        public bool FixedDepthDrop
+        {
+            get { return fixedDepthDrop; }
+            set
+            {
+                if (value != fixedDepthDrop)
+                {
+                    fixedDepthDrop = value;
+                    OnPropertyChanged("FixedDepthDrop");
+                }
+            }
+        }
+
+        public Float DepthDrop
+        {
+            get { return depthDrop; }
+            set
+            {
+                if (value &gt;= 0 &amp;&amp; value &lt;= 1 &amp;&amp; value != depthDrop)
+                {
+                    depthDrop = value;
+                    OnPropertyChanged("DepthDrop");
+                }
+            }
+        }
+
+        public Fillers WeightsFiller
+        {
+            get { return weightsFiller; }
+            set
+            {
+                if (value != weightsFiller)
+                {
+                    weightsFiller = value;
+                    OnPropertyChanged("WeightsFiller");
+                    OnPropertyChanged("WeightsFillerModeVisible");
+                    OnPropertyChanged("WeightsGainVisible");
+                    OnPropertyChanged("WeightsScaleVisible");
+                }
+            }
+        }
+
+        public FillerModes WeightsFillerMode
+        {
+            get { return weightsFillerMode; }
+            set
+            {
+                if (value != weightsFillerMode)
+                {
+                    weightsFillerMode = value;
+                    OnPropertyChanged("WeightsFillerMode");
+                }
+            }
+        }
+
+        public Float WeightsGain
+        {
+            get { return weightsGain; }
+            set
+            {
+                if (value != weightsGain)
+                {
+                    weightsGain = value;
+                    OnPropertyChanged("WeightsGain");
+                }
+            }
+        }
+
+        public bool WeightsFillerModeVisible
+        {
+            get
+            {
+                return WeightsFiller == Fillers.HeNormal || WeightsFiller == Fillers.HeUniform || WeightsFiller == Fillers.LeCunNormal || WeightsFiller == Fillers.LeCunUniform;
+            }
+        }
+
+        public bool WeightsGainVisible
+        {
+            get
+            {
+                return WeightsFiller == Fillers.HeNormal || WeightsFiller == Fillers.HeUniform || WeightsFiller == Fillers.LeCunNormal || WeightsFiller == Fillers.LeCunUniform || WeightsFiller == Fillers.XavierNormal || WeightsFiller == Fillers.XavierUniform;
+            }
+        }
+
+        public bool WeightsScaleVisible
+        {
+            get
+            {
+                return WeightsFiller == Fillers.Constant || WeightsFiller == Fillers.Normal || WeightsFiller == Fillers.TruncatedNormal || WeightsFiller == Fillers.Uniform;
+            }
+        }
+
+        public Float WeightsScale
+        {
+            get { return weightsScale; }
+            set
+            {
+                if (value != weightsScale)
+                {
+                    weightsScale = value;
+                    OnPropertyChanged("WeightsScale");
+                }
+            }
+        }
+
+        public Float WeightsLRM
+        {
+            get { return weightsLRM; }
+            set
+            {
+                if (value != weightsLRM)
+                {
+                    weightsLRM = value;
+                    OnPropertyChanged("WeightsLRM");
+                }
+            }
+        }
+
+        public Float WeightsWDM
+        {
+            get { return weightsWDM; }
+            set
+            {
+                if (value != weightsWDM)
+                {
+                    weightsWDM = value;
+                    OnPropertyChanged("WeightsWDM");
+                }
+            }
+        }
+
+        public bool HasBias
+        {
+            get { return hasBias; }
+            set
+            {
+                if (value != hasBias)
+                {
+                    hasBias = value;
+                    OnPropertyChanged("HasBias");
+                }
+            }
+        }
+
+        public Fillers BiasesFiller
+        {
+            get { return biasesFiller; }
+            set
+            {
+                if (value != biasesFiller)
+                {
+                    biasesFiller = value;
+                    OnPropertyChanged("BiasesFiller");
+                    OnPropertyChanged("BiasesFillerModeVisible");
+                    OnPropertyChanged("BiasesGainVisible");
+                    OnPropertyChanged("BiasesScaleVisible");
+                }
+            }
+        }
+
+        public FillerModes BiasesFillerMode
+        {
+            get { return biasesFillerMode; }
+            set
+            {
+                if (value != biasesFillerMode)
+                {
+                    biasesFillerMode = value;
+                    OnPropertyChanged("BiasesFillerMode");
+                }
+            }
+        }
+
+        public Float BiasesGain
+        {
+            get { return biasesGain; }
+            set
+            {
+                if (value != biasesGain)
+                {
+                    biasesGain = value;
+                    OnPropertyChanged("BiasesGain");
+                }
+            }
+        }
+
+        public Float BiasesScale
+        {
+            get { return biasesScale; }
+            set
+            {
+                if (value != biasesScale)
+                {
+                    biasesScale = value;
+                    OnPropertyChanged("BiasesScale");
+                }
+            }
+        }
+
+        public bool BiasesFillerModeVisible
+        {
+            get
+            {
+                return BiasesFiller == Fillers.HeNormal || BiasesFiller == Fillers.HeUniform || BiasesFiller == Fillers.LeCunNormal || BiasesFiller == Fillers.LeCunUniform;
+            }
+        }
+
+        public bool BiasesGainVisible
+        {
+            get
+            {
+                return BiasesFiller == Fillers.HeNormal || BiasesFiller == Fillers.HeUniform || BiasesFiller == Fillers.LeCunNormal || BiasesFiller == Fillers.LeCunUniform || BiasesFiller == Fillers.XavierNormal || BiasesFiller == Fillers.XavierUniform;
+            }
+        }
+
+        public bool BiasesScaleVisible
+        {
+            get
+            {
+                return BiasesFiller == Fillers.Constant || BiasesFiller == Fillers.Normal || BiasesFiller == Fillers.TruncatedNormal || BiasesFiller == Fillers.Uniform;
+            }
+        }
+
+        public Float BiasesLRM
+        {
+            get { return biasesLRM; }
+            set
+            {
+                if (value != biasesLRM)
+                {
+                    biasesLRM = value;
+                    OnPropertyChanged("BiasesLRM");
+                }
+            }
+        }
+
+        public Float BiasesWDM
+        {
+            get { return biasesWDM; }
+            set
+            {
+                if (value != biasesWDM)
+                {
+                    biasesWDM = value;
+                    OnPropertyChanged("BiasesWDM");
+                }
+            }
+        }
+
+        public Float BatchNormMomentum
+        {
+            get { return batchNormMomentum; }
+            set
+            {
+                if (value != batchNormMomentum)
+                {
+                    batchNormMomentum = value;
+                    OnPropertyChanged("BatchNormMomentum");
+                }
+            }
+        }
+
+        public Float BatchNormEps
+        {
+            get { return batchNormEps; }
+            set
+            {
+                if (value != batchNormEps)
+                {
+                    batchNormEps = value;
+                    OnPropertyChanged("BatchNormEps");
+                }
+            }
+        }
+
+        public bool BatchNormScaling
+        {
+            get { return batchNormScaling; }
+            set
+            {
+                if (value != batchNormScaling)
+                {
+                    batchNormScaling = value;
+                    OnPropertyChanged("BatchNormScaling");
+                }
+            }
+        }
+
+        public Float Alpha
+        {
+            get { return alpha; }
+            set
+            {
+                if (value != alpha)
+                {
+                    if (value &gt;= 0 &amp;&amp; value &lt;= 1)
+                    {
+                        alpha = value;
+                        OnPropertyChanged("Alpha");
+                    }
+                }
+            }
+        }
+
+        public Float Beta
+        {
+            get { return beta; }
+            set
+            {
+                if (value != beta)
+                {
+                    if (value &gt;= 0 &amp;&amp; value &lt;= 1)
+                    {
+                        beta = value;
+                        OnPropertyChanged("Beta");
+                    }
+                }
+            }
+        }
+
+        public UInt Groups
+        {
+            get { return groups; }
+            set
+            {
+                if (value &gt;= 1 &amp;&amp; value &lt;= 6 &amp;&amp; value != groups)
+                {
+                    groups = value;
+                    OnPropertyChanged("Groups");
+                    OnPropertyChanged("Depth");
+                }
+            }
+        }
+        public UInt Iterations
+        {
+            get { return iterations; }
+            set
+            {
+                if (value &gt;= 2 &amp;&amp; value &lt;= 100 &amp;&amp; value != iterations)
+                {
+                    iterations = value;
+                    OnPropertyChanged("Iterations");
+                    OnPropertyChanged("Depth");
+                }
+            }
+        }
+
+        public UInt Depth
+        {
+            get
+            {
+                switch (Script)
+                {
+                    case Scripts.densenet:
+                        return (Groups * Iterations * (Bottleneck ? 2u : 1u)) + ((Groups - 1) * 2);
+                    case Scripts.mobilenetv3:
+                        return (Groups * Iterations * 3) + ((Groups - 1) * 2);
+                    case Scripts.resnet:
+                        return (Groups * Iterations * (Bottleneck ? 3u : 2u)) + ((Groups - 1) * 2);
+                    default:
+                        return 0;
+                }
+            }
+        }
+
+        public UInt Width
+        {
+            get { return width; }
+            set
+            {
+                if (value != width)
+                {
+                    width = value;
+                    OnPropertyChanged("Width");
+                }
+            }
+        }
+
+        public UInt GrowthRate
+        {
+            get { return growthRate; }
+            set
+            {
+                if (value != growthRate)
+                {
+                    growthRate = value;
+                    OnPropertyChanged("GrowthRate");
+                }
+            }
+        }
+
+        public bool Bottleneck
+        {
+            get { return bottleneck; }
+            set
+            {
+                if (value != bottleneck)
+                {
+                    bottleneck = value;
+                    OnPropertyChanged("Bottleneck");
+                    OnPropertyChanged("Depth");
+                }
+            }
+        }
+
+        public Float Dropout
+        {
+            get { return dropout; }
+            set
+            {
+                if (value != dropout)
+                {
+                    if (value &gt;= 0 &amp;&amp; value &lt; 1)
+                    {
+                        dropout = value;
+                        OnPropertyChanged("Dropout");
+                    }
+                }
+            }
+        }
+
+        public Float Compression
+        {
+            get { return compression; }
+            set
+            {
+                if (value != compression)
+                {
+                    if (value &gt;= 0 &amp;&amp; value &lt;= 1)
+                    {
+                        compression = value;
+                        OnPropertyChanged("Compression");
+                    }
+                }
+            }
+        }
+
+        public ObservableCollection&lt;EfficientNetRecord&gt; EfficientNet
+        {
+            get { return efficientnet; }
+            set
+            {
+                if (value != efficientnet)
+                {
+                    efficientnet = value;
+                    OnPropertyChanged("EfficientNet");
+                }
+            }
+        }
+
+        public ObservableCollection&lt;ShuffleNetRecord&gt; ShuffleNet
+        {
+            get { return shufflenet; }
+            set
+            {
+                if (value != shufflenet)
+                {
+                    shufflenet = value;
+                    OnPropertyChanged("ShuffleNet");
+                }
+            }
+        }
+
+        public bool DropoutUsed
+        {
+            get { return (dropout &gt; 0 &amp;&amp; dropout &lt; 1); }
+        }
+
+        public bool SqueezeExcitation
+        {
+            get { return squeezeExcitation; }
+            set
+            {
+                if (value != squeezeExcitation)
+                {
+                    squeezeExcitation = value;
+                    OnPropertyChanged("SqueezeExcitation");
+                }
+            }
+        }
+
+        public bool ChannelZeroPad
+        {
+            get { return channelZeroPad; }
+            set
+            {
+                if (value != channelZeroPad)
+                {
+                    channelZeroPad = value;
+                    OnPropertyChanged("ChannelZeroPad");
+                }
+            }
+        }
+
+        public Activations Activation
+        {
+            get { return activation; }
+            set
+            {
+                if (value != activation)
+                {
+                    activation = value;
+                    OnPropertyChanged("Activation");
+                }
+            }
+        }
+
+        public UInt StrideHFirstConv
+        {
+            get { return strideHFirstConv; }
+            set
+            {
+                if (value != strideHFirstConv &amp;&amp; value &gt; 0)
+                {
+                    strideHFirstConv = value;
+                    OnPropertyChanged("StrideHFirstConv");
+                }
+            }
+        }
+
+        public UInt StrideWFirstConv
+        {
+            get { return strideWFirstConv; }
+            set
+            {
+                if (value != strideWFirstConv &amp;&amp; value &gt; 0)
+                {
+                    strideWFirstConv = value;
+                    OnPropertyChanged("StrideWFirstConv");
+                }
+            }
+        }
+
+        public bool GroupsVisible { get { return Script != Scripts.efficientnetv2 &amp;&amp; Script != Scripts.shufflenetv2 &amp;&amp; Script != Scripts.augshufflenet; } }
+        public bool IterationsVisible { get { return Script != Scripts.efficientnetv2 &amp;&amp; Script != Scripts.shufflenetv2 &amp;&amp; Script != Scripts.augshufflenet; } }
+        public bool WidthVisible { get { return Script == Scripts.mobilenetv3 || Script == Scripts.resnet || Script == Scripts.shufflenetv2 || Script == Scripts.augshufflenet; } }
+        public bool GrowthRateVisible { get { return Script == Scripts.densenet; } }
+        public bool DropoutVisible { get { return Script == Scripts.densenet || Script == Scripts.resnet || Script == Scripts.efficientnetv2; } }
+        public bool DepthDropVisible { get { return Script == Scripts.efficientnetv2 || Script == Scripts.mobilenetv3 || Script == Scripts.resnet || Script == Scripts.densenet; } }
+        public bool CompressionVisible { get { return Script == Scripts.densenet; } }
+        public bool BottleneckVisible { get { return Script == Scripts.densenet || Script == Scripts.resnet; } }
+        public bool SqueezeExcitationVisible { get { return Script == Scripts.mobilenetv3; } }
+        public bool ChannelZeroPadVisible { get { return Script == Scripts.resnet; } }
+        public bool EfficientNetVisible { get { return Script == Scripts.efficientnetv2; } }
+        public bool ShuffleNetVisible { get { return Script == Scripts.shufflenetv2 || Script == Scripts.augshufflenet; } }
+
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            if (PropertyChanged != null)
+                PropertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+    }
+
     public class ScriptCatalog
     {
         public const string nwl = "\r\n";
@@ -701,6 +1792,22 @@ namespace ScriptsDialog
                "Algorithm=Linear" + nwl + nwl;
         }
 
+        public static string ReductionAvg(UInt id, string inputs, string group = "", string prefix = "RAVG")
+        {
+            return "[" + group + prefix + to_string(id) + "]" + nwl +
+               "Type=Reduction" + nwl +
+               "Inputs=" + inputs + nwl +
+               "Operation=Avg" + nwl + nwl;
+        }
+
+        public static string ReductionMax(UInt id, string inputs, string group = "", string prefix = "RMAX")
+        {
+            return "[" + group + prefix + to_string(id) + "]" + nwl +
+               "Type=Reduction" + nwl +
+               "Inputs=" + inputs + nwl +
+               "Operation=Max" + nwl + nwl;
+        }
+
         public static string Convolution(UInt id, string inputs, UInt channels, UInt kernelX = 3, UInt kernelY = 3, UInt strideX = 1, UInt strideY = 1, UInt padX = 1, UInt padY = 1, bool biases = false, string group = "", string prefix = "C", string weightsFiller = "")
         {
             return "[" + group + prefix + to_string(id) + "]" + nwl +
@@ -829,6 +1936,13 @@ namespace ScriptsDialog
         {
             return "[" + group + prefix + "]" + nwl +
                 "Type=GlobalAvgPooling" + nwl +
+                "Inputs=" + input + nwl + nwl;
+        }
+
+        public static string GlobalMaxPooling(string input, string group = "", string prefix = "GMP")
+        {
+            return "[" + group + prefix + "]" + nwl +
+                "Type=GlobalMaxPooling" + nwl +
                 "Inputs=" + input + nwl + nwl;
         }
 
@@ -1013,27 +2127,40 @@ namespace ScriptsDialog
                 return
                     Convolution(C, In("CC", A), channels, 1, 1, 1, 1, 0, 0) +
                     BatchNormActivation(C + 1, In("C", C), activation) +
-                    DepthwiseConvolution(C + 1, In("B", C + 1), 1, kernel, kernel, 2, 2, pad, pad) +
-                    BatchNorm(C + 2, In("DC", C + 1)) +
+                    DepthwiseConvolution(C + 1, In("B", C + 1), 1, kernel, kernel, 1, 1, pad, pad) +
+                    Resampling(C + 1, In("DC", C + 1)) +
+                    BatchNorm(C + 2, In("R", C + 1)) +
                     Convolution(C + 2, In("B", C + 2), channels, 1, 1, 1, 1, 0, 0) +
                     BatchNormActivation(C + 3, In("C", C + 2), activation) +
-                    DepthwiseConvolution(C + 3, In("CC", A), 1, kernel, kernel, 2, 2, pad, pad) +
-                    BatchNorm(C + 4, In("DC", C + 3)) +
+                    DepthwiseConvolution(C + 3, In("CC", A), 1, kernel, kernel, 1, 1, pad, pad) +
+                    Resampling(C + 3, In("DC", C + 3)) +
+                    BatchNorm(C + 4, In("R", C + 3)) +
                     Convolution(C + 4, In("B", C + 4), channels, 1, 1, 1, 1, 0, 0) +
                     BatchNormActivation(C + 5, In("C", C + 4), activation) +
                     Concat(A + 1, In("B", C + 5) + "," + In("B", C + 3));
             }
             else
             {
-                var group = In("SE", C + 3);
-                var strSE =
-                    se ? GlobalAvgPooling(In("B", C + 3), group) +
-                    Convolution(1, group + "GAP", DIV8(channels / 4), 1, 1, 1, 1, 0, 0, false, group) +
-                    BatchNormActivation(1, group + "C1", (activation == Activations.FRelu ? Activations.HardSwish : activation), group) +
-                    Convolution(2, group + "B1", channels, 1, 1, 1, 1, 0, 0, false, group) +
-                    BatchNormActivation(2, group + "C2", Activations.HardSigmoid, group) +
-                    Multiply(In("B", C + 3) + "," + group + "B2", group) +
-                    Concat(A + 1, In("LCS", A) + "," + group + "CM") :
+                var groupCH = In("CHATT", C + 3); // Channel Attention
+                var groupSP = In("SPATT", C + 3); // Spatial Attention
+                var strSE = se ?
+                    GlobalAvgPooling(In("B", C + 3), groupCH) +
+                    Convolution(1, groupCH + "GAP", DIV8(channels), 1, 1, 1, 1, 0, 0, false, groupCH) +
+                    BatchNormActivation(1, groupCH + In("C", 1), activation, groupCH) +
+                    GlobalMaxPooling(In("B", C + 3), groupCH) +
+                    Convolution(2, groupCH + "GMP", DIV8(channels), 1, 1, 1, 1, 0, 0, false, groupCH) +
+                    BatchNormActivation(2, groupCH + In("C", 2), activation, groupCH) +
+                    Add(1, In(groupCH + "B", 1) + "," + In(groupCH + "B", 2), groupCH) +
+                    Convolution(3, groupCH + "A1", DIV8(channels), 1, 1, 1, 1, 0, 0, false, groupCH) +
+                    BatchNormActivation(3, groupCH + In("C", 3), Activations.HardSigmoid, groupCH) +
+                    Multiply(In("B", C + 3) + "," + In(groupCH + "B", 3), groupCH) +
+                    ReductionAvg(1, groupCH + "CM", groupSP) +
+                    ReductionMax(1, groupCH + "CM", groupSP) +
+                    Concat(1, In(groupSP + "RAVG", 1) + "," + In(groupSP + "RMAX", 1), groupSP) +
+                    Convolution(1, groupSP + In("CC", 1), 1, 7, 7, 1, 1, 3, 3, false, groupSP) +
+                    BatchNormActivation(1, groupSP + In("C", 1), Activations.HardSigmoid, groupSP) +
+                    Multiply(groupCH + "CM," + groupSP + In("B", 1), groupSP) +
+                    Concat(A + 1, In("LCS", A) + "," + groupSP + "CM") :
                     Concat(A + 1, In("LCS", A) + "," + In("B", C + 3));
 
                 return
@@ -1056,34 +2183,47 @@ namespace ScriptsDialog
                 return
                     Convolution(C, In("CC", A), channels, 1, 1, 1, 1, 0, 0) +
                     BatchNormActivation(C + 1, In("C", C), activation) +
-                    DepthwiseConvolution(C + 1, In("B", C + 1), 1, kernel, kernel, 2, 2, pad, pad) +
-                    BatchNorm(C + 2, In("DC", C + 1)) +
+                    DepthwiseConvolution(C + 1, In("B", C + 1), 1, kernel, kernel, 1, 1, pad, pad) +
+                    Resampling(C + 1, In("DC", C + 1)) +
+                    BatchNorm(C + 2, In("R", C + 1)) +
                     Convolution(C + 2, In("B", C + 2), channels, 1, 1, 1, 1, 0, 0) +
                     BatchNormActivation(C + 3, In("C", C + 2), activation) +
-                    DepthwiseConvolution(C + 3, In("CC", A), 1, kernel, kernel, 2, 2, pad, pad) +
-                    BatchNorm(C + 4, In("DC", C + 3)) +
+                    DepthwiseConvolution(C + 3, In("CC", A), 1, kernel, kernel, 1, 1, pad, pad) +
+                    Resampling(C + 3, In("DC", C + 3)) +
+                    BatchNorm(C + 4, In("R", C + 3)) +
                     Convolution(C + 4, In("B", C + 4), channels, 1, 1, 1, 1, 0, 0) +
                     BatchNormActivation(C + 5, In("C", C + 4), activation) +
                     Concat(A + 1, In("B", C + 5) + "," + In("B", C + 3));
             }
             else
             {
-                var group = In("SE", C + 3);
-                var strSE =
-                    se ? GlobalAvgPooling(In("B", C + 3), group) +
-                    Convolution(1, group + "GAP", DIV8(channels / 4), 1, 1, 1, 1, 0, 0, false, group) +
-                    BatchNormActivation(1, group + "C1", (activation == Activations.FRelu ? Activations.HardSwish : activation), group) +
-                    Convolution(2, group + "B1", channels, 1, 1, 1, 1, 0, 0, false, group) +
-                    BatchNormActivation(2, group + "C2", Activations.HardSigmoid, group) +
-                    Multiply(In("B", C + 3) + "," + group + "B2", group) +
-                    Concat(A + 1, In("LCC", A) + "," + group + "CM") :
+                var groupCH = In("CHATT", C + 3); // Channel Attention
+                var groupSP = In("SPATT", C + 3); // Spatial Attention
+                var strSE = se ?
+                    GlobalAvgPooling(In("B", C + 3), groupCH) +
+                    Convolution(1, groupCH + "GAP", DIV8(channels), 1, 1, 1, 1, 0, 0, false, groupCH) +
+                    BatchNormActivation(1, groupCH + In("C", 1), activation, groupCH) +
+                    GlobalMaxPooling(In("B", C + 3), groupCH) +
+                    Convolution(2, groupCH + "GMP", DIV8(channels), 1, 1, 1, 1, 0, 0, false, groupCH) +
+                    BatchNormActivation(2, groupCH + In("C", 2), activation, groupCH) +
+                    Add(1, In(groupCH + "B", 1) + "," + In(groupCH + "B", 2), groupCH) +
+                    Convolution(3, groupCH + "A1", DIV8(channels), 1, 1, 1, 1, 0, 0, false, groupCH) +
+                    BatchNormActivation(3, groupCH + In("C", 3), Activations.HardSigmoid, groupCH) +
+                    Multiply(In("B", C + 3) + "," + In(groupCH + "B", 3), groupCH) +
+                    ReductionAvg(1, groupCH + "CM", groupSP) +
+                    ReductionMax(1, groupCH + "CM", groupSP) +
+                    Concat(1, In(groupSP + "RAVG", 1) + "," + In(groupSP + "RMAX", 1), groupSP) +
+                    Convolution(1, groupSP + In("CC", 1), 1, 7, 7, 1, 1, 3, 3, false, groupSP) +
+                    BatchNormActivation(1, groupSP + In("C", 1), Activations.HardSigmoid, groupSP) +
+                    Multiply(groupCH + "CM," + groupSP + In("B", 1), groupSP) +
+                    Concat(A + 1, In("LCC", A) + "," + groupSP + "CM") :
                     Concat(A + 1, In("LCC", A) + "," + In("B", C + 3));
 
                 return
                     Shuffle(A, In("CC", A), shuffle) +
                     ChannelSplitRatioLeft(A, In("SH", A), 0.375f) + ChannelSplitRatioRight(A, In("SH", A), 0.375f) +
                     Convolution(C, In("CSRR", A), DIV8((UInt)((2 * channels) * 0.375f)), 1, 1, 1, 1, 0, 0) +
-                    //BatchNorm(C + 1, In("C", C)) +
+                    // BatchNorm(C + 1, In("C", C)) +
                     BatchNormActivation(C + 1, In("C", C), activation) +
                     DepthwiseConvolution(C + 1, In("B", C + 1), 1, kernel, kernel, 1, 1, pad, pad) +
                     BatchNorm(C + 2, In("DC", C + 1)) +
@@ -1414,7 +2554,7 @@ namespace ScriptsDialog
                             Convolution(C + 1, In("B", C), p.Classes, 1, 1, 1, 1, 0, 0) +
                             BatchNorm(C + 1, In("C", C + 1)) +
                             GlobalAvgPooling(In("B", C + 1)) +
-                            LogSoftmax("GAP") +
+                               LogSoftmax("GAP") +
                             Cost("LSM", p.Dataset, p.Classes, "CategoricalCrossEntropy", 0.125f);
                     }
                     break;
@@ -1528,11 +2668,11 @@ namespace ScriptsDialog
                             net += block;
 
                         net +=
-                            BatchNormActivation(C, In("A", A), p.Activation) +
+                               BatchNormActivation(C, In("A", A), p.Activation) +
                             Convolution(C + 1, In("B", C), p.Classes, 1, 1, 1, 1, 0, 0) +
                             BatchNorm(C + 1, In("C", C + 1)) +
                             GlobalAvgPooling(In("B", C + 1)) +
-                            LogSoftmax("GAP") +
+                               LogSoftmax("GAP") +
                             Cost("LSM", p.Dataset, p.Classes, "CategoricalCrossEntropy", 0.125f);
                     }
                     break;
@@ -1584,11 +2724,42 @@ namespace ScriptsDialog
 
             return net;
         }
+
+
+        const string Framework = "net8.0";
+#if DEBUG
+        const string Mode = "Debug";
+#else
+        const string Mode = "Release";
+#endif
+        public static string StorageDirectory { get; } = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\convnet\";
+        public static string ScriptsDirectory { get; } = StorageDirectory + @"scripts\";
+        public static string ScriptPath { get; } = ScriptsDirectory + @"Scripts\bin\" + Mode + @"\" + Framework + @"\";
+
+        static void Main() 
+        {
+            var param = new ScriptParameters(Scripts.shufflenetv2, Datasets.cifar10, 32, 32, 4, 4, false, true, Fillers.HeNormal, FillerModes.In, 1f, 0.05f, 1f, 1f, false, Fillers.Constant, FillerModes.In, 1f, 0f, 1f, 1f, 0.995f, 0.0001f, false, 0f, 0f, 3, 4, 12, 12, false, 0.0f, 0.0f, false, true, Activations.HardSwish, 1, 1, 0.0f, false)
+            {
+                ShuffleNet = [new(7, 3, 1, 2, false) , new(7, 3, 1, 2, true), new(7, 3, 1, 2, true)] 
+            };
+                        
+            var script = Generate(param);
+            var fileInfo = new FileInfo(ScriptPath + @"script.txt");
+            if (fileInfo.Directory != null)
+            {
+                if (!fileInfo.Directory.Exists)
+                    fileInfo.Directory.Create();
+
+                var streamWriter = fileInfo.CreateText();
+                streamWriter.AutoFlush = true;
+                streamWriter.Write(script);
+                streamWriter.Close();
+                streamWriter.Dispose();
+            }
+        }
     }
-}</Value>
-    </Setting>
-    <Setting Name="EditSplitPositionB" Type="System.Windows.GridLength" Scope="User">
-      <Value Profile="(Default)">840</Value>
+}
+</Value>
     </Setting>
     <Setting Name="PlainFormat" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
