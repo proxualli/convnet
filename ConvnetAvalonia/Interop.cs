@@ -923,7 +923,6 @@ namespace Interop
         private Float scaling = (Float)10;
         private Float rotation = (Float)12;
 
-
         public DNNOptimizers Optimizer
         {
             get { return optimizer; }
