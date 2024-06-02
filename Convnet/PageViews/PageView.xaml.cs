@@ -1,6 +1,6 @@
-﻿using Avalonia.Controls;
+﻿using System.Windows.Controls;
 
-namespace ConvnetAvalonia.PageViews
+namespace Convnet.PageViews
 {
     public partial class PageView : UserControl
     {
