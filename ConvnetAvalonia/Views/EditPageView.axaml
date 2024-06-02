@@ -3,7 +3,10 @@
              xmlns:c="clr-namespace:ConvnetAvalonia.Common"
              xmlns:converters="clr-namespace:ConvnetAvalonia.Converters"
              xmlns:props="clr-namespace:ConvnetAvalonia.Properties"
-             x:Class="ConvnetAvalonia.PageViews.EditPageView">
+             xmlns:vm="clr-namespace:ConvnetAvalonia.PageViewModels"
+             xmlns:view="using:ConvnetAvalonia.PageViews"
+             x:Class="ConvnetAvalonia.PageViews.EditPageView"
+             x:DataType="vm:EditPageViewModel">
 
    <Grid Background="{StaticResource BackgroundBrush}" x:Name="grid">
         <Grid.ColumnDefinitions>

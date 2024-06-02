@@ -61,7 +61,7 @@ namespace ConvnetAvalonia.PageViewModels
             var openButton = new Button
             {
                 Name = "ButtonOpen",
-                Content = new AdvancedImage(new Uri("../Resources/Open.png")),
+                Content = new AdvancedImage(new Uri("../Resources/Open.png", UriKind.Relative)),
                 ClickMode = ClickMode.Release
             };
             ToolTip.SetTip(openButton, "Open");
@@ -70,7 +70,7 @@ namespace ConvnetAvalonia.PageViewModels
             var saveButton = new Button
             {
                 Name = "ButtonSave",
-                Content = new AdvancedImage(new Uri("../Resources/Save.png")),
+                Content = new AdvancedImage(new Uri("../Resources/Save.png", UriKind.Relative)),
                 ClickMode = ClickMode.Release
             };
             ToolTip.SetTip(saveButton, "Save");
@@ -88,7 +88,7 @@ namespace ConvnetAvalonia.PageViewModels
             var synchronizeButton = new Button
             {
                 Name = "ButtonSynchronize",
-                Content = new AdvancedImage(new Uri("../Resources/Synchronize.png")),
+                Content = new AdvancedImage(new Uri("../Resources/Synchronize.png", UriKind.Relative)),
                 ClickMode = ClickMode.Release
             };
             ToolTip.SetTip(synchronizeButton, "Synchronize");
@@ -103,7 +103,7 @@ namespace ConvnetAvalonia.PageViewModels
             var scriptsButton = new Button
             {
                 Name = "ButtonScripts",
-                Content = new AdvancedImage(new Uri("../Resources/Calculate.png")),
+                Content = new AdvancedImage(new Uri("../Resources/Calculate.png", UriKind.Relative)),
                 ClickMode = ClickMode.Release,
             };
             ToolTip.SetTip(scriptsButton, "Run Script");
@@ -113,7 +113,7 @@ namespace ConvnetAvalonia.PageViewModels
             var visualStudioButton = new Button
             {
                 Name = "ButtonVisualStudio",
-                Content = new AdvancedImage(new Uri("../Resources/VisualStudio.png")),
+                Content = new AdvancedImage(new Uri("../Resources/VisualStudio.png", UriKind.Relative)),
                 ClickMode = ClickMode.Release,
             };
             ToolTip.SetTip(visualStudioButton, "Open in Visual Studio");
@@ -127,7 +127,7 @@ namespace ConvnetAvalonia.PageViewModels
             CommandToolBar.Add(visualStudioButton);
         }
 
-       public override string DisplayName => "Edit";
+        public override string DisplayName => "Edit";
 
         public override void Reset()
         {
@@ -497,7 +497,8 @@ namespace ConvnetAvalonia.PageViewModels
                 var security = new FileSecurity(fileInfo.FullName, AccessControlSections.Owner | AccessControlSections.Group | AccessControlSections.Access);
                 //var authorizationRules = security.GetAccessRules(true, true, typeof(NTAccount));
                 var owner = security.GetOwner(typeof(NTAccount));
-                security.ModifyAccessRule(AccessControlModification.Add, new FileSystemAccessRule(owner, FileSystemRights.Modify, AccessControlType.Allow), out bool modified);
+                if (owner != null)
+                    security.ModifyAccessRule(AccessControlModification.Add, new FileSystemAccessRule(owner, FileSystemRights.Modify, AccessControlType.Allow), out bool modified);
                 //#pragma warning restore CA1416 // Validate platform compatibility
 
                 Definition = File.ReadAllText(fileName);

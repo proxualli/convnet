@@ -8,31 +8,21 @@
              xmlns:converters="clr-namespace:ConvnetAvalonia.Converters"
              xmlns:props="clr-namespace:ConvnetAvalonia.Properties"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:DataType="vm:PageViewModel"
              x:Class="ConvnetAvalonia.PageViews.PageView">
- 
-  <UserControl.Resources>
-    <!-- These four templates map a ViewModel to a View. -->
-    <!--<DataTemplate DataType="{x:Type vm:EditPageViewModel}">
-      <view:EditPageView />
-    </DataTemplate>-->
 
-    <!--<DataTemplate DataType="{x:Type viewmodel:TestPageViewModel}">
-      <view:TestPageView/>
+  <UserControl.DataTemplates>
+    <DataTemplate DataType="{x:Type vm:EditPageViewModel}">
+      <view:EditPageView />
     </DataTemplate>
 
-    <DataTemplate DataType="{x:Type viewmodel:TrainPageViewModel}">
-      <view:TrainPageView/>
-    </DataTemplate>-->
-
-    <!--<Style x:Key="ImageEnabled" TargetType="Image">
-      <Style.Triggers>
-        <Trigger Property="IsEnabled" Value="False">
-          <Setter Property="Opacity" Value="0.25"></Setter>
-        </Trigger>
-      </Style.Triggers>
-    </Style>-->
-  </UserControl.Resources>
-
+    <!--<Style TargetType="{x:Type Image}">
+      <Setter Property="RenderOptions.BitmapScalingMode" Value="HighQuality"/>
+    </Style>
+    <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+    <props:Settings x:Key="Settings"/>-->
+  </UserControl.DataTemplates>
+   
   <Grid>
     <Grid.RowDefinitions>
       <RowDefinition Height="Auto"/>
@@ -42,14 +32,22 @@
 
     <!--<ToolBarTray Grid.Row="0" Height="Auto" HorizontalAlignment="Stretch" Name="toolBarTray" VerticalAlignment="Top" Width="Auto" ToolBarTray.IsLocked="False">
       <ToolBar>
-        <ComboBox Name="PageViews" Margin="2" MinWidth="50"  ItemsSource="{Binding Path=Pages}" SelectedItem="{Binding Path=CurrentPage}" IsEnabled="{Binding Path=CurrentPage.IsValid, Mode=TwoWay}" UseLayoutRounding="True" SnapsToDevicePixels="True" IsReadOnly="True" IsTextSearchEnabled="False" IsSynchronizedWithCurrentItem="True" DisplayMemberPath="DisplayName"/>
+        <ComboBox Name="PageViews" Margin="2" MinWidth="50"  ItemsSource="{Binding Path=Pages}" SelectedItem="{Binding Path=CurrentPage}" IsEnabled="{Binding Path=CurrentPage.IsValid, Mode=TwoWay}" UseLayoutRounding="True" IsReadOnly="True" IsTextSearchEnabled="False" IsSynchronizedWithCurrentItem="True" DisplayMemberPath="DisplayName"/>
       </ToolBar>
       <ToolBar Name="CmdToolBar" ItemsSource="{Binding Path=CommandToolBar, Mode=TwoWay, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged}" Visibility="{Binding Path=CommandToolBarVisibility}"/>
     </ToolBarTray>-->
 
-    <!--<Border Grid.Row="1">
+    <ComboBox Name="PageViews" Margin="2" MinWidth="150" Grid.Row="0" ItemsSource="{Binding Path=Pages}" SelectedItem="{Binding Path=CurrentPage}">
+      <ComboBox.ItemTemplate>
+        <DataTemplate>
+          <TextBlock Text="{Binding Path=DisplayName}"/>
+        </DataTemplate>
+      </ComboBox.ItemTemplate>
+    </ComboBox>
+    
+    <Border Grid.Row="1">
       <ContentControl Name="PageContentControl" Content="{Binding Path=CurrentPage}"/>
-    </Border>-->
+    </Border>
 
     <!--<StatusBar Grid.Row="2" Name="statusBarMain" Width="Auto" Height="23" Background="{StaticResource BackgroundBrushLight}">
       <StatusBarItem HorizontalAlignment="Right" Width="Auto">

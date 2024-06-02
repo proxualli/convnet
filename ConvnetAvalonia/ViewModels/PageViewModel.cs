@@ -4,6 +4,7 @@ using ReactiveUI;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Reactive;
 using Float = System.Single;
 using UInt = System.UInt64;
 
