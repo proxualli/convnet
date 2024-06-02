@@ -288,7 +288,7 @@ namespace ConvnetAvalonia.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("420")]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
         public global::Avalonia.Controls.GridLength EditSplitPositionA {
             get {
                 return ((global::Avalonia.Controls.GridLength)(this["EditSplitPositionA"]));

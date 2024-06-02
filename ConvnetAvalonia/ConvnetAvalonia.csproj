@@ -114,10 +114,14 @@
     <AvaloniaResource Include="Resources\ClearContents.png" />
     <AvaloniaResource Include="Resources\Collection.png" />
     <AvaloniaResource Include="Resources\Copy.png" />
-    <AvaloniaResource Include="Resources\CPP-Mode.xshd" />
-    <AvaloniaResource Include="Resources\CSharp-Mode.xshd" />
+    <EmbeddedResource Include="Resources\CPP-Mode.xshd" />
+    <EmbeddedResource Include="Resources\CSharp-Mode.xshd">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </EmbeddedResource>
     <AvaloniaResource Include="Resources\Cut.png" />
-    <AvaloniaResource Include="Resources\Definition.xshd" />
+    <EmbeddedResource Include="Resources\Definition.xshd">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </EmbeddedResource>
     <AvaloniaResource Include="Resources\F1Help.png" />
     <AvaloniaResource Include="Resources\Favorites.png" />
     <AvaloniaResource Include="Resources\Forget.png" />

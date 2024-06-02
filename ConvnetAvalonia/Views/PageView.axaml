@@ -37,7 +37,7 @@
       <ToolBar Name="CmdToolBar" ItemsSource="{Binding Path=CommandToolBar, Mode=TwoWay, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged}" Visibility="{Binding Path=CommandToolBarVisibility}"/>
     </ToolBarTray>-->
 
-    <ComboBox Name="PageViews" Margin="2" MinWidth="150" Grid.Row="0" ItemsSource="{Binding Path=Pages}" SelectedItem="{Binding Path=CurrentPage}">
+    <ComboBox Name="PageViews" Margin="2" MinWidth="60" Grid.Row="0" ItemsSource="{Binding Path=Pages}" SelectedItem="{Binding Path=CurrentPage}" IsEnabled="{Binding Path=CurrentPage.IsValid}">
       <ComboBox.ItemTemplate>
         <DataTemplate>
           <TextBlock Text="{Binding Path=DisplayName}"/>

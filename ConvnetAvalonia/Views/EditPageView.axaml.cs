@@ -1,9 +1,10 @@
-﻿using ConvnetAvalonia.Properties;
+﻿using Avalonia.Controls;
+using Avalonia.Input;
 using AvaloniaEdit.Highlighting;
+using AvaloniaEdit.Highlighting.Xshd;
+using ConvnetAvalonia.Properties;
 using System;
 using System.IO;
-using Avalonia.Controls;
-using AvaloniaEdit.Highlighting.Xshd;
 using System.Xml;
 
 namespace ConvnetAvalonia.PageViews
@@ -13,44 +14,49 @@ namespace ConvnetAvalonia.PageViews
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Interoperability", "CA1416:Validate platform compatibility", Justification = "<Pending>")]
         public EditPageView()
         {
-            //IHighlightingDefinition DefinitionHighlighting;
-            //using (Stream s = typeof(EditPageView).Assembly.GetManifestResourceStream("ConvnetAvalonia.Resources.Definition.xshd"))
-            //{
-            //    if (s == null)
-            //        throw new InvalidOperationException("Could not find embedded resource");
-            //    using (XmlReader reader = new XmlTextReader(s))
-            //    {
-            //        DefinitionHighlighting = HighlightingLoader.Load(reader, HighlightingManager.Instance);
-            //    }
-            //}
+            //string[] names = this.GetType().Assembly.GetManifestResourceNames();
+            //string[] anames = Assembly.GetExecutingAssembly().GetManifestResourceNames();
+            //var bitmap = new Bitmap(AssetLoader.Open(new Uri("ConvnetAvalonia.Resources.Definition.xshd")));
 
-            //HighlightingManager.Instance.RegisterHighlighting("Definition", new string[] { ".txt" }, DefinitionHighlighting);
+            IHighlightingDefinition DefinitionHighlighting;
+            using (Stream? s = typeof(EditPageView).Assembly.GetManifestResourceStream("ConvnetAvalonia.Resources.Definition.xshd"))
+            {
+                if (s == null)
+                    throw new InvalidOperationException("Could not find embedded resource");
+                using (XmlReader reader = new XmlTextReader(s))
+                {
+                    DefinitionHighlighting = HighlightingLoader.Load(reader, HighlightingManager.Instance);
+                }
+            }
+            HighlightingManager.Instance.RegisterHighlighting("Definition", new string[] { ".txt" }, DefinitionHighlighting);
 
-            
-            //IHighlightingDefinition CSharpHighlighting;
-            //using (Stream s = typeof(EditPageView).Assembly.GetManifestResourceStream("ConvnetAvalonia.Resources.CSharp-Mode.xshd"))
-            //{
-            //    if (s == null)
-            //        throw new InvalidOperationException("Could not find embedded resource");
-            //    using (XmlReader reader = new XmlTextReader(s))
-            //    {
-            //        CSharpHighlighting = HighlightingLoader.Load(reader, HighlightingManager.Instance);
-            //    }
-            //}
 
-            //HighlightingManager.Instance.RegisterHighlighting("C#", new string[] { ".cs" }, CSharpHighlighting);
+            IHighlightingDefinition CSharpHighlighting;
+            using (Stream? s = typeof(EditPageView).Assembly.GetManifestResourceStream("ConvnetAvalonia.Resources.CSharp-Mode.xshd"))
+            {
+                if (s == null)
+                    throw new InvalidOperationException("Could not find embedded resource");
+                using (XmlReader reader = new XmlTextReader(s))
+                {
+                    CSharpHighlighting = HighlightingLoader.Load(reader, HighlightingManager.Instance);
+                }
+            }
+            HighlightingManager.Instance.RegisterHighlighting("C#", new string[] { ".cs" }, CSharpHighlighting);
 
 
             InitializeComponent();
 
-            //EditorDefinition.SyntaxHighlighting = HighlightingManager.Instance.GetDefinitionByExtension(".txt");
-            //EditorScript.SyntaxHighlighting = HighlightingManager.Instance.GetDefinitionByExtension(".cs");
+            EditorDefinition.SyntaxHighlighting = HighlightingManager.Instance.GetDefinitionByExtension(".txt");
+            EditorScript.SyntaxHighlighting = HighlightingManager.Instance.GetDefinitionByExtension(".cs");
         }
 
-        //private void GridSplitter_DragCompleted(object? sender, DragCompletedEventArgs e)
-        //{
-        //    if (!e.Canceled)
-        //        Settings.Default.Save();
-        //}
+        private void GridSplitter_DragCompleted(object? sender, VectorEventArgs e)
+        {
+            if (!e.Handled)
+            {
+                Settings.Default.Save();
+                e.Handled = true;
+            }
+        }
     }
 }
