@@ -2764,13 +2764,13 @@ namespace Scripts
     <Setting Name="PlainFormat" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="Dataset" Type="System.String" Scope="User">
-      <Value Profile="(Default)">cifar10</Value>
+    <Setting Name="Dataset" Type="System.Collections.Specialized.StringCollection" Scope="User">
+      <Value Profile="(Default)" />
     </Setting>
     <Setting Name="ShuffleSetter" Type="System.Double" Scope="User">
       <Value Profile="(Default)">96</Value>
     </Setting>
-    <Setting Name="Shuffle" Type="System.String" Scope="User">
+    <Setting Name="Shuffle" Type="System.Double" Scope="User">
       <Value Profile="(Default)">64</Value>
     </Setting>
     <Setting Name="GotoCycle" Type="System.UInt32" Scope="User">

@@ -1,0 +1,25 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:c="clr-namespace:ConvnetAvalonia.Common"
+             xmlns:converters="clr-namespace:ConvnetAvalonia.Converters"
+             xmlns:props="clr-namespace:ConvnetAvalonia.Properties"
+             x:Class="ConvnetAvalonia.PageViews.EditPageView">
+
+   <Grid Background="{StaticResource BackgroundBrush}" x:Name="grid">
+        <Grid.ColumnDefinitions>
+            <!--<ColumnDefinition Width="{Binding Source={x:Static props:Settings.Default}, Path=EditSplitPositionA, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MinWidth="200" MaxWidth="800"/>-->
+          <ColumnDefinition Width="*" MinWidth="200"/>
+          <ColumnDefinition Width="*" MinWidth="200"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="28" MinHeight="28"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Image x:Name="ImageStatusDefinition" Grid.Column="0" Grid.Row="0" />
+        <TextBlock Background="{StaticResource BackgroundBrushLight}" Foreground="{StaticResource TextBrush}" FontSize="17" FontWeight="DemiBold" Text="Definition" TextAlignment="Center" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="2,2,4,2" Padding="0"/>
+        <TextBlock Background="{StaticResource BackgroundBrushLight}" Foreground="{StaticResource TextBrush}" FontSize="17" FontWeight="DemiBold" Text="Scripts" TextAlignment="Center" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,2,2,2"/>
+        <!--<c:DefinitionEditor Background="{StaticResource BackgroundBrush}" Foreground="{StaticResource TextBrush}" x:Name="EditorDefinition" Grid.Column="0" Grid.Row="1" Height="Auto" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ContextMenu="{StaticResource MyContextMenu}" Definition="{Binding Definition, Mode=TwoWay, NotifyOnSourceUpdated=True, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged}" FilePath="{Binding FilePath, Mode=TwoWay, NotifyOnSourceUpdated=True, NotifyOnTargetUpdated=True}" WordWrap="{Binding WordWrap, Mode=TwoWay, NotifyOnSourceUpdated=True, NotifyOnTargetUpdated=True}" ShowLineNumbers="{Binding ShowLineNumbers, Mode=TwoWay, NotifyOnSourceUpdated=True, NotifyOnTargetUpdated=True}" SelectionLength="{Binding SelectionLength, Mode=TwoWay, NotifyOnSourceUpdated=True, NotifyOnTargetUpdated=True}" SelectionStart="{Binding SelectionStart, Mode=TwoWay, NotifyOnSourceUpdated=True, NotifyOnTargetUpdated=True}" TextLocation="{Binding TextLocation, Mode=TwoWay, NotifyOnSourceUpdated=True, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged}" Padding="2" Margin="0,0,4,0"/>-->
+        <!--<GridSplitter Grid.Column="0" HorizontalAlignment="Right" Height="Auto" Grid.Row="0" Grid.RowSpan="2" VerticalAlignment="Stretch" Width="4" Background="{StaticResource BackgroundBrush}" ResizeDirection="Columns" DragCompleted="GridSplitter_DragCompleted"/>
+        <c:CodeEditor x:Name="EditorScript" Background="{StaticResource BackgroundBrush}" Foreground="{StaticResource TextBrush}" FontFamily="Consolas" Grid.Row="1" Grid.Column="1" ContextMenu="{StaticResource MyContextMenu}" ShowLineNumbers="True" SourceCode="{Binding Script, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Padding="2" Margin="0,0,4,0"/>-->
+    </Grid>
+</UserControl>

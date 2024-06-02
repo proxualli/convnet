@@ -1,0 +1,67 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:ConvnetAvalonia.PageViewModels"
+             xmlns:view="using:ConvnetAvalonia.PageViews"
+             xmlns:c="clr-namespace:ConvnetAvalonia.Common"
+             xmlns:converters="clr-namespace:ConvnetAvalonia.Converters"
+             xmlns:props="clr-namespace:ConvnetAvalonia.Properties"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="ConvnetAvalonia.PageViews.PageView">
+ 
+  <UserControl.Resources>
+    <!-- These four templates map a ViewModel to a View. -->
+    <!--<DataTemplate DataType="{x:Type vm:EditPageViewModel}">
+      <view:EditPageView />
+    </DataTemplate>-->
+
+    <!--<DataTemplate DataType="{x:Type viewmodel:TestPageViewModel}">
+      <view:TestPageView/>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type viewmodel:TrainPageViewModel}">
+      <view:TrainPageView/>
+    </DataTemplate>-->
+
+    <!--<Style x:Key="ImageEnabled" TargetType="Image">
+      <Style.Triggers>
+        <Trigger Property="IsEnabled" Value="False">
+          <Setter Property="Opacity" Value="0.25"></Setter>
+        </Trigger>
+      </Style.Triggers>
+    </Style>-->
+  </UserControl.Resources>
+
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="*" />
+      <RowDefinition Height="Auto" />
+    </Grid.RowDefinitions>
+
+    <!--<ToolBarTray Grid.Row="0" Height="Auto" HorizontalAlignment="Stretch" Name="toolBarTray" VerticalAlignment="Top" Width="Auto" ToolBarTray.IsLocked="False">
+      <ToolBar>
+        <ComboBox Name="PageViews" Margin="2" MinWidth="50"  ItemsSource="{Binding Path=Pages}" SelectedItem="{Binding Path=CurrentPage}" IsEnabled="{Binding Path=CurrentPage.IsValid, Mode=TwoWay}" UseLayoutRounding="True" SnapsToDevicePixels="True" IsReadOnly="True" IsTextSearchEnabled="False" IsSynchronizedWithCurrentItem="True" DisplayMemberPath="DisplayName"/>
+      </ToolBar>
+      <ToolBar Name="CmdToolBar" ItemsSource="{Binding Path=CommandToolBar, Mode=TwoWay, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged}" Visibility="{Binding Path=CommandToolBarVisibility}"/>
+    </ToolBarTray>-->
+
+    <!--<Border Grid.Row="1">
+      <ContentControl Name="PageContentControl" Content="{Binding Path=CurrentPage}"/>
+    </Border>-->
+
+    <!--<StatusBar Grid.Row="2" Name="statusBarMain" Width="Auto" Height="23" Background="{StaticResource BackgroundBrushLight}">
+      <StatusBarItem HorizontalAlignment="Right" Width="Auto">
+        <TextBlock x:Name="SampleRate" Margin="2,0,2,0" HorizontalAlignment="Left" VerticalAlignment="Stretch" Text="{Binding Path=SampleRate}" ToolTip="Sample Rate" Foreground="{StaticResource TextBrush}" />
+      </StatusBarItem>
+      <StatusBarItem HorizontalAlignment="Left" Width="Auto">
+        <TextBlock x:Name="Time" Margin="2,0,2,0" HorizontalAlignment="Left" VerticalAlignment="Stretch" Text="{Binding Path=Duration}" ToolTip="Duration" Foreground="{StaticResource TextBrush}"/>
+      </StatusBarItem>
+      <StatusBarItem HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" HorizontalAlignment="Stretch">
+        <ProgressBar Margin="0" x:Name="ProgressBar" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Background="{StaticResource BackgroundBrushLight}" BorderBrush="{StaticResource BackgroundBrushLight}" Minimum="{Binding Path=ProgressBarMinimum}" Maximum="{Binding Path=ProgressBarMaximum}" Value="{Binding Path=ProgressBarValue}" SmallChange="1" Height="Auto" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" IsTabStop="False" Width="Auto">
+        </ProgressBar>
+      </StatusBarItem>
+    </StatusBar>-->
+  </Grid>
+</UserControl>

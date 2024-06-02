@@ -883,10 +883,10 @@ namespace Interop
     };
 
     [Serializable()]
-    public class DNNTrainingRate : System.ComponentModel.INotifyPropertyChanged
+    public class DNNTrainingRate : INotifyPropertyChanged
     {
         [field: NonSerializedAttribute()]
-        public event System.ComponentModel.PropertyChangedEventHandler? PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
 
         private DNNOptimizers optimizer = DNNOptimizers.NAG;
         private Float momentum = (Float)0.9;
@@ -1416,10 +1416,10 @@ namespace Interop
     };
 
     [Serializable()]
-    public class DNNTrainingStrategy : System.ComponentModel.INotifyPropertyChanged
+    public class DNNTrainingStrategy : INotifyPropertyChanged
     {
         [field: NonSerializedAttribute()]
-        public virtual event System.ComponentModel.PropertyChangedEventHandler? PropertyChanged;
+        public virtual event PropertyChangedEventHandler? PropertyChanged;
 
         private Float epochs = (Float)1;
         private UInt n = 128;
@@ -1817,10 +1817,10 @@ namespace Interop
     };
 
     [Serializable()]
-    public class DNNTrainingResult : System.ComponentModel.INotifyPropertyChanged
+    public class DNNTrainingResult : INotifyPropertyChanged
     {
         [field: NonSerializedAttribute()]
-        public virtual event System.ComponentModel.PropertyChangedEventHandler? PropertyChanged;
+        public virtual event PropertyChangedEventHandler? PropertyChanged;
 
         public UInt Cycle
         {
@@ -2437,10 +2437,10 @@ namespace Interop
     };
 
     [Serializable()]
-    public class DNNLayerInfo : System.ComponentModel.INotifyPropertyChanged
+    public class DNNLayerInfo : INotifyPropertyChanged
     {
         [field: NonSerializedAttribute()]
-        public virtual event System.ComponentModel.PropertyChangedEventHandler? PropertyChanged;
+        public virtual event PropertyChangedEventHandler? PropertyChanged;
 
         private string name;
         private string description;
@@ -3354,7 +3354,7 @@ namespace Interop
         public UInt[] ConfusionMatrix;
         public string[][] LabelsCollection;
         public bool UseTrainingStrategy;
-        public System.Collections.ObjectModel.ObservableCollection<DNNTrainingStrategy> TrainingStrategies;
+        public System.Collections.ObjectModel.ObservableCollection<DNNTrainingStrategy>? TrainingStrategies;
         public DNNTrainingRate[] TrainingRates;
         public DNNTrainingRate TrainingRate;
 		public string Definition;
@@ -3736,8 +3736,8 @@ namespace Interop
                     break;
             }
 
-            Layers = new System.Collections.ObjectModel.ObservableCollection< DNNLayerInfo>();
-            TrainingStrategies = new System.Collections.ObjectModel.ObservableCollection< DNNTrainingStrategy>();
+            Layers = new System.Collections.ObjectModel.ObservableCollection<DNNLayerInfo>();
+            TrainingStrategies = new System.Collections.ObjectModel.ObservableCollection<DNNTrainingStrategy>();
             CostLayers = new DNNCostLayer[CostLayerCount];
                         
             UInt counter = 0;

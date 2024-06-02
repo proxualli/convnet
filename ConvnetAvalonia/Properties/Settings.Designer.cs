@@ -22,7 +22,37 @@ namespace ConvnetAvalonia.Properties {
                 return defaultInstance;
             }
         }
-        
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("64")]
+        public byte BackgroundColor
+        {
+            get
+            {
+                return ((byte)(this["BackgroundColor"]));
+            }
+            set
+            {
+                this["BackgroundColor"] = value;
+            }
+        }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool UseTrainingStrategy
+        {
+            get
+            {
+                return ((bool)(this["UseTrainingStrategy"]));
+            }
+            set
+            {
+                this["UseTrainingStrategy"] = value;
+            }
+        }
+
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("3")]
@@ -46,19 +76,22 @@ namespace ConvnetAvalonia.Properties {
                 this["RefreshInterval"] = value;
             }
         }
-        
+
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("9")]
-        public int Optimizer {
-            get {
-                return ((int)(this["Optimizer"]));
+        [global::System.Configuration.DefaultSettingValueAttribute("4")]
+        public Interop.DNNOptimizers Optimizer
+        {
+            get
+            {
+                return ((Interop.DNNOptimizers)(this["Optimizer"]));
             }
-            set {
+            set
+            {
                 this["Optimizer"] = value;
             }
         }
-        
+
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("0")]
@@ -1551,7 +1584,6 @@ namespace ConvnetAvalonia.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("cifar10")]
         public string Dataset {
             get {
                 return ((string)(this["Dataset"]));
@@ -1576,9 +1608,9 @@ namespace ConvnetAvalonia.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("64")]
-        public string Shuffle {
+        public double Shuffle {
             get {
-                return ((string)(this["Shuffle"]));
+                return ((double)(this["Shuffle"]));
             }
             set {
                 this["Shuffle"] = value;
