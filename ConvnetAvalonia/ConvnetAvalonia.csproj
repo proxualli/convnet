@@ -17,7 +17,6 @@
 
   <ItemGroup>
     <Compile Remove="Common\BitMapToImage.cs" />
-    <Compile Remove="Common\DefinitionEditor.cs" />
     <Compile Remove="ViewModels\TestPageViewModel.cs" />
     <Compile Remove="ViewModels\TrainPageViewModel.cs" />
   </ItemGroup>
@@ -73,7 +72,6 @@
 
   <ItemGroup>
     <None Include="Common\BitMapToImage.cs" />
-    <None Include="Common\DefinitionEditor.cs" />
     <None Include="ViewModels\TestPageViewModel.cs" />
     <None Include="ViewModels\TrainPageViewModel.cs" />
   </ItemGroup>
