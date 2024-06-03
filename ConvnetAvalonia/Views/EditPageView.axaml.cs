@@ -1,4 +1,5 @@
-﻿using Avalonia.Controls;
+﻿using Avalonia;
+using Avalonia.Controls;
 using Avalonia.Input;
 using AvaloniaEdit.Highlighting;
 using AvaloniaEdit.Highlighting.Xshd;
@@ -50,6 +51,12 @@ namespace ConvnetAvalonia.PageViews
             EditorScript.SyntaxHighlighting = HighlightingManager.Instance.GetDefinitionByExtension(".cs");
         }
 
+        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs e)
+        {
+            //if (e.Property == ValorProperty)
+            //    Actualizar();
+            base.OnPropertyChanged(e);
+        }
         private void GridSplitter_DragCompleted(object? sender, VectorEventArgs e)
         {
             if (!e.Handled)

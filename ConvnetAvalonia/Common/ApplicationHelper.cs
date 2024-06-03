@@ -5,18 +5,14 @@ using System.IO;
 using System.Linq;
 using System.Net.NetworkInformation;
 using System.Runtime.InteropServices;
-using System.Runtime.InteropServices.ObjectiveC;
 using System.Text.RegularExpressions;
 using Avalonia;
-using Avalonia.Input;
 using Avalonia.Threading;
 
-namespace Convnet.Common
+namespace ConvnetAvalonia.Common
 {
     public static class ApplicationHelper
     {
-       
-
         #region DoEvents
         /// <summary>
         /// Forces the WPF message pump to process all enqueued messages
@@ -27,9 +23,9 @@ namespace Convnet.Common
         //[SecurityPermissionAttribute(SecurityAction.Demand, Flags = SecurityPermissionFlag.UnmanagedCode)]
         public static void DoEvents(DispatcherPriority priority)
         {
-            Func<object, object>  del = new Func<object, object>(ExitFrameOperation);
+            Func<object, object> functionDelegate = new Func<object, object>(ExitFrameOperation);
             DispatcherFrame frame = new DispatcherFrame();
-            DispatcherOperation dispatcherOperation = Dispatcher.UIThread.InvokeAsync(() => del, priority);
+            DispatcherOperation dispatcherOperation = Dispatcher.UIThread.InvokeAsync(() => functionDelegate, priority);
             Dispatcher.UIThread.PushFrame(frame);
 
             if (dispatcherOperation.Status != DispatcherOperationStatus.Completed)

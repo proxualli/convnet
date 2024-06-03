@@ -44,8 +44,8 @@ namespace ConvnetAvalonia.Common
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Interoperability", "CA1416:Validate platform compatibility", Justification = "<Pending>")]
     public class DefinitionEditor : TextEditor, INotifyPropertyChanged
     {
-        public event PropertyChangedEventHandler? PropertyChanged;
-
+        public new event PropertyChangedEventHandler? PropertyChanged;
+       
         public DefinitionEditor()
         {
             FontSize = 13;
@@ -172,7 +172,13 @@ namespace ConvnetAvalonia.Common
             get { return base.SelectionStart; }
             set { SetValue(SelectionStartProperty, value); }
         }
-        
+
+        public string FilePath
+        {
+            get { return (string)GetValue(FilePathProperty); }
+            set { SetValue(FilePathProperty, value); }
+        }
+
         public static readonly DirectProperty<DefinitionEditor, string> FilePathProperty = AvaloniaProperty.RegisterDirect<DefinitionEditor, string>(
            nameof(FilePath),
            o => o.FilePath,
@@ -181,19 +187,13 @@ namespace ConvnetAvalonia.Common
                if (string.Compare(o.FilePath, v) != 0)
                    o.FilePath = v;
            },
-           "",
+           string.Empty,
            Avalonia.Data.BindingMode.TwoWay);
-
-        public string FilePath
-        {
-            get { return (string)GetValue(FilePathProperty); }
-            set { SetValue(FilePathProperty, value); }
-        }
 
         //public static PropertyChangedCallback OnFilePathChanged { get; private set; }
 
-     
-        public static object VisualLine { get; private set; }
+
+        public static object? VisualLine { get; private set; }
 
         #region INotifyPropertyChanged Members
 
@@ -249,7 +249,7 @@ namespace ConvnetAvalonia.Common
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Interoperability", "CA1416:Validate platform compatibility", Justification = "<Pending>")]
     public class CodeEditor : TextEditor, INotifyPropertyChanged
     {
-        public event PropertyChangedEventHandler? PropertyChanged;
+        public new event PropertyChangedEventHandler? PropertyChanged;
 
         public CodeEditor()
         {
@@ -378,7 +378,7 @@ namespace ConvnetAvalonia.Common
             set { SetValue(SelectionStartProperty, value); }
         }
 
-        public static object VisualLine { get; private set; }
+        public static object? VisualLine { get; private set; }
 
         public static readonly DirectProperty<CodeEditor, string> FilePathProperty = AvaloniaProperty.RegisterDirect<CodeEditor, string>(
            nameof(FilePath),

@@ -92,9 +92,6 @@ namespace ConvnetAvalonia.ViewModels
             get => model;
             set
             {
-                if (value == null)
-                    return;
-
                 this.RaiseAndSetIfChanged(ref model, value);
                 if (model != null)
                 {

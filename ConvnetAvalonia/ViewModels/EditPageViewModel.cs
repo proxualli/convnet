@@ -3,7 +3,7 @@ using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Threading;
 using AvaloniaEdit.Document;
-using Convnet.Common;
+using ConvnetAvalonia.Common;
 using ConvnetAvalonia.Properties;
 using CustomMessageBox.Avalonia;
 using Interop;
@@ -40,7 +40,7 @@ namespace ConvnetAvalonia.PageViewModels
         private int selectionStart = 0;
         private int selectionLength = 0;
         private TextLocation textLocation = new(1, 1);
-        private string filePath;
+        //private string filePath = string.Empty;
         private bool wordWrap = false;
         private bool showLineNumbers = true;
         private string script = File.ReadAllText(ScriptsDirectory + @"Scripts\Program.cs");
@@ -139,6 +139,9 @@ namespace ConvnetAvalonia.PageViewModels
             get => definition; 
             set
             {
+                if (definition == value)
+                    return;
+
                 this.RaiseAndSetIfChanged(ref definition, value);
                 Settings.Default.DefinitionEditing = definition;
                 Settings.Default.Save();
@@ -148,11 +151,17 @@ namespace ConvnetAvalonia.PageViewModels
             }
         }
 
-        public string FilePath
-        {
-            get => filePath;
-            set => this.RaiseAndSetIfChanged(ref filePath, value);
-        }
+        //public string FilePath
+        //{
+        //    get => filePath;
+        //    set 
+        //    {
+        //        if (filePath == value)
+        //            return;
+
+        //        this.RaiseAndSetIfChanged(ref filePath, value); 
+        //    }
+        //}
 
         public bool WordWrap
         {
@@ -621,7 +630,7 @@ namespace ConvnetAvalonia.PageViewModels
 
                     using (var process = Process.Start(processInfo))
                     {
-                        process.WaitForExit();
+                        process?.WaitForExit();
                     }
 
                     var log = File.ReadAllText(ScriptsDirectory + @"Scripts\msbuild.log");
@@ -662,21 +671,24 @@ namespace ConvnetAvalonia.PageViewModels
 
         private bool CheckDefinition()
         {
-            var definition = new StringBuilder(Definition);
-            var msg = Model.Check(ref definition);
-
-            Definition = msg.Definition;
-
-            if (msg.Error)
+            if (Model != null)
             {
-                TextLocation = new TextLocation((int)msg.Row - 1, (int)msg.Column);
-                TextLocation = new TextLocation((int)msg.Row, (int)msg.Column);
-                MessageBox.Show(msg.Message, "Check Information", MessageBoxButtons.OK);
-            }
-            
-            return !msg.Error;
-        }
+                var definition = new StringBuilder(Definition);
+                var msg = Model.Check(ref definition);
 
-       
+                Definition = msg.Definition;
+
+                if (msg.Error)
+                {
+                    TextLocation = new TextLocation((int)msg.Row - 1, (int)msg.Column);
+                    TextLocation = new TextLocation((int)msg.Row, (int)msg.Column);
+                    MessageBox.Show(msg.Message, "Check Information", MessageBoxButtons.OK);
+                }
+
+                return !msg.Error;
+            }
+
+            return false;
+        }
     }
 }

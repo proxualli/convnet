@@ -15,7 +15,7 @@
     <DataTemplate DataType="{x:Type vm:EditPageViewModel}">
       <view:EditPageView />
     </DataTemplate>
-
+    
     <!--<Style TargetType="{x:Type Image}">
       <Setter Property="RenderOptions.BitmapScalingMode" Value="HighQuality"/>
     </Style>
@@ -37,7 +37,7 @@
       <ToolBar Name="CmdToolBar" ItemsSource="{Binding Path=CommandToolBar, Mode=TwoWay, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged}" Visibility="{Binding Path=CommandToolBarVisibility}"/>
     </ToolBarTray>-->
 
-    <ComboBox Name="PageViews" Margin="2" MinWidth="60" Grid.Row="0" ItemsSource="{Binding Path=Pages}" SelectedItem="{Binding Path=CurrentPage}" IsEnabled="{Binding Path=CurrentPage.IsValid}">
+    <ComboBox Name="PageViews" Margin="2" MinWidth="60" Grid.Row="0" ItemsSource="{Binding Path=Pages}" SelectedItem="{Binding Path=CurrentPage, Mode=TwoWay}" IsEnabled="{Binding Path=CurrentPage.IsValid, Mode=TwoWay}">
       <ComboBox.ItemTemplate>
         <DataTemplate>
           <TextBlock Text="{Binding Path=DisplayName}"/>
@@ -46,7 +46,7 @@
     </ComboBox>
     
     <Border Grid.Row="1">
-      <ContentControl Name="PageContentControl" Content="{Binding Path=CurrentPage}"/>
+      <ContentControl Name="PageContentControl" Content="{Binding Path=CurrentPage, Mode=TwoWay}"/>
     </Border>
 
     <!--<StatusBar Grid.Row="2" Name="statusBarMain" Width="Auto" Height="23" Background="{StaticResource BackgroundBrushLight}">

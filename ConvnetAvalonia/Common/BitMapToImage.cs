@@ -2,7 +2,7 @@
 using Avalonia.Controls;
 using Avalonia.Media.Imaging;
 
-namespace Convnet.Common
+namespace ConvnetAvalonia.Common
 {
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Interoperability", "CA1416:Validate platform compatibility", Justification = "<Pending>")]
     public class BitmapToImage : Image
