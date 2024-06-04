@@ -1,13 +1,10 @@
-﻿using System;
+﻿using Avalonia.Threading;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Net.NetworkInformation;
 using System.Runtime.InteropServices;
-using System.Text.RegularExpressions;
-using Avalonia;
-using Avalonia.Threading;
 
 namespace ConvnetAvalonia.Common
 {

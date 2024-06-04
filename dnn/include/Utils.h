@@ -126,7 +126,7 @@ namespace
 	constexpr auto Inplace = false;
 	constexpr auto Kahan = true;
 	constexpr auto PlainOptimizerWeights = true;
-	constexpr auto Reference = true;
+	constexpr auto Reference = false;
 	constexpr auto SingleMeanVariancePass = false;
 
 	constexpr auto TestActivations = false;
@@ -134,7 +134,7 @@ namespace
 	constexpr auto TestConcat = false;
 	constexpr auto TestMultiply = false;
 
-	constexpr auto ReferenceBatchNormalization = true;
+	constexpr auto ReferenceBatchNormalization = false;
 	constexpr auto ReferenceConcat = true;
 	constexpr auto ReferenceMultiply = true;
 

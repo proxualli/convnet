@@ -2,6 +2,7 @@
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Threading;
+using AvaloniaEdit;
 using AvaloniaEdit.Document;
 using ConvnetAvalonia.Common;
 using ConvnetAvalonia.Properties;
@@ -30,8 +31,8 @@ namespace ConvnetAvalonia.PageViewModels
         const string Mode = "Release";
 #endif
 
-        public event EventHandler Open;
-        public event EventHandler Save;
+        public event EventHandler? Open;
+        public event EventHandler? Save;
 
         private string modelName = Settings.Default.ModelNameActive;
         private string definition = Settings.Default.DefinitionEditing;
@@ -40,7 +41,7 @@ namespace ConvnetAvalonia.PageViewModels
         private int selectionStart = 0;
         private int selectionLength = 0;
         private TextLocation textLocation = new(1, 1);
-        //private string filePath = string.Empty;
+        private string filePath = string.Empty;
         private bool wordWrap = false;
         private bool showLineNumbers = true;
         private string script = File.ReadAllText(ScriptsDirectory + @"Scripts\Program.cs");
@@ -55,7 +56,7 @@ namespace ConvnetAvalonia.PageViewModels
         
             AddCommandButtons();
         }
-
+      
         private void AddCommandButtons()
         {
             var openButton = new Button
@@ -127,6 +128,12 @@ namespace ConvnetAvalonia.PageViewModels
             CommandToolBar.Add(visualStudioButton);
         }
 
+        //public void CutHandler(object sender, RoutedEventArgs e)
+        //{
+        //    (e.Source as TextBox)?.Cut();
+        //    e.Handled = true;
+        //}
+
         public override string DisplayName => "Edit";
 
         public override void Reset()
@@ -151,17 +158,11 @@ namespace ConvnetAvalonia.PageViewModels
             }
         }
 
-        //public string FilePath
-        //{
-        //    get => filePath;
-        //    set 
-        //    {
-        //        if (filePath == value)
-        //            return;
-
-        //        this.RaiseAndSetIfChanged(ref filePath, value); 
-        //    }
-        //}
+        public string FilePath
+        {
+            get => filePath;
+            set => this.RaiseAndSetIfChanged(ref filePath, value);
+        }
 
         public bool WordWrap
         {

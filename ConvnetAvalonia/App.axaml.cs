@@ -31,7 +31,6 @@ namespace ConvnetAvalonia
                 desktop.MainWindow = new MainWindow
                 {
                     DataContext = new MainWindowViewModel(),
-                    //DataContext = Locator.Current.GetService<MainWindowViewModel>(),
                 };
 
                 if (desktop.MainWindow != null)

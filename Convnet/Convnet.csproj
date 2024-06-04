@@ -43,6 +43,10 @@
     <None Remove="Models\**" />
     <Page Remove="Models\**" />
   </ItemGroup>
+ 
+  <ItemGroup>
+    <Compile Remove="Common\ColorizeCodeEditor.cs" />
+  </ItemGroup>
   
   <ItemGroup>
     <None Remove="Resources\CPP-Mode.xshd" />
@@ -55,6 +59,7 @@
     <None Remove="Resources\XmlDoc.xshd" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Common\ColorizeCodeEditor.cs" />
     <None Include="Resources\Key.png" />
     <Content Include="Resources\state\resnet-3-2-6-channelzeropad-relu.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

@@ -8,6 +8,8 @@ using System.Reflection;
 using System.Text;
 using Interop;
 using System.Linq;
+using Avalonia.Markup.Xaml;
+using AvaloniaEdit;
 
 namespace ConvnetAvalonia
 {
@@ -171,7 +173,7 @@ namespace ConvnetAvalonia
         public MainWindow()
         {
             InitializeComponent();
-
+            
             Directory.CreateDirectory(StorageDirectory);
             Directory.CreateDirectory(DefinitionsDirectory);
             Directory.CreateDirectory(StateDirectory);
@@ -181,7 +183,7 @@ namespace ConvnetAvalonia
                 Directory.CreateDirectory(ScriptsDirectory);
                 Copy(ApplicationPath.Replace(@"Convnet\bin\x64\" + Mode + @"\" + Framework + @"\", "") + @"Scripts\", ScriptsDirectory);
             }
-
+                     
             var fileName = System.IO.Path.Combine(StateDirectory, Settings.Default.ModelNameActive + ".txt");
             var backupModelName = "resnet-3-2-6-channelzeropad-relu";
 
@@ -246,6 +248,7 @@ namespace ConvnetAvalonia
                             }
 
                         Title = PageVM.Model.Name + " - Convnet Explorer";
+                        
                         DataContext = PageVM;
 
                         //switch ((int)Math.Round(Settings.Default.PrioritySetter))
@@ -364,6 +367,86 @@ namespace ConvnetAvalonia
                MessageBox.Show(exception.Message + "\r\n\r\n" + exception.GetBaseException().Message + "\r\n\r\n" + exception.InnerException.Message + "\r\n\r\nAn error occured while loading the Model:" + Settings.Default.ModelNameActive, "Information", MessageBoxButtons.OK);
             }
         }
+
+        //public void CutCmdExecuted(object? target, ExecutedRoutedEventArgs e)
+        //{
+        //    ((TextBox?)e.Source)?.Cut();
+        //}
+
+        //public void CutCmdCanExecute(object? sender, CanExecuteRoutedEventArgs e)
+        //{
+        //    if (e != null && e.Source != null)
+        //    {
+        //        if (e.Source.GetType() == typeof(TextBox))
+        //            e.CanExecute = ((TextBox)e.Source).SelectionEnd > 0;
+        //        else
+        //            e.CanExecute = false;
+        //    }
+        //    else
+        //        e.CanExecute = false;
+        //}
+
+        //private void CopyCmdExecuted(object target, ExecutedRoutedEventArgs e)
+        //{
+        //    (e.Source as TextBox).Copy();
+        //}
+
+        //private void CopyCmdCanExecute(object sender, CanExecuteRoutedEventArgs e)
+        //{
+        //    if (e.Source.GetType() == typeof(TextBox))
+        //        e.CanExecute = (e.Source as TextBox).SelectionLength > 0;
+        //    else
+        //        e.CanExecute = false;
+        //}
+
+        //private void PasteCmdExecuted(object target, ExecutedRoutedEventArgs e)
+        //{
+        //    (e.Source as TextBox).Paste();
+        //}
+
+        //private void PasteCmdCanExecute(object sender, CanExecuteRoutedEventArgs e)
+        //{
+        //    e.CanExecute = false;
+        //}
+
+        //private void SelectAllCmdExecuted(object target, ExecutedRoutedEventArgs e)
+        //{
+        //    (e.Source as TextBox).SelectAll();
+        //}
+
+        //private void SelectAllCmdCanExecute(object sender, CanExecuteRoutedEventArgs e)
+        //{
+        //    if (e.Source.GetType() == typeof(TextBox))
+        //        e.CanExecute = true;
+        //    else
+        //        e.CanExecute = false;
+        //}
+
+        //private void UndoCmdExecuted(object target, ExecutedRoutedEventArgs e)
+        //{
+        //    e.Handled = (e.Source as TextBox).Undo();
+        //}
+
+        //private void UndoCmdCanExecute(object sender, CanExecuteRoutedEventArgs e)
+        //{
+        //    if (e.Source.GetType() == typeof(TextBox))
+        //        e.CanExecute = (e.Source as TextBox).CanUndo;
+        //    else
+        //        e.CanExecute = false;
+        //}
+
+        //private void RedoCmdExecuted(object target, ExecutedRoutedEventArgs e)
+        //{
+        //    e.Handled = (e.Source as TextBox).Redo();
+        //}
+
+        //private void RedoCmdCanExecute(object sender, CanExecuteRoutedEventArgs e)
+        //{
+        //    if (e.Source.GetType() == typeof(TextBox))
+        //        e.CanExecute = (e.Source as TextBox).CanRedo;
+        //    else
+        //        e.CanExecute = false;
+        //}
 
         protected virtual void Dispose(bool disposing)
         {

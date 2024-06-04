@@ -1,7 +1,7 @@
-﻿using System;
+﻿using Avalonia.Data.Converters;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.Globalization;
-using Avalonia.Data.Converters;
 
 namespace ConvnetAvalonia.Converters
 {

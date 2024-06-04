@@ -183,10 +183,10 @@ namespace ConvnetAvalonia.PageViewModels
             set => this.RaiseAndSetIfChanged(ref progressValue, value);
         }
 
-        public ReadOnlyCollection<ConvnetAvalonia.ViewModels.ViewModelBase> Pages { get; }
+        public ReadOnlyCollection<ConvnetAvalonia.ViewModels.ViewModelBase>? Pages { get; }
 
-        private ConvnetAvalonia.ViewModels.ViewModelBase currentPage;
-        public ConvnetAvalonia.ViewModels.ViewModelBase CurrentPage
+        private ConvnetAvalonia.ViewModels.ViewModelBase? currentPage;
+        public ConvnetAvalonia.ViewModels.ViewModelBase? CurrentPage
         {
             get => currentPage; 
             set
@@ -195,13 +195,15 @@ namespace ConvnetAvalonia.PageViewModels
                     return;
 
                 this.RaiseAndSetIfChanged(ref currentPage, value);
+                if (currentPage != null)
+                {
+                    CommandToolBar = currentPage.CommandToolBar;
+                    CommandToolBarVisibility = currentPage.CommandToolBarVisibility;
+                    Settings.Default.CurrentPage = Pages.IndexOf(currentPage);
+                    Settings.Default.Save();
 
-                CommandToolBar = currentPage.CommandToolBar;
-                CommandToolBarVisibility = currentPage.CommandToolBarVisibility;
-                Settings.Default.CurrentPage = Pages.IndexOf(currentPage);
-                Settings.Default.Save();
-                
-                OnPageChange();
+                    OnPageChange();
+                }
             }
         }
 

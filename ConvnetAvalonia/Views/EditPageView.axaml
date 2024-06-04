@@ -1,36 +1,31 @@
 ﻿<UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:actipro="http://schemas.actiprosoftware.com/avaloniaui"
+             xmlns:AvalonEdit="using:AvaloniaEdit"
              xmlns:c="clr-namespace:ConvnetAvalonia.Common"
              xmlns:converters="clr-namespace:ConvnetAvalonia.Converters"
              xmlns:props="clr-namespace:ConvnetAvalonia.Properties"
              xmlns:vm="clr-namespace:ConvnetAvalonia.PageViewModels"
-             xmlns:view="using:ConvnetAvalonia.PageViews"
+             xmlns:view="clr-namespace:ConvnetAvalonia.PageViews"
              x:Class="ConvnetAvalonia.PageViews.EditPageView"
              x:DataType="vm:EditPageViewModel">
-
-  <UserControl.Resources>
-    <ResourceDictionary>
-      <ResourceDictionary.MergedDictionaries>
-        <ResourceInclude Source="/Resources/shared.axaml"/>
-      </ResourceDictionary.MergedDictionaries>
-    </ResourceDictionary>
-  </UserControl.Resources>
-  
-   <Grid Background="{StaticResource BackgroundBrush}" x:Name="grid">
-        <Grid.ColumnDefinitions>
-          <ColumnDefinition Width="{Binding Source={x:Static props:Settings.Default}, Path=EditSplitPositionA}" MinWidth="200" MaxWidth="800"/>
-          <ColumnDefinition Width="*" MinWidth="200"/>
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-          <RowDefinition Height="28" MinHeight="28"/>
-          <RowDefinition Height="*" MinHeight="200"/>
-        </Grid.RowDefinitions>
-        <Image x:Name="ImageStatusDefinition" Grid.Column="0" Grid.Row="0" />
-        <TextBlock Background="{StaticResource BackgroundBrushLight}" Foreground="{StaticResource TextBrush}" FontSize="17" FontWeight="DemiBold" Text="Definition" TextAlignment="Center" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="2,2,4,2" Padding="0"/>
-        <TextBlock Background="{StaticResource BackgroundBrushLight}" Foreground="{StaticResource TextBrush}" FontSize="17" FontWeight="DemiBold" Text="Scripts" TextAlignment="Center" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,2,2,2"/>
-        <c:DefinitionEditor x:Name="EditorDefinition" IsVisible="True" Background="{StaticResource BackgroundBrush}" Foreground="{StaticResource TextBrush}" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" ContextMenu="{StaticResource MyContextMenu}" Definition="{Binding Path=Definition, Mode=TwoWay}" WordWrap="{Binding WordWrap, Mode=TwoWay}" ShowLineNumbers="{Binding ShowLineNumbers, Mode=TwoWay}" SelectionLength="{Binding SelectionLength, Mode=TwoWay}" SelectionStart="{Binding SelectionStart, Mode=TwoWay}" Padding="2" Margin="0,0,4,0"/>
-        <!--<c:DefinitionEditor x:Name="EditorDefinition" Background="{StaticResource BackgroundBrush}" Foreground="{StaticResource TextBrush}" Grid.Column="0" Grid.Row="1" Height="Auto" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" ContextMenu="{StaticResource MyContextMenu}" Definition="{Binding Definition}" FilePath="{Binding FilePath}" WordWrap="{Binding WordWrap}" ShowLineNumbers="{Binding ShowLineNumbers}" SelectionLength="{Binding SelectionLength}" SelectionStart="{Binding SelectionStart}" TextLocation="{Binding TextLocation}" Padding="2" Margin="0,0,4,0"/>-->
-        <GridSplitter Grid.Column="0" HorizontalAlignment="Right" Grid.Row="0" Grid.RowSpan="2" VerticalAlignment="Stretch" Width="4" Background="{StaticResource BackgroundBrush}" ResizeDirection="Columns"/>
-        <c:CodeEditor x:Name="EditorScript" IsVisible="True" Background="{StaticResource BackgroundBrush}" Foreground="{StaticResource TextBrush}" FontFamily="Consolas" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" ContextMenu="{StaticResource MyContextMenu}" ShowLineNumbers="True" SourceCode="{Binding Path=Script, Mode=TwoWay}" Padding="2" Margin="0,0,4,0"/>
-    </Grid>
+ 
+  <Grid x:Name="grid" Background="{StaticResource BackgroundBrush}">
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="{Binding Source={x:Static props:Settings.Default}, Path=EditSplitPositionA}" MinWidth="200" MaxWidth="800"/>
+      <ColumnDefinition Width="*"/>
+    </Grid.ColumnDefinitions>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="28" MinHeight="28"/>
+      <RowDefinition Height="*"/>
+    </Grid.RowDefinitions>
+    <actipro:DynamicImage x:Name="ImageStatusDefinition" Grid.Column="0" Grid.Row="0" />
+    <TextBlock Background="{StaticResource BackgroundBrushLight}" Foreground="{StaticResource TextBrush}" FontSize="17" FontWeight="DemiBold" Text="Definition" TextAlignment="Center" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="2,2,4,2" Padding="0"/>
+    <TextBlock Background="{StaticResource BackgroundBrushLight}" Foreground="{StaticResource TextBrush}" FontSize="17" FontWeight="DemiBold" Text="Scripts" TextAlignment="Center" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,2,2,2"/>
+    <c:DefinitionEditor x:Name="EditorDefinition" ContextMenu="{StaticResource MyContextMenu}" IsVisible="True" Background="{StaticResource BackgroundBrush}" Foreground="{StaticResource TextBrush}" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  Definition="{Binding Definition, Mode=TwoWay}" WordWrap="{Binding WordWrap, Mode=TwoWay}" ShowLineNumbers="{Binding ShowLineNumbers, Mode=TwoWay}" SelectionLength="{Binding SelectionLength, Mode=TwoWay}" SelectionStart="{Binding SelectionStart, Mode=TwoWay}" TextLocation="{Binding TextLocation, Mode=TwoWay}" FilePath="{Binding FilePath, Mode=TwoWay}" Padding="2" Margin="0,0,4,0" />
+    <GridSplitter DragCompleted="GridSplitter_DragCompleted" Grid.Column="0" HorizontalAlignment="Right" Grid.Row="0" Grid.RowSpan="2" VerticalAlignment="Stretch" Width="4" Background="{StaticResource BackgroundBrush}" ResizeDirection="Columns"/>
+    <c:CodeEditor Name="EditorScript" ContextMenu="{StaticResource MyContextMenu}" IsVisible="True" Background="{StaticResource BackgroundBrush}" Foreground="{StaticResource TextBrush}" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" ShowLineNumbers="True" SourceCode="{Binding Script, Mode=TwoWay}" Padding="2" Margin="0,0,4,0"/> 
+  </Grid>
 </UserControl>

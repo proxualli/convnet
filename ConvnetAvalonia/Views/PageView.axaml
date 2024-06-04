@@ -2,8 +2,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:actipro="http://schemas.actiprosoftware.com/avaloniaui"
              xmlns:vm="clr-namespace:ConvnetAvalonia.PageViewModels"
-             xmlns:view="using:ConvnetAvalonia.PageViews"
+             xmlns:view="clr-namespace:ConvnetAvalonia.PageViews"
              xmlns:c="clr-namespace:ConvnetAvalonia.Common"
              xmlns:converters="clr-namespace:ConvnetAvalonia.Converters"
              xmlns:props="clr-namespace:ConvnetAvalonia.Properties"
@@ -11,6 +12,39 @@
              x:DataType="vm:PageViewModel"
              x:Class="ConvnetAvalonia.PageViews.PageView">
 
+  <UserControl.Resources>
+    <ContextMenu x:Key="MyContextMenu">
+      <MenuItem Header="_Cut" >
+        <MenuItem.Icon>
+          <actipro:DynamicImage Source="/Resources/Cut.png"/>
+        </MenuItem.Icon>
+      </MenuItem>
+      <MenuItem Header="Co_py">
+        <MenuItem.Icon>
+          <actipro:DynamicImage Source="/Resources/Copy.png"/>
+        </MenuItem.Icon>
+      </MenuItem>
+      <MenuItem Header="_Paste">
+        <MenuItem.Icon>
+          <actipro:DynamicImage Source="/Resources/Paste.png"/>
+        </MenuItem.Icon>
+      </MenuItem>
+      <Separator />
+      <MenuItem Header="Select _All" />
+      <Separator />
+      <MenuItem Header="_Undo">
+        <MenuItem.Icon>
+          <actipro:DynamicImage Source="/Resources/Undo.png"/>
+        </MenuItem.Icon>
+      </MenuItem>
+      <MenuItem Header="_Redo">
+        <MenuItem.Icon>
+          <actipro:DynamicImage Source="/Resources/Redo.png"/>
+        </MenuItem.Icon>
+      </MenuItem>
+    </ContextMenu>
+  </UserControl.Resources>
+  
   <UserControl.DataTemplates>
     <DataTemplate DataType="{x:Type vm:EditPageViewModel}">
       <view:EditPageView />
@@ -23,30 +57,25 @@
     <props:Settings x:Key="Settings"/>-->
   </UserControl.DataTemplates>
    
-  <Grid>
-    <Grid.RowDefinitions>
-      <RowDefinition Height="Auto"/>
-      <RowDefinition Height="*" />
-      <RowDefinition Height="Auto" />
-    </Grid.RowDefinitions>
-
+  <Grid RowDefinitions="Auto,*">
     <!--<ToolBarTray Grid.Row="0" Height="Auto" HorizontalAlignment="Stretch" Name="toolBarTray" VerticalAlignment="Top" Width="Auto" ToolBarTray.IsLocked="False">
       <ToolBar>
         <ComboBox Name="PageViews" Margin="2" MinWidth="50"  ItemsSource="{Binding Path=Pages}" SelectedItem="{Binding Path=CurrentPage}" IsEnabled="{Binding Path=CurrentPage.IsValid, Mode=TwoWay}" UseLayoutRounding="True" IsReadOnly="True" IsTextSearchEnabled="False" IsSynchronizedWithCurrentItem="True" DisplayMemberPath="DisplayName"/>
       </ToolBar>
       <ToolBar Name="CmdToolBar" ItemsSource="{Binding Path=CommandToolBar, Mode=TwoWay, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged}" Visibility="{Binding Path=CommandToolBarVisibility}"/>
     </ToolBarTray>-->
-
-    <ComboBox Name="PageViews" Margin="2" MinWidth="60" Grid.Row="0" ItemsSource="{Binding Path=Pages}" SelectedItem="{Binding Path=CurrentPage, Mode=TwoWay}" IsEnabled="{Binding Path=CurrentPage.IsValid, Mode=TwoWay}">
-      <ComboBox.ItemTemplate>
-        <DataTemplate>
-          <TextBlock Text="{Binding Path=DisplayName}"/>
-        </DataTemplate>
-      </ComboBox.ItemTemplate>
-    </ComboBox>
+    <Border Grid.Row="0">
+      <ComboBox Name="PageViews" Margin="2" MinWidth="60" Grid.Row="0" ItemsSource="{Binding Pages}" SelectedItem="{Binding CurrentPage, Mode=TwoWay}" IsEnabled="{Binding CurrentPage.IsValid, Mode=TwoWay}">
+        <ComboBox.ItemTemplate>
+          <DataTemplate>
+            <TextBlock Text="{Binding Path=DisplayName}"/>
+          </DataTemplate>
+        </ComboBox.ItemTemplate>
+      </ComboBox>
+    </Border>
     
     <Border Grid.Row="1">
-      <ContentControl Name="PageContentControl" Content="{Binding Path=CurrentPage, Mode=TwoWay}"/>
+      <ContentControl Name="PageContentControl" Content="{Binding CurrentPage, Mode=TwoWay}"/>
     </Border>
 
     <!--<StatusBar Grid.Row="2" Name="statusBarMain" Width="Auto" Height="23" Background="{StaticResource BackgroundBrushLight}">

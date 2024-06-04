@@ -2,7 +2,8 @@
       xmlns="https://github.com/avaloniaui"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:converters="clr-namespace:ConvnetAvalonia.Converters"
-      xmlns:props="clr-namespace:ConvnetAvalonia.Properties">
+      xmlns:props="clr-namespace:ConvnetAvalonia.Properties"
+      xmlns:AvalonEdit="using:AvaloniaEdit">
 
     <props:Settings x:Key="Settings"/>
 
@@ -12,7 +13,7 @@
     <!--<converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     <converters:FirstDegreeFunctionConverter x:Key="AdjustHeight" A="113"/>-->
     
-    <ContextMenu x:Key="MyContextMenu">
+    <!--<ContextMenu x:Key="MyContextMenu">
         <MenuItem Header="_Cut" >
             <MenuItem.Icon>
                 <Image Source="/Resources/Cut.png"/>
@@ -41,7 +42,7 @@
                 <Image Source="/Resources/Redo.png"/>
             </MenuItem.Icon>
         </MenuItem>
-    </ContextMenu>
+    </ContextMenu>-->
 
     <!--Common colors.-->
     <Color x:Key="TextColor">#FFD7CFD7</Color>
