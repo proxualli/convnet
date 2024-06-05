@@ -22,14 +22,6 @@ namespace ConvnetAvalonia.PageViewModels
     {
         public event EventHandler? PageChange;
 
-        public ReactiveCommand<Unit, Unit> CutCommand { get; }
-
-        private void Cut()
-        {
-            //App.MainWindow.MainView.
-            //ApplicationCommands.Cut();
-        }
-
         public PageViewModel(DNNModel model) : base(model)
         {
             Settings.Default.PropertyChanged += Default_PropertyChanged;

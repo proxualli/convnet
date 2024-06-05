@@ -3,7 +3,7 @@ using System.Collections.ObjectModel;
 
 namespace ConvnetAvalonia.Properties
 {
-    internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase
+    public sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase
     {
         [global::System.Configuration.UserScopedSetting()]
         [global::System.Configuration.SettingsSerializeAs(global::System.Configuration.SettingsSerializeAs.Xml)]

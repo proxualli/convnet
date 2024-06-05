@@ -43,10 +43,24 @@
             </MenuItem.Icon>
         </MenuItem>
     </ContextMenu>-->
-
+  <ResourceDictionary.ThemeDictionaries>
+    <ResourceDictionary x:Key='Light'>
+      <Color x:Key="TextColor">#FFD7CFD7</Color>
+      <Color x:Key="BackgroundColor">#FF1E1E1E</Color>
+     
+    </ResourceDictionary>
+    <ResourceDictionary x:Key='Dark'>
+      <Color x:Key="TextColor">#FFD7CFD7</Color>
+      <Color x:Key="BackgroundColor">#FF1E1E1E</Color>
+    </ResourceDictionary>
+  </ResourceDictionary.ThemeDictionaries>
+  
+  <SolidColorBrush x:Key="TextBrush" Color="{DynamicResource TextColor}"/>
+  <SolidColorBrush x:Key="BackgroundBrush" Color="{DynamicResource BackgroundColor}"/>
+  
     <!--Common colors.-->
-    <Color x:Key="TextColor">#FFD7CFD7</Color>
-    <Color x:Key="BackgroundColor">#FF1E1E1E</Color>
+    <!--<Color x:Key="TextColor">#FFD7CFD7</Color>
+    <Color x:Key="BackgroundColor">#FF1E1E1E</Color>-->
     <Color x:Key="BackgroundColorNormal">#FF2E2E2E</Color>
     <Color x:Key="BackgroundColorLight">#FF404040</Color>
     <Color x:Key="BackgroundColorLighter">#FF4D4D4D</Color>
@@ -57,8 +71,7 @@
     <Color x:Key="DisabledControlDarkColor">#FFC5CBF9</Color>
     <Color x:Key="DisabledForegroundColor">#FF888888</Color>
   
-    <SolidColorBrush x:Key="TextBrush" Color="{StaticResource TextColor}"/>
-    <SolidColorBrush x:Key="BackgroundBrush" Color="{StaticResource BackgroundColor}"/>
+   
     <SolidColorBrush x:Key="BackgroundBrushNormal" Color="{StaticResource BackgroundColorNormal}"/>
     <SolidColorBrush x:Key="BackgroundBrushLight" Color="{StaticResource BackgroundColorLight}"/>
     <SolidColorBrush x:Key="BackgroundBrushLighter" Color="{StaticResource BackgroundColorLighter}"/>

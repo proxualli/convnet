@@ -1,8 +1,6 @@
-﻿using AsyncImageLoader;
-using Avalonia.Controls;
+﻿using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Threading;
-using AvaloniaEdit;
 using AvaloniaEdit.Document;
 using ConvnetAvalonia.Common;
 using ConvnetAvalonia.Properties;
@@ -62,7 +60,7 @@ namespace ConvnetAvalonia.PageViewModels
             var openButton = new Button
             {
                 Name = "ButtonOpen",
-                Content = new AdvancedImage(new Uri("../Resources/Open.png", UriKind.Relative)),
+                Content = ImageHelper.LoadFromResource("Open.png"),
                 ClickMode = ClickMode.Release
             };
             ToolTip.SetTip(openButton, "Open");
@@ -71,7 +69,7 @@ namespace ConvnetAvalonia.PageViewModels
             var saveButton = new Button
             {
                 Name = "ButtonSave",
-                Content = new AdvancedImage(new Uri("../Resources/Save.png", UriKind.Relative)),
+                Content = ImageHelper.LoadFromResource("Save.png"),
                 ClickMode = ClickMode.Release
             };
             ToolTip.SetTip(saveButton, "Save");
@@ -80,7 +78,7 @@ namespace ConvnetAvalonia.PageViewModels
             var checkButton = new Button
             {
                 Name = "ButtonCheck",
-                Content = new AdvancedImage(new Uri("../Resources/SpellCheck.png", UriKind.Relative)),
+                Content = ImageHelper.LoadFromResource("SpellCheck.png"),
                 ClickMode = ClickMode.Release
             };
             ToolTip.SetTip(checkButton, "Check");
@@ -89,7 +87,7 @@ namespace ConvnetAvalonia.PageViewModels
             var synchronizeButton = new Button
             {
                 Name = "ButtonSynchronize",
-                Content = new AdvancedImage(new Uri("../Resources/Synchronize.png", UriKind.Relative)),
+                Content = ImageHelper.LoadFromResource("Synchronize.png"),
                 ClickMode = ClickMode.Release
             };
             ToolTip.SetTip(synchronizeButton, "Synchronize");
@@ -104,7 +102,7 @@ namespace ConvnetAvalonia.PageViewModels
             var scriptsButton = new Button
             {
                 Name = "ButtonScripts",
-                Content = new AdvancedImage(new Uri("../Resources/Calculate.png", UriKind.Relative)),
+                Content = ImageHelper.LoadFromResource("Calculate.png"),
                 ClickMode = ClickMode.Release,
             };
             ToolTip.SetTip(scriptsButton, "Run Script");
@@ -114,7 +112,7 @@ namespace ConvnetAvalonia.PageViewModels
             var visualStudioButton = new Button
             {
                 Name = "ButtonVisualStudio",
-                Content = new AdvancedImage(new Uri("../Resources/VisualStudio.png", UriKind.Relative)),
+                Content = ImageHelper.LoadFromResource("VisualStudio.png"),
                 ClickMode = ClickMode.Release,
             };
             ToolTip.SetTip(visualStudioButton, "Open in Visual Studio");
@@ -127,12 +125,6 @@ namespace ConvnetAvalonia.PageViewModels
             CommandToolBar.Add(scriptsButton);
             CommandToolBar.Add(visualStudioButton);
         }
-
-        //public void CutHandler(object sender, RoutedEventArgs e)
-        //{
-        //    (e.Source as TextBox)?.Cut();
-        //    e.Handled = true;
-        //}
 
         public override string DisplayName => "Edit";
 

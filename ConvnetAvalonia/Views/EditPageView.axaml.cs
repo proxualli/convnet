@@ -10,9 +10,9 @@ using AvaloniaEdit.TextMate;
 using ConvnetAvalonia.Properties;
 using System;
 using System.IO;
+using System.Linq;
 using System.Xml;
 using TextMateSharp.Grammars;
-using Material.Icons.Avalonia;
 
 namespace ConvnetAvalonia.PageViews
 {
@@ -60,6 +60,10 @@ namespace ConvnetAvalonia.PageViews
             // var registryOptions = new RegistryOptions(ThemeName.DarkPlus);
             // var textMateInstallation = editorScript.InstallTextMate(_registryOptions);
             // textMateInstallation.SetGrammar(_registryOptions.GetScopeByLanguageId(_registryOptions.GetLanguageByExtension(".cs").Id));
+
+            var gr = this.FindControl<Grid>("grid");
+            if (gr != null)
+                gr.ColumnDefinitions.First().Width = new GridLength(Settings.Default.EditSplitPositionA, GridUnitType.Pixel);
         }
 
         private void InitializeComponent()
@@ -67,21 +71,17 @@ namespace ConvnetAvalonia.PageViews
             AvaloniaXamlLoader.Load(this);
         }
 
-        //protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs e)
-        //{
-
-        //    //if (e.Property == ValorProperty)
-        //    //    Actualizar();
-        //    base.OnPropertyChanged(e);
-        //}
-
         public void GridSplitter_DragCompleted(object? sender, VectorEventArgs e)
         {
             if (!e.Handled)
             {
-                //Settings.Default.EditSplitPositionA = new GridLength(e.Vector.Length);
-                Settings.Default.Save();
-                e.Handled = true;
+                var gr = this.FindControl<Grid>("grid");
+                if (gr != null)
+                { 
+                    Settings.Default.EditSplitPositionA = gr.ColumnDefinitions.First().ActualWidth;
+                    Settings.Default.Save();
+                    e.Handled = true;
+                }
             }
         }
     }

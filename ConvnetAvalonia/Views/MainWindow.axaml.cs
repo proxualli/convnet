@@ -173,7 +173,7 @@ namespace ConvnetAvalonia
         public MainWindow()
         {
             InitializeComponent();
-            
+
             Directory.CreateDirectory(StorageDirectory);
             Directory.CreateDirectory(DefinitionsDirectory);
             Directory.CreateDirectory(StateDirectory);

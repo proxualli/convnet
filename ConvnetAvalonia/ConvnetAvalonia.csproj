@@ -18,12 +18,14 @@
     <Folder Include="Models\" />  </ItemGroup>
 
   <ItemGroup>
-    <Compile Remove="Common\BitMapToImage.cs" />
     <Compile Remove="ViewModels\TestPageViewModel.cs" />
     <Compile Remove="ViewModels\TrainPageViewModel.cs" />
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Resources\Cancel.png" />
+    <None Remove="Resources\Delete.png" />
+    <None Remove="Resources\SelectAll.png" />
     <None Remove="Resources\state\resnet-3-2-6-channelzeropad-relu.txt" />
     <None Remove="Resources\Annotate_HighPriority.ico" />
     <None Remove="Resources\App.ico" />
@@ -73,7 +75,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="Common\BitMapToImage.cs" />
     <None Include="ViewModels\TestPageViewModel.cs" />
     <None Include="ViewModels\TrainPageViewModel.cs" />
   </ItemGroup>
@@ -81,7 +82,6 @@
   <ItemGroup>
     <PackageReference Include="ActiproSoftware.Controls.Avalonia" Version="24.1.0" />
     <PackageReference Include="ActiproSoftware.Controls.Avalonia.Themes.DataGrid" Version="24.1.0" />
-    <PackageReference Include="AsyncImageLoader.Avalonia" Version="3.2.1" />
     <PackageReference Include="Avalonia" Version="11.0.10" />
     <PackageReference Include="Avalonia.AvaloniaEdit" Version="11.0.6" />
     <PackageReference Include="Avalonia.Desktop" Version="11.0.10" />
@@ -92,7 +92,6 @@
     <PackageReference Include="Avalonia.ReactiveUI" Version="11.0.10" />
     <PackageReference Include="AvaloniaEdit.TextMate.Grammars" Version="0.10.12" />
     <PackageReference Include="CustomMessageBox.Avalonia" Version="11.0.0.2" />
-    <PackageReference Include="Material.Icons.Avalonia" Version="2.1.9" />
     <PackageReference Include="Microsoft.Build.Locator" Version="1.7.8" />
     <PackageReference Include="OxyPlot.Avalonia" Version="2.1.0" />
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="8.0.0" />
@@ -106,6 +105,9 @@
   <ItemGroup>
     <AvaloniaResource Include="Resources\Annotate_HighPriority.ico" />
     <AvaloniaResource Include="Resources\App.ico" />
+    <AvaloniaResource Include="Resources\Cancel.png" />
+    <AvaloniaResource Include="Resources\Delete.png" />
+    <AvaloniaResource Include="Resources\SelectAll.png" />
     <AvaloniaResource Include="Resources\state\resnet-3-2-6-channelzeropad-relu.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </AvaloniaResource>
@@ -120,9 +122,7 @@
     <EmbeddedResource Include="Resources\CSharp-Mode.xshd">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </EmbeddedResource>
-    <Resource Include="Resources\Cut.png">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Resource>
+    <AvaloniaResource Include="Resources\Cut.png" />
     <EmbeddedResource Include="Resources\Definition.xshd">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </EmbeddedResource>
@@ -184,7 +184,7 @@
 
   <ItemGroup>
     <None Update="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
+      <Generator>PublicSettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
   </ItemGroup>

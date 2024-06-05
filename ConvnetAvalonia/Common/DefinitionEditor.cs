@@ -2,6 +2,8 @@
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Media;
+using Avalonia.Media.Imaging;
+using Avalonia.Platform;
 using Avalonia.Styling;
 using Avalonia.Threading;
 using AvaloniaEdit;
@@ -11,22 +13,41 @@ using AvaloniaEdit.Rendering;
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Runtime.InteropServices;
-using Material.Icons.Avalonia;
-
-using System.Reflection.Metadata;
-using ActiproSoftware.UI.Avalonia.Controls;
-using AsyncImageLoader;
-using AsyncImageLoader.Loaders;
-using Avalonia.Media.Imaging;
-using Avalonia.Platform;
 using System.IO;
-using SkiaSharp;
+using System.Net.Http;
 using System.Reflection;
+using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 
 namespace ConvnetAvalonia.Common
 {
-    
+    public static class ImageHelper
+    {
+        public static Image LoadFromResource(string resourceString)
+        {
+            var img = new Image();
+            img.Source = new Bitmap(AssetLoader.Open(new Uri($"avares://{Assembly.GetExecutingAssembly().GetName().Name}/Resources/" + resourceString)));
+            return img;
+        }
+
+        public static async Task<Bitmap?> LoadFromWeb(Uri url)
+        {
+            using var httpClient = new HttpClient();
+            try
+            {
+                var response = await httpClient.GetAsync(url);
+                response.EnsureSuccessStatusCode();
+                var data = await response.Content.ReadAsByteArrayAsync();
+                return new Bitmap(new MemoryStream(data));
+            }
+            catch (HttpRequestException ex)
+            {
+                Console.WriteLine($"An error occurred while downloading image '{url}' : {ex.Message}");
+                return null;
+            }
+        }
+    }
+
     public class HighlightCurrentLineBackgroundRenderer : IBackgroundRenderer
     {
         private readonly TextEditor editor;
@@ -65,8 +86,6 @@ namespace ConvnetAvalonia.Common
 
         public new event PropertyChangedEventHandler? PropertyChanged;
 
-        //AddHandler(ScrollViewer.ScrollChangedEvent, new ScrollChangedEventHandler(ScrollChanged));
-
         public static KeyModifiers GetPlatformCommandKey()
         {
             if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
@@ -76,14 +95,13 @@ namespace ConvnetAvalonia.Common
 
             return KeyModifiers.Control;
         }
-
+       
+             
         public DefinitionEditor()
         {
-            //VerticalScrollBarVisibility = Avalonia.Controls.Primitives.ScrollBarVisibility.Visible;
-            //HorizontalScrollBarVisibility = Avalonia.Controls.Primitives.ScrollBarVisibility.Visible;
             FontSize = 14;
-            FontFamily = new FontFamily("Consolas");
-            //FontFamily = new FontFamily("Cascadia Code,Consolas,Menlo,Monospace");
+            //FontFamily = new FontFamily("Consolas");
+            FontFamily = new FontFamily("Cascadia Code,Consolas,Menlo,Monospace");
             Options = new TextEditorOptions
             {
                 IndentationSize = 4,
@@ -94,9 +112,9 @@ namespace ConvnetAvalonia.Common
 
             //TextArea.TextView.BackgroundRenderers.Add(new HighlightCurrentLineBackgroundRenderer(this));
             //TextArea.Caret.PositionChanged += (sender, e) => TextArea.TextView.InvalidateLayer(KnownLayer.Background);
-            //this.Options.ShowBoxForControlCharacters = true;
-            //this.TextArea.IndentationStrategy = new AvaloniaEdit.Indentation.CSharp.CSharpIndentationStrategy(this.Options);
-            //this.TextArea.RightClickMovesCaret = true;
+            //Options.ShowBoxForControlCharacters = true;
+            //TextArea.IndentationStrategy = new AvaloniaEdit.Indentation.CSharp.CSharpIndentationStrategy(this.Options);
+            this.TextArea.RightClickMovesCaret = true;
 
             var cmdKey = GetPlatformCommandKey();
 
@@ -110,20 +128,13 @@ namespace ConvnetAvalonia.Common
             var undo = new Avalonia.Controls.MenuItem { Header = "Undo", InputGesture = new KeyGesture(Key.Z, cmdKey) };
             var redo = new Avalonia.Controls.MenuItem { Header = "Redo", InputGesture = new KeyGesture(Key.Y, cmdKey) };
 
-            //var bitmap = new Bitmap(AssetLoader.Open(new Uri("../Resources/Cut.png", UriKind.Relative)));
-
-            //var bitmap = new Bitmap(AssetLoader.Open(new Uri("avares://ConvnetAvalonia/Resources/Cut.png")));
-            //var img = new AdvancedImage(new Uri("avares://ConvnetAvalonia/Resources/Cut.png", UriKind.RelativeOrAbsolute));
-            //img.Source = new AdvancedImage(new Uri("../Resources/Cut.png", UriKind.RelativeOrAbsolute)).CurrentImage;
-            //img.Width = 16;
-            //img.Height = 16;
-            //img.IsEnabled = true;
-            //img.IsVisible = true;
-            //using (MemoryStream memoryStream = new MemoryStream(Properties.Resources.Cut))
-            //{
-            //    cut.Icon = new Bitmap(PixelFormat.Rgba8888, AlphaFormat.Unpremul, Properties.Resources.Cut[0], new PixelSize(16,16), new Vector(96.0, 96.0), 4);
-            //}
-            //cut.Icon = new Avalonia.Controls.WindowIcon(bitmap);
+            cut.Icon = ImageHelper.LoadFromResource("Cut.png");
+            paste.Icon = ImageHelper.LoadFromResource("Paste.png");
+            copy.Icon = ImageHelper.LoadFromResource("Copy.png");
+            delete.Icon = ImageHelper.LoadFromResource("Cancel.png");
+            selectall.Icon = ImageHelper.LoadFromResource("SelectAll.png");
+            undo.Icon = ImageHelper.LoadFromResource("Undo.png");
+            redo.Icon = ImageHelper.LoadFromResource("Redo.png");
 
             cut.Command = ApplicationCommands.Cut;
             paste.Command = ApplicationCommands.Paste;
@@ -370,8 +381,9 @@ namespace ConvnetAvalonia.Common
 
     public class CodeEditor : AvaloniaEdit.TextEditor, INotifyPropertyChanged, IStyleable
     {
-        public new event PropertyChangedEventHandler? PropertyChanged;
         Type IStyleable.StyleKey => typeof(AvaloniaEdit.TextEditor);
+
+        public new event PropertyChangedEventHandler? PropertyChanged;
 
         public static KeyModifiers GetPlatformCommandKey()
         {
@@ -385,11 +397,9 @@ namespace ConvnetAvalonia.Common
 
         public CodeEditor()
         {
-            //VerticalScrollBarVisibility = Avalonia.Controls.Primitives.ScrollBarVisibility.Visible;
-            //HorizontalScrollBarVisibility = Avalonia.Controls.Primitives.ScrollBarVisibility.Visible;
             FontSize = 14;
-            FontFamily = new FontFamily("Consolas");
-            //FontFamily = new FontFamily("Cascadia Code,Consolas,Menlo,Monospace");
+            //FontFamily = new FontFamily("Consolas");
+            FontFamily = new FontFamily("Cascadia Code,Consolas,Menlo,Monospace");
             Options = new TextEditorOptions
             {
                 IndentationSize = 4,
@@ -400,6 +410,7 @@ namespace ConvnetAvalonia.Common
 
             //TextArea.TextView.BackgroundRenderers.Add(new HighlightCurrentLineBackgroundRenderer(this));
             //TextArea.Caret.PositionChanged += (sender, e) => TextArea.TextView.InvalidateLayer(KnownLayer.Background);
+            this.TextArea.RightClickMovesCaret = true;
 
             var cmdKey = GetPlatformCommandKey();
 
@@ -420,6 +431,14 @@ namespace ConvnetAvalonia.Common
             selectall.Command = ApplicationCommands.SelectAll;
             undo.Command = ApplicationCommands.Undo;
             redo.Command = ApplicationCommands.Redo;
+
+            cut.Icon = ImageHelper.LoadFromResource("Cut.png");
+            paste.Icon = ImageHelper.LoadFromResource("Paste.png");
+            copy.Icon = ImageHelper.LoadFromResource("Copy.png");
+            delete.Icon = ImageHelper.LoadFromResource("Cancel.png");
+            selectall.Icon = ImageHelper.LoadFromResource("SelectAll.png");
+            undo.Icon = ImageHelper.LoadFromResource("Undo.png");
+            redo.Icon = ImageHelper.LoadFromResource("Redo.png");
 
             cut.Click += (s, e) => { if (CanCut) Dispatcher.UIThread.Post(() => Cut()); };
             paste.Click += (s, e) => { if (CanPaste) Dispatcher.UIThread.Post(() => Paste()); };
