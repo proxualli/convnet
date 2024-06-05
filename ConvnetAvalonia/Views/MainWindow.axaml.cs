@@ -368,23 +368,24 @@ namespace ConvnetAvalonia
             }
         }
 
-        //public void CutCmdExecuted(object? target, ExecutedRoutedEventArgs e)
-        //{
-        //    ((TextBox?)e.Source)?.Cut();
-        //}
+        public void CutCmdExecuted(object? target, ExecutedRoutedEventArgs e)
+        {
+            ((TextBox?)e.Source)?.Cut();
+           
+        }
 
-        //public void CutCmdCanExecute(object? sender, CanExecuteRoutedEventArgs e)
-        //{
-        //    if (e != null && e.Source != null)
-        //    {
-        //        if (e.Source.GetType() == typeof(TextBox))
-        //            e.CanExecute = ((TextBox)e.Source).SelectionEnd > 0;
-        //        else
-        //            e.CanExecute = false;
-        //    }
-        //    else
-        //        e.CanExecute = false;
-        //}
+        public void CutCmdCanExecute(object? sender, CanExecuteRoutedEventArgs e)
+        {
+            if (e != null && e.Source != null)
+            {
+                if (e.Source.GetType() == typeof(TextBox))
+                    e.CanExecute = ((TextBox)e.Source).SelectionEnd > 0;
+                else
+                    e.CanExecute = false;
+            }
+            else
+                e.CanExecute = false;
+        }
 
         //private void CopyCmdExecuted(object target, ExecutedRoutedEventArgs e)
         //{

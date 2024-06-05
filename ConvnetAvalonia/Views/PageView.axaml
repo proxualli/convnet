@@ -3,6 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:actipro="http://schemas.actiprosoftware.com/avaloniaui"
+             xmlns:AvalonEdit="using:AvaloniaEdit"
              xmlns:vm="clr-namespace:ConvnetAvalonia.PageViewModels"
              xmlns:view="clr-namespace:ConvnetAvalonia.PageViews"
              xmlns:c="clr-namespace:ConvnetAvalonia.Common"
@@ -14,10 +15,11 @@
 
   <UserControl.Resources>
     <ContextMenu x:Key="MyContextMenu">
-      <MenuItem Header="_Cut" >
+      <MenuItem Header="_Cut" HotKey="Ctrl+c" Command="{Binding CutCommand}">
         <MenuItem.Icon>
           <actipro:DynamicImage Source="/Resources/Cut.png"/>
         </MenuItem.Icon>
+        
       </MenuItem>
       <MenuItem Header="Co_py">
         <MenuItem.Icon>

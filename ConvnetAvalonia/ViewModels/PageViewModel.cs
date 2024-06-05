@@ -1,4 +1,5 @@
-﻿using ConvnetAvalonia.Properties;
+﻿using AvaloniaEdit;
+using ConvnetAvalonia.Properties;
 using Interop;
 using ReactiveUI;
 using System;
@@ -20,6 +21,14 @@ namespace ConvnetAvalonia.PageViewModels
     public class PageViewModel : ConvnetAvalonia.ViewModels.ViewModelBase
     {
         public event EventHandler? PageChange;
+
+        public ReactiveCommand<Unit, Unit> CutCommand { get; }
+
+        private void Cut()
+        {
+            //App.MainWindow.MainView.
+            //ApplicationCommands.Cut();
+        }
 
         public PageViewModel(DNNModel model) : base(model)
         {

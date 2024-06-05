@@ -20,6 +20,6 @@
     <Design.DataContext>
       <vm:MainWindowViewModel/>
     </Design.DataContext>
-  
+
     <view:PageView x:Name="MainView"/>
 </Window>

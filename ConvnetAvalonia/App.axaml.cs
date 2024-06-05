@@ -9,6 +9,7 @@ using ConvnetAvalonia.Properties;
 using System.ComponentModel;
 using System.Globalization;
 //using ConvnetAvalonia.Views;
+using Material.Icons.Avalonia;
 
 namespace ConvnetAvalonia
 {
@@ -20,6 +21,8 @@ namespace ConvnetAvalonia
         
         public override void Initialize()
         {
+            this.Styles.Add(new MaterialIconStyles(null));
+
             AvaloniaXamlLoader.Load(this);
         }
 

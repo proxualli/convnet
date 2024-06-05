@@ -1,6 +1,9 @@
 ﻿using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Input;
 using Avalonia.Media;
 using Avalonia.Styling;
+using Avalonia.Threading;
 using AvaloniaEdit;
 using AvaloniaEdit.Document;
 using AvaloniaEdit.Editing;
@@ -8,10 +11,22 @@ using AvaloniaEdit.Rendering;
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
+using Material.Icons.Avalonia;
 
+using System.Reflection.Metadata;
+using ActiproSoftware.UI.Avalonia.Controls;
+using AsyncImageLoader;
+using AsyncImageLoader.Loaders;
+using Avalonia.Media.Imaging;
+using Avalonia.Platform;
+using System.IO;
+using SkiaSharp;
+using System.Reflection;
 
 namespace ConvnetAvalonia.Common
 {
+    
     public class HighlightCurrentLineBackgroundRenderer : IBackgroundRenderer
     {
         private readonly TextEditor editor;
@@ -52,10 +67,20 @@ namespace ConvnetAvalonia.Common
 
         //AddHandler(ScrollViewer.ScrollChangedEvent, new ScrollChangedEventHandler(ScrollChanged));
 
+        public static KeyModifiers GetPlatformCommandKey()
+        {
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+            {
+                return KeyModifiers.Meta;
+            }
+
+            return KeyModifiers.Control;
+        }
+
         public DefinitionEditor()
         {
-            VerticalScrollBarVisibility = Avalonia.Controls.Primitives.ScrollBarVisibility.Visible;
-            HorizontalScrollBarVisibility = Avalonia.Controls.Primitives.ScrollBarVisibility.Visible;
+            //VerticalScrollBarVisibility = Avalonia.Controls.Primitives.ScrollBarVisibility.Visible;
+            //HorizontalScrollBarVisibility = Avalonia.Controls.Primitives.ScrollBarVisibility.Visible;
             FontSize = 14;
             FontFamily = new FontFamily("Consolas");
             //FontFamily = new FontFamily("Cascadia Code,Consolas,Menlo,Monospace");
@@ -64,17 +89,69 @@ namespace ConvnetAvalonia.Common
                 IndentationSize = 4,
                 ConvertTabsToSpaces = false,
                 AllowScrollBelowDocument = false,
-                EnableVirtualSpace = true
+                EnableVirtualSpace = false
             };
 
-            TextArea.TextView.BackgroundRenderers.Add(new HighlightCurrentLineBackgroundRenderer(this));
-            TextArea.Caret.PositionChanged += (sender, e) => TextArea.TextView.InvalidateLayer(KnownLayer.Background);
-            //var cm = new Avalonia.Controls.ContextMenu();
-            //var cut = new Avalonia.Controls.MenuItem();
-            //cut.Header = "_Cut";
-            //cut.Command = ApplicationCommands.Cut;
-            //cm.Items.Add(cut);
-            //ContextMenu = cm;
+            //TextArea.TextView.BackgroundRenderers.Add(new HighlightCurrentLineBackgroundRenderer(this));
+            //TextArea.Caret.PositionChanged += (sender, e) => TextArea.TextView.InvalidateLayer(KnownLayer.Background);
+            //this.Options.ShowBoxForControlCharacters = true;
+            //this.TextArea.IndentationStrategy = new AvaloniaEdit.Indentation.CSharp.CSharpIndentationStrategy(this.Options);
+            //this.TextArea.RightClickMovesCaret = true;
+
+            var cmdKey = GetPlatformCommandKey();
+
+            var cm = new Avalonia.Controls.ContextMenu();
+
+            var cut = new Avalonia.Controls.MenuItem { Header = "Cut", InputGesture = new KeyGesture(Key.X, cmdKey) };
+            var copy = new Avalonia.Controls.MenuItem { Header = "Copy", InputGesture = new KeyGesture(Key.C, cmdKey) };
+            var paste = new Avalonia.Controls.MenuItem { Header = "Paste", InputGesture = new KeyGesture(Key.V, cmdKey) };
+            var delete = new Avalonia.Controls.MenuItem { Header = "Delete", InputGesture = new KeyGesture(Key.Delete) };
+            var selectall = new Avalonia.Controls.MenuItem { Header = "Select All", InputGesture = new KeyGesture(Key.A, cmdKey) };
+            var undo = new Avalonia.Controls.MenuItem { Header = "Undo", InputGesture = new KeyGesture(Key.Z, cmdKey) };
+            var redo = new Avalonia.Controls.MenuItem { Header = "Redo", InputGesture = new KeyGesture(Key.Y, cmdKey) };
+
+            //var bitmap = new Bitmap(AssetLoader.Open(new Uri("../Resources/Cut.png", UriKind.Relative)));
+
+            //var bitmap = new Bitmap(AssetLoader.Open(new Uri("avares://ConvnetAvalonia/Resources/Cut.png")));
+            //var img = new AdvancedImage(new Uri("avares://ConvnetAvalonia/Resources/Cut.png", UriKind.RelativeOrAbsolute));
+            //img.Source = new AdvancedImage(new Uri("../Resources/Cut.png", UriKind.RelativeOrAbsolute)).CurrentImage;
+            //img.Width = 16;
+            //img.Height = 16;
+            //img.IsEnabled = true;
+            //img.IsVisible = true;
+            //using (MemoryStream memoryStream = new MemoryStream(Properties.Resources.Cut))
+            //{
+            //    cut.Icon = new Bitmap(PixelFormat.Rgba8888, AlphaFormat.Unpremul, Properties.Resources.Cut[0], new PixelSize(16,16), new Vector(96.0, 96.0), 4);
+            //}
+            //cut.Icon = new Avalonia.Controls.WindowIcon(bitmap);
+
+            cut.Command = ApplicationCommands.Cut;
+            paste.Command = ApplicationCommands.Paste;
+            copy.Command = ApplicationCommands.Copy;
+            delete.Command = ApplicationCommands.Delete;
+            selectall.Command = ApplicationCommands.SelectAll;
+            undo.Command = ApplicationCommands.Undo;
+            redo.Command = ApplicationCommands.Redo;
+
+            cut.Click += (s, e) => { if (CanCut) Dispatcher.UIThread.Post(() => Cut()); };
+            paste.Click += (s, e) => { if (CanPaste) Dispatcher.UIThread.Post(() => Paste()); };
+            copy.Click += (s, e) => { if (CanCopy) Dispatcher.UIThread.Post(() => Copy()); };
+            delete.Click += (s, e) => { if (CanDelete) Dispatcher.UIThread.Post(() => Delete()); };
+            selectall.Click += (s, e) => { if (CanSelectAll) Dispatcher.UIThread.Post(() => SelectAll()); };
+            undo.Click += (s, e) => { if (CanUndo) Dispatcher.UIThread.Post(() => Undo()); };
+            redo.Click += (s, e) => { if (CanRedo) Dispatcher.UIThread.Post(() => Redo()); };
+
+            cm.Items.Add(cut);
+            cm.Items.Add(copy);
+            cm.Items.Add(paste);
+            cm.Items.Add(delete);
+            cm.Items.Add(new Avalonia.Controls.Separator());
+            cm.Items.Add(selectall);
+            cm.Items.Add(new Avalonia.Controls.Separator());
+            cm.Items.Add(undo);
+            cm.Items.Add(redo);
+
+            ContextMenu = cm;
         }
 
         //public static readonly StyledProperty<string> DefinitionProperty =  AvaloniaProperty.Register<DefinitionEditor, string>(nameof(Definition), defaultValue: string.Empty, false, Avalonia.Data.BindingMode.TwoWay);
@@ -296,10 +373,20 @@ namespace ConvnetAvalonia.Common
         public new event PropertyChangedEventHandler? PropertyChanged;
         Type IStyleable.StyleKey => typeof(AvaloniaEdit.TextEditor);
 
+        public static KeyModifiers GetPlatformCommandKey()
+        {
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+            {
+                return KeyModifiers.Meta;
+            }
+
+            return KeyModifiers.Control;
+        }
+
         public CodeEditor()
         {
-            VerticalScrollBarVisibility = Avalonia.Controls.Primitives.ScrollBarVisibility.Visible;
-            HorizontalScrollBarVisibility = Avalonia.Controls.Primitives.ScrollBarVisibility.Visible;
+            //VerticalScrollBarVisibility = Avalonia.Controls.Primitives.ScrollBarVisibility.Visible;
+            //HorizontalScrollBarVisibility = Avalonia.Controls.Primitives.ScrollBarVisibility.Visible;
             FontSize = 14;
             FontFamily = new FontFamily("Consolas");
             //FontFamily = new FontFamily("Cascadia Code,Consolas,Menlo,Monospace");
@@ -311,8 +398,48 @@ namespace ConvnetAvalonia.Common
                 EnableVirtualSpace = true
             };
 
-            TextArea.TextView.BackgroundRenderers.Add(new HighlightCurrentLineBackgroundRenderer(this));
-            TextArea.Caret.PositionChanged += (sender, e) => TextArea.TextView.InvalidateLayer(KnownLayer.Background);     
+            //TextArea.TextView.BackgroundRenderers.Add(new HighlightCurrentLineBackgroundRenderer(this));
+            //TextArea.Caret.PositionChanged += (sender, e) => TextArea.TextView.InvalidateLayer(KnownLayer.Background);
+
+            var cmdKey = GetPlatformCommandKey();
+
+            var cm = new Avalonia.Controls.ContextMenu();
+
+            var cut = new Avalonia.Controls.MenuItem { Header = "Cut", InputGesture = new KeyGesture(Key.X, cmdKey) };
+            var copy = new Avalonia.Controls.MenuItem { Header = "Copy", InputGesture = new KeyGesture(Key.C, cmdKey) };
+            var paste = new Avalonia.Controls.MenuItem { Header = "Paste", InputGesture = new KeyGesture(Key.V, cmdKey) };
+            var delete = new Avalonia.Controls.MenuItem { Header = "Delete", InputGesture = new KeyGesture(Key.Delete) };
+            var selectall = new Avalonia.Controls.MenuItem { Header = "Select All", InputGesture = new KeyGesture(Key.A, cmdKey) };
+            var undo = new Avalonia.Controls.MenuItem { Header = "Undo", InputGesture = new KeyGesture(Key.Z, cmdKey) };
+            var redo = new Avalonia.Controls.MenuItem { Header = "Redo", InputGesture = new KeyGesture(Key.Y, cmdKey) };
+
+            cut.Command = ApplicationCommands.Cut;
+            paste.Command = ApplicationCommands.Paste;
+            copy.Command = ApplicationCommands.Copy;
+            delete.Command = ApplicationCommands.Delete;
+            selectall.Command = ApplicationCommands.SelectAll;
+            undo.Command = ApplicationCommands.Undo;
+            redo.Command = ApplicationCommands.Redo;
+
+            cut.Click += (s, e) => { if (CanCut) Dispatcher.UIThread.Post(() => Cut()); };
+            paste.Click += (s, e) => { if (CanPaste) Dispatcher.UIThread.Post(() => Paste()); };
+            copy.Click += (s, e) => { if (CanCopy) Dispatcher.UIThread.Post(() => Copy()); };
+            delete.Click += (s, e) => { if (CanDelete) Dispatcher.UIThread.Post(() => Delete()); };
+            selectall.Click += (s, e) => { if (CanSelectAll) Dispatcher.UIThread.Post(() => SelectAll()); };
+            undo.Click += (s, e) => { if (CanUndo) Dispatcher.UIThread.Post(() => Undo()); };
+            redo.Click += (s, e) => { if (CanRedo) Dispatcher.UIThread.Post(() => Redo()); };
+
+            cm.Items.Add(cut);
+            cm.Items.Add(copy);
+            cm.Items.Add(paste);
+            cm.Items.Add(delete);
+            cm.Items.Add(new Avalonia.Controls.Separator());
+            cm.Items.Add(selectall);
+            cm.Items.Add(new Avalonia.Controls.Separator());
+            cm.Items.Add(undo);
+            cm.Items.Add(redo);
+
+            ContextMenu = cm;
         }
 
         //public static readonly StyledProperty<string> SourceCodeProperty = AvaloniaProperty.Register<CodeEditor, string>(nameof(SourceCode), defaultValue: string.Empty, false, Avalonia.Data.BindingMode.TwoWay);

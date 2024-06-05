@@ -12,6 +12,7 @@ using System;
 using System.IO;
 using System.Xml;
 using TextMateSharp.Grammars;
+using Material.Icons.Avalonia;
 
 namespace ConvnetAvalonia.PageViews
 {
@@ -76,8 +77,9 @@ namespace ConvnetAvalonia.PageViews
 
         public void GridSplitter_DragCompleted(object? sender, VectorEventArgs e)
         {
-            //if (!e.Handled)
+            if (!e.Handled)
             {
+                //Settings.Default.EditSplitPositionA = new GridLength(e.Vector.Length);
                 Settings.Default.Save();
                 e.Handled = true;
             }
