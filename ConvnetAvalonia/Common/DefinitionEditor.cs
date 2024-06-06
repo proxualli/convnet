@@ -48,36 +48,36 @@ namespace ConvnetAvalonia.Common
         }
     }
 
-    public class HighlightCurrentLineBackgroundRenderer : IBackgroundRenderer
-    {
-        private readonly TextEditor editor;
+    //public class HighlightCurrentLineBackgroundRenderer : IBackgroundRenderer
+    //{
+    //    private readonly TextEditor editor;
 
-        public HighlightCurrentLineBackgroundRenderer(TextEditor editor)
-        {
-            this.editor = editor;
-        }
+    //    public HighlightCurrentLineBackgroundRenderer(TextEditor editor)
+    //    {
+    //        this.editor = editor;
+    //    }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Interoperability", "CA1416:Validate platform compatibility", Justification = "<Pending>")]
-        public KnownLayer Layer
-        {
-            get { return KnownLayer.Background; }
-        }
+    //    [System.Diagnostics.CodeAnalysis.SuppressMessage("Interoperability", "CA1416:Validate platform compatibility", Justification = "<Pending>")]
+    //    public KnownLayer Layer
+    //    {
+    //        get { return KnownLayer.Background; }
+    //    }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Interoperability", "CA1416:Validate platform compatibility", Justification = "<Pending>")]
-        public void Draw(TextView textView, DrawingContext drawingContext)
-        {
-            if (editor.Document == null)
-                return;
+    //    [System.Diagnostics.CodeAnalysis.SuppressMessage("Interoperability", "CA1416:Validate platform compatibility", Justification = "<Pending>")]
+    //    public void Draw(TextView textView, DrawingContext drawingContext)
+    //    {
+    //        if (editor.Document == null)
+    //            return;
 
-            textView.EnsureVisualLines();
-            var currentLine = editor.Document.GetLineByOffset(editor.CaretOffset);
-            foreach (var rect in BackgroundGeometryBuilder.GetRectsForSegment(textView, currentLine))
-            {
-                if (textView.Bounds.Width >= 32)
-                    drawingContext.DrawRectangle(new SolidColorBrush(Color.FromArgb(0x50, 0xCF, 0xCF, 0xCF)), null, new Rect(rect.Position, new Size(textView.Bounds.Width - 32, rect.Height)));
-            }
-        }
-    }
+    //        textView.EnsureVisualLines();
+    //        var currentLine = editor.Document.GetLineByOffset(editor.CaretOffset);
+    //        foreach (var rect in BackgroundGeometryBuilder.GetRectsForSegment(textView, currentLine))
+    //        {
+    //            if (textView.Bounds.Width >= 32)
+    //                drawingContext.DrawRectangle(new SolidColorBrush(Color.FromArgb(0x50, 0xCF, 0xCF, 0xCF)), null, new Rect(rect.Position, new Size(textView.Bounds.Width - 32, rect.Height)));
+    //        }
+    //    }
+    //}
 
   
     public class DefinitionEditor : TextEditor, INotifyPropertyChanged, IStyleable
@@ -180,7 +180,7 @@ namespace ConvnetAvalonia.Common
             get { return Text; }
             set
             {
-                //if (value != Text)
+                if (value != Text)
                 {
                     Text = value;
                     //Document.Text = value;
@@ -207,25 +207,6 @@ namespace ConvnetAvalonia.Common
         }
 
         public static readonly StyledProperty<TextLocation> TextLocationProperty = AvaloniaProperty.Register<DefinitionEditor, TextLocation>(nameof(TextLocation), defaultValue: new TextLocation(), false, Avalonia.Data.BindingMode.TwoWay);
-
-        //public static readonly DirectProperty<DefinitionEditor, TextLocation> TextLocationProperty = AvaloniaProperty.RegisterDirect<DefinitionEditor, TextLocation>(
-        //    nameof(TextLocation),
-        //    o => o.TextLocation,
-        //    (o, v) =>
-        //    {
-        //        if (o.TextLocation != v)
-        //        {
-        //            o.TextArea.Caret.Line = v.Line;
-        //            o.TextArea.Caret.Column = v.Column;
-        //            o.TextArea.Caret.BringCaretToView();
-        //            o.TextArea.Caret.Show();
-        //            o.ScrollTo(v.Line, v.Column);
-        //            o.TextLocation = v;
-
-        //        }
-        //    },
-        //    new TextLocation(0, 0),
-        //    Avalonia.Data.BindingMode.TwoWay);
 
         public TextLocation TextLocation
         {
@@ -301,17 +282,6 @@ namespace ConvnetAvalonia.Common
 
         public static readonly StyledProperty<string> FilePathProperty = AvaloniaProperty.Register<DefinitionEditor, string>(nameof(FilePath), defaultValue: string.Empty, false, Avalonia.Data.BindingMode.TwoWay);
 
-        //public static readonly DirectProperty<DefinitionEditor, string> FilePathProperty = AvaloniaProperty.RegisterDirect<DefinitionEditor, string>(
-        //  nameof(FilePath),
-        //  o => o.FilePath,
-        //  (o, v) =>
-        //  {
-        //      if (string.Compare(o.FilePath, v) != 0)
-        //          o.FilePath = v;
-        //  },
-        //  string.Empty,
-        //  Avalonia.Data.BindingMode.TwoWay);
-
         public string FilePath
         {
             get { return GetValue(FilePathProperty); }
@@ -322,8 +292,7 @@ namespace ConvnetAvalonia.Common
             }
         }
         
-        //public static PropertyChangedCallback OnFilePathChanged { get; private set; }
-
+       
 
         #region INotifyPropertyChanged Members
 
