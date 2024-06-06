@@ -68,7 +68,7 @@ namespace ConvnetAvalonia
                     //        mainWindow.PageVM.Model.SaveWeights(fileName, Settings.Default.PersistOptimizer);
                     //    }
 
-                    if (MainWindow != null && MainWindow.PageVM != null && MainWindow.PageVM.Pages != null)
+                    if (MainWindow.PageVM != null && MainWindow.PageVM.Pages != null)
                     { 
                         //var editPV = MainWindow.PageVM.Pages[(int)PageViewModels.ViewModels.Edit] as EditPageViewModel;
                         //if (editPV != null)

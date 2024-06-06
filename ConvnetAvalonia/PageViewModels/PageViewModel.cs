@@ -1,11 +1,9 @@
-﻿using AvaloniaEdit;
-using ConvnetAvalonia.Properties;
+﻿using ConvnetAvalonia.Properties;
 using Interop;
 using ReactiveUI;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Reactive;
 using Float = System.Single;
 using UInt = System.UInt64;
 

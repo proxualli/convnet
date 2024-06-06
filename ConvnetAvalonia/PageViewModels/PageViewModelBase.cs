@@ -1,5 +1,4 @@
 ﻿using Avalonia.Controls;
-using AvaloniaEdit;
 using DynamicData;
 using Interop;
 using ReactiveUI;

@@ -2,8 +2,6 @@
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Media;
-using Avalonia.Media.Imaging;
-using Avalonia.Platform;
 using Avalonia.Styling;
 using Avalonia.Threading;
 using AvaloniaEdit;
@@ -12,48 +10,9 @@ using AvaloniaEdit.Editing;
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.IO;
-using System.Net.Http;
-using System.Reflection;
-using System.Runtime.InteropServices;
-using System.Threading.Tasks;
 
 namespace ConvnetAvalonia.Common
 {
-    public static class ImageHelper
-    {
-        public static Image LoadFromResource(string fileName)
-        {
-            var img = new Image
-            {
-                Source = new Bitmap(AssetLoader.Open(new Uri($"avares://{Assembly.GetExecutingAssembly().GetName().Name}/Resources/" + fileName)))
-            };
-            return img;
-        }
-
-        public static async Task<Image?> LoadFromWeb(Uri url)
-        {
-            using var httpClient = new HttpClient();
-            try
-            {
-                var response = await httpClient.GetAsync(url);
-                response.EnsureSuccessStatusCode();
-                var data = await response.Content.ReadAsByteArrayAsync();
-
-                var img = new Image
-                {
-                    Source = new Bitmap(new MemoryStream(data))
-                };
-                return img;
-            }
-            catch (HttpRequestException ex)
-            {
-                Console.WriteLine($"An error occurred while downloading image '{url}' : {ex.Message}");
-                return null;
-            }
-        }
-    }
-
     //public class HighlightCurrentLineBackgroundRenderer : IBackgroundRenderer
     //{
     //    private readonly TextEditor editor;
@@ -92,17 +51,6 @@ namespace ConvnetAvalonia.Common
 
         public new event PropertyChangedEventHandler? PropertyChanged;
 
-        public static KeyModifiers GetPlatformCommandKey()
-        {
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
-            {
-                return KeyModifiers.Meta;
-            }
-
-            return KeyModifiers.Control;
-        }
-       
-             
         public DefinitionEditor()
         {
             FontSize = 13;
@@ -119,7 +67,7 @@ namespace ConvnetAvalonia.Common
             //TextArea.TextView.BackgroundRenderers.Add(new HighlightCurrentLineBackgroundRenderer(this));
             //TextArea.Caret.PositionChanged += (sender, e) => TextArea.TextView.InvalidateLayer(KnownLayer.Background);
 
-            var cmdKey = GetPlatformCommandKey();
+            var cmdKey = ApplicationHelper.GetPlatformCommandKey();
 
             var cm = new ContextMenu();
 
@@ -131,13 +79,13 @@ namespace ConvnetAvalonia.Common
             var undo = new MenuItem { Header = "Undo", InputGesture = new KeyGesture(Key.Z, cmdKey) };
             var redo = new MenuItem { Header = "Redo", InputGesture = new KeyGesture(Key.Y, cmdKey) };
 
-            cut.Icon = ImageHelper.LoadFromResource("Cut.png");
-            paste.Icon = ImageHelper.LoadFromResource("Paste.png");
-            copy.Icon = ImageHelper.LoadFromResource("Copy.png");
-            delete.Icon = ImageHelper.LoadFromResource("Cancel.png");
-            selectall.Icon = ImageHelper.LoadFromResource("SelectAll.png");
-            undo.Icon = ImageHelper.LoadFromResource("Undo.png");
-            redo.Icon = ImageHelper.LoadFromResource("Redo.png");
+            cut.Icon = ApplicationHelper.LoadFromResource("Cut.png");
+            paste.Icon = ApplicationHelper.LoadFromResource("Paste.png");
+            copy.Icon = ApplicationHelper.LoadFromResource("Copy.png");
+            delete.Icon = ApplicationHelper.LoadFromResource("Cancel.png");
+            selectall.Icon = ApplicationHelper.LoadFromResource("SelectAll.png");
+            undo.Icon = ApplicationHelper.LoadFromResource("Undo.png");
+            redo.Icon = ApplicationHelper.LoadFromResource("Redo.png");
 
             cut.Command = ApplicationCommands.Cut;
             paste.Command = ApplicationCommands.Paste;
@@ -361,16 +309,6 @@ namespace ConvnetAvalonia.Common
 
         public new event PropertyChangedEventHandler? PropertyChanged;
 
-        public static KeyModifiers GetPlatformCommandKey()
-        {
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
-            {
-                return KeyModifiers.Meta;
-            }
-
-            return KeyModifiers.Control;
-        }
-
         public CodeEditor()
         {
             FontSize = 13;
@@ -389,7 +327,7 @@ namespace ConvnetAvalonia.Common
             //TextArea.TextView.BackgroundRenderers.Add(new HighlightCurrentLineBackgroundRenderer(this));
             //TextArea.Caret.PositionChanged += (sender, e) => TextArea.TextView.InvalidateLayer(KnownLayer.Background);
                  
-            var cmdKey = GetPlatformCommandKey();
+            var cmdKey = ApplicationHelper.GetPlatformCommandKey();
 
             var cm = new ContextMenu();
 
@@ -409,13 +347,13 @@ namespace ConvnetAvalonia.Common
             undo.Command = ApplicationCommands.Undo;
             redo.Command = ApplicationCommands.Redo;
 
-            cut.Icon = ImageHelper.LoadFromResource("Cut.png");
-            paste.Icon = ImageHelper.LoadFromResource("Paste.png");
-            copy.Icon = ImageHelper.LoadFromResource("Copy.png");
-            delete.Icon = ImageHelper.LoadFromResource("Cancel.png");
-            selectall.Icon = ImageHelper.LoadFromResource("SelectAll.png");
-            undo.Icon = ImageHelper.LoadFromResource("Undo.png");
-            redo.Icon = ImageHelper.LoadFromResource("Redo.png");
+            cut.Icon = ApplicationHelper.LoadFromResource("Cut.png");
+            paste.Icon = ApplicationHelper.LoadFromResource("Paste.png");
+            copy.Icon = ApplicationHelper.LoadFromResource("Copy.png");
+            delete.Icon = ApplicationHelper.LoadFromResource("Cancel.png");
+            selectall.Icon = ApplicationHelper.LoadFromResource("SelectAll.png");
+            undo.Icon = ApplicationHelper.LoadFromResource("Undo.png");
+            redo.Icon = ApplicationHelper.LoadFromResource("Redo.png");
 
             cut.Click += (s, e) => { if (CanCut) Dispatcher.UIThread.Post(() => Cut()); };
             paste.Click += (s, e) => { if (CanPaste) Dispatcher.UIThread.Post(() => Paste()); };

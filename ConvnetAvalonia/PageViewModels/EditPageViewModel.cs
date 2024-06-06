@@ -6,7 +6,6 @@ using ConvnetAvalonia.Common;
 using ConvnetAvalonia.Properties;
 using CustomMessageBox.Avalonia;
 using Interop;
-using Newtonsoft.Json.Linq;
 using ReactiveUI;
 using System;
 using System.Diagnostics;
@@ -61,7 +60,7 @@ namespace ConvnetAvalonia.PageViewModels
             var openButton = new Button
             {
                 Name = "ButtonOpen",
-                Content = ImageHelper.LoadFromResource("Open.png"),
+                Content = ApplicationHelper.LoadFromResource("Open.png"),
                 ClickMode = ClickMode.Release
             };
             ToolTip.SetTip(openButton, "Open");
@@ -70,7 +69,7 @@ namespace ConvnetAvalonia.PageViewModels
             var saveButton = new Button
             {
                 Name = "ButtonSave",
-                Content = ImageHelper.LoadFromResource("Save.png"),
+                Content = ApplicationHelper.LoadFromResource("Save.png"),
                 ClickMode = ClickMode.Release
             };
             ToolTip.SetTip(saveButton, "Save");
@@ -79,7 +78,7 @@ namespace ConvnetAvalonia.PageViewModels
             var checkButton = new Button
             {
                 Name = "ButtonCheck",
-                Content = ImageHelper.LoadFromResource("SpellCheck.png"),
+                Content = ApplicationHelper.LoadFromResource("SpellCheck.png"),
                 ClickMode = ClickMode.Release
             };
             ToolTip.SetTip(checkButton, "Check");
@@ -88,7 +87,7 @@ namespace ConvnetAvalonia.PageViewModels
             var synchronizeButton = new Button
             {
                 Name = "ButtonSynchronize",
-                Content = ImageHelper.LoadFromResource("Synchronize.png"),
+                Content = ApplicationHelper.LoadFromResource("Synchronize.png"),
                 ClickMode = ClickMode.Release
             };
             ToolTip.SetTip(synchronizeButton, "Synchronize");
@@ -103,7 +102,7 @@ namespace ConvnetAvalonia.PageViewModels
             var scriptsButton = new Button
             {
                 Name = "ButtonScripts",
-                Content = ImageHelper.LoadFromResource("Calculate.png"),
+                Content = ApplicationHelper.LoadFromResource("Calculate.png"),
                 ClickMode = ClickMode.Release,
             };
             ToolTip.SetTip(scriptsButton, "Run Script");
@@ -113,7 +112,7 @@ namespace ConvnetAvalonia.PageViewModels
             var visualStudioButton = new Button
             {
                 Name = "ButtonVisualStudio",
-                Content = ImageHelper.LoadFromResource("VisualStudio.png"),
+                Content = ApplicationHelper.LoadFromResource("VisualStudio.png"),
                 ClickMode = ClickMode.Release,
             };
             ToolTip.SetTip(visualStudioButton, "Open in Visual Studio");

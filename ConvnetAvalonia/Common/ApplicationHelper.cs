@@ -1,15 +1,64 @@
-﻿using Avalonia.Threading;
+﻿using Avalonia.Controls;
+using Avalonia.Input;
+using Avalonia.Media.Imaging;
+using Avalonia.Platform;
+using Avalonia.Threading;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Net.NetworkInformation;
+using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 
 namespace ConvnetAvalonia.Common
 {
     public static class ApplicationHelper
     {
+        public static KeyModifiers GetPlatformCommandKey()
+        {
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+            {
+                return KeyModifiers.Meta;
+            }
+
+            return KeyModifiers.Control;
+        }
+       
+        public static Image LoadFromResource(string fileName)
+        {
+            var img = new Image
+            {
+                Source = new Bitmap(AssetLoader.Open(new Uri($"avares://{Assembly.GetExecutingAssembly().GetName().Name}/Resources/" + fileName)))
+            };
+            return img;
+        }
+
+        public static async Task<Image?> LoadFromWeb(Uri url)
+        {
+            using var httpClient = new HttpClient();
+            try
+            {
+                var response = await httpClient.GetAsync(url);
+                response.EnsureSuccessStatusCode();
+                var data = await response.Content.ReadAsByteArrayAsync();
+
+                var img = new Image
+                {
+                    Source = new Bitmap(new MemoryStream(data))
+                };
+                return img;
+            }
+            catch (HttpRequestException ex)
+            {
+                Console.WriteLine($"An error occurred while downloading image '{url}' : {ex.Message}");
+                return null;
+            }
+        }
+        
         #region DoEvents
         /// <summary>
         /// Forces the WPF message pump to process all enqueued messages
