@@ -21,7 +21,7 @@ namespace ConvnetAvalonia.Converters
         public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
         {
             int returnValue = 0;
-            if (parameter is Type)
+            if (parameter is Type && value != null)
             {
                 returnValue = (int)Enum.Parse((Type)parameter, value.ToString());
             }

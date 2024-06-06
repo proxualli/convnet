@@ -1,11 +1,9 @@
-﻿using Avalonia;
-using Avalonia.Controls;
+﻿using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Markup.Xaml;
 using AvaloniaEdit;
 using AvaloniaEdit.Highlighting;
 using AvaloniaEdit.Highlighting.Xshd;
-using AvaloniaEdit.Indentation.CSharp;
 using AvaloniaEdit.TextMate;
 using ConvnetAvalonia.Common;
 using ConvnetAvalonia.PageViewModels;

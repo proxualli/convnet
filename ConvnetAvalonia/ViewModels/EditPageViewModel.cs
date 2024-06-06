@@ -264,7 +264,7 @@ namespace ConvnetAvalonia.PageViewModels
                 
                 var pathWeights = Settings.Default.PersistOptimizer ? Path.Combine(pathWeightsDirectory, Dataset.ToString().ToLower(CultureInfo.CurrentCulture) + "-" + Settings.Default.Optimizer.ToString().ToLower(CultureInfo.CurrentCulture) + @".bin") : Path.Combine(pathWeightsDirectory, Dataset.ToString().ToLower(CultureInfo.CurrentCulture) + ".bin");
                 
-                if (!sameDef || modelname != Model.Name || modelname != ModelName)
+                if (!sameDef || modelname != Model?.Name || modelname != ModelName)
                 {
                     //Mouse.OverrideCursor = Cursors.Wait;
 
@@ -303,7 +303,7 @@ namespace ConvnetAvalonia.PageViewModels
                             try
                             {
 
-                                Model.Dispose();
+                                Model?.Dispose();
                                 Model = new DNNModel(Definition)
                                 {
                                     BackgroundColor = Settings.Default.BackgroundColor,
@@ -311,8 +311,9 @@ namespace ConvnetAvalonia.PageViewModels
                                     TrainingStrategies = Settings.Default.TrainingStrategies
                                 };
                                 Model.ClearTrainingStrategies();
-                                foreach (DNNTrainingStrategy strategy in Settings.Default.TrainingStrategies)
-                                    Model.AddTrainingStrategy(strategy);
+                                if (Settings.Default.TrainingStrategies != null)
+                                    foreach (DNNTrainingStrategy strategy in Settings.Default.TrainingStrategies)
+                                        Model.AddTrainingStrategy(strategy);
                                 Model.SetFormat(Settings.Default.PlainFormat);
                                 Model.SetOptimizer(Settings.Default.Optimizer);
                                 Model.SetPersistOptimizer(Settings.Default.PersistOptimizer);
@@ -329,7 +330,9 @@ namespace ConvnetAvalonia.PageViewModels
                                 Settings.Default.DefinitionActive = Definition;
                                 Settings.Default.Save();
 
-                                App.MainWindow.Title = Model.Name + " - Convnet Explorer";
+                                if (App.MainWindow != null)
+                                    App.MainWindow.Title = Model.Name + " - Convnet Explorer";
+
                                 CanSynchronize = false;
 
                                 GC.Collect(GC.MaxGeneration);
@@ -399,7 +402,9 @@ namespace ConvnetAvalonia.PageViewModels
                                 Settings.Default.DefinitionActive = Definition;
                                 Settings.Default.Save();
 
-                                App.MainWindow.Title = Model.Name + " - Convnet Explorer";
+                                if (App.MainWindow != null)
+                                    App.MainWindow.Title = Model.Name + " - Convnet Explorer";
+
                                 CanSynchronize = false;
 
                                 GC.Collect(GC.MaxGeneration);
@@ -417,7 +422,7 @@ namespace ConvnetAvalonia.PageViewModels
                     }
                 }
 
-                Settings.Default.Dataset = Model.Dataset.ToString().ToLower(CultureInfo.CurrentCulture);
+                Settings.Default.Dataset = Model?.Dataset.ToString().ToLower(CultureInfo.CurrentCulture);
                 Settings.Default.Save();
             }
             catch (Exception ex)

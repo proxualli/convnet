@@ -8,8 +8,6 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-using Interop;
-
 namespace ConvnetAvalonia.Properties {
     
     
@@ -24,58 +22,37 @@ namespace ConvnetAvalonia.Properties {
                 return defaultInstance;
             }
         }
-
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("64")]
-        public byte BackgroundColor
-        {
-            get
-            {
-                return ((byte)(this["BackgroundColor"]));
-            }
-            set
-            {
-                this["BackgroundColor"] = value;
-            }
-        }
-
+        
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("3")]
-        public double PixelSize
-        {
-            get
-            {
+        public double PixelSize {
+            get {
                 return ((double)(this["PixelSize"]));
             }
-            set
-            {
+            set {
                 this["PixelSize"] = value;
             }
         }
-
+        
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("60")]
-        public int? RefreshInterval
-        {
-            get
-            {
-                return ((int?)(this["RefreshInterval"]));
+        public int RefreshInterval {
+            get {
+                return ((int)(this["RefreshInterval"]));
             }
-            set
-            {
+            set {
                 this["RefreshInterval"] = value;
             }
         }
-
+        
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("9")]
-        public DNNOptimizers Optimizer {
+        public Interop.DNNOptimizers Optimizer {
             get {
-                return ((DNNOptimizers)(this["Optimizer"]));
+                return ((Interop.DNNOptimizers)(this["Optimizer"]));
             }
             set {
                 this["Optimizer"] = value;
@@ -129,83 +106,7 @@ namespace ConvnetAvalonia.Properties {
                 this["GotoEpoch"] = value;
             }
         }
-
-
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool UseTrainingStrategy
-        {
-            get
-            {
-                return ((bool)(this["UseTrainingStrategy"]));
-            }
-            set
-            {
-                this["UseTrainingStrategy"] = value;
-            }
-        }
-
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("420")]
-        public double EditSplitPositionA
-        {
-            get
-            {
-                return ((double)(this["EditSplitPositionA"]));
-            }
-            set
-            {
-                this["EditSplitPositionA"] = value;
-            }
-        }
-
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
-        public int SelectedLayer
-        {
-            get
-            {
-                return ((int)(this["SelectedLayer"]));
-            }
-            set
-            {
-                this["SelectedLayer"] = value;
-            }
-        }
-
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool DisableLocking
-        {
-            get
-            {
-                return ((bool)(this["DisableLocking"]));
-            }
-            set
-            {
-                this["DisableLocking"] = value;
-            }
-        }
-
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool PlainFormat
-        {
-            get
-            {
-                return ((bool)(this["PlainFormat"]));
-            }
-            set
-            {
-                this["PlainFormat"] = value;
-            }
-        }
-
+        
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("Normal")]
@@ -253,116 +154,141 @@ namespace ConvnetAvalonia.Properties {
                 this["PlotType"] = value;
             }
         }
+        
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("[resnet-3-2-6-channelzeropad]\r\nDataset=CIFAR10\r\nDim=3,32,32\r\nZeroPad" +
-             "=4,4\r\nRandomCrop=Yes\r\nWeightsFiller=HeNormal\r\nBiases=No\r\nMomentum=0.995\r\nScaling" +
-             "=No\r\n\r\n[C1]\r\nType=Convolution\r\nInputs=Input\r\nChannels=96\r\nKernel=3,3\r\nPad=1,1\r\n\r" +
-             "\n[B1]\r\nType=BatchNormRelu\r\nInputs=C1\r\n\r\n[C2]\r\nType=Convolution\r\nInputs=B1\r\nChann" +
-             "els=96\r\nKernel=3,3\r\nPad=1,1\r\n\r\n[B2]\r\nType=BatchNormReluDropout\r\nInputs=C2\r\nDropo" +
-             "ut=0.3\r\n\r\n[C3]\r\nType=Convolution\r\nInputs=B2\r\nChannels=96\r\nKernel=3,3\r\nPad=1,1\r\n\r" +
-             "\n[C4]\r\nType=Convolution\r\nInputs=B1\r\nChannels=96\r\nKernel=1,1\r\n\r\n[A1]\r\nType=Add\r\nI" +
-             "nputs=C3,C4\r\n\r\n[B5]\r\nType=BatchNormRelu\r\nInputs=A1\r\n\r\n[C5]\r\nType=Convolution\r\nIn" +
-             "puts=B5\r\nChannels=96\r\nKernel=3,3\r\nPad=1,1\r\n\r\n[B6]\r\nType=BatchNormReluDropout\r\nIn" +
-             "puts=C5\r\nDropout=0.3\r\n\r\n[C6]\r\nType=Convolution\r\nInputs=B6\r\nChannels=96\r\nKernel=3" +
-             ",3\r\nPad=1,1\r\n\r\n[A2]\r\nType=Add\r\nInputs=C6,A1\r\n\r\n[B7]\r\nType=BatchNormRelu\r\nInputs=" +
-             "A2\r\n\r\n[C7]\r\nType=Convolution\r\nInputs=B7\r\nChannels=192\r\nKernel=3,3\r\nStride=2,2\r\nP" +
-             "ad=1,1\r\n\r\n[B8]\r\nType=BatchNormReluDropout\r\nInputs=C7\r\nDropout=0.3\r\n\r\n[C8]\r\nType=" +
-             "Convolution\r\nInputs=B8\r\nChannels=192\r\nKernel=3,3\r\nPad=1,1\r\n\r\n[AVG1]\r\nType=AvgPoo" +
-             "ling\r\nInputs=A2\r\nKernel=3,3\r\nStride=2,2\r\nPad=1,1\r\n\r\n[CZP1]\r\nType=ChannelZeroPad\r" +
-             "\nInputs=AVG1\r\nChannels=192\r\n\r\n[A3]\r\nType=Add\r\nInputs=C8,CZP1\r\n\r\n[B9]\r\nType=Batch" +
-             "NormRelu\r\nInputs=A3\r\n\r\n[C9]\r\nType=Convolution\r\nInputs=B9\r\nChannels=192\r\nKernel=3" +
-             ",3\r\nPad=1,1\r\n\r\n[B10]\r\nType=BatchNormReluDropout\r\nInputs=C9\r\nDropout=0.3\r\n\r\n[C10]" +
-             "\r\nType=Convolution\r\nInputs=B10\r\nChannels=192\r\nKernel=3,3\r\nPad=1,1\r\n\r\n[A4]\r\nType=" +
-             "Add\r\nInputs=C10,A3\r\n\r\n[B11]\r\nType=BatchNormRelu\r\nInputs=A4\r\n\r\n[C11]\r\nType=Convol" +
-             "ution\r\nInputs=B11\r\nChannels=384\r\nKernel=3,3\r\nStride=2,2\r\nPad=1,1\r\n\r\n[B12]\r\nType=" +
-             "BatchNormReluDropout\r\nInputs=C11\r\nDropout=0.3\r\n\r\n[C12]\r\nType=Convolution\r\nInputs" +
-             "=B12\r\nChannels=384\r\nKernel=3,3\r\nPad=1,1\r\n\r\n[AVG2]\r\nType=AvgPooling\r\nInputs=A4\r\nK" +
-             "ernel=3,3\r\nStride=2,2\r\nPad=1,1\r\n\r\n[CZP2]\r\nType=ChannelZeroPad\r\nInputs=AVG2\r\nChan" +
-             "nels=384\r\n\r\n[A5]\r\nType=Add\r\nInputs=C12,CZP2\r\n\r\n[B13]\r\nType=BatchNormRelu\r\nInputs" +
-             "=A5\r\n\r\n[C13]\r\nType=Convolution\r\nInputs=B13\r\nChannels=384\r\nKernel=3,3\r\nPad=1,1\r\n\r" +
-             "\n[B14]\r\nType=BatchNormReluDropout\r\nInputs=C13\r\nDropout=0.3\r\n\r\n[C14]\r\nType=Convol" +
-             "ution\r\nInputs=B14\r\nChannels=384\r\nKernel=3,3\r\nPad=1,1\r\n\r\n[A6]\r\nType=Add\r\nInputs=C" +
-             "14,A5\r\n\r\n[B15]\r\nType=BatchNormRelu\r\nInputs=A6\r\n\r\n[C15]\r\nType=Convolution\r\nInputs" +
-             "=B15\r\nChannels=10\r\nKernel=1,1\r\n\r\n[B16]\r\nType=BatchNorm\r\nInputs=C15\r\n\r\n[GAP]\r\nTyp" +
-             "e=GlobalAvgPooling\r\nInputs=B16\r\n\r\n[LSM1]\r\nType=LogSoftmax\r\nInputs=GAP\r\n\r\n" +
-             "[Cost]\r\nType=Cost\r\nInputs=LSM1\r\nCost=CategoricalCrossEntropy\r\nChannel" +
-             "s=10")]
-        public string DefinitionEditing
-        {
-            get
-            {
+        [global::System.Configuration.DefaultSettingValueAttribute("[resnet-3-2-6-channelzeropad-relu]\r\nDataset=cifar10\r\nDim=3,32,32\r\nZeroPad=4,4\r\nRa" +
+            "ndomCrop=Yes\r\nWeightsFiller=HeNormal(In,1)\r\nBiases=No\r\nDropout=0\r\nDepthDrop=0\r\nF" +
+            "ixedDepthDrop=Yes\r\nScaling=No\r\nMomentum=0.995\r\nEps=0.0001\r\n\r\n[C1]\r\nType=Convolut" +
+            "ion\r\nInputs=Input\r\nChannels=96\r\nKernel=3,3\r\nPad=1,1\r\n\r\n[B1]\r\nType=BatchNormRelu\r" +
+            "\nInputs=C1\r\n\r\n[C2]\r\nType=Convolution\r\nInputs=B1\r\nChannels=96\r\nKernel=3,3\r\nPad=1," +
+            "1\r\n\r\n[B2]\r\nType=BatchNormRelu\r\nInputs=C2\r\n\r\n[C3]\r\nType=Convolution\r\nInputs=B2\r\nC" +
+            "hannels=96\r\nKernel=3,3\r\nPad=1,1\r\n\r\n[C4]\r\nType=Convolution\r\nInputs=B1\r\nChannels=9" +
+            "6\r\nKernel=1,1\r\n\r\n[A1]\r\nType=Add\r\nInputs=C3,C4\r\n\r\n[B5]\r\nType=BatchNormRelu\r\nInput" +
+            "s=A1\r\n\r\n[C5]\r\nType=Convolution\r\nInputs=B5\r\nChannels=96\r\nKernel=3,3\r\nPad=1,1\r\n\r\n[" +
+            "B6]\r\nType=BatchNormRelu\r\nInputs=C5\r\n\r\n[C6]\r\nType=Convolution\r\nInputs=B6\r\nChannel" +
+            "s=96\r\nKernel=3,3\r\nPad=1,1\r\n\r\n[A2]\r\nType=Add\r\nInputs=C6,A1\r\n\r\n[B7]\r\nType=BatchNor" +
+            "mRelu\r\nInputs=A2\r\n\r\n[C7]\r\nType=Convolution\r\nInputs=B7\r\nChannels=192\r\nKernel=3,3\r" +
+            "\nStride=2,2\r\nPad=1,1\r\n\r\n[B8]\r\nType=BatchNormRelu\r\nInputs=C7\r\n\r\n[C8]\r\nType=Convol" +
+            "ution\r\nInputs=B8\r\nChannels=192\r\nKernel=3,3\r\nPad=1,1\r\n\r\n[P1]\r\nType=AvgPooling\r\nIn" +
+            "puts=A2\r\nKernel=3,3\r\nStride=2,2\r\nPad=1,1\r\n\r\n[CZP1]\r\nType=ChannelZeroPad\r\nInputs=" +
+            "P1\r\nChannels=192\r\n\r\n[A3]\r\nType=Add\r\nInputs=C8,CZP1\r\n\r\n[B9]\r\nType=BatchNormRelu\r\n" +
+            "Inputs=A3\r\n\r\n[C9]\r\nType=Convolution\r\nInputs=B9\r\nChannels=192\r\nKernel=3,3\r\nPad=1," +
+            "1\r\n\r\n[B10]\r\nType=BatchNormRelu\r\nInputs=C9\r\n\r\n[C10]\r\nType=Convolution\r\nInputs=B10" +
+            "\r\nChannels=192\r\nKernel=3,3\r\nPad=1,1\r\n\r\n[A4]\r\nType=Add\r\nInputs=C10,A3\r\n\r\n[B11]\r\nT" +
+            "ype=BatchNormRelu\r\nInputs=A4\r\n\r\n[C11]\r\nType=Convolution\r\nInputs=B11\r\nChannels=38" +
+            "4\r\nKernel=3,3\r\nStride=2,2\r\nPad=1,1\r\n\r\n[B12]\r\nType=BatchNormRelu\r\nInputs=C11\r\n\r\n[" +
+            "C12]\r\nType=Convolution\r\nInputs=B12\r\nChannels=384\r\nKernel=3,3\r\nPad=1,1\r\n\r\n[P2]\r\nT" +
+            "ype=AvgPooling\r\nInputs=A4\r\nKernel=3,3\r\nStride=2,2\r\nPad=1,1\r\n\r\n[CZP2]\r\nType=Chann" +
+            "elZeroPad\r\nInputs=P2\r\nChannels=384\r\n\r\n[A5]\r\nType=Add\r\nInputs=C12,CZP2\r\n\r\n[B13]\r\n" +
+            "Type=BatchNormRelu\r\nInputs=A5\r\n\r\n[C13]\r\nType=Convolution\r\nInputs=B13\r\nChannels=3" +
+            "84\r\nKernel=3,3\r\nPad=1,1\r\n\r\n[B14]\r\nType=BatchNormRelu\r\nInputs=C13\r\n\r\n[C14]\r\nType=" +
+            "Convolution\r\nInputs=B14\r\nChannels=384\r\nKernel=3,3\r\nPad=1,1\r\n\r\n[A6]\r\nType=Add\r\nIn" +
+            "puts=C14,A5\r\n\r\n[B15]\r\nType=BatchNormRelu\r\nInputs=A6\r\n\r\n[C15]\r\nType=Convolution\r\n" +
+            "Inputs=B15\r\nChannels=10\r\nKernel=1,1\r\n\r\n[B16]\r\nType=BatchNorm\r\nInputs=C15\r\n\r\n[GAP" +
+            "]\r\nType=GlobalAvgPooling\r\nInputs=B16\r\n\r\n[LSM]\r\nType=LogSoftmax\r\nInputs=GAP\r\n\r\n[C" +
+            "ost]\r\nType=Cost\r\nInputs=LSM\r\nCost=CategoricalCrossEntropy\r\nLabelIndex=0\r\nChannel" +
+            "s=10\r\nEps=0.125")]
+        public string DefinitionEditing {
+            get {
                 return ((string)(this["DefinitionEditing"]));
             }
-            set
-            {
+            set {
                 this["DefinitionEditing"] = value;
             }
         }
-
+        
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("[resnet-3-2-6-channelzeropad]\r\nDataset=CIFAR10\r\nDim=3,32,32\r\nZeroPad" +
-            "=4,4\r\nRandomCrop=Yes\r\nWeightsFiller=HeNormal\r\nBiases=No\r\nMomentum=0.995\r\nScaling" +
-            "=No\r\n\r\n[C1]\r\nType=Convolution\r\nInputs=Input\r\nChannels=96\r\nKernel=3,3\r\nPad=1,1\r\n\r" +
-            "\n[B1]\r\nType=BatchNormRelu\r\nInputs=C1\r\n\r\n[C2]\r\nType=Convolution\r\nInputs=B1\r\nChann" +
-            "els=96\r\nKernel=3,3\r\nPad=1,1\r\n\r\n[B2]\r\nType=BatchNormReluDropout\r\nInputs=C2\r\nDropo" +
-            "ut=0.3\r\n\r\n[C3]\r\nType=Convolution\r\nInputs=B2\r\nChannels=96\r\nKernel=3,3\r\nPad=1,1\r\n\r" +
-            "\n[C4]\r\nType=Convolution\r\nInputs=B1\r\nChannels=96\r\nKernel=1,1\r\n\r\n[A1]\r\nType=Add\r\nI" +
-            "nputs=C3,C4\r\n\r\n[B5]\r\nType=BatchNormRelu\r\nInputs=A1\r\n\r\n[C5]\r\nType=Convolution\r\nIn" +
-            "puts=B5\r\nChannels=96\r\nKernel=3,3\r\nPad=1,1\r\n\r\n[B6]\r\nType=BatchNormReluDropout\r\nIn" +
-            "puts=C5\r\nDropout=0.3\r\n\r\n[C6]\r\nType=Convolution\r\nInputs=B6\r\nChannels=96\r\nKernel=3" +
-            ",3\r\nPad=1,1\r\n\r\n[A2]\r\nType=Add\r\nInputs=C6,A1\r\n\r\n[B7]\r\nType=BatchNormRelu\r\nInputs=" +
-            "A2\r\n\r\n[C7]\r\nType=Convolution\r\nInputs=B7\r\nChannels=192\r\nKernel=3,3\r\nStride=2,2\r\nP" +
-            "ad=1,1\r\n\r\n[B8]\r\nType=BatchNormReluDropout\r\nInputs=C7\r\nDropout=0.3\r\n\r\n[C8]\r\nType=" +
-            "Convolution\r\nInputs=B8\r\nChannels=192\r\nKernel=3,3\r\nPad=1,1\r\n\r\n[AVG1]\r\nType=AvgPoo" +
-            "ling\r\nInputs=A2\r\nKernel=3,3\r\nStride=2,2\r\nPad=1,1\r\n\r\n[CZP1]\r\nType=ChannelZeroPad\r" +
-            "\nInputs=AVG1\r\nChannels=192\r\n\r\n[A3]\r\nType=Add\r\nInputs=C8,CZP1\r\n\r\n[B9]\r\nType=Batch" +
-            "NormRelu\r\nInputs=A3\r\n\r\n[C9]\r\nType=Convolution\r\nInputs=B9\r\nChannels=192\r\nKernel=3" +
-            ",3\r\nPad=1,1\r\n\r\n[B10]\r\nType=BatchNormReluDropout\r\nInputs=C9\r\nDropout=0.3\r\n\r\n[C10]" +
-            "\r\nType=Convolution\r\nInputs=B10\r\nChannels=192\r\nKernel=3,3\r\nPad=1,1\r\n\r\n[A4]\r\nType=" +
-            "Add\r\nInputs=C10,A3\r\n\r\n[B11]\r\nType=BatchNormRelu\r\nInputs=A4\r\n\r\n[C11]\r\nType=Convol" +
-            "ution\r\nInputs=B11\r\nChannels=384\r\nKernel=3,3\r\nStride=2,2\r\nPad=1,1\r\n\r\n[B12]\r\nType=" +
-            "BatchNormReluDropout\r\nInputs=C11\r\nDropout=0.3\r\n\r\n[C12]\r\nType=Convolution\r\nInputs" +
-            "=B12\r\nChannels=384\r\nKernel=3,3\r\nPad=1,1\r\n\r\n[AVG2]\r\nType=AvgPooling\r\nInputs=A4\r\nK" +
-            "ernel=3,3\r\nStride=2,2\r\nPad=1,1\r\n\r\n[CZP2]\r\nType=ChannelZeroPad\r\nInputs=AVG2\r\nChan" +
-            "nels=384\r\n\r\n[A5]\r\nType=Add\r\nInputs=C12,CZP2\r\n\r\n[B13]\r\nType=BatchNormRelu\r\nInputs" +
-            "=A5\r\n\r\n[C13]\r\nType=Convolution\r\nInputs=B13\r\nChannels=384\r\nKernel=3,3\r\nPad=1,1\r\n\r" +
-            "\n[B14]\r\nType=BatchNormReluDropout\r\nInputs=C13\r\nDropout=0.3\r\n\r\n[C14]\r\nType=Convol" +
-            "ution\r\nInputs=B14\r\nChannels=384\r\nKernel=3,3\r\nPad=1,1\r\n\r\n[A6]\r\nType=Add\r\nInputs=C" +
-            "14,A5\r\n\r\n[B15]\r\nType=BatchNormRelu\r\nInputs=A6\r\n\r\n[C15]\r\nType=Convolution\r\nInputs" +
-            "=B15\r\nChannels=10\r\nKernel=1,1\r\n\r\n[B16]\r\nType=BatchNorm\r\nInputs=C15\r\n\r\n[GAP]\r\nTyp" +
-            "e=GlobalAvgPooling\r\nInputs=B16\r\n\r\n[LSM1]\r\nType=LogSoftmax\r\nInputs=GAP\r\n\r\n" +
-            "[Cost]\r\nType=Cost\r\nInputs=LSM1\r\nCost=CategoricalCrossEntropy\r\nChannel" +
-            "s=10")]
-        public string DefinitionActive
-        {
-            get
-            {
+        [global::System.Configuration.DefaultSettingValueAttribute("[resnet-3-2-6-channelzeropad-relu]\r\nDataset=cifar10\r\nDim=3,32,32\r\nZeroPad=4,4\r\nRa" +
+            "ndomCrop=Yes\r\nWeightsFiller=HeNormal(In,1)\r\nBiases=No\r\nDropout=0\r\nDepthDrop=0\r\nF" +
+            "ixedDepthDrop=Yes\r\nScaling=No\r\nMomentum=0.995\r\nEps=0.0001\r\n\r\n[C1]\r\nType=Convolut" +
+            "ion\r\nInputs=Input\r\nChannels=96\r\nKernel=3,3\r\nPad=1,1\r\n\r\n[B1]\r\nType=BatchNormRelu\r" +
+            "\nInputs=C1\r\n\r\n[C2]\r\nType=Convolution\r\nInputs=B1\r\nChannels=96\r\nKernel=3,3\r\nPad=1," +
+            "1\r\n\r\n[B2]\r\nType=BatchNormRelu\r\nInputs=C2\r\n\r\n[C3]\r\nType=Convolution\r\nInputs=B2\r\nC" +
+            "hannels=96\r\nKernel=3,3\r\nPad=1,1\r\n\r\n[C4]\r\nType=Convolution\r\nInputs=B1\r\nChannels=9" +
+            "6\r\nKernel=1,1\r\n\r\n[A1]\r\nType=Add\r\nInputs=C3,C4\r\n\r\n[B5]\r\nType=BatchNormRelu\r\nInput" +
+            "s=A1\r\n\r\n[C5]\r\nType=Convolution\r\nInputs=B5\r\nChannels=96\r\nKernel=3,3\r\nPad=1,1\r\n\r\n[" +
+            "B6]\r\nType=BatchNormRelu\r\nInputs=C5\r\n\r\n[C6]\r\nType=Convolution\r\nInputs=B6\r\nChannel" +
+            "s=96\r\nKernel=3,3\r\nPad=1,1\r\n\r\n[A2]\r\nType=Add\r\nInputs=C6,A1\r\n\r\n[B7]\r\nType=BatchNor" +
+            "mRelu\r\nInputs=A2\r\n\r\n[C7]\r\nType=Convolution\r\nInputs=B7\r\nChannels=192\r\nKernel=3,3\r" +
+            "\nStride=2,2\r\nPad=1,1\r\n\r\n[B8]\r\nType=BatchNormRelu\r\nInputs=C7\r\n\r\n[C8]\r\nType=Convol" +
+            "ution\r\nInputs=B8\r\nChannels=192\r\nKernel=3,3\r\nPad=1,1\r\n\r\n[P1]\r\nType=AvgPooling\r\nIn" +
+            "puts=A2\r\nKernel=3,3\r\nStride=2,2\r\nPad=1,1\r\n\r\n[CZP1]\r\nType=ChannelZeroPad\r\nInputs=" +
+            "P1\r\nChannels=192\r\n\r\n[A3]\r\nType=Add\r\nInputs=C8,CZP1\r\n\r\n[B9]\r\nType=BatchNormRelu\r\n" +
+            "Inputs=A3\r\n\r\n[C9]\r\nType=Convolution\r\nInputs=B9\r\nChannels=192\r\nKernel=3,3\r\nPad=1," +
+            "1\r\n\r\n[B10]\r\nType=BatchNormRelu\r\nInputs=C9\r\n\r\n[C10]\r\nType=Convolution\r\nInputs=B10" +
+            "\r\nChannels=192\r\nKernel=3,3\r\nPad=1,1\r\n\r\n[A4]\r\nType=Add\r\nInputs=C10,A3\r\n\r\n[B11]\r\nT" +
+            "ype=BatchNormRelu\r\nInputs=A4\r\n\r\n[C11]\r\nType=Convolution\r\nInputs=B11\r\nChannels=38" +
+            "4\r\nKernel=3,3\r\nStride=2,2\r\nPad=1,1\r\n\r\n[B12]\r\nType=BatchNormRelu\r\nInputs=C11\r\n\r\n[" +
+            "C12]\r\nType=Convolution\r\nInputs=B12\r\nChannels=384\r\nKernel=3,3\r\nPad=1,1\r\n\r\n[P2]\r\nT" +
+            "ype=AvgPooling\r\nInputs=A4\r\nKernel=3,3\r\nStride=2,2\r\nPad=1,1\r\n\r\n[CZP2]\r\nType=Chann" +
+            "elZeroPad\r\nInputs=P2\r\nChannels=384\r\n\r\n[A5]\r\nType=Add\r\nInputs=C12,CZP2\r\n\r\n[B13]\r\n" +
+            "Type=BatchNormRelu\r\nInputs=A5\r\n\r\n[C13]\r\nType=Convolution\r\nInputs=B13\r\nChannels=3" +
+            "84\r\nKernel=3,3\r\nPad=1,1\r\n\r\n[B14]\r\nType=BatchNormRelu\r\nInputs=C13\r\n\r\n[C14]\r\nType=" +
+            "Convolution\r\nInputs=B14\r\nChannels=384\r\nKernel=3,3\r\nPad=1,1\r\n\r\n[A6]\r\nType=Add\r\nIn" +
+            "puts=C14,A5\r\n\r\n[B15]\r\nType=BatchNormRelu\r\nInputs=A6\r\n\r\n[C15]\r\nType=Convolution\r\n" +
+            "Inputs=B15\r\nChannels=10\r\nKernel=1,1\r\n\r\n[B16]\r\nType=BatchNorm\r\nInputs=C15\r\n\r\n[GAP" +
+            "]\r\nType=GlobalAvgPooling\r\nInputs=B16\r\n\r\n[LSM]\r\nType=LogSoftmax\r\nInputs=GAP\r\n\r\n[C" +
+            "ost]\r\nType=Cost\r\nInputs=LSM\r\nCost=CategoricalCrossEntropy\r\nLabelIndex=0\r\nChannel" +
+            "s=10\r\nEps=0.125")]
+        public string DefinitionActive {
+            get {
                 return ((string)(this["DefinitionActive"]));
             }
-            set
-            {
+            set {
                 this["DefinitionActive"] = value;
             }
         }
-
+        
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("resnet-3-2-6-channelzeropad")]
-        public string ModelNameActive
-        {
-            get
-            {
+        [global::System.Configuration.DefaultSettingValueAttribute("resnet-3-2-6-channelzeropad-relu")]
+        public string ModelNameActive {
+            get {
                 return ((string)(this["ModelNameActive"]));
             }
-            set
-            {
+            set {
                 this["ModelNameActive"] = value;
             }
         }
-
-
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("420")]
+        public double EditSplitPositionA {
+            get {
+                return ((double)(this["EditSplitPositionA"]));
+            }
+            set {
+                this["EditSplitPositionA"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int SelectedLayer {
+            get {
+                return ((int)(this["SelectedLayer"]));
+            }
+            set {
+                this["SelectedLayer"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool DisableLocking {
+            get {
+                return ((bool)(this["DisableLocking"]));
+            }
+            set {
+                this["DisableLocking"] = value;
+            }
+        }
+        
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("using System.Collections.ObjectModel;\r\nusing System.ComponentModel;\r\nusing System" +
@@ -1610,22 +1536,31 @@ namespace ConvnetAvalonia.Properties {
                 this["Script"] = value;
             }
         }
-
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool PlainFormat {
+            get {
+                return ((bool)(this["PlainFormat"]));
+            }
+            set {
+                this["PlainFormat"] = value;
+            }
+        }
+        
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("cifar10")]
-        public string Dataset
-        {
-            get
-            {
+        public string Dataset {
+            get {
                 return ((string)(this["Dataset"]));
             }
-            set
-            {
+            set {
                 this["Dataset"] = value;
             }
         }
-
+        
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("96")]
@@ -1659,6 +1594,30 @@ namespace ConvnetAvalonia.Properties {
             }
             set {
                 this["GotoCycle"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("64")]
+        public byte BackgroundColor {
+            get {
+                return ((byte)(this["BackgroundColor"]));
+            }
+            set {
+                this["BackgroundColor"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool UseTrainingStrategy {
+            get {
+                return ((bool)(this["UseTrainingStrategy"]));
+            }
+            set {
+                this["UseTrainingStrategy"] = value;
             }
         }
     }

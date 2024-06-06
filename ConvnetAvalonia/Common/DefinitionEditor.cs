@@ -9,8 +9,6 @@ using Avalonia.Threading;
 using AvaloniaEdit;
 using AvaloniaEdit.Document;
 using AvaloniaEdit.Editing;
-using AvaloniaEdit.Rendering;
-using Newtonsoft.Json.Linq;
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -24,14 +22,16 @@ namespace ConvnetAvalonia.Common
 {
     public static class ImageHelper
     {
-        public static Image LoadFromResource(string resourceString)
+        public static Image LoadFromResource(string fileName)
         {
-            var img = new Image();
-            img.Source = new Bitmap(AssetLoader.Open(new Uri($"avares://{Assembly.GetExecutingAssembly().GetName().Name}/Resources/" + resourceString)));
+            var img = new Image
+            {
+                Source = new Bitmap(AssetLoader.Open(new Uri($"avares://{Assembly.GetExecutingAssembly().GetName().Name}/Resources/" + fileName)))
+            };
             return img;
         }
 
-        public static async Task<Bitmap?> LoadFromWeb(Uri url)
+        public static async Task<Image?> LoadFromWeb(Uri url)
         {
             using var httpClient = new HttpClient();
             try
@@ -39,7 +39,12 @@ namespace ConvnetAvalonia.Common
                 var response = await httpClient.GetAsync(url);
                 response.EnsureSuccessStatusCode();
                 var data = await response.Content.ReadAsByteArrayAsync();
-                return new Bitmap(new MemoryStream(data));
+
+                var img = new Image
+                {
+                    Source = new Bitmap(new MemoryStream(data))
+                };
+                return img;
             }
             catch (HttpRequestException ex)
             {
@@ -167,12 +172,9 @@ namespace ConvnetAvalonia.Common
 
         private void DefinitionEditor_TextChanged(object? sender, EventArgs e)
         {
-            if (Definition != base.Text)
-            {
-                Definition = base.Text;
-                SetValue(DefinitionProperty, Definition);
-                OnPropertyChanged(nameof(Definition));
-            }
+            Definition = base.Text;
+            SetValue(DefinitionProperty, Definition);
+            OnPropertyChanged(nameof(Definition));
         }
       
         public static readonly DirectProperty<DefinitionEditor, string> DefinitionProperty = AvaloniaProperty.RegisterDirect<DefinitionEditor, string>(
@@ -440,12 +442,9 @@ namespace ConvnetAvalonia.Common
 
         private void CodeEditor_TextChanged(object? sender, EventArgs e)
         {
-            if (SourceCode != base.Text)
-            {
-                SourceCode = base.Text;
-                SetValue(SourceCodeProperty, SourceCode);
-                OnPropertyChanged(nameof(SourceCode));
-            }
+            SourceCode = base.Text;
+            SetValue(SourceCodeProperty, SourceCode);
+            OnPropertyChanged(nameof(SourceCode));   
         }
 
         public static readonly DirectProperty<CodeEditor, string> SourceCodeProperty = AvaloniaProperty.RegisterDirect<CodeEditor, string>(

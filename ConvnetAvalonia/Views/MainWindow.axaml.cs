@@ -2,14 +2,12 @@ using Avalonia.Controls;
 using ConvnetAvalonia.PageViewModels;
 using ConvnetAvalonia.Properties;
 using CustomMessageBox.Avalonia;
+using Interop;
 using System;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Text;
-using Interop;
-using System.Linq;
-using Avalonia.Markup.Xaml;
-using AvaloniaEdit;
 
 namespace ConvnetAvalonia
 {
@@ -23,13 +21,13 @@ namespace ConvnetAvalonia
 #else
         const string Mode = "Release";
 #endif
-        public static string ApplicationPath { get; } = System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + @"\";
+        public static string ApplicationPath { get; } = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + @"\";
         public static string StorageDirectory { get; } = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\convnet\";
         public static string StateDirectory { get; } = StorageDirectory + @"state\";
         public static string DefinitionsDirectory { get; } = StorageDirectory + @"definitions\";
         public static string ScriptsDirectory { get; } = StorageDirectory + @"scripts\";
         
-        public PageViewModel PageVM;
+        public PageViewModel? PageVM;
 
         public static void Copy(string sourceDirectory, string targetDirectory)
         {
@@ -47,7 +45,7 @@ namespace ConvnetAvalonia
             foreach (var fi in source.GetFiles())
             {
                 //Console.WriteLine(@"Copying {0}\{1}", target.FullName, fi.Name);
-                fi.CopyTo(System.IO.Path.Combine(target.FullName, fi.Name), true);
+                fi.CopyTo(Path.Combine(target.FullName, fi.Name), true);
             }
 
             // Copy each subdirectory using recursion.
@@ -184,18 +182,18 @@ namespace ConvnetAvalonia
                 Copy(ApplicationPath.Replace(@"Convnet\bin\x64\" + Mode + @"\" + Framework + @"\", "") + @"Scripts\", ScriptsDirectory);
             }
                      
-            var fileName = System.IO.Path.Combine(StateDirectory, Settings.Default.ModelNameActive + ".txt");
+            var fileName = Path.Combine(StateDirectory, Settings.Default.ModelNameActive + ".txt");
             var backupModelName = "resnet-3-2-6-channelzeropad-relu";
 
-            if (!File.Exists(System.IO.Path.Combine(StateDirectory, backupModelName + ".txt")))
+            if (!File.Exists(Path.Combine(StateDirectory, backupModelName + ".txt")))
                 File.Copy(ApplicationPath + @"Resources\state\" + backupModelName + ".txt", StateDirectory + backupModelName + ".txt", true);
 
-            if (!File.Exists(fileName) || !File.ReadLines(System.IO.Path.Combine(StateDirectory, backupModelName + ".txt")).SequenceEqual(File.ReadLines(ApplicationPath + @"Resources\state\" + backupModelName + ".txt")))
+            if (!File.Exists(fileName) || !File.ReadLines(Path.Combine(StateDirectory, backupModelName + ".txt")).SequenceEqual(File.ReadLines(ApplicationPath + @"Resources\state\" + backupModelName + ".txt")))
             {
                 Directory.CreateDirectory(DefinitionsDirectory + backupModelName + @"\");
                 File.Copy(ApplicationPath + @"Resources\state\" + backupModelName + ".txt", DefinitionsDirectory + backupModelName + ".txt", true);
 
-                fileName = System.IO.Path.Combine(StateDirectory, backupModelName + ".txt");
+                fileName = Path.Combine(StateDirectory, backupModelName + ".txt");
                 Settings.Default.ModelNameActive = backupModelName;
                 Settings.Default.DefinitionActive = File.ReadAllText(fileName);
                 Settings.Default.Optimizer = DNNOptimizers.NAG;
@@ -226,15 +224,15 @@ namespace ConvnetAvalonia
                         model.SetDisableLocking(Settings.Default.DisableLocking);
                         model.SetShuffleCount((ulong)Math.Round(Settings.Default.Shuffle));
 
-                        string path = System.IO.Path.GetTempPath() + Guid.NewGuid().ToString() + ".csv";
+                        string path = Path.GetTempPath() + Guid.NewGuid().ToString() + ".csv";
                         if (PersistLog(path))
                             File.Delete(path);
 
                         var dataset = PageVM.Model.Dataset.ToString().ToLower();
                         var optimizer = PageVM.Model.Optimizer.ToString().ToLower();
 
-                        var fileNamePersistOptimizer = System.IO.Path.Combine(StateDirectory, Settings.Default.ModelNameActive + "-(" + dataset + ")(" + optimizer + @").bin");
-                        var fileNameNoOptimizer = System.IO.Path.Combine(StateDirectory, Settings.Default.ModelNameActive + "-(" + dataset + ").bin");
+                        var fileNamePersistOptimizer = Path.Combine(StateDirectory, Settings.Default.ModelNameActive + "-(" + dataset + ")(" + optimizer + @").bin");
+                        var fileNameNoOptimizer = Path.Combine(StateDirectory, Settings.Default.ModelNameActive + "-(" + dataset + ").bin");
 
                         var fileNameOptimizer = Settings.Default.PersistOptimizer ? fileNamePersistOptimizer : fileNameNoOptimizer;
                         var fileNameOptimizerInverse = Settings.Default.PersistOptimizer ? fileNameNoOptimizer : fileNamePersistOptimizer;
@@ -280,7 +278,7 @@ namespace ConvnetAvalonia
                 {
                     // try backup model
                     File.Copy(ApplicationPath + @"Resources\state\" + backupModelName + ".txt", StateDirectory + backupModelName + ".txt", true);
-                    fileName = System.IO.Path.Combine(StateDirectory, backupModelName + ".txt");
+                    fileName = Path.Combine(StateDirectory, backupModelName + ".txt");
                     Settings.Default.ModelNameActive = backupModelName;
                     Settings.Default.DefinitionActive = File.ReadAllText(fileName);
                     Settings.Default.Optimizer = DNNOptimizers.NAG;
@@ -312,15 +310,15 @@ namespace ConvnetAvalonia
                         model.SetDisableLocking(Settings.Default.DisableLocking);
                         model.SetShuffleCount((ulong)Math.Round(Settings.Default.Shuffle));
 
-                        string path = System.IO.Path.GetTempPath() + Guid.NewGuid().ToString() + ".csv";
+                        string path = Path.GetTempPath() + Guid.NewGuid().ToString() + ".csv";
                         if (PersistLog(path))
                             File.Delete(path);
 
                         var dataset = PageVM.Model.Dataset.ToString().ToLower();
                         var optimizer = PageVM.Model.Optimizer.ToString().ToLower();
 
-                        var fileNamePersistOptimizer = System.IO.Path.Combine(StateDirectory, Settings.Default.ModelNameActive + "-(" + dataset + ")(" + optimizer + @").bin");
-                        var fileNameNoOptimizer = System.IO.Path.Combine(StateDirectory, Settings.Default.ModelNameActive + "-(" + dataset + ").bin");
+                        var fileNamePersistOptimizer = Path.Combine(StateDirectory, Settings.Default.ModelNameActive + "-(" + dataset + ")(" + optimizer + @").bin");
+                        var fileNameNoOptimizer = Path.Combine(StateDirectory, Settings.Default.ModelNameActive + "-(" + dataset + ").bin");
 
                         var fileNameOptimizer = Settings.Default.PersistOptimizer ? fileNamePersistOptimizer : fileNameNoOptimizer;
                         var fileNameOptimizerInverse = Settings.Default.PersistOptimizer ? fileNameNoOptimizer : fileNamePersistOptimizer;
@@ -364,90 +362,13 @@ namespace ConvnetAvalonia
             }
             catch (Exception exception)
             {
-               MessageBox.Show(exception.Message + "\r\n\r\n" + exception.GetBaseException().Message + "\r\n\r\n" + exception.InnerException.Message + "\r\n\r\nAn error occured while loading the Model:" + Settings.Default.ModelNameActive, "Information", MessageBoxButtons.OK);
+                if (exception != null)
+                    if (exception.InnerException != null)
+                        MessageBox.Show(exception.Message + "\r\n\r\n" + exception.GetBaseException().Message + "\r\n\r\n" + exception.InnerException.Message + "\r\n\r\nAn error occured while loading the Model:" + Settings.Default.ModelNameActive, "Information", MessageBoxButtons.OK);
+                    else
+                        MessageBox.Show(exception.Message + "\r\n\r\n" + exception.GetBaseException().Message + "\r\n\r\nAn error occured while loading the Model:" + Settings.Default.ModelNameActive, "Information", MessageBoxButtons.OK);
             }
         }
-
-        public void CutCmdExecuted(object? target, ExecutedRoutedEventArgs e)
-        {
-            ((TextBox?)e.Source)?.Cut();
-           
-        }
-
-        public void CutCmdCanExecute(object? sender, CanExecuteRoutedEventArgs e)
-        {
-            if (e != null && e.Source != null)
-            {
-                if (e.Source.GetType() == typeof(TextBox))
-                    e.CanExecute = ((TextBox)e.Source).SelectionEnd > 0;
-                else
-                    e.CanExecute = false;
-            }
-            else
-                e.CanExecute = false;
-        }
-
-        //private void CopyCmdExecuted(object target, ExecutedRoutedEventArgs e)
-        //{
-        //    (e.Source as TextBox).Copy();
-        //}
-
-        //private void CopyCmdCanExecute(object sender, CanExecuteRoutedEventArgs e)
-        //{
-        //    if (e.Source.GetType() == typeof(TextBox))
-        //        e.CanExecute = (e.Source as TextBox).SelectionLength > 0;
-        //    else
-        //        e.CanExecute = false;
-        //}
-
-        //private void PasteCmdExecuted(object target, ExecutedRoutedEventArgs e)
-        //{
-        //    (e.Source as TextBox).Paste();
-        //}
-
-        //private void PasteCmdCanExecute(object sender, CanExecuteRoutedEventArgs e)
-        //{
-        //    e.CanExecute = false;
-        //}
-
-        //private void SelectAllCmdExecuted(object target, ExecutedRoutedEventArgs e)
-        //{
-        //    (e.Source as TextBox).SelectAll();
-        //}
-
-        //private void SelectAllCmdCanExecute(object sender, CanExecuteRoutedEventArgs e)
-        //{
-        //    if (e.Source.GetType() == typeof(TextBox))
-        //        e.CanExecute = true;
-        //    else
-        //        e.CanExecute = false;
-        //}
-
-        //private void UndoCmdExecuted(object target, ExecutedRoutedEventArgs e)
-        //{
-        //    e.Handled = (e.Source as TextBox).Undo();
-        //}
-
-        //private void UndoCmdCanExecute(object sender, CanExecuteRoutedEventArgs e)
-        //{
-        //    if (e.Source.GetType() == typeof(TextBox))
-        //        e.CanExecute = (e.Source as TextBox).CanUndo;
-        //    else
-        //        e.CanExecute = false;
-        //}
-
-        //private void RedoCmdExecuted(object target, ExecutedRoutedEventArgs e)
-        //{
-        //    e.Handled = (e.Source as TextBox).Redo();
-        //}
-
-        //private void RedoCmdCanExecute(object sender, CanExecuteRoutedEventArgs e)
-        //{
-        //    if (e.Source.GetType() == typeof(TextBox))
-        //        e.CanExecute = (e.Source as TextBox).CanRedo;
-        //    else
-        //        e.CanExecute = false;
-        //}
 
         protected virtual void Dispose(bool disposing)
         {

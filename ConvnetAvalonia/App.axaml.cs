@@ -1,16 +1,10 @@
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
-using ConvnetAvalonia.ViewModels;
-using Splat;
-using System.Diagnostics;
-using System;
 using ConvnetAvalonia.Properties;
-using System.ComponentModel;
-using System.Globalization;
-using ConvnetAvalonia.PageViews;
-using ConvnetAvalonia.PageViewModels;
-//using ConvnetAvalonia.Views;
+using ConvnetAvalonia.ViewModels;
+using System;
+using System.Diagnostics;
 
 
 namespace ConvnetAvalonia
