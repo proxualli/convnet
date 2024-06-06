@@ -75,12 +75,12 @@ namespace ConvnetAvalonia.Common
     //        foreach (var rect in BackgroundGeometryBuilder.GetRectsForSegment(textView, currentLine))
     //        {
     //            if (textView.Bounds.Width >= 32)
-    //                drawingContext.DrawRectangle(new SolidColorBrush(Color.FromArgb(0x50, 0xCF, 0xCF, 0xCF)), null, new Rect(rect.Position, new Size(textView.Bounds.Width - 32, rect.Height)));
+    //                drawingContext.DrawRectangle(new SolidColorBrush(Color.FromArgb(0xA0, 0xAF, 0xAF, 0xCF)), null, new Rect(rect.Position, new Size(textView.Bounds.Width - 32, rect.Height)));
     //        }
     //    }
     //}
 
-  
+
     public class DefinitionEditor : TextEditor, INotifyPropertyChanged, IStyleable
     {
         Type IStyleable.StyleKey => typeof(AvaloniaEdit.TextEditor);
@@ -107,10 +107,9 @@ namespace ConvnetAvalonia.Common
                 IndentationSize = 4,
                 ConvertTabsToSpaces = false,
                 AllowScrollBelowDocument = true,
-                EnableVirtualSpace = false
             };
-            TextArea.IndentationStrategy = new AvaloniaEdit.Indentation.CSharp.CSharpIndentationStrategy(Options);
-            TextArea.RightClickMovesCaret = true;
+            
+            TextArea.RightClickMovesCaret = false;
             //TextArea.TextView.BackgroundRenderers.Add(new HighlightCurrentLineBackgroundRenderer(this));
             //TextArea.Caret.PositionChanged += (sender, e) => TextArea.TextView.InvalidateLayer(KnownLayer.Background);
            
@@ -162,16 +161,19 @@ namespace ConvnetAvalonia.Common
 
             ContextMenu = cm;
 
-            //TextChanged += DefinitionEditor_TextChanged;
+            TextChanged += DefinitionEditor_TextChanged;
         }
 
-        //private void DefinitionEditor_TextChanged(object? sender, EventArgs e)
-        //{
-        //    Definition = Text;
-        //}
-
-        //public static readonly StyledProperty<string> DefinitionProperty =  AvaloniaProperty.Register<DefinitionEditor, string>(nameof(Definition), defaultValue: string.Empty, false, Avalonia.Data.BindingMode.TwoWay);
-
+        private void DefinitionEditor_TextChanged(object? sender, EventArgs e)
+        {
+            if (Definition != base.Text)
+            {
+                Definition = base.Text;
+                SetValue(DefinitionProperty, Definition);
+                OnPropertyChanged(nameof(Definition));
+            }
+        }
+      
         public static readonly DirectProperty<DefinitionEditor, string> DefinitionProperty = AvaloniaProperty.RegisterDirect<DefinitionEditor, string>(
             nameof(Definition),
             o => o.Definition,
@@ -191,12 +193,9 @@ namespace ConvnetAvalonia.Common
                 if (value != Text)
                 {
                     Text = value;
-                    //Document.Text = value;
-                    //AppendText(value);
-                    //this.RaisePropertyChanged<string>(DefinitionProperty, Text, value);
-                    //base.Text = value;
                     SetValue(DefinitionProperty, value);
                     OnPropertyChanged(nameof(Definition));
+                    //OnPropertyChanged(nameof(Length));
                     //OnTextChanged(new EventArgs());
                     //OnPropertyChanged(nameof(Text));
                 }
@@ -378,13 +377,10 @@ namespace ConvnetAvalonia.Common
                 IndentationSize = 4,
                 ConvertTabsToSpaces = false,
                 AllowScrollBelowDocument = true,
-                EnableVirtualSpace = true,
                 EnableHyperlinks = true,
                 EnableEmailHyperlinks = true,
-                ShowBoxForControlCharacters = true
             };
             TextArea.IndentationStrategy = new AvaloniaEdit.Indentation.CSharp.CSharpIndentationStrategy(Options);
-            TextArea.RightClickMovesCaret = true;
             //TextArea.TextView.BackgroundRenderers.Add(new HighlightCurrentLineBackgroundRenderer(this));
             //TextArea.Caret.PositionChanged += (sender, e) => TextArea.TextView.InvalidateLayer(KnownLayer.Background);
                  
@@ -448,8 +444,6 @@ namespace ConvnetAvalonia.Common
                 OnPropertyChanged(nameof(SourceCode));
             }
         }
-
-        //public static readonly StyledProperty<string> SourceCodeProperty = AvaloniaProperty.Register<CodeEditor, string>(nameof(SourceCode), defaultValue: string.Empty, false, Avalonia.Data.BindingMode.TwoWay);
 
         public static readonly DirectProperty<CodeEditor, string> SourceCodeProperty = AvaloniaProperty.RegisterDirect<CodeEditor, string>(
             nameof(SourceCode),
