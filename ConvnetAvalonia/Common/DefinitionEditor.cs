@@ -10,6 +10,7 @@ using AvaloniaEdit;
 using AvaloniaEdit.Document;
 using AvaloniaEdit.Editing;
 using AvaloniaEdit.Rendering;
+using Newtonsoft.Json.Linq;
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -105,7 +106,7 @@ namespace ConvnetAvalonia.Common
             {
                 IndentationSize = 4,
                 ConvertTabsToSpaces = false,
-                AllowScrollBelowDocument = false,
+                AllowScrollBelowDocument = true,
                 EnableVirtualSpace = false
             };
             TextArea.IndentationStrategy = new AvaloniaEdit.Indentation.CSharp.CSharpIndentationStrategy(Options);
@@ -160,7 +161,14 @@ namespace ConvnetAvalonia.Common
             cm.Items.Add(redo);
 
             ContextMenu = cm;
+
+            //TextChanged += DefinitionEditor_TextChanged;
         }
+
+        //private void DefinitionEditor_TextChanged(object? sender, EventArgs e)
+        //{
+        //    Definition = Text;
+        //}
 
         //public static readonly StyledProperty<string> DefinitionProperty =  AvaloniaProperty.Register<DefinitionEditor, string>(nameof(Definition), defaultValue: string.Empty, false, Avalonia.Data.BindingMode.TwoWay);
 
@@ -369,7 +377,7 @@ namespace ConvnetAvalonia.Common
             {
                 IndentationSize = 4,
                 ConvertTabsToSpaces = false,
-                AllowScrollBelowDocument = false,
+                AllowScrollBelowDocument = true,
                 EnableVirtualSpace = true,
                 EnableHyperlinks = true,
                 EnableEmailHyperlinks = true,
@@ -427,6 +435,18 @@ namespace ConvnetAvalonia.Common
             cm.Items.Add(redo);
 
             ContextMenu = cm;
+
+            TextChanged += CodeEditor_TextChanged;
+        }
+
+        private void CodeEditor_TextChanged(object? sender, EventArgs e)
+        {
+            if (SourceCode != base.Text)
+            {
+                SourceCode = base.Text;
+                SetValue(SourceCodeProperty, SourceCode);
+                OnPropertyChanged(nameof(SourceCode));
+            }
         }
 
         //public static readonly StyledProperty<string> SourceCodeProperty = AvaloniaProperty.Register<CodeEditor, string>(nameof(SourceCode), defaultValue: string.Empty, false, Avalonia.Data.BindingMode.TwoWay);
@@ -444,12 +464,15 @@ namespace ConvnetAvalonia.Common
        
         public string SourceCode
         {
-            get { return Text; }
+            get { return base.Text; }
             set
             {
-                Text = value;
-                SetValue(SourceCodeProperty, value);
-                OnPropertyChanged(nameof(SourceCode));
+                if (value != base.Text)
+                { 
+                    base.Text = value;
+                    SetValue(SourceCodeProperty, value);
+                    OnPropertyChanged(nameof(SourceCode));
+                }
             }
         }
 

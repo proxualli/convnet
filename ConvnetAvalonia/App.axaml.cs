@@ -8,6 +8,8 @@ using System;
 using ConvnetAvalonia.Properties;
 using System.ComponentModel;
 using System.Globalization;
+using ConvnetAvalonia.PageViews;
+using ConvnetAvalonia.PageViewModels;
 //using ConvnetAvalonia.Views;
 
 
@@ -35,7 +37,11 @@ namespace ConvnetAvalonia
                 };
 
                 if (desktop.MainWindow != null)
+                {
                     App.MainWindow = desktop.MainWindow as MainWindow;
+                    if (App.MainWindow != null)
+                        App.MainWindow.Closing += MainWindow_Closing;
+                }
             }
             
             base.OnFrameworkInitializationCompleted();
@@ -69,8 +75,15 @@ namespace ConvnetAvalonia
                     //        mainWindow.PageVM.Model.SaveWeights(fileName, Settings.Default.PersistOptimizer);
                     //    }
 
-                    Settings.Default.Save();
-                    e.Cancel = false;
+                    if (MainWindow != null && MainWindow.PageVM != null && MainWindow.PageVM.Pages != null)
+                    { 
+                        //var editPV = MainWindow.PageVM.Pages[(int)PageViewModels.ViewModels.Edit] as EditPageViewModel;
+                        //if (editPV != null)
+                        //    Settings.Default.Script = editPV.Script;
+                        
+                        Settings.Default.Save();
+                        e.Cancel = false;
+                    }
                 }
                 //else
                   //  e.Cancel = true;
@@ -89,6 +102,7 @@ namespace ConvnetAvalonia
                 // Free managed objects.
                 if (MainWindow != null)
                 {
+                    Settings.Default.Save();
                     MainWindow.Closing -= MainWindow_Closing;
                     MainWindow.Dispose();
                 }

@@ -7,6 +7,7 @@ using AvaloniaEdit.Highlighting;
 using AvaloniaEdit.Highlighting.Xshd;
 using AvaloniaEdit.Indentation.CSharp;
 using AvaloniaEdit.TextMate;
+using ConvnetAvalonia.Common;
 using ConvnetAvalonia.Properties;
 using System;
 using System.IO;
@@ -41,29 +42,37 @@ namespace ConvnetAvalonia.PageViews
             if (editorDefinition != null)
                 editorDefinition.SyntaxHighlighting = HighlightingManager.Instance.GetDefinitionByExtension(".txt");
 
-            IHighlightingDefinition CSharpHighlighting;
-            using (Stream? s = typeof(EditPageView).Assembly.GetManifestResourceStream("ConvnetAvalonia.Resources.CSharp-Mode.xshd"))
-            {
-                if (s == null)
-                    throw new InvalidOperationException("Could not find embedded resource");
-                using (XmlReader reader = new XmlTextReader(s))
-                {
-                    CSharpHighlighting = HighlightingLoader.Load(reader, HighlightingManager.Instance);
-                }
-            }
-            HighlightingManager.Instance.RegisterHighlighting("C#", new string[] { ".cs" }, CSharpHighlighting);
+
+            //IHighlightingDefinition CSharpHighlighting;
+            //using (Stream? s = typeof(EditPageView).Assembly.GetManifestResourceStream("ConvnetAvalonia.Resources.CSharp-Mode.xshd"))
+            //{
+            //    if (s == null)
+            //        throw new InvalidOperationException("Could not find embedded resource");
+            //    using (XmlReader reader = new XmlTextReader(s))
+            //    {
+            //        CSharpHighlighting = HighlightingLoader.Load(reader, HighlightingManager.Instance);
+            //    }
+            //}
+            //HighlightingManager.Instance.RegisterHighlighting("C#", new string[] { ".cs" }, CSharpHighlighting);
+
             var editorScript = this.FindControl<TextEditor>("EditorScript");
             if (editorScript != null)
+            {
                 editorScript.SyntaxHighlighting = HighlightingManager.Instance.GetDefinitionByExtension(".cs");
-
-            // var textEditor = this.FindControl<TextEditor>("EditorScript");
-            // var registryOptions = new RegistryOptions(ThemeName.DarkPlus);
-            // var textMateInstallation = editorScript.InstallTextMate(_registryOptions);
-            // textMateInstallation.SetGrammar(_registryOptions.GetScopeByLanguageId(_registryOptions.GetLanguageByExtension(".cs").Id));
+                editorScript.TextChanged += EditorScript_TextChanged;
+                var registryOptions = new RegistryOptions(ThemeName.DarkPlus);
+                var textMateInstallation = editorScript.InstallTextMate(registryOptions);
+                textMateInstallation.SetGrammar(registryOptions.GetScopeByLanguageId(registryOptions.GetLanguageByExtension(".cs").Id));
+            }
 
             var gr = this.FindControl<Grid>("grid");
             if (gr != null)
                 gr.ColumnDefinitions.First().Width = new GridLength(Settings.Default.EditSplitPositionA, GridUnitType.Pixel);
+        }
+
+        private void EditorScript_TextChanged(object? sender, EventArgs e)
+        {
+            Settings.Default.Script = (sender as CodeEditor)?.Text;
         }
 
         private void InitializeComponent()

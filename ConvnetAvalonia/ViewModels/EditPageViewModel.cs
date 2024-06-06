@@ -6,6 +6,7 @@ using ConvnetAvalonia.Common;
 using ConvnetAvalonia.Properties;
 using CustomMessageBox.Avalonia;
 using Interop;
+using Newtonsoft.Json.Linq;
 using ReactiveUI;
 using System;
 using System.Diagnostics;
@@ -42,7 +43,7 @@ namespace ConvnetAvalonia.PageViewModels
         private string filePath = string.Empty;
         private bool wordWrap = false;
         private bool showLineNumbers = true;
-        private string script = File.ReadAllText(ScriptsDirectory + @"Scripts\Program.cs");
+        private string script = Settings.Default.Script; // File.ReadAllText(ScriptsDirectory + @"Scripts\Program.cs");
         private bool dirty = true;
         private static bool initAction = true;
         private readonly DispatcherTimer clickWaitTimer;
@@ -217,21 +218,20 @@ namespace ConvnetAvalonia.PageViewModels
                    this.RaiseAndSetIfChanged(ref modelName, value.Trim());
             }
         }
-
+     
         public string Script
         {
             get => script;
             set
             {
-                if (value == null)
-                    return;
-
                 if (value.Equals(script))
                     return;
 
                 this.RaiseAndSetIfChanged(ref script, value);
-
-                File.WriteAllText(ScriptsDirectory + @"Scripts\Program.cs", Script);
+                Settings.Default.Script = script;
+                Settings.Default.Save();
+                    
+                //File.WriteAllText(ScriptsDirectory + @"Scripts\Program.cs", Script);
                 dirty = true;
             }
         }
