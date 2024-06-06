@@ -8,6 +8,7 @@ using AvaloniaEdit.Highlighting.Xshd;
 using AvaloniaEdit.Indentation.CSharp;
 using AvaloniaEdit.TextMate;
 using ConvnetAvalonia.Common;
+using ConvnetAvalonia.PageViewModels;
 using ConvnetAvalonia.Properties;
 using System;
 using System.IO;
@@ -72,7 +73,12 @@ namespace ConvnetAvalonia.PageViews
 
         private void EditorScript_TextChanged(object? sender, EventArgs e)
         {
-            Settings.Default.Script = (sender as CodeEditor)?.Text;
+            if (DataContext != null && sender != null)
+            {
+                var epvm = DataContext as EditPageViewModel;
+                if (epvm != null )
+                    epvm.Script = ((CodeEditor)sender).Text;
+            }
         }
 
         private void InitializeComponent()

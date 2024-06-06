@@ -229,9 +229,6 @@ namespace ConvnetAvalonia.PageViewModels
 
                 this.RaiseAndSetIfChanged(ref script, value);
                 Settings.Default.Script = script;
-                Settings.Default.Save();
-                    
-                //File.WriteAllText(ScriptsDirectory + @"Scripts\Program.cs", Script);
                 dirty = true;
             }
         }
