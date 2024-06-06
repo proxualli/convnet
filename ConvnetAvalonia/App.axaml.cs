@@ -2,7 +2,6 @@ using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using ConvnetAvalonia.Properties;
-using ConvnetAvalonia.ViewModels;
 using System;
 using System.Diagnostics;
 
@@ -27,7 +26,7 @@ namespace ConvnetAvalonia
                 desktop.ShutdownRequested += AppShutdownRequested;
                 desktop.MainWindow = new MainWindow
                 {
-                    DataContext = new MainWindowViewModel(),
+                    DataContext = new PageViewModels.MainWindowViewModel(),
                 };
 
                 if (desktop.MainWindow != null)

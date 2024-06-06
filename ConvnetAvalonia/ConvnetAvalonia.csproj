@@ -13,14 +13,12 @@
     <AssemblyName>ConvnetAvalonia</AssemblyName>
     <SignAssembly>True</SignAssembly>
   </PropertyGroup>
-
   <ItemGroup>
-    <Folder Include="Models\" />  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Remove="ViewModels\TestPageViewModel.cs" />
-    <Compile Remove="ViewModels\TrainPageViewModel.cs" />
+    <Compile Remove="PageViewModels\TestPageViewModel.cs" />
+    <Compile Remove="PageViewModels\TrainPageViewModel.cs" />
   </ItemGroup>
+
+ 
 
   <ItemGroup>
     <None Remove="Resources\Cancel.png" />
@@ -74,11 +72,7 @@
     <None Remove="Resources\XmlDoc.xshd" />
   </ItemGroup>
 
-  <ItemGroup>
-    <None Include="ViewModels\TestPageViewModel.cs" />
-    <None Include="ViewModels\TrainPageViewModel.cs" />
-  </ItemGroup>
-
+ 
   <ItemGroup>
     <PackageReference Include="ActiproSoftware.Controls.Avalonia" Version="24.1.0" />
     <PackageReference Include="ActiproSoftware.Controls.Avalonia.Themes.DataGrid" Version="24.1.0" />
@@ -160,6 +154,11 @@
     <AvaloniaResource Include="Resources\VisualStudio.png" />
     <AvaloniaResource Include="Resources\XML-Mode.xshd" />
     <AvaloniaResource Include="Resources\XmlDoc.xshd" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="PageViewModels\TestPageViewModel.cs" />
+    <None Include="PageViewModels\TrainPageViewModel.cs" />
   </ItemGroup>
 
   <ItemGroup>

@@ -18,10 +18,50 @@ namespace ConvnetAvalonia.PageViewModels
         Train = 2
     }
 
-    public class PageViewModel : ConvnetAvalonia.ViewModels.ViewModelBase
+    public class PageViewModel : PageViewModelBase
     {
         public event EventHandler? PageChange;
 
+         public void Cut()
+        {
+           
+            //if (PageVM != null && PageVM.Pages != null)
+            //{
+            //    //var epvm = MainView.PageViews.Items[(int)PageViewModels.ViewModels.Edit] as EditPageViewModel;
+
+            //    var epvm = PageVM.Pages[(int)PageViewModels.ViewModels.Edit] as EditPageViewModel;
+            //    if (epvm != null)
+            //    {
+            //        var topLevel = TopLevel.GetTopLevel(this);
+            //        if (FocusManager != null)
+            //        {
+            //            var elem = FocusManager.GetFocusedElement();
+
+            //        }
+            //    }
+            //}
+        }
+
+        public bool CanCut()
+        {
+            //if (PageVM != null && PageVM.Pages != null)
+            //{
+            //    //var epvm = MainView.PageViews.Items[(int)PageViewModels.ViewModels.Edit] as EditPageViewModel;
+
+            //    var epvm = PageVM.Pages[(int)PageViewModels.ViewModels.Edit] as EditPageViewModel;
+            //    if (epvm != null)
+            //    {
+            //        var topLevel = TopLevel.GetTopLevel(this);
+            //        if (FocusManager != null)
+            //        {
+            //            var elem = FocusManager.GetFocusedElement();
+            //            return true;
+            //        }
+            //    }
+            //}
+
+            return true;
+        }
         public PageViewModel(DNNModel model) : base(model)
         {
             Settings.Default.PropertyChanged += Default_PropertyChanged;
@@ -47,8 +87,8 @@ namespace ConvnetAvalonia.PageViewModels
                 //TrainPageVM.Save += PageVM_Save;
 
                 //var listPages = new List<ConvnetAvalonia.ViewModels.ViewModelBase> { EditPageVM, TestPageVM, TrainPageVM };
-                var listPages = new List<ConvnetAvalonia.ViewModels.ViewModelBase> { EditPageVM };
-                Pages = new ReadOnlyCollection<ConvnetAvalonia.ViewModels.ViewModelBase>(listPages);
+                var listPages = new List<PageViewModelBase> { EditPageVM };
+                Pages = new ReadOnlyCollection<PageViewModelBase>(listPages);
                 CurrentPage = Pages[Settings.Default.CurrentPage];
             }
         }
@@ -187,10 +227,10 @@ namespace ConvnetAvalonia.PageViewModels
             set => this.RaiseAndSetIfChanged(ref progressValue, value);
         }
 
-        public ReadOnlyCollection<ConvnetAvalonia.ViewModels.ViewModelBase>? Pages { get; }
+        public ReadOnlyCollection<PageViewModelBase>? Pages { get; }
 
-        private ConvnetAvalonia.ViewModels.ViewModelBase? currentPage;
-        public ConvnetAvalonia.ViewModels.ViewModelBase? CurrentPage
+        private PageViewModelBase? currentPage;
+        public PageViewModelBase? CurrentPage
         {
             get => currentPage; 
             set
@@ -243,7 +283,7 @@ namespace ConvnetAvalonia.PageViewModels
         public override void Reset()
         {
             if (Pages != null)
-                foreach (ConvnetAvalonia.ViewModels.ViewModelBase page in Pages)
+                foreach (PageViewModelBase page in Pages)
                     page.Reset();
         }
     }

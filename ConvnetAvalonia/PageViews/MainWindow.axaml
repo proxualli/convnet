@@ -1,0 +1,53 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="using:ConvnetAvalonia.PageViewModels"
+        xmlns:view="clr-namespace:ConvnetAvalonia.PageViews"
+        xmlns:v="clr-namespace:ConvnetAvalonia.PageViewModels"
+        x:Class="ConvnetAvalonia.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Icon="/Resources/App.ico"
+        Title="Convnet Explorer"
+        x:CompileBindings="True"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450">
+
+  <Window.DataTemplates>
+    <DataTemplate DataType="{x:Type v:PageViewModel}">
+      <view:PageView />
+    </DataTemplate>
+  </Window.DataTemplates>
+    
+  <Design.DataContext>
+    <vm:MainWindowViewModel/>
+  </Design.DataContext>
+
+  <DockPanel x:Name="dockPanelMain" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
+    <Menu DockPanel.Dock="Top" x:Name="menuMain">
+      <MenuItem Header="_File" />
+      <MenuItem Header="_Edit">
+        <MenuItem Header="_Cut" Command="{Binding Cut}" />
+        <MenuItem Header="Co_py"/>
+        <MenuItem Header="_Paste"/>
+        <MenuItem Header="_Delete"/>
+        <Separator />
+        <MenuItem Header="Select _All"/>
+        <Separator />
+        <MenuItem Header="_Undo"/>
+        <MenuItem Header="_Redo"/>
+      </MenuItem>
+      <MenuItem Header="_Settings">
+        <MenuItem Header="_Format"/>
+        <MenuItem Header="_Locking"/>
+        <MenuItem Header="_Shuffle Dataset"/>
+        <MenuItem Header="_Priority"/>
+      </MenuItem>
+      <MenuItem Header="_Help">
+        <MenuItem Header="_Documentation"/>     
+      </MenuItem>
+    </Menu>
+    
+    <view:PageView DockPanel.Dock="Top" x:Name="MainView"/>
+  </DockPanel>
+  
+</Window>

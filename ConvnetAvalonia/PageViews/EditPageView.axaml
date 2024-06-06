@@ -7,7 +7,6 @@
              xmlns:converters="clr-namespace:ConvnetAvalonia.Converters"
              xmlns:props="clr-namespace:ConvnetAvalonia.Properties"
              xmlns:vm="clr-namespace:ConvnetAvalonia.PageViewModels"
-             xmlns:view="clr-namespace:ConvnetAvalonia.PageViews"
              x:Class="ConvnetAvalonia.PageViews.EditPageView"
              x:DataType="vm:EditPageViewModel">
  

@@ -22,7 +22,7 @@ using System.Threading.Tasks;
 namespace ConvnetAvalonia.PageViewModels
 {
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Interoperability", "CA1416:Validate platform compatibility", Justification = "<Pending>")]
-    public class EditPageViewModel : ConvnetAvalonia.ViewModels.ViewModelBase
+    public class EditPageViewModel : PageViewModelBase
     {
 #if DEBUG
         const string Mode = "Debug";

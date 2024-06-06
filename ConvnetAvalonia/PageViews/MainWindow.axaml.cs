@@ -1,4 +1,5 @@
 using Avalonia.Controls;
+using Avalonia.Input;
 using ConvnetAvalonia.PageViewModels;
 using ConvnetAvalonia.Properties;
 using CustomMessageBox.Avalonia;
@@ -7,11 +8,12 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Text;
 
 namespace ConvnetAvalonia
 {
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window, IDisposable
     {
         public bool ShowCloseApplicationDialog = true;
 
@@ -29,7 +31,20 @@ namespace ConvnetAvalonia
         
         public PageViewModel? PageVM;
 
-        public static void Copy(string sourceDirectory, string targetDirectory)
+        //public void Cut(object msg)
+        //{
+        //    Debug.WriteLine($"The action was called. {msg}");
+        //}
+
+        //public bool CanCut(object msg)
+        //{
+        //   // ApplicationCommands.Cut.CanExecute(msg);
+            
+        //    if (msg != null) return !string.IsNullOrWhiteSpace(msg.ToString());
+        //    return false;
+        //}
+
+        public static void CopyDir(string sourceDirectory, string targetDirectory)
         {
             var diSource = new DirectoryInfo(sourceDirectory);
             var diTarget = new DirectoryInfo(targetDirectory);
@@ -168,9 +183,76 @@ namespace ConvnetAvalonia
             return false;
         }
 
+        public static KeyModifiers GetPlatformCommandKey()
+        {
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+            {
+                return KeyModifiers.Meta;
+            }
+
+            return KeyModifiers.Control;
+        }
+
         public MainWindow()
         {
             InitializeComponent();
+
+            
+
+            //var cmdKey = GetPlatformCommandKey();
+
+            //var file = new MenuItem();
+            //file.Header = "_File";
+
+            //var edit = new MenuItem();
+            //edit.Header = "_Edit";
+
+            //var cut = new MenuItem { Header = "Cut", InputGesture = new KeyGesture(Key.X, cmdKey) };
+            //var copy = new MenuItem { Header = "Copy", InputGesture = new KeyGesture(Key.C, cmdKey) };
+            //var paste = new MenuItem { Header = "Paste", InputGesture = new KeyGesture(Key.V, cmdKey) };
+            //var delete = new MenuItem { Header = "Delete", InputGesture = new KeyGesture(Key.Delete) };
+            //var selectall = new MenuItem { Header = "Select All", InputGesture = new KeyGesture(Key.A, cmdKey) };
+            //var undo = new MenuItem { Header = "Undo", InputGesture = new KeyGesture(Key.Z, cmdKey) };
+            //var redo = new MenuItem { Header = "Redo", InputGesture = new KeyGesture(Key.Y, cmdKey) };
+
+            //cut.Icon = ImageHelper.LoadFromResource("Cut.png");
+            //paste.Icon = ImageHelper.LoadFromResource("Paste.png");
+            //copy.Icon = ImageHelper.LoadFromResource("Copy.png");
+            //delete.Icon = ImageHelper.LoadFromResource("Cancel.png");
+            //selectall.Icon = ImageHelper.LoadFromResource("SelectAll.png");
+            //undo.Icon = ImageHelper.LoadFromResource("Undo.png");
+            //redo.Icon = ImageHelper.LoadFromResource("Redo.png");
+
+            ////cut.Command = ApplicationCommands.Cut;
+            ////paste.Command = ApplicationCommands.Paste;
+            ////copy.Command = ApplicationCommands.Copy;
+            ////delete.Command = ApplicationCommands.Delete;
+            ////selectall.Command = ApplicationCommands.SelectAll;
+            ////undo.Command = ApplicationCommands.Undo;
+            ////redo.Command = ApplicationCommands.Redo;
+
+            ////cut.Click += (s, e) => { if (CanCut) Dispatcher.UIThread.Post(() => Cut()); };
+            ////paste.Click += (s, e) => { if (CanPaste) Dispatcher.UIThread.Post(() => Paste()); };
+            ////copy.Click += (s, e) => { if (CanCopy) Dispatcher.UIThread.Post(() => Copy()); };
+            ////delete.Click += (s, e) => { if (CanDelete) Dispatcher.UIThread.Post(() => Delete()); };
+            ////selectall.Click += (s, e) => { if (CanSelectAll) Dispatcher.UIThread.Post(() => SelectAll()); };
+            ////undo.Click += (s, e) => { if (CanUndo) Dispatcher.UIThread.Post(() => Undo()); };
+            ////redo.Click += (s, e) => { if (CanRedo) Dispatcher.UIThread.Post(() => Redo()); };
+
+            //edit.Items.Add(cut);
+            //edit.Items.Add(copy);
+            //edit.Items.Add(paste);
+            //edit.Items.Add(delete);
+            //edit.Items.Add(new Separator());
+            //edit.Items.Add(selectall);
+            //edit.Items.Add(new Separator());
+            //edit.Items.Add(undo);
+            //edit.Items.Add(redo);
+
+            //menuMain.Items.Add(file);
+            //menuMain.Items.Add(edit);
+
+
 
             Directory.CreateDirectory(StorageDirectory);
             Directory.CreateDirectory(DefinitionsDirectory);
@@ -179,7 +261,7 @@ namespace ConvnetAvalonia
             if (!Directory.Exists(ScriptsDirectory))
             {
                 Directory.CreateDirectory(ScriptsDirectory);
-                Copy(ApplicationPath.Replace(@"Convnet\bin\x64\" + Mode + @"\" + Framework + @"\", "") + @"Scripts\", ScriptsDirectory);
+                CopyDir(ApplicationPath.Replace(@"Convnet\bin\x64\" + Mode + @"\" + Framework + @"\", "") + @"Scripts\", ScriptsDirectory);
             }
                      
             var fileName = Path.Combine(StateDirectory, Settings.Default.ModelNameActive + ".txt");
@@ -386,5 +468,7 @@ namespace ConvnetAvalonia
             // Ensure that the destructor is not called
             GC.SuppressFinalize(this);
         }
+
+       
     }
 }

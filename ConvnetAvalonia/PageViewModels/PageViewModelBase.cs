@@ -12,9 +12,9 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 
-namespace ConvnetAvalonia.ViewModels
+namespace ConvnetAvalonia.PageViewModels
 {
-    public abstract class ViewModelBase : ReactiveObject
+    public abstract class PageViewModelBase : ReactiveObject
     {
         const string Framework = @"\net8.0\";
 #if DEBUG
@@ -97,12 +97,12 @@ namespace ConvnetAvalonia.ViewModels
                 if (model != null)
                 {
                     Dataset = model.Dataset;
-                    this.OnModelChanged();
+                    OnModelChanged();
                 }
             }
         }
 
-        private void CommandToolBarCollectionChanged(Object? sender, NotifyCollectionChangedEventArgs e)
+        private void CommandToolBarCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
         {
             if (CommandToolBar.Count > 0)
                 CommandToolBarVisibility = true;
@@ -110,7 +110,7 @@ namespace ConvnetAvalonia.ViewModels
                 CommandToolBarVisibility = false;
         }
 
-        protected ViewModelBase(DNNModel? model)
+        protected PageViewModelBase(DNNModel? model)
         {
             if (model != null)
             {

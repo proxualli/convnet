@@ -1,6 +1,6 @@
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
-using ConvnetAvalonia.ViewModels;
+using ConvnetAvalonia.PageViewModels;
 using System;
 
 namespace ConvnetAvalonia
@@ -27,7 +27,7 @@ namespace ConvnetAvalonia
 
         public bool Match(object? data)
         {
-            return data is ViewModelBase;
+            return data is PageViewModelBase;
         }
     }
 }
