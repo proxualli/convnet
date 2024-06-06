@@ -127,13 +127,16 @@ namespace ConvnetAvalonia.PageViewModels
 
         private void EditPageVM_ModelChanged(object? sender, EventArgs e)
         {
-            Model = Pages[(int)ViewModels.Edit].Model;
-            if (Model != null)
+            if (Pages != null)
             {
-                Model.TrainProgress += TrainProgress;
-                Model.TestProgress += TestProgress;
-                Pages[(int)ViewModels.Train].Model = Model;
-                Pages[(int)ViewModels.Test].Model = Model;
+                Model = Pages[(int)ViewModels.Edit].Model;
+                if (Model != null)
+                {
+                    Model.TrainProgress += TrainProgress;
+                    Model.TestProgress += TestProgress;
+                    Pages[(int)ViewModels.Train].Model = Model;
+                    Pages[(int)ViewModels.Test].Model = Model;
+                }
             }
         }
 
@@ -196,7 +199,7 @@ namespace ConvnetAvalonia.PageViewModels
                     return;
 
                 this.RaiseAndSetIfChanged(ref currentPage, value);
-                if (currentPage != null)
+                if (currentPage != null && Pages != null)
                 {
                     CommandToolBar = currentPage.CommandToolBar;
                     CommandToolBarVisibility = currentPage.CommandToolBarVisibility;
@@ -212,7 +215,7 @@ namespace ConvnetAvalonia.PageViewModels
         {
             PageChange?.Invoke(this, EventArgs.Empty);
 
-            if (Settings.Default.CurrentPage == (int)ViewModels.Edit)
+            if (Settings.Default.CurrentPage == (int)ViewModels.Edit && Pages != null)
             {
                 var vm = Pages[(int)ViewModels.Edit] as EditPageViewModel;
                 vm?.CheckButtonClick(this, new Avalonia.Interactivity.RoutedEventArgs());
@@ -239,8 +242,9 @@ namespace ConvnetAvalonia.PageViewModels
 
         public override void Reset()
         {
-            foreach (ConvnetAvalonia.ViewModels.ViewModelBase page in Pages)
-                page.Reset();
+            if (Pages != null)
+                foreach (ConvnetAvalonia.ViewModels.ViewModelBase page in Pages)
+                    page.Reset();
         }
     }
 }

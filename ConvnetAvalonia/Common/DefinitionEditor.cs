@@ -99,8 +99,7 @@ namespace ConvnetAvalonia.Common
              
         public DefinitionEditor()
         {
-            FontSize = 14;
-            //FontFamily = new FontFamily("Consolas");
+            FontSize = 13;
             FontFamily = new FontFamily("Cascadia Code,Consolas,Menlo,Monospace");
             Options = new TextEditorOptions
             {
@@ -109,13 +108,11 @@ namespace ConvnetAvalonia.Common
                 AllowScrollBelowDocument = false,
                 EnableVirtualSpace = false
             };
-
+            TextArea.IndentationStrategy = new AvaloniaEdit.Indentation.CSharp.CSharpIndentationStrategy(Options);
+            TextArea.RightClickMovesCaret = true;
             //TextArea.TextView.BackgroundRenderers.Add(new HighlightCurrentLineBackgroundRenderer(this));
             //TextArea.Caret.PositionChanged += (sender, e) => TextArea.TextView.InvalidateLayer(KnownLayer.Background);
-            //Options.ShowBoxForControlCharacters = true;
-            //TextArea.IndentationStrategy = new AvaloniaEdit.Indentation.CSharp.CSharpIndentationStrategy(this.Options);
-            this.TextArea.RightClickMovesCaret = true;
-
+           
             var cmdKey = GetPlatformCommandKey();
 
             var cm = new Avalonia.Controls.ContextMenu();
@@ -397,21 +394,23 @@ namespace ConvnetAvalonia.Common
 
         public CodeEditor()
         {
-            FontSize = 14;
-            //FontFamily = new FontFamily("Consolas");
+            FontSize = 13;
             FontFamily = new FontFamily("Cascadia Code,Consolas,Menlo,Monospace");
             Options = new TextEditorOptions
             {
                 IndentationSize = 4,
                 ConvertTabsToSpaces = false,
                 AllowScrollBelowDocument = false,
-                EnableVirtualSpace = true
+                EnableVirtualSpace = true,
+                EnableHyperlinks = true,
+                EnableEmailHyperlinks = true,
+                ShowBoxForControlCharacters = true
             };
-
+            TextArea.IndentationStrategy = new AvaloniaEdit.Indentation.CSharp.CSharpIndentationStrategy(Options);
+            TextArea.RightClickMovesCaret = true;
             //TextArea.TextView.BackgroundRenderers.Add(new HighlightCurrentLineBackgroundRenderer(this));
             //TextArea.Caret.PositionChanged += (sender, e) => TextArea.TextView.InvalidateLayer(KnownLayer.Background);
-            this.TextArea.RightClickMovesCaret = true;
-
+                 
             var cmdKey = GetPlatformCommandKey();
 
             var cm = new Avalonia.Controls.ContextMenu();
