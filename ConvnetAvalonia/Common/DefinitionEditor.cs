@@ -116,15 +116,15 @@ namespace ConvnetAvalonia.Common
 
             var cmdKey = GetPlatformCommandKey();
 
-            var cm = new Avalonia.Controls.ContextMenu();
+            var cm = new ContextMenu();
 
-            var cut = new Avalonia.Controls.MenuItem { Header = "Cut", InputGesture = new KeyGesture(Key.X, cmdKey) };
-            var copy = new Avalonia.Controls.MenuItem { Header = "Copy", InputGesture = new KeyGesture(Key.C, cmdKey) };
-            var paste = new Avalonia.Controls.MenuItem { Header = "Paste", InputGesture = new KeyGesture(Key.V, cmdKey) };
-            var delete = new Avalonia.Controls.MenuItem { Header = "Delete", InputGesture = new KeyGesture(Key.Delete) };
-            var selectall = new Avalonia.Controls.MenuItem { Header = "Select All", InputGesture = new KeyGesture(Key.A, cmdKey) };
-            var undo = new Avalonia.Controls.MenuItem { Header = "Undo", InputGesture = new KeyGesture(Key.Z, cmdKey) };
-            var redo = new Avalonia.Controls.MenuItem { Header = "Redo", InputGesture = new KeyGesture(Key.Y, cmdKey) };
+            var cut = new MenuItem { Header = "Cut", InputGesture = new KeyGesture(Key.X, cmdKey) };
+            var copy = new MenuItem { Header = "Copy", InputGesture = new KeyGesture(Key.C, cmdKey) };
+            var paste = new MenuItem { Header = "Paste", InputGesture = new KeyGesture(Key.V, cmdKey) };
+            var delete = new MenuItem { Header = "Delete", InputGesture = new KeyGesture(Key.Delete) };
+            var selectall = new MenuItem { Header = "Select All", InputGesture = new KeyGesture(Key.A, cmdKey) };
+            var undo = new MenuItem { Header = "Undo", InputGesture = new KeyGesture(Key.Z, cmdKey) };
+            var redo = new MenuItem { Header = "Redo", InputGesture = new KeyGesture(Key.Y, cmdKey) };
 
             cut.Icon = ImageHelper.LoadFromResource("Cut.png");
             paste.Icon = ImageHelper.LoadFromResource("Paste.png");
@@ -389,15 +389,15 @@ namespace ConvnetAvalonia.Common
                  
             var cmdKey = GetPlatformCommandKey();
 
-            var cm = new Avalonia.Controls.ContextMenu();
+            var cm = new ContextMenu();
 
-            var cut = new Avalonia.Controls.MenuItem { Header = "Cut", InputGesture = new KeyGesture(Key.X, cmdKey) };
-            var copy = new Avalonia.Controls.MenuItem { Header = "Copy", InputGesture = new KeyGesture(Key.C, cmdKey) };
-            var paste = new Avalonia.Controls.MenuItem { Header = "Paste", InputGesture = new KeyGesture(Key.V, cmdKey) };
-            var delete = new Avalonia.Controls.MenuItem { Header = "Delete", InputGesture = new KeyGesture(Key.Delete) };
-            var selectall = new Avalonia.Controls.MenuItem { Header = "Select All", InputGesture = new KeyGesture(Key.A, cmdKey) };
-            var undo = new Avalonia.Controls.MenuItem { Header = "Undo", InputGesture = new KeyGesture(Key.Z, cmdKey) };
-            var redo = new Avalonia.Controls.MenuItem { Header = "Redo", InputGesture = new KeyGesture(Key.Y, cmdKey) };
+            var cut = new MenuItem { Header = "Cut", InputGesture = new KeyGesture(Key.X, cmdKey) };
+            var copy = new MenuItem { Header = "Copy", InputGesture = new KeyGesture(Key.C, cmdKey) };
+            var paste = new MenuItem { Header = "Paste", InputGesture = new KeyGesture(Key.V, cmdKey) };
+            var delete = new MenuItem { Header = "Delete", InputGesture = new KeyGesture(Key.Delete) };
+            var selectall = new MenuItem { Header = "Select All", InputGesture = new KeyGesture(Key.A, cmdKey) };
+            var undo = new MenuItem { Header = "Undo", InputGesture = new KeyGesture(Key.Z, cmdKey) };
+            var redo = new MenuItem { Header = "Redo", InputGesture = new KeyGesture(Key.Y, cmdKey) };
 
             cut.Command = ApplicationCommands.Cut;
             paste.Command = ApplicationCommands.Paste;
