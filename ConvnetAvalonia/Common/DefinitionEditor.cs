@@ -107,12 +107,13 @@ namespace ConvnetAvalonia.Common
                 IndentationSize = 4,
                 ConvertTabsToSpaces = false,
                 AllowScrollBelowDocument = true,
+                HighlightCurrentLine = true,
             };
-            
-            TextArea.RightClickMovesCaret = false;
+            TextArea.RightClickMovesCaret = true;
+            TextArea.IndentationStrategy = new AvaloniaEdit.Indentation.CSharp.CSharpIndentationStrategy(Options);
             //TextArea.TextView.BackgroundRenderers.Add(new HighlightCurrentLineBackgroundRenderer(this));
             //TextArea.Caret.PositionChanged += (sender, e) => TextArea.TextView.InvalidateLayer(KnownLayer.Background);
-           
+
             var cmdKey = GetPlatformCommandKey();
 
             var cm = new Avalonia.Controls.ContextMenu();
@@ -379,7 +380,9 @@ namespace ConvnetAvalonia.Common
                 AllowScrollBelowDocument = true,
                 EnableHyperlinks = true,
                 EnableEmailHyperlinks = true,
+                HighlightCurrentLine = true,
             };
+            TextArea.RightClickMovesCaret = true;
             TextArea.IndentationStrategy = new AvaloniaEdit.Indentation.CSharp.CSharpIndentationStrategy(Options);
             //TextArea.TextView.BackgroundRenderers.Add(new HighlightCurrentLineBackgroundRenderer(this));
             //TextArea.Caret.PositionChanged += (sender, e) => TextArea.TextView.InvalidateLayer(KnownLayer.Background);
