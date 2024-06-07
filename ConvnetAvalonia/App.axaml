@@ -3,8 +3,11 @@
              x:Class="ConvnetAvalonia.App"
              xmlns:local="using:ConvnetAvalonia"
              xmlns:converters="clr-namespace:ConvnetAvalonia.Converters"
+             xmlns:dialogHostAvalonia="clr-namespace:DialogHostAvalonia;assembly=DialogHost.Avalonia"
              RequestedThemeVariant="Default">
-             <!--xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+             <!--
+             xmlns:sty="using:FluentAvalonia.Styling"
+             xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
              xmlns:asyncImageLoader="clr-namespace:AsyncImageLoader;assembly=AsyncImageLoader.Avalonia"
              "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
 
@@ -19,6 +22,9 @@
   <Application.Styles>
     <FluentTheme />
     <StyleInclude Source="avares://AvaloniaEdit/Themes/Fluent/AvaloniaEdit.xaml" />
+    <!--<sty:FluentAvaloniaTheme />-->
+    <StyleInclude Source="avares://Avalonia.Controls.ToolBar/Themes/Avalonia.Controls.ToolBar.axaml" />
+    <dialogHostAvalonia:DialogHostStyles />
     <!--<StyleInclude Source="avares://AsyncImageLoader.Avalonia/AdvancedImage.axaml" />-->
   </Application.Styles>
 

@@ -32,7 +32,7 @@ namespace ConvnetAvalonia.PageViewModels
     };
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Interoperability", "CA1416:Validate platform compatibility", Justification = "<Pending>")]
-    public class TrainPageViewModel : ViewModelBase
+    public class TrainPageViewModel : PageViewModelBase
     {
         private string progressText;
         private bool showProgress;

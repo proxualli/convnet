@@ -5,6 +5,7 @@ using AvaloniaEdit.Document;
 using ConvnetAvalonia.Common;
 using ConvnetAvalonia.Properties;
 using CustomMessageBox.Avalonia;
+using DialogHostAvalonia;
 using Interop;
 using ReactiveUI;
 using System;
@@ -16,7 +17,9 @@ using System.Security.AccessControl;
 using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
-
+using FluentAvalonia;
+using FluentAvalonia.UI.Controls;
+using AvaloniaEdit;
 
 namespace ConvnetAvalonia.PageViewModels
 {
@@ -60,7 +63,7 @@ namespace ConvnetAvalonia.PageViewModels
             var openButton = new Button
             {
                 Name = "ButtonOpen",
-                Content = ApplicationHelper.LoadFromResource("Open.png"),
+                Content = ApplicationHelper.LoadFromResource("OpenFile.png"),
                 ClickMode = ClickMode.Release
             };
             ToolTip.SetTip(openButton, "Open");
@@ -69,7 +72,7 @@ namespace ConvnetAvalonia.PageViewModels
             var saveButton = new Button
             {
                 Name = "ButtonSave",
-                Content = ApplicationHelper.LoadFromResource("Save.png"),
+                Content = ApplicationHelper.LoadFromResource("SaveAs.png"),
                 ClickMode = ClickMode.Release
             };
             ToolTip.SetTip(saveButton, "Save");
@@ -87,7 +90,7 @@ namespace ConvnetAvalonia.PageViewModels
             var synchronizeButton = new Button
             {
                 Name = "ButtonSynchronize",
-                Content = ApplicationHelper.LoadFromResource("Synchronize.png"),
+                Content = ApplicationHelper.LoadFromResource("Sync.png"),
                 ClickMode = ClickMode.Release
             };
             ToolTip.SetTip(synchronizeButton, "Synchronize");
@@ -102,7 +105,7 @@ namespace ConvnetAvalonia.PageViewModels
             var scriptsButton = new Button
             {
                 Name = "ButtonScripts",
-                Content = ApplicationHelper.LoadFromResource("Calculate.png"),
+                Content = ApplicationHelper.LoadFromResource("Calculator.png"),
                 ClickMode = ClickMode.Release,
             };
             ToolTip.SetTip(scriptsButton, "Run Script");
@@ -116,7 +119,7 @@ namespace ConvnetAvalonia.PageViewModels
                 ClickMode = ClickMode.Release,
             };
             ToolTip.SetTip(visualStudioButton, "Open in Visual Studio");
-            visualStudioButton.Click += VisualStudioButtonClick; 
+            visualStudioButton.Click += VisualStudioButtonClick;
 
             CommandToolBar.Add(openButton);
             CommandToolBar.Add(saveButton);
@@ -138,13 +141,12 @@ namespace ConvnetAvalonia.PageViewModels
             get => definition; 
             set
             {
-                if (definition == value)
+                if (value.Equals(definition))
                     return;
 
                 this.RaiseAndSetIfChanged(ref definition, value);
                 Settings.Default.DefinitionEditing = definition;
-                Settings.Default.Save();
-
+                
                 ModelName = definition.Split(Environment.NewLine.ToCharArray(), StringSplitOptions.RemoveEmptyEntries)[0].Trim().Replace("[", "").Replace("]", "").Trim();
                 DefinitionStatus = false;
             }
@@ -674,9 +676,10 @@ namespace ConvnetAvalonia.PageViewModels
 
                 if (msg.Error)
                 {
-                    TextLocation = new TextLocation((int)msg.Row - 1, (int)msg.Column);
+                    TextLocation = new TextLocation(1, 1);
                     TextLocation = new TextLocation((int)msg.Row, (int)msg.Column);
-                    MessageBox.Show(msg.Message, "Check Information", MessageBoxButtons.OK);
+                    
+                    MessageBox.Show(msg.Message, "Check", MessageBoxButtons.OK, icon: MessageBoxIcon.Information);
                 }
 
                 return !msg.Error;

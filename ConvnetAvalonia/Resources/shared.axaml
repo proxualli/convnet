@@ -47,17 +47,18 @@
     <ResourceDictionary x:Key='Light'>
       <Color x:Key="TextColor">#FFD7CFD7</Color>
       <Color x:Key="BackgroundColor">#FF1E1E1E</Color>
-     
+      <Color x:Key="ToolBarBackgroundColor">#FFCECECE</Color>
     </ResourceDictionary>
     <ResourceDictionary x:Key='Dark'>
       <Color x:Key="TextColor">#FFD7CFD7</Color>
       <Color x:Key="BackgroundColor">#FF1E1E1E</Color>
+      <Color x:Key="ToolBarBackgroundColor">#FF1E1E1E</Color>
     </ResourceDictionary>
   </ResourceDictionary.ThemeDictionaries>
   
   <SolidColorBrush x:Key="TextBrush" Color="{DynamicResource TextColor}"/>
   <SolidColorBrush x:Key="BackgroundBrush" Color="{DynamicResource BackgroundColor}"/>
-  
+  <SolidColorBrush x:Key="ToolBarBackgroundBrush" Color="{DynamicResource ToolBarBackgroundColor}"/>
     <!--Common colors.-->
     <!--<Color x:Key="TextColor">#FFD7CFD7</Color>
     <Color x:Key="BackgroundColor">#FF1E1E1E</Color>-->

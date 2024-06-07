@@ -11,8 +11,10 @@ using ConvnetAvalonia.Properties;
 using System;
 using System.IO;
 using System.Linq;
+using System.Reflection.Metadata;
 using System.Xml;
 using TextMateSharp.Grammars;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace ConvnetAvalonia.PageViews
 {
@@ -39,7 +41,10 @@ namespace ConvnetAvalonia.PageViews
             HighlightingManager.Instance.RegisterHighlighting("Definition", new string[] { ".txt" }, DefinitionHighlighting);
             var editorDefinition = this.FindControl<TextEditor>("EditorDefinition");
             if (editorDefinition != null)
+            {
                 editorDefinition.SyntaxHighlighting = HighlightingManager.Instance.GetDefinitionByExtension(".txt");
+                editorDefinition.TextChanged += EditorDefinition_TextChanged;
+            }
 
 
             //IHighlightingDefinition CSharpHighlighting;
@@ -67,6 +72,16 @@ namespace ConvnetAvalonia.PageViews
             var gr = this.FindControl<Grid>("grid");
             if (gr != null)
                 gr.ColumnDefinitions.First().Width = new GridLength(Settings.Default.EditSplitPositionA, GridUnitType.Pixel);
+        }
+
+        private void EditorDefinition_TextChanged(object? sender, EventArgs e)
+        {
+            if (DataContext != null && sender != null)
+            {
+                var epvm = DataContext as EditPageViewModel;
+                if (epvm != null)
+                    epvm.Definition = ((DefinitionEditor)sender).Text;
+            }
         }
 
         private void EditorScript_TextChanged(object? sender, EventArgs e)

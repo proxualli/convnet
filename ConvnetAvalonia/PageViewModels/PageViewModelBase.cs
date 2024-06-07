@@ -10,6 +10,9 @@ using System.Data;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using FluentAvalonia;
+using Avalonia.Collections;
+using FluentAvalonia.UI.Controls;
 
 namespace ConvnetAvalonia.PageViewModels
 {

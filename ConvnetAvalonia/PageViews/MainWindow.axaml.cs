@@ -1,12 +1,15 @@
 using Avalonia.Controls;
 using Avalonia.Input;
+using AvaloniaEdit;
 using ConvnetAvalonia.PageViewModels;
 using ConvnetAvalonia.Properties;
 using CustomMessageBox.Avalonia;
 using Interop;
+using ReactiveUI;
 using System;
 using System.IO;
 using System.Linq;
+using System.Reactive;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -31,18 +34,16 @@ namespace ConvnetAvalonia
         
         public PageViewModel? PageVM;
 
-        //public void Cut(object msg)
-        //{
-        //    Debug.WriteLine($"The action was called. {msg}");
-        //}
-
-        //public bool CanCut(object msg)
-        //{
-        //   // ApplicationCommands.Cut.CanExecute(msg);
-            
-        //    if (msg != null) return !string.IsNullOrWhiteSpace(msg.ToString());
-        //    return false;
-        //}
+        public ReactiveCommand<Unit, Unit> CutCommand { get; }
+        public void Cut()
+        {
+            //var elem = TopLevel.GetTopLevel(this).GetFocusedElement();
+            ApplicationCommands.Cut.Execute(null, null);
+        }
+        public bool CanCut
+        {
+            get => ApplicationCommands.Cut.CanExecute(null, null);
+        }
 
         public static void CopyDir(string sourceDirectory, string targetDirectory)
         {
@@ -196,9 +197,8 @@ namespace ConvnetAvalonia
         public MainWindow()
         {
             InitializeComponent();
-
             
-
+            CutCommand = ReactiveCommand.Create(Cut, this.WhenAnyValue(x => x.CanCut));
             //var cmdKey = GetPlatformCommandKey();
 
             //var file = new MenuItem();

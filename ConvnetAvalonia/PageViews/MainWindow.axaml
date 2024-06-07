@@ -2,18 +2,21 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:vm="using:ConvnetAvalonia.PageViewModels"
         xmlns:view="clr-namespace:ConvnetAvalonia.PageViews"
-        xmlns:v="clr-namespace:ConvnetAvalonia.PageViewModels"
+        xmlns:vm="clr-namespace:ConvnetAvalonia.PageViewModels"
         x:Class="ConvnetAvalonia.MainWindow"
         x:DataType="vm:MainWindowViewModel"
         Icon="/Resources/App.ico"
         Title="Convnet Explorer"
-        x:CompileBindings="True"
+        Background="{DynamicResource BackgroundBrush}"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450">
 
+  <Window.KeyBindings>
+    <KeyBinding Gesture="Ctrl+O"  />
+  </Window.KeyBindings>
+  
   <Window.DataTemplates>
-    <DataTemplate DataType="{x:Type v:PageViewModel}">
+    <DataTemplate DataType="{x:Type vm:PageViewModel}">
       <view:PageView />
     </DataTemplate>
   </Window.DataTemplates>
@@ -26,7 +29,7 @@
     <Menu DockPanel.Dock="Top" x:Name="menuMain">
       <MenuItem Header="_File" />
       <MenuItem Header="_Edit">
-        <MenuItem Header="_Cut" Command="{Binding Cut}" />
+        <MenuItem Header="_Cut"  />
         <MenuItem Header="Co_py"/>
         <MenuItem Header="_Paste"/>
         <MenuItem Header="_Delete"/>

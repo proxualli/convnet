@@ -8,9 +8,13 @@
              xmlns:c="clr-namespace:ConvnetAvalonia.Common"
              xmlns:converters="clr-namespace:ConvnetAvalonia.Converters"
              xmlns:props="clr-namespace:ConvnetAvalonia.Properties"
+             xmlns:ui="using:FluentAvalonia.UI.Controls"
+             xmlns:uip="using:FluentAvalonia.UI.Controls.Primitives"
+             xmlns:controls="clr-namespace:Avalonia.Controls.ToolBar.Controls;assembly=Avalonia.Controls.ToolBar"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:DataType="vm:PageViewModel"
-             x:Class="ConvnetAvalonia.PageViews.PageView">
+             x:Class="ConvnetAvalonia.PageViews.PageView"
+             >
   
   <UserControl.DataTemplates>
     <DataTemplate DataType="{x:Type vm:EditPageViewModel}">
@@ -25,21 +29,18 @@
   </UserControl.DataTemplates>
    
   <Grid RowDefinitions="Auto,*">
-    <!--<ToolBarTray Grid.Row="0" Height="Auto" HorizontalAlignment="Stretch" Name="toolBarTray" VerticalAlignment="Top" Width="Auto" ToolBarTray.IsLocked="False">
-      <ToolBar>
-        <ComboBox Name="PageViews" Margin="2" MinWidth="50"  ItemsSource="{Binding Path=Pages}" SelectedItem="{Binding Path=CurrentPage}" IsEnabled="{Binding Path=CurrentPage.IsValid, Mode=TwoWay}" UseLayoutRounding="True" IsReadOnly="True" IsTextSearchEnabled="False" IsSynchronizedWithCurrentItem="True" DisplayMemberPath="DisplayName"/>
-      </ToolBar>
-      <ToolBar Name="CmdToolBar" ItemsSource="{Binding Path=CommandToolBar, Mode=TwoWay, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged}" Visibility="{Binding Path=CommandToolBarVisibility}"/>
-    </ToolBarTray>-->
-    <Border Grid.Row="0">
-      <ComboBox Name="PageViews" Margin="2" MinWidth="60" Grid.Row="0" ItemsSource="{Binding Pages}" SelectedItem="{Binding CurrentPage, Mode=TwoWay}" IsEnabled="{Binding CurrentPage.IsValid, Mode=TwoWay}">
-        <ComboBox.ItemTemplate>
-          <DataTemplate>
-            <TextBlock Text="{Binding Path=DisplayName}"/>
-          </DataTemplate>
-        </ComboBox.ItemTemplate>
-      </ComboBox>
-    </Border>
+    <controls:ToolBarTray Name="toolBarTray" Grid.Row="0" HorizontalAlignment="Stretch" Orientation="Horizontal">
+      <controls:ToolBar Background="{DynamicResource ToolBarBackgroundBrush}" Foreground="{DynamicResource TextBrush}" >
+        <ComboBox Name="PageViews" Margin="2" MinWidth="60" ItemsSource="{Binding Pages}" SelectedItem="{Binding CurrentPage, Mode=TwoWay}" IsEnabled="{Binding CurrentPage.IsValid, Mode=TwoWay}">
+          <ComboBox.ItemTemplate>
+            <DataTemplate>
+              <TextBlock Text="{Binding Path=DisplayName}"/>
+            </DataTemplate>
+          </ComboBox.ItemTemplate>
+        </ComboBox>
+      </controls:ToolBar>
+      <controls:ToolBar Name="CmdToolBar" Margin="2" Background="{DynamicResource ToolBarBackgroundBrush}" Foreground="{DynamicResource TextBrush}"  ItemsSource="{Binding CommandToolBar, Mode=TwoWay}" IsVisible="{Binding Path=CommandToolBarVisibility}" />
+    </controls:ToolBarTray>
     
     <Border Grid.Row="1">
       <ContentControl Name="PageContentControl" Content="{Binding CurrentPage, Mode=TwoWay}"/>

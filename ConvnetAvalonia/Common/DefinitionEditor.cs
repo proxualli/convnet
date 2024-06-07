@@ -115,7 +115,7 @@ namespace ConvnetAvalonia.Common
 
             ContextMenu = cm;
 
-            TextChanged += DefinitionEditor_TextChanged;
+            TextChanged += DefinitionEditor_TextChanged;           
         }
 
         private void DefinitionEditor_TextChanged(object? sender, EventArgs e)
@@ -138,12 +138,12 @@ namespace ConvnetAvalonia.Common
 
         public string Definition
         {
-            get { return Text; }
+            get { return base.Text; }
             set
             {
-                if (value != Text)
+                if (value != base.Text)
                 {
-                    Text = value;
+                    base.Text = value;
                     SetValue(DefinitionProperty, value);
                     OnPropertyChanged(nameof(Definition));
                     //OnPropertyChanged(nameof(Length));
@@ -152,9 +152,10 @@ namespace ConvnetAvalonia.Common
                 }
             }
         }
+
         protected override void OnTextChanged(EventArgs e)
         {
-            SetCurrentValue(DefinitionProperty, Text);
+            SetCurrentValue(DefinitionProperty, base.Text);
             OnPropertyChanged(nameof(Length));
             base.OnTextChanged(e);
         }
@@ -164,7 +165,18 @@ namespace ConvnetAvalonia.Common
             get { return base.Text.Length; }
         }
 
-        public static readonly StyledProperty<TextLocation> TextLocationProperty = AvaloniaProperty.Register<DefinitionEditor, TextLocation>(nameof(TextLocation), defaultValue: new TextLocation(), false, Avalonia.Data.BindingMode.TwoWay);
+        //public static readonly StyledProperty<TextLocation> TextLocationProperty = AvaloniaProperty.Register<DefinitionEditor, TextLocation>(nameof(TextLocation), defaultValue: new TextLocation(), false, Avalonia.Data.BindingMode.TwoWay);
+
+        public static readonly DirectProperty<DefinitionEditor, TextLocation> TextLocationProperty = AvaloniaProperty.RegisterDirect<DefinitionEditor, TextLocation>(
+           nameof(TextLocation),
+           o => o.TextLocation,
+           (o, v) =>
+           {
+               if (!o.TextLocation.Equals(v))
+                   o.TextLocation = v;
+           },
+           new TextLocation(1,1),
+           Avalonia.Data.BindingMode.TwoWay);
 
         public TextLocation TextLocation
         {
@@ -178,7 +190,6 @@ namespace ConvnetAvalonia.Common
                     TextArea.Caret.BringCaretToView();
                     TextArea.Caret.Show();
                     ScrollTo(value.Line, value.Column);
-                    TextLocation = value;
                     SetValue(TextLocationProperty, value);
                     OnPropertyChanged(nameof(TextLocation));
                 }
