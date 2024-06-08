@@ -80,7 +80,7 @@ namespace ConvnetAvalonia.PageViews
             {
                 var epvm = DataContext as EditPageViewModel;
                 if (epvm != null)
-                    epvm.Definition = ((DefinitionEditor)sender).Text;
+                    epvm.Definition = ((CodeEditor)sender).Text;
             }
         }
 
