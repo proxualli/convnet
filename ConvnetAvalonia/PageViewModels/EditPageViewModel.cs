@@ -193,10 +193,8 @@ namespace ConvnetAvalonia.PageViewModels
                 if (value != definitionStatus)
                 {
                     this.RaiseAndSetIfChanged(ref definitionStatus, value);
-                    var editing = Definition.ToLower();
-                    var active = Settings.Default.DefinitionActive.ToLower();
-                    CanSynchronize = definitionStatus && !editing.Equals(active) && Model != null && Model.TaskState == DNNTaskStates.Stopped;
-                    //this.RaisePropertyChanged(nameof(CanSynchronize));
+                    var sameDefinition = Definition.ToLower().Equals(Settings.Default.DefinitionActive.ToLower());
+                    CanSynchronize = definitionStatus && !sameDefinition && Model != null && Model.TaskState == DNNTaskStates.Stopped;
                 }
             }
         }
