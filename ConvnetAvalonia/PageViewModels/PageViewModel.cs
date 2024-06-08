@@ -165,10 +165,10 @@ namespace ConvnetAvalonia.PageViewModels
 
         private void EditPageVM_ModelChanged(object? sender, EventArgs e)
         {
-            if (Pages != null)
+            if (Pages != null && Pages.Count > 0)
             {
                 Model = Pages[(int)ViewModels.Edit].Model;
-                if (Model != null)
+                if (Model != null && Pages.Count == 3)
                 {
                     Model.TrainProgress += TrainProgress;
                     Model.TestProgress += TestProgress;

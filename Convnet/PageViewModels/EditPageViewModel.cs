@@ -647,7 +647,6 @@ namespace Convnet.PageViewModels
         //    }
         //}
 
-
         private void ScriptDialog()
         {
             if (dirty)
@@ -657,7 +656,7 @@ namespace Convnet.PageViewModels
 
                 try
                 {
-                    var processInfo = new ProcessStartInfo("dotnet", @"build Scripts.csproj -p:Platform=AnyCPU -p:nugetinteractive=true -c Release -fl -flp:logfile=msbuild.log;verbosity=quiet")
+                    var processInfo = new ProcessStartInfo("dotnet", @"build Scripts.csproj -p:Platform=AnyCPU -p:nugetinteractive=true -c " + Mode + " -fl -flp:logfile=msbuild.log;verbosity=quiet")
                     {
                         WorkingDirectory = ScriptsDirectory + @"Scripts\",
                         UseShellExecute = true,

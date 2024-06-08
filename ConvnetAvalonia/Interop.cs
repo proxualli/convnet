@@ -3426,7 +3426,7 @@ namespace Interop
 		public bool PersistOptimizer;
         public bool DisableLocking;
         public bool PlainFormat;
-        private bool disposedValue;
+        private bool disposedValue = false;
 
         public void OnElapsed(object? sender, System.Timers.ElapsedEventArgs e)
         {

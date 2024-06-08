@@ -1,11 +1,11 @@
-﻿using Avalonia.Controls;
+﻿using Avalonia;
+using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Threading;
 using AvaloniaEdit.Document;
 using ConvnetAvalonia.Common;
 using ConvnetAvalonia.Properties;
 using CustomMessageBox.Avalonia;
-using DialogHostAvalonia;
 using Interop;
 using ReactiveUI;
 using System;
@@ -13,13 +13,11 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Reactive.Linq;
 using System.Security.AccessControl;
 using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
-using FluentAvalonia;
-using FluentAvalonia.UI.Controls;
-using AvaloniaEdit;
 
 namespace ConvnetAvalonia.PageViewModels
 {
@@ -45,7 +43,7 @@ namespace ConvnetAvalonia.PageViewModels
         private string filePath = string.Empty;
         private bool wordWrap = false;
         private bool showLineNumbers = true;
-        private string script = Settings.Default.Script; // File.ReadAllText(ScriptsDirectory + @"Scripts\Program.cs");
+        private string script = Settings.Default.Script;
         private bool dirty = true;
         private static bool initAction = true;
         private readonly DispatcherTimer clickWaitTimer;
@@ -86,7 +84,7 @@ namespace ConvnetAvalonia.PageViewModels
             };
             ToolTip.SetTip(checkButton, "Check");
             checkButton.Click += CheckButtonClick;
-
+            
             var synchronizeButton = new Button
             {
                 Name = "ButtonSynchronize",
@@ -95,12 +93,12 @@ namespace ConvnetAvalonia.PageViewModels
             };
             ToolTip.SetTip(synchronizeButton, "Synchronize");
             synchronizeButton.Click += SynchronizeButtonClick;
-            //var binding = new Binding("CanSynchronize")
-            //{
-            //    Converter = new Converters.BooleanToVisibilityConverter(),
-            //    Source = this
-            //};
-            //BindingOperations.Apply(synchronizeButton, Button.IsVisibleProperty, binding);
+            var binding = new Avalonia.Data.Binding("CanSynchronize")
+            {
+                Converter = new Converters.BooleanToVisibilityConverter(),
+                Source = this
+            };
+            synchronizeButton.Bind(Button.IsVisibleProperty, binding);
 
             var scriptsButton = new Button
             {
@@ -110,8 +108,7 @@ namespace ConvnetAvalonia.PageViewModels
             };
             ToolTip.SetTip(scriptsButton, "Run Script");
             scriptsButton.Click += ScriptsButtonClick;
-            //scriptsButton.MouseDoubleClick += ScriptsButtonMouseDoubleClick;
-
+           
             var visualStudioButton = new Button
             {
                 Name = "ButtonVisualStudio",
@@ -252,172 +249,149 @@ namespace ConvnetAvalonia.PageViewModels
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Interoperability", "CA1416:Validate platform compatibility", Justification = "<Pending>")]
-        private void SynchronizeButtonClick(object? sender, RoutedEventArgs e)
+        private async void SynchronizeButtonClick(object? sender, RoutedEventArgs e)
         {
-            //Mouse.OverrideCursor = null;
             try
             {
-                var sameDef = Definition.ToLower(CultureInfo.CurrentCulture).Equals(Settings.Default.DefinitionActive.ToLower(CultureInfo.CurrentCulture));
                 var modelname = Definition.Split(Environment.NewLine.ToCharArray(), StringSplitOptions.RemoveEmptyEntries)[0].Trim().Replace("[", "").Replace("]", "").Trim();
+                var notSameModelName = modelname != Model?.Name || modelname != ModelName;
+                var sameDefinition = Definition.ToLower(CultureInfo.CurrentCulture).Equals(Settings.Default.DefinitionActive.ToLower(CultureInfo.CurrentCulture));
                 var pathDefinition = Path.Combine(DefinitionsDirectory, modelname + ".txt");
                 var pathStateDefinition = Path.Combine(StateDirectory, modelname + ".txt");
                 var pathWeightsDirectory = DefinitionsDirectory + modelname + @"\";
-                
                 var pathWeights = Settings.Default.PersistOptimizer ? Path.Combine(pathWeightsDirectory, Dataset.ToString().ToLower(CultureInfo.CurrentCulture) + "-" + Settings.Default.Optimizer.ToString().ToLower(CultureInfo.CurrentCulture) + @".bin") : Path.Combine(pathWeightsDirectory, Dataset.ToString().ToLower(CultureInfo.CurrentCulture) + ".bin");
-                
-                if (!sameDef || modelname != Model?.Name || modelname != ModelName)
+
+                if (notSameModelName || !sameDefinition)
                 {
-                    //Mouse.OverrideCursor = Cursors.Wait;
-
-                    var result = MessageBox.Show("File already exists", "File already exists! Overwrite?", MessageBoxButtons.YesNo, MessageBoxIcon.None);
-
-                    Task<MessageBoxResult> overwrite;
+                    bool ok = true;
                     if (File.Exists(Path.Combine(DefinitionsDirectory, modelname + ".txt")))
                     {
-                        // Mouse.OverrideCursor = null;
-                        overwrite = MessageBox.Show("File already exists! Overwrite?", "File already exists", MessageBoxButtons.YesNo, MessageBoxIcon.None, MessageBoxDefaultButton.Button2);
+                        var overwrite = await Dispatcher.UIThread.InvokeAsync(() => MessageBox.Show("File already exists! Overwrite?", "File already exists", MessageBoxButtons.YesNo, MessageBoxIcon.None, MessageBoxDefaultButton.Button2));
+                        ok = overwrite == MessageBoxResult.Yes;
+                    }
+                                       
+                    if (ok)
+                    {
+                        File.WriteAllText(pathDefinition, Definition);
+                        File.WriteAllText(pathStateDefinition, Definition);
 
-                        if (overwrite.Result == MessageBoxResult.Yes)
+                        if (!Directory.Exists(pathWeightsDirectory))
+                            Directory.CreateDirectory(pathWeightsDirectory);
+
+                        var reloadWeights = false;
+                        if (sameDefinition)
                         {
-                            //Mouse.OverrideCursor = Cursors.Wait;
-
-                            File.WriteAllText(pathDefinition, Definition);
-                            File.WriteAllText(pathStateDefinition, Definition);
-
-                            if (!Directory.Exists(pathWeightsDirectory))
-                                Directory.CreateDirectory(pathWeightsDirectory);
-
-                            //Task<MessageBoxResult> keepWeights;
-                            var reloadWeights = false;
-                            if (sameDef)
+                            var keepWeights = await Dispatcher.UIThread.InvokeAsync(() => MessageBox.Show("Keep model weights?", "Same Model", MessageBoxButtons.YesNo, MessageBoxIcon.None, MessageBoxDefaultButton.Button1));
+                            if (keepWeights == MessageBoxResult.Yes)
                             {
-                                //Mouse.OverrideCursor = null;
-                                var keepWeights = MessageBox.Show("Keep model weights?", "Same Model", MessageBoxButtons.YesNo, MessageBoxIcon.None, MessageBoxDefaultButton.Button1);
-
-                                if (keepWeights.Result == MessageBoxResult.Yes)
-                                {
-                                    Model.SaveWeights(pathWeights, Settings.Default.PersistOptimizer);
-                                    reloadWeights = true;
-                                }
+                                Model?.SaveWeights(pathWeights, Settings.Default.PersistOptimizer);
+                                reloadWeights = true;
                             }
+                        }
 
-                            try
+                        try
+                        {
+                            Model?.Dispose();
+                            Model = new DNNModel(Definition)
                             {
+                                BackgroundColor = Settings.Default.BackgroundColor,
+                                BlockSize = (UInt64)Settings.Default.PixelSize,
+                                TrainingStrategies = Settings.Default.TrainingStrategies
+                            };
+                            Model?.ClearTrainingStrategies();
+                            if (Settings.Default.TrainingStrategies != null)
+                                foreach (DNNTrainingStrategy strategy in Settings.Default.TrainingStrategies)
+                                    Model?.AddTrainingStrategy(strategy);
+                            Model?.SetFormat(Settings.Default.PlainFormat);
+                            Model?.SetOptimizer(Settings.Default.Optimizer);
+                            Model?.SetPersistOptimizer(Settings.Default.PersistOptimizer);
+                            Model?.SetUseTrainingStrategy(Settings.Default.UseTrainingStrategy);
+                            Model?.SetDisableLocking(Settings.Default.DisableLocking);
+                            Model?.SetShuffleCount((ulong)Math.Round(Settings.Default.Shuffle));
 
-                                Model?.Dispose();
-                                Model = new DNNModel(Definition)
-                                {
-                                    BackgroundColor = Settings.Default.BackgroundColor,
-                                    BlockSize = (UInt64)Settings.Default.PixelSize,
-                                    TrainingStrategies = Settings.Default.TrainingStrategies
-                                };
-                                Model.ClearTrainingStrategies();
-                                if (Settings.Default.TrainingStrategies != null)
-                                    foreach (DNNTrainingStrategy strategy in Settings.Default.TrainingStrategies)
-                                        Model.AddTrainingStrategy(strategy);
-                                Model.SetFormat(Settings.Default.PlainFormat);
-                                Model.SetOptimizer(Settings.Default.Optimizer);
-                                Model.SetPersistOptimizer(Settings.Default.PersistOptimizer);
-                                Model.SetUseTrainingStrategy(Settings.Default.UseTrainingStrategy);
-                                Model.SetDisableLocking(Settings.Default.DisableLocking);
-                                Model.SetShuffleCount((ulong)Math.Round(Settings.Default.Shuffle));
+                            if (reloadWeights)
+                                Model?.LoadWeights(pathWeights, Settings.Default.PersistOptimizer);
 
-                                if (reloadWeights)
-                                    Model.LoadWeights(pathWeights, Settings.Default.PersistOptimizer);
+                            ModelName = modelname;
+                            Settings.Default.ModelNameActive = Model?.Name;
+                            Settings.Default.DefinitionEditing = Definition;
+                            Settings.Default.DefinitionActive = Definition;
+                            Settings.Default.Save();
 
-                                ModelName = modelname;
-                                Settings.Default.ModelNameActive = Model.Name;
-                                Settings.Default.DefinitionEditing = Definition;
-                                Settings.Default.DefinitionActive = Definition;
-                                Settings.Default.Save();
+                            if (App.MainWindow != null)
+                                App.MainWindow.Title = Model?.Name + " - Convnet Explorer";
 
-                                if (App.MainWindow != null)
-                                    App.MainWindow.Title = Model.Name + " - Convnet Explorer";
+                            CanSynchronize = false;
 
-                                CanSynchronize = false;
+                            GC.Collect(GC.MaxGeneration);
+                            GC.WaitForFullGCComplete();
 
-                                GC.Collect(GC.MaxGeneration);
-                                GC.WaitForFullGCComplete();
-
-                                //Mouse.OverrideCursor = null;
-                                MessageBox.Show("Model synchronized", "Information", MessageBoxButtons.OK);
-                            }
-                            catch (Exception ex)
-                            {
-                                //Mouse.OverrideCursor = null;
-                                MessageBox.Show("An error occured during synchronization:\r\n" + ex.ToString(), "Synchronize Debug Information", MessageBoxButtons.OK);
-                            }
+                            Dispatcher.UIThread.Post(() => MessageBox.Show("Model synchronized", "Information", MessageBoxButtons.OK));
+                        }
+                        catch (Exception ex)
+                        {
+                            Dispatcher.UIThread.Post(() => MessageBox.Show("An error occured during synchronization:\r\n" + ex.ToString(), "Synchronize Debug Information", MessageBoxButtons.OK), DispatcherPriority.Normal);
                         }
                     }
                 }
                 else
                 {
-                    if (modelname != Model.Name || modelname != ModelName)
+                    if (notSameModelName)
                     {
-                        //Mouse.OverrideCursor = Cursors.Wait;
-
-                        var overwrite = false;
+                        bool ok = true;
                         if (File.Exists(Path.Combine(DefinitionsDirectory, modelname + ".txt")))
                         {
-                            //Mouse.OverrideCursor = null;
-                            var dialog = MessageBox.Show("File already exists! Overwrite?", "File already exists", MessageBoxButtons.YesNo, MessageBoxIcon.None, MessageBoxDefaultButton.Button2);
-                            overwrite = dialog.Result == MessageBoxResult.Yes;
+                            var overwrite = await Dispatcher.UIThread.InvokeAsync(() => MessageBox.Show("File already exists! Overwrite?", "File already exists", MessageBoxButtons.YesNo, MessageBoxIcon.None, MessageBoxDefaultButton.Button2));
+                            ok = overwrite == MessageBoxResult.Yes;
                         }
 
-                        if (overwrite)
+                        if (ok)
                         {
-                            //Mouse.OverrideCursor = Cursors.Wait;
-
                             File.WriteAllText(pathDefinition, Definition);
                             File.WriteAllText(pathStateDefinition, Definition);
 
                             if (!Directory.Exists(pathWeightsDirectory))
                                 Directory.CreateDirectory(pathWeightsDirectory);
 
-                                Task<MessageBoxResult> keepWeights;// = MessageBoxResult.No;
-
-                            //Mouse.OverrideCursor = null;
-                            keepWeights = MessageBox.Show("Keep model weights?", "Same Network", MessageBoxButtons.YesNo, MessageBoxIcon.None, MessageBoxDefaultButton.Button1);
-
-                            if (keepWeights.Result == MessageBoxResult.Yes)
-                                Model.SaveWeights(pathWeights, Settings.Default.PersistOptimizer);
+                            var keepWeights = await Dispatcher.UIThread.InvokeAsync(() => MessageBox.Show("Keep model weights?", "Same Model", MessageBoxButtons.YesNo, MessageBoxIcon.None, MessageBoxDefaultButton.Button1));
+                            if (keepWeights == MessageBoxResult.Yes)
+                                Model?.SaveWeights(pathWeights, Settings.Default.PersistOptimizer);
 
                             try
                             {
-                                Model.Dispose();
+                                Model?.Dispose();
                                 Model = new DNNModel(Definition);
-                                Model.SetFormat(Settings.Default.PlainFormat);
-                                Model.SetOptimizer(Settings.Default.Optimizer);
-                                Model.SetPersistOptimizer(Settings.Default.PersistOptimizer);
-                                Model.SetDisableLocking(Settings.Default.DisableLocking);
-                                Model.SetShuffleCount((ulong)Math.Round(Settings.Default.Shuffle));
+                                Model?.SetFormat(Settings.Default.PlainFormat);
+                                Model?.SetOptimizer(Settings.Default.Optimizer);
+                                Model?.SetPersistOptimizer(Settings.Default.PersistOptimizer);
+                                Model?.SetDisableLocking(Settings.Default.DisableLocking);
+                                Model?.SetShuffleCount((ulong)Math.Round(Settings.Default.Shuffle));
                                 Settings.Default.Save();
-                                Model.BlockSize = (UInt64)Settings.Default.PixelSize;
+                                if (Model != null)
+                                    Model.BlockSize = (UInt64)Settings.Default.PixelSize;
 
-                                if (keepWeights.Result == MessageBoxResult.Yes)
-                                    Model.LoadWeights(pathWeights, Settings.Default.PersistOptimizer);
+                                if (keepWeights == MessageBoxResult.Yes)
+                                    Model?.LoadWeights(pathWeights, Settings.Default.PersistOptimizer);
 
                                 ModelName = modelname;
-                                Settings.Default.ModelNameActive = Model.Name;
+                                Settings.Default.ModelNameActive = Model?.Name;
                                 Settings.Default.DefinitionEditing = Definition;
                                 Settings.Default.DefinitionActive = Definition;
                                 Settings.Default.Save();
 
                                 if (App.MainWindow != null)
-                                    App.MainWindow.Title = Model.Name + " - Convnet Explorer";
+                                    App.MainWindow.Title = Model?.Name + " - Convnet Explorer";
 
                                 CanSynchronize = false;
 
                                 GC.Collect(GC.MaxGeneration);
                                 GC.WaitForFullGCComplete();
 
-                                //Mouse.OverrideCursor = null;
-                                MessageBox.Show("Model synchronized", "Information", MessageBoxButtons.OK);
+                                Dispatcher.UIThread.Post(() => MessageBox.Show("Model synchronized", "Information", MessageBoxButtons.OK));
                             }
                             catch (Exception ex)
                             {
-                                //Mouse.OverrideCursor = null;
-                                MessageBox.Show("An error occured during synchronization:\r\n" + ex.ToString(), "Synchronize Debug Information", MessageBoxButtons.OK);
+                                Dispatcher.UIThread.Post(() => MessageBox.Show("An error occured during synchronization:\r\n" + ex.ToString(), "Synchronize Debug Information", MessageBoxButtons.OK));
                             }
                         }
                     }
@@ -428,8 +402,7 @@ namespace ConvnetAvalonia.PageViewModels
             }
             catch (Exception ex)
             {
-                //Mouse.OverrideCursor = null;
-                MessageBox.Show("An error occured during synchronization:\r\n" + ex.ToString(), "Synchronize Debug Information", MessageBoxButtons.OK);
+                Dispatcher.UIThread.Post(() => MessageBox.Show("An error occured during synchronization:\r\n" + ex.ToString(), "Synchronize Debug Information", MessageBoxButtons.OK));
             }
         }
 
@@ -438,7 +411,7 @@ namespace ConvnetAvalonia.PageViewModels
             clickWaitTimer.Stop();
 
             if (!initAction)
-                ScriptDialog();
+                Dispatcher.UIThread.Post(()=>ScriptDialog());
         }
 
         private void ScriptsButtonClick(object? sender, RoutedEventArgs e)
@@ -447,11 +420,6 @@ namespace ConvnetAvalonia.PageViewModels
             clickWaitTimer.Start();
         }
 
-        //private void ScriptsButtonMouseDoubleClick(object? sender, MouseButtonEventArgs e)
-        //{
-        //    e.Handled = true;
-        //}
-        
         private void VisualStudioButtonClick(object? sender, RoutedEventArgs e)
         {
             var vspath = @"C:\Program Files\Microsoft Visual Studio\2022\";
@@ -491,6 +459,7 @@ namespace ConvnetAvalonia.PageViewModels
 
         async Task ScriptsDialogAsync()
         {
+
             await ProcessAsyncHelper.RunAsync(new ProcessStartInfo(ScriptPath + @"Scripts.exe"), null);
 
             var fileName = ScriptPath + @"script.txt";
@@ -513,107 +482,19 @@ namespace ConvnetAvalonia.PageViewModels
             }
         }
 
-        //private void ScriptDialog()
-        //{
-        //    if (dirty)
-        //    {
-        //        Mouse.OverrideCursor = Cursors.Wait;
-        //        IsValid = false;
-
-        //        var processInfo = new ProcessStartInfo("dotnet")
-        //        {
-        //            WorkingDirectory = ScriptsDirectory + @"Scripts\",
-        //            UseShellExecute = true,
-        //            CreateNoWindow = true,
-        //            WindowStyle = ProcessWindowStyle.Hidden,
-        //            Verb = "runas"
-        //        };
-
-        //        using (var process = Process.Start(processInfo))
-        //        {
-        //            process.WaitForExit();
-        //        }
-
-        //        var projectFilePath = ScriptsDirectory + @"Scripts\Scripts.csproj";
-
-        //        Dictionary<string, string> GlobalProperty = new()
-        //        {
-        //            { "Configuration", Mode },
-        //            { "Platform", "AnyCPU" },
-        //        };
-
-        //        int repeat = 0;
-        //        FileInfo fileInfo;
-        //        BuildResult buildResult;
-        //        do
-        //        {
-        //            var pc = new ProjectCollection(GlobalProperty, null, ToolsetDefinitionLocations.Default);
-        //            BuildParameters bp = new(pc)
-        //            {
-        //                OnlyLogCriticalEvents = true,
-        //                DetailedSummary = true,
-        //                MaxNodeCount = 1
-        //            };
-
-        //            var tempFilePath = Path.GetTempFileName();
-        //            fileInfo = new FileInfo(tempFilePath)
-        //            {
-        //                Attributes = FileAttributes.Temporary
-        //            };
-        //            bp.Loggers = [new BasicFileLogger() { Parameters = fileInfo.FullName }];
-        //            bp.Loggers.FirstOrDefault().Verbosity = LoggerVerbosity.Diagnostic;
-
-        //            var buildRequest = new BuildRequestData(projectFilePath, GlobalProperty, null, ["Build"], null);
-        //            buildResult = BuildManager.DefaultBuildManager.Build(bp, buildRequest);
-        //            BuildManager.DefaultBuildManager.ResetCaches();
-        //            BuildManager.DefaultBuildManager.ShutdownAllNodes();
-
-        //            pc.UnloadAllProjects();
-        //            pc.UnregisterAllLoggers();
-        //            pc.Dispose();
-        //            BuildManager.DefaultBuildManager.Dispose();
-
-        //            repeat++;
-        //        }
-        //        while (buildResult.OverallResult != BuildResultCode.Success && repeat <= 1);
-
-        //        Mouse.OverrideCursor = null;
-        //        IsValid = true;
-
-        //        if (buildResult.OverallResult == BuildResultCode.Success)
-        //            dirty = false;
-        //        else
-        //        {
-        //            Xceed.Wpf.Toolkit.MessageBox.Show(File.ReadAllText(fileInfo.FullName), "Compiler Result", MessageBoxButton.OK);
-        //            fileInfo.Delete();
-        //        }
-        //    }
-
-        //    try
-        //    {
-        //        if (!dirty)
-        //        {
-        //            File.Delete(ScriptPath + @"ScriptsDialog.deps.json");
-        //            var task = ScriptsDialogAsync();
-        //        }
-        //    }
-        //    catch (Exception exception)
-        //    {
-        //        Xceed.Wpf.Toolkit.MessageBox.Show(exception.Message, "Load Assembly", MessageBoxButton.OK);
-        //    }
-        //}
-
-
         private void ScriptDialog()
         {
             if (dirty)
             {
-                //Mouse.OverrideCursor = Cursors.Wait;
                 IsValid = false;
 
                 try
                 {
-                    var processInfo = new ProcessStartInfo("dotnet", @"build Scripts.csproj -p:Platform=AnyCPU -p:nugetinteractive=true -c Release -fl -flp:logfile=msbuild.log;verbosity=quiet")
+                    var csproj = "<Project Sdk=\"Microsoft.NET.Sdk\">\r\n\r\n  <PropertyGroup>\r\n    <OutputType>Exe</OutputType>\r\n    <TargetFramework>net8.0</TargetFramework>\r\n    <ImplicitUsings>enable</ImplicitUsings>\r\n    <Nullable>enable</Nullable>\r\n  </PropertyGroup>\r\n\r\n</Project>";
+                    File.WriteAllText(ScriptsDirectory + @"Scripts\Scripts.csproj", csproj);
+                    File.WriteAllText(ScriptsDirectory + @"Scripts\Program.cs", Script);
+
+                    var processInfo = new ProcessStartInfo("dotnet", @"build Scripts.csproj -p:Platform=AnyCPU -p:nugetinteractive=true -c " + Mode + " -fl -flp:logfile=msbuild.log;verbosity=quiet")
                     {
                         WorkingDirectory = ScriptsDirectory + @"Scripts\",
                         UseShellExecute = true,
@@ -631,20 +512,16 @@ namespace ConvnetAvalonia.PageViewModels
 
                     var log = File.ReadAllText(ScriptsDirectory + @"Scripts\msbuild.log");
 
-                    //Mouse.OverrideCursor = null;
+                    
                     IsValid = true;
-
                     dirty = log.Length > 0;
-
                     if (dirty)
-                        MessageBox.Show(log, "Build error", MessageBoxButtons.OK);
+                        Dispatcher.UIThread.Post(() => MessageBox.Show(log, "Build error", MessageBoxButtons.OK));
                 }
                 catch (Exception ex)
                 {
-                    //Mouse.OverrideCursor = null;
                     IsValid = true;
-
-                    MessageBox.Show(ex.Message, "Build failed", MessageBoxButtons.OK);
+                    Dispatcher.UIThread.Post(() => MessageBox.Show(ex.Message, "Build failed", MessageBoxButtons.OK));
                 }
             }
 
@@ -653,15 +530,13 @@ namespace ConvnetAvalonia.PageViewModels
                 if (!dirty)
                 {
                     File.Delete(ScriptPath + @"Scripts.deps.json");
-                    var task = ScriptsDialogAsync();
+                    Dispatcher.UIThread.Post(async () => await ScriptsDialogAsync());
                 }
             }
             catch (Exception exception)
             {
-                //Mouse.OverrideCursor = null;
                 IsValid = true;
-
-                MessageBox.Show(exception.Message, "Load Assembly", MessageBoxButtons.OK);
+                Dispatcher.UIThread.Post(() => MessageBox.Show(exception.Message, "Load Assembly", MessageBoxButtons.OK));
             }
         }
 
@@ -678,9 +553,8 @@ namespace ConvnetAvalonia.PageViewModels
                 {
                     TextLocation = new TextLocation(1, 1);
                     TextLocation = new TextLocation((int)msg.Row, (int)msg.Column);
-                    
-                    MessageBox.Show(msg.Message, "Check", MessageBoxButtons.OK, icon: MessageBoxIcon.Information);
-                }
+                    Dispatcher.UIThread.Invoke(() => MessageBox.Show(msg.Message, "Check", MessageBoxButtons.OK, icon: MessageBoxIcon.Information));
+                };
 
                 return !msg.Error;
             }
