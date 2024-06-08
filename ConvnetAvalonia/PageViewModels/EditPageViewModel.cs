@@ -190,11 +190,14 @@ namespace ConvnetAvalonia.PageViewModels
             get => definitionStatus;
             set
             {
-                this.RaiseAndSetIfChanged(ref definitionStatus, value);
-
-                string editing = Definition.ToLower();
-                string active = Settings.Default.DefinitionActive.ToLower();
-                CanSynchronize = definitionStatus && Model != null && Model.TaskState == DNNTaskStates.Stopped && !editing.Equals(active);
+                if (value != definitionStatus)
+                {
+                    this.RaiseAndSetIfChanged(ref definitionStatus, value);
+                    var editing = Definition.ToLower();
+                    var active = Settings.Default.DefinitionActive.ToLower();
+                    CanSynchronize = definitionStatus && !editing.Equals(active) && Model != null && Model.TaskState == DNNTaskStates.Stopped;
+                    //this.RaisePropertyChanged(nameof(CanSynchronize));
+                }
             }
         }
 
@@ -411,7 +414,7 @@ namespace ConvnetAvalonia.PageViewModels
             clickWaitTimer.Stop();
 
             if (!initAction)
-                Dispatcher.UIThread.Post(()=>ScriptDialog());
+                Dispatcher.UIThread.Post(() => ScriptDialog());
         }
 
         private void ScriptsButtonClick(object? sender, RoutedEventArgs e)
@@ -459,7 +462,6 @@ namespace ConvnetAvalonia.PageViewModels
 
         async Task ScriptsDialogAsync()
         {
-
             await ProcessAsyncHelper.RunAsync(new ProcessStartInfo(ScriptPath + @"Scripts.exe"), null);
 
             var fileName = ScriptPath + @"script.txt";
@@ -477,6 +479,7 @@ namespace ConvnetAvalonia.PageViewModels
 
                 Definition = File.ReadAllText(fileName);
                 ModelName = Definition.Split(separator, StringSplitOptions.RemoveEmptyEntries)[0].Replace("[", "").Replace("]", "");
+                DefinitionStatus = Dispatcher.UIThread.Invoke<bool>(() => CheckDefinition());
 
                 fileInfo.Delete();
             }
