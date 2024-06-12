@@ -190,6 +190,10 @@
     </None>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Dialogs\" />
+  </ItemGroup>
+
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
     <Exec Command="xcopy /Y $(SolutionDir)$(PlatformName)\$(ConfigurationName)\dnn.dll $(TargetDir)" />
     <Exec Command="xcopy /Y $(SolutionDir)$(PlatformName)\$(ConfigurationName)\dnn.dll $(TargetDir)" />

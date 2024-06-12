@@ -10,6 +10,8 @@ namespace ConvnetAvalonia.PageViewModels
 {
     public class MainWindowViewModel : ReactiveObject
     {
+        public PageViewModel? PageVM;
+
         //public ReactiveCommand<Unit, Unit> CutCommand { get; }
 
         //private bool canCut = true;

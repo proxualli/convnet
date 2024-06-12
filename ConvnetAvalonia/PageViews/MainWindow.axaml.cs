@@ -3,6 +3,7 @@ using Avalonia.Input;
 using AvaloniaEdit;
 using ConvnetAvalonia.PageViewModels;
 using ConvnetAvalonia.Properties;
+using ConvnetAvalonia.Common;
 using CustomMessageBox.Avalonia;
 using Interop;
 using ReactiveUI;
@@ -45,32 +46,7 @@ namespace ConvnetAvalonia
             get => ApplicationCommands.Cut.CanExecute(null, null);
         }
 
-        public static void CopyDir(string sourceDirectory, string targetDirectory)
-        {
-            var diSource = new DirectoryInfo(sourceDirectory);
-            var diTarget = new DirectoryInfo(targetDirectory);
-
-            CopyAll(diSource, diTarget);
-        }
-
-        public static void CopyAll(DirectoryInfo source, DirectoryInfo target)
-        {
-            Directory.CreateDirectory(target.FullName);
-
-            // Copy each file into the new directory.
-            foreach (var fi in source.GetFiles())
-            {
-                //Console.WriteLine(@"Copying {0}\{1}", target.FullName, fi.Name);
-                fi.CopyTo(Path.Combine(target.FullName, fi.Name), true);
-            }
-
-            // Copy each subdirectory using recursion.
-            foreach (var diSourceSubDir in source.GetDirectories())
-            {
-                DirectoryInfo nextTargetSubDir = target.CreateSubdirectory(diSourceSubDir.Name);
-                CopyAll(diSourceSubDir, nextTargetSubDir);
-            }
-        }
+        
 
         private bool PersistLog(string path)
         {
@@ -184,16 +160,7 @@ namespace ConvnetAvalonia
             return false;
         }
 
-        public static KeyModifiers GetPlatformCommandKey()
-        {
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
-            {
-                return KeyModifiers.Meta;
-            }
-
-            return KeyModifiers.Control;
-        }
-
+       
         public MainWindow()
         {
             InitializeComponent();
@@ -261,7 +228,7 @@ namespace ConvnetAvalonia
             if (!Directory.Exists(ScriptsDirectory))
             {
                 Directory.CreateDirectory(ScriptsDirectory);
-                CopyDir(ApplicationPath.Replace(@"Convnet\bin\x64\" + Mode + @"\" + Framework + @"\", "") + @"Scripts\", ScriptsDirectory);
+                ApplicationHelper.CopyDir(ApplicationPath.Replace(@"Convnet\bin\x64\" + Mode + @"\" + Framework + @"\", "") + @"Scripts\", ScriptsDirectory);
             }
                      
             var fileName = Path.Combine(StateDirectory, Settings.Default.ModelNameActive + ".txt");

@@ -29,7 +29,6 @@ namespace ConvnetAvalonia.PageViewModels
 #else
         const string Mode = "Release";
 #endif
-
         public event EventHandler? Open;
         public event EventHandler? Save;
 
@@ -51,7 +50,7 @@ namespace ConvnetAvalonia.PageViewModels
         public EditPageViewModel(DNNModel model) : base(model)
         {
             initAction = true;
-            clickWaitTimer = new DispatcherTimer(new TimeSpan(0, 0, 0, 0, 500), DispatcherPriority.Background, MouseWaitTimer_Tick);
+            clickWaitTimer = new DispatcherTimer(new TimeSpan(0, 0, 0, 0, 50), DispatcherPriority.Background, MouseWaitTimer_Tick);
         
             AddCommandButtons();
         }
@@ -477,7 +476,7 @@ namespace ConvnetAvalonia.PageViewModels
 
                 Definition = File.ReadAllText(fileName);
                 ModelName = Definition.Split(separator, StringSplitOptions.RemoveEmptyEntries)[0].Replace("[", "").Replace("]", "");
-                DefinitionStatus = Dispatcher.UIThread.Invoke<bool>(() => CheckDefinition());
+                DefinitionStatus = Dispatcher.UIThread.Invoke(() => CheckDefinition());
 
                 fileInfo.Delete();
             }

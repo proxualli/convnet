@@ -27,7 +27,13 @@
 
   <DockPanel x:Name="dockPanelMain" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
     <Menu DockPanel.Dock="Top" x:Name="menuMain">
-      <MenuItem Header="_File" />
+      <MenuItem Header="_File">
+        <MenuItem Header="_Open..." InputGesture="Ctrl+O"  />
+        <MenuItem Header="Save"/>
+        <MenuItem Header="Save As..."/>
+        <Separator/>
+        <MenuItem Header="Exit..."/>
+      </MenuItem>
       <MenuItem Header="_Edit">
         <MenuItem Header="_Cut"  />
         <MenuItem Header="Co_py"/>

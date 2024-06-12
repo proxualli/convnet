@@ -254,9 +254,7 @@ namespace ConvnetAvalonia.Common
                 SetValue(FilePathProperty, value); 
                 OnPropertyChanged(nameof(FilePath));
             }
-        }
-        
-       
+        }      
 
         #region INotifyPropertyChanged Members
 
