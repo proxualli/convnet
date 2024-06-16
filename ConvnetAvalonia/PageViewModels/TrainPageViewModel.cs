@@ -1710,7 +1710,7 @@ namespace ConvnetAvalonia.PageViewModels
                 Title = "Load layer weights",
                 DefaultExt = ".bin",
                 FilterIndex = 1,
-                InitialDirectory = DefinitionsDirectory + Model.Name + @"\"
+                InitialDirectory = DefinitionsDirectory + Model.Name + Path.DirectorySeparatorChar
             };
 
             bool stop = false;
