@@ -201,6 +201,7 @@ namespace Convnet.Dialogs
                     }
                     break;
 
+                case DNNOptimizers.AdaBelief:
                 case DNNOptimizers.AdaBound:
                 case DNNOptimizers.AdaDelta:
                 case DNNOptimizers.Adam:  
@@ -253,6 +254,7 @@ namespace Convnet.Dialogs
                     }
                     break;
 
+                case DNNOptimizers.AdaBelief:
                 case DNNOptimizers.AdaBound:
                 case DNNOptimizers.AdaBoundW:
                 case DNNOptimizers.Adam:
@@ -270,6 +272,7 @@ namespace Convnet.Dialogs
 
             switch (optimizer)
             {
+                case DNNOptimizers.AdaBelief:
                 case DNNOptimizers.AdaDelta:
                 case DNNOptimizers.AdaGrad:
                 case DNNOptimizers.Adam:

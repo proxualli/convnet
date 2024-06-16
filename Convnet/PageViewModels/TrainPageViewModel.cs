@@ -221,6 +221,7 @@ namespace Convnet.PageViewModels
                                 sb.AppendFormat(" Sample:\t\t{0:G}\n Cycle:\t\t\t{1}/{2}\n Epoch:\t\t\t{3}/{4}\n Batch Size:\t\t{5:G}\n Rate:\t\t\t{6:0.#######}\n Momentum:\t\t{7:0.#######}\n Beta2:\t\t\t{8:0.#######}\n L2 Penalty:\t\t{9:0.#######}\n Dropout:\t\t" + (Dropout > 0 ? Dropout.ToString() + "\n" : "No\n") + " Cutout:\t\t" + (Cutout > 0 ? Cutout.ToString() + "\n" : "No\n") + " Auto Augment:\t\t" + (AutoAugment > 0 ? AutoAugment.ToString() + "\n" : "No\n") + (HorizontalFlip ? " Horizontal Flip:\tYes\n" : " Horizontal Flip:\tNo\n") + (VerticalFlip ? " Vertical Flip:\tYes\n" : " Vertical Flip:\tNo\n") + " Color Cast:\t\t" + (ColorCast > 0u ? ColorCast.ToString() + "\n" : "No\n") + " Distortion:\t\t" + (Model.Distortion > 0 ? Distortion.ToString() + "\n" : "No\n") + " Loss:\t\t\t{10:N7}\n Errors:\t\t{11:G}\n Error:\t\t\t{12:N2} %\n Accuracy:\t\t{13:N2} %", SampleIndex, Cycle, TotalCycles, Epoch, TotalEpochs, Model.BatchSize, Rate, Momentum, Beta2, L2Penalty, AvgTrainLoss, TrainErrors, TrainErrorPercentage, 100 - TrainErrorPercentage);
                                 break;
 
+                            case DNNOptimizers.AdaBelief:
                             case DNNOptimizers.AdaBound:
                             case DNNOptimizers.Adam:
                             case DNNOptimizers.Adamax:

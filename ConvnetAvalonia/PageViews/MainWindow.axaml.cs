@@ -27,11 +27,11 @@ namespace ConvnetAvalonia
 #else
         const string Mode = "Release";
 #endif
-        public static string ApplicationPath { get; } = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + @"\";
-        public static string StorageDirectory { get; } = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\convnet\";
-        public static string StateDirectory { get; } = StorageDirectory + @"state\";
-        public static string DefinitionsDirectory { get; } = StorageDirectory + @"definitions\";
-        public static string ScriptsDirectory { get; } = StorageDirectory + @"scripts\";
+        public static string ApplicationPath { get; } = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + Path.DirectorySeparatorChar;
+        public static string StorageDirectory { get; } = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + Path.DirectorySeparatorChar + "convnet" + Path.DirectorySeparatorChar;
+        public static string StateDirectory { get; } = StorageDirectory + "state" + Path.DirectorySeparatorChar;
+        public static string DefinitionsDirectory { get; } = StorageDirectory + "definitions" + Path.DirectorySeparatorChar;
+        public static string ScriptsDirectory { get; } = StorageDirectory + "scripts" + Path.DirectorySeparatorChar;
         
         public PageViewModel? PageVM;
 
@@ -228,24 +228,24 @@ namespace ConvnetAvalonia
             if (!Directory.Exists(ScriptsDirectory))
             {
                 Directory.CreateDirectory(ScriptsDirectory);
-                ApplicationHelper.CopyDir(ApplicationPath.Replace(@"Convnet\bin\x64\" + Mode + @"\" + Framework + @"\", "") + @"Scripts\", ScriptsDirectory);
+                ApplicationHelper.CopyDir(ApplicationPath.Replace(@"Convnet" + Path.DirectorySeparatorChar + "bin" + Path.DirectorySeparatorChar + "x64" + Path.DirectorySeparatorChar + Mode + Path.DirectorySeparatorChar + Framework + Path.DirectorySeparatorChar, "") + @"Scripts" + Path.DirectorySeparatorChar, ScriptsDirectory);
             }
                      
             var fileName = Path.Combine(StateDirectory, Settings.Default.ModelNameActive + ".txt");
             var backupModelName = "resnet-3-2-6-channelzeropad-relu";
 
             if (!File.Exists(Path.Combine(StateDirectory, backupModelName + ".txt")))
-                File.Copy(ApplicationPath + @"Resources\state\" + backupModelName + ".txt", StateDirectory + backupModelName + ".txt", true);
+                File.Copy(ApplicationPath + @"Resources" + Path.DirectorySeparatorChar+"state" + Path.DirectorySeparatorChar + backupModelName + ".txt", StateDirectory + backupModelName + ".txt", true);
 
-            if (!File.Exists(fileName) || !File.ReadLines(Path.Combine(StateDirectory, backupModelName + ".txt")).SequenceEqual(File.ReadLines(ApplicationPath + @"Resources\state\" + backupModelName + ".txt")))
+            if (!File.Exists(fileName) || !File.ReadLines(Path.Combine(StateDirectory, backupModelName + ".txt")).SequenceEqual(File.ReadLines(ApplicationPath + @"Resources" + Path.DirectorySeparatorChar + "state" + Path.DirectorySeparatorChar + backupModelName + ".txt")))
             {
-                Directory.CreateDirectory(DefinitionsDirectory + backupModelName + @"\");
-                File.Copy(ApplicationPath + @"Resources\state\" + backupModelName + ".txt", DefinitionsDirectory + backupModelName + ".txt", true);
+                Directory.CreateDirectory(DefinitionsDirectory + backupModelName + Path.DirectorySeparatorChar);
+                File.Copy(ApplicationPath + @"Resources" + Path.DirectorySeparatorChar + "state" + Path.DirectorySeparatorChar + backupModelName + ".txt", DefinitionsDirectory + backupModelName + ".txt", true);
 
                 fileName = Path.Combine(StateDirectory, backupModelName + ".txt");
                 Settings.Default.ModelNameActive = backupModelName;
                 Settings.Default.DefinitionActive = File.ReadAllText(fileName);
-                Settings.Default.Optimizer = DNNOptimizers.NAG;
+                Settings.Default.Optimizer = (int)DNNOptimizers.NAG;
                 Settings.Default.Save();
             }
 
@@ -267,7 +267,7 @@ namespace ConvnetAvalonia
                             foreach (DNNTrainingStrategy strategy in Settings.Default.TrainingStrategies)
                                 model.AddTrainingStrategy(strategy);
                         model.SetFormat(Settings.Default.PlainFormat);
-                        model.SetOptimizer(Settings.Default.Optimizer);
+                        model.SetOptimizer((DNNOptimizers)Settings.Default.Optimizer);
                         model.SetPersistOptimizer(Settings.Default.PersistOptimizer);
                         model.SetUseTrainingStrategy(Settings.Default.UseTrainingStrategy);
                         model.SetDisableLocking(Settings.Default.DisableLocking);
@@ -326,11 +326,11 @@ namespace ConvnetAvalonia
                 else
                 {
                     // try backup model
-                    File.Copy(ApplicationPath + @"Resources\state\" + backupModelName + ".txt", StateDirectory + backupModelName + ".txt", true);
+                    File.Copy(ApplicationPath + @"Resources" + Path.DirectorySeparatorChar + "state" + Path.DirectorySeparatorChar + backupModelName + ".txt", StateDirectory + backupModelName + ".txt", true);
                     fileName = Path.Combine(StateDirectory, backupModelName + ".txt");
                     Settings.Default.ModelNameActive = backupModelName;
                     Settings.Default.DefinitionActive = File.ReadAllText(fileName);
-                    Settings.Default.Optimizer = DNNOptimizers.NAG;
+                    Settings.Default.Optimizer = (int)DNNOptimizers.NAG;
                     Settings.Default.Save();
 
                     model = new DNNModel(Settings.Default.DefinitionActive);
@@ -353,7 +353,7 @@ namespace ConvnetAvalonia
                             foreach (DNNTrainingStrategy strategy in Settings.Default.TrainingStrategies)
                                 model.AddTrainingStrategy(strategy);
                         model.SetFormat(Settings.Default.PlainFormat);
-                        model.SetOptimizer(Settings.Default.Optimizer);
+                        model.SetOptimizer((DNNOptimizers)Settings.Default.Optimizer);
                         model.SetPersistOptimizer(Settings.Default.PersistOptimizer);
                         model.SetUseTrainingStrategy(Settings.Default.UseTrainingStrategy);
                         model.SetDisableLocking(Settings.Default.DisableLocking);

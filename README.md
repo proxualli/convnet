@@ -75,6 +75,7 @@
 * SmoothHinge
 
 ### Optimizers
+* [AdaBelief](https://arxiv.org/pdf/2010.07468)
 * [AdaBound](https://arxiv.org/abs/1902.09843)
 * [AdaBoundW](https://arxiv.org/abs/1902.09843)
 * [AdaDelta](https://arxiv.org/pdf/1609.04747.pdf)

@@ -303,7 +303,7 @@ namespace ConvnetAvalonia.PageViewModels
                                 foreach (DNNTrainingStrategy strategy in Settings.Default.TrainingStrategies)
                                     Model?.AddTrainingStrategy(strategy);
                             Model?.SetFormat(Settings.Default.PlainFormat);
-                            Model?.SetOptimizer(Settings.Default.Optimizer);
+                            Model?.SetOptimizer((DNNOptimizers)Settings.Default.Optimizer);
                             Model?.SetPersistOptimizer(Settings.Default.PersistOptimizer);
                             Model?.SetUseTrainingStrategy(Settings.Default.UseTrainingStrategy);
                             Model?.SetDisableLocking(Settings.Default.DisableLocking);
@@ -362,7 +362,7 @@ namespace ConvnetAvalonia.PageViewModels
                                 Model?.Dispose();
                                 Model = new DNNModel(Definition);
                                 Model?.SetFormat(Settings.Default.PlainFormat);
-                                Model?.SetOptimizer(Settings.Default.Optimizer);
+                                Model?.SetOptimizer((DNNOptimizers)Settings.Default.Optimizer);
                                 Model?.SetPersistOptimizer(Settings.Default.PersistOptimizer);
                                 Model?.SetDisableLocking(Settings.Default.DisableLocking);
                                 Model?.SetShuffleCount((ulong)Math.Round(Settings.Default.Shuffle));

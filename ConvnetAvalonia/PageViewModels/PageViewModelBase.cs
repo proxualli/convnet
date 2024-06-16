@@ -18,19 +18,19 @@ namespace ConvnetAvalonia.PageViewModels
 {
     public abstract class PageViewModelBase : ReactiveObject
     {
-        const string Framework = @"\net8.0\";
+        const string Framework = @"net8.0";
 #if DEBUG
         const string Mode = "Debug";
 #else
         const string Mode = @"Release";
 #endif
 
-        public static string ApplicationPath { get; } = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + @"\";
-        public static string StorageDirectory { get; } = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\convnet\";
-        public static string StateDirectory { get; } = StorageDirectory + @"state\";
-        public static string DefinitionsDirectory { get; } = StorageDirectory + @"definitions\";
-        public static string ScriptsDirectory { get; } = StorageDirectory + @"scripts\";
-        public static string ScriptPath { get; } = ScriptsDirectory + @"Scripts\bin\" + Mode + Framework;
+        public static string ApplicationPath { get; } = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + Path.DirectorySeparatorChar;
+        public static string StorageDirectory { get; } = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + Path.DirectorySeparatorChar + "convnet" + Path.DirectorySeparatorChar;
+        public static string StateDirectory { get; } = StorageDirectory + "state" + Path.DirectorySeparatorChar;
+        public static string DefinitionsDirectory { get; } = StorageDirectory + "definitions" + Path.DirectorySeparatorChar;
+        public static string ScriptsDirectory { get; } = StorageDirectory + "scripts" + Path.DirectorySeparatorChar;
+        public static string ScriptPath { get; } = ScriptsDirectory + "Scripts" + Path.DirectorySeparatorChar + "bin" + Path.DirectorySeparatorChar + Mode + Path.DirectorySeparatorChar + Framework + Path.DirectorySeparatorChar;
         public static IEnumerable<DNNOptimizers> GetOptimizers => Enum.GetValues(typeof(DNNOptimizers)).Cast<DNNOptimizers>();
         public static IEnumerable<DNNInterpolations> GetInterpolations => Enum.GetValues(typeof(DNNInterpolations)).Cast<DNNInterpolations>();
 

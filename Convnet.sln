@@ -3,6 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.1.32407.343
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Convnet", "Convnet\Convnet.csproj", "{45AAE32B-0D5D-4494-A0A7-C170F8DBCA8B}"
+	ProjectSection(ProjectDependencies) = postProject
+		{78F1BB71-C716-48F5-9429-4537F1AE6319} = {78F1BB71-C716-48F5-9429-4537F1AE6319}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "dnn", "dnn\dnn.vcxproj", "{78F1BB71-C716-48F5-9429-4537F1AE6319}"
 EndProject
@@ -257,7 +260,6 @@ Global
 		{42A112E4-E623-4F72-BDFA-1CE5AFE7DD9C}.Release|x64.Build.0 = Release|x64
 		{40182BB0-5B98-4929-8E16-A55BE0FB5CF3}.Debug|Any CPU.ActiveCfg = Debug|x64
 		{40182BB0-5B98-4929-8E16-A55BE0FB5CF3}.Debug|x64.ActiveCfg = Debug|x64
-		{40182BB0-5B98-4929-8E16-A55BE0FB5CF3}.Debug|x64.Build.0 = Debug|x64
 		{40182BB0-5B98-4929-8E16-A55BE0FB5CF3}.Release|Any CPU.ActiveCfg = Release|x64
 		{40182BB0-5B98-4929-8E16-A55BE0FB5CF3}.Release|x64.ActiveCfg = Release|x64
 		{B6F8452A-4C8F-4356-8C0E-16C57B76CAF6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU

@@ -50,9 +50,9 @@ namespace ConvnetAvalonia.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("9")]
-        public Interop.DNNOptimizers Optimizer {
+        public int Optimizer {
             get {
-                return ((Interop.DNNOptimizers)(this["Optimizer"]));
+                return ((int)(this["Optimizer"]));
             }
             set {
                 this["Optimizer"] = value;
@@ -1509,25 +1509,28 @@ namespace ConvnetAvalonia.Properties {
             ".Dataset, p.Classes, \"CategoricalCrossEntropy\", 0.125f);\r\n                    }\r" +
             "\n                    break;\r\n            }\r\n\r\n            return net;\r\n        }" +
             "\r\n\r\n\r\n        const string Framework = \"net8.0\";\r\n#if DEBUG\r\n        const strin" +
-            "g Mode = \"Debug\";\r\n#else\r\n        const string Mode = \"Release\";\r\n#endif\r\n      " +
-            "  public static string StorageDirectory { get; } = Environment.GetFolderPath(Env" +
-            "ironment.SpecialFolder.MyDocuments) + @\"\\convnet\\\";\r\n        public static strin" +
-            "g ScriptsDirectory { get; } = StorageDirectory + @\"scripts\\\";\r\n        public st" +
-            "atic string ScriptPath { get; } = ScriptsDirectory + @\"Scripts\\bin\\\" + Mode + @\"" +
-            "\\\" + Framework + @\"\\\";\r\n\r\n        static void Main() \r\n        {\r\n            va" +
-            "r param = new ScriptParameters(Scripts.shufflenetv2, Datasets.cifar10, 32, 32, 4" +
-            ", 4, false, true, Fillers.HeNormal, FillerModes.In, 1f, 0.05f, 1f, 1f, false, Fi" +
-            "llers.Constant, FillerModes.In, 1f, 0f, 1f, 1f, 0.995f, 0.0001f, false, 0f, 0f, " +
-            "3, 4, 12, 12, false, 0.0f, 0.0f, false, true, Activations.HardSwish, 1, 1, 0.0f," +
-            " false)\r\n            {\r\n                ShuffleNet = [new(7, 3, 1, 2, false) , n" +
-            "ew(7, 3, 1, 2, true), new(7, 3, 1, 2, true)] \r\n            };\r\n                 " +
-            "       \r\n            var script = Generate(param);\r\n            var fileInfo = n" +
-            "ew FileInfo(ScriptPath + @\"script.txt\");\r\n            if (fileInfo.Directory != " +
-            "null)\r\n            {\r\n                if (!fileInfo.Directory.Exists)\r\n         " +
-            "           fileInfo.Directory.Create();\r\n\r\n                var streamWriter = fi" +
-            "leInfo.CreateText();\r\n                streamWriter.AutoFlush = true;\r\n          " +
-            "      streamWriter.Write(script);\r\n                streamWriter.Close();\r\n      " +
-            "          streamWriter.Dispose();\r\n            }\r\n        }\r\n    }\r\n}\r\n")]
+            "g Mode = \"Debug\";\r\n#else\r\n        const string Mode = \"Release\";\r\n#endif\r\n\r\n    " +
+            "    public static string StorageDirectory { get; } = Environment.GetFolderPath(E" +
+            "nvironment.SpecialFolder.MyDocuments) + Path.DirectorySeparatorChar + @\"convnet\"" +
+            " + Path.DirectorySeparatorChar;\r\n        public static string ScriptsDirectory {" +
+            " get; } = StorageDirectory + @\"scripts\" + Path.DirectorySeparatorChar;\r\n        " +
+            "public static string ScriptPath { get; } = ScriptsDirectory + @\"Scripts\" + Path." +
+            "DirectorySeparatorChar + @\"bin\" + Path.DirectorySeparatorChar + Mode +  Path.Dir" +
+            "ectorySeparatorChar + Framework + Path.DirectorySeparatorChar;\r\n\r\n        static" +
+            " void Main() \r\n        {\r\n            var param = new ScriptParameters(Scripts.s" +
+            "hufflenetv2, Datasets.cifar10, 32, 32, 4, 4, false, true, Fillers.HeNormal, Fill" +
+            "erModes.In, 1f, 0.05f, 1f, 1f, false, Fillers.Constant, FillerModes.In, 1f, 0f, " +
+            "1f, 1f, 0.995f, 0.0001f, false, 0f, 0f, 3, 4, 12, 12, false, 0.0f, 0.0f, false, " +
+            "true, Activations.HardSwish, 1, 1, 0.0f, false)\r\n            {\r\n                " +
+            "ShuffleNet = [new(7, 3, 1, 2, false) , new(7, 3, 1, 2, true), new(7, 3, 1, 2, tr" +
+            "ue)] \r\n            };\r\n                        \r\n            var script = Genera" +
+            "te(param);\r\n            var fileInfo = new FileInfo(ScriptPath + @\"script.txt\");" +
+            "\r\n            if (fileInfo.Directory != null)\r\n            {\r\n                if" +
+            " (!fileInfo.Directory.Exists)\r\n                    fileInfo.Directory.Create();\r" +
+            "\n\r\n                var streamWriter = fileInfo.CreateText();\r\n                st" +
+            "reamWriter.AutoFlush = true;\r\n                streamWriter.Write(script);\r\n     " +
+            "           streamWriter.Close();\r\n                streamWriter.Dispose();\r\n     " +
+            "       }\r\n        }\r\n    }\r\n}\r\n")]
         public string Script {
             get {
                 return ((string)(this["Script"]));

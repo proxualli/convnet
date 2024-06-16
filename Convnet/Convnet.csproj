@@ -146,7 +146,7 @@
   </ItemGroup>
  
   <ItemGroup>
-    <ProjectReference Include="..\ConvnetAvalonia\ConvnetAvalonia.csproj" />
+    <ProjectReference Include="..\dnn\dnn.vcxproj" />
   </ItemGroup>
   
   <ItemGroup>

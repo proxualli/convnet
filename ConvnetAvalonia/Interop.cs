@@ -33,21 +33,22 @@ namespace Interop
 
     public enum Optimizers
     {
-        AdaBound = 0,
-		AdaBoundW = 1,
-		AdaDelta = 2,
-		AdaGrad = 3,
-		Adam = 4,
-		Adamax = 5,
-		AdamW = 6,
-		AmsBound = 7,
-		AmsBoundW = 8,
-		NAG = 9,
-		RMSProp = 10,
-		SGD = 11,
-		SGDMomentum = 12,
-		SGDW = 13
-	};
+        AdaBelief = 0,
+        AdaBound = 1,
+        AdaBoundW = 2,
+        AdaDelta = 3,
+        AdaGrad = 4,
+        Adam = 5,
+        Adamax = 6,
+        AdamW = 7,
+        AmsBound = 8,
+        AmsBoundW = 9,
+        NAG = 10,
+        RMSProp = 11,
+        SGD = 12,
+        SGDMomentum = 13,
+        SGDW = 14
+    };
 
     public enum Costs
     {
@@ -649,20 +650,21 @@ namespace Interop
     [Serializable()]
     public enum DNNOptimizers
     {
-        AdaBound = 0,
-        AdaBoundW = 1,
-        AdaDelta = 2,
-        AdaGrad = 3,
-        Adam = 4,
-        Adamax = 5,
-        AdamW = 6,
-        AmsBound = 7,
-        AmsBoundW = 8,
-        NAG = 9,
-        RMSProp = 10,
-        SGD = 11,
-        SGDMomentum = 12,
-        SGDW = 13
+        AdaBelief = 0,
+        AdaBound = 1,
+        AdaBoundW = 2,
+        AdaDelta = 3,
+        AdaGrad = 4,
+        Adam = 5,
+        Adamax = 6,
+        AdamW = 7,
+        AmsBound = 8,
+        AmsBoundW = 9,
+        NAG = 10,
+        RMSProp = 11,
+        SGD = 12,
+        SGDMomentum = 13,
+        SGDW = 14
     };
 
     [Serializable()]
