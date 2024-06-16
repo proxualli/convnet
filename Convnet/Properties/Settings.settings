@@ -1630,7 +1630,7 @@ namespace Scripts
 
     public class ScriptCatalog
     {
-        public const string nwl = "\r\n";
+        public static string nwl = Environment.NewLine;
 
         public static string to_string(bool variable)
         {
@@ -2732,9 +2732,10 @@ namespace Scripts
 #else
         const string Mode = "Release";
 #endif
-        public static string StorageDirectory { get; } = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\convnet\";
-        public static string ScriptsDirectory { get; } = StorageDirectory + @"scripts\";
-        public static string ScriptPath { get; } = ScriptsDirectory + @"Scripts\bin\" + Mode + @"\" + Framework + @"\";
+
+        public static string StorageDirectory { get; } = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + Path.DirectorySeparatorChar + @"convnet" + Path.DirectorySeparatorChar;
+        public static string ScriptsDirectory { get; } = StorageDirectory + @"scripts" + Path.DirectorySeparatorChar;
+        public static string ScriptPath { get; } = ScriptsDirectory + @"Scripts" + Path.DirectorySeparatorChar + @"bin" + Path.DirectorySeparatorChar + Mode +  Path.DirectorySeparatorChar + Framework + Path.DirectorySeparatorChar;
 
         static void Main() 
         {

@@ -531,6 +531,7 @@ Eps=0.125</Value>
       <Value Profile="(Default)">using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Globalization;
+using System;
 
 using Float = System.Single;
 using UInt = System.UInt64;
@@ -1630,7 +1631,8 @@ namespace Scripts
 
     public class ScriptCatalog
     {
-        public const string nwl = "\r\n";
+       public static string nwl = Environment.NewLine;
+
 
         public static string to_string(bool variable)
         {
