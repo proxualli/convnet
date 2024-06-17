@@ -495,26 +495,26 @@ namespace ConvnetAvalonia.PageViewModels
                 try
                 {
                     var csproj = "<Project Sdk=\"Microsoft.NET.Sdk\">\r\n\r\n  <PropertyGroup>\r\n    <OutputType>Exe</OutputType>\r\n    <TargetFramework>net8.0</TargetFramework>\r\n    <ImplicitUsings>enable</ImplicitUsings>\r\n    <Nullable>enable</Nullable>\r\n  </PropertyGroup>\r\n\r\n</Project>";
-                    File.WriteAllText(Path.Combine(ScriptsDirectory, "Scripts", "Scripts.csproj"), csproj);
-                    File.WriteAllText(Path.Combine(ScriptsDirectory, "Scripts", "Program.cs"), Script);
+                    File.WriteAllText(Path.Combine(ScriptsDirectory, "Scripts.csproj"), csproj);
+                    File.WriteAllText(Path.Combine(ScriptsDirectory, "Program.cs"), Script);
 
                     var processInfo = new ProcessStartInfo("dotnet", @"build Scripts.csproj -p:Platform=AnyCPU -p:nugetinteractive=true -c " + Mode + " -fl -flp:logfile=msbuild.log;verbosity=quiet")
                     {
-                        WorkingDirectory = Path.Combine(ScriptsDirectory, "Scripts"),
+                        WorkingDirectory = ScriptsDirectory,
                         UseShellExecute = RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? true : false,
                         CreateNoWindow = true,
                         WindowStyle = ProcessWindowStyle.Hidden,
                         Verb = "runas"
                     };
 
-                    File.Delete(Path.Combine(ScriptsDirectory, "Scripts", "msbuild.log"));
+                    File.Delete(Path.Combine(ScriptsDirectory, "msbuild.log"));
 
                     using (var process = Process.Start(processInfo))
                     {
                         process?.WaitForExit();
                     }
 
-                    var log = File.ReadAllText(Path.Combine(ScriptsDirectory, "Scripts", "msbuild.log"));
+                    var log = File.ReadAllText(Path.Combine(ScriptsDirectory, "msbuild.log"));
 
                     
                     IsValid = true;
