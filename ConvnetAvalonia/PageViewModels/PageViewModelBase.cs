@@ -30,7 +30,7 @@ namespace ConvnetAvalonia.PageViewModels
         public static string StateDirectory { get; } = Path.Combine(StorageDirectory, "state");
         public static string DefinitionsDirectory { get; } = Path.Combine(StorageDirectory, "definitions");
         public static string ScriptsDirectory { get; } = Path.Combine(StorageDirectory, "scripts");
-        public static string ScriptPath { get; } = Path.Combine(ScriptsDirectory, "Scripts", "bin", Mode, Framework);
+        public static string ScriptPath { get; } = Path.Combine(ScriptsDirectory, "bin", Mode, Framework);
         public static IEnumerable<DNNOptimizers> GetOptimizers => Enum.GetValues(typeof(DNNOptimizers)).Cast<DNNOptimizers>();
         public static IEnumerable<DNNInterpolations> GetInterpolations => Enum.GetValues(typeof(DNNInterpolations)).Cast<DNNInterpolations>();
 

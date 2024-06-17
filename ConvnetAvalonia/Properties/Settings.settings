@@ -2737,7 +2737,7 @@ namespace Scripts
 
         public static string StorageDirectory { get; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "convnet");
         public static string ScriptsDirectory { get; } = Path.Combine(StorageDirectory, "scripts");
-        public static string ScriptPath { get; } = Path.Combine(ScriptsDirectory, "Scripts", "bin", Mode, Framework);
+        public static string ScriptPath { get; } = Path.Combine(ScriptsDirectory, "bin", Mode, Framework);
 
         static void Main() 
         {

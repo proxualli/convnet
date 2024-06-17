@@ -1514,21 +1514,21 @@ namespace ConvnetAvalonia.Properties {
             " { get; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Use" +
             "rProfile), \"convnet\");\r\n        public static string ScriptsDirectory { get; } =" +
             " Path.Combine(StorageDirectory, \"scripts\");\r\n        public static string Script" +
-            "Path { get; } = Path.Combine(ScriptsDirectory, \"Scripts\", \"bin\", Mode, Framework" +
-            ");\r\n\r\n        static void Main() \r\n        {\r\n            var param = new Script" +
-            "Parameters(Scripts.shufflenetv2, Datasets.cifar10, 32, 32, 4, 4, false, true, Fi" +
-            "llers.HeNormal, FillerModes.In, 1f, 0.05f, 1f, 1f, false, Fillers.Constant, Fill" +
-            "erModes.In, 1f, 0f, 1f, 1f, 0.995f, 0.0001f, false, 0f, 0f, 3, 4, 12, 12, false," +
-            " 0.0f, 0.0f, false, true, Activations.HardSwish, 1, 1, 0.0f, false)\r\n           " +
-            " {\r\n                ShuffleNet = [new(7, 3, 1, 2, false) , new(7, 3, 1, 2, true)" +
-            ", new(7, 3, 1, 2, true)] \r\n            };\r\n                        \r\n           " +
-            " var script = Generate(param);\r\n            var fileInfo = new FileInfo(Path.Com" +
-            "bine(ScriptPath, \"script.txt\"));\r\n            if (fileInfo.Directory != null)\r\n " +
-            "           {\r\n                if (!fileInfo.Directory.Exists)\r\n                 " +
-            "   fileInfo.Directory.Create();\r\n\r\n                var streamWriter = fileInfo.C" +
-            "reateText();\r\n                streamWriter.AutoFlush = true;\r\n                st" +
-            "reamWriter.Write(script);\r\n                streamWriter.Close();\r\n              " +
-            "  streamWriter.Dispose();\r\n            }\r\n        }\r\n    }\r\n}\r\n")]
+            "Path { get; } = Path.Combine(ScriptsDirectory, \"bin\", Mode, Framework);\r\n\r\n     " +
+            "   static void Main() \r\n        {\r\n            var param = new ScriptParameters(" +
+            "Scripts.shufflenetv2, Datasets.cifar10, 32, 32, 4, 4, false, true, Fillers.HeNor" +
+            "mal, FillerModes.In, 1f, 0.05f, 1f, 1f, false, Fillers.Constant, FillerModes.In," +
+            " 1f, 0f, 1f, 1f, 0.995f, 0.0001f, false, 0f, 0f, 3, 4, 12, 12, false, 0.0f, 0.0f" +
+            ", false, true, Activations.HardSwish, 1, 1, 0.0f, false)\r\n            {\r\n       " +
+            "         ShuffleNet = [new(7, 3, 1, 2, false) , new(7, 3, 1, 2, true), new(7, 3," +
+            " 1, 2, true)] \r\n            };\r\n                        \r\n            var script" +
+            " = Generate(param);\r\n            var fileInfo = new FileInfo(Path.Combine(Script" +
+            "Path, \"script.txt\"));\r\n            if (fileInfo.Directory != null)\r\n            " +
+            "{\r\n                if (!fileInfo.Directory.Exists)\r\n                    fileInfo" +
+            ".Directory.Create();\r\n\r\n                var streamWriter = fileInfo.CreateText()" +
+            ";\r\n                streamWriter.AutoFlush = true;\r\n                streamWriter." +
+            "Write(script);\r\n                streamWriter.Close();\r\n                streamWri" +
+            "ter.Dispose();\r\n            }\r\n        }\r\n    }\r\n}\r\n")]
         public string Script {
             get {
                 return ((string)(this["Script"]));
