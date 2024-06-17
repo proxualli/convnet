@@ -459,9 +459,9 @@ namespace ConvnetAvalonia.PageViewModels
 
         async Task ScriptsDialogAsync()
         {
-            await ProcessAsyncHelper.RunAsync(new ProcessStartInfo(ScriptPath + "Scripts.exe"), null);
+            await ProcessAsyncHelper.RunAsync(new ProcessStartInfo(Path.Combine(ScriptPath, "Scripts.exe")), null);
 
-            var fileName = ScriptPath + @"script.txt";
+            var fileName = Path.Combine(ScriptPath, "script.txt");
             var fileInfo = new FileInfo(fileName);
 
             if (fileInfo.Exists)
@@ -491,26 +491,26 @@ namespace ConvnetAvalonia.PageViewModels
                 try
                 {
                     var csproj = "<Project Sdk=\"Microsoft.NET.Sdk\">\r\n\r\n  <PropertyGroup>\r\n    <OutputType>Exe</OutputType>\r\n    <TargetFramework>net8.0</TargetFramework>\r\n    <ImplicitUsings>enable</ImplicitUsings>\r\n    <Nullable>enable</Nullable>\r\n  </PropertyGroup>\r\n\r\n</Project>";
-                    File.WriteAllText(ScriptsDirectory + "Scripts" + Path.DirectorySeparatorChar + "Scripts.csproj", csproj);
-                    File.WriteAllText(ScriptsDirectory + "Scripts" + Path.DirectorySeparatorChar + "Program.cs", Script);
+                    File.WriteAllText(Path.Combine(ScriptsDirectory, "Scripts", "Scripts.csproj"), csproj);
+                    File.WriteAllText(Path.Combine(ScriptsDirectory, "Scripts", "Program.cs"), Script);
 
                     var processInfo = new ProcessStartInfo("dotnet", @"build Scripts.csproj -p:Platform=AnyCPU -p:nugetinteractive=true -c " + Mode + " -fl -flp:logfile=msbuild.log;verbosity=quiet")
                     {
-                        WorkingDirectory = ScriptsDirectory + "Scripts" + Path.DirectorySeparatorChar,
+                        WorkingDirectory = Path.Combine(ScriptsDirectory, "Scripts"),
                         UseShellExecute = true,
                         CreateNoWindow = true,
                         WindowStyle = ProcessWindowStyle.Hidden,
                         Verb = "runas"
                     };
 
-                    File.Delete(ScriptsDirectory + "Scripts" + Path.DirectorySeparatorChar + "msbuild.log");
+                    File.Delete(Path.Combine(ScriptsDirectory, "Scripts", "msbuild.log"));
 
                     using (var process = Process.Start(processInfo))
                     {
                         process?.WaitForExit();
                     }
 
-                    var log = File.ReadAllText(ScriptsDirectory + "Scripts" + Path.DirectorySeparatorChar + "msbuild.log");
+                    var log = File.ReadAllText(Path.Combine(ScriptsDirectory, "Scripts", "msbuild.log"));
 
                     
                     IsValid = true;

@@ -1511,26 +1511,24 @@ namespace ConvnetAvalonia.Properties {
             "}\r\n\r\n            return net;\r\n        }\r\n\r\n\r\n        const string Framework = \"n" +
             "et8.0\";\r\n#if DEBUG\r\n        const string Mode = \"Debug\";\r\n#else\r\n        const s" +
             "tring Mode = \"Release\";\r\n#endif\r\n\r\n        public static string StorageDirectory" +
-            " { get; } = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + P" +
-            "ath.DirectorySeparatorChar + @\"convnet\" + Path.DirectorySeparatorChar;\r\n        " +
-            "public static string ScriptsDirectory { get; } = StorageDirectory + @\"scripts\" +" +
-            " Path.DirectorySeparatorChar;\r\n        public static string ScriptPath { get; } " +
-            "= ScriptsDirectory + @\"Scripts\" + Path.DirectorySeparatorChar + @\"bin\" + Path.Di" +
-            "rectorySeparatorChar + Mode +  Path.DirectorySeparatorChar + Framework + Path.Di" +
-            "rectorySeparatorChar;\r\n\r\n        static void Main() \r\n        {\r\n            var" +
-            " param = new ScriptParameters(Scripts.shufflenetv2, Datasets.cifar10, 32, 32, 4," +
-            " 4, false, true, Fillers.HeNormal, FillerModes.In, 1f, 0.05f, 1f, 1f, false, Fil" +
-            "lers.Constant, FillerModes.In, 1f, 0f, 1f, 1f, 0.995f, 0.0001f, false, 0f, 0f, 3" +
-            ", 4, 12, 12, false, 0.0f, 0.0f, false, true, Activations.HardSwish, 1, 1, 0.0f, " +
-            "false)\r\n            {\r\n                ShuffleNet = [new(7, 3, 1, 2, false) , ne" +
-            "w(7, 3, 1, 2, true), new(7, 3, 1, 2, true)] \r\n            };\r\n                  " +
-            "      \r\n            var script = Generate(param);\r\n            var fileInfo = ne" +
-            "w FileInfo(ScriptPath + @\"script.txt\");\r\n            if (fileInfo.Directory != n" +
-            "ull)\r\n            {\r\n                if (!fileInfo.Directory.Exists)\r\n          " +
-            "          fileInfo.Directory.Create();\r\n\r\n                var streamWriter = fil" +
-            "eInfo.CreateText();\r\n                streamWriter.AutoFlush = true;\r\n           " +
-            "     streamWriter.Write(script);\r\n                streamWriter.Close();\r\n       " +
-            "         streamWriter.Dispose();\r\n            }\r\n        }\r\n    }\r\n}\r\n")]
+            " { get; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyD" +
+            "ocuments), \"convnet\");\r\n        public static string ScriptsDirectory { get; } =" +
+            " Path.Combine(StorageDirectory, \"scripts\");\r\n        public static string Script" +
+            "Path { get; } = Path.Combine(ScriptsDirectory, \"Scripts\", \"bin\", Mode, Framework" +
+            ");\r\n\r\n        static void Main() \r\n        {\r\n            var param = new Script" +
+            "Parameters(Scripts.shufflenetv2, Datasets.cifar10, 32, 32, 4, 4, false, true, Fi" +
+            "llers.HeNormal, FillerModes.In, 1f, 0.05f, 1f, 1f, false, Fillers.Constant, Fill" +
+            "erModes.In, 1f, 0f, 1f, 1f, 0.995f, 0.0001f, false, 0f, 0f, 3, 4, 12, 12, false," +
+            " 0.0f, 0.0f, false, true, Activations.HardSwish, 1, 1, 0.0f, false)\r\n           " +
+            " {\r\n                ShuffleNet = [new(7, 3, 1, 2, false) , new(7, 3, 1, 2, true)" +
+            ", new(7, 3, 1, 2, true)] \r\n            };\r\n                        \r\n           " +
+            " var script = Generate(param);\r\n            var fileInfo = new FileInfo(Path.Com" +
+            "bine(ScriptPath, \"script.txt\"));\r\n            if (fileInfo.Directory != null)\r\n " +
+            "           {\r\n                if (!fileInfo.Directory.Exists)\r\n                 " +
+            "   fileInfo.Directory.Create();\r\n\r\n                var streamWriter = fileInfo.C" +
+            "reateText();\r\n                streamWriter.AutoFlush = true;\r\n                st" +
+            "reamWriter.Write(script);\r\n                streamWriter.Close();\r\n              " +
+            "  streamWriter.Dispose();\r\n            }\r\n        }\r\n    }\r\n}\r\n")]
         public string Script {
             get {
                 return ((string)(this["Script"]));

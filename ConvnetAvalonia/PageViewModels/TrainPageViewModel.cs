@@ -1710,7 +1710,7 @@ namespace ConvnetAvalonia.PageViewModels
                 Title = "Load layer weights",
                 DefaultExt = ".bin",
                 FilterIndex = 1,
-                InitialDirectory = DefinitionsDirectory + Model.Name + Path.DirectorySeparatorChar
+                InitialDirectory = Path.Combine(DefinitionsDirectory, Model.Name)
             };
 
             bool stop = false;
@@ -1759,7 +1759,7 @@ namespace ConvnetAvalonia.PageViewModels
                 Title = "Save layer weights",
                 DefaultExt = ".bin",
                 FilterIndex = 1,
-                InitialDirectory = DefinitionsDirectory + Model.Name + @"\"
+                InitialDirectory = Path.Combine(DefinitionsDirectory, Model.Name)
             };
 
             if (saveFileDialog.ShowDialog(Application.Current.MainWindow) == true)

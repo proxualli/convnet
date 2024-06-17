@@ -25,12 +25,12 @@ namespace ConvnetAvalonia.PageViewModels
         const string Mode = @"Release";
 #endif
 
-        public static string ApplicationPath { get; } = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + Path.DirectorySeparatorChar;
-        public static string StorageDirectory { get; } = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + Path.DirectorySeparatorChar + "convnet" + Path.DirectorySeparatorChar;
-        public static string StateDirectory { get; } = StorageDirectory + "state" + Path.DirectorySeparatorChar;
-        public static string DefinitionsDirectory { get; } = StorageDirectory + "definitions" + Path.DirectorySeparatorChar;
-        public static string ScriptsDirectory { get; } = StorageDirectory + "scripts" + Path.DirectorySeparatorChar;
-        public static string ScriptPath { get; } = ScriptsDirectory + "Scripts" + Path.DirectorySeparatorChar + "bin" + Path.DirectorySeparatorChar + Mode + Path.DirectorySeparatorChar + Framework + Path.DirectorySeparatorChar;
+        public static string ApplicationPath { get; } = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+        public static string StorageDirectory { get; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "convnet");
+        public static string StateDirectory { get; } = Path.Combine(StorageDirectory, "state");
+        public static string DefinitionsDirectory { get; } = Path.Combine(StorageDirectory, "definitions");
+        public static string ScriptsDirectory { get; } = Path.Combine(StorageDirectory, "scripts");
+        public static string ScriptPath { get; } = Path.Combine(ScriptsDirectory, "Scripts", "bin", Mode, Framework);
         public static IEnumerable<DNNOptimizers> GetOptimizers => Enum.GetValues(typeof(DNNOptimizers)).Cast<DNNOptimizers>();
         public static IEnumerable<DNNInterpolations> GetInterpolations => Enum.GetValues(typeof(DNNInterpolations)).Cast<DNNInterpolations>();
 

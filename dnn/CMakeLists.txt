@@ -39,7 +39,7 @@ INCLUDE(GNUInstallDirs)
 INCLUDE(CheckCSourceCompiles)
 INCLUDE(CheckCXXSourceCompiles)
 
-option(BUILD_SHARED_LIBS "Build shared library" OFF)
+option(BUILD_SHARED_LIBS "Build shared library" ON)
 
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
@@ -55,9 +55,9 @@ if(WIN32 OR MSVC)
 else()
   set(flags -mrdseed -mrdrnd -mfma -mavx512f -mavx512dq -mavx512vl -mavx512bw -mavx512ifma -mavx512vbmi -mavx512vbmi2 -mavx512bitalg -mavx512vpopcntdq -mavx512vnni -mavx512bf16 -march=native -fopenmp)
   if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-    set(linkflags -fopenmp=libiomp5)
+    set(linkflags -fopenmp=libiomp5 -z noexecstack)
   else()
-    set(linkflags -fopenmp)
+    set(linkflags -fopenmp -z noexecstack)
   endif()
   add_compile_options(
     "$<$<COMPILE_LANGUAGE:CXX>:${flags}>"
@@ -100,11 +100,11 @@ set(PNG_TESTS FALSE CACHE BOOL "" FORCE)
 set(PNG_BUILD_ZLIB ON CACHE BOOL "" FORCE)
 
 if(BUILD_SHARED_LIBS)
-  set(DNNL_LIBRARY_TYPE "SHARED" CACHE STRING "" FORCE)
-  set(PNG_SHARED TRUE CACHE BOOL "" FORCE)
-  set(PNG_STATIC FALSE CACHE BOOL "" FORCE)
-  set(ENABLE_SHARED TRUE CACHE BOOL "" FORCE)
-  set(ENABLE_STATIC FALSE CACHE BOOL "" FORCE)
+  set(DNNL_LIBRARY_TYPE "STATIC" CACHE STRING "" FORCE)
+  set(PNG_SHARED FALSE CACHE BOOL "" FORCE)
+  set(PNG_STATIC TRUE CACHE BOOL "" FORCE)
+  set(ENABLE_SHARED FALSE CACHE BOOL "" FORCE)
+  set(ENABLE_STATIC TRUE CACHE BOOL "" FORCE)
 else()
   set(DNNL_LIBRARY_TYPE "STATIC" CACHE STRING "" FORCE)
   set(PNG_SHARED FALSE CACHE BOOL "" FORCE)
@@ -362,11 +362,8 @@ IF(NOT TARGET zlib)
     "${ZLIB_SOURCE_DIR}"
     "${DNN_DEPENDENCIES_BINARY_DIR}/zlib")
 ENDIF()
-if(BUILD_SHARED_LIBS)
-  TARGET_LINK_LIBRARIES(${PROJECT_NAME} PUBLIC zlib)
-else()
-  TARGET_LINK_LIBRARIES(${PROJECT_NAME} PUBLIC zlibstatic)
-endif()
+TARGET_LINK_LIBRARIES(${PROJECT_NAME} PUBLIC zlibstatic)
+
 
 if(WIN32 OR MSVC)
   set(SKIP_INSTALL_ALL ON)
@@ -380,11 +377,8 @@ ENDIF()
 if(WIN32 OR MSVC AND BUILD_SHARED_LIBS)
   TARGET_LINK_LIBRARIES(png PRIVATE zlib)
 endif()
-if(BUILD_SHARED_LIBS)
-  TARGET_LINK_LIBRARIES(${PROJECT_NAME} PUBLIC png)
-else()
-  TARGET_LINK_LIBRARIES(${PROJECT_NAME} PUBLIC png_static)
-endif()
+TARGET_LINK_LIBRARIES(${PROJECT_NAME} PUBLIC png_static)
+
 
 # ---[ Configure JPEG
 IF(NOT TARGET jpeg)
@@ -392,11 +386,7 @@ IF(NOT TARGET jpeg)
     "${JPEG_SOURCE_DIR}"
     "${DNN_DEPENDENCIES_BINARY_DIR}/libjpeg-turbo")
 ENDIF()
-if(BUILD_SHARED_LIBS)
-  TARGET_LINK_LIBRARIES(${PROJECT_NAME} PUBLIC jpeg)
-else()
-  TARGET_LINK_LIBRARIES(${PROJECT_NAME} PUBLIC jpeg-static)
-endif()
+TARGET_LINK_LIBRARIES(${PROJECT_NAME} PUBLIC jpeg-static)
 
 # ---[ Configure oneDNN
 IF(NOT TARGET dnnl)
