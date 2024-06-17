@@ -2308,7 +2308,7 @@ namespace Scripts
 #else
         const string Mode = "Release";
 #endif
-        public static string StorageDirectory { get; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "convnet");
+        public static string StorageDirectory { get; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "convnet");
         public static string ScriptsDirectory { get; } = Path.Combine(StorageDirectory, "scripts");
         public static string ScriptPath { get; } = Path.Combine(ScriptsDirectory, "Scripts", "bin", Mode, Framework);
 

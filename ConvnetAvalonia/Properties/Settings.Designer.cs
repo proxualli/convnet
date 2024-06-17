@@ -1511,8 +1511,8 @@ namespace ConvnetAvalonia.Properties {
             "}\r\n\r\n            return net;\r\n        }\r\n\r\n\r\n        const string Framework = \"n" +
             "et8.0\";\r\n#if DEBUG\r\n        const string Mode = \"Debug\";\r\n#else\r\n        const s" +
             "tring Mode = \"Release\";\r\n#endif\r\n\r\n        public static string StorageDirectory" +
-            " { get; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyD" +
-            "ocuments), \"convnet\");\r\n        public static string ScriptsDirectory { get; } =" +
+            " { get; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Use" +
+            "rProfile), \"convnet\");\r\n        public static string ScriptsDirectory { get; } =" +
             " Path.Combine(StorageDirectory, \"scripts\");\r\n        public static string Script" +
             "Path { get; } = Path.Combine(ScriptsDirectory, \"Scripts\", \"bin\", Mode, Framework" +
             ");\r\n\r\n        static void Main() \r\n        {\r\n            var param = new Script" +

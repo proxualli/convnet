@@ -26,7 +26,7 @@ namespace ConvnetAvalonia.PageViewModels
 #endif
 
         public static string ApplicationPath { get; } = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-        public static string StorageDirectory { get; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "convnet");
+        public static string StorageDirectory { get; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "convnet");
         public static string StateDirectory { get; } = Path.Combine(StorageDirectory, "state");
         public static string DefinitionsDirectory { get; } = Path.Combine(StorageDirectory, "definitions");
         public static string ScriptsDirectory { get; } = Path.Combine(StorageDirectory, "scripts");
