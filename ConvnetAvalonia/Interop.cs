@@ -3772,7 +3772,7 @@ namespace Interop
 		    TaskState = DNNTaskStates.Stopped;
             MeanTrainSet = new Float[] { (Float)0, (Float)0, (Float)0 };
             StdTrainSet = new Float[] { (Float)0, (Float)0, (Float)0 };
-            StorageDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "convnet");
+            StorageDirectory = Path.Combine(Environment.GetFolderPath(RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? Environment.SpecialFolder.MyDocuments : Environment.SpecialFolder.UserProfile), "convnet");
 		    DatasetsDirectory = Path.Combine(StorageDirectory, "datasets");
 		    DefinitionsDirectory = Path.Combine(StorageDirectory, "definitions");
 

@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
-
+using System.Runtime.InteropServices;
 using Float = System.Single;
 using UInt = System.UInt64;
 
@@ -2308,9 +2308,9 @@ namespace Scripts
 #else
         const string Mode = "Release";
 #endif
-        public static string StorageDirectory { get; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "convnet");
+        public static string StorageDirectory { get; } = Path.Combine(Environment.GetFolderPath(RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? Environment.SpecialFolder.MyDocuments : Environment.SpecialFolder.UserProfile), "convnet");
         public static string ScriptsDirectory { get; } = Path.Combine(StorageDirectory, "scripts");
-        public static string ScriptPath { get; } = Path.Combine(ScriptsDirectory, "Scripts", "bin", Mode, Framework);
+        public static string ScriptPath { get; } = Path.Combine(ScriptsDirectory, "bin", Mode, Framework);
 
         static void Main()
         {

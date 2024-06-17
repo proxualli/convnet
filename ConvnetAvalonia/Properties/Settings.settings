@@ -531,6 +531,7 @@ Eps=0.125</Value>
       <Value Profile="(Default)">using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Globalization;
+using System.Runtime.InteropServices;
 using System;
 
 using Float = System.Single;
@@ -2735,7 +2736,7 @@ namespace Scripts
         const string Mode = "Release";
 #endif
 
-        public static string StorageDirectory { get; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "convnet");
+        public static string StorageDirectory { get; } = Path.Combine(Environment.GetFolderPath(RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? Environment.SpecialFolder.MyDocuments : Environment.SpecialFolder.UserProfile), "convnet");
         public static string ScriptsDirectory { get; } = Path.Combine(StorageDirectory, "scripts");
         public static string ScriptPath { get; } = Path.Combine(ScriptsDirectory, "bin", Mode, Framework);
 
