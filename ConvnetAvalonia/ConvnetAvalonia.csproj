@@ -195,10 +195,11 @@
   </ItemGroup>
 
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-    <Exec Command="xcopy /Y $(SolutionDir)$(PlatformName)\$(ConfigurationName)\dnn.dll $(TargetDir)" Condition=" '$(OS)' == 'Windows_NT' "/>
-    <Exec Command="xcopy /Y $(SolutionDir)$(PlatformName)\$(ConfigurationName)\dnn.dll $(TargetDir)" Condition=" '$(OS)' == 'Windows_NT' "/>
-    <Exec Command="xcopy /Y $(SolutionDir)$(PlatformName)\$(ConfigurationName)\dnnl.dll $(TargetDir)" Condition=" '$(OS)' == 'Windows_NT' "/>
-    <!--<Exec Command="xcopy /Y $(SolutionDir)\dnn\deps\oneDNN\build\src\$(ConfigurationName)\dnnl.dll $(TargetDir)" Condition=" '$(OS)' == 'Windows_NT' "/>-->
-    <Exec Command="xcopy /Y $(SolutionDir)$(PlatformName)\$(ConfigurationName)\libpng16.dll $(TargetDir)" Condition=" '$(OS)' == 'Windows_NT' "/>
+    <Exec Command="xcopy /Y $(SolutionDir)$(PlatformName)\$(ConfigurationName)\dnn.dll $(TargetDir)" Condition="$([MSBuild]::IsOSPlatform('Windows'))"/>
+    <Exec Command="xcopy /Y $(SolutionDir)$(PlatformName)\$(ConfigurationName)\dnn.dll $(TargetDir)" Condition="$([MSBuild]::IsOSPlatform('Windows'))"/>
+    <Exec Command="xcopy /Y $(SolutionDir)$(PlatformName)\$(ConfigurationName)\dnnl.dll $(TargetDir)" Condition="$([MSBuild]::IsOSPlatform('Windows'))"/>
+    <!--<Exec Command="xcopy /Y $(SolutionDir)\dnn\deps\oneDNN\build\src\$(ConfigurationName)\dnnl.dll $(TargetDir)" Condition="$([MSBuild]::IsOSPlatform('Windows'))"/>-->
+    <Exec Command="xcopy /Y $(SolutionDir)$(PlatformName)\$(ConfigurationName)\libpng16.dll $(TargetDir)" Condition="$([MSBuild]::IsOSPlatform('Windows'))"/>
+    <Exec Command="cp $(SolutionDir)/dnn/build/libdnn.so $(TargetDir)" Condition="$([MSBuild]::IsOSPlatform('Linux'))"/>
   </Target>
 </Project>

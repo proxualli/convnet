@@ -1206,7 +1206,7 @@ namespace Scripts
 
     public class ScriptCatalog
     {
-        public const string nwl = "\r\n";
+        public static string nwl { get; } = Environment.NewLine;
 
         public static string to_string(bool variable)
         {
@@ -2244,11 +2244,11 @@ namespace Scripts
                             net += block;
 
                         net +=
-                               BatchNormActivation(C, In("A", A), p.Activation) +
+                            BatchNormActivation(C, In("A", A), p.Activation) +
                             Convolution(C + 1, In("B", C), p.Classes, 1, 1, 1, 1, 0, 0) +
                             BatchNorm(C + 1, In("C", C + 1)) +
                             GlobalAvgPooling(In("B", C + 1)) +
-                               LogSoftmax("GAP") +
+                            LogSoftmax("GAP") +
                             Cost("LSM", p.Dataset, p.Classes, "CategoricalCrossEntropy", 0.125f);
                     }
                     break;
@@ -2308,9 +2308,9 @@ namespace Scripts
 #else
         const string Mode = "Release";
 #endif
-        public static string StorageDirectory { get; } = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\convnet\";
-        public static string ScriptsDirectory { get; } = StorageDirectory + @"scripts\";
-        public static string ScriptPath { get; } = ScriptsDirectory + @"Scripts\bin\" + Mode + @"\" + Framework + @"\";
+        public static string StorageDirectory { get; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "convnet");
+        public static string ScriptsDirectory { get; } = Path.Combine(StorageDirectory, "scripts");
+        public static string ScriptPath { get; } = Path.Combine(ScriptsDirectory, "Scripts", "bin", Mode, Framework);
 
         static void Main()
         {
@@ -2321,7 +2321,7 @@ namespace Scripts
 
             var script = Generate(param);
 
-            var fileInfo = new FileInfo(ScriptPath + @"script.txt");
+            var fileInfo = new FileInfo(Path.Combine(ScriptPath, @"script.txt"));
             if (fileInfo.Directory != null)
             {
                 if (!fileInfo.Directory.Exists)
