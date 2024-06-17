@@ -14,6 +14,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reactive.Linq;
+using System.Runtime.InteropServices;
 using System.Security.AccessControl;
 using System.Security.Principal;
 using System.Text;
@@ -258,7 +259,7 @@ namespace ConvnetAvalonia.PageViewModels
                 var sameDefinition = Definition.ToLower(CultureInfo.CurrentCulture).Equals(Settings.Default.DefinitionActive.ToLower(CultureInfo.CurrentCulture));
                 var pathDefinition = Path.Combine(DefinitionsDirectory, modelname + ".txt");
                 var pathStateDefinition = Path.Combine(StateDirectory, modelname + ".txt");
-                var pathWeightsDirectory = DefinitionsDirectory + modelname + @"\";
+                var pathWeightsDirectory = Path.Combine(DefinitionsDirectory, modelname);
                 var pathWeights = Settings.Default.PersistOptimizer ? Path.Combine(pathWeightsDirectory, Dataset.ToString().ToLower(CultureInfo.CurrentCulture) + "-" + Settings.Default.Optimizer.ToString().ToLower(CultureInfo.CurrentCulture) + @".bin") : Path.Combine(pathWeightsDirectory, Dataset.ToString().ToLower(CultureInfo.CurrentCulture) + ".bin");
 
                 if (notSameModelName || !sameDefinition)
@@ -459,7 +460,7 @@ namespace ConvnetAvalonia.PageViewModels
 
         async Task ScriptsDialogAsync()
         {
-            await ProcessAsyncHelper.RunAsync(new ProcessStartInfo(Path.Combine(ScriptPath, "Scripts.exe")), null);
+            await ProcessAsyncHelper.RunAsync(new ProcessStartInfo(Path.Combine(ScriptPath, RuntimeInformation.IsOSPlatform(OSPlatform.Linux) ? "Scripts" : "Scripts.exe")), null);
 
             var fileName = Path.Combine(ScriptPath, "script.txt");
             var fileInfo = new FileInfo(fileName);
@@ -529,7 +530,7 @@ namespace ConvnetAvalonia.PageViewModels
             {
                 if (!dirty)
                 {
-                    File.Delete(ScriptPath + @"Scripts.deps.json");
+                    File.Delete(Path.Combine(ScriptPath, "Scripts.deps.json"));
                     Dispatcher.UIThread.Post(async () => await ScriptsDialogAsync());
                 }
             }
