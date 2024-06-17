@@ -467,13 +467,16 @@ namespace ConvnetAvalonia.PageViewModels
 
             if (fileInfo.Exists)
             {
-                //#pragma warning disable CA1416 // Validate platform compatibility
-                var security = new FileSecurity(fileInfo.FullName, AccessControlSections.Owner | AccessControlSections.Group | AccessControlSections.Access);
-                //var authorizationRules = security.GetAccessRules(true, true, typeof(NTAccount));
-                var owner = security.GetOwner(typeof(NTAccount));
-                if (owner != null)
-                    security.ModifyAccessRule(AccessControlModification.Add, new FileSystemAccessRule(owner, FileSystemRights.Modify, AccessControlType.Allow), out bool modified);
-                //#pragma warning restore CA1416 // Validate platform compatibility
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                {
+                    //#pragma warning disable CA1416 // Validate platform compatibility
+                    var security = new FileSecurity(fileInfo.FullName, AccessControlSections.Owner | AccessControlSections.Group | AccessControlSections.Access);
+                    //var authorizationRules = security.GetAccessRules(true, true, typeof(NTAccount));
+                    var owner = security.GetOwner(typeof(NTAccount));
+                    if (owner != null)
+                        security.ModifyAccessRule(AccessControlModification.Add, new FileSystemAccessRule(owner, FileSystemRights.Modify, AccessControlType.Allow), out bool modified);
+                    //#pragma warning restore CA1416 // Validate platform compatibility
+                }
 
                 Definition = File.ReadAllText(fileName);
                 ModelName = Definition.Split(separator, StringSplitOptions.RemoveEmptyEntries)[0].Replace("[", "").Replace("]", "");
@@ -498,7 +501,7 @@ namespace ConvnetAvalonia.PageViewModels
                     var processInfo = new ProcessStartInfo("dotnet", @"build Scripts.csproj -p:Platform=AnyCPU -p:nugetinteractive=true -c " + Mode + " -fl -flp:logfile=msbuild.log;verbosity=quiet")
                     {
                         WorkingDirectory = Path.Combine(ScriptsDirectory, "Scripts"),
-                        UseShellExecute = true,
+                        UseShellExecute = RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? true : false,
                         CreateNoWindow = true,
                         WindowStyle = ProcessWindowStyle.Hidden,
                         Verb = "runas"
