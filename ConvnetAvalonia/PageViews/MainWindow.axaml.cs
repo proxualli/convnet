@@ -228,7 +228,7 @@ namespace ConvnetAvalonia
             if (!Directory.Exists(ScriptsDirectory))
             {
                 Directory.CreateDirectory(ScriptsDirectory);
-                ApplicationHelper.CopyDir(Path.Combine(ApplicationPath.Replace(Path.Combine("Convnet", "bin", "x64", Mode, Framework), ""), "Scripts"), ScriptsDirectory);
+                ApplicationHelper.CopyDir(Path.Combine(ApplicationPath.Replace(Path.Combine("ConvnetAvalonia", "bin", RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? "x64" : "", Mode, Framework), ""), "Scripts"), ScriptsDirectory);
             }
                      
             var fileName = Path.Combine(StateDirectory, Settings.Default.ModelNameActive + ".txt");
@@ -273,7 +273,7 @@ namespace ConvnetAvalonia
                         model.SetDisableLocking(Settings.Default.DisableLocking);
                         model.SetShuffleCount((ulong)Math.Round(Settings.Default.Shuffle));
 
-                        string path = Path.GetTempPath() + Guid.NewGuid().ToString() + ".csv";
+                        string path = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString() + ".csv");
                         if (PersistLog(path))
                             File.Delete(path);
 
@@ -359,7 +359,7 @@ namespace ConvnetAvalonia
                         model.SetDisableLocking(Settings.Default.DisableLocking);
                         model.SetShuffleCount((ulong)Math.Round(Settings.Default.Shuffle));
 
-                        string path = Path.GetTempPath() + Guid.NewGuid().ToString() + ".csv";
+                        string path = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString() + ".csv");
                         if (PersistLog(path))
                             File.Delete(path);
 
