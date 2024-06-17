@@ -11,6 +11,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -29,11 +30,11 @@ namespace Convnet
 #else
         const string Mode = "Release";
 #endif
-        public static string ApplicationPath { get; } = System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + @"\";
-        public static string StorageDirectory { get; } = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\convnet\";
-        public static string StateDirectory { get; } = StorageDirectory + @"state\";
-        public static string DefinitionsDirectory { get; } = StorageDirectory + @"definitions\";
-        public static string ScriptsDirectory { get; } = StorageDirectory + @"scripts\";
+        public static string ApplicationPath { get; } = System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+        public static string StorageDirectory { get; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "convnet");
+        public static string StateDirectory { get; } = Path.Combine(StorageDirectory, "state");
+        public static string DefinitionsDirectory { get; } = Path.Combine(StorageDirectory, "definitions");
+        public static string ScriptsDirectory { get; } = Path.Combine(StorageDirectory, "scripts");
 
         public static RoutedUICommand ResetCmd = new RoutedUICommand();
         public static RoutedUICommand AboutCmd = new RoutedUICommand();
@@ -45,33 +46,6 @@ namespace Convnet
 
         public bool ShowCloseApplicationDialog = true;
         public PageViewModel PageVM;
-
-        public static void Copy(string sourceDirectory, string targetDirectory)
-        {
-            var diSource = new DirectoryInfo(sourceDirectory);
-            var diTarget = new DirectoryInfo(targetDirectory);
-
-            CopyAll(diSource, diTarget);
-        }
-
-        public static void CopyAll(DirectoryInfo source, DirectoryInfo target)
-        {
-            Directory.CreateDirectory(target.FullName);
-
-            // Copy each file into the new directory.
-            foreach (var fi in source.GetFiles())
-            {
-                //Console.WriteLine(@"Copying {0}\{1}", target.FullName, fi.Name);
-                fi.CopyTo(System.IO.Path.Combine(target.FullName, fi.Name), true);
-            }
-
-            // Copy each subdirectory using recursion.
-            foreach (var diSourceSubDir in source.GetDirectories())
-            {
-                DirectoryInfo nextTargetSubDir = target.CreateSubdirectory(diSourceSubDir.Name);
-                CopyAll(diSourceSubDir, nextTargetSubDir);
-            }
-        }
 
         private bool PersistLog(string path)
         {
@@ -193,21 +167,21 @@ namespace Convnet
             if (!Directory.Exists(ScriptsDirectory))
             {
                 Directory.CreateDirectory(ScriptsDirectory);
-                Copy(ApplicationPath.Replace(@"Convnet\bin\x64\" + Mode + @"\" + Framework + @"\", "") + @"Scripts\", ScriptsDirectory);
+                ApplicationHelper.CopyDir(Path.Combine(ApplicationPath.Replace(Path.Combine("ConvnetAvalonia", "bin", RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? "x64" : "", Mode, Framework), ""), "Scripts"), ScriptsDirectory);
             }
 
-            var fileName = System.IO.Path.Combine(StateDirectory, Settings.Default.ModelNameActive + ".txt");
+            var fileName = Path.Combine(StateDirectory, Settings.Default.ModelNameActive + ".txt");
             var backupModelName = "resnet-3-2-6-channelzeropad-relu";
-                        
-            if (!File.Exists(System.IO.Path.Combine(StateDirectory, backupModelName + ".txt")))
-                File.Copy(ApplicationPath + @"Resources\state\" + backupModelName + ".txt", StateDirectory + backupModelName + ".txt", true);
-            
-            if (!File.Exists(fileName) || !File.ReadLines(System.IO.Path.Combine(StateDirectory, backupModelName + ".txt")).SequenceEqual(File.ReadLines(ApplicationPath + @"Resources\state\" + backupModelName + ".txt")))
+
+            if (!File.Exists(Path.Combine(StateDirectory, backupModelName + ".txt")))
+                File.Copy(Path.Combine(ApplicationPath, "Resources", "state", backupModelName + ".txt"), Path.Combine(StateDirectory, backupModelName + ".txt"), true);
+
+            if (!File.Exists(fileName) || !File.ReadLines(Path.Combine(StateDirectory, backupModelName + ".txt")).SequenceEqual(File.ReadLines(Path.Combine(ApplicationPath, "Resources", "state", backupModelName + ".txt"))))
             {
-                Directory.CreateDirectory(DefinitionsDirectory + backupModelName + @"\");
-                File.Copy(ApplicationPath + @"Resources\state\" + backupModelName + ".txt", DefinitionsDirectory + backupModelName + ".txt", true);
-                
-                fileName = System.IO.Path.Combine(StateDirectory, backupModelName + ".txt");
+                Directory.CreateDirectory(Path.Combine(DefinitionsDirectory, backupModelName));
+                File.Copy(Path.Combine(ApplicationPath, "Resources", "state", backupModelName + ".txt"), Path.Combine(DefinitionsDirectory, backupModelName + ".txt"), true);
+
+                fileName = Path.Combine(StateDirectory, backupModelName + ".txt");
                 Settings.Default.ModelNameActive = backupModelName;
                 Settings.Default.DefinitionActive = File.ReadAllText(fileName);
                 Settings.Default.Optimizer = DNNOptimizers.NAG;
@@ -1000,7 +974,7 @@ namespace Convnet
             {
                 Directory.Delete(ScriptsDirectory, true);
                 Directory.CreateDirectory(ScriptsDirectory);
-                Copy(ApplicationPath.Replace(@"Convnet\bin\x64\" + Mode + @"\" + Framework + @"\", "") + @"ScriptsDialog\", ScriptsDirectory);
+                ApplicationHelper.CopyDir(ApplicationPath.Replace(@"Convnet\bin\x64\" + Mode + @"\" + Framework + @"\", "") + @"ScriptsDialog\", ScriptsDirectory);
             }
         }
 

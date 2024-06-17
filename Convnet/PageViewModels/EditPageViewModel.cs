@@ -45,7 +45,7 @@ namespace Convnet.PageViewModels
         private string filePath;
         private bool wordWrap = false;
         private bool showLineNumbers = true;
-        private string script = File.ReadAllText(ScriptsDirectory + @"Scripts\Program.cs");
+        private string script = File.ReadAllText(Path.Combine(ScriptsDirectory, "Program.cs"));
         private bool dirty = true;
         private static bool initAction = true;
         private readonly DispatcherTimer clickWaitTimer;
@@ -286,13 +286,13 @@ namespace Convnet.PageViewModels
                     return;
 
                 script = value;
-                File.WriteAllText(ScriptsDirectory + @"Scripts\Program.cs", Script);
+                File.WriteAllText(Path.Combine(ScriptsDirectory, "Program.cs"), Script);
                 dirty = true;
                 OnPropertyChanged(nameof(Script));
             }
         }
 
-        private static readonly string[] separator = ["\r\n"];
+        private static readonly string[] separator = [Environment.NewLine];
 
         private void OpenButtonClick(object sender, RoutedEventArgs e)
         {
@@ -319,7 +319,7 @@ namespace Convnet.PageViewModels
                 var modelname = Definition.Split(Environment.NewLine.ToCharArray(), StringSplitOptions.RemoveEmptyEntries)[0].Trim().Replace("[", "").Replace("]", "").Trim();
                 var pathDefinition = Path.Combine(DefinitionsDirectory, modelname + ".txt");
                 var pathStateDefinition = Path.Combine(StateDirectory, modelname + ".txt");
-                var pathWeightsDirectory = DefinitionsDirectory + modelname + @"\";
+                var pathWeightsDirectory = Path.Combine(DefinitionsDirectory, modelname);
                 
                 var pathWeights = Settings.Default.PersistOptimizer ? Path.Combine(pathWeightsDirectory, Dataset.ToString().ToLower(CultureInfo.CurrentCulture) + "-" + Settings.Default.Optimizer.ToString().ToLower(CultureInfo.CurrentCulture) + @".bin") : Path.Combine(pathWeightsDirectory, Dataset.ToString().ToLower(CultureInfo.CurrentCulture) + ".bin");
                 
@@ -516,9 +516,9 @@ namespace Convnet.PageViewModels
             {
                 try
                 {
-                    var ProcStartInfo = new ProcessStartInfo(vspath + version + common + @"devenv.exe", ScriptsDirectory + @"\Scripts\Scripts.csproj")
+                    var ProcStartInfo = new ProcessStartInfo(vspath + version + common + @"devenv.exe", ScriptsDirectory + @"\Scripts.csproj")
                     {
-                        WorkingDirectory = ScriptsDirectory + @"Scripts",
+                        WorkingDirectory = ScriptsDirectory,
                         Verb = "runas",
                         UseShellExecute = true,
                         CreateNoWindow = true,
@@ -536,9 +536,9 @@ namespace Convnet.PageViewModels
 
         async Task ScriptsDialogAsync()
         {
-            await ProcessAsyncHelper.RunAsync(new ProcessStartInfo(ScriptPath + @"Scripts.exe"), null);
+            await ProcessAsyncHelper.RunAsync(new ProcessStartInfo(Path.Combine(ScriptPath, "Scripts.exe")), null);
 
-            var fileName = ScriptPath + @"script.txt";
+            var fileName = Path.Combine(ScriptPath, "script.txt");
             var fileInfo = new FileInfo(fileName);
 
             if (fileInfo.Exists)
@@ -658,21 +658,21 @@ namespace Convnet.PageViewModels
                 {
                     var processInfo = new ProcessStartInfo("dotnet", @"build Scripts.csproj -p:Platform=AnyCPU -p:nugetinteractive=true -c " + Mode + " -fl -flp:logfile=msbuild.log;verbosity=quiet")
                     {
-                        WorkingDirectory = ScriptsDirectory + @"Scripts\",
+                        WorkingDirectory = ScriptsDirectory,
                         UseShellExecute = true,
                         CreateNoWindow = true,
                         WindowStyle = ProcessWindowStyle.Hidden,
                         Verb = "runas"
                     };
 
-                    File.Delete(ScriptsDirectory + @"Scripts\msbuild.log");
+                    File.Delete(Path.Combine(ScriptsDirectory, "msbuild.log"));
 
                     using (var process = Process.Start(processInfo))
                     {
                         process.WaitForExit();
                     }
 
-                    var log = File.ReadAllText(ScriptsDirectory + @"Scripts\msbuild.log");
+                    var log = File.ReadAllText(Path.Combine(ScriptsDirectory, "msbuild.log"));
 
                     Mouse.OverrideCursor = null;
                     IsValid = true;
@@ -695,7 +695,7 @@ namespace Convnet.PageViewModels
             {
                 if (!dirty)
                 {
-                    File.Delete(ScriptPath + @"Scripts.deps.json");
+                    File.Delete(Path.Combine(ScriptPath, "Scripts.deps.json"));
                     var task = ScriptsDialogAsync();
                 }
             }

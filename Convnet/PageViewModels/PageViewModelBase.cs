@@ -15,19 +15,19 @@ namespace Convnet.PageViewModels
 {
     public abstract class PageViewModelBase : INotifyPropertyChanged
     {
-        const string Framework = @"\net8.0\";
+        const string Framework = "net8.0";
 #if DEBUG
         const string Mode = "Debug";
 #else
         const string Mode = @"Release";
 #endif
 
-        public static string ApplicationPath { get; } = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + @"\";
-        public static string StorageDirectory { get; } = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\convnet\";
-        public static string StateDirectory { get; } = StorageDirectory + @"state\";
-        public static string DefinitionsDirectory { get; } = StorageDirectory + @"definitions\";
-        public static string ScriptsDirectory { get; } = StorageDirectory + @"scripts\";
-        public static string ScriptPath { get; } = ScriptsDirectory + @"Scripts\bin\" + Mode + Framework;
+        public static string ApplicationPath { get; } = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+        public static string StorageDirectory { get; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "convnet");
+        public static string StateDirectory { get; } = Path.Combine(StorageDirectory, "state");
+        public static string DefinitionsDirectory { get; } = Path.Combine(StorageDirectory, "definitions");
+        public static string ScriptsDirectory { get; } = Path.Combine(StorageDirectory, "scripts");
+        public static string ScriptPath { get; } = Path.Combine(ScriptsDirectory, "bin", Mode, Framework);
 
         public static IEnumerable<DNNOptimizers> GetOptimizers => Enum.GetValues(typeof(DNNOptimizers)).Cast<DNNOptimizers>();
         public static IEnumerable<DNNInterpolations> GetInterpolations => Enum.GetValues(typeof(DNNInterpolations)).Cast<DNNInterpolations>();
