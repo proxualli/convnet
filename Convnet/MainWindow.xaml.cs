@@ -211,15 +211,15 @@ namespace Convnet
                         model.SetDisableLocking(Settings.Default.DisableLocking);
                         model.SetShuffleCount((ulong)Math.Round(Settings.Default.Shuffle));
 
-                        string path = System.IO.Path.GetTempPath() + Guid.NewGuid().ToString() + ".csv";
+                        string path = Path.GetTempPath() + Guid.NewGuid().ToString() + ".csv";
                         if (PersistLog(path))
                             File.Delete(path);
 
                         var dataset = PageVM.Model.Dataset.ToString().ToLower();
                         var optimizer = PageVM.Model.Optimizer.ToString().ToLower();
 
-                        var fileNamePersistOptimizer = System.IO.Path.Combine(StateDirectory, Settings.Default.ModelNameActive + "-(" + dataset + ")(" + optimizer + @").bin");
-                        var fileNameNoOptimizer = System.IO.Path.Combine(StateDirectory, Settings.Default.ModelNameActive + "-(" + dataset + ").bin");
+                        var fileNamePersistOptimizer = Path.Combine(StateDirectory, Settings.Default.ModelNameActive + "-(" + dataset + ")(" + optimizer + @").bin");
+                        var fileNameNoOptimizer = Path.Combine(StateDirectory, Settings.Default.ModelNameActive + "-(" + dataset + ").bin");
 
                         var fileNameOptimizer = Settings.Default.PersistOptimizer ? fileNamePersistOptimizer : fileNameNoOptimizer;
                         var fileNameOptimizerInverse = Settings.Default.PersistOptimizer ? fileNameNoOptimizer : fileNamePersistOptimizer;
@@ -263,8 +263,8 @@ namespace Convnet
                 else
                 {
                     // try backup model
-                    File.Copy(ApplicationPath + @"Resources\state\" + backupModelName + ".txt", StateDirectory + backupModelName + ".txt", true);
-                    fileName = System.IO.Path.Combine(StateDirectory, backupModelName + ".txt");
+                    File.Copy(Path.Combine(ApplicationPath, "Resources", "state", backupModelName + ".txt"), Path.Combine(StateDirectory, backupModelName + ".txt"), true);
+                    fileName = Path.Combine(StateDirectory, backupModelName + ".txt");
                     Settings.Default.ModelNameActive = backupModelName;
                     Settings.Default.DefinitionActive = File.ReadAllText(fileName);
                     Settings.Default.Optimizer = DNNOptimizers.NAG;
@@ -295,15 +295,15 @@ namespace Convnet
                         model.SetDisableLocking(Settings.Default.DisableLocking);
                         model.SetShuffleCount((ulong)Math.Round(Settings.Default.Shuffle));
 
-                        string path = System.IO.Path.GetTempPath() + Guid.NewGuid().ToString() + ".csv";
+                        string path = Path.GetTempPath() + Guid.NewGuid().ToString() + ".csv";
                         if (PersistLog(path))
                             File.Delete(path);
 
                         var dataset = PageVM.Model.Dataset.ToString().ToLower();
                         var optimizer = PageVM.Model.Optimizer.ToString().ToLower();
 
-                        var fileNamePersistOptimizer = System.IO.Path.Combine(StateDirectory, Settings.Default.ModelNameActive + "-(" + dataset + ")(" + optimizer + @").bin");
-                        var fileNameNoOptimizer = System.IO.Path.Combine(StateDirectory, Settings.Default.ModelNameActive + "-(" + dataset + ").bin");
+                        var fileNamePersistOptimizer = Path.Combine(StateDirectory, Settings.Default.ModelNameActive + "-(" + dataset + ")(" + optimizer + @").bin");
+                        var fileNameNoOptimizer = Path.Combine(StateDirectory, Settings.Default.ModelNameActive + "-(" + dataset + ").bin");
 
                         var fileNameOptimizer = Settings.Default.PersistOptimizer ? fileNamePersistOptimizer : fileNameNoOptimizer;
                         var fileNameOptimizerInverse = Settings.Default.PersistOptimizer ? fileNameNoOptimizer : fileNamePersistOptimizer;
