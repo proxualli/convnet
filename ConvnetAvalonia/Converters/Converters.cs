@@ -87,7 +87,7 @@ namespace ConvnetAvalonia.Converters
         public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
         {
             if (targetType != typeof(bool))
-                throw new InvalidOperationException("The target must be a boolean");
+                throw new InvalidOperationException("The target must be a bool");
 
             if (value != null)
                 return (uint)value > (uint)1 ? false : true;
@@ -101,37 +101,37 @@ namespace ConvnetAvalonia.Converters
         }
     }
 
-    //public class NullableBoolToVisibilityConverter : IValueConverter
-    //{
-    //    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-    //    {
-    //        if (targetType != typeof(Visibility))
-    //            throw new InvalidOperationException("The target must be a Visibility");
+    public class NullableBoolToVisibilityConverter : IValueConverter
+    {
+        public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+        {
+            if (targetType != typeof(bool))
+                throw new InvalidOperationException("The target must be a bool");
 
-    //        return (((bool?)value).HasValue && ((bool?)value).Value) ? Visibility.Visible : Visibility.Collapsed;
-    //    }
+            return (((bool?)value).HasValue && ((bool?)value).Value) ? true : false;
+        }
 
-    //    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-    //    {
-    //        throw new NotImplementedException();
-    //    }
-    //}
+        public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
 
-    //public class InverseNullableBoolToVisibilityConverter : IValueConverter
-    //{
-    //    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-    //    {
-    //        if (targetType != typeof(Visibility))
-    //            throw new InvalidOperationException("The target must be a Visibility");
+    public class InverseNullableBoolToVisibilityConverter : IValueConverter
+    {
+        public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+        {
+            if (targetType != typeof(bool))
+                throw new InvalidOperationException("The target must be a bool");
 
-    //        return (((bool?)value).HasValue && ((bool?)value).Value) ? Visibility.Collapsed : Visibility.Visible;
-    //    }
+            return (((bool?)value).HasValue && ((bool?)value).Value) ? false : true;
+        }
 
-    //    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-    //    {
-    //        throw new NotImplementedException();
-    //    }
-    //}
+        public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
 
     public sealed class BooleanToVisibilityConverter : IValueConverter
     {

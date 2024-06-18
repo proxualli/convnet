@@ -226,6 +226,7 @@ namespace ConvnetAvalonia.PageViewModels
                                 sb.AppendFormat(" Sample:\t\t{0:G}\n Cycle:\t\t\t{1}/{2}\n Epoch:\t\t\t{3}/{4}\n Batch Size:\t\t{5:G}\n Rate:\t\t\t{6:0.#######}\n Momentum:\t\t{7:0.#######}\n Beta2:\t\t\t{8:0.#######}\n L2 Penalty:\t\t{9:0.#######}\n Dropout:\t\t" + (Dropout > 0 ? Dropout.ToString() + "\n" : "No\n") + " Cutout:\t\t" + (Cutout > 0 ? Cutout.ToString() + "\n" : "No\n") + " Auto Augment:\t\t" + (AutoAugment > 0 ? AutoAugment.ToString() + "\n" : "No\n") + (HorizontalFlip ? " Horizontal Flip:\tYes\n" : " Horizontal Flip:\tNo\n") + (VerticalFlip ? " Vertical Flip:\tYes\n" : " Vertical Flip:\tNo\n") + " Color Cast:\t\t" + (ColorCast > 0u ? ColorCast.ToString() + "\n" : "No\n") + " Distortion:\t\t" + (Model.Distortion > 0 ? Distortion.ToString() + "\n" : "No\n") + " Loss:\t\t\t{10:N7}\n Errors:\t\t{11:G}\n Error:\t\t\t{12:N2} %\n Accuracy:\t\t{13:N2} %", SampleIndex, Cycle, TotalCycles, Epoch, TotalEpochs, Model.BatchSize, Rate, Momentum, Beta2, L2Penalty, AvgTrainLoss, TrainErrors, TrainErrorPercentage, 100 - TrainErrorPercentage);
                                 break;
 
+                            case DNNOptimizers.AdaBelief:
                             case DNNOptimizers.AdaBound:
                             case DNNOptimizers.Adam:
                             case DNNOptimizers.Adamax:
@@ -413,8 +414,8 @@ namespace ConvnetAvalonia.PageViewModels
                 Converter = new Converters.EnumConverter(),
                 ConverterParameter = typeof(DNNOptimizers)
             };
-            BindingOperations.SetBinding(optimizerComboBox, ComboBox.SelectedValueProperty, optBinding);
-
+            optimizerComboBox.Bind(ComboBox.SelectedValueProperty, optBinding);
+            
             costLayersComboBox = new ComboBox
             {
                 Name = "ComboBoxCostLayers"
@@ -454,9 +455,8 @@ namespace ConvnetAvalonia.PageViewModels
                 IsChecked = Settings.Default.DisableLocking
             };
             ToolTip.SetTip(disableLockingCheckBox, "Disable Locking");
-            disableLockingCheckBox.Unchecked += DisableLockingCheckBox_Unchecked;
-            disableLockingCheckBox.Checked += DisableLockingCheckBox_Unchecked;
-
+            disableLockingCheckBox.IsCheckedChanged += DisableLockingCheckBox_IsCheckedChanged;
+            
             unlockAllButton = new Button
             {
                 Name = "UnlockAllButton",
@@ -516,10 +516,9 @@ namespace ConvnetAvalonia.PageViewModels
                 Path = "ShowTrainingPlot",
                 Mode = BindingMode.TwoWay,
             };
-            BindingOperations.SetBinding(trainingPlotCheckBox, CheckBox.IsCheckedProperty, tpBinding);
-            trainingPlotCheckBox.Unchecked += TrainingPlotCheckBox_Unchecked;
-            trainingPlotCheckBox.Checked += TrainingPlotCheckBox_Unchecked;
-
+            trainingPlotCheckBox.Bind(CheckBox.IsCheckedProperty, tpBinding);
+            trainingPlotCheckBox.IsCheckedChanged += TrainingPlotCheckBox_IsCheckedChanged;
+            
             plotTypeComboBox = new ComboBox
             {
                 Name = "ComboBoxPlotType",
@@ -533,7 +532,7 @@ namespace ConvnetAvalonia.PageViewModels
                 Mode = BindingMode.TwoWay,
                 Converter = new Converters.NullableBoolToVisibilityConverter(),
             };
-            BindingOperations.SetBinding(plotTypeComboBox, ComboBox.IsVisibleProperty, binding);
+            plotTypeComboBox.Bind(ComboBox.IsVisibleProperty, binding);
             plotTypeComboBox.SelectionChanged += PlotTypeComboBox_SelectionChanged; 
             binding = new Binding
             {
@@ -543,9 +542,9 @@ namespace ConvnetAvalonia.PageViewModels
                 Converter = new Converters.EnumConverter(),
                 ConverterParameter = typeof(PlotType)
             };
-            BindingOperations.SetBinding(plotTypeComboBox, ComboBox.SelectedValueProperty, binding);
-
-            pixelSizeSlider = new FormattedSlider
+            plotTypeComboBox.Bind(ComboBox.SelectedValueProperty, binding);
+            
+            pixelSizeSlider = new Slider
             {
                 Name = "PixelSizeSlider",
                 Minimum = 1,
@@ -554,8 +553,6 @@ namespace ConvnetAvalonia.PageViewModels
                 SmallChange = 1,
                 Width = 96,
                 IsSnapToTickEnabled = true,
-                AutoToolTipPlacement = Primitives.AutoToolTipPlacement.TopLeft,
-                Interval = 12,
                 Value = Settings.Default.PixelSize
             };
             ToolTip.SetTip(pixelSizeSlider, Math.Round(Settings.Default.PixelSize) == 1 ? "1 Pixel" : Math.Round(Settings.Default.PixelSize).ToString() + " Pixels");
@@ -566,7 +563,7 @@ namespace ConvnetAvalonia.PageViewModels
                 Mode = BindingMode.TwoWay,
                 Converter = new Converters.InverseNullableBoolToVisibilityConverter()
             };
-            BindingOperations.SetBinding(pixelSizeSlider, ComboBox.IsVisible, binding);
+            pixelSizeSlider.Bind(ComboBox.IsVisibleProperty, binding);
             pixelSizeSlider.ValueChanged += PixelSizeSlider_ValueChanged;
 
             refreshButton = new Button
@@ -578,27 +575,26 @@ namespace ConvnetAvalonia.PageViewModels
             ToolTip.SetTip(refreshButton, "Refresh");
             refreshButton.Click += RefreshButtonClick;
 
-            Xceed.Wpf.Toolkit.IntegerUpDown refreshRateIntegerUpDown = new Xceed.Wpf.Toolkit.IntegerUpDown
+            NumericUpDown refreshRateIntegerUpDown = new NumericUpDown
             {
                 Name = "RefreshRate",
-                ToolTip = "Refresh Rate/s",
-                HorizontalContentAlignment = System.Windows.HorizontalAlignment.Right,
+                HorizontalContentAlignment = Avalonia.Layout.HorizontalAlignment.Right,
                 Minimum = 1,
                 Maximum = 300,
                 Increment = 1,
                 ParsingNumberStyle = System.Globalization.NumberStyles.Integer,
                 ClipValueToMinMax = true,
-                AutoMoveFocus = true,
                 Focusable = true
             };
+            ToolTip.SetTip(refreshRateIntegerUpDown, "Refresh Rate/s");
             binding = new Binding
             {
                 Source = this,
                 Path = "RefreshRate",
                 Mode = BindingMode.TwoWay                
             };
-            BindingOperations.SetBinding(refreshRateIntegerUpDown, Xceed.Wpf.Toolkit.IntegerUpDown.ValueProperty, binding);
-
+            refreshRateIntegerUpDown.Bind(NumericUpDown.ValueProperty, binding);
+            
             CommandToolBar.Add(startButton);                        // 0
             CommandToolBar.Add(stopButton);                         // 1
             CommandToolBar.Add(pauseButton);                        // 2
@@ -630,17 +626,12 @@ namespace ConvnetAvalonia.PageViewModels
             CommandToolBar.Add(refreshRateIntegerUpDown);           // 28
         }
 
-        private void PlotTypeComboBox_SelectionChanged(object? sender, SelectionChangedEventArgs e)
-        {
-            
-        }
-
         public void OnDisableLockingChanged(object? sender, RoutedEventArgs e)
         {
             disableLockingCheckBox.IsChecked = Settings.Default.DisableLocking;
         }
 
-        private void DisableLockingCheckBox_Unchecked(object? sender, RoutedEventArgs e)
+        private void DisableLockingCheckBox_IsCheckedChanged(object? sender, RoutedEventArgs e)
         {
             if (disableLockingCheckBox.IsChecked.HasValue)
             {
@@ -662,10 +653,10 @@ namespace ConvnetAvalonia.PageViewModels
                 }
                 else
                     if (Model?.LayerCount > (ulong)(index + 1))
-                    {
-                        layersComboBox.SelectedIndex = index + 1;
-                        layersComboBox.SelectedIndex = index;
-                    }
+                {
+                    layersComboBox.SelectedIndex = index + 1;
+                    layersComboBox.SelectedIndex = index;
+                }
             }
         }
 
@@ -734,22 +725,22 @@ namespace ConvnetAvalonia.PageViewModels
             return checkBoxLayout;
         }
 
-        private void LayersComboBox_SourceUpdated(object? sender, DataTransferEventArgs e)
-        {
-            if (e.OriginalSource is CheckBox cb)
-            {
-                if (cb.IsEnabled)
-                {
-                    var layer = Model?.Layers.FirstOrDefault(i => i.Name == cb.Content as String);
-                    if (layer != null && layer.LockUpdate != null) 
-                        Model?.SetLayerLocked(layer.LayerIndex, layer.LockUpdate.Value);
+        //private void LayersComboBox_SourceUpdated(object? sender, DataTransferEventArgs e)
+        //{
+        //    if (e.OriginalSource is CheckBox cb)
+        //    {
+        //        if (cb.IsEnabled)
+        //        {
+        //            var layer = Model?.Layers.FirstOrDefault(i => i.Name == cb.Content as String);
+        //            if (layer != null && layer.LockUpdate != null) 
+        //                Model?.SetLayerLocked(layer.LayerIndex, layer.LockUpdate.Value);
 
-                    e.Handled = true;
-                }
-            }
-        }
-
-        private void PixelSizeSlider_ValueChanged(object? sender, RoutedPropertyChangedEventArgs<double> e)
+        //            e.Handled = true;
+        //        }
+        //    }
+        //}
+       
+        private void PixelSizeSlider_ValueChanged(object? sender, Avalonia.Controls.Primitives.RangeBaseValueChangedEventArgs e)
         {
             int temp = (int)Math.Round(e.NewValue);
             if (temp == 1)
@@ -766,20 +757,20 @@ namespace ConvnetAvalonia.PageViewModels
             LayersComboBox_SelectionChanged(this, null);
         }
 
-        private void TrainingPlotCheckBox_Unchecked(object? sender, RoutedEventArgs e)
+        private void TrainingPlotCheckBox_IsCheckedChanged(object? sender, RoutedEventArgs e)
         {
             Settings.Default.ShowTrainingPlot = trainingPlotCheckBox.IsChecked ?? false;
             Settings.Default.Save();
         }
 
-        private void PlotTypeChanged(object? sender, SelectionChangedEventArgs e)
+        private void PlotTypeComboBox_SelectionChanged(object? sender, SelectionChangedEventArgs e)
         {
             CurrentPlotType = (PlotType)plotTypeComboBox.SelectedIndex;
             Settings.Default.PlotType = (uint)plotTypeComboBox.SelectedIndex;
             Settings.Default.Save();
             RefreshTrainingPlot();
         }
-
+               
         public void CostLayersComboBox_SelectionChanged(object? sender, SelectionChangedEventArgs e)
         {
             if (costLayersComboBox.SelectedIndex >= 0)
@@ -1212,63 +1203,63 @@ namespace ConvnetAvalonia.PageViewModels
 
                 if (Model?.TaskState == DNNTaskStates.Stopped)
                 {
-                    TrainParameters dialog = new TrainParameters
-                    {
-                        Owner = Application.Current.MainWindow,
-                        Model = this.Model,
-                        Path = DefinitionsDirectory,
-                        IsEnabled = true,
-                        Rate = TrainRate,
-                        tpvm = this
-                    };
+                    //TrainParameters dialog = new TrainParameters
+                    //{
+                    //    Owner = Application.Current.MainWindow,
+                    //    Model = this.Model,
+                    //    Path = DefinitionsDirectory,
+                    //    IsEnabled = true,
+                    //    Rate = TrainRate,
+                    //    tpvm = this
+                    //};
                   
-                    if (dialog.ShowDialog() ?? false)
-                    {
-                        TrainRate = dialog.Rate;
+                    //if (dialog.ShowDialog() ?? false)
+                    //{
+                    //    TrainRate = dialog.Rate;
 
-                        if (SGDR)
-                            Model.AddTrainingRateSGDR(TrainRate, true, GotoEpoch, GotoCycle, Model.TrainingSamples);
-                        else
-                            Model.AddTrainingRate(TrainRate, true, GotoEpoch, Model.TrainingSamples);
+                    //    if (SGDR)
+                    //        Model.AddTrainingRateSGDR(TrainRate, true, GotoEpoch, GotoCycle, Model.TrainingSamples);
+                    //    else
+                    //        Model.AddTrainingRate(TrainRate, true, GotoEpoch, Model.TrainingSamples);
 
-                        Model.SetOptimizer(TrainRate.Optimizer);
-                        Model.Optimizer = TrainRate.Optimizer;
-                        Optimizer = TrainRate.Optimizer;
+                    //    Model.SetOptimizer(TrainRate.Optimizer);
+                    //    Model.Optimizer = TrainRate.Optimizer;
+                    //    Optimizer = TrainRate.Optimizer;
 
-                        EpochDuration = TimeSpan.Zero;
+                    //    EpochDuration = TimeSpan.Zero;
 
-                        RefreshTimer = new Timer(1000 * Settings.Default.RefreshInterval.Value);
-                        RefreshTimer.Elapsed += new ElapsedEventHandler(RefreshTimer_Elapsed);
+                    //    RefreshTimer = new Timer(1000 * Settings.Default.RefreshInterval.Value);
+                    //    RefreshTimer.Elapsed += new ElapsedEventHandler(RefreshTimer_Elapsed);
                         
-                        Model.SetCostIndex((uint)SelectedCostIndex);
-                        Model.Start(true);
-                        RefreshTimer.Start();
-                        CommandToolBar[0].IsVisible = false;
-                        CommandToolBar[1].IsVisible = true;
-                        CommandToolBar[2].IsVisible = true;
+                    //    Model.SetCostIndex((uint)SelectedCostIndex);
+                    //    Model.Start(true);
+                    //    RefreshTimer.Start();
+                    //    CommandToolBar[0].IsVisible = false;
+                    //    CommandToolBar[1].IsVisible = true;
+                    //    CommandToolBar[2].IsVisible = true;
 
-                        CommandToolBar[6].IsVisible = false;
-                        CommandToolBar[7].IsVisible = true;
-                        CommandToolBar[8].IsVisible = false;
+                    //    CommandToolBar[6].IsVisible = false;
+                    //    CommandToolBar[7].IsVisible = true;
+                    //    CommandToolBar[8].IsVisible = false;
                                                
-                        CommandToolBar[17].IsVisible = false;
-                        CommandToolBar[18].IsVisible = false;
-                        CommandToolBar[19].IsVisible = false;
-                        CommandToolBar[20].IsVisible = false;
-                        CommandToolBar[21].IsVisible = false;
+                    //    CommandToolBar[17].IsVisible = false;
+                    //    CommandToolBar[18].IsVisible = false;
+                    //    CommandToolBar[19].IsVisible = false;
+                    //    CommandToolBar[20].IsVisible = false;
+                    //    CommandToolBar[21].IsVisible = false;
 
-                        if (Model.Layers[layersComboBox.SelectedIndex].WeightCount > 0)
-                        {
-                            if ((Model.Layers[layersComboBox.SelectedIndex].IsNormLayer && Model.Layers[layersComboBox.SelectedIndex].Scaling) || !Model.Layers[layersComboBox.SelectedIndex].IsNormLayer)
-                            {
-                                CommandToolBar[17].IsVisible = !Settings.Default.DisableLocking;
-                                CommandToolBar[18].IsVisible = !Settings.Default.DisableLocking;
-                                CommandToolBar[20].IsVisible = true;
-                            }
-                        }
+                    //    if (Model.Layers[layersComboBox.SelectedIndex].WeightCount > 0)
+                    //    {
+                    //        if ((Model.Layers[layersComboBox.SelectedIndex].IsNormLayer && Model.Layers[layersComboBox.SelectedIndex].Scaling) || !Model.Layers[layersComboBox.SelectedIndex].IsNormLayer)
+                    //        {
+                    //            CommandToolBar[17].IsVisible = !Settings.Default.DisableLocking;
+                    //            CommandToolBar[18].IsVisible = !Settings.Default.DisableLocking;
+                    //            CommandToolBar[20].IsVisible = true;
+                    //        }
+                    //    }
 
-                        ShowProgress = true;
-                    }
+                    //    ShowProgress = true;
+                    //}
                 }
                 else
                 {
@@ -1366,114 +1357,114 @@ namespace ConvnetAvalonia.PageViewModels
 
         private void EditorButtonClick(object? sender, RoutedEventArgs e)
         {
-            if (Model?.TaskState == DNNTaskStates.Stopped)
-            {
-                if (Settings.Default.TrainingRates == null)
-                    Settings.Default.TrainingRates = new ObservableCollection<DNNTrainingRate> { TrainRate };
+            //if (Model?.TaskState == DNNTaskStates.Stopped)
+            //{
+            //    if (Settings.Default.TrainingRates == null)
+            //        Settings.Default.TrainingRates = new ObservableCollection<DNNTrainingRate> { TrainRate };
                       
-                TrainRates = Settings.Default.TrainingRates;
+            //    TrainRates = Settings.Default.TrainingRates;
                 
-                TrainingSchemeEditor dialog = new TrainingSchemeEditor { Path = StorageDirectory };
+            //    TrainingSchemeEditor dialog = new TrainingSchemeEditor { Path = StorageDirectory };
                 
-                dialog.tpvm = this;
-                dialog.DataContext = this;
-                dialog.buttonTrain.IsEnabled = true;
-                dialog.Owner = Application.Current.MainWindow;
-                dialog.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+            //    dialog.tpvm = this;
+            //    dialog.DataContext = this;
+            //    dialog.buttonTrain.IsEnabled = true;
+            //    dialog.Owner = Application.Current.MainWindow;
+            //    dialog.WindowStartupLocation = WindowStartupLocation.CenterOwner;
 
-                if (dialog.ShowDialog() ?? false)
-                {
-                    bool first = true;
-                    foreach (DNNTrainingRate rate in TrainRates)
-                    {
-                        if (SGDR)
-                            Model.AddTrainingRateSGDR(rate, first, GotoEpoch, GotoCycle, Model.TrainingSamples);
-                        else
-                            Model.AddTrainingRate(rate, first, GotoEpoch, Model.TrainingSamples);
+            //    if (dialog.ShowDialog() ?? false)
+            //    {
+            //        bool first = true;
+            //        foreach (DNNTrainingRate rate in TrainRates)
+            //        {
+            //            if (SGDR)
+            //                Model.AddTrainingRateSGDR(rate, first, GotoEpoch, GotoCycle, Model.TrainingSamples);
+            //            else
+            //                Model.AddTrainingRate(rate, first, GotoEpoch, Model.TrainingSamples);
 
-                        first = false;
-                    }
+            //            first = false;
+            //        }
 
-                    EpochDuration = TimeSpan.Zero;
+            //        EpochDuration = TimeSpan.Zero;
 
-                    RefreshTimer = new Timer(1000 * Settings.Default.RefreshInterval.Value);
-                    RefreshTimer.Elapsed += new ElapsedEventHandler(RefreshTimer_Elapsed);
+            //        RefreshTimer = new Timer(1000 * Settings.Default.RefreshInterval.Value);
+            //        RefreshTimer.Elapsed += new ElapsedEventHandler(RefreshTimer_Elapsed);
 
-                    Model.SetOptimizer(TrainRates[0].Optimizer);
-                    Model.Optimizer = TrainRates[0].Optimizer;
-                    Optimizer = TrainRates[0].Optimizer;
+            //        Model.SetOptimizer(TrainRates[0].Optimizer);
+            //        Model.Optimizer = TrainRates[0].Optimizer;
+            //        Optimizer = TrainRates[0].Optimizer;
 
-                    Model.Start(true);
-                    RefreshTimer.Start();
-                    CommandToolBar[0].IsVisible = false;
-                    CommandToolBar[1].IsVisible = true;
-                    CommandToolBar[2].IsVisible = true;
+            //        Model.Start(true);
+            //        RefreshTimer.Start();
+            //        CommandToolBar[0].IsVisible = false;
+            //        CommandToolBar[1].IsVisible = true;
+            //        CommandToolBar[2].IsVisible = true;
 
-                    CommandToolBar[6].IsVisible = false;
-                    CommandToolBar[7].IsVisible = true;
-                    CommandToolBar[8].IsVisible = false;
+            //        CommandToolBar[6].IsVisible = false;
+            //        CommandToolBar[7].IsVisible = true;
+            //        CommandToolBar[8].IsVisible = false;
                   
-                    if (layersComboBox.SelectedIndex >= 0 && Model.Layers[layersComboBox.SelectedIndex].WeightCount > 0)
-                    {
-                        DNNLayerInfo info = Model.Layers[layersComboBox.SelectedIndex];
-                        if (info.IsNormLayer)
-                        {
-                            if (info.Scaling)
-                            {
-                                CommandToolBar[17].IsVisible = !Settings.Default.DisableLocking;
-                                CommandToolBar[18].IsVisible = !Settings.Default.DisableLocking;
-                                CommandToolBar[19].IsVisible = false;
-                                CommandToolBar[20].IsVisible = true;
-                                CommandToolBar[21].IsVisible = true;
-                            }
-                            else
-                            {
-                                CommandToolBar[17].IsVisible = false;
-                                CommandToolBar[18].IsVisible = false;
-                                CommandToolBar[19].IsVisible = false;
-                                CommandToolBar[20].IsVisible = false;
-                                CommandToolBar[21].IsVisible = true;
-                            }
-                        }
-                        else
-                        {
-                            CommandToolBar[17].IsVisible = !Settings.Default.DisableLocking;
-                            CommandToolBar[18].IsVisible = !Settings.Default.DisableLocking;
-                            CommandToolBar[19].IsVisible = false;
-                            CommandToolBar[20].IsVisible = true;
-                            CommandToolBar[21].IsVisible = false;
-                        }
-                    }
-                    else
-                    {
-                        CommandToolBar[17].IsVisible = false;
-                        CommandToolBar[18].IsVisible = false;
-                        CommandToolBar[19].IsVisible = false;
-                        CommandToolBar[20].IsVisible = false;
-                        CommandToolBar[21].IsVisible = false;
-                    }
+            //        if (layersComboBox.SelectedIndex >= 0 && Model.Layers[layersComboBox.SelectedIndex].WeightCount > 0)
+            //        {
+            //            DNNLayerInfo info = Model.Layers[layersComboBox.SelectedIndex];
+            //            if (info.IsNormLayer)
+            //            {
+            //                if (info.Scaling)
+            //                {
+            //                    CommandToolBar[17].IsVisible = !Settings.Default.DisableLocking;
+            //                    CommandToolBar[18].IsVisible = !Settings.Default.DisableLocking;
+            //                    CommandToolBar[19].IsVisible = false;
+            //                    CommandToolBar[20].IsVisible = true;
+            //                    CommandToolBar[21].IsVisible = true;
+            //                }
+            //                else
+            //                {
+            //                    CommandToolBar[17].IsVisible = false;
+            //                    CommandToolBar[18].IsVisible = false;
+            //                    CommandToolBar[19].IsVisible = false;
+            //                    CommandToolBar[20].IsVisible = false;
+            //                    CommandToolBar[21].IsVisible = true;
+            //                }
+            //            }
+            //            else
+            //            {
+            //                CommandToolBar[17].IsVisible = !Settings.Default.DisableLocking;
+            //                CommandToolBar[18].IsVisible = !Settings.Default.DisableLocking;
+            //                CommandToolBar[19].IsVisible = false;
+            //                CommandToolBar[20].IsVisible = true;
+            //                CommandToolBar[21].IsVisible = false;
+            //            }
+            //        }
+            //        else
+            //        {
+            //            CommandToolBar[17].IsVisible = false;
+            //            CommandToolBar[18].IsVisible = false;
+            //            CommandToolBar[19].IsVisible = false;
+            //            CommandToolBar[20].IsVisible = false;
+            //            CommandToolBar[21].IsVisible = false;
+            //        }
 
-                    ShowProgress = true;
-                }
-            }
-            else
-            {
-                if (Settings.Default.TrainingRates == null)
-                    Settings.Default.TrainingRates = new ObservableCollection<DNNTrainingRate> { TrainRate };
+            //        ShowProgress = true;
+            //    }
+            //}
+            //else
+            //{
+            //    if (Settings.Default.TrainingRates == null)
+            //        Settings.Default.TrainingRates = new ObservableCollection<DNNTrainingRate> { TrainRate };
                 
-                TrainRates = Settings.Default.TrainingRates;
+            //    TrainRates = Settings.Default.TrainingRates;
 
-                TrainingSchemeEditor dialog = new TrainingSchemeEditor { Path = StorageDirectory };
-                dialog.tpvm = this;
-                dialog.DataContext = this;
-                dialog.buttonTrain.IsEnabled = false;
-                dialog.Owner = Application.Current.MainWindow;
-                dialog.WindowStartupLocation = WindowStartupLocation.CenterOwner;
-                if (dialog.ShowDialog() ?? false)
-                    Settings.Default.TrainingRates = TrainRates;
-            }
+            //    TrainingSchemeEditor dialog = new TrainingSchemeEditor { Path = StorageDirectory };
+            //    dialog.tpvm = this;
+            //    dialog.DataContext = this;
+            //    dialog.buttonTrain.IsEnabled = false;
+            //    dialog.Owner = Application.Current.MainWindow;
+            //    dialog.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+            //    if (dialog.ShowDialog() ?? false)
+            //        Settings.Default.TrainingRates = TrainRates;
+            //}
 
-            Settings.Default.Save();
+            //Settings.Default.Save();
         }
 
         private void StrategyButtonClick(object? sender, RoutedEventArgs e)
@@ -1488,22 +1479,22 @@ namespace ConvnetAvalonia.PageViewModels
 
             TrainingStrategies = Settings.Default.TrainingStrategies;
             
-            TrainingStrategiesEditor dialog = new TrainingStrategiesEditor { Path = StorageDirectory };
-            dialog.tpvm = this;
-            dialog.DataContext = this;
-            dialog.buttonOk.IsEnabled = true;
-            dialog.Owner = Application.Current.MainWindow;
-            dialog.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+            //TrainingStrategiesEditor dialog = new TrainingStrategiesEditor { Path = StorageDirectory };
+            //dialog.tpvm = this;
+            //dialog.DataContext = this;
+            //dialog.buttonOk.IsEnabled = true;
+            //dialog.Owner = Application.Current.MainWindow;
+            //dialog.WindowStartupLocation = WindowStartupLocation.CenterOwner;
 
-            if (dialog.ShowDialog() ?? false)
-            {
-                Settings.Default.TrainingStrategies = TrainingStrategies;
-                Settings.Default.Save();
+            //if (dialog.ShowDialog() ?? false)
+            //{
+            //    Settings.Default.TrainingStrategies = TrainingStrategies;
+            //    Settings.Default.Save();
 
-                Model?.ClearTrainingStrategies();
-                foreach (DNNTrainingStrategy strategy in TrainingStrategies)
-                    Model?.AddTrainingStrategy(strategy);
-            }
+            //    Model?.ClearTrainingStrategies();
+            //    foreach (DNNTrainingStrategy strategy in TrainingStrategies)
+            //        Model?.AddTrainingStrategy(strategy);
+            //}
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Interoperability", "CA1416:Validate platform compatibility", Justification = "<Pending>")]
@@ -1537,72 +1528,72 @@ namespace ConvnetAvalonia.PageViewModels
 
         private void OpenLayerWeightsButtonClick(object? sender, RoutedEventArgs e)
         {
-            OpenFileDialog openFileDialog = new OpenFileDialog
-            {
-                CheckFileExists = true,
-                CheckPathExists = true,
-                Multiselect = false,
-                AddExtension = true,
-                ValidateNames = true,
-                Filter = "Layer Weights|*.bin",
-                Title = "Load layer weights",
-                DefaultExt = ".bin",
-                FilterIndex = 1,
-                InitialDirectory = Path.Combine(DefinitionsDirectory, Model?.Name)
-            };
+            //OpenFileDialog openFileDialog = new OpenFileDialog
+            //{
+            //    CheckFileExists = true,
+            //    CheckPathExists = true,
+            //    Multiselect = false,
+            //    AddExtension = true,
+            //    ValidateNames = true,
+            //    Filter = "Layer Weights|*.bin",
+            //    Title = "Load layer weights",
+            //    DefaultExt = ".bin",
+            //    FilterIndex = 1,
+            //    InitialDirectory = Path.Combine(DefinitionsDirectory, Model?.Name)
+            //};
 
-            bool stop = false;
-            while (!stop)
-            {
-                if (openFileDialog.ShowDialog(Application.Current.MainWindow) == true)
-                {
+            //var stop = false;
+            //while (!stop)
+            //{
+            //    if (openFileDialog.ShowDialog(Application.Current.MainWindow) == true)
+            //    {
 
-                    string fileName = openFileDialog.FileName;
-                    if (fileName.Contains(".bin"))
-                    {
-                        if (Model.LoadLayerWeights(fileName, (uint)layersComboBox.SelectedIndex) == 0)
-                        {
-                            Dispatcher.UIThread.Post(() => LayersComboBox_SelectionChanged(sender, null), DispatcherPriority.Render);
-                            Dispatcher.UIThread.Post(() => MessageBox.Show("Layer weights are loaded", "Information", MessageBoxButtons.OK));
-                            stop = true;
-                        }
-                        else
-                            Dispatcher.UIThread.Post(() => MessageBox.Show("Layer weights are incompatible", "Choose a different file", MessageBoxButtons.OK));
-                    }
-                }
-                else
-                    stop = true;
-            }
+            //        string fileName = openFileDialog.FileName;
+            //        if (fileName.Contains(".bin"))
+            //        {
+            //            if (Model?.LoadLayerWeights(fileName, (uint)layersComboBox.SelectedIndex) == 0)
+            //            {
+            //                Dispatcher.UIThread.Post(() => LayersComboBox_SelectionChanged(sender, null), DispatcherPriority.Render);
+            //                Dispatcher.UIThread.Post(() => MessageBox.Show("Layer weights are loaded", "Information", MessageBoxButtons.OK));
+            //                stop = true;
+            //            }
+            //            else
+            //                Dispatcher.UIThread.Post(() => MessageBox.Show("Layer weights are incompatible", "Choose a different file", MessageBoxButtons.OK));
+            //        }
+            //    }
+            //    else
+            //        stop = true;
+            //}
         }
 
         private void SaveLayerWeightsButtonClick(object? sender, RoutedEventArgs e)
         {
-            int layerIndex = layersComboBox.SelectedIndex;
+            var layerIndex = layersComboBox.SelectedIndex;
 
-            SaveFileDialog saveFileDialog = new SaveFileDialog
-            {
-                FileName = Model.Layers[layerIndex].Name,
-                AddExtension = true,
-                CreatePrompt = false,
-                OverwritePrompt = true,
-                ValidateNames = true,
-                Filter = "Layer Weights|*.bin",
-                Title = "Save layer weights",
-                DefaultExt = ".bin",
-                FilterIndex = 1,
-                InitialDirectory = Path.Combine(DefinitionsDirectory, Model.Name)
-            };
+            //SaveFileDialog saveFileDialog = new SaveFileDialog
+            //{
+            //    FileName = Model.Layers[layerIndex].Name,
+            //    AddExtension = true,
+            //    CreatePrompt = false,
+            //    OverwritePrompt = true,
+            //    ValidateNames = true,
+            //    Filter = "Layer Weights|*.bin",
+            //    Title = "Save layer weights",
+            //    DefaultExt = ".bin",
+            //    FilterIndex = 1,
+            //    InitialDirectory = Path.Combine(DefinitionsDirectory, Model.Name)
+            //};
 
-            if (saveFileDialog.ShowDialog(Application.Current.MainWindow) == true)
-            {
-                if (saveFileDialog.FileName.Contains(".bin"))
-                {
-                    if (Model.SaveLayerWeights(saveFileDialog.FileName, (ulong)layerIndex) == 0)
-                       Dispatcher.UIThread.Post(() => MessageBox.Show("Layer weights are saved", "Information", MessageBoxButtons.OK));
-                    else
-                        Dispatcher.UIThread.Post(() => MessageBox.Show("Layer weights not saved!", "Information", MessageBoxButtons.OK));
-                }
-            }
+            //if (saveFileDialog.ShowDialog(Application.Current.MainWindow) == true)
+            //{
+            //    if (saveFileDialog.FileName.Contains(".bin"))
+            //    {
+            //        if (Model.SaveLayerWeights(saveFileDialog.FileName, (ulong)layerIndex) == 0)
+            //           Dispatcher.UIThread.Post(() => MessageBox.Show("Layer weights are saved", "Information", MessageBoxButtons.OK));
+            //        else
+            //            Dispatcher.UIThread.Post(() => MessageBox.Show("Layer weights not saved!", "Information", MessageBoxButtons.OK));
+            //    }
+            //}
         }
 
         private void ForgetLayerWeightsButtonClick(object? sender, RoutedEventArgs e)
@@ -1625,7 +1616,7 @@ namespace ConvnetAvalonia.PageViewModels
         {
             if (Model != null && layersComboBox.SelectedIndex >= 0)
             {
-                int index = layersComboBox.SelectedIndex;
+                var index = layersComboBox.SelectedIndex;
                 if (index < (int)Model.LayerCount)
                 {
                     Settings.Default.SelectedLayer = index;

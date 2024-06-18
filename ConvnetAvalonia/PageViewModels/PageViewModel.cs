@@ -80,12 +80,12 @@ namespace ConvnetAvalonia.PageViewModels
                 //var TestPageVM = new TestPageViewModel(Model);
                 //TestPageVM.Open += PageVM_Open;
 
-                //var TrainPageVM = new TrainPageViewModel(Model);
-                //TrainPageVM.Open += PageVM_Open;
-                //TrainPageVM.Save += PageVM_Save;
+                var TrainPageVM = new TrainPageViewModel(Model);
+                TrainPageVM.Open += PageVM_Open;
+                TrainPageVM.Save += PageVM_Save;
 
                 //var listPages = new List<ConvnetAvalonia.ViewModels.ViewModelBase> { EditPageVM, TestPageVM, TrainPageVM };
-                var listPages = new List<PageViewModelBase> { EditPageVM };
+                var listPages = new List<PageViewModelBase> { EditPageVM, TrainPageVM };
                 Pages = new ReadOnlyCollection<PageViewModelBase>(listPages);
                 CurrentPage = Pages[Settings.Default.CurrentPage];
             }
