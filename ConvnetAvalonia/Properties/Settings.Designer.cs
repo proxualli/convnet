@@ -49,7 +49,7 @@ namespace ConvnetAvalonia.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("9")]
+        [global::System.Configuration.DefaultSettingValueAttribute("10")]
         public int Optimizer {
             get {
                 return ((int)(this["Optimizer"]));

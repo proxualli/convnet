@@ -13,6 +13,7 @@ using System.IO;
 using System.Linq;
 using System.Xml;
 using TextMateSharp.Grammars;
+using TextMateSharp.Themes;
 
 namespace ConvnetAvalonia.PageViews
 {
@@ -36,7 +37,7 @@ namespace ConvnetAvalonia.PageViews
                     DefinitionHighlighting = HighlightingLoader.Load(reader, HighlightingManager.Instance);
                 }
             }
-            HighlightingManager.Instance.RegisterHighlighting("Definition", new string[] { ".txt" }, DefinitionHighlighting);
+            HighlightingManager.Instance.RegisterHighlighting("Definition", [".txt"], DefinitionHighlighting);
             var editorDefinition = this.FindControl<TextEditor>("EditorDefinition");
             if (editorDefinition != null)
             {
@@ -55,16 +56,24 @@ namespace ConvnetAvalonia.PageViews
             //        CSharpHighlighting = HighlightingLoader.Load(reader, HighlightingManager.Instance);
             //    }
             //}
-            //HighlightingManager.Instance.RegisterHighlighting("C#", new string[] { ".cs" }, CSharpHighlighting);
+            //HighlightingManager.Instance.RegisterHighlighting("C#", [".cs"], CSharpHighlighting);
+            //var editorScript = this.FindControl<TextEditor>("EditorScript");
+            //if (editorScript != null)
+            //{
+            //    editorScript.SyntaxHighlighting = HighlightingManager.Instance.GetDefinitionByExtension(".cs");
+            //    editorScript.TextChanged += EditorScript_TextChanged;
+            //}
 
             var editorScript = this.FindControl<TextEditor>("EditorScript");
             if (editorScript != null)
             {
                 editorScript.SyntaxHighlighting = HighlightingManager.Instance.GetDefinitionByExtension(".cs");
                 editorScript.TextChanged += EditorScript_TextChanged;
+
                 var registryOptions = new RegistryOptions(ThemeName.DarkPlus);
                 var textMateInstallation = editorScript.InstallTextMate(registryOptions);
-                textMateInstallation.SetGrammar(registryOptions.GetScopeByLanguageId(registryOptions.GetLanguageByExtension(".cs").Id));
+                var csharpLanguage = registryOptions.GetLanguageByExtension(".cs");
+                textMateInstallation.SetGrammar(registryOptions.GetScopeByLanguageId(csharpLanguage.Id));
             }
 
             var gr = this.FindControl<Grid>("grid");

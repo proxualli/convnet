@@ -73,8 +73,8 @@ namespace ConvnetAvalonia.PageViewModels
         private PlotType currentPlotType;
         private LegendPosition currentLegendPosition;
         private PlotModel plotModel;
-        private Avalonia.Media.Imaging.Bitmap weightsSnapshot;
-        private Avalonia.Media.Imaging.Bitmap inputSnapshot;
+        private Avalonia.Media.Imaging.WriteableBitmap weightsSnapshot;
+        private Avalonia.Media.Imaging.WriteableBitmap inputSnapshot;
         private readonly StringBuilder sb;
 
         public Timer RefreshTimer;
@@ -345,7 +345,7 @@ namespace ConvnetAvalonia.PageViewModels
                 Source = this,
                 Path = "ShowTrainingPlot",
                 Mode = BindingMode.TwoWay,
-                //Converter = new Converters.NullableBoolToVisibilityConverter(),
+                Converter = new Converters.BooleanToVisibilityConverter(),
             };
             plotTypeComboBox.Bind(ComboBox.IsVisibleProperty, binding);
             plotTypeComboBox.SelectionChanged += PlotTypeComboBox_SelectionChanged;
@@ -367,7 +367,9 @@ namespace ConvnetAvalonia.PageViewModels
                 LargeChange = 1,
                 SmallChange = 1,
                 Width = 96,
-                IsSnapToTickEnabled = true,
+                Height = 34,
+                HorizontalAlignment = Avalonia.Layout.HorizontalAlignment.Stretch,
+                VerticalAlignment = Avalonia.Layout.VerticalAlignment.Stretch,
                 Value = Settings.Default.PixelSize
             };
             ToolTip.SetTip(pixelSizeSlider, Math.Round(Settings.Default.PixelSize) == 1 ? "1 Pixel" : Math.Round(Settings.Default.PixelSize).ToString() + " Pixels");
@@ -376,9 +378,9 @@ namespace ConvnetAvalonia.PageViewModels
                 Source = this,
                 Path = "ShowTrainingPlot",
                 Mode = BindingMode.TwoWay,
-                //Converter = new Converters.InverseNullableBoolToVisibilityConverter()
+                Converter = new Converters.InverseBooleanToVisibilityConverter()
             };
-            pixelSizeSlider.Bind(ComboBox.IsVisibleProperty, binding);
+            pixelSizeSlider.Bind(Slider.IsVisibleProperty, binding);
             pixelSizeSlider.ValueChanged += PixelSizeSlider_ValueChanged;
 
             refreshButton = new Button
@@ -1058,13 +1060,13 @@ namespace ConvnetAvalonia.PageViewModels
             set => this.RaiseAndSetIfChanged(ref showTrainingPlot, value);
         }
 
-        public Avalonia.Media.Imaging.Bitmap WeightsSnapshot
+        public Avalonia.Media.Imaging.WriteableBitmap WeightsSnapshot
         {
             get => weightsSnapshot;
             set => this.RaiseAndSetIfChanged(ref weightsSnapshot, value);
         }
 
-        public Avalonia.Media.Imaging.Bitmap InputSnapshot
+        public Avalonia.Media.Imaging.WriteableBitmap InputSnapshot
         {
             get => inputSnapshot;
             set => this.RaiseAndSetIfChanged(ref inputSnapshot, value);
@@ -1502,8 +1504,6 @@ namespace ConvnetAvalonia.PageViewModels
 
             if (result == MessageBoxResult.Yes)                
             {
-                Model?.ResetWeights();
-               
                 Dispatcher.UIThread.Post(() =>
                 {
                     Model?.ResetWeights();

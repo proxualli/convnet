@@ -9,7 +9,7 @@
       <Value Profile="(Default)">60</Value>
     </Setting>
     <Setting Name="Optimizer" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">9</Value>
+      <Value Profile="(Default)">10</Value>
     </Setting>
     <Setting Name="CurrentPage" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">0</Value>

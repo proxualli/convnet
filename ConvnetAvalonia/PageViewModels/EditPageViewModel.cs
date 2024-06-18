@@ -498,7 +498,7 @@ namespace ConvnetAvalonia.PageViewModels
                     File.WriteAllText(Path.Combine(ScriptsDirectory, "Scripts.csproj"), csproj);
                     File.WriteAllText(Path.Combine(ScriptsDirectory, "Program.cs"), Script);
 
-                    var processInfo = new ProcessStartInfo("dotnet", @"build Scripts.csproj -p:Platform=AnyCPU -p:nugetinteractive=true -c " + Mode + " -fl -flp:logfile=msbuild.log;verbosity=quiet")
+                    var processInfo = new ProcessStartInfo("dotnet", @"build Scripts.csproj -p:Platform=AnyCPU -p:nugetinteractive=true -c:" + Mode + " -fl -flp:logfile=msbuild.log;verbosity=quiet")
                     {
                         WorkingDirectory = ScriptsDirectory,
                         UseShellExecute = RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? true : false,

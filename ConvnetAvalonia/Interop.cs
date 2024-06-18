@@ -1,6 +1,7 @@
 ﻿using Avalonia;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
+using Avalonia.Remote.Protocol.Viewport;
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -8,6 +9,7 @@ using System.IO;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 using Float = System.Single;
 using UInt = System.UInt64;
 
@@ -2451,7 +2453,7 @@ namespace Interop
         private DNNCosts cost;
         private System.Collections.Generic.List<UInt> inputs;
         //private System.Collections.Generic.List<string> InputsNames;
-        private Avalonia.Media.Imaging.Bitmap weightsSnapshot;
+        private Avalonia.Media.Imaging.WriteableBitmap weightsSnapshot;
         private bool lockable;
         private bool? lockUpdate = false;
         private bool isNormLayer;
@@ -2577,7 +2579,7 @@ namespace Interop
             }
         }
         //public System.Collections.Generic.List<string> InputsNames;
-        public Avalonia.Media.Imaging.Bitmap WeightsSnapshot
+        public Avalonia.Media.Imaging.WriteableBitmap WeightsSnapshot
         {
             get { return weightsSnapshot; }
             set
@@ -3348,7 +3350,7 @@ namespace Interop
 		public Byte BackgroundColor;
 		public int SelectedIndex;
         public System.Collections.ObjectModel.ObservableCollection<DNNLayerInfo> Layers;
-        public Avalonia.Media.Imaging.Bitmap InputSnapshot;
+        public Avalonia.Media.Imaging.WriteableBitmap InputSnapshot;
         public string Label;
 		public DNNCostLayer[] CostLayers;
         public Float[] MeanTrainSet;
@@ -3904,29 +3906,58 @@ namespace Interop
                                 //var height = info.InputC == 3 ? (pitchW + 3 * border) : depthwise ? (pitchW + border) : ((info.InputC / info.Groups) * pitchW + border);
                                 //var biasOffset = height * width + width;
 
-                                //var totalSize = (!depthwise && info.InputC == 3) ? 3 * biasOffset : biasOffset;
-                                //var pixelFormat = (!depthwise && info.InputC == 3) ? PixelFormats.Rgb24 : PixelFormats.Gray8;
+                                ////var totalSize = 4 * biasOffset;
+                                //var totalSize = (!depthwise && info.InputC == 3) ?  3 * biasOffset : biasOffset;
+                                ////var pixelFormat = (!depthwise && info.InputC == 3) ? PixelFormats.Rgb24 : PixelFormats.Gray8;
 
                                 //if (totalSize > 0 && totalSize <= int.MaxValue)
                                 //{
-                                    
                                 //    var img = new Byte[(int)(totalSize)];
                                 //    DNNGetImage(layerIndex, BackgroundColor, img);
+                                //    var stride = (int)info.W * ((Avalonia.Platform.PixelFormat.Rgba8888.BitsPerPixel + 7) / 8);
                                 //    //using (MemoryStream memoryStream = new MemoryStream(img))
                                 //    //{
-                                //    //    var bitmap = new Bitmap(memoryStream);
+                                //    //    //var bitmap = new Bitmap(memoryStream);
+
+                                //    //    info.WeightsSnapshotX = (int)(width * BlockSize);
+                                //    //    info.WeightsSnapshotY = (int)(height * BlockSize);
+                                //    //    info.WeightsSnapshot = bitmap;
                                 //    //}
-                                //    var bitmap = new WriteableBitmap(new PixelSize((int)info.W, (int)info.H), new Vector(96, 96), PixelFormat.Rgba8888, AlphaFormat.Unpremul);
+                                //    var bitmap = new WriteableBitmap(new PixelSize((int)info.W, (int)info.H), new Vector(96, 96), Avalonia.Platform.PixelFormat.Rgba8888, AlphaFormat.Unpremul);
                                 //    using (var frameBuffer = bitmap.Lock())
                                 //    {
+                                //        for (int y = 0; y < (int)info.H; y++)
+                                //        { 
+
+                                //        }
                                 //        Marshal.Copy(img, 0, frameBuffer.Address, img.Length);
+                                //        //for (int y = 0; y < (int)info.H; y++)
+                                //        //{
+                                //        //    // 创建一个字节数组来存储这一行的数据
+                                //        //    byte[] rowData = new byte[(int)info.W * 4];// 假设是32位位图，每个像素4字节
+
+                                //        //    // 源指针偏移，定位到当前行的起始位置
+                                //        //    IntPtr srcPtrOffset = IntPtr.Add((nint)img[0], y * stride);
+
+                                //        //    // 从非托管内存复制到托管数组
+                                //        //    Marshal.Copy(srcPtrOffset, rowData, 0, rowData.Length);
+
+                                //        //    // 将托管数组的内容复制到WriteableBitmap
+                                //        //    for (int i = 0; i < rowData.Length; i++)
+                                //        //    {
+                                //        //        // 计算目标位置指针
+                                //        //        IntPtr destPtrOffset = IntPtr.Add(frameBuffer.Address, y * frameBuffer.RowBytes + i);
+                                //        //        // 写入数据
+                                //        //        Marshal.WriteByte(destPtrOffset, rowData[i]);
+                                //        //    }
+                                //        //}
                                 //    }
 
                                 //    info.WeightsSnapshotX = (int)(width * BlockSize);
                                 //    info.WeightsSnapshotY = (int)(height * BlockSize);
                                 //    info.WeightsSnapshot = bitmap;
-                                   
-                                //    GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, true, true); 
+
+                                //    GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, true, true);
                                 //}
                             }
                             break;

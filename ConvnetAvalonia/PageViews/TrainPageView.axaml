@@ -9,7 +9,7 @@
              xmlns:vm="clr-namespace:ConvnetAvalonia.PageViewModels"
              x:Class="ConvnetAvalonia.PageViews.TrainPageView"
              x:DataType="vm:TrainPageViewModel">
- 
+
   <Grid x:Name="grid" Background="{DynamicResource BackgroundBrush}">
     <Grid.ColumnDefinitions>
       <ColumnDefinition MinWidth="200" MaxWidth="800"/>
