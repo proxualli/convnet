@@ -13,17 +13,19 @@
              xmlns:controls="clr-namespace:Avalonia.Controls.ToolBar.Controls;assembly=Avalonia.Controls.ToolBar"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:DataType="vm:PageViewModel"
-             x:Class="ConvnetAvalonia.PageViews.PageView"
-             >
+             x:Class="ConvnetAvalonia.PageViews.PageView">
   
   <UserControl.DataTemplates>
     <DataTemplate DataType="{x:Type vm:EditPageViewModel}">
       <view:EditPageView />
     </DataTemplate>
+    <DataTemplate DataType="{x:Type vm:TestPageViewModel}">
+      <view:TestPageView />
+    </DataTemplate>
     <DataTemplate DataType="{x:Type vm:TrainPageViewModel}">
       <view:TrainPageView />
     </DataTemplate>
-    
+        
     <!--<Style TargetType="{x:Type Image}">
       <Setter Property="RenderOptions.BitmapScalingMode" Value="HighQuality"/>
     </Style>
@@ -34,7 +36,7 @@
   <Grid RowDefinitions="Auto,*">
     <controls:ToolBarTray Name="toolBarTray" Grid.Row="0" HorizontalAlignment="Stretch" Orientation="Horizontal">
       <controls:ToolBar Background="{DynamicResource ToolBarBackgroundBrush}" Foreground="{DynamicResource TextBrush}" >
-        <ComboBox Name="PageViews" Margin="2" MinWidth="60" ItemsSource="{Binding Pages}" SelectedItem="{Binding CurrentPage, Mode=TwoWay}" IsEnabled="{Binding CurrentPage.IsValid, Mode=TwoWay}">
+        <ComboBox Name="PageViews" Margin="2" MinWidth="60" ItemsSource="{Binding Pages}" SelectedItem="{Binding CurrentPage}" IsEnabled="{Binding CurrentPage.IsValid, Mode=TwoWay}">
           <ComboBox.ItemTemplate>
             <DataTemplate>
               <TextBlock Text="{Binding Path=DisplayName}"/>
@@ -46,7 +48,7 @@
     </controls:ToolBarTray>
     
     <Border Grid.Row="1">
-      <ContentControl Name="PageContentControl" Content="{Binding CurrentPage, Mode=TwoWay}"/>
+      <ContentControl Name="PageContentControl" Content="{Binding CurrentPage}"/>
     </Border>
 
     <!--<StatusBar Grid.Row="2" Name="statusBarMain" Width="Auto" Height="23" Background="{StaticResource BackgroundBrushLight}">

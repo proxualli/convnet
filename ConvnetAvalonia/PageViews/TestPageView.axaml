@@ -1,0 +1,23 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:AvalonEdit="using:AvaloniaEdit"
+             xmlns:c="clr-namespace:ConvnetAvalonia.Common"
+             xmlns:converters="clr-namespace:ConvnetAvalonia.Converters"
+             xmlns:props="clr-namespace:ConvnetAvalonia.Properties"
+             xmlns:vm="clr-namespace:ConvnetAvalonia.PageViewModels"
+             x:Class="ConvnetAvalonia.PageViews.TestPageView"
+             x:DataType="vm:TestPageViewModel">
+ 
+  <Grid x:Name="grid" Background="{DynamicResource BackgroundBrush}">
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition MinWidth="200" MaxWidth="800"/>
+      <ColumnDefinition Width="*" MinWidth="200"/>
+    </Grid.ColumnDefinitions>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="30" MinHeight="30"/>
+      <RowDefinition Height="*"/>
+    </Grid.RowDefinitions>
+    </Grid>
+</UserControl>

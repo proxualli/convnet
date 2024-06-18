@@ -64,7 +64,7 @@ namespace ConvnetAvalonia.PageViewModels
         private int weightsSnapshotY;
         private bool showWeights;
         private bool showWeightsSnapshot;
-        private bool? showTrainingPlot;
+        private bool showTrainingPlot;
         private ObservableCollection<DataPoint> pointsTrain;
         private ObservableCollection<DataPoint> pointsTest;
         private string pointsTrainLabel;
@@ -115,7 +115,328 @@ namespace ConvnetAvalonia.PageViewModels
 
             //(UIElementAutomationPeer.CreatePeerForElement(refreshButton).GetPattern(PatternInterface.Invoke) as IInvokeProvider).Invoke();
         }
-        
+
+        private void AddCommandButtons()
+        {
+            Button startButton = new Button
+            {
+                Name = "ButtonStart",
+                Content = ApplicationHelper.LoadFromResource("Play.png"),
+                ClickMode = ClickMode.Release
+            };
+            ToolTip.SetTip(startButton, "Start Training");
+            startButton.Click += StartButtonClick;
+
+            Button stopButton = new Button
+            {
+                Name = "ButtonStop",
+                Content = ApplicationHelper.LoadFromResource("Stop.png"),
+                ClickMode = ClickMode.Release,
+                IsVisible = false
+            };
+            ToolTip.SetTip(stopButton, "Stop Training");
+            stopButton.Click += StopButtonClick;
+
+            Button pauseButton = new Button
+            {
+                Name = "ButtonPause",
+                Content = ApplicationHelper.LoadFromResource("Pause.png"),
+                ClickMode = ClickMode.Release,
+                IsVisible = false
+            };
+            ToolTip.SetTip(pauseButton, "Pause Training");
+            pauseButton.Click += PauseButtonClick;
+
+            Button editorButton = new Button
+            {
+                Name = "ButtonEditor",
+                Content = ApplicationHelper.LoadFromResource("Collection.png"),
+                ClickMode = ClickMode.Release
+            };
+            ToolTip.SetTip(editorButton, "Training Scheme Editor");
+            editorButton.Click += EditorButtonClick;
+
+            Button strategiesButton = new Button
+            {
+                Name = "ButtonStrategies",
+                Content = ApplicationHelper.LoadFromResource("Property.png"),
+                ClickMode = ClickMode.Release
+            };
+            ToolTip.SetTip(strategiesButton, "Training Strategies Editor");
+            strategiesButton.Click += StrategyButtonClick;
+
+            Button openButton = new Button
+            {
+                Name = "ButtonOpen",
+                Content = ApplicationHelper.LoadFromResource("Open.png"),
+                ClickMode = ClickMode.Release
+            };
+            ToolTip.SetTip(openButton, "Load Model Weights");
+            openButton.Click += OpenButtonClick;
+
+            Button saveButton = new Button
+            {
+                Name = "ButtonSave",
+                Content = ApplicationHelper.LoadFromResource("Save.png"),
+                ClickMode = ClickMode.Release
+            };
+            ToolTip.SetTip(saveButton, "Save Model Weights");
+            saveButton.Click += SaveButtonClick;
+
+            Button forgetButton = new Button
+            {
+                Name = "ButtonForgetWeights",
+                Content = ApplicationHelper.LoadFromResource("Bolt.png"),
+                ClickMode = ClickMode.Release
+            };
+            ToolTip.SetTip(forgetButton, "Forget Model Weights");
+            forgetButton.Click += ForgetButtonClick;
+
+            Button clearButton = new Button
+            {
+                Name = "ButtonClearLog",
+                Content = ApplicationHelper.LoadFromResource("ClearContents.png"),
+                ClickMode = ClickMode.Release
+            };
+            ToolTip.SetTip(clearButton, "Clear Log");
+            clearButton.Click += ClearButtonClick;
+
+            dataProviderComboBox = new ComboBox
+            {
+                Name = "ComboBoxDataSet",
+                ItemsSource = Enum.GetValues(typeof(DNNDatasets)).Cast<Enum>().ToList(),
+                SelectedIndex = (int)Dataset,
+                IsEnabled = false
+            };
+            ToolTip.SetTip(dataProviderComboBox, "Dataset");
+
+            optimizerComboBox = new ComboBox
+            {
+                Name = "ComboBoxOptimizers",
+                ItemsSource = Enum.GetValues(typeof(DNNOptimizers)).Cast<Enum>().ToList(),
+                IsEnabled = false
+            };
+            ToolTip.SetTip(optimizerComboBox, "Optimizer");
+            Binding optBinding = new Binding
+            {
+                Source = this,
+                Path = "Optimizer",
+                Mode = BindingMode.TwoWay,
+                Converter = new Converters.EnumConverter(),
+                ConverterParameter = typeof(DNNOptimizers)
+            };
+            optimizerComboBox.Bind(ComboBox.SelectedValueProperty, optBinding);
+
+            costLayersComboBox = new ComboBox
+            {
+                Name = "ComboBoxCostLayers"
+            };
+            costLayersComboBox.Items.Clear();
+            for (uint layer = 0u; layer < Model?.CostLayerCount; layer++)
+            {
+                ComboBoxItem item = new ComboBoxItem
+                {
+                    Name = "CostLayer" + layer.ToString(),
+                    Content = Model.CostLayers[layer].Name,
+                    Tag = layer
+                };
+                costLayersComboBox.Items.Add(item);
+            }
+            ToolTip.SetTip(costLayersComboBox, "Cost Layer");
+            costLayersComboBox.SelectedIndex = (int)Model.CostIndex;
+            selectedCostIndex = costLayersComboBox.SelectedIndex;
+            costLayersComboBox.SelectionChanged += CostLayersComboBox_SelectionChanged;
+            costLayersComboBox.IsVisible = Model.CostLayerCount > 1;
+
+            layersComboBox = new ComboBox { Name = "ComboBoxLayers" };
+            layersComboBox.DataContext = Model;
+            layersComboBox.ItemsSource = Model.Layers;
+            layersComboBox.ItemTemplate = GetLockTemplate();
+            //layersComboBox.SourceUpdated += LayersComboBox_SourceUpdated;
+            //layersComboBox.IsSynchronizedWithCurrentItem = true;
+            layersComboBox.SelectedIndex = Settings.Default.SelectedLayer;
+            layersComboBox.SelectionChanged += LayersComboBox_SelectionChanged;
+            ToolTip.SetTip(layersComboBox, "Layer");
+            Model.SelectedIndex = Settings.Default.SelectedLayer;
+
+            disableLockingCheckBox = new CheckBox
+            {
+                Name = "CheckBoxDisableLocking",
+                Content = ApplicationHelper.LoadFromResource("Key.png"),
+                IsChecked = Settings.Default.DisableLocking
+            };
+            ToolTip.SetTip(disableLockingCheckBox, "Disable Locking");
+            disableLockingCheckBox.IsCheckedChanged += DisableLockingCheckBox_IsCheckedChanged;
+
+            unlockAllButton = new Button
+            {
+                Name = "UnlockAllButton",
+                Content = ApplicationHelper.LoadFromResource("Unlock.png"),
+                ClickMode = ClickMode.Release,
+                IsVisible = !Settings.Default.DisableLocking && Model.Layers[Settings.Default.SelectedLayer].Lockable
+            };
+            ToolTip.SetTip(unlockAllButton, "Unlock All");
+            unlockAllButton.Click += UnlockAll_Click;
+
+            lockAllButton = new Button
+            {
+                Name = "LockAllButton",
+                Content = ApplicationHelper.LoadFromResource("Lock.png"),
+                ClickMode = ClickMode.Release,
+                IsVisible = !Settings.Default.DisableLocking && Model.Layers[Settings.Default.SelectedLayer].Lockable
+            };
+            ToolTip.SetTip(lockAllButton, "Lock All");
+            lockAllButton.Click += LockAll_Click;
+
+            Button openLayerWeightsButton = new Button
+            {
+                Name = "ButtonOpenWeightsLayer",
+                Content = ApplicationHelper.LoadFromResource("Open.png"),
+                ClickMode = ClickMode.Release
+            };
+            ToolTip.SetTip(openLayerWeightsButton, "Load Weights");
+            openLayerWeightsButton.Click += OpenLayerWeightsButtonClick;
+
+            Button saveLayerWeightsButton = new Button
+            {
+                Name = "ButtonSaveWeightsLayer",
+                Content = ApplicationHelper.LoadFromResource("Save.png"),
+                ClickMode = ClickMode.Release
+            };
+            ToolTip.SetTip(saveLayerWeightsButton, "Save Weights");
+            saveLayerWeightsButton.Click += SaveLayerWeightsButtonClick;
+
+            Button forgetLayerWeightsButton = new Button
+            {
+                Name = "ButtonForgetWeightsLayer",
+                Content = ApplicationHelper.LoadFromResource("LightningBolt.png"),
+                ClickMode = ClickMode.Release
+            };
+            ToolTip.SetTip(forgetLayerWeightsButton, "Forget Weights");
+            forgetLayerWeightsButton.Click += ForgetLayerWeightsButtonClick;
+
+            trainingPlotCheckBox = new CheckBox
+            {
+                Name = "CheckBoxTrainingPlot",
+                Content = ApplicationHelper.LoadFromResource("PerformanceLog.png")
+            };
+            ToolTip.SetTip(trainingPlotCheckBox, "Training Plot");
+            Binding tpBinding = new Binding
+            {
+                Source = this,
+                Path = "ShowTrainingPlot",
+                Mode = BindingMode.TwoWay,
+            };
+            trainingPlotCheckBox.Bind(CheckBox.IsCheckedProperty, tpBinding);
+            trainingPlotCheckBox.IsCheckedChanged += TrainingPlotCheckBox_IsCheckedChanged;
+
+            plotTypeComboBox = new ComboBox
+            {
+                Name = "ComboBoxPlotType",
+                ItemsSource = Enum.GetValues(typeof(PlotType)).Cast<Enum>().ToList()
+            };
+            ToolTip.SetTip(plotTypeComboBox, "Plot Type");
+            Binding binding = new Binding
+            {
+                Source = this,
+                Path = "ShowTrainingPlot",
+                Mode = BindingMode.TwoWay,
+                //Converter = new Converters.NullableBoolToVisibilityConverter(),
+            };
+            plotTypeComboBox.Bind(ComboBox.IsVisibleProperty, binding);
+            plotTypeComboBox.SelectionChanged += PlotTypeComboBox_SelectionChanged;
+            binding = new Binding
+            {
+                Source = this,
+                Path = "CurrentPlotType",
+                Mode = BindingMode.TwoWay,
+                Converter = new Converters.EnumConverter(),
+                ConverterParameter = typeof(PlotType)
+            };
+            plotTypeComboBox.Bind(ComboBox.SelectedValueProperty, binding);
+
+            pixelSizeSlider = new Slider
+            {
+                Name = "PixelSizeSlider",
+                Minimum = 1,
+                Maximum = 8,
+                LargeChange = 1,
+                SmallChange = 1,
+                Width = 96,
+                IsSnapToTickEnabled = true,
+                Value = Settings.Default.PixelSize
+            };
+            ToolTip.SetTip(pixelSizeSlider, Math.Round(Settings.Default.PixelSize) == 1 ? "1 Pixel" : Math.Round(Settings.Default.PixelSize).ToString() + " Pixels");
+            binding = new Binding
+            {
+                Source = this,
+                Path = "ShowTrainingPlot",
+                Mode = BindingMode.TwoWay,
+                //Converter = new Converters.InverseNullableBoolToVisibilityConverter()
+            };
+            pixelSizeSlider.Bind(ComboBox.IsVisibleProperty, binding);
+            pixelSizeSlider.ValueChanged += PixelSizeSlider_ValueChanged;
+
+            refreshButton = new Button
+            {
+                Name = "ButtonRefresh",
+                Content = ApplicationHelper.LoadFromResource("Refresh.png"),
+                ClickMode = ClickMode.Release
+            };
+            ToolTip.SetTip(refreshButton, "Refresh");
+            refreshButton.Click += RefreshButtonClick;
+
+            NumericUpDown refreshRateIntegerUpDown = new NumericUpDown
+            {
+                Name = "RefreshRate",
+                HorizontalContentAlignment = Avalonia.Layout.HorizontalAlignment.Right,
+                Minimum = 1,
+                Maximum = 300,
+                Increment = 1,
+                ParsingNumberStyle = System.Globalization.NumberStyles.Integer,
+                ClipValueToMinMax = true,
+                Focusable = true
+            };
+            ToolTip.SetTip(refreshRateIntegerUpDown, "Refresh Rate/s");
+            binding = new Binding
+            {
+                Source = this,
+                Path = "RefreshRate",
+                Mode = BindingMode.TwoWay
+            };
+            refreshRateIntegerUpDown.Bind(NumericUpDown.ValueProperty, binding);
+
+            CommandToolBar.Add(startButton);                        // 0
+            CommandToolBar.Add(stopButton);                         // 1
+            CommandToolBar.Add(pauseButton);                        // 2
+            CommandToolBar.Add(editorButton);                       // 3
+            CommandToolBar.Add(strategiesButton);                   // 4
+            CommandToolBar.Add(new Separator());                    // 5
+            CommandToolBar.Add(openButton);                         // 6
+            CommandToolBar.Add(saveButton);                         // 7
+            CommandToolBar.Add(forgetButton);                       // 8
+            CommandToolBar.Add(clearButton);                        // 9
+            CommandToolBar.Add(new Separator());                    // 10
+            CommandToolBar.Add(dataProviderComboBox);               // 11
+            CommandToolBar.Add(optimizerComboBox);                  // 12
+            CommandToolBar.Add(new Separator());                    // 13
+            CommandToolBar.Add(costLayersComboBox);                 // 14
+            CommandToolBar.Add(layersComboBox);                     // 15
+            CommandToolBar.Add(disableLockingCheckBox);             // 16
+            CommandToolBar.Add(unlockAllButton);                    // 17
+            CommandToolBar.Add(lockAllButton);                      // 18
+            CommandToolBar.Add(openLayerWeightsButton);             // 19
+            CommandToolBar.Add(saveLayerWeightsButton);             // 20
+            CommandToolBar.Add(forgetLayerWeightsButton);           // 21
+            CommandToolBar.Add(new Separator());                    // 22
+            CommandToolBar.Add(trainingPlotCheckBox);               // 23
+            CommandToolBar.Add(plotTypeComboBox);                   // 24
+            CommandToolBar.Add(pixelSizeSlider);                    // 25
+            CommandToolBar.Add(new Separator());                    // 26
+            CommandToolBar.Add(refreshButton);                      // 27
+            CommandToolBar.Add(refreshRateIntegerUpDown);           // 28
+        }
+
         private void TrainPageViewModel_RefreshRateChanged(object? sender, int? e)
         {
             if (RefreshTimer != null && e.HasValue)
@@ -303,327 +624,6 @@ namespace ConvnetAvalonia.PageViewModels
                     break;
             }
             ProgressText = sb.ToString();
-        }
-
-        private void AddCommandButtons()
-        {
-            Button startButton = new Button
-            {
-                Name = "ButtonStart",
-                Content = ApplicationHelper.LoadFromResource("Play.png"),
-                ClickMode = ClickMode.Release
-            };
-            ToolTip.SetTip(startButton, "Start Training");
-            startButton.Click += StartButtonClick;
-
-            Button stopButton = new Button
-            {
-                Name = "ButtonStop",
-                Content = ApplicationHelper.LoadFromResource("Stop.png"),
-                ClickMode = ClickMode.Release,
-                IsVisible = false
-            };
-            ToolTip.SetTip(stopButton, "Stop Training");
-            stopButton.Click += StopButtonClick;
-         
-            Button pauseButton = new Button
-            {
-                Name = "ButtonPause",
-                Content = ApplicationHelper.LoadFromResource("Pause.png"),
-                ClickMode = ClickMode.Release,
-                IsVisible = false
-            };
-            ToolTip.SetTip(pauseButton, "Pause Training");
-            pauseButton.Click += PauseButtonClick;
-         
-            Button editorButton = new Button
-            {
-                Name = "ButtonEditor",
-                Content = ApplicationHelper.LoadFromResource("Collection.png"),
-                ClickMode = ClickMode.Release
-            };
-            ToolTip.SetTip(editorButton, "Training Scheme Editor");
-            editorButton.Click += EditorButtonClick;
-
-            Button strategiesButton = new Button
-            {
-                Name = "ButtonStrategies",
-                Content = ApplicationHelper.LoadFromResource("Property.png"),
-                ClickMode = ClickMode.Release
-            };
-            ToolTip.SetTip(strategiesButton, "Training Strategies Editor");
-            strategiesButton.Click += StrategyButtonClick;
-
-            Button openButton = new Button
-            {
-                Name = "ButtonOpen",
-                Content = ApplicationHelper.LoadFromResource("Open.png"),
-                ClickMode = ClickMode.Release
-            };
-            ToolTip.SetTip(openButton, "Load Model Weights");
-            openButton.Click += OpenButtonClick;
-
-            Button saveButton = new Button
-            {
-                Name = "ButtonSave",
-                Content = ApplicationHelper.LoadFromResource("Save.png"),
-                ClickMode = ClickMode.Release
-            };
-            ToolTip.SetTip(saveButton, "Save Model Weights");
-            saveButton.Click += SaveButtonClick;
-
-            Button forgetButton = new Button
-            {
-                Name = "ButtonForgetWeights",
-                Content = ApplicationHelper.LoadFromResource("Bolt.png"),
-                ClickMode = ClickMode.Release
-            };
-            ToolTip.SetTip(forgetButton, "Forget Model Weights");
-            forgetButton.Click += ForgetButtonClick;
-
-            Button clearButton = new Button
-            {
-                Name = "ButtonClearLog",
-                Content = ApplicationHelper.LoadFromResource("ClearContents.png"),
-                ClickMode = ClickMode.Release
-            };
-            ToolTip.SetTip(clearButton, "Clear Log");
-            clearButton.Click += ClearButtonClick;
-
-            dataProviderComboBox = new ComboBox
-            {
-                Name = "ComboBoxDataSet",
-                ItemsSource = Enum.GetValues(typeof(DNNDatasets)).Cast<Enum>().ToList(),
-                SelectedIndex = (int)Dataset,
-                IsEnabled = false
-            };
-            ToolTip.SetTip(dataProviderComboBox, "Dataset");
-
-            optimizerComboBox = new ComboBox
-            {
-                Name = "ComboBoxOptimizers",
-                ItemsSource = Enum.GetValues(typeof(DNNOptimizers)).Cast<Enum>().ToList(),
-                IsEnabled = false
-            };
-            ToolTip.SetTip(optimizerComboBox, "Optimizer");
-            Binding optBinding = new Binding
-            {
-                Source = this,
-                Path = "Optimizer",
-                Mode = BindingMode.TwoWay,
-                Converter = new Converters.EnumConverter(),
-                ConverterParameter = typeof(DNNOptimizers)
-            };
-            optimizerComboBox.Bind(ComboBox.SelectedValueProperty, optBinding);
-            
-            costLayersComboBox = new ComboBox
-            {
-                Name = "ComboBoxCostLayers"
-            };
-            costLayersComboBox.Items.Clear();
-            for (uint layer = 0u; layer < Model?.CostLayerCount; layer++)
-            {
-                ComboBoxItem item = new ComboBoxItem
-                {
-                    Name = "CostLayer" + layer.ToString(),
-                    Content = Model.CostLayers[layer].Name,
-                    Tag = layer
-                };
-                costLayersComboBox.Items.Add(item);
-            }
-            ToolTip.SetTip(costLayersComboBox, "Cost Layer");
-            costLayersComboBox.SelectedIndex = (int)Model.CostIndex;
-            selectedCostIndex = costLayersComboBox.SelectedIndex;
-            costLayersComboBox.SelectionChanged += CostLayersComboBox_SelectionChanged;
-            costLayersComboBox.IsVisible = Model.CostLayerCount > 1;
-
-            layersComboBox = new ComboBox { Name = "ComboBoxLayers" };
-            layersComboBox.DataContext = Model;
-            layersComboBox.ItemsSource = Model.Layers;
-            layersComboBox.ItemTemplate = GetLockTemplate();
-            //layersComboBox.SourceUpdated += LayersComboBox_SourceUpdated;
-            //layersComboBox.IsSynchronizedWithCurrentItem = true;
-            layersComboBox.SelectedIndex = Settings.Default.SelectedLayer;
-            layersComboBox.SelectionChanged += LayersComboBox_SelectionChanged;
-            ToolTip.SetTip(layersComboBox, "Layer");
-            Model.SelectedIndex = Settings.Default.SelectedLayer;
-
-            disableLockingCheckBox = new CheckBox
-            {
-                Name = "CheckBoxDisableLocking",
-                Content = ApplicationHelper.LoadFromResource("Key.png"),
-                IsChecked = Settings.Default.DisableLocking
-            };
-            ToolTip.SetTip(disableLockingCheckBox, "Disable Locking");
-            disableLockingCheckBox.IsCheckedChanged += DisableLockingCheckBox_IsCheckedChanged;
-            
-            unlockAllButton = new Button
-            {
-                Name = "UnlockAllButton",
-                Content = ApplicationHelper.LoadFromResource("Unlock.png"),
-                ClickMode = ClickMode.Release,
-                IsVisible = !Settings.Default.DisableLocking && Model.Layers[Settings.Default.SelectedLayer].Lockable
-            };
-            ToolTip.SetTip(unlockAllButton, "Unlock All");
-            unlockAllButton.Click += UnlockAll_Click;
-
-            lockAllButton = new Button
-            {
-                Name = "LockAllButton",
-                Content = ApplicationHelper.LoadFromResource("Lock.png"),
-                ClickMode = ClickMode.Release,
-                IsVisible = !Settings.Default.DisableLocking && Model.Layers[Settings.Default.SelectedLayer].Lockable
-            };
-            ToolTip.SetTip(lockAllButton, "Lock All");
-            lockAllButton.Click += LockAll_Click;
-
-            Button openLayerWeightsButton = new Button
-            {
-                Name = "ButtonOpenWeightsLayer",
-                Content = ApplicationHelper.LoadFromResource("Open.png"),
-                ClickMode = ClickMode.Release
-            };
-            ToolTip.SetTip(openLayerWeightsButton, "Load Weights");
-            openLayerWeightsButton.Click += OpenLayerWeightsButtonClick;
-
-            Button saveLayerWeightsButton = new Button
-            {
-                Name = "ButtonSaveWeightsLayer",
-                Content = ApplicationHelper.LoadFromResource("Save.png"),
-                ClickMode = ClickMode.Release
-            };
-            ToolTip.SetTip(saveLayerWeightsButton, "Save Weights");
-            saveLayerWeightsButton.Click += SaveLayerWeightsButtonClick;
-
-            Button forgetLayerWeightsButton = new Button
-            {
-                Name = "ButtonForgetWeightsLayer",
-                Content = ApplicationHelper.LoadFromResource("LightningBolt.png"),
-                ClickMode = ClickMode.Release
-            };
-            ToolTip.SetTip(forgetLayerWeightsButton, "Forget Weights");
-            forgetLayerWeightsButton.Click += ForgetLayerWeightsButtonClick;
-
-            trainingPlotCheckBox = new CheckBox
-            {
-                Name = "CheckBoxTrainingPlot",
-                Content = ApplicationHelper.LoadFromResource("PerformanceLog.png")           
-            };
-            ToolTip.SetTip(trainingPlotCheckBox, "Training Plot");
-            Binding tpBinding = new Binding
-            {
-                Source = this,
-                Path = "ShowTrainingPlot",
-                Mode = BindingMode.TwoWay,
-            };
-            trainingPlotCheckBox.Bind(CheckBox.IsCheckedProperty, tpBinding);
-            trainingPlotCheckBox.IsCheckedChanged += TrainingPlotCheckBox_IsCheckedChanged;
-            
-            plotTypeComboBox = new ComboBox
-            {
-                Name = "ComboBoxPlotType",
-                ItemsSource = Enum.GetValues(typeof(PlotType)).Cast<Enum>().ToList()                
-            };
-            ToolTip.SetTip(plotTypeComboBox, "Plot Type");
-            Binding binding = new Binding
-            {
-                Source = this,
-                Path = "ShowTrainingPlot",
-                Mode = BindingMode.TwoWay,
-                //Converter = new Converters.NullableBoolToVisibilityConverter(),
-            };
-            plotTypeComboBox.Bind(ComboBox.IsVisibleProperty, binding);
-            plotTypeComboBox.SelectionChanged += PlotTypeComboBox_SelectionChanged; 
-            binding = new Binding
-            {
-                Source = this,
-                Path = "CurrentPlotType",
-                Mode = BindingMode.TwoWay,
-                Converter = new Converters.EnumConverter(),
-                ConverterParameter = typeof(PlotType)
-            };
-            plotTypeComboBox.Bind(ComboBox.SelectedValueProperty, binding);
-            
-            pixelSizeSlider = new Slider
-            {
-                Name = "PixelSizeSlider",
-                Minimum = 1,
-                Maximum = 8,
-                LargeChange = 1,
-                SmallChange = 1,
-                Width = 96,
-                IsSnapToTickEnabled = true,
-                Value = Settings.Default.PixelSize
-            };
-            ToolTip.SetTip(pixelSizeSlider, Math.Round(Settings.Default.PixelSize) == 1 ? "1 Pixel" : Math.Round(Settings.Default.PixelSize).ToString() + " Pixels");
-            binding = new Binding
-            {
-                Source = this,
-                Path = "ShowTrainingPlot",
-                Mode = BindingMode.TwoWay,
-                //Converter = new Converters.InverseNullableBoolToVisibilityConverter()
-            };
-            pixelSizeSlider.Bind(ComboBox.IsVisibleProperty, binding);
-            pixelSizeSlider.ValueChanged += PixelSizeSlider_ValueChanged;
-
-            refreshButton = new Button
-            {
-                Name = "ButtonRefresh",
-                Content = ApplicationHelper.LoadFromResource("Refresh.png"),
-                ClickMode = ClickMode.Release
-            };
-            ToolTip.SetTip(refreshButton, "Refresh");
-            refreshButton.Click += RefreshButtonClick;
-
-            NumericUpDown refreshRateIntegerUpDown = new NumericUpDown
-            {
-                Name = "RefreshRate",
-                HorizontalContentAlignment = Avalonia.Layout.HorizontalAlignment.Right,
-                Minimum = 1,
-                Maximum = 300,
-                Increment = 1,
-                ParsingNumberStyle = System.Globalization.NumberStyles.Integer,
-                ClipValueToMinMax = true,
-                Focusable = true
-            };
-            ToolTip.SetTip(refreshRateIntegerUpDown, "Refresh Rate/s");
-            binding = new Binding
-            {
-                Source = this,
-                Path = "RefreshRate",
-                Mode = BindingMode.TwoWay                
-            };
-            refreshRateIntegerUpDown.Bind(NumericUpDown.ValueProperty, binding);
-            
-            CommandToolBar.Add(startButton);                        // 0
-            CommandToolBar.Add(stopButton);                         // 1
-            CommandToolBar.Add(pauseButton);                        // 2
-            CommandToolBar.Add(editorButton);                       // 3
-            CommandToolBar.Add(strategiesButton);                   // 4
-            CommandToolBar.Add(new Separator());                    // 5
-            CommandToolBar.Add(openButton);                         // 6
-            CommandToolBar.Add(saveButton);                         // 7
-            CommandToolBar.Add(forgetButton);                       // 8
-            CommandToolBar.Add(clearButton);                        // 9
-            CommandToolBar.Add(new Separator());                    // 10
-            CommandToolBar.Add(dataProviderComboBox);               // 11
-            CommandToolBar.Add(optimizerComboBox);                  // 12
-            CommandToolBar.Add(new Separator());                    // 13
-            CommandToolBar.Add(costLayersComboBox);                 // 14
-            CommandToolBar.Add(layersComboBox);                     // 15
-            CommandToolBar.Add(disableLockingCheckBox);             // 16
-            CommandToolBar.Add(unlockAllButton);                    // 17
-            CommandToolBar.Add(lockAllButton);                      // 18
-            CommandToolBar.Add(openLayerWeightsButton);             // 19
-            CommandToolBar.Add(saveLayerWeightsButton);             // 20
-            CommandToolBar.Add(forgetLayerWeightsButton);           // 21
-            CommandToolBar.Add(new Separator());                    // 22
-            CommandToolBar.Add(trainingPlotCheckBox);               // 23
-            CommandToolBar.Add(plotTypeComboBox);                   // 24
-            CommandToolBar.Add(pixelSizeSlider);                    // 25
-            CommandToolBar.Add(new Separator());                    // 26
-            CommandToolBar.Add(refreshButton);                      // 27
-            CommandToolBar.Add(refreshRateIntegerUpDown);           // 28
         }
 
         public void OnDisableLockingChanged(object? sender, RoutedEventArgs e)
@@ -1048,7 +1048,7 @@ namespace ConvnetAvalonia.PageViewModels
             set => this.RaiseAndSetIfChanged(ref showWeightsSnapshot, value);
         }
 
-        public bool? ShowTrainingPlot
+        public bool ShowTrainingPlot
         {
             get => showTrainingPlot;
             set => this.RaiseAndSetIfChanged(ref showTrainingPlot, value);
@@ -1068,13 +1068,7 @@ namespace ConvnetAvalonia.PageViewModels
 
         public DNNTrainingRate TrainRate
         {
-            get
-            {
-                if (Settings.Default.TraininingRate == null)
-                    Settings.Default.TraininingRate = new DNNTrainingRate(DNNOptimizers.NAG, 0.9f, 0.999f, 0.0005f, 0, 1E-08f, 128, 1, 32, 32, 0, 4, 4, 1, 200, 1, 0.05f, 0.0001f, 0.1f, 0.003f, 1, 1, false, false, 0, 0, false, 0, 0, 0, 0, DNNInterpolations.Cubic, 10, 12);
-
-                return Settings.Default.TraininingRate;
-            }
+            get => Settings.Default.TraininingRate ?? new DNNTrainingRate(DNNOptimizers.NAG, 0.9f, 0.999f, 0.0005f, 0, 1E-08f, 128, 1, 32, 32, 0, 4, 4, 1, 200, 1, 0.05f, 0.0001f, 0.1f, 0.003f, 1, 1, false, false, 0, 0, false, 0, 0, 0, 0, DNNInterpolations.Cubic, 10, 12);
             private set
             {
                 if (value == Settings.Default.TraininingRate)

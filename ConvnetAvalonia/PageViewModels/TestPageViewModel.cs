@@ -1,17 +1,22 @@
-﻿using ConvnetAvalonia.Common;
-using ConvnetAvalonia.Dialogs;
+﻿using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Data;
+using Avalonia.Interactivity;
+using Avalonia.Markup.Xaml.Templates;
+using Avalonia.Media.Imaging;
+using Avalonia.Threading;
+using ConvnetAvalonia.Common;
 using ConvnetAvalonia.Properties;
+using CustomMessageBox.Avalonia;
 using Interop;
+using ReactiveUI;
 using System;
+using System.Collections.ObjectModel;
 using System.Data;
 using System.Linq;
 using System.Text;
 using System.Timers;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Input;
-using System.Windows.Media.Imaging;
-using System.Windows.Threading;
+
 using Float = System.Single;
 using UInt = System.UInt64;
 
@@ -24,8 +29,8 @@ namespace ConvnetAvalonia.PageViewModels
         private bool showProgress;
         private string label;
         private bool showSample;
-        private DataTable confusionDataTable;
-        private BitmapSource inputSnapShot;
+        private DataTable? confusionDataTable;
+        private Bitmap? inputSnapShot;
         private readonly StringBuilder sb;
         private ComboBox dataProviderComboBox;
         private ComboBox costLayersComboBox;
@@ -33,25 +38,7 @@ namespace ConvnetAvalonia.PageViewModels
         public event EventHandler Open;
         private int flag = 0;
 
-        public DNNTrainingRate TestRate
-        {
-            get
-            {
-                if (Settings.Default.TestRate == null)
-                    Settings.Default.TestRate = new DNNTrainingRate(DNNOptimizers.NAG, 0.9f, 0.0005f, 0, 0.999f, 0.000001f, 128, 1, 32, 32, 0, 4, 4, 1, 200, 1, 0.05f, 0.0001f, 0.1f, 0.003f, 1, 1, false, false, 0, 0, false, 0, 0, 0, 0, DNNInterpolations.Cubic, 10, 12);
-               
-                return Settings.Default.TestRate;
-            }
-            private set
-            {
-                if (value == Settings.Default.TestRate)
-                    return;
-
-                Settings.Default.TestRate = value;
-                OnPropertyChanged(nameof(TestRate));
-            }
-        }
-
+        
         public TestPageViewModel(Interop.DNNModel model) : base(model)
         {
             AddCommandButtons();
@@ -64,7 +51,7 @@ namespace ConvnetAvalonia.PageViewModels
                 Model.TestProgress += TestProgress;
             Modelhanged += TestPageViewModel_ModelChanged;
 
-            Application.Current.Dispatcher.Invoke(() => LayerIndexChanged(this, null), DispatcherPriority.Render);
+            Dispatcher.UIThread.Post(() => LayerIndexChanged(this, null), DispatcherPriority.Render);
         }
 
         private void AddCommandButtons()
@@ -72,47 +59,47 @@ namespace ConvnetAvalonia.PageViewModels
             Button startButton = new Button
             {
                 Name = "ButtonStart",
-                ToolTip = "Start Testing",
-                Content = new BitmapToImage(Resources.Play),
+                Content = ApplicationHelper.LoadFromResource("Play.png"),
                 ClickMode = ClickMode.Release
             };
-            startButton.Click += new RoutedEventHandler(StartButtonClick);
+            ToolTip.SetTip(startButton, "Start Testing");
+            startButton.Click += StartButtonClick;
 
             Button stopButton = new Button
             {
                 Name = "ButtonStop",
-                ToolTip = "Stop Testing",
-                Content = new BitmapToImage(Resources.Stop),
+                Content = ApplicationHelper.LoadFromResource("Stop.png"),
                 ClickMode = ClickMode.Release,
-                Visibility = Visibility.Collapsed
+                IsVisible = false
             };
-            stopButton.Click += new RoutedEventHandler(StopButtonClick);
+            ToolTip.SetTip(stopButton, "Stop Testing");
+            stopButton.Click += StopButtonClick;
            
             Button pauseButton = new Button
             {
                 Name = "ButtonPause",
-                ToolTip = "Pause Testing",
-                Content = new BitmapToImage(Resources.Pause),
+                Content = ApplicationHelper.LoadFromResource("Pause.png"),
                 ClickMode = ClickMode.Release,
-                Visibility = Visibility.Collapsed
+                IsVisible = false
             };
-            pauseButton.Click += new RoutedEventHandler(PauseButtonClick);
+            ToolTip.SetTip(pauseButton, "Pause Testing");
+            pauseButton.Click += PauseButtonClick;
           
             dataProviderComboBox = new ComboBox
             {
                 Name = "ComboBoxDataSet",
                 ItemsSource = Enum.GetValues(typeof(DNNDatasets)).Cast<Enum>().ToList(),
                 SelectedIndex = (int)Dataset,
-                ToolTip = "Dataset",
                 IsEnabled = false
             };
+            ToolTip.SetTip(dataProviderComboBox, "Dataset");
 
             costLayersComboBox = new ComboBox
             {
                 Name = "ComboBoxCostLayers"
             };
             costLayersComboBox.Items.Clear();
-            for (uint layer = 0u; layer < Model.CostLayerCount; layer++)
+            for (uint layer = 0u; layer < Model?.CostLayerCount; layer++)
             {
                 ComboBoxItem item = new ComboBoxItem
                 {
@@ -122,7 +109,7 @@ namespace ConvnetAvalonia.PageViewModels
                 };
                 costLayersComboBox.Items.Add(item);
             }
-            costLayersComboBox.ToolTip = "Cost Layer";
+            ToolTip.SetTip(costLayersComboBox, "Cost Layer");
             costLayersComboBox.SelectedIndex = (int)Model.CostIndex;
             costLayersComboBox.SelectionChanged += CostLayersComboBox_SelectionChanged;
             costLayersComboBox.IsEnabled = Model.CostLayerCount > 1;
@@ -135,25 +122,25 @@ namespace ConvnetAvalonia.PageViewModels
             CommandToolBar.Add(costLayersComboBox);
         }
 
-        public void CostLayersComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        public void CostLayersComboBox_SelectionChanged(object? sender, SelectionChangedEventArgs e)
         {
             if (costLayersComboBox.SelectedIndex >= 0)
             {
                 var costIndex = (uint)costLayersComboBox.SelectedIndex;
-                Model.SetCostIndex(costIndex);
-                if (Model.TaskState != DNNTaskStates.Running && ConfusionDataTable != null)
+                Model?.SetCostIndex(costIndex);
+                if (Model?.TaskState != DNNTaskStates.Running && ConfusionDataTable != null)
                 {
-                    Model.GetConfusionMatrix();
+                    Model?.GetConfusionMatrix();
                     ConfusionDataTable = GetConfusionDataTable();
-                    Model.UpdateCostInfo(costIndex);
+                    Model?.UpdateCostInfo(costIndex);
                     sb.Length = 0;
-                    sb.AppendFormat("Loss:\t\t{0:N7}\nErrors:\t{1:G}\nError:\t\t{2:N2} %\nAccuracy:\t{3:N2} %", Model.CostLayers[costIndex].AvgTestLoss, Model.CostLayers[costIndex].TestErrors, Model.CostLayers[costIndex].TestErrorPercentage, (Float)100 - Model.CostLayers[costIndex].TestErrorPercentage);
+                    sb.AppendFormat("Loss:\t\t{0:N7}\nErrors:\t{1:G}\nError:\t\t{2:N2} %\nAccuracy:\t{3:N2} %", Model?.CostLayers[costIndex].AvgTestLoss, Model?.CostLayers[costIndex].TestErrors, Model?.CostLayers[costIndex].TestErrorPercentage, (Float)100 - Model?.CostLayers[costIndex].TestErrorPercentage);
                     ProgressText = sb.ToString();
                 }
             }
         }
 
-        private void TestPageViewModel_ModelChanged(object sender, EventArgs e)
+        private void TestPageViewModel_ModelChanged(object? sender, EventArgs e)
         {
             Model.TestProgress += TestProgress;
             ShowProgress = false;
@@ -176,75 +163,81 @@ namespace ConvnetAvalonia.PageViewModels
 
             dataProviderComboBox.SelectedIndex = (int)Dataset;
 
-            Application.Current.Dispatcher.Invoke(() => LayerIndexChanged(this, null), DispatcherPriority.Render);
+            Dispatcher.UIThread.Post(() => LayerIndexChanged(this, null), DispatcherPriority.Render);
         }
 
         private void TestProgress(UInt BatchSize, UInt SampleIndex, Float AvgTestLoss, Float TestErrorPercentage, Float TestAccuracy, UInt TestErrors, DNNStates State, DNNTaskStates TaskState)
         {
             if (flag == 0 && State != DNNStates.Completed)
             {
-                Application.Current.Dispatcher.Invoke(() =>
+                Dispatcher.UIThread.Post(() =>
                 {
                     sb.Length = 0;
                     sb.AppendFormat("Sample:\t\t{0:G}\nLoss:\t\t{1:N7}\nErrors:\t\t{2:G}\nError:\t\t{3:N2} %\nAccuracy:\t{4:N2} %", SampleIndex, AvgTestLoss, TestErrors, TestErrorPercentage, TestAccuracy);
                     ProgressText = sb.ToString();
 
-                    Model.UpdateLayerInfo(0ul, true);
-                    InputSnapShot = Model.InputSnapshot;
-                    Label = Model.Label;
+                    if (Model != null)
+                    {
+                        Model.UpdateLayerInfo(0ul, true);
+                        InputSnapShot = Model.InputSnapshot;
+                        Label = Model.Label;
+                    }
                 }, DispatcherPriority.Render);
             }
             else
             {
-                Application.Current.Dispatcher.Invoke(() =>
+                Dispatcher.UIThread.Post(() =>
                 {
                     sb.Length = 0;
                     sb.AppendFormat("Loss:\t\t{0:N7}\nErrors:\t\t{1:G}\nError:\t\t{2:N2} %\nAccuracy:\t{3:N2} %", AvgTestLoss, TestErrors, TestErrorPercentage, TestAccuracy);
                     ProgressText = sb.ToString();
-
-                    Mouse.OverrideCursor = Cursors.Wait;
 
                     flag = 1;
                     RefreshTimer.Stop();
                     RefreshTimer.Elapsed -= new ElapsedEventHandler(RefreshTimer_Elapsed);
                     RefreshTimer.Dispose();
 
-                    Model.Stop();
-                    Model.SetCostIndex((uint)costLayersComboBox.SelectedIndex);
-                    Model.GetConfusionMatrix();
+                    Model?.Stop();
+                    Model?.SetCostIndex((uint)costLayersComboBox.SelectedIndex);
+                    Model?.GetConfusionMatrix();
                     ConfusionDataTable = GetConfusionDataTable();
 
-                    CommandToolBar[0].ToolTip = "Start Testing";
-                    CommandToolBar[0].Visibility = Visibility.Visible;
-                    CommandToolBar[1].Visibility = Visibility.Collapsed;
-                    CommandToolBar[2].Visibility = Visibility.Collapsed;
+                    ToolTip.SetTip(CommandToolBar[0], "Start Testing");
+
+                    CommandToolBar[0].IsVisible = true;
+                    CommandToolBar[1].IsVisible = false;
+                    CommandToolBar[2].IsVisible = false;
 
                     IsValid = true;
                     ShowSample = false;
-                    Mouse.OverrideCursor = null;
-                   
                 }, DispatcherPriority.Normal);
             }
         }
 
-        public DataTable ConfusionDataTable
+        public DNNTrainingRate TestRate
         {
-            get { return confusionDataTable; }
-            set
+            get => Settings.Default.TestRate ?? new DNNTrainingRate(DNNOptimizers.NAG, 0.9f, 0.0005f, 0, 0.999f, 0.000001f, 128, 1, 32, 32, 0, 4, 4, 1, 200, 1, 0.05f, 0.0001f, 0.1f, 0.003f, 1, 1, false, false, 0, 0, false, 0, 0, 0, 0, DNNInterpolations.Cubic, 10, 12);
+            private set
             {
-                if (value == confusionDataTable)
+                if (value == Settings.Default.TestRate)
                     return;
 
-                confusionDataTable = value;
-                OnPropertyChanged(nameof(ConfusionDataTable));
+                Settings.Default.TestRate = value;
+                this.RaisePropertyChanged(nameof(TestRate));
             }
         }
 
-        private DataTable GetConfusionDataTable()
+        public DataTable? ConfusionDataTable
         {
-            DataTable table = null;
+            get => confusionDataTable;
+            set => this.RaiseAndSetIfChanged(ref confusionDataTable, value);
+        }
 
-            if (Model.ConfusionMatrix != null)
+        private DataTable? GetConfusionDataTable()
+        {
+            DataTable? table = null;
+
+            if (Model?.ConfusionMatrix != null)
             {
                 table = new DataTable("ConfusionTable");
                 uint classCount = (uint)Model.ClassCount;
@@ -282,56 +275,35 @@ namespace ConvnetAvalonia.PageViewModels
 
         public bool ShowProgress
         {
-            get { return showProgress; }
-            set
-            {
-                if (value == showProgress)
-                    return;
-
-                showProgress = value;
-                OnPropertyChanged(nameof(ShowProgress));
-            }
+            get => showProgress;
+            set => this.RaiseAndSetIfChanged(ref showProgress, value);
         }
 
         public bool ShowSample
         {
-            get { return showSample; }
-            set
-            {
-                if (value == showSample)
-                    return;
-
-                showSample = value;
-
-                OnPropertyChanged(nameof(ShowSample));
-            }
+            get => showSample;
+            set => this.RaiseAndSetIfChanged(ref showSample, value);
         }
 
-        public BitmapSource InputSnapShot
+        public Bitmap? InputSnapShot
         {
-            get { return inputSnapShot; }
-            set
-            {
-                if (value == inputSnapShot)
-                    return;
-
-                inputSnapShot = value;
-                OnPropertyChanged(nameof(InputSnapShot));
-            }
+            get => inputSnapShot;
+            set => this.RaiseAndSetIfChanged(ref inputSnapShot, value);
         }
 
         public string Label
         {
-            get { return label; }
-            set
-            {
-                if (value == label)
-                    return;
-
-                label = value;
-                OnPropertyChanged(nameof(Label));
-            }
+            get => label;
+            set => this.RaiseAndSetIfChanged(ref label, value);
         }
+
+        public string ProgressText
+        {
+            get => progressText;
+            set => this.RaiseAndSetIfChanged(ref progressText, value);
+        }
+
+        public override string DisplayName => "Test";
 
         public override void Reset()
         {
@@ -339,30 +311,12 @@ namespace ConvnetAvalonia.PageViewModels
             Label = string.Empty;
         }
 
-        public string ProgressText
+        private void RefreshTimer_Elapsed(object? sender, ElapsedEventArgs e)
         {
-            get
-            {
-                return progressText;
-            }
-            set
-            {
-                if (value == progressText)
-                    return;
-
-                progressText = value;
-                OnPropertyChanged(nameof(ProgressText));
-            }
+            Dispatcher.UIThread.Post(() => LayerIndexChanged(sender, null), DispatcherPriority.Render);
         }
 
-        public override string DisplayName => "Test";
-
-        private void RefreshTimer_Elapsed(object sender, ElapsedEventArgs e)
-        {
-            Application.Current.Dispatcher.Invoke(() => LayerIndexChanged(sender, null), DispatcherPriority.Render);
-        }
-
-        private void LayerIndexChanged(object sender, SelectionChangedEventArgs e)
+        private void LayerIndexChanged(object? sender, SelectionChangedEventArgs e)
         {
             if (Model != null)
             {
@@ -377,105 +331,102 @@ namespace ConvnetAvalonia.PageViewModels
             }
         }
 
-        private void StartButtonClick(object sender, RoutedEventArgs e)
+        private void StartButtonClick(object? sender, RoutedEventArgs e)
         {
-            Application.Current.Dispatcher.Invoke(() =>
+            Dispatcher.UIThread.Post(() =>
             {
-                if (Model.TaskState == DNNTaskStates.Stopped)
+                if (Model?.TaskState == DNNTaskStates.Stopped)
                 {
-                    TestParameters dialog = new TestParameters
-                    {
-                        Owner = Application.Current.MainWindow,
-                        Model = Model,
-                        Path = DefinitionsDirectory,
-                        IsEnabled = true,
-                        Rate = TestRate
-                    };
+                    //TestParameters dialog = new TestParameters
+                    //{
+                    //    Owner = Application.Current.MainWindow,
+                    //    Model = Model,
+                    //    Path = DefinitionsDirectory,
+                    //    IsEnabled = true,
+                    //    Rate = TestRate
+                    //};
 
-                    if (dialog.ShowDialog() ?? false)
-                    {
-                        IsValid = false;
+                    //if (dialog.ShowDialog() ?? false)
+                    //{
+                    //    IsValid = false;
 
-                        TestRate = dialog.Rate;
-                        Settings.Default.Save();
+                    //    TestRate = dialog.Rate;
+                    //    Settings.Default.Save();
 
-                        flag = 0;
-                        Model.AddTrainingRate(new DNNTrainingRate(dialog.Rate.Optimizer, dialog.Rate.Momentum, dialog.Rate.Beta2, dialog.Rate.L2Penalty, dialog.Rate.Dropout, dialog.Rate.Eps, dialog.Rate.N, dialog.Rate.D, dialog.Rate.H, dialog.Rate.W, dialog.Rate.PadD, dialog.Rate.PadH, dialog.Rate.PadW, 1, 1, dialog.Rate.EpochMultiplier, dialog.Rate.MaximumRate, dialog.Rate.MinimumRate, dialog.Rate.FinalRate, dialog.Rate.Gamma, dialog.Rate.DecayAfterEpochs, dialog.Rate.DecayFactor, dialog.Rate.HorizontalFlip, dialog.Rate.VerticalFlip, dialog.Rate.InputDropout, dialog.Rate.Cutout, dialog.Rate.CutMix, dialog.Rate.AutoAugment, dialog.Rate.ColorCast, dialog.Rate.ColorAngle, dialog.Rate.Distortion, dialog.Rate.Interpolation, dialog.Rate.Scaling, dialog.Rate.Rotation), true, 1, Model.TrainingSamples);
-                        Model.SetCostIndex((uint)costLayersComboBox.SelectedIndex);
-                        Model.Start(false);
-                        RefreshTimer = new Timer(1000.0);
-                        RefreshTimer.Elapsed += RefreshTimer_Elapsed;
+                    //    flag = 0;
+                    //    Model.AddTrainingRate(new DNNTrainingRate(dialog.Rate.Optimizer, dialog.Rate.Momentum, dialog.Rate.Beta2, dialog.Rate.L2Penalty, dialog.Rate.Dropout, dialog.Rate.Eps, dialog.Rate.N, dialog.Rate.D, dialog.Rate.H, dialog.Rate.W, dialog.Rate.PadD, dialog.Rate.PadH, dialog.Rate.PadW, 1, 1, dialog.Rate.EpochMultiplier, dialog.Rate.MaximumRate, dialog.Rate.MinimumRate, dialog.Rate.FinalRate, dialog.Rate.Gamma, dialog.Rate.DecayAfterEpochs, dialog.Rate.DecayFactor, dialog.Rate.HorizontalFlip, dialog.Rate.VerticalFlip, dialog.Rate.InputDropout, dialog.Rate.Cutout, dialog.Rate.CutMix, dialog.Rate.AutoAugment, dialog.Rate.ColorCast, dialog.Rate.ColorAngle, dialog.Rate.Distortion, dialog.Rate.Interpolation, dialog.Rate.Scaling, dialog.Rate.Rotation), true, 1, Model.TrainingSamples);
+                    //    Model.SetCostIndex((uint)costLayersComboBox.SelectedIndex);
+                    //    Model.Start(false);
+                    //    RefreshTimer = new Timer(1000.0);
+                    //    RefreshTimer.Elapsed += RefreshTimer_Elapsed;
 
-                        CommandToolBar[0].Visibility = Visibility.Collapsed;
-                        CommandToolBar[1].Visibility = Visibility.Visible;
-                        CommandToolBar[2].Visibility = Visibility.Visible;
+                    //    CommandToolBar[0].IsVisible = false;
+                    //    CommandToolBar[1].IsVisible = true;
+                    //    CommandToolBar[2].IsVisible = true;
 
-                        ShowProgress = true;
-                        ShowSample = true;
-                    }
+                    //    ShowProgress = true;
+                    //    ShowSample = true;
+                    //}
                 }
                 else
                 {
-                    if (Model.TaskState == DNNTaskStates.Paused)
+                    if (Model?.TaskState == DNNTaskStates.Paused)
                     {
                         Model.Resume();
 
-                        CommandToolBar[0].Visibility = Visibility.Collapsed;
-                        CommandToolBar[1].Visibility = Visibility.Visible;
-                        CommandToolBar[2].Visibility = Visibility.Visible;
+                        CommandToolBar[0].IsVisible = false;
+                        CommandToolBar[1].IsVisible = true;
+                        CommandToolBar[2].IsVisible = true;
                     }
                 }
             }, DispatcherPriority.Normal);
         }
 
-        private void StopButtonClick(object sender, RoutedEventArgs e)
+        private void StopButtonClick(object? sender, RoutedEventArgs e)
         {
-            Application.Current.Dispatcher.Invoke(() =>
+            Dispatcher.UIThread.Post(() =>
             {
-                if (Model.TaskState != DNNTaskStates.Stopped)
+                if (Model?.TaskState != DNNTaskStates.Stopped)
                 {
-                    if (Xceed.Wpf.Toolkit.MessageBox.Show("Do you really want stop?", "Stop Test", MessageBoxButton.YesNo, MessageBoxImage.None, MessageBoxResult.No) == MessageBoxResult.Yes)
+                    if (MessageBox.Show("Do you really want stop?", "Stop Test", MessageBoxButtons.YesNo, MessageBoxIcon.None, MessageBoxDefaultButton.Button2).Result == MessageBoxResult.Yes)
                     {
-                        Mouse.OverrideCursor = Cursors.Wait;
-
                         RefreshTimer.Stop();
                         RefreshTimer.Elapsed -= new ElapsedEventHandler(RefreshTimer_Elapsed);
                         RefreshTimer.Dispose();
 
-                        Model.Stop();
+                        Model?.Stop();
                         ConfusionDataTable = null;
 
-                        CommandToolBar[0].ToolTip = "Start Testing";
-                        CommandToolBar[0].Visibility = Visibility.Visible;
-                        CommandToolBar[1].Visibility = Visibility.Collapsed;
-                        CommandToolBar[2].Visibility = Visibility.Collapsed;
+                        ToolTip.SetTip(CommandToolBar[0], "Start Testing");
+                        CommandToolBar[0].IsVisible = true;
+                        CommandToolBar[1].IsVisible = false;
+                        CommandToolBar[2].IsVisible = false;
 
                         IsValid = true;
                         ShowProgress = false;
                         ShowSample = false;
-                        Mouse.OverrideCursor = null;
                     }
                 }
             }, DispatcherPriority.Normal);
         }
 
-        private void PauseButtonClick(object sender, RoutedEventArgs e)
+        private void PauseButtonClick(object? sender, RoutedEventArgs e)
         {
-            Application.Current.Dispatcher.Invoke(() =>
+            Dispatcher.UIThread.Post(() =>
             {
-                if (Model.TaskState == DNNTaskStates.Running)
+                if (Model?.TaskState == DNNTaskStates.Running)
                 {
                     Model.Pause();
 
-                    CommandToolBar[0].ToolTip = "Resume Testing";
-                    CommandToolBar[0].Visibility = Visibility.Visible;
-                    CommandToolBar[1].Visibility = Visibility.Visible;
-                    CommandToolBar[2].Visibility = Visibility.Collapsed;
+                    ToolTip.SetTip(CommandToolBar[0], "Start Testing");
+                    CommandToolBar[0].IsVisible = true;
+                    CommandToolBar[1].IsVisible = true;
+                    CommandToolBar[2].IsVisible = false;
                 }
             }, DispatcherPriority.Normal);
         }
 
-        private void OpenButtonClick(object sender, RoutedEventArgs e)
+        private void OpenButtonClick(object? sender, RoutedEventArgs e)
         {
             Open?.Invoke(this, EventArgs.Empty);
         }
@@ -491,7 +442,7 @@ namespace ConvnetAvalonia.PageViewModels
                 {
                     // TODO: dispose managed state (managed objects).
                     RefreshTimer.Dispose();
-                    confusionDataTable.Dispose();
+                    confusionDataTable?.Dispose();
                 }
 
                 // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.

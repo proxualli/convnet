@@ -77,16 +77,14 @@ namespace ConvnetAvalonia.PageViewModels
                 EditPageVM.Save += PageVM_SaveAs;
                 EditPageVM.Modelhanged += EditPageVM_ModelChanged;
 
-                //var TestPageVM = new TestPageViewModel(Model);
-                //TestPageVM.Open += PageVM_Open;
+                var TestPageVM = new TestPageViewModel(Model);
+                TestPageVM.Open += PageVM_Open;
 
                 var TrainPageVM = new TrainPageViewModel(Model);
                 TrainPageVM.Open += PageVM_Open;
                 TrainPageVM.Save += PageVM_Save;
 
-                //var listPages = new List<ConvnetAvalonia.ViewModels.ViewModelBase> { EditPageVM, TestPageVM, TrainPageVM };
-                var listPages = new List<PageViewModelBase> { EditPageVM, TrainPageVM };
-                Pages = new ReadOnlyCollection<PageViewModelBase>(listPages);
+                Pages = new ReadOnlyCollection<PageViewModelBase?>([EditPageVM, TestPageVM, TrainPageVM]);
                 CurrentPage = Pages[Settings.Default.CurrentPage];
             }
         }
@@ -167,8 +165,8 @@ namespace ConvnetAvalonia.PageViewModels
         {
             if (Pages != null && Pages.Count > 0)
             {
-                Model = Pages[(int)ViewModels.Edit].Model;
-                if (Model != null && Pages.Count == 3)
+                Model = Pages[(int)ViewModels.Edit]?.Model;
+                if (Model != null)
                 {
                     Model.TrainProgress += TrainProgress;
                     Model.TestProgress += TestProgress;
@@ -178,7 +176,10 @@ namespace ConvnetAvalonia.PageViewModels
             }
         }
 
-        public ViewModels CurrentModel => (ViewModels)Pages.IndexOf(CurrentPage);
+        public ViewModels? CurrentModel
+        {
+            get => (Pages != null && CurrentPage != null) ? (ViewModels?)Pages.IndexOf(CurrentPage) : null;  
+        }
 
         public override string DisplayName => "Main";
 
@@ -225,7 +226,7 @@ namespace ConvnetAvalonia.PageViewModels
             set => this.RaiseAndSetIfChanged(ref progressValue, value);
         }
 
-        public ReadOnlyCollection<PageViewModelBase>? Pages { get; }
+        public ReadOnlyCollection<PageViewModelBase?>? Pages { get; }
 
         private PageViewModelBase? currentPage;
         public PageViewModelBase? CurrentPage
@@ -281,8 +282,8 @@ namespace ConvnetAvalonia.PageViewModels
         public override void Reset()
         {
             if (Pages != null)
-                foreach (PageViewModelBase page in Pages)
-                    page.Reset();
+                foreach (PageViewModelBase? page in Pages)
+                    page?.Reset();
         }
     }
 }

@@ -1,9 +1,9 @@
 using Avalonia.Controls;
-using Avalonia.Input;
+using Avalonia.Markup.Xaml;
 using AvaloniaEdit;
+using ConvnetAvalonia.Common;
 using ConvnetAvalonia.PageViewModels;
 using ConvnetAvalonia.Properties;
-using ConvnetAvalonia.Common;
 using CustomMessageBox.Avalonia;
 using Interop;
 using ReactiveUI;
@@ -15,7 +15,7 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace ConvnetAvalonia
+namespace ConvnetAvalonia.PageViews
 {
     public partial class MainWindow : Window, IDisposable
     {
@@ -27,7 +27,7 @@ namespace ConvnetAvalonia
 #else
         const string Mode = "Release";
 #endif
-        public static string ApplicationPath { get; } = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+        public static string? ApplicationPath { get; } = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
         public static string StorageDirectory { get; } = Path.Combine(Environment.GetFolderPath(RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? Environment.SpecialFolder.MyDocuments :Environment.SpecialFolder.UserProfile), "convnet");
         public static string StateDirectory { get; } = Path.Combine(StorageDirectory, "state");
         public static string DefinitionsDirectory { get; } = Path.Combine(StorageDirectory, "definitions");
@@ -160,11 +160,11 @@ namespace ConvnetAvalonia
             return false;
         }
 
-       
+
         public MainWindow()
         {
             InitializeComponent();
-            
+
             CutCommand = ReactiveCommand.Create(Cut, this.WhenAnyValue(x => x.CanCut));
             //var cmdKey = GetPlatformCommandKey();
 
@@ -225,28 +225,31 @@ namespace ConvnetAvalonia
             Directory.CreateDirectory(DefinitionsDirectory);
             Directory.CreateDirectory(StateDirectory);
 
-            if (!Directory.Exists(ScriptsDirectory))
+            if (!Directory.Exists(ScriptsDirectory) && ApplicationPath != null)
             {
                 Directory.CreateDirectory(ScriptsDirectory);
                 ApplicationHelper.CopyDir(Path.Combine(ApplicationPath.Replace(Path.Combine("ConvnetAvalonia", "bin", RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? "x64" : "", Mode, Framework), ""), "Scripts"), ScriptsDirectory);
             }
-                     
+
             var fileName = Path.Combine(StateDirectory, Settings.Default.ModelNameActive + ".txt");
             var backupModelName = "resnet-3-2-6-channelzeropad-relu";
 
-            if (!File.Exists(Path.Combine(StateDirectory, backupModelName + ".txt")))
+            if (!File.Exists(Path.Combine(StateDirectory, backupModelName + ".txt")) && ApplicationPath != null)
                 File.Copy(Path.Combine(ApplicationPath, "Resources", "state", backupModelName + ".txt"), Path.Combine(StateDirectory, backupModelName + ".txt"), true);
 
-            if (!File.Exists(fileName) || !File.ReadLines(Path.Combine(StateDirectory, backupModelName + ".txt")).SequenceEqual(File.ReadLines(Path.Combine(ApplicationPath, "Resources", "state", backupModelName + ".txt"))))
-            {
-                Directory.CreateDirectory(Path.Combine(DefinitionsDirectory, backupModelName));
-                File.Copy(Path.Combine(ApplicationPath, "Resources", "state", backupModelName + ".txt"), Path.Combine(DefinitionsDirectory, backupModelName + ".txt"), true);
+            if (ApplicationPath != null)
+            { 
+                if (!File.Exists(fileName) || !File.ReadLines(Path.Combine(StateDirectory, backupModelName + ".txt")).SequenceEqual(File.ReadLines(Path.Combine(ApplicationPath, "Resources", "state", backupModelName + ".txt"))))
+                {
+                    Directory.CreateDirectory(Path.Combine(DefinitionsDirectory, backupModelName));
+                    File.Copy(Path.Combine(ApplicationPath, "Resources", "state", backupModelName + ".txt"), Path.Combine(DefinitionsDirectory, backupModelName + ".txt"), true);
 
-                fileName = Path.Combine(StateDirectory, backupModelName + ".txt");
-                Settings.Default.ModelNameActive = backupModelName;
-                Settings.Default.DefinitionActive = File.ReadAllText(fileName);
-                Settings.Default.Optimizer = (int)DNNOptimizers.NAG;
-                Settings.Default.Save();
+                    fileName = Path.Combine(StateDirectory, backupModelName + ".txt");
+                    Settings.Default.ModelNameActive = backupModelName;
+                    Settings.Default.DefinitionActive = File.ReadAllText(fileName);
+                    Settings.Default.Optimizer = (int)DNNOptimizers.NAG;
+                    Settings.Default.Save();
+                }
             }
 
             try
@@ -326,7 +329,8 @@ namespace ConvnetAvalonia
                 else
                 {
                     // try backup model
-                    File.Copy(Path.Combine(ApplicationPath, "Resources", "state", backupModelName + ".txt"), Path.Combine(StateDirectory, backupModelName + ".txt"), true);
+                    if (ApplicationPath != null)
+                        File.Copy(Path.Combine(ApplicationPath, "Resources", "state", backupModelName + ".txt"), Path.Combine(StateDirectory, backupModelName + ".txt"), true);
                     fileName = Path.Combine(StateDirectory, backupModelName + ".txt");
                     Settings.Default.ModelNameActive = backupModelName;
                     Settings.Default.DefinitionActive = File.ReadAllText(fileName);
@@ -417,6 +421,11 @@ namespace ConvnetAvalonia
                     else
                         MessageBox.Show(exception.Message + "\r\n\r\n" + exception.GetBaseException().Message + "\r\n\r\nAn error occured while loading the Model:" + Settings.Default.ModelNameActive, "Information", MessageBoxButtons.OK);
             }
+        }
+
+        private void InitializeComponent()
+        {
+            AvaloniaXamlLoader.Load(this);
         }
 
         protected virtual void Dispose(bool disposing)

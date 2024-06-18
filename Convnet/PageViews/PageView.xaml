@@ -5,7 +5,6 @@
              xmlns:viewmodel="clr-namespace:Convnet.PageViewModels">
 
     <UserControl.Resources>
-        <!-- These four templates map a ViewModel to a View. -->
         <DataTemplate DataType="{x:Type viewmodel:EditPageViewModel}">
             <view:EditPageView/>
         </DataTemplate>

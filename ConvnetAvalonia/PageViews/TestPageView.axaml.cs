@@ -3,10 +3,10 @@ using Avalonia.Markup.Xaml;
 
 namespace ConvnetAvalonia.PageViews
 {
-    public partial class TrainPageView : UserControl
+    public partial class TestPageView : UserControl
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Interoperability", "CA1416:Validate platform compatibility", Justification = "<Pending>")]
-        public TrainPageView()
+        public TestPageView()
         {
             //string[] names = this.GetType().Assembly.GetManifestResourceNames();
             //string[] anames = Assembly.GetExecutingAssembly().GetManifestResourceNames();

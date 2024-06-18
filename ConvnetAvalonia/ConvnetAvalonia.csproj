@@ -13,9 +13,6 @@
     <AssemblyName>ConvnetAvalonia</AssemblyName>
     <SignAssembly>True</SignAssembly>
   </PropertyGroup>
-  <ItemGroup>
-    <Compile Remove="PageViewModels\TestPageViewModel.cs" />
-  </ItemGroup>
 
  
 
@@ -167,10 +164,6 @@
     <AvaloniaResource Include="Resources\VisualStudio.png" />
     <AvaloniaResource Include="Resources\XML-Mode.xshd" />
     <AvaloniaResource Include="Resources\XmlDoc.xshd" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="PageViewModels\TestPageViewModel.cs" />
   </ItemGroup>
 
   <ItemGroup>

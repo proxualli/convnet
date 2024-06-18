@@ -12,7 +12,7 @@ namespace ConvnetAvalonia
     {
         public static readonly bool SingleInstanceApp = true;
         public event EventHandler<ShutdownRequestedEventArgs>? ShutdownRequested;
-        public static MainWindow? MainWindow = null;
+        public static ConvnetAvalonia.PageViews.MainWindow? MainWindow = null;
         
         public override void Initialize()
         {
@@ -24,14 +24,14 @@ namespace ConvnetAvalonia
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
                 desktop.ShutdownRequested += AppShutdownRequested;
-                desktop.MainWindow = new MainWindow
+                desktop.MainWindow = new ConvnetAvalonia.PageViews.MainWindow
                 {
-                    DataContext = new PageViewModels.MainWindowViewModel(),
+                    
                 };
 
                 if (desktop.MainWindow != null)
                 {
-                    App.MainWindow = desktop.MainWindow as MainWindow;
+                    App.MainWindow = desktop.MainWindow as ConvnetAvalonia.PageViews.MainWindow;
                     if (App.MainWindow != null)
                         App.MainWindow.Closing += MainWindow_Closing;
                 }

@@ -11,10 +11,8 @@ using ConvnetAvalonia.Properties;
 using System;
 using System.IO;
 using System.Linq;
-using System.Reflection.Metadata;
 using System.Xml;
 using TextMateSharp.Grammars;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace ConvnetAvalonia.PageViews
 {
@@ -74,6 +72,11 @@ namespace ConvnetAvalonia.PageViews
                 gr.ColumnDefinitions.First().Width = new GridLength(Settings.Default.EditSplitPositionA, GridUnitType.Pixel);
         }
 
+        private void InitializeComponent()
+        {
+            AvaloniaXamlLoader.Load(this);
+        }
+
         private void EditorDefinition_TextChanged(object? sender, EventArgs e)
         {
             if (DataContext != null && sender != null)
@@ -92,11 +95,6 @@ namespace ConvnetAvalonia.PageViews
                 if (epvm != null )
                     epvm.Script = ((CodeEditor)sender).Text;
             }
-        }
-
-        private void InitializeComponent()
-        {
-            AvaloniaXamlLoader.Load(this);
         }
 
         public void GridSplitter_DragCompleted(object? sender, VectorEventArgs e)

@@ -1,4 +1,5 @@
 using Avalonia.Controls;
+using Avalonia.Markup.Xaml;
 
 namespace ConvnetAvalonia.PageViews
 {
@@ -7,6 +8,11 @@ namespace ConvnetAvalonia.PageViews
         public PageView()
         {
             InitializeComponent();
+        }
+
+        private void InitializeComponent()
+        {
+            AvaloniaXamlLoader.Load(this);
         }
     }
 }
