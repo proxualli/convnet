@@ -37,10 +37,10 @@ namespace ConvnetAvalonia.Converters
             {
                 if (value != null)
                 {
-                    Type type = value.GetType();
-                    var member = type.GetMember(value.ToString());
-                    var attributes = member[0].GetCustomAttributes(typeof(DisplayAttribute), true);
-                    var attribute = attributes[0] as DisplayAttribute;
+                    var type = value.GetType();
+                    var member = type?.GetMember(value.ToString());
+                    var attributes = member?[0].GetCustomAttributes(typeof(DisplayAttribute), true);
+                    var attribute = attributes?[0] as DisplayAttribute;
                     var result = attribute?.Name ?? value.ToString();
                     return result;
                 }

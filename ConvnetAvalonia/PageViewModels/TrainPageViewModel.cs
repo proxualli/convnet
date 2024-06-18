@@ -1496,9 +1496,11 @@ namespace ConvnetAvalonia.PageViewModels
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Interoperability", "CA1416:Validate platform compatibility", Justification = "<Pending>")]
-        private void ForgetButtonClick(object? sender, RoutedEventArgs e)
+        private async void ForgetButtonClick(object? sender, RoutedEventArgs e)
         {
-            if (Dispatcher.UIThread.InvokeAsync(() => MessageBox.Show("Do you really want to forget all weights?", "Forget Model Weights", MessageBoxButtons.YesNo, MessageBoxIcon.None, MessageBoxDefaultButton.Button2)).Result == MessageBoxResult.Yes)                
+            var result = await Dispatcher.UIThread.InvokeAsync(() => MessageBox.Show("Do you really want to forget all weights?", "Forget Model Weights", MessageBoxButtons.YesNo, MessageBoxIcon.None, MessageBoxDefaultButton.Button2));
+
+            if (result == MessageBoxResult.Yes)                
             {
                 Model?.ResetWeights();
                 Dispatcher.UIThread.Post(() => LayersComboBox_SelectionChanged(sender, null), DispatcherPriority.Render);
