@@ -530,7 +530,7 @@ namespace ConvnetAvalonia.PageViewModels
                 Source = this,
                 Path = "ShowTrainingPlot",
                 Mode = BindingMode.TwoWay,
-                Converter = new Converters.NullableBoolToVisibilityConverter(),
+                //Converter = new Converters.NullableBoolToVisibilityConverter(),
             };
             plotTypeComboBox.Bind(ComboBox.IsVisibleProperty, binding);
             plotTypeComboBox.SelectionChanged += PlotTypeComboBox_SelectionChanged; 
@@ -561,7 +561,7 @@ namespace ConvnetAvalonia.PageViewModels
                 Source = this,
                 Path = "ShowTrainingPlot",
                 Mode = BindingMode.TwoWay,
-                Converter = new Converters.InverseNullableBoolToVisibilityConverter()
+                //Converter = new Converters.InverseNullableBoolToVisibilityConverter()
             };
             pixelSizeSlider.Bind(ComboBox.IsVisibleProperty, binding);
             pixelSizeSlider.ValueChanged += PixelSizeSlider_ValueChanged;

@@ -274,8 +274,8 @@ namespace ConvnetAvalonia.PageViewModels
             //        testPVM.CostLayersComboBox_SelectionChanged(this, null);
             //}
 
-            //if (Settings.Default.CurrentPage == (int)ViewModels.Train && CostLayers.Count > 1)
-            //    (Pages[(int)ViewModels.Train] as TrainPageViewModel).CostLayersComboBox_SelectionChanged(this, null);
+            if (Settings.Default.CurrentPage == (int)ViewModels.Train && CostLayers?.Count > 1)
+                (Pages[(int)ViewModels.Train] as TrainPageViewModel)?.CostLayersComboBox_SelectionChanged(this, null);
         }
 
         public override void Reset()
