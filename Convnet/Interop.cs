@@ -3668,7 +3668,7 @@ namespace Interop
             switch (Dataset)
             {
                 case DNNDatasets.tinyimagenet:
-                    LabelsCollection[0] = GetTextLabels(string.Concat(DatasetsDirectory, Dataset.ToString() + "\\classnames.txt"));
+                    LabelsCollection[0] = GetTextLabels(Path.Combine(DatasetsDirectory, Dataset.ToString(), "classnames.txt"));
                     /*LabelsCollection[0] = new string[200];
                     for (int i = 0; i < 200; i++)
                         LabelsCollection[0][i] = i.ToString();*/
@@ -3683,7 +3683,7 @@ namespace Interop
                     break;
 
                 case DNNDatasets.cifar10:
-                    LabelsCollection[0] = GetTextLabels(string.Concat(DatasetsDirectory, Dataset.ToString() + "\\batches.meta.txt"));
+                    LabelsCollection[0] = GetTextLabels(Path.Combine(DatasetsDirectory, Dataset.ToString(), "batches.meta.txt"));
                     if (info.MeanTrainSet.Length >= 3)
                     {
                         for (int i = 0; i < 3; i++)
@@ -3695,8 +3695,8 @@ namespace Interop
                     break;
 
                 case DNNDatasets.cifar100:
-                    LabelsCollection[0] = GetTextLabels(string.Concat(DatasetsDirectory, Dataset.ToString() + "\\coarse_label_names.txt"));
-                    LabelsCollection[1] = GetTextLabels(string.Concat(DatasetsDirectory, Dataset.ToString() + "\\fine_label_names.txt"));
+                    LabelsCollection[0] = GetTextLabels(Path.Combine(DatasetsDirectory, Dataset.ToString(), "coarse_label_names.txt"));
+                    LabelsCollection[1] = GetTextLabels(Path.Combine(DatasetsDirectory, Dataset.ToString(), "fine_label_names.txt"));
                     if (info.MeanTrainSet.Length >= 3)
                     {
                         for (int i = 0; i < 3; i++)
@@ -3708,7 +3708,7 @@ namespace Interop
                     break;
 
                 case DNNDatasets.fashionmnist:
-                    LabelsCollection[0] = GetTextLabels(string.Concat(DatasetsDirectory, Dataset.ToString() + "\\batches.meta.txt"));
+                    LabelsCollection[0] = GetTextLabels(Path.Combine(DatasetsDirectory, Dataset.ToString(), "batches.meta.txt"));
                     if (info.MeanTrainSet.Length >= 1)
                     {
                         for (int i = 0; i < 1; i++)

@@ -1,23 +1,23 @@
-﻿using ConvnetAvalonia.Common;
-using ConvnetAvalonia.Dialogs;
+﻿using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Data;
+using Avalonia.Interactivity;
+using Avalonia.Markup.Xaml.Templates;
+using Avalonia.Threading;
+using ConvnetAvalonia.Common;
 using ConvnetAvalonia.Properties;
+using CustomMessageBox.Avalonia;
 using Interop;
 using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Legends;
+using ReactiveUI;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Timers;
-using System.Windows;
-using System.Windows.Automation.Peers;
-using System.Windows.Automation.Provider;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Input;
-using System.Windows.Media.Imaging;
-using System.Windows.Threading;
+
 using Float = System.Single;
 using UInt = System.UInt64;
 
@@ -57,7 +57,7 @@ namespace ConvnetAvalonia.PageViewModels
         private Button unlockAllButton;
         private Button lockAllButton;
         private CheckBox trainingPlotCheckBox;
-        private FormattedSlider pixelSizeSlider;
+        private Slider pixelSizeSlider;
         private DNNOptimizers optimizer;
         private int? refreshRate;
         private int weightsSnapshotX;
@@ -72,8 +72,8 @@ namespace ConvnetAvalonia.PageViewModels
         private PlotType currentPlotType;
         private LegendPosition currentLegendPosition;
         private PlotModel plotModel;
-        private BitmapSource weightsSnapshot;
-        private BitmapSource inputSnapshot;
+        private Avalonia.Media.Imaging.Bitmap weightsSnapshot;
+        private Avalonia.Media.Imaging.Bitmap inputSnapshot;
         private readonly StringBuilder sb;
 
         public Timer RefreshTimer;
@@ -113,16 +113,16 @@ namespace ConvnetAvalonia.PageViewModels
             Modelhanged += TrainPageViewModel_ModelChanged;
             RefreshRateChanged += TrainPageViewModel_RefreshRateChanged;
 
-            (UIElementAutomationPeer.CreatePeerForElement(refreshButton).GetPattern(PatternInterface.Invoke) as IInvokeProvider).Invoke();
+            //(UIElementAutomationPeer.CreatePeerForElement(refreshButton).GetPattern(PatternInterface.Invoke) as IInvokeProvider).Invoke();
         }
         
-        private void TrainPageViewModel_RefreshRateChanged(object sender, int? e)
+        private void TrainPageViewModel_RefreshRateChanged(object? sender, int? e)
         {
             if (RefreshTimer != null && e.HasValue)
                RefreshTimer.Interval = 1000 * e.Value;
         }
 
-        private void TrainPageViewModel_ModelChanged(object sender, EventArgs e)
+        private void TrainPageViewModel_ModelChanged(object? sender, EventArgs e)
         {
             showProgress = false;
             showSample = false;
@@ -134,11 +134,14 @@ namespace ConvnetAvalonia.PageViewModels
             currentPlotType = (PlotType)Settings.Default.PlotType;
             currentLegendPosition = currentPlotType == PlotType.Accuracy ? LegendPosition.BottomRight : LegendPosition.TopRight;
 
-            Model.NewEpoch += NewEpoch;
-            Model.TrainProgress += TrainProgress;
+            if (Model != null)
+            {
+                Model.NewEpoch += NewEpoch;
+                Model.TrainProgress += TrainProgress;
+            }
 
             costLayersComboBox.Items.Clear();
-            for (uint layer = 0u; layer < Model.CostLayerCount; layer++)
+            for (uint layer = 0u; layer < Model?.CostLayerCount; layer++)
             {
                 ComboBoxItem item = new ComboBoxItem
                 {
@@ -151,7 +154,7 @@ namespace ConvnetAvalonia.PageViewModels
             costLayersComboBox.SelectedIndex = (int)Model.CostIndex;
             selectedCostIndex = costLayersComboBox.SelectedIndex;
             costLayersComboBox.IsEnabled = Model.CostLayerCount > 1;
-            costLayersComboBox.Visibility = Model.CostLayerCount > 1 ? Visibility.Visible : Visibility.Collapsed;
+            costLayersComboBox.IsVisible = Model.CostLayerCount > 1 ? true : false;
 
             layersComboBox.ItemsSource = Model.Layers;
             layersComboBox.SelectedIndex = 0;
@@ -159,33 +162,35 @@ namespace ConvnetAvalonia.PageViewModels
             Settings.Default.SelectedLayer = 0;
             Settings.Default.Save();
             dataProviderComboBox.SelectedIndex = (int)Dataset;
-           
 
-            Application.Current.Dispatcher.Invoke(() => LayersComboBox_SelectionChanged(sender, null), DispatcherPriority.Render);
+            Dispatcher.UIThread.Post(() => LayersComboBox_SelectionChanged(sender, null), DispatcherPriority.Render);
+            var overwrite = Dispatcher.UIThread.InvokeAsync(() => MessageBox.Show("File already exists! Overwrite?", "File already exists", MessageBoxButtons.YesNo, MessageBoxIcon.None, MessageBoxDefaultButton.Button2));
 
-            Mouse.OverrideCursor = null;
             if (TrainingLog.Count > 0)
-                if (Xceed.Wpf.Toolkit.MessageBox.Show("Do you want to clear the training log?", "Clear log?", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                if (Dispatcher.UIThread.InvokeAsync(() => MessageBox.Show("Do you want to clear the training log?", "Clear log?", MessageBoxButtons.YesNo, MessageBoxIcon.None, MessageBoxDefaultButton.Button1)).Result == MessageBoxResult.Yes)
                     TrainingLog.Clear();
 
-            Application.Current.Dispatcher.Invoke(() => RefreshTrainingPlot(), DispatcherPriority.Render);
+            Dispatcher.UIThread.Post(() => RefreshTrainingPlot(), DispatcherPriority.Render);
         }
 
         private void NewEpoch(UInt Cycle, UInt Epoch, UInt TotalEpochs, UInt Optimizer, Float Beta2, Float Gamma, Float Eps, bool HorizontalFlip, bool VerticalFlip, Float InputDropout, Float Cutout, bool CutMix, Float AutoAugment, Float ColorCast, UInt ColorAngle, Float Distortion, UInt Interpolation, Float Scaling, Float Rotation, Float Rate, UInt N, UInt D, UInt H, UInt W, UInt PadD, UInt PadH, UInt PadW, Float Momentum, Float L2Penalty, Float Dropout, Float AvgTrainLoss, Float TrainErrorPercentage, Float TrainAccuracy, UInt TrainErrors, Float AvgTestLoss, Float TestErrorPercentage, Float TestAccuracy, UInt TestErrors, UInt ElapsedNanoSecondes)
         {
-            Application.Current.Dispatcher.Invoke(() =>
+            Dispatcher.UIThread.Post(() =>
             {
-                TimeSpan span = Model.Duration.Elapsed.Subtract(EpochDuration);
-                EpochDuration = Model.Duration.Elapsed;
-                for (uint c = 0; c < Model.CostLayerCount; c++)
+                if (Model != null)
                 {
-                    Model.UpdateCostInfo(c);
-                    TrainingLog.Add(new DNNTrainingResult(Cycle, Epoch, Model.CostLayers[c].GroupIndex, c, Model.CostLayers[c].Name, N, D, H, W, PadD, PadH, PadW, (DNNOptimizers)Optimizer, Rate, Eps, Momentum, Beta2, Gamma, L2Penalty, Dropout, InputDropout, Cutout, CutMix, AutoAugment, HorizontalFlip, VerticalFlip, ColorCast, ColorAngle, Distortion, (DNNInterpolations)Interpolation, Scaling, Rotation, Model.CostLayers[c].AvgTrainLoss, Model.CostLayers[c].TrainErrors, Model.CostLayers[c].TrainErrorPercentage, Model.CostLayers[c].TrainAccuracy, Model.CostLayers[c].AvgTestLoss, Model.CostLayers[c].TestErrors, Model.CostLayers[c].TestErrorPercentage, Model.CostLayers[c].TestAccuracy, (System.Int64)span.TotalMilliseconds, span));
-                }
+                    TimeSpan span = Model.Duration.Elapsed.Subtract(EpochDuration);
+                    EpochDuration = Model.Duration.Elapsed;
+                    for (uint c = 0; c < Model.CostLayerCount; c++)
+                    {
+                        Model.UpdateCostInfo(c);
+                        TrainingLog.Add(new DNNTrainingResult(Cycle, Epoch, Model.CostLayers[c].GroupIndex, c, Model.CostLayers[c].Name, N, D, H, W, PadD, PadH, PadW, (DNNOptimizers)Optimizer, Rate, Eps, Momentum, Beta2, Gamma, L2Penalty, Dropout, InputDropout, Cutout, CutMix, AutoAugment, HorizontalFlip, VerticalFlip, ColorCast, ColorAngle, Distortion, (DNNInterpolations)Interpolation, Scaling, Rotation, Model.CostLayers[c].AvgTrainLoss, Model.CostLayers[c].TrainErrors, Model.CostLayers[c].TrainErrorPercentage, Model.CostLayers[c].TrainAccuracy, Model.CostLayers[c].AvgTestLoss, Model.CostLayers[c].TestErrors, Model.CostLayers[c].TestErrorPercentage, Model.CostLayers[c].TestAccuracy, (System.Int64)span.TotalMilliseconds, span));
+                    }
 
-                SelectedIndex = TrainingLog.Count - 1;
-              
-                RefreshTrainingPlot();
+                    SelectedIndex = TrainingLog.Count - 1;
+
+                    RefreshTrainingPlot();
+                }
             }, DispatcherPriority.Render);
         }
 
@@ -196,7 +201,7 @@ namespace ConvnetAvalonia.PageViewModels
             {
                 case DNNStates.Training:
                     {
-                        if (Optimizer != Optim)
+                        if (Optimizer != Optim && Model != null)
                         {
                             Optimizer = Optim;
                             Model.Optimizer = Optim;
@@ -204,7 +209,7 @@ namespace ConvnetAvalonia.PageViewModels
 
                         sb.Append("<Span><Bold>Training</Bold></Span><LineBreak/>");
                         sb.Append("<Span>");
-                        switch (Model.Optimizer)
+                        switch (Model?.Optimizer)
                         {
                             case DNNOptimizers.AdaGrad:
                                 sb.AppendFormat(" Sample:\t\t{0:G}\n Cycle:\t\t\t{1}/{2}\n Epoch:\t\t\t{3}/{4}\n Batch Size:\t\t{5:G}\n Rate:\t\t\t{6:0.#######}\n Dropout:\t\t" + (Dropout > 0 ? Dropout.ToString() + "\n" : "No\n") + (CutMix ? " CutMix:\t\t" : " Cutout:\t\t") + (Cutout > 0 ? Cutout.ToString() + "\n" : "No\n") + " Auto Augment:\t\t" + (AutoAugment > 0 ? AutoAugment.ToString() + "\n" : "No\n") + (HorizontalFlip ? " Horizontal Flip:\tYes\n" : " Horizontal Flip:\tNo\n") + (VerticalFlip ? " Vertical Flip:\tYes\n" : " Vertical Flip:\tNo\n") + " Color Cast:\t\t" + (ColorCast > 0u ? ColorCast.ToString() + "\n" : "No\n") + " Distortion:\t\t" + (Model.Distortion > 0 ? Distortion.ToString() + "\n" : "No\n") + " Loss:\t\t\t{7:N7}\n Errors:\t\t{8:G}\n Error:\t\t\t{9:N2} %\n Accuracy:\t\t{10:N2} %", SampleIndex, Cycle, TotalCycles, Epoch, TotalEpochs, Model.BatchSize, Rate, AvgTrainLoss, TrainErrors, TrainErrorPercentage, 100 - TrainErrorPercentage);
@@ -257,41 +262,41 @@ namespace ConvnetAvalonia.PageViewModels
 
                 case DNNStates.Completed:
                     {
-                        Application.Current.Dispatcher.Invoke(() =>
+                        Dispatcher.UIThread.Post(() =>
                         {
                             RefreshTimer.Stop();
                             RefreshTimer.Elapsed -= new ElapsedEventHandler(RefreshTimer_Elapsed);
                             RefreshTimer.Dispose();
-                            Mouse.OverrideCursor = Cursors.Wait;
-                            Model.Stop();
 
-                            CommandToolBar[0].ToolTip = "Start Training";
-                            CommandToolBar[0].Visibility = Visibility.Visible;
-                            CommandToolBar[1].Visibility = Visibility.Collapsed;
-                            CommandToolBar[2].Visibility = Visibility.Collapsed;
-
-                            CommandToolBar[5].Visibility = Visibility.Visible;
-                            CommandToolBar[6].Visibility = Visibility.Visible;
-                            CommandToolBar[7].Visibility = Visibility.Visible;
-                                                        
-                            if (Model.Layers[layersComboBox.SelectedIndex].WeightCount > 0 || Model.Layers[layersComboBox.SelectedIndex].IsNormLayer)
+                            if (Model != null)
                             {
-                                CommandToolBar[16].Visibility = !Settings.Default.DisableLocking ? Visibility.Visible : Visibility.Collapsed;
-                                CommandToolBar[17].Visibility = !Settings.Default.DisableLocking ? Visibility.Visible : Visibility.Collapsed;
-                                CommandToolBar[18].Visibility = Visibility.Visible;
-                                CommandToolBar[19].Visibility = Visibility.Visible;
-                            }
-                            else
-                            {
-                                CommandToolBar[16].Visibility = Visibility.Collapsed;
-                                CommandToolBar[17].Visibility = Visibility.Collapsed;
-                                CommandToolBar[18].Visibility = Visibility.Collapsed;
-                                CommandToolBar[19].Visibility = Visibility.Collapsed;
-                            }
+                                Model.Stop();
 
+                                ToolTip.SetTip(CommandToolBar[0], "Start Training");
+                                CommandToolBar[0].IsVisible = true;
+                                CommandToolBar[1].IsVisible = false;
+                                CommandToolBar[2].IsVisible = false;
+
+                                CommandToolBar[5].IsVisible = true;
+                                CommandToolBar[6].IsVisible = true;
+                                CommandToolBar[7].IsVisible = true;
+
+                                if (Model.Layers[layersComboBox.SelectedIndex].WeightCount > 0 || Model.Layers[layersComboBox.SelectedIndex].IsNormLayer)
+                                {
+                                    CommandToolBar[16].IsVisible = !Settings.Default.DisableLocking;
+                                    CommandToolBar[17].IsVisible = !Settings.Default.DisableLocking;
+                                    CommandToolBar[18].IsVisible = true;
+                                    CommandToolBar[19].IsVisible = true;
+                                }
+                                else
+                                {
+                                    CommandToolBar[16].IsVisible = false;
+                                    CommandToolBar[17].IsVisible = false;
+                                    CommandToolBar[18].IsVisible = false;
+                                    CommandToolBar[19].IsVisible = false;
+                                }
+                            }
                             ShowProgress = false;
-
-                            Mouse.OverrideCursor = null;
                         }, DispatcherPriority.Render);
                     }
                     break;
@@ -304,108 +309,107 @@ namespace ConvnetAvalonia.PageViewModels
             Button startButton = new Button
             {
                 Name = "ButtonStart",
-                ToolTip = "Start Training",
-                Content = new BitmapToImage(Resources.Play),
+                Content = ApplicationHelper.LoadFromResource("Play.png"),
                 ClickMode = ClickMode.Release
             };
-            startButton.Click += new RoutedEventHandler(StartButtonClick);
+            ToolTip.SetTip(startButton, "Start Training");
+            startButton.Click += StartButtonClick;
 
             Button stopButton = new Button
             {
                 Name = "ButtonStop",
-                ToolTip = "Stop Training",
-                Content = new BitmapToImage(Resources.Stop),
+                Content = ApplicationHelper.LoadFromResource("Stop.png"),
                 ClickMode = ClickMode.Release,
-                Visibility = Visibility.Collapsed
+                IsVisible = false
             };
-            stopButton.Click += new RoutedEventHandler(StopButtonClick);
+            ToolTip.SetTip(stopButton, "Stop Training");
+            stopButton.Click += StopButtonClick;
          
             Button pauseButton = new Button
             {
                 Name = "ButtonPause",
-                ToolTip = "Pause Training",
-                Content = new BitmapToImage(Resources.Pause),
+                Content = ApplicationHelper.LoadFromResource("Pause.png"),
                 ClickMode = ClickMode.Release,
-                Visibility = Visibility.Collapsed
+                IsVisible = false
             };
-            pauseButton.Click += new RoutedEventHandler(PauseButtonClick);
+            ToolTip.SetTip(pauseButton, "Pause Training");
+            pauseButton.Click += PauseButtonClick;
          
             Button editorButton = new Button
             {
                 Name = "ButtonEditor",
-                ToolTip = "Training Scheme Editor",
-                Content = new BitmapToImage(Resources.Collection),
+                Content = ApplicationHelper.LoadFromResource("Collection.png"),
                 ClickMode = ClickMode.Release
             };
-            editorButton.Click += new RoutedEventHandler(EditorButtonClick);
+            ToolTip.SetTip(editorButton, "Training Scheme Editor");
+            editorButton.Click += EditorButtonClick;
 
             Button strategiesButton = new Button
             {
                 Name = "ButtonStrategies",
-                ToolTip = "Training Strategies Editor",
-                Content = new BitmapToImage(Resources.Property),
+                Content = ApplicationHelper.LoadFromResource("Property.png"),
                 ClickMode = ClickMode.Release
             };
-            strategiesButton.Click += new RoutedEventHandler(StrategyButtonClick);
+            ToolTip.SetTip(strategiesButton, "Training Strategies Editor");
+            strategiesButton.Click += StrategyButtonClick;
 
             Button openButton = new Button
             {
                 Name = "ButtonOpen",
-                ToolTip = "Load Model Weights",
-                Content = new BitmapToImage(Resources.Open),
+                Content = ApplicationHelper.LoadFromResource("Open.png"),
                 ClickMode = ClickMode.Release
             };
-            openButton.Click += new RoutedEventHandler(OpenButtonClick);
+            ToolTip.SetTip(openButton, "Load Model Weights");
+            openButton.Click += OpenButtonClick;
 
             Button saveButton = new Button
             {
                 Name = "ButtonSave",
-                ToolTip = "Save Model Weights",
-                Content = new BitmapToImage(Resources.Save),
+                Content = ApplicationHelper.LoadFromResource("Save.png"),
                 ClickMode = ClickMode.Release
             };
-            saveButton.Click += new RoutedEventHandler(SaveButtonClick);
+            ToolTip.SetTip(saveButton, "Save Model Weights");
+            saveButton.Click += SaveButtonClick;
 
             Button forgetButton = new Button
             {
                 Name = "ButtonForgetWeights",
-                ToolTip = "Forget Model Weights",
-                Content = new BitmapToImage(Resources.Bolt),
+                Content = ApplicationHelper.LoadFromResource("Bolt.png"),
                 ClickMode = ClickMode.Release
             };
-            forgetButton.Click += new RoutedEventHandler(ForgetButtonClick);
+            ToolTip.SetTip(forgetButton, "Forget Model Weights");
+            forgetButton.Click += ForgetButtonClick;
 
             Button clearButton = new Button
             {
                 Name = "ButtonClearLog",
-                ToolTip = "Clear Log",
-                Content = new BitmapToImage(Resources.ClearContents),
+                Content = ApplicationHelper.LoadFromResource("ClearContents.png"),
                 ClickMode = ClickMode.Release
             };
-            clearButton.Click += new RoutedEventHandler(ClearButtonClick);
+            ToolTip.SetTip(clearButton, "Clear Log");
+            clearButton.Click += ClearButtonClick;
 
             dataProviderComboBox = new ComboBox
             {
                 Name = "ComboBoxDataSet",
                 ItemsSource = Enum.GetValues(typeof(DNNDatasets)).Cast<Enum>().ToList(),
                 SelectedIndex = (int)Dataset,
-                ToolTip = "Dataset",
                 IsEnabled = false
             };
+            ToolTip.SetTip(dataProviderComboBox, "Dataset");
 
             optimizerComboBox = new ComboBox
             {
                 Name = "ComboBoxOptimizers",
                 ItemsSource = Enum.GetValues(typeof(DNNOptimizers)).Cast<Enum>().ToList(),
-                ToolTip = "Optimizer",
                 IsEnabled = false
             };
+            ToolTip.SetTip(optimizerComboBox, "Optimizer");
             Binding optBinding = new Binding
             {
                 Source = this,
-                Path = new PropertyPath("Optimizer"),
+                Path = "Optimizer",
                 Mode = BindingMode.TwoWay,
-                UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged,
                 Converter = new Converters.EnumConverter(),
                 ConverterParameter = typeof(DNNOptimizers)
             };
@@ -416,7 +420,7 @@ namespace ConvnetAvalonia.PageViewModels
                 Name = "ComboBoxCostLayers"
             };
             costLayersComboBox.Items.Clear();
-            for (uint layer = 0u; layer < Model.CostLayerCount; layer++)
+            for (uint layer = 0u; layer < Model?.CostLayerCount; layer++)
             {
                 ComboBoxItem item = new ComboBoxItem
                 {
@@ -426,90 +430,90 @@ namespace ConvnetAvalonia.PageViewModels
                 };
                 costLayersComboBox.Items.Add(item);
             }
-            costLayersComboBox.ToolTip = "Cost Layer";
+            ToolTip.SetTip(costLayersComboBox, "Cost Layer");
             costLayersComboBox.SelectedIndex = (int)Model.CostIndex;
             selectedCostIndex = costLayersComboBox.SelectedIndex;
             costLayersComboBox.SelectionChanged += CostLayersComboBox_SelectionChanged;
-            costLayersComboBox.Visibility = Model.CostLayerCount > 1 ? Visibility.Visible : Visibility.Collapsed;
+            costLayersComboBox.IsVisible = Model.CostLayerCount > 1;
 
             layersComboBox = new ComboBox { Name = "ComboBoxLayers" };
             layersComboBox.DataContext = Model;
             layersComboBox.ItemsSource = Model.Layers;
             layersComboBox.ItemTemplate = GetLockTemplate();
-            layersComboBox.SourceUpdated += LayersComboBox_SourceUpdated;
-            layersComboBox.IsSynchronizedWithCurrentItem = true;
+            //layersComboBox.SourceUpdated += LayersComboBox_SourceUpdated;
+            //layersComboBox.IsSynchronizedWithCurrentItem = true;
             layersComboBox.SelectedIndex = Settings.Default.SelectedLayer;
-            layersComboBox.SelectionChanged += new SelectionChangedEventHandler(LayersComboBox_SelectionChanged);
-            layersComboBox.ToolTip = "Layer";
+            layersComboBox.SelectionChanged += LayersComboBox_SelectionChanged;
+            ToolTip.SetTip(layersComboBox, "Layer");
             Model.SelectedIndex = Settings.Default.SelectedLayer;
 
             disableLockingCheckBox = new CheckBox
             {
                 Name = "CheckBoxDisableLocking",
-                Content = new BitmapToImage(Resources.Key),
-                ToolTip = "Disable Locking",
+                Content = ApplicationHelper.LoadFromResource("Key.png"),
                 IsChecked = Settings.Default.DisableLocking
             };
+            ToolTip.SetTip(disableLockingCheckBox, "Disable Locking");
             disableLockingCheckBox.Unchecked += DisableLockingCheckBox_Unchecked;
             disableLockingCheckBox.Checked += DisableLockingCheckBox_Unchecked;
 
             unlockAllButton = new Button
             {
                 Name = "UnlockAllButton",
-                Content = new BitmapToImage(Resources.Unlock),
-                ToolTip = "Unlock All",
+                Content = ApplicationHelper.LoadFromResource("Unlock.png"),
                 ClickMode = ClickMode.Release,
-                Visibility = !Settings.Default.DisableLocking && Model.Layers[Settings.Default.SelectedLayer].Lockable ? Visibility.Visible : Visibility.Collapsed
+                IsVisible = !Settings.Default.DisableLocking && Model.Layers[Settings.Default.SelectedLayer].Lockable
             };
+            ToolTip.SetTip(unlockAllButton, "Unlock All");
             unlockAllButton.Click += UnlockAll_Click;
 
             lockAllButton = new Button
             {
                 Name = "LockAllButton",
-                Content = new BitmapToImage(Resources.Lock),
-                ToolTip = "Lock All",
+                Content = ApplicationHelper.LoadFromResource("Lock.png"),
                 ClickMode = ClickMode.Release,
-                Visibility = !Settings.Default.DisableLocking && Model.Layers[Settings.Default.SelectedLayer].Lockable ? Visibility.Visible : Visibility.Collapsed
+                IsVisible = !Settings.Default.DisableLocking && Model.Layers[Settings.Default.SelectedLayer].Lockable
             };
+            ToolTip.SetTip(lockAllButton, "Lock All");
             lockAllButton.Click += LockAll_Click;
 
             Button openLayerWeightsButton = new Button
             {
                 Name = "ButtonOpenWeightsLayer",
-                ToolTip = "Load Weights",
-                Content = new BitmapToImage(Resources.Open),
+                Content = ApplicationHelper.LoadFromResource("Open.png"),
                 ClickMode = ClickMode.Release
             };
-            openLayerWeightsButton.Click += new RoutedEventHandler(OpenLayerWeightsButtonClick);
+            ToolTip.SetTip(openLayerWeightsButton, "Load Weights");
+            openLayerWeightsButton.Click += OpenLayerWeightsButtonClick;
 
             Button saveLayerWeightsButton = new Button
             {
                 Name = "ButtonSaveWeightsLayer",
-                ToolTip = "Save Weights",
-                Content = new BitmapToImage(Resources.Save),
+                Content = ApplicationHelper.LoadFromResource("Save.png"),
                 ClickMode = ClickMode.Release
             };
-            saveLayerWeightsButton.Click += new RoutedEventHandler(SaveLayerWeightsButtonClick);
+            ToolTip.SetTip(saveLayerWeightsButton, "Save Weights");
+            saveLayerWeightsButton.Click += SaveLayerWeightsButtonClick;
 
             Button forgetLayerWeightsButton = new Button
             {
                 Name = "ButtonForgetWeightsLayer",
-                ToolTip = "Forget Weights",
-                Content = new BitmapToImage(Resources.LightningBolt),
+                Content = ApplicationHelper.LoadFromResource("LightningBolt.png"),
                 ClickMode = ClickMode.Release
             };
-            forgetLayerWeightsButton.Click += new RoutedEventHandler(ForgetLayerWeightsButtonClick);
+            ToolTip.SetTip(forgetLayerWeightsButton, "Forget Weights");
+            forgetLayerWeightsButton.Click += ForgetLayerWeightsButtonClick;
 
             trainingPlotCheckBox = new CheckBox
             {
                 Name = "CheckBoxTrainingPlot",
-                Content = new BitmapToImage(Resources.PerformanceLog),
-                ToolTip = "Training Plot"
+                Content = ApplicationHelper.LoadFromResource("PerformanceLog.png")           
             };
+            ToolTip.SetTip(trainingPlotCheckBox, "Training Plot");
             Binding tpBinding = new Binding
             {
                 Source = this,
-                Path = new PropertyPath("ShowTrainingPlot"),
+                Path = "ShowTrainingPlot",
                 Mode = BindingMode.TwoWay,
             };
             BindingOperations.SetBinding(trainingPlotCheckBox, CheckBox.IsCheckedProperty, tpBinding);
@@ -519,23 +523,22 @@ namespace ConvnetAvalonia.PageViewModels
             plotTypeComboBox = new ComboBox
             {
                 Name = "ComboBoxPlotType",
-                ItemsSource = Enum.GetValues(typeof(PlotType)).Cast<Enum>().ToList(),
-                ToolTip = "Plot Type"
+                ItemsSource = Enum.GetValues(typeof(PlotType)).Cast<Enum>().ToList()                
             };
+            ToolTip.SetTip(plotTypeComboBox, "Plot Type");
             Binding binding = new Binding
             {
                 Source = this,
-                Path = new PropertyPath("ShowTrainingPlot"),
+                Path = "ShowTrainingPlot",
                 Mode = BindingMode.TwoWay,
                 Converter = new Converters.NullableBoolToVisibilityConverter(),
-                UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged
             };
-            BindingOperations.SetBinding(plotTypeComboBox, ComboBox.VisibilityProperty, binding);
-            plotTypeComboBox.SelectionChanged += new SelectionChangedEventHandler(PlotTypeChanged);
+            BindingOperations.SetBinding(plotTypeComboBox, ComboBox.IsVisibleProperty, binding);
+            plotTypeComboBox.SelectionChanged += PlotTypeComboBox_SelectionChanged; 
             binding = new Binding
             {
                 Source = this,
-                Path = new PropertyPath("CurrentPlotType"),
+                Path = "CurrentPlotType",
                 Mode = BindingMode.TwoWay,
                 Converter = new Converters.EnumConverter(),
                 ConverterParameter = typeof(PlotType)
@@ -551,31 +554,29 @@ namespace ConvnetAvalonia.PageViewModels
                 SmallChange = 1,
                 Width = 96,
                 IsSnapToTickEnabled = true,
-                AutoToolTipPlacement = System.Windows.Controls.Primitives.AutoToolTipPlacement.TopLeft,
+                AutoToolTipPlacement = Primitives.AutoToolTipPlacement.TopLeft,
                 Interval = 12,
-                AutoToolTipFormat = "Pixels",
-                ToolTip = Math.Round(Settings.Default.PixelSize) == 1 ? "1 Pixel" : Math.Round(Settings.Default.PixelSize).ToString() + " Pixels",
                 Value = Settings.Default.PixelSize
             };
+            ToolTip.SetTip(pixelSizeSlider, Math.Round(Settings.Default.PixelSize) == 1 ? "1 Pixel" : Math.Round(Settings.Default.PixelSize).ToString() + " Pixels");
             binding = new Binding
             {
                 Source = this,
-                Path = new PropertyPath("ShowTrainingPlot"),
+                Path = "ShowTrainingPlot",
                 Mode = BindingMode.TwoWay,
-                Converter = new Converters.InverseNullableBoolToVisibilityConverter(),
-                UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged
+                Converter = new Converters.InverseNullableBoolToVisibilityConverter()
             };
-            BindingOperations.SetBinding(pixelSizeSlider, ComboBox.VisibilityProperty, binding);
+            BindingOperations.SetBinding(pixelSizeSlider, ComboBox.IsVisible, binding);
             pixelSizeSlider.ValueChanged += PixelSizeSlider_ValueChanged;
 
             refreshButton = new Button
             {
                 Name = "ButtonRefresh",
-                ToolTip = "Refresh",
-                Content = new BitmapToImage(Resources.Refresh),
+                Content = ApplicationHelper.LoadFromResource("Refresh.png"),
                 ClickMode = ClickMode.Release
             };
-            refreshButton.Click += new RoutedEventHandler(RefreshButtonClick);
+            ToolTip.SetTip(refreshButton, "Refresh");
+            refreshButton.Click += RefreshButtonClick;
 
             Xceed.Wpf.Toolkit.IntegerUpDown refreshRateIntegerUpDown = new Xceed.Wpf.Toolkit.IntegerUpDown
             {
@@ -593,9 +594,8 @@ namespace ConvnetAvalonia.PageViewModels
             binding = new Binding
             {
                 Source = this,
-                Path = new PropertyPath("RefreshRate"),
-                Mode = BindingMode.TwoWay,
-                UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged
+                Path = "RefreshRate",
+                Mode = BindingMode.TwoWay                
             };
             BindingOperations.SetBinding(refreshRateIntegerUpDown, Xceed.Wpf.Toolkit.IntegerUpDown.ValueProperty, binding);
 
@@ -630,22 +630,27 @@ namespace ConvnetAvalonia.PageViewModels
             CommandToolBar.Add(refreshRateIntegerUpDown);           // 28
         }
 
-        public void OnDisableLockingChanged(object sender, RoutedEventArgs e)
+        private void PlotTypeComboBox_SelectionChanged(object? sender, SelectionChangedEventArgs e)
+        {
+            
+        }
+
+        public void OnDisableLockingChanged(object? sender, RoutedEventArgs e)
         {
             disableLockingCheckBox.IsChecked = Settings.Default.DisableLocking;
         }
 
-        private void DisableLockingCheckBox_Unchecked(object sender, RoutedEventArgs e)
+        private void DisableLockingCheckBox_Unchecked(object? sender, RoutedEventArgs e)
         {
             if (disableLockingCheckBox.IsChecked.HasValue)
             {
                 Settings.Default.DisableLocking = disableLockingCheckBox.IsChecked.Value;
                 Settings.Default.Save();
 
-                Model.SetDisableLocking(Settings.Default.DisableLocking);
+                Model?.SetDisableLocking(Settings.Default.DisableLocking);
 
-                unlockAllButton.Visibility = !Settings.Default.DisableLocking ? Visibility.Visible : Visibility.Collapsed;
-                lockAllButton.Visibility = !Settings.Default.DisableLocking ? Visibility.Visible : Visibility.Collapsed;
+                unlockAllButton.IsVisible = !Settings.Default.DisableLocking;
+                lockAllButton.IsVisible = !Settings.Default.DisableLocking;
 
                 layersComboBox.ItemTemplate = GetLockTemplate();
 
@@ -656,7 +661,7 @@ namespace ConvnetAvalonia.PageViewModels
                     layersComboBox.SelectedIndex = index;
                 }
                 else
-                    if (Model.LayerCount > (ulong)(index + 1))
+                    if (Model?.LayerCount > (ulong)(index + 1))
                     {
                         layersComboBox.SelectedIndex = index + 1;
                         layersComboBox.SelectedIndex = index;
@@ -664,14 +669,14 @@ namespace ConvnetAvalonia.PageViewModels
             }
         }
 
-        private void UnlockAll_Click(object sender, RoutedEventArgs e)
+        private void UnlockAll_Click(object? sender, RoutedEventArgs e)
         {
-            Model.SetLocked(false);
+            Model?.SetLocked(false);
         }
 
-        private void LockAll_Click(object sender, RoutedEventArgs e)
+        private void LockAll_Click(object? sender, RoutedEventArgs e)
         {
-            Model.SetLocked(true);
+            Model?.SetLocked(true);
         }
 
         static DataTemplate GetLockTemplate()
@@ -681,91 +686,93 @@ namespace ConvnetAvalonia.PageViewModels
                 DataType = typeof(DNNLayerInfo)
             };
             //set up the StackPanel
-            FrameworkElementFactory panelFactory = new FrameworkElementFactory(typeof(StackPanel))
-            {
-                Name = "myComboFactory"
-            };
-            panelFactory.SetValue(StackPanel.OrientationProperty, Orientation.Horizontal);
+            //FrameworkElementFactory panelFactory = new FrameworkElementFactory(typeof(StackPanel))
+            //{
+            //    Name = "myComboFactory"
+            //};
+            //panelFactory.SetValue(StackPanel.OrientationProperty, Orientation.Horizontal);
 
-            FrameworkElementFactory contentFactory;
-            var color = System.Windows.Media.Color.FromArgb(255,215,199,215);
-            var brush = new System.Windows.Media.SolidColorBrush(color);
-            brush.Freeze();
-            if (!Settings.Default.DisableLocking)
-            {
+            //FrameworkElementFactory contentFactory;
+            //var color = System.Windows.Media.Color.FromArgb(255,215,199,215);
+            //var brush = new System.Windows.Media.SolidColorBrush(color);
+            //brush.Freeze();
+            //if (!Settings.Default.DisableLocking)
+            //{
 
-                //set up the CheckBox
-                contentFactory = new FrameworkElementFactory(typeof(CheckBox));
-                contentFactory.SetBinding(CheckBox.ContentProperty, new Binding("Name"));
-                contentFactory.SetValue(Control.ForegroundProperty, brush);
+            //    //set up the CheckBox
+            //    contentFactory = new FrameworkElementFactory(typeof(CheckBox));
+            //    contentFactory.SetBinding(CheckBox.ContentProperty, new Binding("Name"));
+            //    contentFactory.SetValue(Control.ForegroundProperty, brush);
 
-                Binding bindingIsChecked = new Binding("LockUpdate")
-                {
-                    Mode = BindingMode.TwoWay,
-                    UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged,
-                    NotifyOnSourceUpdated = true
-                };
-                contentFactory.SetBinding(CheckBox.IsCheckedProperty, bindingIsChecked);
-                contentFactory.SetBinding(CheckBox.IsEnabledProperty, new Binding("Lockable"));
-            }
-            else
-            {
-                contentFactory = new FrameworkElementFactory(typeof(TextBlock));
-                contentFactory.SetBinding(TextBlock.TextProperty, new Binding("Name"));
-                contentFactory.SetValue(Control.ForegroundProperty, brush);
-            }
+            //    Binding bindingIsChecked = new Binding("LockUpdate")
+            //    {
+            //        Mode = BindingMode.TwoWay,
+            //        UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged,
+            //        NotifyOnSourceUpdated = true
+            //    };
+            //    contentFactory.SetBinding(CheckBox.IsCheckedProperty, bindingIsChecked);
+            //    contentFactory.SetBinding(CheckBox.IsEnabledProperty, new Binding("Lockable"));
+            //}
+            //else
+            //{
+            //    contentFactory = new FrameworkElementFactory(typeof(TextBlock));
+            //    contentFactory.SetBinding(TextBlock.TextProperty, new Binding("Name"));
+            //    contentFactory.SetValue(Control.ForegroundProperty, brush);
+            //}
 
-            Binding bindingFontWeights = new Binding("Lockable");
-            Converters.BoolToStringConverter converter = new Converters.BoolToStringConverter
-            {
-                TrueValue = System.Windows.FontWeights.ExtraBold,
-                FalseValue = System.Windows.FontWeights.Normal
-            };
-            bindingFontWeights.Converter = converter;
-            contentFactory.SetBinding(CheckBox.FontWeightProperty, bindingFontWeights);
-            panelFactory.AppendChild(contentFactory);
-            checkBoxLayout.VisualTree = panelFactory;
+            //Binding bindingFontWeights = new Binding("Lockable");
+            //Converters.BoolToStringConverter converter = new Converters.BoolToStringConverter
+            //{
+            //    TrueValue = System.Windows.FontWeights.ExtraBold,
+            //    FalseValue = System.Windows.FontWeights.Normal
+            //};
+            //bindingFontWeights.Converter = converter;
+            //contentFactory.SetBinding(CheckBox.FontWeightProperty, bindingFontWeights);
+            //panelFactory.AppendChild(contentFactory);
+            //checkBoxLayout.VisualTree = panelFactory;
            
             return checkBoxLayout;
         }
 
-        private void LayersComboBox_SourceUpdated(object sender, DataTransferEventArgs e)
+        private void LayersComboBox_SourceUpdated(object? sender, DataTransferEventArgs e)
         {
             if (e.OriginalSource is CheckBox cb)
             {
                 if (cb.IsEnabled)
                 {
-                    var layer = Model.Layers.FirstOrDefault(i => i.Name == cb.Content as String);
-
-                    Model.SetLayerLocked(layer.LayerIndex, layer.LockUpdate.Value);
+                    var layer = Model?.Layers.FirstOrDefault(i => i.Name == cb.Content as String);
+                    if (layer != null && layer.LockUpdate != null) 
+                        Model?.SetLayerLocked(layer.LayerIndex, layer.LockUpdate.Value);
 
                     e.Handled = true;
                 }
             }
         }
 
-        private void PixelSizeSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        private void PixelSizeSlider_ValueChanged(object? sender, RoutedPropertyChangedEventArgs<double> e)
         {
             int temp = (int)Math.Round(e.NewValue);
             if (temp == 1)
-                pixelSizeSlider.ToolTip = "1 Pixel";
+                ToolTip.SetTip(pixelSizeSlider, "1 Pixel");
             else
-                pixelSizeSlider.ToolTip = temp.ToString() + " Pixels";
-
+                ToolTip.SetTip(pixelSizeSlider, temp.ToString() + " Pixels");
+            
             Settings.Default.PixelSize = temp;
             Settings.Default.Save();
-            Model.BlockSize = (ulong)temp;
+
+            if (Model != null)
+                Model.BlockSize = (ulong)temp;
 
             LayersComboBox_SelectionChanged(this, null);
         }
 
-        private void TrainingPlotCheckBox_Unchecked(object sender, RoutedEventArgs e)
+        private void TrainingPlotCheckBox_Unchecked(object? sender, RoutedEventArgs e)
         {
             Settings.Default.ShowTrainingPlot = trainingPlotCheckBox.IsChecked ?? false;
             Settings.Default.Save();
         }
 
-        private void PlotTypeChanged(object sender, SelectionChangedEventArgs e)
+        private void PlotTypeChanged(object? sender, SelectionChangedEventArgs e)
         {
             CurrentPlotType = (PlotType)plotTypeComboBox.SelectedIndex;
             Settings.Default.PlotType = (uint)plotTypeComboBox.SelectedIndex;
@@ -773,12 +780,12 @@ namespace ConvnetAvalonia.PageViewModels
             RefreshTrainingPlot();
         }
 
-        public void CostLayersComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        public void CostLayersComboBox_SelectionChanged(object? sender, SelectionChangedEventArgs e)
         {
             if (costLayersComboBox.SelectedIndex >= 0)
             {
                 SelectedCostIndex = costLayersComboBox.SelectedIndex;
-                Model.SetCostIndex((uint)SelectedCostIndex);
+                Model?.SetCostIndex((uint)SelectedCostIndex);
             }
         }
 
@@ -831,9 +838,9 @@ namespace ConvnetAvalonia.PageViewModels
             plotModel.Series[0].Title = PointsTrainLabel;
             plotModel.Series[1].Title = PointsTestLabel;
 
-            OnPropertyChanged(nameof(PointsTrain));
-            OnPropertyChanged(nameof(PointsTest));
-           
+            this.RaisePropertyChanged(nameof(PointsTrain));
+            this.RaisePropertyChanged(nameof(PointsTest));
+            
             plotModel.InvalidatePlot(true);
         }
 
@@ -891,144 +898,92 @@ namespace ConvnetAvalonia.PageViewModels
 
         public PlotModel PlotModel
         {
-            get { return plotModel; }
-            set
-            {
-                if (plotModel == value)
-                    return;
-
-                plotModel = value;
-                OnPropertyChanged(nameof(PlotModel));
-            }
+            get => plotModel;
+            set => this.RaiseAndSetIfChanged(ref plotModel, value);
         }
 
         public bool SGDR
         {
-            get { return sgdr; }
+            get => sgdr;
             set
             {
                 if (sgdr == value)
                     return;
 
-                sgdr = value;
-
+                this.RaiseAndSetIfChanged(ref sgdr, value);
                 Settings.Default.SGDR = sgdr;
                 Settings.Default.Save();
-
-                OnPropertyChanged(nameof(SGDR));
             }
         }
 
         public uint GotoEpoch
         {
-            get { return gotoEpoch; }
+            get => gotoEpoch;
             set
             {
                 if (gotoEpoch == value)
                     return;
 
-                gotoEpoch = value;
-
+                this.RaiseAndSetIfChanged(ref gotoEpoch, value);
                 Settings.Default.GotoEpoch = gotoEpoch;
                 Settings.Default.Save();
-
-                OnPropertyChanged(nameof(GotoEpoch));
             }
         }
 
         public uint GotoCycle
         {
-            get { return gotoCycle; }
+            get => gotoCycle;
             set
             {
                 if (gotoCycle == value)
                     return;
 
-                gotoCycle = value;
-
+                this.RaiseAndSetIfChanged(ref gotoCycle, value);
                 Settings.Default.GotoCycle = gotoCycle;
                 Settings.Default.Save();
-
-                OnPropertyChanged(nameof(GotoCycle));
             }
         }
 
         public LegendPosition CurrentLegendPosition
         {
-            get { return currentLegendPosition; }
-            set
-            {
-                if (currentLegendPosition == value)
-                    return;
-
-                currentLegendPosition = value;
-                OnPropertyChanged(nameof(CurrentLegendPosition));
-            }
+            get => currentLegendPosition;
+            set => this.RaiseAndSetIfChanged(ref currentLegendPosition, value);
         }
 
         public ObservableCollection<DataPoint> PointsTrain
         {
-            get { return pointsTrain; }
-            set
-            {
-                if (value == pointsTrain)
-                    return;
-
-                pointsTrain = value;
-                OnPropertyChanged(nameof(PointsTrain));
-            }
+            get => pointsTrain;
+            set => this.RaiseAndSetIfChanged(ref pointsTrain, value);
         }
 
         public ObservableCollection<DataPoint> PointsTest
         {
-            get { return pointsTest; }
-            set
-            {
-                if (value == pointsTest)
-                    return;
-
-                pointsTest = value;
-                OnPropertyChanged(nameof(PointsTest));
-            }
+            get => pointsTest;
+            set => this.RaiseAndSetIfChanged(ref pointsTest, value);
         }
 
         public string PointsTrainLabel
         {
-            get { return pointsTrainLabel; }
-            set
-            {
-                if (pointsTrainLabel == value)
-                    return;
-
-                pointsTrainLabel = value;
-                OnPropertyChanged(nameof(PointsTrainLabel));
-            }
+            get => pointsTrainLabel;
+            set => this.RaiseAndSetIfChanged(ref pointsTrainLabel, value);
         }
 
         public string PointsTestLabel
         {
-            get { return pointsTestLabel; }
-            set
-            {
-                if (pointsTestLabel == value)
-                    return;
-
-                pointsTestLabel = value;
-                OnPropertyChanged(nameof(PointsTestLabel));
-            }
+            get => pointsTestLabel;
+            set => this.RaiseAndSetIfChanged(ref pointsTestLabel, value);
         }
 
         public PlotType CurrentPlotType
         {
-            get { return currentPlotType; }
+            get => currentPlotType;
             set
             {
                 if (currentPlotType == value)
                     return;
 
-                currentPlotType = value;
-                OnPropertyChanged(nameof(CurrentPlotType));
-
+                this.RaiseAndSetIfChanged(ref currentPlotType, value);
+                
                 switch (currentPlotType)
                 {
                     case PlotType.Accuracy:
@@ -1044,171 +999,80 @@ namespace ConvnetAvalonia.PageViewModels
 
         public string ProgressText
         {
-            get { return progressText; }
-            set
-            {
-                if (value == progressText)
-                    return;
-
-                progressText = value;
-                OnPropertyChanged(nameof(ProgressText));
-            }
+            get => progressText;
+            set => this.RaiseAndSetIfChanged(ref progressText, value);
         }
 
         public bool ShowProgress
         {
-            get { return showProgress; }
-            set
-            {
-                if (value == showProgress)
-                    return;
-
-                showProgress = value;
-                OnPropertyChanged(nameof(ShowProgress));
-            }
+            get => showProgress; 
+            set => this.RaiseAndSetIfChanged(ref showProgress, value);
         }
 
         public string LayerInfo
         {
-            get { return layerInfo; }
-            set
-            {
-                if (value == layerInfo)
-                    return;
-
-                layerInfo = value;
-                OnPropertyChanged(nameof(LayerInfo));
-            }
+            get => layerInfo;
+            set => this.RaiseAndSetIfChanged(ref layerInfo, value);
         }
 
         public string WeightsMinMax
         {
-            get { return weightsMinMax; }
-            set
-            {
-                if (value == weightsMinMax)
-                    return;
-
-                weightsMinMax = value;
-                OnPropertyChanged(nameof(WeightsMinMax));
-            }
+            get => weightsMinMax;
+            set => this.RaiseAndSetIfChanged(ref weightsMinMax, value);
         }
 
         public int WeightsSnapshotX
         {
-            get { return weightsSnapshotX; }
-            set
-            {
-                if (value == weightsSnapshotX)
-                    return;
-
-                weightsSnapshotX = value;
-                OnPropertyChanged(nameof(WeightsSnapshotX));
-            }
+            get => weightsSnapshotX;
+            set => this.RaiseAndSetIfChanged(ref weightsSnapshotX, value);
         }
 
         public int WeightsSnapshotY
         {
-            get { return weightsSnapshotY; }
-            set
-            {
-                if (value == weightsSnapshotY)
-                    return;
-
-                weightsSnapshotY = value;
-                OnPropertyChanged(nameof(WeightsSnapshotY));
-            }
+            get => weightsSnapshotY;
+            set => this.RaiseAndSetIfChanged(ref weightsSnapshotY, value);
         }
 
         public String Label
         {
-            get { return label; }
-            set
-            {
-                if (value == label)
-                    return;
-
-                label = value;
-                OnPropertyChanged(nameof(Label));
-            }
+            get => label;
+            set => this.RaiseAndSetIfChanged(ref label, value);
         }
 
         public bool ShowSample
         {
-            get { return showSample; }
-            set
-            {
-                if (value == showSample)
-                    return;
-
-                showSample = value;
-                OnPropertyChanged(nameof(ShowSample));
-            }
+            get => showSample;
+            set => this.RaiseAndSetIfChanged(ref showSample, value);
         }
 
         public bool ShowWeights
         {
-            get { return showWeights; }
-            set
-            {
-                if (value == showWeights)
-                    return;
-
-                showWeights = value;
-                OnPropertyChanged(nameof(ShowWeights));
-            }
+            get => showWeights;
+            set => this.RaiseAndSetIfChanged(ref showWeights, value);
         }
 
         public bool ShowWeightsSnapshot
         {
-            get { return showWeightsSnapshot; }
-            set
-            {
-                if (value == showWeightsSnapshot)
-                    return;
-
-                showWeightsSnapshot = value;
-                OnPropertyChanged(nameof(ShowWeightsSnapshot));
-            }
+            get => showWeightsSnapshot;
+            set => this.RaiseAndSetIfChanged(ref showWeightsSnapshot, value);
         }
 
         public bool? ShowTrainingPlot
         {
-            get { return showTrainingPlot; }
-            set
-            {
-                if (value == showTrainingPlot)
-                    return;
-
-                showTrainingPlot = value;
-                OnPropertyChanged(nameof(ShowTrainingPlot));
-            }
+            get => showTrainingPlot;
+            set => this.RaiseAndSetIfChanged(ref showTrainingPlot, value);
         }
 
-        public BitmapSource WeightsSnapshot
+        public Avalonia.Media.Imaging.Bitmap WeightsSnapshot
         {
-            get { return weightsSnapshot; }
-            set
-            {
-                if (value == weightsSnapshot)
-                    return;
-
-                weightsSnapshot = value;
-                OnPropertyChanged(nameof(WeightsSnapshot));
-            }
+            get => weightsSnapshot;
+            set => this.RaiseAndSetIfChanged(ref weightsSnapshot, value);
         }
 
-        public BitmapSource InputSnapshot
+        public Avalonia.Media.Imaging.Bitmap InputSnapshot
         {
-            get { return inputSnapshot; }
-            set
-            {
-                if (value == inputSnapshot)
-                    return;
-
-                inputSnapshot = value;
-                OnPropertyChanged(nameof(InputSnapshot));
-            }
+            get => inputSnapshot;
+            set => this.RaiseAndSetIfChanged(ref inputSnapshot, value);
         }
 
         public DNNTrainingRate TrainRate
@@ -1226,34 +1090,20 @@ namespace ConvnetAvalonia.PageViewModels
                     return;
 
                 Settings.Default.TraininingRate = value;
-                OnPropertyChanged(nameof(TrainRate));
+                this.RaisePropertyChanged(nameof(TrainRate));
             }
         }
 
         public ObservableCollection<DNNTrainingRate> TrainRates
         {
-            get { return trainRates; }
-            private set
-            {
-                if (value == trainRates)
-                    return;
-
-                trainRates = value;
-                OnPropertyChanged(nameof(TrainRates));
-            }
+            get => trainRates;
+            private set => this.RaiseAndSetIfChanged(ref trainRates, value);
         }
 
         public ObservableCollection<DNNTrainingStrategy> TrainingStrategies
         {
-            get { return trainingStrategies; }
-            set
-            {
-                if (value == trainingStrategies)
-                    return;
-
-                trainingStrategies = value;
-                OnPropertyChanged(nameof(TrainingStrategies));
-            }
+            get => trainingStrategies;
+            set => this.RaiseAndSetIfChanged(ref trainingStrategies, value);
         }
 
         public ObservableCollection<DNNTrainingResult> TrainingLog
@@ -1271,50 +1121,40 @@ namespace ConvnetAvalonia.PageViewModels
                     return;
 
                 Settings.Default.TrainingLog = value;
-                OnPropertyChanged(nameof(TrainingLog));
+                this.RaisePropertyChanged(nameof(TrainingLog));
             }
         }
 
         public int SelectedCostIndex
         {
-            get { return selectedCostIndex; }
-            set
+            get => selectedCostIndex;
+            set 
             {
                 if (value == selectedCostIndex)
                     return;
 
-                selectedCostIndex = value;
-                OnPropertyChanged(nameof(SelectedCostIndex));
+                this.RaiseAndSetIfChanged(ref selectedCostIndex, value);
                 RefreshTrainingPlot();
             }
         }
 
         public int SelectedIndex
         {
-            get { return selectedIndex; }
-            set
-            {
-                if (value == selectedIndex)
-                    return;
-
-                selectedIndex = value;
-                OnPropertyChanged(nameof(SelectedIndex));
-            }
+            get => selectedIndex;
+            set => this.RaiseAndSetIfChanged(ref selectedIndex, value);
         }
 
         public DNNOptimizers Optimizer
         {
-            get { return optimizer; }
+            get => optimizer;
             set
             {
                 if (value == optimizer)
                     return;
 
-                optimizer = value;
-                Settings.Default.Optimizer = optimizer;
+                this.RaiseAndSetIfChanged(ref optimizer, value);
+                Settings.Default.Optimizer = (int)optimizer;
                 Settings.Default.Save();
-                                               
-                OnPropertyChanged(nameof(Optimizer));
             }
         }
 
@@ -1322,18 +1162,21 @@ namespace ConvnetAvalonia.PageViewModels
 
         public int? RefreshRate
         {
-            get { return refreshRate; }
+            get => refreshRate;
             set
             {
-                if (value.HasValue && value.Value == refreshRate.Value)
+                if (value.HasValue && value.Value == refreshRate)
                     return;
 
-                refreshRate = value;
-                OnPropertyChanged(nameof(RefreshRate));
-                Settings.Default.RefreshInterval = refreshRate.Value;
-                Settings.Default.Save();
-                EventHandler<int?> handler = RefreshRateChanged;
-                handler.Invoke(this, refreshRate);
+                this.RaiseAndSetIfChanged(ref refreshRate, value);
+
+                if (refreshRate != null)
+                {
+                    Settings.Default.RefreshInterval = refreshRate.Value;
+                    Settings.Default.Save();
+                    EventHandler<int?> handler = RefreshRateChanged;
+                    handler.Invoke(this, refreshRate);
+                }
             }
         }
 
@@ -1342,7 +1185,7 @@ namespace ConvnetAvalonia.PageViewModels
             if (TrainingLog != null)
             {
                 TrainingLog.Clear();
-                Model.ClearLog();
+                Model?.ClearLog();
             }
             SelectedIndex = -1;
             ProgressText = String.Empty;
@@ -1350,23 +1193,24 @@ namespace ConvnetAvalonia.PageViewModels
             RefreshTrainingPlot();
         }
 
-        private void RefreshTimer_Elapsed(object sender, ElapsedEventArgs e)
+        private void RefreshTimer_Elapsed(object? sender, ElapsedEventArgs e)
         {
-            Application.Current.Dispatcher.Invoke(() => LayersComboBox_SelectionChanged(sender, null), DispatcherPriority.Render);
+            Dispatcher.UIThread.Post(() => LayersComboBox_SelectionChanged(sender, null), DispatcherPriority.Render);
         }
 
-        private void StartButtonClick(object sender, RoutedEventArgs e)
+        private void StartButtonClick(object? sender, RoutedEventArgs e)
         {
-            Application.Current.Dispatcher.Invoke(() =>
+            Dispatcher.UIThread.Post(() =>
             {
-                if (Model.TaskState == DNNTaskStates.Running)
+                if (Model?.TaskState == DNNTaskStates.Running)
                 {
-                    Xceed.Wpf.Toolkit.MessageBox.Show("You must stop testing first.", "Information", MessageBoxButton.OK);
+
+                    MessageBox.Show("You must stop testing first.", "Information", MessageBoxButtons.OK);
 
                     return;
                 }
 
-                if (Model.TaskState == DNNTaskStates.Stopped)
+                if (Model?.TaskState == DNNTaskStates.Stopped)
                 {
                     TrainParameters dialog = new TrainParameters
                     {
@@ -1399,27 +1243,27 @@ namespace ConvnetAvalonia.PageViewModels
                         Model.SetCostIndex((uint)SelectedCostIndex);
                         Model.Start(true);
                         RefreshTimer.Start();
-                        CommandToolBar[0].Visibility = Visibility.Collapsed;
-                        CommandToolBar[1].Visibility = Visibility.Visible;
-                        CommandToolBar[2].Visibility = Visibility.Visible;
+                        CommandToolBar[0].IsVisible = false;
+                        CommandToolBar[1].IsVisible = true;
+                        CommandToolBar[2].IsVisible = true;
 
-                        CommandToolBar[6].Visibility = Visibility.Collapsed;
-                        CommandToolBar[7].Visibility = Visibility.Visible;
-                        CommandToolBar[8].Visibility = Visibility.Collapsed;
+                        CommandToolBar[6].IsVisible = false;
+                        CommandToolBar[7].IsVisible = true;
+                        CommandToolBar[8].IsVisible = false;
                                                
-                        CommandToolBar[17].Visibility = Visibility.Collapsed;
-                        CommandToolBar[18].Visibility = Visibility.Collapsed;
-                        CommandToolBar[19].Visibility = Visibility.Collapsed;
-                        CommandToolBar[20].Visibility = Visibility.Collapsed;
-                        CommandToolBar[21].Visibility = Visibility.Collapsed;
+                        CommandToolBar[17].IsVisible = false;
+                        CommandToolBar[18].IsVisible = false;
+                        CommandToolBar[19].IsVisible = false;
+                        CommandToolBar[20].IsVisible = false;
+                        CommandToolBar[21].IsVisible = false;
 
                         if (Model.Layers[layersComboBox.SelectedIndex].WeightCount > 0)
                         {
                             if ((Model.Layers[layersComboBox.SelectedIndex].IsNormLayer && Model.Layers[layersComboBox.SelectedIndex].Scaling) || !Model.Layers[layersComboBox.SelectedIndex].IsNormLayer)
                             {
-                                CommandToolBar[17].Visibility = !Settings.Default.DisableLocking ? Visibility.Visible : Visibility.Collapsed;
-                                CommandToolBar[18].Visibility = !Settings.Default.DisableLocking ? Visibility.Visible : Visibility.Collapsed;
-                                CommandToolBar[20].Visibility = Visibility.Visible;
+                                CommandToolBar[17].IsVisible = !Settings.Default.DisableLocking;
+                                CommandToolBar[18].IsVisible = !Settings.Default.DisableLocking;
+                                CommandToolBar[20].IsVisible = true;
                             }
                         }
 
@@ -1428,102 +1272,101 @@ namespace ConvnetAvalonia.PageViewModels
                 }
                 else
                 {
-                    if (Model.TaskState == DNNTaskStates.Paused)
+                    if (Model?.TaskState == DNNTaskStates.Paused)
                     {
                         Model.Resume();
-                        CommandToolBar[0].Visibility = Visibility.Collapsed;
-                        CommandToolBar[1].Visibility = Visibility.Visible;
-                        CommandToolBar[2].Visibility = Visibility.Visible;
+                        CommandToolBar[0].IsVisible = false;
+                        CommandToolBar[1].IsVisible = true;
+                        CommandToolBar[2].IsVisible = true;
 
-                        CommandToolBar[6].Visibility = Visibility.Collapsed;
-                        CommandToolBar[7].Visibility = Visibility.Visible;
-                        CommandToolBar[8].Visibility = Visibility.Collapsed;
+                        CommandToolBar[6].IsVisible = false;
+                        CommandToolBar[7].IsVisible = true;
+                        CommandToolBar[8].IsVisible = false;
                     }
                 }
             }, DispatcherPriority.Normal);
         }
 
-        private void StopButtonClick(object sender, RoutedEventArgs e)
+        private void StopButtonClick(object? sender, RoutedEventArgs e)
         {
-            Application.Current.Dispatcher.Invoke(() =>
+            Dispatcher.UIThread.Post(() =>
             {
-                if (Model.TaskState != DNNTaskStates.Stopped)
+                if (Model?.TaskState != DNNTaskStates.Stopped)
                 {
-                    if (Xceed.Wpf.Toolkit.MessageBox.Show("Do you really want stop?", "Stop Training", MessageBoxButton.YesNo, MessageBoxImage.None, MessageBoxResult.No) == MessageBoxResult.Yes)
+                    if (Dispatcher.UIThread.InvokeAsync(() => MessageBox.Show("Do you really want to stop?", "Stop Training", MessageBoxButtons.YesNo, MessageBoxIcon.None, MessageBoxDefaultButton.Button2)).Result == MessageBoxResult.Yes)
                     {
                         RefreshTimer.Stop();
                         RefreshTimer.Elapsed -= new ElapsedEventHandler(RefreshTimer_Elapsed);
                         RefreshTimer.Dispose();
-                        Mouse.OverrideCursor = Cursors.Wait;
-                        Model.Stop();
+                        
+                        Model?.Stop();
 
-                        CommandToolBar[0].ToolTip = "Start Training";
-                        CommandToolBar[0].Visibility = Visibility.Visible;
-                        CommandToolBar[1].Visibility = Visibility.Collapsed;
-                        CommandToolBar[2].Visibility = Visibility.Collapsed;
+                        ToolTip.SetTip(CommandToolBar[0], "Start Training");
+                        CommandToolBar[0].IsVisible = true;
+                        CommandToolBar[1].IsVisible = false;
+                        CommandToolBar[2].IsVisible = false;
 
-                        CommandToolBar[6].Visibility = Visibility.Visible;
-                        CommandToolBar[7].Visibility = Visibility.Visible;
-                        CommandToolBar[8].Visibility = Visibility.Visible;
+                        CommandToolBar[6].IsVisible = true;
+                        CommandToolBar[7].IsVisible = true;
+                        CommandToolBar[8].IsVisible = true;
                        
-                        CommandToolBar[17].Visibility = Visibility.Collapsed;
-                        CommandToolBar[18].Visibility = Visibility.Collapsed;
-                        CommandToolBar[19].Visibility = Visibility.Collapsed;
-                        CommandToolBar[20].Visibility = Visibility.Collapsed;
-                        CommandToolBar[21].Visibility = Visibility.Collapsed;
+                        CommandToolBar[17].IsVisible = false;
+                        CommandToolBar[18].IsVisible = false;
+                        CommandToolBar[19].IsVisible = false;
+                        CommandToolBar[20].IsVisible = false;
+                        CommandToolBar[21].IsVisible = false;
 
-                        if (Model.Layers[layersComboBox.SelectedIndex].WeightCount > 0)
+                        if (Model?.Layers[layersComboBox.SelectedIndex].WeightCount > 0)
                         {
                             if ((Model.Layers[layersComboBox.SelectedIndex].IsNormLayer && Model.Layers[layersComboBox.SelectedIndex].Scaling) || !Model.Layers[layersComboBox.SelectedIndex].IsNormLayer)
                             {
-                                CommandToolBar[17].Visibility = !Settings.Default.DisableLocking ? Visibility.Visible : Visibility.Collapsed;
-                                CommandToolBar[18].Visibility = !Settings.Default.DisableLocking ? Visibility.Visible : Visibility.Collapsed;
-                                CommandToolBar[19].Visibility = Visibility.Visible;
-                                CommandToolBar[20].Visibility = Visibility.Visible;
-                                CommandToolBar[21].Visibility = Visibility.Visible;
+                                CommandToolBar[17].IsVisible = !Settings.Default.DisableLocking;
+                                CommandToolBar[18].IsVisible = !Settings.Default.DisableLocking;
+                                CommandToolBar[19].IsVisible = true;
+                                CommandToolBar[20].IsVisible = true;
+                                CommandToolBar[21].IsVisible = true;
                             }
                         }
 
                         ShowProgress = false;
-
-                        Mouse.OverrideCursor = null;
                     }
                 }
             }, DispatcherPriority.Normal);
         }
 
-        private void PauseButtonClick(object sender, RoutedEventArgs e)
+        private void PauseButtonClick(object? sender, RoutedEventArgs e)
         {
-            Application.Current.Dispatcher.Invoke(() =>
+            Dispatcher.UIThread.Post(() =>
             {
-                if (Model.TaskState == DNNTaskStates.Running)
+                if (Model?.TaskState == DNNTaskStates.Running)
                 {
                     Model.Pause();
-                    CommandToolBar[0].ToolTip = "Resume Training";
-                    CommandToolBar[0].Visibility = Visibility.Visible;
-                    CommandToolBar[1].Visibility = Visibility.Visible;
-                    CommandToolBar[2].Visibility = Visibility.Collapsed;
+                    
+                    ToolTip.SetTip(CommandToolBar[0], "Resume Training");
+                    CommandToolBar[0].IsVisible = true;
+                    CommandToolBar[1].IsVisible = true;
+                    CommandToolBar[2].IsVisible = false;
 
-                    CommandToolBar[6].Visibility = Visibility.Collapsed;
-                    CommandToolBar[7].Visibility = Visibility.Visible;
-                    CommandToolBar[8].Visibility = Visibility.Collapsed;
+                    CommandToolBar[6].IsVisible = false;
+                    CommandToolBar[7].IsVisible = true;
+                    CommandToolBar[8].IsVisible = false;
                 }
             }, DispatcherPriority.Normal);
         }
 
-        private void OpenButtonClick(object sender, RoutedEventArgs e)
+        private void OpenButtonClick(object? sender, RoutedEventArgs e)
         {
             Open?.Invoke(this, EventArgs.Empty);
         }
 
-        private void SaveButtonClick(object sender, RoutedEventArgs e)
+        private void SaveButtonClick(object? sender, RoutedEventArgs e)
         {
             Save?.Invoke(this, EventArgs.Empty);
         }
 
-        private void EditorButtonClick(object sender, RoutedEventArgs e)
+        private void EditorButtonClick(object? sender, RoutedEventArgs e)
         {
-            if (Model.TaskState == DNNTaskStates.Stopped)
+            if (Model?.TaskState == DNNTaskStates.Stopped)
             {
                 if (Settings.Default.TrainingRates == null)
                     Settings.Default.TrainingRates = new ObservableCollection<DNNTrainingRate> { TrainRate };
@@ -1562,13 +1405,13 @@ namespace ConvnetAvalonia.PageViewModels
 
                     Model.Start(true);
                     RefreshTimer.Start();
-                    CommandToolBar[0].Visibility = Visibility.Collapsed;
-                    CommandToolBar[1].Visibility = Visibility.Visible;
-                    CommandToolBar[2].Visibility = Visibility.Visible;
+                    CommandToolBar[0].IsVisible = false;
+                    CommandToolBar[1].IsVisible = true;
+                    CommandToolBar[2].IsVisible = true;
 
-                    CommandToolBar[6].Visibility = Visibility.Collapsed;
-                    CommandToolBar[7].Visibility = Visibility.Visible;
-                    CommandToolBar[8].Visibility = Visibility.Collapsed;
+                    CommandToolBar[6].IsVisible = false;
+                    CommandToolBar[7].IsVisible = true;
+                    CommandToolBar[8].IsVisible = false;
                   
                     if (layersComboBox.SelectedIndex >= 0 && Model.Layers[layersComboBox.SelectedIndex].WeightCount > 0)
                     {
@@ -1577,37 +1420,37 @@ namespace ConvnetAvalonia.PageViewModels
                         {
                             if (info.Scaling)
                             {
-                                CommandToolBar[17].Visibility = !Settings.Default.DisableLocking ? Visibility.Visible : Visibility.Collapsed;
-                                CommandToolBar[18].Visibility = !Settings.Default.DisableLocking ? Visibility.Visible : Visibility.Collapsed;
-                                CommandToolBar[19].Visibility = Visibility.Collapsed;
-                                CommandToolBar[20].Visibility = Visibility.Visible;
-                                CommandToolBar[21].Visibility = Visibility.Visible;
+                                CommandToolBar[17].IsVisible = !Settings.Default.DisableLocking;
+                                CommandToolBar[18].IsVisible = !Settings.Default.DisableLocking;
+                                CommandToolBar[19].IsVisible = false;
+                                CommandToolBar[20].IsVisible = true;
+                                CommandToolBar[21].IsVisible = true;
                             }
                             else
                             {
-                                CommandToolBar[17].Visibility = Visibility.Collapsed;
-                                CommandToolBar[18].Visibility = Visibility.Collapsed;
-                                CommandToolBar[19].Visibility = Visibility.Collapsed;
-                                CommandToolBar[20].Visibility = Visibility.Collapsed;
-                                CommandToolBar[21].Visibility = Visibility.Visible;
+                                CommandToolBar[17].IsVisible = false;
+                                CommandToolBar[18].IsVisible = false;
+                                CommandToolBar[19].IsVisible = false;
+                                CommandToolBar[20].IsVisible = false;
+                                CommandToolBar[21].IsVisible = true;
                             }
                         }
                         else
                         {
-                            CommandToolBar[17].Visibility = !Settings.Default.DisableLocking ? Visibility.Visible : Visibility.Collapsed;
-                            CommandToolBar[18].Visibility = !Settings.Default.DisableLocking ? Visibility.Visible : Visibility.Collapsed;
-                            CommandToolBar[19].Visibility = Visibility.Collapsed;
-                            CommandToolBar[20].Visibility = Visibility.Visible;
-                            CommandToolBar[21].Visibility = Visibility.Collapsed;
+                            CommandToolBar[17].IsVisible = !Settings.Default.DisableLocking;
+                            CommandToolBar[18].IsVisible = !Settings.Default.DisableLocking;
+                            CommandToolBar[19].IsVisible = false;
+                            CommandToolBar[20].IsVisible = true;
+                            CommandToolBar[21].IsVisible = false;
                         }
                     }
                     else
                     {
-                        CommandToolBar[17].Visibility = Visibility.Collapsed;
-                        CommandToolBar[18].Visibility = Visibility.Collapsed;
-                        CommandToolBar[19].Visibility = Visibility.Collapsed;
-                        CommandToolBar[20].Visibility = Visibility.Collapsed;
-                        CommandToolBar[21].Visibility = Visibility.Collapsed;
+                        CommandToolBar[17].IsVisible = false;
+                        CommandToolBar[18].IsVisible = false;
+                        CommandToolBar[19].IsVisible = false;
+                        CommandToolBar[20].IsVisible = false;
+                        CommandToolBar[21].IsVisible = false;
                     }
 
                     ShowProgress = true;
@@ -1633,7 +1476,7 @@ namespace ConvnetAvalonia.PageViewModels
             Settings.Default.Save();
         }
 
-        private void StrategyButtonClick(object sender, RoutedEventArgs e)
+        private void StrategyButtonClick(object? sender, RoutedEventArgs e)
         {
             if (Settings.Default.TrainingStrategies == null)
             {
@@ -1657,29 +1500,24 @@ namespace ConvnetAvalonia.PageViewModels
                 Settings.Default.TrainingStrategies = TrainingStrategies;
                 Settings.Default.Save();
 
-                Model.ClearTrainingStrategies();
+                Model?.ClearTrainingStrategies();
                 foreach (DNNTrainingStrategy strategy in TrainingStrategies)
-                    Model.AddTrainingStrategy(strategy);
+                    Model?.AddTrainingStrategy(strategy);
             }
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Interoperability", "CA1416:Validate platform compatibility", Justification = "<Pending>")]
-        private void ForgetButtonClick(object sender, RoutedEventArgs e)
+        private void ForgetButtonClick(object? sender, RoutedEventArgs e)
         {
-            if (Xceed.Wpf.Toolkit.MessageBox.Show("Do you really want to forget all weights?", "Forget Model Weights", MessageBoxButton.YesNo, MessageBoxImage.None, MessageBoxResult.No) == MessageBoxResult.Yes)
+            if (Dispatcher.UIThread.InvokeAsync(() => MessageBox.Show("Do you really want to forget all weights?", "Forget Model Weights", MessageBoxButtons.YesNo, MessageBoxIcon.None, MessageBoxDefaultButton.Button2)).Result == MessageBoxResult.Yes)                
             {
-                Mouse.OverrideCursor = Cursors.Wait;
-
-                Model.ResetWeights();
-
-                Application.Current.Dispatcher.Invoke(() => LayersComboBox_SelectionChanged(sender, null), DispatcherPriority.Render);
-
-                Mouse.OverrideCursor = null;
+                Model?.ResetWeights();
+                Dispatcher.UIThread.Post(() => LayersComboBox_SelectionChanged(sender, null), DispatcherPriority.Render);
             }
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Interoperability", "CA1416:Validate platform compatibility", Justification = "<Pending>")]
-        private void ClearButtonClick(object sender, RoutedEventArgs e)
+        private void ClearButtonClick(object? sender, RoutedEventArgs e)
         {
             if (TrainingLog.Count > 0)
             {
@@ -1688,18 +1526,18 @@ namespace ConvnetAvalonia.PageViewModels
                 //    sb.AppendLine(row.Epoch.ToString() + "\t" + row.TrainingRate.ToString() + "\t" + row.Dropout.ToString() + row.Cutout.ToString() + "\t" + row.Distortion.ToString() + "\t" + row.HorizontalFlip.ToString() + "\t" + row.VerticalFlip.ToString() + "\t" + row.TrainErrors.ToString() + "\t" + row.TestErrors.ToString() + "\t" + row.AvgTrainLoss.ToString() + "\t" + row.AvgTestLoss.ToString() + "\t" + row.TrainErrors.ToString() + "\t" + row.TestErrors.ToString() + "\t" + row.TestAccuracy.ToString() + "\t" + row.ElapsedTime.ToString());
                 //Clipboard.SetText(sb.ToString());
 
-                if (Xceed.Wpf.Toolkit.MessageBox.Show("Do you really want to clear the log?", "Clear Log", MessageBoxButton.YesNo, MessageBoxImage.None, MessageBoxResult.No) == MessageBoxResult.Yes)
+                if (Dispatcher.UIThread.InvokeAsync(() => MessageBox.Show("Do you really want to clear the log?", "Clear Log", MessageBoxButtons.YesNo, MessageBoxIcon.None, MessageBoxDefaultButton.Button2)).Result == MessageBoxResult.Yes)
                 {
                     TrainingLog.Clear();
-                    Model.ClearLog();
+                    Model?.ClearLog();
                     RefreshTrainingPlot();
                 }
             }
         }
 
-        private void OpenLayerWeightsButtonClick(object sender, RoutedEventArgs e)
+        private void OpenLayerWeightsButtonClick(object? sender, RoutedEventArgs e)
         {
-            Microsoft.Win32.OpenFileDialog openFileDialog = new Microsoft.Win32.OpenFileDialog
+            OpenFileDialog openFileDialog = new OpenFileDialog
             {
                 CheckFileExists = true,
                 CheckPathExists = true,
@@ -1710,7 +1548,7 @@ namespace ConvnetAvalonia.PageViewModels
                 Title = "Load layer weights",
                 DefaultExt = ".bin",
                 FilterIndex = 1,
-                InitialDirectory = Path.Combine(DefinitionsDirectory, Model.Name)
+                InitialDirectory = Path.Combine(DefinitionsDirectory, Model?.Name)
             };
 
             bool stop = false;
@@ -1722,33 +1560,26 @@ namespace ConvnetAvalonia.PageViewModels
                     string fileName = openFileDialog.FileName;
                     if (fileName.Contains(".bin"))
                     {
-                        Mouse.OverrideCursor = Cursors.Wait;
-
                         if (Model.LoadLayerWeights(fileName, (uint)layersComboBox.SelectedIndex) == 0)
                         {
-                            Application.Current.Dispatcher.Invoke(() => LayersComboBox_SelectionChanged(sender, null), DispatcherPriority.Render);
-                            Mouse.OverrideCursor = null;
-                            Xceed.Wpf.Toolkit.MessageBox.Show("Layer weights are loaded", "Information", MessageBoxButton.OK);
+                            Dispatcher.UIThread.Post(() => LayersComboBox_SelectionChanged(sender, null), DispatcherPriority.Render);
+                            Dispatcher.UIThread.Post(() => MessageBox.Show("Layer weights are loaded", "Information", MessageBoxButtons.OK));
                             stop = true;
                         }
                         else
-                        {
-                            Mouse.OverrideCursor = null;
-                            Xceed.Wpf.Toolkit.MessageBox.Show("Layer weights are incompatible", "Choose a different file", MessageBoxButton.OK);
-                        }
+                            Dispatcher.UIThread.Post(() => MessageBox.Show("Layer weights are incompatible", "Choose a different file", MessageBoxButtons.OK));
                     }
                 }
                 else
                     stop = true;
             }
-            Mouse.OverrideCursor = null;
         }
 
-        private void SaveLayerWeightsButtonClick(object sender, RoutedEventArgs e)
+        private void SaveLayerWeightsButtonClick(object? sender, RoutedEventArgs e)
         {
             int layerIndex = layersComboBox.SelectedIndex;
 
-            Microsoft.Win32.SaveFileDialog saveFileDialog = new Microsoft.Win32.SaveFileDialog
+            SaveFileDialog saveFileDialog = new SaveFileDialog
             {
                 FileName = Model.Layers[layerIndex].Name,
                 AddExtension = true,
@@ -1766,40 +1597,31 @@ namespace ConvnetAvalonia.PageViewModels
             {
                 if (saveFileDialog.FileName.Contains(".bin"))
                 {
-                    Mouse.OverrideCursor = Cursors.Wait;
                     if (Model.SaveLayerWeights(saveFileDialog.FileName, (ulong)layerIndex) == 0)
-                    {
-                        Mouse.OverrideCursor = null;
-                        Xceed.Wpf.Toolkit.MessageBox.Show("Layer weights are saved", "Information", MessageBoxButton.OK);
-                    }
+                       Dispatcher.UIThread.Post(() => MessageBox.Show("Layer weights are saved", "Information", MessageBoxButtons.OK));
                     else
-                    {
-                        Mouse.OverrideCursor = null;
-                        Xceed.Wpf.Toolkit.MessageBox.Show("Layer weights not saved!", "Information", MessageBoxButton.OK);
-                    }
+                        Dispatcher.UIThread.Post(() => MessageBox.Show("Layer weights not saved!", "Information", MessageBoxButtons.OK));
                 }
             }
         }
 
-        private void ForgetLayerWeightsButtonClick(object sender, RoutedEventArgs e)
+        private void ForgetLayerWeightsButtonClick(object? sender, RoutedEventArgs e)
         {
-            if (Xceed.Wpf.Toolkit.MessageBox.Show("Do you really want to forget layer weights?", "Forget Layer Weights", MessageBoxButton.YesNo, MessageBoxImage.None, MessageBoxResult.No) == MessageBoxResult.Yes)
+            if (Dispatcher.UIThread.InvokeAsync(() => MessageBox.Show("Do you really want to forget layer weights?", "Forget Layer Weights", MessageBoxButtons.YesNo, MessageBoxIcon.None, MessageBoxDefaultButton.Button2)).Result == MessageBoxResult.Yes)
             {
-                Mouse.OverrideCursor = Cursors.Wait;
                 uint index = (uint)layersComboBox.SelectedIndex;
-                Model.ResetLayerWeights((uint)layersComboBox.SelectedIndex);
-                Application.Current.Dispatcher.Invoke(() => LayersComboBox_SelectionChanged(sender, null), DispatcherPriority.Render);
-                Mouse.OverrideCursor = null;
+                Model?.ResetLayerWeights((uint)layersComboBox.SelectedIndex);
+                Dispatcher.UIThread.Post(() => LayersComboBox_SelectionChanged(sender, null), DispatcherPriority.Render);
             }
         }
 
-        public void RefreshButtonClick(object sender, RoutedEventArgs e)
+        public void RefreshButtonClick(object? sender, RoutedEventArgs e)
         {
-            Application.Current.Dispatcher.Invoke(() => LayersComboBox_SelectionChanged(sender, null), DispatcherPriority.Render);
-            Application.Current.Dispatcher.Invoke(() => RefreshTrainingPlot(), DispatcherPriority.Render);
+            Dispatcher.UIThread.Post(() => LayersComboBox_SelectionChanged(sender, null), DispatcherPriority.Render);
+            Dispatcher.UIThread.Post(() => RefreshTrainingPlot(), DispatcherPriority.Render);
         }
 
-        public void LayersComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        public void LayersComboBox_SelectionChanged(object? sender, SelectionChangedEventArgs e)
         {
             if (Model != null && layersComboBox.SelectedIndex >= 0)
             {
@@ -1825,11 +1647,11 @@ namespace ConvnetAvalonia.PageViewModels
                         Model.UpdateLayerInfo((ulong)index, ShowWeightsSnapshot);
 
 
-                    CommandToolBar[17].Visibility = !Settings.Default.DisableLocking ? Visibility.Visible : Visibility.Collapsed;
-                    CommandToolBar[18].Visibility = !Settings.Default.DisableLocking ? Visibility.Visible : Visibility.Collapsed;
-                    CommandToolBar[19].Visibility = Model.Layers[index].Lockable && Model.TaskState == DNNTaskStates.Stopped ? Visibility.Visible : Visibility.Collapsed;
-                    CommandToolBar[20].Visibility = Model.Layers[index].Lockable ? Visibility.Visible : Visibility.Collapsed;
-                    CommandToolBar[21].Visibility = Model.Layers[index].Lockable && Model.TaskState == DNNTaskStates.Stopped ? Visibility.Visible : Visibility.Collapsed;
+                    CommandToolBar[17].IsVisible = !Settings.Default.DisableLocking;
+                    CommandToolBar[18].IsVisible = !Settings.Default.DisableLocking;
+                    CommandToolBar[19].IsVisible = Model.Layers[index].Lockable && Model.TaskState == DNNTaskStates.Stopped;
+                    CommandToolBar[20].IsVisible = Model.Layers[index].Lockable;
+                    CommandToolBar[21].IsVisible = Model.Layers[index].Lockable && Model.TaskState == DNNTaskStates.Stopped;
 
                     LayerInfo = "<Span><Bold>Layer</Bold></Span><LineBreak/>";
                     LayerInfo += "<Span>" + Model.Layers[index].Description + "</Span><LineBreak/>";
@@ -1939,8 +1761,8 @@ namespace ConvnetAvalonia.PageViewModels
                                 weightsMinMax += "<Span>" + sb.ToString() + "</Span>";
                         }
                     }
-                    OnPropertyChanged(nameof(WeightsMinMax));
-
+                    this.RaisePropertyChanged(nameof(WeightsMinMax));
+                   
                     if (Settings.Default.Timings)
                     {
                         LayerInfo += "<Span><Bold>Timings</Bold></Span><LineBreak/>";

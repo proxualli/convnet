@@ -1,12 +1,8 @@
 ﻿using Convnet.Common;
 using Convnet.Properties;
-using Interop;
 using ICSharpCode.AvalonEdit.Document;
-using Microsoft.Build.Evaluation;
-using Microsoft.Build.Execution;
-using Microsoft.Build.Framework;
+using Interop;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
@@ -516,7 +512,7 @@ namespace Convnet.PageViewModels
             {
                 try
                 {
-                    var ProcStartInfo = new ProcessStartInfo(vspath + version + common + @"devenv.exe", ScriptsDirectory + @"\Scripts.csproj")
+                    var ProcStartInfo = new ProcessStartInfo(Path.Combine(vspath, version, "Common7", "IDE", "devenv.exe"), Path.Combine(ScriptsDirectory,"Scripts.csproj"))
                     {
                         WorkingDirectory = ScriptsDirectory,
                         Verb = "runas",

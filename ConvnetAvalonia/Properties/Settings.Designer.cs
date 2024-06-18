@@ -1623,5 +1623,17 @@ namespace ConvnetAvalonia.Properties {
                 this["UseTrainingStrategy"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool SGDR {
+            get {
+                return ((bool)(this["SGDR"]));
+            }
+            set {
+                this["SGDR"] = value;
+            }
+        }
     }
 }
