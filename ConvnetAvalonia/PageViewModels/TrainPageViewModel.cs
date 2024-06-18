@@ -1503,12 +1503,17 @@ namespace ConvnetAvalonia.PageViewModels
             if (result == MessageBoxResult.Yes)                
             {
                 Model?.ResetWeights();
-                Dispatcher.UIThread.Post(() => LayersComboBox_SelectionChanged(sender, null), DispatcherPriority.Render);
+               
+                Dispatcher.UIThread.Post(() =>
+                {
+                    Model?.ResetWeights();
+                    LayersComboBox_SelectionChanged(sender, null);
+                }, DispatcherPriority.Render);
             }
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Interoperability", "CA1416:Validate platform compatibility", Justification = "<Pending>")]
-        private void ClearButtonClick(object? sender, RoutedEventArgs e)
+        private async void ClearButtonClick(object? sender, RoutedEventArgs e)
         {
             if (TrainingLog.Count > 0)
             {
@@ -1517,11 +1522,15 @@ namespace ConvnetAvalonia.PageViewModels
                 //    sb.AppendLine(row.Epoch.ToString() + "\t" + row.TrainingRate.ToString() + "\t" + row.Dropout.ToString() + row.Cutout.ToString() + "\t" + row.Distortion.ToString() + "\t" + row.HorizontalFlip.ToString() + "\t" + row.VerticalFlip.ToString() + "\t" + row.TrainErrors.ToString() + "\t" + row.TestErrors.ToString() + "\t" + row.AvgTrainLoss.ToString() + "\t" + row.AvgTestLoss.ToString() + "\t" + row.TrainErrors.ToString() + "\t" + row.TestErrors.ToString() + "\t" + row.TestAccuracy.ToString() + "\t" + row.ElapsedTime.ToString());
                 //Clipboard.SetText(sb.ToString());
 
-                if (Dispatcher.UIThread.InvokeAsync(() => MessageBox.Show("Do you really want to clear the log?", "Clear Log", MessageBoxButtons.YesNo, MessageBoxIcon.None, MessageBoxDefaultButton.Button2)).Result == MessageBoxResult.Yes)
+                var result = await Dispatcher.UIThread.InvokeAsync(() => MessageBox.Show("Do you really want to clear the log?", "Clear Log", MessageBoxButtons.YesNo, MessageBoxIcon.None, MessageBoxDefaultButton.Button2));
+                if (result == MessageBoxResult.Yes)
                 {
-                    TrainingLog.Clear();
-                    Model?.ClearLog();
-                    RefreshTrainingPlot();
+                    Dispatcher.UIThread.Post(() =>
+                    {
+                        TrainingLog.Clear();
+                        Model?.ClearLog();
+                        RefreshTrainingPlot();
+                    }, DispatcherPriority.Render);
                 }
             }
         }
@@ -1596,20 +1605,27 @@ namespace ConvnetAvalonia.PageViewModels
             //}
         }
 
-        private void ForgetLayerWeightsButtonClick(object? sender, RoutedEventArgs e)
+        private async void ForgetLayerWeightsButtonClick(object? sender, RoutedEventArgs e)
         {
-            if (Dispatcher.UIThread.InvokeAsync(() => MessageBox.Show("Do you really want to forget layer weights?", "Forget Layer Weights", MessageBoxButtons.YesNo, MessageBoxIcon.None, MessageBoxDefaultButton.Button2)).Result == MessageBoxResult.Yes)
+            var result = await Dispatcher.UIThread.InvokeAsync(() => MessageBox.Show("Do you really want to forget layer weights?", "Forget Layer Weights", MessageBoxButtons.YesNo, MessageBoxIcon.None, MessageBoxDefaultButton.Button2));
+            if (result == MessageBoxResult.Yes)
             {
-                uint index = (uint)layersComboBox.SelectedIndex;
-                Model?.ResetLayerWeights((uint)layersComboBox.SelectedIndex);
-                Dispatcher.UIThread.Post(() => LayersComboBox_SelectionChanged(sender, null), DispatcherPriority.Render);
+                Dispatcher.UIThread.Post(() =>
+                {
+                    uint index = (uint)layersComboBox.SelectedIndex;
+                    Model?.ResetLayerWeights((uint)layersComboBox.SelectedIndex);
+                    LayersComboBox_SelectionChanged(sender, null);
+                }, DispatcherPriority.Render);
             }
         }
 
         public void RefreshButtonClick(object? sender, RoutedEventArgs e)
         {
-            Dispatcher.UIThread.Post(() => LayersComboBox_SelectionChanged(sender, null), DispatcherPriority.Render);
-            Dispatcher.UIThread.Post(() => RefreshTrainingPlot(), DispatcherPriority.Render);
+            Dispatcher.UIThread.Post(() =>
+            {
+                LayersComboBox_SelectionChanged(sender, null);
+                RefreshTrainingPlot();
+            }, DispatcherPriority.Render);
         }
 
         public void LayersComboBox_SelectionChanged(object? sender, SelectionChangedEventArgs e)
