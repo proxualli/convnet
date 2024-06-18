@@ -1,9 +1,4 @@
-﻿using Avalonia.Controls;
-using Avalonia.Input;
-using Avalonia.Interactivity;
-using AvaloniaEdit;
-using ReactiveUI;
-using System.Reactive;
+﻿using ReactiveUI;
 
 
 namespace ConvnetAvalonia.PageViewModels

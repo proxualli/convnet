@@ -1,8 +1,6 @@
-﻿using Avalonia;
-using Avalonia.Controls;
+﻿using Avalonia.Controls;
 using Avalonia.Data;
 using Avalonia.Interactivity;
-using Avalonia.Markup.Xaml.Templates;
 using Avalonia.Media.Imaging;
 using Avalonia.Threading;
 using ConvnetAvalonia.Common;
@@ -11,7 +9,6 @@ using CustomMessageBox.Avalonia;
 using Interop;
 using ReactiveUI;
 using System;
-using System.Collections.ObjectModel;
 using System.Data;
 using System.Linq;
 using System.Text;

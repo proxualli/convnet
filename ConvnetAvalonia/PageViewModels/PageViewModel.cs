@@ -2,7 +2,6 @@
 using Interop;
 using ReactiveUI;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Float = System.Single;
 using UInt = System.UInt64;
@@ -20,7 +19,7 @@ namespace ConvnetAvalonia.PageViewModels
     {
         public event EventHandler? PageChange;
 
-         public void Cut()
+        public void Cut()
         {
            
             //if (PageVM != null && PageVM.Pages != null)
@@ -60,6 +59,7 @@ namespace ConvnetAvalonia.PageViewModels
 
             return true;
         }
+
         public PageViewModel(DNNModel model) : base(model)
         {
             Settings.Default.PropertyChanged += Default_PropertyChanged;
@@ -260,23 +260,23 @@ namespace ConvnetAvalonia.PageViewModels
                 vm?.CheckButtonClick(this, new Avalonia.Interactivity.RoutedEventArgs());
             }
 
-            //if (Settings.Default.CurrentPage == (int)ViewModels.Test)
-            //{
-            //    var testPVM = Pages[(int)ViewModels.Test] as TestPageViewModel;
+            if (Settings.Default.CurrentPage == (int)ViewModels.Test)
+            {
+                var testPVM = Pages?[(int)ViewModels.Test] as TestPageViewModel;
 
-            //    if (testPVM.Model != null)
-            //    {
-            //        testPVM.CommandToolBar[0].Visibility = testPVM.Model.TaskState == DNNTaskStates.Stopped ? System.Windows.Visibility.Visible : System.Windows.Visibility.Collapsed;
-            //        testPVM.CommandToolBar[1].Visibility = System.Windows.Visibility.Collapsed;
-            //        testPVM.CommandToolBar[2].Visibility = System.Windows.Visibility.Collapsed;
-            //    }
+                if (testPVM?.Model != null)
+                {
+                    testPVM.CommandToolBar[0].IsVisible = testPVM.Model.TaskState == DNNTaskStates.Stopped;
+                    testPVM.CommandToolBar[1].IsVisible = false;
+                    testPVM.CommandToolBar[2].IsVisible = false;
+                }
 
-            //    if (CostLayers.Count > 1)
-            //        testPVM.CostLayersComboBox_SelectionChanged(this, null);
-            //}
+                if (CostLayers?.Count > 1)
+                    testPVM?.CostLayersComboBox_SelectionChanged(this, null);
+            }
 
             if (Settings.Default.CurrentPage == (int)ViewModels.Train && CostLayers?.Count > 1)
-                (Pages[(int)ViewModels.Train] as TrainPageViewModel)?.CostLayersComboBox_SelectionChanged(this, null);
+                (Pages?[(int)ViewModels.Train] as TrainPageViewModel)?.CostLayersComboBox_SelectionChanged(this, null);
         }
 
         public override void Reset()

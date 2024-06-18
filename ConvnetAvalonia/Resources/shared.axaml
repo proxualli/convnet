@@ -147,6 +147,7 @@
 
     <SolidColorBrush x:Key="LightColorBrush" Color="#DDD" />
 
+ 
   <DrawingImage x:Key="Save">
     <DrawingImage.Drawing>
       <GeometryDrawing Brush="#00539C">

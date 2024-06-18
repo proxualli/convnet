@@ -1,5 +1,6 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Templates;
 using Avalonia.Data;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml.Templates;
@@ -115,6 +116,7 @@ namespace ConvnetAvalonia.PageViewModels
 
             //(UIElementAutomationPeer.CreatePeerForElement(refreshButton).GetPattern(PatternInterface.Invoke) as IInvokeProvider).Invoke();
         }
+
 
         private void AddCommandButtons()
         {
@@ -251,7 +253,9 @@ namespace ConvnetAvalonia.PageViewModels
             layersComboBox = new ComboBox { Name = "ComboBoxLayers" };
             layersComboBox.DataContext = Model;
             layersComboBox.ItemsSource = Model.Layers;
-            layersComboBox.ItemTemplate = GetLockTemplate();
+            var template = new FuncDataTemplate<DNNLayerInfo>((value, namescope) => new TextBlock { [!TextBlock.TextProperty] = new Binding("Name"), });
+            layersComboBox.ItemTemplate = template;
+            //layersComboBox.ItemTemplate = GetLockTemplate();
             //layersComboBox.SourceUpdated += LayersComboBox_SourceUpdated;
             //layersComboBox.IsSynchronizedWithCurrentItem = true;
             layersComboBox.SelectedIndex = Settings.Default.SelectedLayer;
@@ -643,7 +647,7 @@ namespace ConvnetAvalonia.PageViewModels
                 unlockAllButton.IsVisible = !Settings.Default.DisableLocking;
                 lockAllButton.IsVisible = !Settings.Default.DisableLocking;
 
-                layersComboBox.ItemTemplate = GetLockTemplate();
+                //layersComboBox.ItemTemplate = GetLockTemplate();
 
                 int index = layersComboBox.SelectedIndex;
                 if (index > 0)
@@ -670,60 +674,60 @@ namespace ConvnetAvalonia.PageViewModels
             Model?.SetLocked(true);
         }
 
-        static DataTemplate GetLockTemplate()
-        {
-            DataTemplate checkBoxLayout = new DataTemplate
-            {
-                DataType = typeof(DNNLayerInfo)
-            };
-            //set up the StackPanel
-            //FrameworkElementFactory panelFactory = new FrameworkElementFactory(typeof(StackPanel))
-            //{
-            //    Name = "myComboFactory"
-            //};
-            //panelFactory.SetValue(StackPanel.OrientationProperty, Orientation.Horizontal);
+        //static DataTemplate GetLockTemplate()
+        //{
+        //    DataTemplate checkBoxLayout = new DataTemplate
+        //    {
+        //        DataType = typeof(DNNLayerInfo)
+        //    };
+        //    // set up the StackPanel
+        //    var panelFactory = new FrameworkElementFactory(typeof(StackPanel))
+        //    {
+        //        Name = "myComboFactory"
+        //    };
+        //    panelFactory.SetValue(StackPanel.OrientationProperty, Orientation.Horizontal);
 
-            //FrameworkElementFactory contentFactory;
-            //var color = System.Windows.Media.Color.FromArgb(255,215,199,215);
-            //var brush = new System.Windows.Media.SolidColorBrush(color);
-            //brush.Freeze();
-            //if (!Settings.Default.DisableLocking)
-            //{
+        //    FrameworkElementFactory contentFactory;
+        //    var color = System.Windows.Media.Color.FromArgb(255, 215, 199, 215);
+        //    var brush = new System.Windows.Media.SolidColorBrush(color);
+        //    brush.Freeze();
+        //    if (!Settings.Default.DisableLocking)
+        //    {
 
-            //    //set up the CheckBox
-            //    contentFactory = new FrameworkElementFactory(typeof(CheckBox));
-            //    contentFactory.SetBinding(CheckBox.ContentProperty, new Binding("Name"));
-            //    contentFactory.SetValue(Control.ForegroundProperty, brush);
+        //        //set up the CheckBox
+        //        contentFactory = new FrameworkElementFactory(typeof(CheckBox));
+        //        contentFactory.SetBinding(CheckBox.ContentProperty, new Binding("Name"));
+        //        contentFactory.SetValue(Control.ForegroundProperty, brush);
 
-            //    Binding bindingIsChecked = new Binding("LockUpdate")
-            //    {
-            //        Mode = BindingMode.TwoWay,
-            //        UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged,
-            //        NotifyOnSourceUpdated = true
-            //    };
-            //    contentFactory.SetBinding(CheckBox.IsCheckedProperty, bindingIsChecked);
-            //    contentFactory.SetBinding(CheckBox.IsEnabledProperty, new Binding("Lockable"));
-            //}
-            //else
-            //{
-            //    contentFactory = new FrameworkElementFactory(typeof(TextBlock));
-            //    contentFactory.SetBinding(TextBlock.TextProperty, new Binding("Name"));
-            //    contentFactory.SetValue(Control.ForegroundProperty, brush);
-            //}
+        //        Binding bindingIsChecked = new Binding("LockUpdate")
+        //        {
+        //            Mode = BindingMode.TwoWay,
+        //            UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged,
+        //            NotifyOnSourceUpdated = true
+        //        };
+        //        contentFactory.SetBinding(CheckBox.IsCheckedProperty, bindingIsChecked);
+        //        contentFactory.SetBinding(CheckBox.IsEnabledProperty, new Binding("Lockable"));
+        //    }
+        //    else
+        //    {
+        //        contentFactory = new FrameworkElementFactory(typeof(TextBlock));
+        //        contentFactory.SetBinding(TextBlock.TextProperty, new Binding("Name"));
+        //        contentFactory.SetValue(Control.ForegroundProperty, brush);
+        //    }
 
-            //Binding bindingFontWeights = new Binding("Lockable");
-            //Converters.BoolToStringConverter converter = new Converters.BoolToStringConverter
-            //{
-            //    TrueValue = System.Windows.FontWeights.ExtraBold,
-            //    FalseValue = System.Windows.FontWeights.Normal
-            //};
-            //bindingFontWeights.Converter = converter;
-            //contentFactory.SetBinding(CheckBox.FontWeightProperty, bindingFontWeights);
-            //panelFactory.AppendChild(contentFactory);
-            //checkBoxLayout.VisualTree = panelFactory;
-           
-            return checkBoxLayout;
-        }
+        //    Binding bindingFontWeights = new Binding("Lockable");
+        //    Converters.BoolToStringConverter converter = new Converters.BoolToStringConverter
+        //    {
+        //        TrueValue = System.Windows.FontWeights.ExtraBold,
+        //        FalseValue = System.Windows.FontWeights.Normal
+        //    };
+        //    bindingFontWeights.Converter = converter;
+        //    contentFactory.SetBinding(CheckBox.FontWeightProperty, bindingFontWeights);
+        //    panelFactory.AppendChild(contentFactory);
+        //    checkBoxLayout.VisualTree = panelFactory;
+
+        //    return checkBoxLayout;
+        //}
 
         //private void LayersComboBox_SourceUpdated(object? sender, DataTransferEventArgs e)
         //{
