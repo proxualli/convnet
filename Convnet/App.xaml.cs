@@ -85,7 +85,7 @@ namespace Convnet
                     {
                         var dataset = Settings.Default.Dataset.ToString().ToLower(CultureInfo.CurrentCulture);
                         var optimizer = Settings.Default.Optimizer.ToString().ToLower(CultureInfo.CurrentCulture);
-                        var fileName = Convnet.MainWindow.StateDirectory + mainWindow.PageVM.Model.Name + @"-(" + dataset + @")" + (Settings.Default.PersistOptimizer ? (@"(" + optimizer + @").bin") : @".bin");
+                        var fileName = System.IO.Path.Combine(Convnet.MainWindow.StateDirectory, mainWindow.PageVM.Model.Name + @"-(" + dataset + @")" + (Settings.Default.PersistOptimizer ? (@"(" + optimizer + @").bin") : @".bin"));
                         mainWindow.PageVM.Model.SaveWeights(fileName, Settings.Default.PersistOptimizer);
                     }
 
