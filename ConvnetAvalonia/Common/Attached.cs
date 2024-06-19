@@ -1,17 +1,9 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Documents;
-using Avalonia.Input;
-using Avalonia.Interactivity;
 using Avalonia.Media;
-using Avalonia.Styling;
-using Avalonia.Threading;
-using Avalonia.Markup.Xaml;
 using System;
 using System.IO;
-using System.Windows.Input;
-using System.Xml;
-using Newtonsoft.Json.Linq;
 
 namespace ConvnetAvalonia.Common
 {
