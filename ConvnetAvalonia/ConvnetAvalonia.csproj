@@ -13,6 +13,9 @@
     <AssemblyName>ConvnetAvalonia</AssemblyName>
     <SignAssembly>True</SignAssembly>
   </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="Common\FormattedTextBlock.cs" />
+  </ItemGroup>
 
  
 
@@ -79,6 +82,7 @@
     <PackageReference Include="Avalonia" Version="11.0.11" />
     <PackageReference Include="Avalonia.AvaloniaEdit" Version="11.0.6" />
     <PackageReference Include="Avalonia.Desktop" Version="11.0.11" />
+    <PackageReference Include="Avalonia.Markup.Xaml.Loader" Version="11.0.11" />
     <PackageReference Include="Avalonia.Themes.Fluent" Version="11.0.11" />
     <PackageReference Include="Avalonia.Fonts.Inter" Version="11.0.11" />
     <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
@@ -183,6 +187,10 @@
 
   <ItemGroup>
     <Folder Include="Dialogs\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Common\FormattedTextBlock.cs" />
   </ItemGroup>
 
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
