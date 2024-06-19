@@ -16,6 +16,7 @@ using System.Collections.ObjectModel;
 using System.Formats.Asn1;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using Float = System.Single;
 using UInt = System.UInt64;
 
@@ -174,13 +175,51 @@ namespace ConvnetAvalonia.PageViewModels
                         Dispatcher.UIThread.Post(() => MessageBox.Show(files[0] + " is loaded", "Information", MessageBoxButtons.OK));
                     }
                 }
+                else if (files[0].EndsWith(".bin")) 
+                {
+                    if (CurrentPage is TrainPageViewModel tpvm)
+                    {
+                        if (tpvm.Model != null)
+                        {
+                            if (tpvm.Model.LoadWeights(files[0], Settings.Default.PersistOptimizer) == 0)
+                            {
+                                Dispatcher.UIThread.Post(() =>
+                                {
+                                    tpvm.Optimizer = tpvm.Model.Optimizer;
+                                    tpvm.RefreshButtonClick(this, null);
+                                    MessageBox.Show(files[0] + " is loaded", "Information", MessageBoxButtons.OK);
+                                }, DispatcherPriority.Render);
+                            }
+                            else
+                                Dispatcher.UIThread.Post(() => MessageBox.Show(files[0] + " is incompatible", "Information", MessageBoxButtons.OK), DispatcherPriority.Render);
+                        }
+                    }
+                }
             }
         }
 
-        private void PageVM_Save(object? sender, EventArgs e)
+        private async void PageVM_Save(object? sender, EventArgs e)
         {
             //if (ApplicationCommands.Save.CanExecute(null, null))
             //    ApplicationCommands.Save.Execute(null, null);
+
+            if (Model != null)
+            {
+                var path = Path.Combine(DefinitionsDirectory, Model.Name);
+                var shortFileName = @"(" + Model.Dataset.ToString().ToLower() + @")" + (Settings.Default.PersistOptimizer ? @"(" + Model.Optimizer.ToString().ToLower() + @").bin" : @".bin");
+                var fileName = Model.Name + @"-" + shortFileName;
+                               
+                MessageBoxResult result = MessageBoxResult.Yes;
+                if (File.Exists(Path.Combine(StateDirectory, fileName)))
+                    result = await Dispatcher.UIThread.InvokeAsync(() => MessageBox.Show("Do you want to overwrite the existing file?", "File already exists", MessageBoxButtons.YesNo, MessageBoxIcon.None, MessageBoxDefaultButton.Button2));
+               
+                if (result == MessageBoxResult.Yes)
+                    if (Model.SaveWeights(Path.Combine(StateDirectory, fileName), Settings.Default.PersistOptimizer) == 0)
+                    {
+                        File.Copy(Path.Combine(StateDirectory, fileName), Path.Combine(path, shortFileName), true);
+                        Dispatcher.UIThread.Post(() => MessageBox.Show("Weights are saved", "Information", MessageBoxButtons.OK));
+                    }
+            }
         }
 
         private void PageVM_SaveAs(object? sender, EventArgs e)
