@@ -118,7 +118,7 @@ namespace ConvnetAvalonia.PageViewModels
             Dispatcher.UIThread.Post(() =>
             {
                 LayersComboBox_SelectionChanged(this, null);
-                RefreshTrainingPlot();
+                //RefreshTrainingPlot();
             }, DispatcherPriority.Render);
         }
 
@@ -454,7 +454,7 @@ namespace ConvnetAvalonia.PageViewModels
                RefreshTimer.Interval = 1000 * e.Value;
         }
 
-        private void TrainPageViewModel_ModelChanged(object? sender, EventArgs e)
+        private async void TrainPageViewModel_ModelChanged(object? sender, EventArgs e)
         {
             showProgress = false;
             showSample = false;
@@ -496,11 +496,13 @@ namespace ConvnetAvalonia.PageViewModels
             dataProviderComboBox.SelectedIndex = (int)Dataset;
 
             Dispatcher.UIThread.Post(() => LayersComboBox_SelectionChanged(sender, null), DispatcherPriority.Render);
-            var overwrite = Dispatcher.UIThread.InvokeAsync(() => MessageBox.Show("File already exists! Overwrite?", "File already exists", MessageBoxButtons.YesNo, MessageBoxIcon.None, MessageBoxDefaultButton.Button2));
-
+           
             if (TrainingLog.Count > 0)
-                if (Dispatcher.UIThread.InvokeAsync(() => MessageBox.Show("Do you want to clear the training log?", "Clear log?", MessageBoxButtons.YesNo, MessageBoxIcon.None, MessageBoxDefaultButton.Button1)).Result == MessageBoxResult.Yes)
-                    TrainingLog.Clear();
+            {
+                var clear = await Dispatcher.UIThread.Invoke(() => MessageBox.Show("Do you want to clear the training log?", "Clear log?", MessageBoxButtons.YesNo, MessageBoxIcon.None, MessageBoxDefaultButton.Button1));
+                if (clear == MessageBoxResult.Yes)
+                    Dispatcher.UIThread.Post(() => TrainingLog.Clear(), DispatcherPriority.Render);
+            }
 
             Dispatcher.UIThread.Post(() => RefreshTrainingPlot(), DispatcherPriority.Render);
         }

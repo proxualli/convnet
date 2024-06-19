@@ -267,10 +267,10 @@ namespace ConvnetAvalonia.PageViewModels
                     bool ok = true;
                     if (File.Exists(Path.Combine(DefinitionsDirectory, modelname + ".txt")))
                     {
-                        var overwrite = await Dispatcher.UIThread.InvokeAsync(() => MessageBox.Show("File already exists! Overwrite?", "File already exists", MessageBoxButtons.YesNo, MessageBoxIcon.None, MessageBoxDefaultButton.Button2));
+                        var overwrite = await Dispatcher.UIThread.InvokeAsync(() => MessageBox.Show("File already exists! Overwrite?", "File already exists", MessageBoxButtons.YesNo, MessageBoxIcon.None, MessageBoxDefaultButton.Button2), DispatcherPriority.Render);
                         ok = overwrite == MessageBoxResult.Yes;
                     }
-                                       
+
                     if (ok)
                     {
                         File.WriteAllText(pathDefinition, Definition);
@@ -282,7 +282,7 @@ namespace ConvnetAvalonia.PageViewModels
                         var reloadWeights = false;
                         if (sameDefinition)
                         {
-                            var keepWeights = await Dispatcher.UIThread.InvokeAsync(() => MessageBox.Show("Keep model weights?", "Same Model", MessageBoxButtons.YesNo, MessageBoxIcon.None, MessageBoxDefaultButton.Button1));
+                            var keepWeights = await Dispatcher.UIThread.InvokeAsync(() => MessageBox.Show("Keep model weights?", "Same Model", MessageBoxButtons.YesNo, MessageBoxIcon.None, MessageBoxDefaultButton.Button1), DispatcherPriority.Render);
                             if (keepWeights == MessageBoxResult.Yes)
                             {
                                 Model?.SaveWeights(pathWeights, Settings.Default.PersistOptimizer);
