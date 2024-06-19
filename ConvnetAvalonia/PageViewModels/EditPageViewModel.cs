@@ -326,7 +326,7 @@ namespace ConvnetAvalonia.PageViewModels
 
                             GC.Collect(GC.MaxGeneration);
                             GC.WaitForFullGCComplete();
-
+                            
                             Dispatcher.UIThread.Post(() => MessageBox.Show("Model synchronized", "Information", MessageBoxButtons.OK));
                         }
                         catch (Exception ex)

@@ -13,9 +13,6 @@
     <AssemblyName>ConvnetAvalonia</AssemblyName>
     <SignAssembly>True</SignAssembly>
   </PropertyGroup>
-  <ItemGroup>
-    <Compile Remove="Common\FormattedTextBlock.cs" />
-  </ItemGroup>
 
  
 
@@ -90,7 +87,9 @@
     <PackageReference Include="Avalonia.ReactiveUI" Version="11.0.11" />
     <PackageReference Include="Avalonia.Xaml.Interactivity" Version="11.0.10.9" />
     <PackageReference Include="AvaloniaControlsToolBar" Version="0.0.1" />
+    <PackageReference Include="Avalonia.Controls.DataGrid" Version="11.0.11" />
     <PackageReference Include="AvaloniaEdit.TextMate.Grammars" Version="0.10.12" />
+    <PackageReference Include="CsvHelper" Version="33.0.0" />
     <PackageReference Include="CustomMessageBox.Avalonia" Version="11.0.0.2" />
     <PackageReference Include="DialogHost.Avalonia" Version="0.7.7" />
     <PackageReference Include="FluentAvalonia.BreadcrumbBar" Version="2.0.2" />
@@ -187,10 +186,6 @@
 
   <ItemGroup>
     <Folder Include="Dialogs\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="Common\FormattedTextBlock.cs" />
   </ItemGroup>
 
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">

@@ -1,8 +1,21 @@
-﻿using ConvnetAvalonia.Properties;
+﻿using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Controls.Templates;
+using Avalonia.Data;
+using Avalonia.Interactivity;
+using Avalonia.Markup.Xaml.Templates;
+using Avalonia.Threading;
+using ConvnetAvalonia.Properties;
+using CsvHelper;
+using CustomMessageBox.Avalonia;
 using Interop;
 using ReactiveUI;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Formats.Asn1;
+using System.Globalization;
+using System.IO;
 using Float = System.Single;
 using UInt = System.UInt64;
 
@@ -94,10 +107,74 @@ namespace ConvnetAvalonia.PageViewModels
             Settings.Default.Save();
         }
 
-        private void PageVM_Open(object? sender, EventArgs e)
+        private async void PageVM_Open(object? sender, EventArgs e)
         {
             //if (ApplicationCommands.Open.CanExecute(null, null))
             //    ApplicationCommands.Open.Execute(null, null);
+
+            var dialog = new OpenFileDialog
+            {
+                AllowMultiple = false,
+                Title = "Load Model",
+                Directory = DefinitionsDirectory
+            };
+            dialog.Filters.Add(new FileDialogFilter() { Name = "Model Weights|*.bin", Extensions = new List<string> { "bin" } });
+            dialog.Filters.Add(new FileDialogFilter() { Name = "Model Log|*.csv", Extensions = new List<string> { "csv" } });
+            var files = await dialog.ShowAsync(App.MainWindow);
+
+            if (files != null && files.Length > 0)
+            {
+                if (files[0].EndsWith(".csv"))
+                {
+                    if (CurrentPage is TrainPageViewModel tpvm)
+                    {
+                        ObservableCollection<DNNTrainingResult> backup = new ObservableCollection<DNNTrainingResult>(Settings.Default.TrainingLog);
+
+                        try
+                        {
+                            CsvHelper.Configuration.CsvConfiguration config = new CsvHelper.Configuration.CsvConfiguration(CultureInfo.CurrentCulture)
+                            {
+                                HasHeaderRecord = true,
+                                DetectDelimiter = true,
+                                DetectDelimiterValues = new string[] { ";" },
+                                Delimiter = ";"
+                            };
+
+                            using (var reader = new StreamReader(files[0], true))
+                            using (var csv = new CsvReader(reader, config))
+                            {
+                                var records = csv.GetRecords<DNNTrainingResult>();
+
+                                if (Settings.Default.TrainingLog.Count > 0)
+                                {
+                                    var result = await Dispatcher.UIThread.InvokeAsync(() => MessageBox.Show("Do you really want to clear the log?", "Clear Log", MessageBoxButtons.YesNo, MessageBoxIcon.None, MessageBoxDefaultButton.Button2));
+
+                                    if (result == MessageBoxResult.Yes)
+                                    {
+                                        Settings.Default.TrainingLog.Clear();
+                                        Model?.ClearLog();
+                                    }
+                                }
+
+                                foreach (var record in records)
+                                    Settings.Default.TrainingLog.Add(record);
+                            }
+
+                            Model?.LoadLog(files[0]);
+                        }
+                        catch (Exception ex)
+                        {
+                            Settings.Default.TrainingLog = backup;
+                            Dispatcher.UIThread.Post(() => MessageBox.Show(ex.Message, "Information", MessageBoxButtons.OK));
+                        }
+
+                        Settings.Default.Save();
+
+                        tpvm.RefreshTrainingPlot();
+                        Dispatcher.UIThread.Post(() => MessageBox.Show(files[0] + " is loaded", "Information", MessageBoxButtons.OK));
+                    }
+                }
+            }
         }
 
         private void PageVM_Save(object? sender, EventArgs e)

@@ -54,7 +54,70 @@
             
           </oxy:PlotView>-->
         </Border>
-      
     </Grid>
+    
+    <ScrollViewer Grid.Row="1" x:Name="ScrollViewerHeader" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" BorderThickness="1" BorderBrush="DarkGray" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden" Focusable="False" IsHitTestVisible="False">
+      <Grid >
+        <!--<Grid.ColumnDefinitions>
+          <ColumnDefinition Width="{Binding ActualWidth, ElementName=cycle}" />
+          <ColumnDefinition Width="{Binding ActualWidth, ElementName=epoch}" />
+          <ColumnDefinition Width="{Binding ActualWidth, ElementName=batchSize}" />
+          <ColumnDefinition Width="{Binding ActualWidth, ElementName=depth}" />
+          <ColumnDefinition Width="{Binding ActualWidth, ElementName=height}" />
+          <ColumnDefinition Width="{Binding ActualWidth, ElementName=width}" />
+          <ColumnDefinition Width="{Binding ActualWidth, ElementName=padD}" />
+          <ColumnDefinition Width="{Binding ActualWidth, ElementName=padH}" />
+          <ColumnDefinition Width="{Binding ActualWidth, ElementName=padW}" />
+          <ColumnDefinition Width="{Binding ActualWidth, ElementName=optimizer}" />
+          <ColumnDefinition Width="{Binding ActualWidth, ElementName=rate}" />
+          <ColumnDefinition Width="{Binding ActualWidth, ElementName=eps}" />
+          <ColumnDefinition Width="{Binding ActualWidth, ElementName=momentum}" />
+          <ColumnDefinition Width="{Binding ActualWidth, ElementName=beta2}" />
+          <ColumnDefinition Width="{Binding ActualWidth, ElementName=gamma}" />
+          <ColumnDefinition Width="{Binding ActualWidth, ElementName=l2Penalty}" />
+          <ColumnDefinition Width="{Binding ActualWidth, ElementName=dropout}" />
+          <ColumnDefinition Width="{Binding ActualWidth, ElementName=inputDropout}" />
+          <ColumnDefinition Width="{Binding ActualWidth, ElementName=cutout}" />
+          <ColumnDefinition Width="{Binding ActualWidth, ElementName=cutMix}" />
+          <ColumnDefinition Width="{Binding ActualWidth, ElementName=autoaugment}" />
+          <ColumnDefinition Width="{Binding ActualWidth, ElementName=hflip}" />
+          <ColumnDefinition Width="{Binding ActualWidth, ElementName=vflip}" />
+          <ColumnDefinition Width="{Binding ActualWidth, ElementName=colorCast}" />
+          <ColumnDefinition Width="{Binding ActualWidth, ElementName=colorAngle}" />
+          <ColumnDefinition Width="{Binding ActualWidth, ElementName=distortion}" />
+          <ColumnDefinition Width="{Binding ActualWidth, ElementName=interpolation}" />
+          <ColumnDefinition Width="{Binding ActualWidth, ElementName=scaling}" />
+          <ColumnDefinition Width="{Binding ActualWidth, ElementName=rotation}" />
+          <ColumnDefinition Width="{Binding ActualWidth, ElementName=avgTrainLoss}" />
+          <ColumnDefinition Width="{Binding ActualWidth, ElementName=trainErrors}" />
+          <ColumnDefinition Width="{Binding ActualWidth, ElementName=trainErrorPercentage}" />
+          <ColumnDefinition Width="{Binding ActualWidth, ElementName=trainAccuracy}" />
+          <ColumnDefinition Width="{Binding ActualWidth, ElementName=avgTestLoss}" />
+          <ColumnDefinition Width="{Binding ActualWidth, ElementName=testErrors}" />
+          <ColumnDefinition Width="{Binding ActualWidth, ElementName=testErrorPercentage}" />
+          <ColumnDefinition Width="{Binding ActualWidth, ElementName=testAccuracy}" />
+          <ColumnDefinition Width="{Binding ActualWidth, ElementName=duration}" />
+        </Grid.ColumnDefinitions>-->
+
+        <Border Grid.Column="2" Grid.ColumnSpan="7" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  BorderThickness="1,1,0,0" BorderBrush="{StaticResource TextBrush}" Margin="1,0,-1,0" Background="{StaticResource BackgroundBrush}">
+          <TextBlock Text="Resolution" HorizontalAlignment="Stretch" VerticalAlignment="Center" TextAlignment="Center" Foreground="{StaticResource TextBrush}" FontFamily="Consolas" FontSize="14" />
+        </Border>
+        <Border Grid.Column="9" Grid.ColumnSpan="8" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  BorderThickness="1,1,0,0" BorderBrush="{StaticResource TextBrush}" Margin="1,0,-1,0" Background="{StaticResource BackgroundBrush}">
+          <TextBlock Text="Regularization" HorizontalAlignment="Stretch" VerticalAlignment="Center" TextAlignment="Center" Foreground="{StaticResource TextBrush}" FontFamily="Consolas" FontSize="14" />
+        </Border>
+        <Border Grid.Column="17" Grid.ColumnSpan="12" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  BorderThickness="1,1,0,0" BorderBrush="{StaticResource TextBrush}" Margin="1,0,-1,0" Background="{StaticResource BackgroundBrush}">
+          <TextBlock Text="Augmentation" HorizontalAlignment="Stretch" VerticalAlignment="Center" TextAlignment="Center" Foreground="{StaticResource TextBrush}" FontFamily="Consolas" FontSize="14" />
+        </Border>
+        <Border Grid.Column="29" Grid.ColumnSpan="4" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  BorderThickness="1,1,0,0" BorderBrush="{StaticResource TextBrush}" Margin="1,0,-1,0" Background="{StaticResource BackgroundBrush}">
+          <TextBlock Text="Train" HorizontalAlignment="Stretch" VerticalAlignment="Center" TextAlignment="Center" Foreground="{StaticResource TextBrush}" FontFamily="Consolas" FontSize="14" />
+        </Border>
+        <Border Grid.Column="33" Grid.ColumnSpan="4" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  BorderThickness="1,1,1,0" BorderBrush="{StaticResource TextBrush}" Margin="1,0,-1,0" Background="{StaticResource BackgroundBrush}">
+          <TextBlock Text="Test" HorizontalAlignment="Stretch" VerticalAlignment="Center" TextAlignment="Center" Foreground="{StaticResource TextBrush}" FontFamily="Consolas" FontSize="14" />
+        </Border>
+      </Grid>
+    </ScrollViewer>
+
+    <DataGrid Grid.Row="2" AutoGenerateColumns="true" IsReadOnly="True" CanUserSortColumns="False" CanUserReorderColumns="False" CanUserResizeColumns="False" Foreground="{StaticResource TextBrush}" Background="{StaticResource BackgroundBrush}" BorderBrush="{StaticResource DisabledBorderBrush}" BorderThickness="1" GridLinesVisibility="All" Margin="0" HorizontalAlignment="Stretch" x:Name="listViewTrainingResult" VerticalAlignment="Stretch" SelectedIndex="{Binding SelectedIndex}" ItemsSource="{Binding TrainingLog}" Grid.ColumnSpan="1" FontFamily="Consolas" FontSize="13">
+    </DataGrid>
   </Grid>
 </UserControl>
