@@ -103,9 +103,6 @@ namespace ConvnetAvalonia.PageViewModels
 
         private async void PageVM_Open(object? sender, EventArgs e)
         {
-            //if (ApplicationCommands.Open.CanExecute(null, null))
-            //    ApplicationCommands.Open.Execute(null, null);
-
             var dialog = new OpenFileDialog
             {
                 AllowMultiple = false,
@@ -120,7 +117,7 @@ namespace ConvnetAvalonia.PageViewModels
             if (CurrentPage is EditPageViewModel)
             {
                 dialog.Filters.Add(new FileDialogFilter() { Name = "Definition|*.txt", Extensions = new List<string> { "txt" } });
-                // dialog.InitialFileName = "model.txt";
+                dialog.Filters.Add(new FileDialogFilter() { Name = "C#|*.cs", Extensions = new List<string> { "cs" } });
             }
 
             var files = await dialog.ShowAsync(App.MainWindow);
@@ -177,7 +174,7 @@ namespace ConvnetAvalonia.PageViewModels
                         Dispatcher.UIThread.Post(() => MessageBox.Show(files[0] + " is loaded", "Information", MessageBoxButtons.OK));
                     }
                 }
-                else if (files[0].EndsWith(".bin")) 
+                else if (files[0].EndsWith(".bin"))
                 {
                     if (CurrentPage is TrainPageViewModel tpvm)
                     {
@@ -197,14 +194,41 @@ namespace ConvnetAvalonia.PageViewModels
                         }
                     }
                 }
+                else if (files[0].EndsWith(".txt"))
+                {
+                    if (CurrentPage is EditPageViewModel epvm)
+                    {
+                        if (epvm.Model != null)
+                        {
+                            var reader = new StreamReader(files[0], true);
+                            var definition = reader.ReadToEnd().Trim();
+                            epvm.Definition = definition;
+                            Settings.Default.DefinitionEditing = definition.Trim();
+                            Settings.Default.Save();
+                            Dispatcher.UIThread.Post(() => MessageBox.Show(files[0] + " is loaded", "Information", MessageBoxButtons.OK), DispatcherPriority.Render);
+                        }
+                    }
+                }
+                else if (files[0].EndsWith(".cs"))
+                {
+                    if (CurrentPage is EditPageViewModel epvm)
+                    {
+                        if (epvm.Model != null)
+                        {
+                            var reader = new StreamReader(files[0], true);
+                            var script = reader.ReadToEnd().Trim();
+                            epvm.Script = script;
+                            Settings.Default.Script = script.Trim();
+                            Settings.Default.Save();
+                            Dispatcher.UIThread.Post(() => MessageBox.Show(files[0] + " is loaded", "Information", MessageBoxButtons.OK), DispatcherPriority.Render);
+                        }
+                    }
+                }
             }
         }
 
         private async void PageVM_Save(object? sender, EventArgs e)
         {
-            //if (ApplicationCommands.Save.CanExecute(null, null))
-            //    ApplicationCommands.Save.Execute(null, null);
-
             if (Model != null)
             {
                 var path = Path.Combine(DefinitionsDirectory, Model.Name);
@@ -226,8 +250,6 @@ namespace ConvnetAvalonia.PageViewModels
 
         private void PageVM_SaveAs(object? sender, EventArgs e)
         {
-            //if (ApplicationCommands.SaveAs.CanExecute(null, null))
-            //    ApplicationCommands.SaveAs.Execute(null, null);
         }
 
         private void TrainProgress(DNNOptimizers Optimizer, UInt BatchSize, UInt Cycle, UInt TotalCycles, UInt Epoch, UInt TotalEpochs, bool HorizontalMirror, bool VerticalMirror, Float InputDropOut, Float Cutout, bool CutMix, Float AutoAugment, Float ColorCast, UInt ColorRadius, Float Distortion, DNNInterpolations Interpolation, Float Scaling, Float Rotation, UInt SampleIndex, Float Rate, Float Momentum, Float Beta2, Float Gamma, Float L2Penalty, Float DropOut, Float AvgTrainLoss, Float TrainErrorPercentage, Float TrainAccuracy, UInt TrainErrors, Float AvgTestLoss, Float TestErrorPercentage, Float Accuracy, UInt64 TestErrors, DNNStates NetworkState, DNNTaskStates TaskState)
