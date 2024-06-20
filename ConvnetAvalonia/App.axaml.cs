@@ -1,7 +1,6 @@
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
-using Avalonia.Threading;
 using ConvnetAvalonia.PageViewModels;
 using ConvnetAvalonia.Properties;
 using CustomMessageBox.Avalonia;
@@ -91,15 +90,15 @@ namespace ConvnetAvalonia
                         MainWindow?.PageVM?.Model?.SaveWeights(fileName, Settings.Default.PersistOptimizer);
                     }
 
-                    if (MainWindow?.PageVM != null && MainWindow?.PageVM?.Pages != null)
-                    { 
-                        var editPV = MainWindow.PageVM.Pages[(int)PageViewModels.ViewModels.Edit] as EditPageViewModel;
-                        if (editPV != null)
-                            Settings.Default.Script = editPV.Script;
-                        
-                        Settings.Default.Save();
-                        e.Cancel = false;
-                    }
+                    //if (MainWindow?.PageVM != null && MainWindow?.PageVM?.Pages != null)
+                    //{ 
+                    //    var editPV = MainWindow.PageVM.Pages[(int)PageViewModels.ViewModels.Edit] as EditPageViewModel;
+                    //    if (editPV != null)
+                    //        Settings.Default.Script = editPV.Script;    
+                    //}
+
+                    Settings.Default.Save();
+                    e.Cancel = false;
                 }
                 else
                     e.Cancel = true;
