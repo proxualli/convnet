@@ -3,7 +3,6 @@ using Avalonia.Controls;
 using Avalonia.Controls.Templates;
 using Avalonia.Data;
 using Avalonia.Interactivity;
-using Avalonia.Markup.Xaml.Templates;
 using Avalonia.Threading;
 using ConvnetAvalonia.Common;
 using ConvnetAvalonia.Properties;
@@ -114,12 +113,8 @@ namespace ConvnetAvalonia.PageViewModels
             Modelhanged += TrainPageViewModel_ModelChanged;
             RefreshRateChanged += TrainPageViewModel_RefreshRateChanged;
 
-            //(UIElementAutomationPeer.CreatePeerForElement(refreshButton).GetPattern(PatternInterface.Invoke) as IInvokeProvider).Invoke();
-            Dispatcher.UIThread.Post(() =>
-            {
-                LayersComboBox_SelectionChanged(this, null);
-                //RefreshTrainingPlot();
-            }, DispatcherPriority.Render);
+            LayersComboBox_SelectionChanged(this, null);
+            RefreshTrainingPlot();
         }
 
 
@@ -495,7 +490,7 @@ namespace ConvnetAvalonia.PageViewModels
             Settings.Default.Save();
             dataProviderComboBox.SelectedIndex = (int)Dataset;
 
-            Dispatcher.UIThread.Post(() => LayersComboBox_SelectionChanged(sender, null), DispatcherPriority.Render);
+            LayersComboBox_SelectionChanged(sender, null);
            
             if (TrainingLog.Count > 0)
             {
@@ -504,7 +499,7 @@ namespace ConvnetAvalonia.PageViewModels
                     Dispatcher.UIThread.Post(() => TrainingLog.Clear(), DispatcherPriority.Render);
             }
 
-            Dispatcher.UIThread.Post(() => RefreshTrainingPlot(), DispatcherPriority.Render);
+            RefreshTrainingPlot();
         }
 
         private void NewEpoch(UInt Cycle, UInt Epoch, UInt TotalEpochs, UInt Optimizer, Float Beta2, Float Gamma, Float Eps, bool HorizontalFlip, bool VerticalFlip, Float InputDropout, Float Cutout, bool CutMix, Float AutoAugment, Float ColorCast, UInt ColorAngle, Float Distortion, UInt Interpolation, Float Scaling, Float Rotation, Float Rate, UInt N, UInt D, UInt H, UInt W, UInt PadD, UInt PadH, UInt PadW, Float Momentum, Float L2Penalty, Float Dropout, Float AvgTrainLoss, Float TrainErrorPercentage, Float TrainAccuracy, UInt TrainErrors, Float AvgTestLoss, Float TestErrorPercentage, Float TestAccuracy, UInt TestErrors, UInt ElapsedNanoSecondes)
@@ -521,11 +516,11 @@ namespace ConvnetAvalonia.PageViewModels
                         TrainingLog.Add(new DNNTrainingResult(Cycle, Epoch, Model.CostLayers[c].GroupIndex, c, Model.CostLayers[c].Name, N, D, H, W, PadD, PadH, PadW, (DNNOptimizers)Optimizer, Rate, Eps, Momentum, Beta2, Gamma, L2Penalty, Dropout, InputDropout, Cutout, CutMix, AutoAugment, HorizontalFlip, VerticalFlip, ColorCast, ColorAngle, Distortion, (DNNInterpolations)Interpolation, Scaling, Rotation, Model.CostLayers[c].AvgTrainLoss, Model.CostLayers[c].TrainErrors, Model.CostLayers[c].TrainErrorPercentage, Model.CostLayers[c].TrainAccuracy, Model.CostLayers[c].AvgTestLoss, Model.CostLayers[c].TestErrors, Model.CostLayers[c].TestErrorPercentage, Model.CostLayers[c].TestAccuracy, (System.Int64)span.TotalMilliseconds, span));
                     }
 
-                    SelectedIndex = TrainingLog.Count - 1;
-
-                    RefreshTrainingPlot();
+                    SelectedIndex = TrainingLog.Count - 1;                    
                 }
             }, DispatcherPriority.Render);
+
+            RefreshTrainingPlot();
         }
 
         private void TrainProgress(DNNOptimizers Optim, UInt BatchSize, UInt Cycle, UInt TotalCycles, UInt Epoch, UInt TotalEpochs, bool HorizontalFlip, bool VerticalFlip, Float InputDropout, Float Cutout, bool CutMix, Float AutoAugment, Float ColorCast, UInt ColorAngle, Float Distortion, DNNInterpolations Interpolation, Float Scaling, Float Rotation, UInt SampleIndex, Float Rate, Float Momentum, Float Beta2, Float Gamma, Float L2Penalty, Float Dropout, Float AvgTrainLoss, Float TrainErrorPercentage, Float TrainAccuracy, UInt TrainErrors, Float AvgTestLoss, Float TestErrorPercentage, Float TestAccuracy, UInt TestErrors, DNNStates State, DNNTaskStates TaskState)
@@ -795,57 +790,60 @@ namespace ConvnetAvalonia.PageViewModels
 
         public void RefreshTrainingPlot()
         {
-            PointsTrain.Clear();
-            PointsTest.Clear();
-
-            switch (CurrentPlotType)
+            Dispatcher.UIThread.Post(() =>
             {
-                case PlotType.Accuracy:
-                    foreach (DNNTrainingResult result in TrainingLog)
-                        if ((int)result.CostIndex == SelectedCostIndex)
-                            PointsTrain.Add(new DataPoint(result.Epoch, result.TrainAccuracy));
+                PointsTrain.Clear();
+                PointsTest.Clear();
 
-                    foreach (DNNTrainingResult result in TrainingLog)
-                        if ((int)result.CostIndex == SelectedCostIndex)
-                            PointsTest.Add(new DataPoint(result.Epoch, result.TestAccuracy));
+                switch (CurrentPlotType)
+                {
+                    case PlotType.Accuracy:
+                        foreach (DNNTrainingResult result in TrainingLog)
+                            if ((int)result.CostIndex == SelectedCostIndex)
+                                PointsTrain.Add(new DataPoint(result.Epoch, result.TrainAccuracy));
 
-                    PointsTrainLabel = "Train Accuracy %";
-                    PointsTestLabel = "Test Accuracy %";
-                    break;
+                        foreach (DNNTrainingResult result in TrainingLog)
+                            if ((int)result.CostIndex == SelectedCostIndex)
+                                PointsTest.Add(new DataPoint(result.Epoch, result.TestAccuracy));
 
-                case PlotType.Error:
-                    foreach (DNNTrainingResult result in TrainingLog)
-                        if ((int)result.CostIndex == SelectedCostIndex)
-                            PointsTrain.Add(new DataPoint(result.Epoch, result.TrainErrorPercentage));
+                        PointsTrainLabel = "Train Accuracy %";
+                        PointsTestLabel = "Test Accuracy %";
+                        break;
 
-                    foreach (DNNTrainingResult result in TrainingLog)
-                        if ((int)result.CostIndex == SelectedCostIndex)
-                            PointsTest.Add(new DataPoint(result.Epoch, result.TestErrorPercentage));
+                    case PlotType.Error:
+                        foreach (DNNTrainingResult result in TrainingLog)
+                            if ((int)result.CostIndex == SelectedCostIndex)
+                                PointsTrain.Add(new DataPoint(result.Epoch, result.TrainErrorPercentage));
 
-                    PointsTrainLabel = "Train Error %";
-                    PointsTestLabel = "Test Error %";
-                    break;
+                        foreach (DNNTrainingResult result in TrainingLog)
+                            if ((int)result.CostIndex == SelectedCostIndex)
+                                PointsTest.Add(new DataPoint(result.Epoch, result.TestErrorPercentage));
 
-                case PlotType.Loss:
-                    foreach (DNNTrainingResult result in TrainingLog)
-                        if ((int)result.CostIndex == SelectedCostIndex)
-                            PointsTrain.Add(new DataPoint(result.Epoch, result.AvgTrainLoss));
+                        PointsTrainLabel = "Train Error %";
+                        PointsTestLabel = "Test Error %";
+                        break;
 
-                    foreach (DNNTrainingResult result in TrainingLog)
-                        if ((int)result.CostIndex == SelectedCostIndex)
-                            PointsTest.Add(new DataPoint(result.Epoch, result.AvgTestLoss));
+                    case PlotType.Loss:
+                        foreach (DNNTrainingResult result in TrainingLog)
+                            if ((int)result.CostIndex == SelectedCostIndex)
+                                PointsTrain.Add(new DataPoint(result.Epoch, result.AvgTrainLoss));
 
-                    PointsTrainLabel = "Avg Train Loss";
-                    PointsTestLabel = "Avg Test Loss";
-                    break;
-            }
-            plotModel.Series[0].Title = PointsTrainLabel;
-            plotModel.Series[1].Title = PointsTestLabel;
+                        foreach (DNNTrainingResult result in TrainingLog)
+                            if ((int)result.CostIndex == SelectedCostIndex)
+                                PointsTest.Add(new DataPoint(result.Epoch, result.AvgTestLoss));
 
-            this.RaisePropertyChanged(nameof(PointsTrain));
-            this.RaisePropertyChanged(nameof(PointsTest));
-            
-            plotModel.InvalidatePlot(true);
+                        PointsTrainLabel = "Avg Train Loss";
+                        PointsTestLabel = "Avg Test Loss";
+                        break;
+                }
+                plotModel.Series[0].Title = PointsTrainLabel;
+                plotModel.Series[1].Title = PointsTestLabel;
+
+                this.RaisePropertyChanged(nameof(PointsTrain));
+                this.RaisePropertyChanged(nameof(PointsTest));
+
+                plotModel.InvalidatePlot(true);
+            }, DispatcherPriority.Render);
         }
 
         private void InitializeTrainingPlot()
@@ -1193,7 +1191,7 @@ namespace ConvnetAvalonia.PageViewModels
 
         private void RefreshTimer_Elapsed(object? sender, ElapsedEventArgs e)
         {
-            Dispatcher.UIThread.Post(() => LayersComboBox_SelectionChanged(sender, null), DispatcherPriority.Render);
+            LayersComboBox_SelectionChanged(sender, null);
         }
 
         private void StartButtonClick(object? sender, RoutedEventArgs e)
@@ -1511,11 +1509,8 @@ namespace ConvnetAvalonia.PageViewModels
 
             if (result == MessageBoxResult.Yes)                
             {
-                Dispatcher.UIThread.Post(() =>
-                {
-                    Model?.ResetWeights();
-                    LayersComboBox_SelectionChanged(sender, null);
-                }, DispatcherPriority.Render);
+                Model?.ResetWeights();
+                LayersComboBox_SelectionChanged(sender, null);
             }
         }
 
@@ -1532,12 +1527,9 @@ namespace ConvnetAvalonia.PageViewModels
                 var result = await Dispatcher.UIThread.InvokeAsync(() => MessageBox.Show("Do you really want to clear the log?", "Clear Log", MessageBoxButtons.YesNo, MessageBoxIcon.None, MessageBoxDefaultButton.Button2));
                 if (result == MessageBoxResult.Yes)
                 {
-                    Dispatcher.UIThread.Post(() =>
-                    {
-                        TrainingLog.Clear();
-                        Model?.ClearLog();
-                        RefreshTrainingPlot();
-                    }, DispatcherPriority.Render);
+                    TrainingLog.Clear();
+                    Model?.ClearLog();
+                    RefreshTrainingPlot();
                 }
             }
         }
@@ -1617,22 +1609,16 @@ namespace ConvnetAvalonia.PageViewModels
             var result = await Dispatcher.UIThread.InvokeAsync(() => MessageBox.Show("Do you really want to forget layer weights?", "Forget Layer Weights", MessageBoxButtons.YesNo, MessageBoxIcon.None, MessageBoxDefaultButton.Button2));
             if (result == MessageBoxResult.Yes)
             {
-                Dispatcher.UIThread.Post(() =>
-                {
-                    uint index = (uint)layersComboBox.SelectedIndex;
-                    Model?.ResetLayerWeights((uint)layersComboBox.SelectedIndex);
-                    LayersComboBox_SelectionChanged(sender, null);
-                }, DispatcherPriority.Render);
+                uint index = (uint)layersComboBox.SelectedIndex;
+                Model?.ResetLayerWeights((uint)layersComboBox.SelectedIndex);
+                LayersComboBox_SelectionChanged(sender, null);
             }
         }
 
         public void RefreshButtonClick(object? sender, RoutedEventArgs e)
         {
-            Dispatcher.UIThread.Post(() =>
-            {
-                LayersComboBox_SelectionChanged(sender, null);
-                RefreshTrainingPlot();
-            }, DispatcherPriority.Render);
+            LayersComboBox_SelectionChanged(sender, null);
+            RefreshTrainingPlot();
         }
 
         public void LayersComboBox_SelectionChanged(object? sender, SelectionChangedEventArgs e)
@@ -1786,22 +1772,22 @@ namespace ConvnetAvalonia.PageViewModels
                             if (Model.State == DNNStates.Training)
                             {
                                 sb.Length = 0;
-                                sb.AppendFormat(" fprop:\t\t{0:D}/{1:D} ms", (int)Model.Layers[index].FPropLayerTime, (int)Model.fpropTime);
+                                sb.AppendFormat(" fprop:  \t\t{0:D}/{1:D} ms", (int)Model.Layers[index].FPropLayerTime, (int)Model.fpropTime);
                                 LayerInfo += "<Span>" + sb.ToString() + "</Span><LineBreak/>";
                                 sb.Length = 0;
-                                sb.AppendFormat(" bprop:\t\t{0:D}/{1:D} ms", (int)Model.Layers[index].BPropLayerTime, (int)Model.bpropTime);
+                                sb.AppendFormat(" bprop:  \t\t{0:D}/{1:D} ms", (int)Model.Layers[index].BPropLayerTime, (int)Model.bpropTime);
                                 LayerInfo += "<Span>" + sb.ToString() + "</Span><LineBreak/>";
                                 if (ShowWeightsSnapshot)
                                 {
                                     sb.Length = 0;
-                                    sb.AppendFormat(" update:\t{0:D}/{1:D} ms", (int)Model.Layers[index].UpdateLayerTime, (int)Model.updateTime);
+                                    sb.AppendFormat(" update:  \t{0:D}/{1:D} ms", (int)Model.Layers[index].UpdateLayerTime, (int)Model.updateTime);
                                     LayerInfo += "<Span>" + sb.ToString() + "</Span>";
                                 }
                             }
                             else
                             {
                                 sb.Length = 0;
-                                sb.AppendFormat(" fprop:\t\t{0:D}/{1:D} ms", (int)Model.Layers[index].FPropLayerTime, (int)Model.fpropTime);
+                                sb.AppendFormat(" fprop:  \t\t{0:D}/{1:D} ms", (int)Model.Layers[index].FPropLayerTime, (int)Model.fpropTime);
                                 LayerInfo += "<Span>" + sb.ToString() + "</Span>";
                             }
                         }
@@ -1815,10 +1801,7 @@ namespace ConvnetAvalonia.PageViewModels
                 }
             }, DispatcherPriority.Render);
 
-            //Dispatcher.UIThread.Post(() =>
-            //{
             //   RefreshTrainingPlot();
-            //}, DispatcherPriority.Render);
         }
     }
 }
