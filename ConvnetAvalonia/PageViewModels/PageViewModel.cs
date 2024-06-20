@@ -1,9 +1,4 @@
-﻿using Avalonia;
-using Avalonia.Controls;
-using Avalonia.Controls.Templates;
-using Avalonia.Data;
-using Avalonia.Interactivity;
-using Avalonia.Markup.Xaml.Templates;
+﻿using Avalonia.Controls;
 using Avalonia.Threading;
 using ConvnetAvalonia.Properties;
 using CsvHelper;
@@ -13,10 +8,8 @@ using ReactiveUI;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Formats.Asn1;
 using System.Globalization;
 using System.IO;
-using System.Linq;
 using Float = System.Single;
 using UInt = System.UInt64;
 
@@ -116,11 +109,20 @@ namespace ConvnetAvalonia.PageViewModels
             var dialog = new OpenFileDialog
             {
                 AllowMultiple = false,
-                Title = "Load Model",
-                Directory = DefinitionsDirectory
+                Title = "Load",
+                Directory = Path.Combine(DefinitionsDirectory, Model.Name)
             };
-            dialog.Filters.Add(new FileDialogFilter() { Name = "Model Weights|*.bin", Extensions = new List<string> { "bin" } });
-            dialog.Filters.Add(new FileDialogFilter() { Name = "Model Log|*.csv", Extensions = new List<string> { "csv" } });
+            if (CurrentPage is TrainPageViewModel)
+            {
+                dialog.Filters.Add(new FileDialogFilter() { Name = "Weights|*.bin", Extensions = new List<string> { "bin" } });
+                dialog.Filters.Add(new FileDialogFilter() { Name = "Log|*.csv", Extensions = new List<string> { "csv" } });
+            }
+            if (CurrentPage is EditPageViewModel)
+            {
+                dialog.Filters.Add(new FileDialogFilter() { Name = "Definition|*.txt", Extensions = new List<string> { "txt" } });
+                // dialog.InitialFileName = "model.txt";
+            }
+
             var files = await dialog.ShowAsync(App.MainWindow);
 
             if (files != null && files.Length > 0)
@@ -298,8 +300,7 @@ namespace ConvnetAvalonia.PageViewModels
         }
 
         public override string DisplayName => "Main";
-
-        
+                
         private string? sampleRate;
         public string? SampleRate
         {
