@@ -844,6 +844,7 @@ namespace ConvnetAvalonia.PageViewModels
                 this.RaisePropertyChanged(nameof(PointsTest));
 
                 plotModel.InvalidatePlot(true);
+                this.RaisePropertyChanged(nameof(PlotModel));
             }, DispatcherPriority.Render);
         }
 
@@ -897,6 +898,7 @@ namespace ConvnetAvalonia.PageViewModels
             legend.LegendPosition = LegendPosition.RightBottom;
             plotModel.Legends.Add(legend);
             plotModel.TextColor = OxyColor.FromRgb(255, 255, 255);
+            this.RaisePropertyChanged(nameof(PlotModel));
         }
 
         public PlotModel PlotModel

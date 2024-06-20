@@ -566,7 +566,7 @@ namespace Convnet.PageViewModels
                 Converter = new Converters.InverseNullableBoolToVisibilityConverter(),
                 UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged
             };
-            BindingOperations.SetBinding(pixelSizeSlider, ComboBox.VisibilityProperty, binding);
+            BindingOperations.SetBinding(pixelSizeSlider, FormattedSlider.VisibilityProperty, binding);
             pixelSizeSlider.ValueChanged += PixelSizeSlider_ValueChanged;
 
             refreshButton = new Button

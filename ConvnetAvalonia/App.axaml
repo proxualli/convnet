@@ -11,16 +11,12 @@
   </Application.DataTemplates>
   
   <Application.Styles>
-    <FluentTheme />
+    <FluentTheme/>
     <StyleInclude Source="avares://Avalonia.Controls.DataGrid/Themes/Fluent.xaml"/>
     <StyleInclude Source="avares://AvaloniaEdit/Themes/Fluent/AvaloniaEdit.xaml" />
     <StyleInclude Source="avares://Avalonia.Controls.ToolBar/Themes/Avalonia.Controls.ToolBar.axaml" />
+    <StyleInclude Source="avares://OxyPlot.Avalonia/Themes/Default.axaml"/>
     <dialogHostAvalonia:DialogHostStyles />
-    <!-- Add the line below to get OxyPlot UI theme applied. -->
-    <!--<StyleInclude Source="resm:OxyPlot.Avalonia.Themes.Default.xaml?assembly=OxyPlot.Avalonia"/>-->
-
-    <!-- Add the line below to get OxyPlot UI theme applied in Avalonia 11. -->
-    <!--<StyleInclude Source="avares://AvaloniaEdit/Themes/Simple/AvaloniaEdit.xaml"/>-->
   </Application.Styles>
 
   <Application.Resources>
