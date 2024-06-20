@@ -13,6 +13,9 @@
     <AssemblyName>ConvnetAvalonia</AssemblyName>
     <SignAssembly>True</SignAssembly>
   </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="PageViewModels\MainWindowViewModel.cs" />
+  </ItemGroup>
 
   <ItemGroup>
     <!--This helps with theme dll-s trimming.
@@ -188,6 +191,10 @@
 
   <ItemGroup>
     <Folder Include="Dialogs\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="PageViewModels\MainWindowViewModel.cs" />
   </ItemGroup>
 
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">

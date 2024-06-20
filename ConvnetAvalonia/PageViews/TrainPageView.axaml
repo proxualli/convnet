@@ -44,26 +44,31 @@
           </Border>
         </StackPanel>
         <Border x:Name="BorderSnapShot" BorderThickness="1,1,0,1" CornerRadius="3" Margin="1,1,0,1" Padding="2" IsVisible="{Binding ShowWeightsSnapshot, Converter={StaticResource BooleanToVisibilityConverter}, Mode=TwoWay}" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="1" Grid.RowSpan="1" MaxHeight="{Binding Bounds.Height, ElementName=BorderWeightsMinMax}">
-          <ScrollViewer x:Name="SnapShot" AllowAutoHide="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" IsHitTestVisible="True" >
-            <Image Source="{Binding WeightsSnapshot}" UseLayoutRounding="True" MinWidth="{Binding WeightsSnapshotX}" Width="{Binding WeightsSnapshotX}" MinHeight="{Binding WeightsSnapshotY}" Height="{Binding WeightsSnapshotY}" IsHitTestVisible="True" />
+          <ScrollViewer x:Name="SnapShot" AllowAutoHide="True" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" IsHitTestVisible="True" >
+            <Image Source="{Binding WeightsSnapshot}" UseLayoutRounding="True" VerticalAlignment="Center" HorizontalAlignment="Center" MinWidth="{Binding WeightsSnapshotX}" Width="{Binding WeightsSnapshotX}" MinHeight="{Binding WeightsSnapshotY}" Height="{Binding WeightsSnapshotY}" IsHitTestVisible="True" />
           </ScrollViewer>
         </Border>
         <Border x:Name="BorderTrainingPlot" BorderThickness="1" CornerRadius="3" Margin="1,1,1,1" Padding="2" IsVisible="{Binding ShowTrainingPlot, Converter={StaticResource BooleanToVisibilityConverter}}" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="1" Grid.RowSpan="1" Background="{DynamicResource BackgroundBrushLight}">
           <oxy:PlotView x:Name="TrainingPlot" Model="{Binding PlotModel, Mode=TwoWay}" Background="{DynamicResource BackgroundBrushLight}">
-            <!--<oxy:PlotView.DefaultTrackerTemplate>
+            <oxy:PlotView.DefaultTrackerTemplate>
               <ControlTemplate>
-                <oxy:TrackerControl LineExtents="{Binding PlotModel.PlotArea}" Background="Transparent" BorderBrush="Transparent" Foreground="{DynamicResource TextBrush}">
+                <oxy:TrackerControl VerticalLineVisibility="False" LineExtents="{Binding PlotModel.PlotArea}" Background="Transparent" BorderBrush="Transparent" Foreground="{DynamicResource TextBrush}">
                   <oxy:TrackerControl.Content>
-                    <UniformGrid Columns="2" Margin="3">
-                      <TextBlock />
-                      <TextBlock Text="Epochs" FontWeight="DemiBold" />
-                      <TextBlock />
-                      <TextBlock FontWeight="DemiBold"/>
-                    </UniformGrid>
+                    <TextBlock Text="{Binding}" Margin="3"/> 
                   </oxy:TrackerControl.Content>
                 </oxy:TrackerControl>
+                <!--<oxy:TrackerControl Position="{Binding Position}" LineExtents="{Binding PlotModel.PlotArea}" Background="Transparent" BorderBrush="Transparent" Foreground="{DynamicResource TextBrush}">
+                  <oxy:TrackerControl.Content>
+                    <UniformGrid Columns="2" Margin="3">
+                      <TextBlock Text="{Binding DataPoint.X, StringFormat='{}{0:0}'}"/>
+                      <TextBlock Text="Epochs" FontWeight="DemiBold" />
+                      <TextBlock Text="{Binding DataPoint.Y, StringFormat='{}{0:0.000}'}"/>
+                      <TextBlock Text="{Binding Series.Title}" FontWeight="DemiBold"/>
+                    </UniformGrid>
+                  </oxy:TrackerControl.Content>
+                </oxy:TrackerControl>-->
               </ControlTemplate>
-            </oxy:PlotView.DefaultTrackerTemplate>-->
+            </oxy:PlotView.DefaultTrackerTemplate>
           </oxy:PlotView>
         </Border>
     </Grid>

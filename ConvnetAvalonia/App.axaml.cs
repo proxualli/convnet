@@ -1,9 +1,16 @@
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
+using Avalonia.Threading;
+using ConvnetAvalonia.PageViewModels;
 using ConvnetAvalonia.Properties;
+using CustomMessageBox.Avalonia;
+using Interop;
 using System;
 using System.Diagnostics;
+using System.Globalization;
+using System.Reflection;
+using System.Threading;
 
 
 namespace ConvnetAvalonia
@@ -11,6 +18,7 @@ namespace ConvnetAvalonia
     public partial class App : Application, IDisposable
     {
         public static readonly bool SingleInstanceApp = true;
+        private static readonly SingleInstanceMutex sim = new SingleInstanceMutex();
         public event EventHandler<ShutdownRequestedEventArgs>? ShutdownRequested;
         public static ConvnetAvalonia.PageViews.MainWindow? MainWindow = null;
         
@@ -23,6 +31,14 @@ namespace ConvnetAvalonia
         {
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
+                if (SingleInstanceApp)
+                {
+                    if (sim.IsOtherInstanceRunning)
+                    {
+                        return;
+                    }
+                }
+
                 desktop.ShutdownRequested += AppShutdownRequested;
                 desktop.MainWindow = new ConvnetAvalonia.PageViews.MainWindow
                 {
@@ -55,31 +71,38 @@ namespace ConvnetAvalonia
         {           
             if (MainWindow != null && MainWindow.ShowCloseApplicationDialog)
             {
-                //if (Xceed.Wpf.Toolkit.MessageBox.Show("Do you really want to exit?", "Exit Application", MessageBoxButton.YesNo, MessageBoxImage.None, MessageBoxResult.No) == MessageBoxResult.Yes)
+                MessageBoxResult exit = MessageBoxResult.Yes;
+                //exit = Dispatcher.UIThread.Invoke(() => MessageBox.Show(MainWindow, "Do you really want to exit?", "Exit Application", MessageBoxButtons.YesNo, MessageBoxIcon.None, MessageBoxDefaultButton.Button2)).Result;
+               
+                if (exit == MessageBoxResult.Yes)
                 {
-                    //    if (mainWindow.PageVM.Model.TaskState != DNNTaskStates.Stopped)
-                    //        mainWindow.PageVM.Model.Stop();
+                    if (MainWindow?.PageVM?.Model?.TaskState != DNNTaskStates.Stopped)
+                        MainWindow?.PageVM?.Model?.Stop();
 
-                    //    if (Xceed.Wpf.Toolkit.MessageBox.Show("Do you want to save the network state?", "Save Network State", MessageBoxButton.YesNo, MessageBoxImage.None, MessageBoxResult.Yes) == MessageBoxResult.Yes)
-                    //    {
-                    //        var dataset = Settings.Default.Dataset.ToString().ToLower(CultureInfo.CurrentCulture);
-                    //        var optimizer = Settings.Default.Optimizer.ToString().ToLower(CultureInfo.CurrentCulture);
-                    //        var fileName = Convnet.MainWindow.StateDirectory + mainWindow.PageVM.Model.Name + @"-(" + dataset + @")" + (Settings.Default.PersistOptimizer ? (@"(" + optimizer + @").bin") : @".bin");
-                    //        mainWindow.PageVM.Model.SaveWeights(fileName, Settings.Default.PersistOptimizer);
-                    //    }
+                    MessageBoxResult save = MessageBoxResult.Yes;
+                    //save = Dispatcher.UIThread.Invoke(() => MessageBox.Show("Do you want to save the network state?", "Save Network State", MessageBoxButtons.YesNo, MessageBoxIcon.None, MessageBoxDefaultButton.Button1)).Result;
+                    
+                    if (save == MessageBoxResult.Yes)
+                    {
+                        var dataset = Settings.Default.Dataset.ToString().ToLower(CultureInfo.CurrentCulture);
+                        var optimizer = Settings.Default.Optimizer.ToString().ToLower(CultureInfo.CurrentCulture);
+                        var fileName = PageViews.MainWindow.StateDirectory + MainWindow?.PageVM?.Model?.Name + @"-(" + dataset + @")" + (Settings.Default.PersistOptimizer ? (@"(" + optimizer + @").bin") : @".bin");
 
-                    if (MainWindow.PageVM != null && MainWindow.PageVM.Pages != null)
+                        MainWindow?.PageVM?.Model?.SaveWeights(fileName, Settings.Default.PersistOptimizer);
+                    }
+
+                    if (MainWindow?.PageVM != null && MainWindow?.PageVM?.Pages != null)
                     { 
-                        //var editPV = MainWindow.PageVM.Pages[(int)PageViewModels.ViewModels.Edit] as EditPageViewModel;
-                        //if (editPV != null)
-                        //    Settings.Default.Script = editPV.Script;
+                        var editPV = MainWindow.PageVM.Pages[(int)PageViewModels.ViewModels.Edit] as EditPageViewModel;
+                        if (editPV != null)
+                            Settings.Default.Script = editPV.Script;
                         
                         Settings.Default.Save();
                         e.Cancel = false;
                     }
                 }
-                //else
-                  //  e.Cancel = true;
+                else
+                    e.Cancel = true;
             }
             else
             {
@@ -110,5 +133,107 @@ namespace ConvnetAvalonia
             GC.SuppressFinalize(this);
         }
 
+
+
+        /// <summary>
+        /// Represents a <see cref="SingleInstanceMutex"/> class.
+        /// </summary>
+        public partial class SingleInstanceMutex : IDisposable
+        {
+            #region Fields
+
+            /// <summary>
+            /// Indicator whether another instance of this application is running or not.
+            /// </summary>
+            private readonly bool isNoOtherInstanceRunning;
+
+            /// <summary>
+            /// The <see cref="Mutex"/> used to ask for other instances of this application.
+            /// </summary>
+            private Mutex singleInstanceMutex = null;
+
+            /// <summary>
+            /// An indicator whether this object is beeing actively disposed or not.
+            /// </summary>
+            private bool disposed;
+
+            #endregion
+
+            #region Constructor
+
+            /// <summary>
+            /// Initializes a new instance of the <see cref="SingleInstanceMutex"/> class.
+            /// </summary>
+            public SingleInstanceMutex()
+            {
+                singleInstanceMutex = new Mutex(true, Assembly.GetCallingAssembly().FullName, out isNoOtherInstanceRunning);
+            }
+
+            #endregion
+
+            #region Properties
+
+            /// <summary>
+            /// Gets an indicator whether another instance of the application is running or not.
+            /// </summary>
+            public bool IsOtherInstanceRunning
+            {
+                get
+                {
+                    return !isNoOtherInstanceRunning;
+                }
+            }
+
+            #endregion
+
+            #region Methods
+
+            /// <summary>
+            /// Closes the <see cref="SingleInstanceMutex"/>.
+            /// </summary>
+            public void Close()
+            {
+                ThrowIfDisposed();
+                singleInstanceMutex.Close();
+            }
+
+            public void Dispose()
+            {
+                Dispose(true);
+                GC.SuppressFinalize(this);
+            }
+
+            private void Dispose(bool disposing)
+            {
+                if (!disposed)
+                {
+                    /* Release unmanaged ressources */
+
+                    if (disposing)
+                    {
+                        /* Release managed ressources */
+                        Close();
+                    }
+
+                    disposed = true;
+                }
+            }
+
+            /// <summary>
+            /// Throws an exception if something is tried to be done with an already disposed object.
+            /// </summary>
+            /// <remarks>
+            /// All public methods of the class must first call this.
+            /// </remarks>
+            public void ThrowIfDisposed()
+            {
+                if (disposed)
+                {
+                    throw new ObjectDisposedException(GetType().Name);
+                }
+            }
+
+            #endregion
+        }
     }
 }

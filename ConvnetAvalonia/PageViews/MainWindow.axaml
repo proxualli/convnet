@@ -9,53 +9,12 @@
         Title="Convnet Explorer"
         Background="{DynamicResource BackgroundBrush}"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450">
-
-  <Window.KeyBindings>
-    <KeyBinding Gesture="Ctrl+O"  />
-  </Window.KeyBindings>
   
   <Window.DataTemplates>
     <DataTemplate DataType="{x:Type vm:PageViewModel}">
       <view:PageView />
     </DataTemplate>
   </Window.DataTemplates>
-    
-  <Design.DataContext>
-    <vm:MainWindowViewModel/>
-  </Design.DataContext>
 
-  <DockPanel x:Name="dockPanelMain" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
-    <Menu DockPanel.Dock="Top" x:Name="menuMain">
-      <MenuItem Header="_File">
-        <MenuItem Header="_Open..." InputGesture="Ctrl+O"  />
-        <MenuItem Header="Save"/>
-        <MenuItem Header="Save As..."/>
-        <Separator/>
-        <MenuItem Header="Exit..."/>
-      </MenuItem>
-      <MenuItem Header="_Edit">
-        <MenuItem Header="_Cut"  />
-        <MenuItem Header="Co_py"/>
-        <MenuItem Header="_Paste"/>
-        <MenuItem Header="_Delete"/>
-        <Separator />
-        <MenuItem Header="Select _All"/>
-        <Separator />
-        <MenuItem Header="_Undo"/>
-        <MenuItem Header="_Redo"/>
-      </MenuItem>
-      <MenuItem Header="_Settings">
-        <MenuItem Header="_Format"/>
-        <MenuItem Header="_Locking"/>
-        <MenuItem Header="_Shuffle Dataset"/>
-        <MenuItem Header="_Priority"/>
-      </MenuItem>
-      <MenuItem Header="_Help">
-        <MenuItem Header="_Documentation"/>     
-      </MenuItem>
-    </Menu>
-    
-    <view:PageView DockPanel.Dock="Top" x:Name="MainView"/>
-  </DockPanel>
-  
+  <view:PageView x:Name="MainView"/>  
 </Window>

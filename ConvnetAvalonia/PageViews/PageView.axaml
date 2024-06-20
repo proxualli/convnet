@@ -22,39 +22,60 @@
     <DataTemplate DataType="{x:Type vm:TrainPageViewModel}">
       <view:TrainPageView />
     </DataTemplate>
-        
-    <!--<Style TargetType="{x:Type Image}">
-      <Setter Property="RenderOptions.BitmapScalingMode" Value="HighQuality"/>
-    </Style>
-    <props:Settings x:Key="Settings"/>-->
   </UserControl.DataTemplates>
 
-  <!--<UserControl.Resources>
-    <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
-  </UserControl.Resources>-->
-  
-  <Grid RowDefinitions="Auto,*,Auto">
-    <controls:ToolBarTray Name="toolBarTray" Grid.Row="0" HorizontalAlignment="Stretch" Orientation="Horizontal" Margin="1">
-      <controls:ToolBar Background="{DynamicResource ToolBarBackgroundBrush}" Foreground="{DynamicResource TextBrush}" >
-        <ComboBox Name="PageViews" Margin="2" MinWidth="60" ItemsSource="{Binding Pages}" SelectedItem="{Binding CurrentPage}" IsEnabled="{Binding CurrentPage.IsValid, Mode=TwoWay}">
-          <ComboBox.ItemTemplate>
-            <DataTemplate>
-              <TextBlock Text="{Binding Path=DisplayName}"/>
-            </DataTemplate>
-          </ComboBox.ItemTemplate>
-        </ComboBox>
-      </controls:ToolBar>
-      <controls:ToolBar Name="CmdToolBar" Margin="2" Background="{DynamicResource ToolBarBackgroundBrush}" Foreground="{DynamicResource TextBrush}"  ItemsSource="{Binding CommandToolBar, Mode=TwoWay}" IsVisible="{Binding Path=CommandToolBarVisibility}" />
-    </controls:ToolBarTray>
+  <DockPanel x:Name="dockPanelMain" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
+    <Menu DockPanel.Dock="Top" x:Name="menuMain">
+      <MenuItem Header="_File">
+        <MenuItem Header="_Open..." InputGesture="Ctrl+O"  />
+        <MenuItem Header="Save"/>
+        <MenuItem Header="Save As..."/>
+        <Separator/>
+        <MenuItem Header="Exit..."/>
+      </MenuItem>
+      <MenuItem Header="_Edit">
+        <MenuItem Header="_Cut"  />
+        <MenuItem Header="Co_py"/>
+        <MenuItem Header="_Paste"/>
+        <MenuItem Header="_Delete"/>
+        <Separator />
+        <MenuItem Header="Select _All"/>
+        <Separator />
+        <MenuItem Header="_Undo"/>
+        <MenuItem Header="_Redo"/>
+      </MenuItem>
+      <MenuItem Header="_Settings">
+        <MenuItem Header="_Format"/>
+        <MenuItem Header="_Locking"/>
+        <MenuItem Header="_Shuffle Dataset"/>
+        <MenuItem Header="_Priority"/>
+      </MenuItem>
+      <MenuItem Header="_Help">
+        <MenuItem Header="_Documentation"/>
+      </MenuItem>
+    </Menu>
     
-    <Border Grid.Row="1">
-      <ContentControl Name="PageContentControl" Content="{Binding CurrentPage}" Margin="1"/>
-    </Border>
-
-    <StackPanel Name="statusBarMain" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Orientation="Horizontal" Grid.Row="2"  Height="23" Background="{StaticResource BackgroundBrushLight}" Margin="1">
-      <TextBlock x:Name="SampleRate" Margin="2,0,2,0" HorizontalAlignment="Left" VerticalAlignment="Stretch" Text="{Binding Path=SampleRate}" ToolTip.Tip="Sample Rate" Foreground="{StaticResource TextBrush}" />
-      <TextBlock x:Name="Time" Margin="2,0,2,0" HorizontalAlignment="Left" VerticalAlignment="Stretch" Text="{Binding Path=Duration}" ToolTip.Tip="Duration" Foreground="{StaticResource TextBrush}"/>
-      <ProgressBar Margin="0" x:Name="ProgressBar" Orientation="Horizontal" Background="{StaticResource BackgroundBrushLight}" BorderBrush="{StaticResource BackgroundBrushLight}" Minimum="{Binding Path=ProgressBarMinimum}" Maximum="{Binding Path=ProgressBarMaximum}" Value="{Binding Path=ProgressBarValue}" SmallChange="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" IsTabStop="False"/>
-    </StackPanel>
-  </Grid>
+    <Grid RowDefinitions="Auto,*,Auto" DockPanel.Dock="Top">
+      <controls:ToolBarTray Name="toolBarTray" Grid.Row="0" HorizontalAlignment="Stretch" Orientation="Horizontal" Margin="1">
+        <controls:ToolBar Background="{DynamicResource ToolBarBackgroundBrush}" Foreground="{DynamicResource TextBrush}" >
+          <ComboBox Name="PageViews" Margin="2" MinWidth="60" ItemsSource="{Binding Pages}" SelectedItem="{Binding CurrentPage}" IsEnabled="{Binding CurrentPage.IsValid, Mode=TwoWay}">
+            <ComboBox.ItemTemplate>
+              <DataTemplate>
+                <TextBlock Text="{Binding Path=DisplayName}"/>
+              </DataTemplate>
+            </ComboBox.ItemTemplate>
+          </ComboBox>
+        </controls:ToolBar>
+        <controls:ToolBar Name="CmdToolBar" Margin="2" Background="{DynamicResource ToolBarBackgroundBrush}" Foreground="{DynamicResource TextBrush}"  ItemsSource="{Binding CommandToolBar, Mode=TwoWay}" IsVisible="{Binding Path=CommandToolBarVisibility}" />
+      </controls:ToolBarTray>
+      <Border Grid.Row="1">
+        <ContentControl Name="PageContentControl" Content="{Binding CurrentPage}" Margin="1"/>
+      </Border>
+      <StackPanel Name="statusBarMain" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Orientation="Horizontal" Grid.Row="2"  Height="23" Background="{StaticResource BackgroundBrushLight}" Margin="1">
+        <TextBlock x:Name="SampleRate" Margin="2,0,2,0" HorizontalAlignment="Left" VerticalAlignment="Stretch" Text="{Binding Path=SampleRate}" ToolTip.Tip="Sample Rate" Foreground="{StaticResource TextBrush}" />
+        <TextBlock x:Name="Time" Margin="2,0,2,0" HorizontalAlignment="Left" VerticalAlignment="Stretch" Text="{Binding Path=Duration}" ToolTip.Tip="Duration" Foreground="{StaticResource TextBrush}"/>
+        <ProgressBar Margin="0" x:Name="ProgressBar" Orientation="Horizontal" Background="{StaticResource BackgroundBrushLight}" BorderBrush="{StaticResource BackgroundBrushLight}" Minimum="{Binding Path=ProgressBarMinimum}" Maximum="{Binding Path=ProgressBarMaximum}" Value="{Binding Path=ProgressBarValue}" SmallChange="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" IsTabStop="False"/>
+      </StackPanel>
+    </Grid>
+  </DockPanel>
 </UserControl>
