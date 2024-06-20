@@ -3898,67 +3898,56 @@ namespace Interop
                         case DNNLayerTypes.DepthwiseConvolution:
                         case DNNLayerTypes.PartialDepthwiseConvolution:
                             {
-                                //var border = (info.InputC != 3 && info.KernelH == 1 && info.KernelW == 1) ? (UInt)0 : (UInt)1;
-                                //var depthwise = info.LayerType == DNNLayerTypes.DepthwiseConvolution || info.LayerType == DNNLayerTypes.PartialDepthwiseConvolution;
-                                //var pitchH = info.KernelH + border;
-                                //var pitchW = info.KernelW + border;
-                                //var width = info.C * pitchH + border;
-                                //var height = info.InputC == 3 ? (pitchW + 3 * border) : depthwise ? (pitchW + border) : ((info.InputC / info.Groups) * pitchW + border);
-                                //var biasOffset = height * width + width;
+                                var depthwise = info.LayerType == DNNLayerTypes.DepthwiseConvolution || info.LayerType == DNNLayerTypes.PartialDepthwiseConvolution;
+                                var color = (!depthwise && info.InputC == 3);
+                                var border = (info.InputC != 3 && info.KernelH == 1 && info.KernelW == 1) ? (UInt)0 : (UInt)1;
+                                var pitchH = info.KernelH + border;
+                                var pitchW = info.KernelW + border;
+                                var width = info.C * pitchH + border;
+                                var height = (info.InputC == 3) ? (pitchW + 3 * border) : (depthwise ? (pitchW + border) : ((info.InputC / info.Groups) * pitchW + border));
+                                var area = height * width;
+                                var nativeTotalSize = color ? 3 * area : area + width;
+                                var totalSize = 4 * area;
+                                var format = Avalonia.Platform.PixelFormat.Rgba8888;
+                                var stride = (int)width * ((format.BitsPerPixel + 7) / 8);
 
-                                ////var totalSize = 4 * biasOffset;
-                                //var totalSize = (!depthwise && info.InputC == 3) ?  3 * biasOffset : biasOffset;
-                                ////var pixelFormat = (!depthwise && info.InputC == 3) ? PixelFormats.Rgb24 : PixelFormats.Gray8;
-
-                                //if (totalSize > 0 && totalSize <= int.MaxValue)
-                                //{
-                                //    var img = new Byte[(int)(totalSize)];
-                                //    DNNGetImage(layerIndex, BackgroundColor, img);
-                                //    var stride = (int)info.W * ((Avalonia.Platform.PixelFormat.Rgba8888.BitsPerPixel + 7) / 8);
-                                //    //using (MemoryStream memoryStream = new MemoryStream(img))
-                                //    //{
-                                //    //    //var bitmap = new Bitmap(memoryStream);
-
-                                //    //    info.WeightsSnapshotX = (int)(width * BlockSize);
-                                //    //    info.WeightsSnapshotY = (int)(height * BlockSize);
-                                //    //    info.WeightsSnapshot = bitmap;
-                                //    //}
-                                //    var bitmap = new WriteableBitmap(new PixelSize((int)info.W, (int)info.H), new Vector(96, 96), Avalonia.Platform.PixelFormat.Rgba8888, AlphaFormat.Unpremul);
-                                //    using (var frameBuffer = bitmap.Lock())
-                                //    {
-                                //        for (int y = 0; y < (int)info.H; y++)
-                                //        { 
-
-                                //        }
-                                //        Marshal.Copy(img, 0, frameBuffer.Address, img.Length);
-                                //        //for (int y = 0; y < (int)info.H; y++)
-                                //        //{
-                                //        //    // 创建一个字节数组来存储这一行的数据
-                                //        //    byte[] rowData = new byte[(int)info.W * 4];// 假设是32位位图，每个像素4字节
-
-                                //        //    // 源指针偏移，定位到当前行的起始位置
-                                //        //    IntPtr srcPtrOffset = IntPtr.Add((nint)img[0], y * stride);
-
-                                //        //    // 从非托管内存复制到托管数组
-                                //        //    Marshal.Copy(srcPtrOffset, rowData, 0, rowData.Length);
-
-                                //        //    // 将托管数组的内容复制到WriteableBitmap
-                                //        //    for (int i = 0; i < rowData.Length; i++)
-                                //        //    {
-                                //        //        // 计算目标位置指针
-                                //        //        IntPtr destPtrOffset = IntPtr.Add(frameBuffer.Address, y * frameBuffer.RowBytes + i);
-                                //        //        // 写入数据
-                                //        //        Marshal.WriteByte(destPtrOffset, rowData[i]);
-                                //        //    }
-                                //        //}
-                                //    }
-
-                                //    info.WeightsSnapshotX = (int)(width * BlockSize);
-                                //    info.WeightsSnapshotY = (int)(height * BlockSize);
-                                //    info.WeightsSnapshot = bitmap;
-
-                                //    GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, true, true);
-                                //}
+                                if (nativeTotalSize > 0 && nativeTotalSize <= int.MaxValue)
+                                {
+                                    var img = new Byte[nativeTotalSize];
+                                    DNNGetImage(layerIndex, BackgroundColor, img);
+                                    
+                                    var newImg = new Byte[totalSize];
+                                    if (color)
+                                    {
+                                        for (var i = 0ul; i < area; i++)
+                                        {
+                                            newImg[(i * 4) + 0] = img[(i * 3) + 0];  // R
+                                            newImg[(i * 4) + 1] = img[(i * 3) + 1];  // G
+                                            newImg[(i * 4) + 2] = img[(i * 3) + 2];  // B
+                                            newImg[(i * 4) + 3] = 255;               // A
+                                        }
+                                    }
+                                    else
+                                    {
+                                        for (var i = 0ul; i < area; i++)
+                                        {
+                                            newImg[(i * 4) + 0] = img[i];  // R
+                                            newImg[(i * 4) + 1] = img[i];  // G
+                                            newImg[(i * 4) + 2] = img[i];  // B
+                                            newImg[(i * 4) + 3] = 255;     // A
+                                        }
+                                    }
+                                    
+                                    int length = Marshal.SizeOf(newImg[0]) * newImg.Length;
+                                    IntPtr pnt = Marshal.AllocHGlobal(length);
+                                    Marshal.Copy(newImg, 0, pnt, newImg.Length);
+                                    var bitmap = new WriteableBitmap(format, AlphaFormat.Premul, pnt, new PixelSize((int)width, (int)height), new Vector(96, 96), stride);
+                                    Marshal.FreeHGlobal(pnt);
+                                    info.WeightsSnapshotX = (int)(width * BlockSize);
+                                    info.WeightsSnapshotY = (int)(height * BlockSize);
+                                    info.WeightsSnapshot = bitmap;
+                                    GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, true, true);
+                                }
                             }
                             break;
 
@@ -3970,58 +3959,81 @@ namespace Interop
                         case DNNLayerTypes.GroupNorm:
                         case DNNLayerTypes.LayerNorm:
                             {
-                                //if (info.BiasCount > 0)
-                                //{
-                                //    var width = info.BiasCount;
-                                //    var height = (info.WeightCount / width) + 3;
-                                //    var totalSize = width * height;
-                                //    var pixelFormat = PixelFormats.Gray8;
+                                if (info.BiasCount > 0)
+                                {
+                                    var width = info.BiasCount;
+                                    var height = (info.WeightCount / width) + 3;
+                                    var area = width * height;
+                                    var nativeTotalSize = area + width;
+                                    var totalSize = 4 * area;
+                                    var format = Avalonia.Platform.PixelFormat.Rgba8888;
+                                    var stride = (int)width * ((format.BitsPerPixel + 7) / 8);
 
-                                //    if (totalSize > 0 && totalSize <= int.MaxValue)
-                                //    {
-                                //        var img = new Byte[(int)(totalSize)];
-                                //        DNNGetImage(info.LayerIndex, BackgroundColor, img);
+                                    if (area > 0 && area <= int.MaxValue)
+                                    {
+                                        var img = new Byte[(int)(nativeTotalSize)];
+                                        DNNGetImage(info.LayerIndex, BackgroundColor, img);
 
-                                //        var bitmap = new WriteableBitmap(new PixelSize((int)info.W, (int)info.H), new Vector(96, 96), pixelFormat, AlphaFormat.Unpremul);
-                                //        using (var frameBuffer = bitmap.Lock())
-                                //        {
-                                //            Marshal.Copy(img, 0, frameBuffer.Address, img.Length);
-                                //        }
+                                        var newImg = new Byte[totalSize];
+                                       
+                                        for (var i = 0ul; i < area; i++)
+                                        {
+                                            newImg[(i * 4) + 0] = img[i];  // R
+                                            newImg[(i * 4) + 1] = img[i];  // G
+                                            newImg[(i * 4) + 2] = img[i];  // B
+                                            newImg[(i * 4) + 3] = 255;     // A
+                                        }
+                                        
 
-                                //        info.WeightsSnapshotX = (int)(width * BlockSize);
-                                //        info.WeightsSnapshotY = (int)(height * BlockSize);
-                                //        info.WeightsSnapshot = bitmap;
-
-                                //        GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, true, true);
-                                //    }
-                                //}
+                                        int length = Marshal.SizeOf(newImg[0]) * newImg.Length;
+                                        IntPtr pnt = Marshal.AllocHGlobal(length);
+                                        Marshal.Copy(newImg, 0, pnt, newImg.Length);
+                                        var bitmap = new WriteableBitmap(format, AlphaFormat.Premul, pnt, new PixelSize((int)width, (int)height), new Vector(96, 96), stride);
+                                        Marshal.FreeHGlobal(pnt);
+                                        info.WeightsSnapshotX = (int)(width * BlockSize);
+                                        info.WeightsSnapshotY = (int)(height * BlockSize);
+                                        info.WeightsSnapshot = bitmap;
+                                        GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, true, true);
+                                    }
+                                }
                             }
                             break;
 
                         case DNNLayerTypes.PRelu:
                             {
-                                //var width = info.WeightCount;
-                                //var height = (UInt)4;
-                                //var totalSize = width * height;
-                                //var pixelFormat = PixelFormats.Gray8;
+                                var width = info.WeightCount;
+                                var height = (UInt)4;
+                                var area = width * height;
+                                var nativeTotalSize = area;
+                                var totalSize = 4 * area;
+                                var format = Avalonia.Platform.PixelFormat.Rgba8888;
+                                var stride = (int)width * ((format.BitsPerPixel + 7) / 8);
 
-                                //if (totalSize > 0 && totalSize <= int.MaxValue)
-                                //{
-                                //    var img = new Byte[(int)(totalSize)];
-                                //    DNNGetImage(info.LayerIndex, BackgroundColor, img);
+                                if (nativeTotalSize > 0 && nativeTotalSize <= int.MaxValue)
+                                {
+                                    var img = new Byte[(int)(nativeTotalSize)];
+                                    DNNGetImage(info.LayerIndex, BackgroundColor, img);
 
-                                //    var bitmap = new WriteableBitmap(new PixelSize((int)info.W, (int)info.H), new Vector(96, 96), pixelFormat, AlphaFormat.Unpremul);
-                                //    using (var frameBuffer = bitmap.Lock())
-                                //    {
-                                //        Marshal.Copy(img, 0, frameBuffer.Address, img.Length);
-                                //    }
+                                    var newImg = new Byte[totalSize];
 
-                                //    info.WeightsSnapshotX = (int)(width * BlockSize);
-                                //    info.WeightsSnapshotY = (int)(height * BlockSize);
-                                //    info.WeightsSnapshot = bitmap;
+                                    for (var i = 0ul; i < area; i++)
+                                    {
+                                        newImg[(i * 4) + 0] = img[i];  // R
+                                        newImg[(i * 4) + 1] = img[i];  // G
+                                        newImg[(i * 4) + 2] = img[i];  // B
+                                        newImg[(i * 4) + 3] = 255;     // A
+                                    }
 
-                                //    GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, true, true);
-                                //}
+                                    int length = Marshal.SizeOf(newImg[0]) * newImg.Length;
+                                    IntPtr pnt = Marshal.AllocHGlobal(length);
+                                    Marshal.Copy(newImg, 0, pnt, newImg.Length);
+                                    var bitmap = new WriteableBitmap(format, AlphaFormat.Premul, pnt, new PixelSize((int)width, (int)height), new Vector(96, 96), stride);
+                                    Marshal.FreeHGlobal(pnt);
+                                    info.WeightsSnapshotX = (int)(width * BlockSize);
+                                    info.WeightsSnapshotY = (int)(height * BlockSize);
+                                    info.WeightsSnapshot = bitmap;
+                                    GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, true, true);
+                                }
                             }
                             break;
                     }
