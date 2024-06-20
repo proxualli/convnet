@@ -496,7 +496,7 @@ namespace ConvnetAvalonia.PageViewModels
             {
                 var clear = await Dispatcher.UIThread.Invoke(() => MessageBox.Show("Do you want to clear the training log?", "Clear log?", MessageBoxButtons.YesNo, MessageBoxIcon.None, MessageBoxDefaultButton.Button1));
                 if (clear == MessageBoxResult.Yes)
-                    Dispatcher.UIThread.Post(() => TrainingLog.Clear(), DispatcherPriority.Render);
+                    TrainingLog.Clear();
             }
 
             RefreshTrainingPlot();
@@ -776,6 +776,7 @@ namespace ConvnetAvalonia.PageViewModels
             CurrentPlotType = (PlotType)plotTypeComboBox.SelectedIndex;
             Settings.Default.PlotType = (uint)plotTypeComboBox.SelectedIndex;
             Settings.Default.Save();
+
             RefreshTrainingPlot();
         }
                
