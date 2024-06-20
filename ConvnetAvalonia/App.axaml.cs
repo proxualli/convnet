@@ -20,7 +20,8 @@ namespace ConvnetAvalonia
         private static readonly SingleInstanceMutex sim = new SingleInstanceMutex();
         public event EventHandler<ShutdownRequestedEventArgs>? ShutdownRequested;
         public static ConvnetAvalonia.PageViews.MainWindow? MainWindow = null;
-        
+        public bool ShowCloseApplicationDialog = true;
+
         public override void Initialize()
         {
             AvaloniaXamlLoader.Load(this);
@@ -30,13 +31,8 @@ namespace ConvnetAvalonia
         {
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
-                if (SingleInstanceApp)
-                {
-                    if (sim.IsOtherInstanceRunning)
-                    {
-                        return;
-                    }
-                }
+                if (SingleInstanceApp && sim.IsOtherInstanceRunning)
+                    return;
 
                 desktop.ShutdownRequested += AppShutdownRequested;
                 desktop.MainWindow = new ConvnetAvalonia.PageViews.MainWindow
@@ -68,7 +64,7 @@ namespace ConvnetAvalonia
 
         public void MainWindow_Closing(object? sender, Avalonia.Controls.WindowClosingEventArgs e)
         {           
-            if (MainWindow != null && MainWindow.ShowCloseApplicationDialog)
+            if (ShowCloseApplicationDialog)
             {
                 MessageBoxResult exit = MessageBoxResult.Yes;
                 //exit = Dispatcher.UIThread.Invoke(() => MessageBox.Show(MainWindow, "Do you really want to exit?", "Exit Application", MessageBoxButtons.YesNo, MessageBoxIcon.None, MessageBoxDefaultButton.Button2)).Result;

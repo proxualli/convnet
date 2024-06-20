@@ -19,8 +19,6 @@ namespace ConvnetAvalonia.PageViews
 {
     public partial class MainWindow : Window, IDisposable
     {
-        public bool ShowCloseApplicationDialog = true;
-
         const string Framework = "net8.0";
 #if DEBUG
         const string Mode = "Debug";
