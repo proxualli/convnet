@@ -90,13 +90,6 @@ namespace ConvnetAvalonia
                         MainWindow?.PageVM?.Model?.SaveWeights(fileName, Settings.Default.PersistOptimizer);
                     }
 
-                    //if (MainWindow?.PageVM != null && MainWindow?.PageVM?.Pages != null)
-                    //{ 
-                    //    var editPV = MainWindow.PageVM.Pages[(int)PageViewModels.ViewModels.Edit] as EditPageViewModel;
-                    //    if (editPV != null)
-                    //        Settings.Default.Script = editPV.Script;    
-                    //}
-
                     Settings.Default.Save();
                     e.Cancel = false;
                 }
