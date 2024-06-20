@@ -20,7 +20,7 @@
       <RowDefinition Height="22"/>
       <RowDefinition Height="*" />
     </Grid.RowDefinitions>
-    <Grid Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+    <Grid Grid.Row="0">
       <Grid.ColumnDefinitions>
         <ColumnDefinition Width="Auto"/>
         <ColumnDefinition Width="*"/>
@@ -43,8 +43,8 @@
             </StackPanel>
           </Border>
         </StackPanel>
-        <Border x:Name="BorderSnapShot" BorderThickness="1,1,0,1" CornerRadius="3" Margin="1,1,0,1" Padding="2" IsVisible="{Binding ShowWeightsSnapshot, Converter={StaticResource BooleanToVisibilityConverter}, Mode=TwoWay}" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="1" Grid.RowSpan="1">
-          <ScrollViewer x:Name="SnapShot" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" IsHitTestVisible="True">
+        <Border x:Name="BorderSnapShot" BorderThickness="1,1,0,1" CornerRadius="3" Margin="1,1,0,1" Padding="2" IsVisible="{Binding ShowWeightsSnapshot, Converter={StaticResource BooleanToVisibilityConverter}, Mode=TwoWay}" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="1" Grid.RowSpan="1" MaxHeight="{Binding Bounds.Height, ElementName=BorderWeightsMinMax}">
+          <ScrollViewer x:Name="SnapShot" AllowAutoHide="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" IsHitTestVisible="True" >
             <Image Source="{Binding WeightsSnapshot}" UseLayoutRounding="True" MinWidth="{Binding WeightsSnapshotX}" Width="{Binding WeightsSnapshotX}" MinHeight="{Binding WeightsSnapshotY}" Height="{Binding WeightsSnapshotY}" IsHitTestVisible="True" />
           </ScrollViewer>
         </Border>
@@ -68,9 +68,9 @@
         </Border>
     </Grid>
     
-    <ScrollViewer Grid.Row="1" x:Name="ScrollViewerHeader" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" BorderThickness="1" BorderBrush="DarkGray" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden" Focusable="False" IsHitTestVisible="False">
+    <!--<ScrollViewer Grid.Row="1" x:Name="ScrollViewerHeader" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" BorderThickness="1" BorderBrush="DarkGray" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden" Focusable="False" IsHitTestVisible="False">
       <Grid >
-        <!--<Grid.ColumnDefinitions>
+        --><!--<Grid.ColumnDefinitions>
           <ColumnDefinition Width="{Binding ActualWidth, ElementName=cycle}" />
           <ColumnDefinition Width="{Binding ActualWidth, ElementName=epoch}" />
           <ColumnDefinition Width="{Binding ActualWidth, ElementName=batchSize}" />
@@ -109,7 +109,7 @@
           <ColumnDefinition Width="{Binding ActualWidth, ElementName=testErrorPercentage}" />
           <ColumnDefinition Width="{Binding ActualWidth, ElementName=testAccuracy}" />
           <ColumnDefinition Width="{Binding ActualWidth, ElementName=duration}" />
-        </Grid.ColumnDefinitions>-->
+        </Grid.ColumnDefinitions>--><!--
 
         <Border Grid.Column="2" Grid.ColumnSpan="7" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  BorderThickness="1,1,0,0" BorderBrush="{DynamicResource TextBrush}" Margin="1,0,-1,0" Background="{DynamicResource BackgroundBrush}">
           <TextBlock Text="Resolution" HorizontalAlignment="Stretch" VerticalAlignment="Center" TextAlignment="Center" Foreground="{DynamicResource TextBrush}" FontFamily="Consolas" FontSize="14" />
@@ -127,7 +127,7 @@
           <TextBlock Text="Test" HorizontalAlignment="Stretch" VerticalAlignment="Center" TextAlignment="Center" Foreground="{DynamicResource TextBrush}" FontFamily="Consolas" FontSize="14" />
         </Border>
       </Grid>
-    </ScrollViewer>
+    </ScrollViewer>-->
 
     <DataGrid Grid.Row="2" AutoGenerateColumns="true" IsReadOnly="True" CanUserSortColumns="False" CanUserReorderColumns="False" CanUserResizeColumns="False" Foreground="{DynamicResource TextBrush}" Background="{DynamicResource BackgroundBrush}" BorderBrush="{DynamicResource DisabledBorderBrush}" BorderThickness="1" GridLinesVisibility="All" Margin="0" HorizontalAlignment="Stretch" x:Name="listViewTrainingResult" VerticalAlignment="Stretch" SelectedIndex="{Binding SelectedIndex}" ItemsSource="{Binding TrainingLog}" Grid.ColumnSpan="1" FontFamily="Consolas" FontSize="13">
     </DataGrid>

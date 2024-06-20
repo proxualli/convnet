@@ -3899,7 +3899,7 @@ namespace Interop
                         case DNNLayerTypes.PartialDepthwiseConvolution:
                             {
                                 var depthwise = info.LayerType == DNNLayerTypes.DepthwiseConvolution || info.LayerType == DNNLayerTypes.PartialDepthwiseConvolution;
-                                var color = (!depthwise && info.InputC == 3);
+                                var color = !depthwise && info.InputC == 3;
                                 var border = (info.InputC != 3 && info.KernelH == 1 && info.KernelW == 1) ? (UInt)0 : (UInt)1;
                                 var pitchH = info.KernelH + border;
                                 var pitchW = info.KernelW + border;
