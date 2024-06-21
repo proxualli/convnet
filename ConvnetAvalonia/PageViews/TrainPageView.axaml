@@ -112,19 +112,19 @@
         </Grid.ColumnDefinitions>
 
         <Border Grid.Column="2" Grid.ColumnSpan="7" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  BorderThickness="1,1,0,0" BorderBrush="{DynamicResource TextBrush}" Margin="1,0,-1,0" Background="{DynamicResource BackgroundBrush}">
-          <TextBlock Text="Resolution" HorizontalAlignment="Stretch" VerticalAlignment="Center" TextAlignment="Center" Foreground="{DynamicResource TextBrush}" FontFamily="Consolas" FontSize="14" />
+          <TextBlock Text="Resolution" Padding="7" HorizontalAlignment="Stretch" VerticalAlignment="Center" TextAlignment="Center" Foreground="{DynamicResource TextBrush}" FontFamily="Consolas" FontSize="14" />
         </Border>
         <Border Grid.Column="9" Grid.ColumnSpan="8" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  BorderThickness="1,1,0,0" BorderBrush="{DynamicResource TextBrush}" Margin="1,0,-1,0" Background="{DynamicResource BackgroundBrush}">
-          <TextBlock Text="Regularization" HorizontalAlignment="Stretch" VerticalAlignment="Center" TextAlignment="Center" Foreground="{DynamicResource TextBrush}" FontFamily="Consolas" FontSize="14" />
+          <TextBlock Text="Regularization" Padding="7" HorizontalAlignment="Stretch" VerticalAlignment="Center" TextAlignment="Center" Foreground="{DynamicResource TextBrush}" FontFamily="Consolas" FontSize="14" />
         </Border>
         <Border Grid.Column="17" Grid.ColumnSpan="12" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  BorderThickness="1,1,0,0" BorderBrush="{DynamicResource TextBrush}" Margin="1,0,-1,0" Background="{DynamicResource BackgroundBrush}">
-          <TextBlock Text="Augmentation" HorizontalAlignment="Stretch" VerticalAlignment="Center" TextAlignment="Center" Foreground="{DynamicResource TextBrush}" FontFamily="Consolas" FontSize="14" />
+          <TextBlock Text="Augmentation" Padding="7" HorizontalAlignment="Stretch" VerticalAlignment="Center" TextAlignment="Center" Foreground="{DynamicResource TextBrush}" FontFamily="Consolas" FontSize="14" />
         </Border>
         <Border Grid.Column="29" Grid.ColumnSpan="4" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  BorderThickness="1,1,0,0" BorderBrush="{DynamicResource TextBrush}" Margin="1,0,-1,0" Background="{DynamicResource BackgroundBrush}">
-          <TextBlock Text="Train" HorizontalAlignment="Stretch" VerticalAlignment="Center" TextAlignment="Center" Foreground="{DynamicResource TextBrush}" FontFamily="Consolas" FontSize="14" />
+          <TextBlock Text="Train" Padding="7" HorizontalAlignment="Stretch" VerticalAlignment="Center" TextAlignment="Center" Foreground="{DynamicResource TextBrush}" FontFamily="Consolas" FontSize="14" />
         </Border>
         <Border Grid.Column="33" Grid.ColumnSpan="4" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  BorderThickness="1,1,1,0" BorderBrush="{DynamicResource TextBrush}" Margin="1,0,-1,0" Background="{DynamicResource BackgroundBrush}">
-          <TextBlock Text="Test" HorizontalAlignment="Stretch" VerticalAlignment="Center" TextAlignment="Center" Foreground="{DynamicResource TextBrush}" FontFamily="Consolas" FontSize="14" />
+          <TextBlock Text="Test" Padding="7" HorizontalAlignment="Stretch" VerticalAlignment="Center" TextAlignment="Center" Foreground="{DynamicResource TextBrush}" FontFamily="Consolas" FontSize="14" />
         </Border>
       </Grid>
     </ScrollViewer>
