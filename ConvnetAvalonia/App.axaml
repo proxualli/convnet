@@ -5,9 +5,11 @@
              xmlns:converters="clr-namespace:ConvnetAvalonia.Converters"
              xmlns:dialogHostAvalonia="clr-namespace:DialogHostAvalonia;assembly=DialogHost.Avalonia"
              RequestedThemeVariant="Default">
+  
   <Application.DataTemplates>
     <local:ViewLocator/>
   </Application.DataTemplates>
+  
   <Application.Styles>
     <FluentTheme/>
     <StyleInclude Source="avares://Avalonia.Controls.DataGrid/Themes/Fluent.xaml"/>
@@ -16,6 +18,7 @@
     <StyleInclude Source="avares://OxyPlot.Avalonia/Themes/Default.axaml"/>
     <dialogHostAvalonia:DialogHostStyles />
   </Application.Styles>
+  
   <Application.Resources>
     <ResourceDictionary>
       <ResourceDictionary.MergedDictionaries>
@@ -23,6 +26,7 @@
       </ResourceDictionary.MergedDictionaries>
     </ResourceDictionary>
   </Application.Resources>
+  
   <Application.Styles>
      <Style Selector="DataGridColumnHeader">
         <Setter Property="Background" Value="{DynamicResource BackgroundBrush}"/>
@@ -31,10 +35,11 @@
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="Focusable" Value="False" />
         <Setter Property="SeparatorBrush" Value="{DynamicResource DataGridGridLinesBrush}" />
-        <Setter Property="Padding" Value="10,0,0,0" />
-        <Setter Property="FontSize" Value="12" />
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="Margin" Value="0,0,0,0" />
+        <Setter Property="FontSize" Value="14" />
         <Setter Property="FontWeight" Value="Bold" />
-        <Setter Property="MinHeight" Value="30" />
+        <Setter Property="MinHeight" Value="28" />
         <Setter Property="Template">
           <ControlTemplate>
             <Grid Name="PART_ColumnHeaderRoot"
@@ -46,7 +51,7 @@
                     Margin="{TemplateBinding Padding}">
                 <Grid.ColumnDefinitions>
                   <ColumnDefinition Width="*" />
-                  <ColumnDefinition MinWidth="32"
+                  <ColumnDefinition MinWidth="0"
                                     Width="Auto" />
                 </Grid.ColumnDefinitions>
 
