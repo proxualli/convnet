@@ -28,6 +28,18 @@
   </Application.Resources>
   
   <Application.Styles>
+    <Style Selector="DataGridRow">
+      <Setter Property="MinHeight" Value="24" />
+      <Setter Property="MaxHeight" Value="24" />
+      <Setter Property="Margin" Value="0" />
+      <Setter Property="Padding" Value="0" />
+      <Setter Property="FontSize" Value="13" />
+      <Setter Property="FontWeight" Value="Normal" />
+      <Setter Property="Background" Value="{DynamicResource BackgroundBrush}"/>
+      <Setter Property="Foreground" Value="{DynamicResource TextBrush}"/>
+      <Setter Property="HorizontalAlignment" Value="Center" />
+      <Setter Property="VerticalAlignment" Value="Center" />
+    </Style>
      <Style Selector="DataGridColumnHeader">
         <Setter Property="Background" Value="{DynamicResource BackgroundBrush}"/>
         <Setter Property="Foreground" Value="{DynamicResource TextBrush}"/>
@@ -35,11 +47,11 @@
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="Focusable" Value="False" />
         <Setter Property="SeparatorBrush" Value="{DynamicResource DataGridGridLinesBrush}" />
-        <Setter Property="Padding" Value="0" />
-        <Setter Property="Margin" Value="0,0,0,0" />
+        <Setter Property="Margin" Value="0" />
+        <Setter Property="Padding" Value="0,5,0,0" />
         <Setter Property="FontSize" Value="14" />
         <Setter Property="FontWeight" Value="Bold" />
-        <Setter Property="MinHeight" Value="28" />
+        <Setter Property="MinHeight" Value="30" />
         <Setter Property="Template">
           <ControlTemplate>
             <Grid Name="PART_ColumnHeaderRoot"

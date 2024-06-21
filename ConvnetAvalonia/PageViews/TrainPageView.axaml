@@ -129,19 +129,25 @@
       </Grid>
     </ScrollViewer>-->
 
-    <DataGrid Grid.Row="2" x:Name="listViewTrainingResult" AutoGenerateColumns="False" IsReadOnly="True" CanUserSortColumns="False" CanUserReorderColumns="False" CanUserResizeColumns="False" Foreground="{DynamicResource TextBrush}" Background="{DynamicResource BackgroundBrush}" BorderBrush="{DynamicResource DisabledBorderBrush}" BorderThickness="1" GridLinesVisibility="Horizontal" Margin="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" SelectedIndex="{Binding SelectedIndex}" ItemsSource="{Binding TrainingLog}" Grid.ColumnSpan="1" FontFamily="Consolas" FontWeight="Normal" FontSize="13">
+    <DataGrid Grid.Row="2"  x:Name="listViewTrainingResult" AutoGenerateColumns="False" IsReadOnly="True" CanUserSortColumns="False" CanUserReorderColumns="False" CanUserResizeColumns="False" Foreground="{DynamicResource TextBrush}" Background="{DynamicResource BackgroundBrush}" BorderBrush="{DynamicResource DisabledBorderBrush}" BorderThickness="1" GridLinesVisibility="None" Margin="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" SelectedIndex="{Binding SelectedIndex}" ItemsSource="{Binding TrainingLog}" Grid.ColumnSpan="1" FontFamily="Consolas" FontWeight="Normal" FontSize="13">
       <DataGrid.Columns>
         <DataGridTextColumn DisplayIndex="0" Header="Cycle" Binding="{Binding Cycle}" Width="48"/>
-        <DataGridTextColumn DisplayIndex="1" Header="Epoch" Binding="{Binding Epoch}" Width="48"/>
+        <DataGridTextColumn DisplayIndex="1" Header="Epoch" Binding="{Binding Epoch}" Width="50"/>
         <DataGridTextColumn DisplayIndex="2" Header="N" Binding="{Binding N}" Width="50"/>
-        <DataGridTextColumn DisplayIndex="3" Header="D" Binding="{Binding D}" Width="48" IsVisible="False"/>
-        <DataGridTextColumn DisplayIndex="4" Header="H" Binding="{Binding H}" Width="48"/>
-        <DataGridTextColumn DisplayIndex="5" Header="W" Binding="{Binding W}" Width="48"/>
+        <DataGridTextColumn DisplayIndex="3" Header="D" Binding="{Binding D}" Width="50" IsVisible="False"/>
+        <DataGridTextColumn DisplayIndex="4" Header="H" Binding="{Binding H}" Width="50"/>
+        <DataGridTextColumn DisplayIndex="5" Header="W" Binding="{Binding W}" Width="50"/>
         <DataGridTextColumn DisplayIndex="6" Header="PadD" Binding="{Binding PadD}" Width="36" IsVisible="False"/>
         <DataGridTextColumn DisplayIndex="7" Header="PadH" Binding="{Binding PadH}" Width="36"/>
         <DataGridTextColumn DisplayIndex="8" Header="PadW" Binding="{Binding PadW}" Width="36"/>
-        <DataGridTextColumn DisplayIndex="9" Header="Optimizer" Binding="{Binding Optimizer}" Width="94"/>
-        <DataGridTextColumn DisplayIndex="10" Header="Rate" Binding="{Binding Rate}" Width="98"/>
+        <DataGridTextColumn DisplayIndex="9" Header="Optimizer" Binding="{Binding Optimizer}" Width="92"/>
+        <DataGridTemplateColumn DisplayIndex="10" Header="Rate" Width="98">
+          <DataGridTemplateColumn.CellTemplate>
+            <DataTemplate >
+              <TextBlock Text="{Binding Rate, StringFormat={}{0:0.00000000}}}" VerticalAlignment="Center" HorizontalAlignment="Center" />
+            </DataTemplate>
+          </DataGridTemplateColumn.CellTemplate>
+        </DataGridTemplateColumn>
         <DataGridTextColumn DisplayIndex="11" Header="Eps" Binding="{Binding Eps}" Width="66"/>
         <DataGridTextColumn DisplayIndex="12" Header="Momentum" Binding="{Binding Momentum}" Width="72"/>
         <DataGridTextColumn DisplayIndex="13" Header="Beta2" Binding="{Binding Beta2}" Width="66"/>
@@ -150,24 +156,60 @@
         <DataGridTextColumn DisplayIndex="16" Header="Dropout" Binding="{Binding Dropout}" Width="64"/>
         <DataGridTextColumn DisplayIndex="17" Header="InputDropout" Binding="{Binding InputDropout}" Width="100"/>
         <DataGridTextColumn DisplayIndex="18" Header="Cutout" Binding="{Binding Cutout}" Width="54"/>
-        <DataGridTextColumn DisplayIndex="19" Header="CutMix" Binding="{Binding CutMix}" Width="56"/>
+        <DataGridCheckBoxColumn DisplayIndex="19" Header="CutMix" Binding="{Binding CutMix}" Width="54"/>
         <DataGridTextColumn DisplayIndex="20" Header="AutoAugment" Binding="{Binding AutoAugment}" Width="94"/>
-        <DataGridTextColumn DisplayIndex="21" Header="Horz.Flip" Binding="{Binding HorizontalFlip}" Width="80"/>
-        <DataGridTextColumn DisplayIndex="22" Header="Vert.Flip" Binding="{Binding VerticalFlip}" Width="80"/>
-        <DataGridTextColumn DisplayIndex="23" Header="ColorCast" Binding="{Binding ColorCast}" Width="82"/>
+        <DataGridCheckBoxColumn DisplayIndex="21" Header="Horz.Flip" Binding="{Binding HorizontalFlip}" Width="78"/>
+        <DataGridCheckBoxColumn DisplayIndex="22" Header="Vert.Flip" Binding="{Binding VerticalFlip}" Width="78"/>
+        <DataGridTextColumn DisplayIndex="23" Header="ColorCast" Binding="{Binding ColorCast}" Width="80"/>
         <DataGridTextColumn DisplayIndex="24" Header="ColorAngle" Binding="{Binding ColorAngle}" Width="88"/>
         <DataGridTextColumn DisplayIndex="25" Header="Distortion" Binding="{Binding Distortion}" Width="84"/>
         <DataGridTextColumn DisplayIndex="26" Header="Interpolation" Binding="{Binding Interpolation}" Width="108"/>
         <DataGridTextColumn DisplayIndex="27" Header="Scaling" Binding="{Binding Scaling}" Width="64"/>
         <DataGridTextColumn DisplayIndex="28" Header="Rotation" Binding="{Binding Rotation}" Width="70"/>
-        <DataGridTextColumn DisplayIndex="29" Header="Loss" Binding="{Binding AvgTrainLoss}" Width="80"/>
+        <DataGridTemplateColumn DisplayIndex="29" Header="Loss" Width="80">
+          <DataGridTemplateColumn.CellTemplate>
+            <DataTemplate >
+              <TextBlock Text="{Binding AvgTrainLoss, StringFormat={}{0:0.000000}}}" VerticalAlignment="Center" HorizontalAlignment="Center" />
+            </DataTemplate>
+          </DataGridTemplateColumn.CellTemplate>
+        </DataGridTemplateColumn>
         <DataGridTextColumn DisplayIndex="30" Header="Errors" Binding="{Binding TrainErrors}" Width="64"/>
-        <DataGridTextColumn DisplayIndex="31" Header="Error" Binding="{Binding TrainErrorPercentage}" Width="70"/>
-        <DataGridTextColumn DisplayIndex="32" Header="Accuracy" Binding="{Binding TrainAccuracy}" Width="78"/>
-        <DataGridTextColumn DisplayIndex="33" Header="Loss" Binding="{Binding AvgTestLoss}" Width="80"/>
+        <DataGridTemplateColumn DisplayIndex="31" Header="Error" Width="70">
+          <DataGridTemplateColumn.CellTemplate>
+            <DataTemplate >
+              <TextBlock Text="{Binding TrainErrorPercentage, StringFormat='{}{0:#0.00}'}" VerticalAlignment="Center" HorizontalAlignment="Center" />
+            </DataTemplate>
+          </DataGridTemplateColumn.CellTemplate>
+        </DataGridTemplateColumn>
+        <DataGridTemplateColumn DisplayIndex="32" Header="Accuracy" Width="78">
+          <DataGridTemplateColumn.CellTemplate>
+            <DataTemplate >
+              <TextBlock Text="{Binding TrainAccuracy, StringFormat='{}{0:#0.00}'}" VerticalAlignment="Center" HorizontalAlignment="Center" />
+            </DataTemplate>
+          </DataGridTemplateColumn.CellTemplate>
+        </DataGridTemplateColumn>
+        <DataGridTemplateColumn DisplayIndex="33" Header="Loss" Width="80">
+          <DataGridTemplateColumn.CellTemplate>
+            <DataTemplate >
+              <TextBlock Text="{Binding AvgTestLoss, StringFormat={}{0:0.000000}}}" VerticalAlignment="Center" HorizontalAlignment="Center" />
+            </DataTemplate>
+          </DataGridTemplateColumn.CellTemplate>
+        </DataGridTemplateColumn>
         <DataGridTextColumn DisplayIndex="34" Header="Errors" Binding="{Binding TestErrors}" Width="64"/>
-        <DataGridTextColumn DisplayIndex="35" Header="Error" Binding="{Binding TestErrorPercentage}" Width="70"/>
-        <DataGridTextColumn DisplayIndex="36" Header="Accuracy" Binding="{Binding TestAccuracy}" Width="78"/>
+        <DataGridTemplateColumn DisplayIndex="35" Header="Error" Width="70">
+          <DataGridTemplateColumn.CellTemplate>
+            <DataTemplate >
+              <TextBlock Text="{Binding TestErrorPercentage, StringFormat='{}{0:#0.00}'}" VerticalAlignment="Center" HorizontalAlignment="Center" />
+            </DataTemplate>
+          </DataGridTemplateColumn.CellTemplate>
+        </DataGridTemplateColumn>
+        <DataGridTemplateColumn DisplayIndex="36" Header="Accuracy" Width="78">
+          <DataGridTemplateColumn.CellTemplate>
+            <DataTemplate >
+              <TextBlock Text="{Binding TestAccuracy, StringFormat='{}{0:#0.00}'}" VerticalAlignment="Center" HorizontalAlignment="Center" />
+            </DataTemplate>
+          </DataGridTemplateColumn.CellTemplate>
+        </DataGridTemplateColumn>
         <DataGridTextColumn DisplayIndex="37" Header="Duration" Binding="{Binding ElapsedTime}" Width="90"/>
       </DataGrid.Columns>
     </DataGrid>
