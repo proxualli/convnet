@@ -12,7 +12,7 @@
   <Grid x:Name="gridMain" Background="{DynamicResource BackgroundBrushLight}">
     <Grid.RowDefinitions>
       <RowDefinition Height="Auto"/>
-      <RowDefinition Height="22"/>
+      <RowDefinition Height="26"/>
       <RowDefinition Height="*" />
     </Grid.RowDefinitions>
     <Grid Grid.Row="0">
@@ -67,49 +67,49 @@
           </oxy:PlotView>
         </Border>
     </Grid>
-    
-    <!--<ScrollViewer Grid.Row="1" x:Name="ScrollViewerHeader" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" BorderThickness="1" BorderBrush="DarkGray" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden" Focusable="False" IsHitTestVisible="False">
+
+    <ScrollViewer Grid.Row="1" x:Name="ScrollViewerHeader" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" BorderThickness="0" BorderBrush="DarkGray" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden" Focusable="False" IsHitTestVisible="False">
       <Grid >
-        --><!--<Grid.ColumnDefinitions>
-          <ColumnDefinition Width="{Binding ActualWidth, ElementName=cycle}" />
-          <ColumnDefinition Width="{Binding ActualWidth, ElementName=epoch}" />
-          <ColumnDefinition Width="{Binding ActualWidth, ElementName=batchSize}" />
-          <ColumnDefinition Width="{Binding ActualWidth, ElementName=depth}" />
-          <ColumnDefinition Width="{Binding ActualWidth, ElementName=height}" />
-          <ColumnDefinition Width="{Binding ActualWidth, ElementName=width}" />
-          <ColumnDefinition Width="{Binding ActualWidth, ElementName=padD}" />
-          <ColumnDefinition Width="{Binding ActualWidth, ElementName=padH}" />
-          <ColumnDefinition Width="{Binding ActualWidth, ElementName=padW}" />
-          <ColumnDefinition Width="{Binding ActualWidth, ElementName=optimizer}" />
-          <ColumnDefinition Width="{Binding ActualWidth, ElementName=rate}" />
-          <ColumnDefinition Width="{Binding ActualWidth, ElementName=eps}" />
-          <ColumnDefinition Width="{Binding ActualWidth, ElementName=momentum}" />
-          <ColumnDefinition Width="{Binding ActualWidth, ElementName=beta2}" />
-          <ColumnDefinition Width="{Binding ActualWidth, ElementName=gamma}" />
-          <ColumnDefinition Width="{Binding ActualWidth, ElementName=l2Penalty}" />
-          <ColumnDefinition Width="{Binding ActualWidth, ElementName=dropout}" />
-          <ColumnDefinition Width="{Binding ActualWidth, ElementName=inputDropout}" />
-          <ColumnDefinition Width="{Binding ActualWidth, ElementName=cutout}" />
-          <ColumnDefinition Width="{Binding ActualWidth, ElementName=cutMix}" />
-          <ColumnDefinition Width="{Binding ActualWidth, ElementName=autoaugment}" />
-          <ColumnDefinition Width="{Binding ActualWidth, ElementName=hflip}" />
-          <ColumnDefinition Width="{Binding ActualWidth, ElementName=vflip}" />
-          <ColumnDefinition Width="{Binding ActualWidth, ElementName=colorCast}" />
-          <ColumnDefinition Width="{Binding ActualWidth, ElementName=colorAngle}" />
-          <ColumnDefinition Width="{Binding ActualWidth, ElementName=distortion}" />
-          <ColumnDefinition Width="{Binding ActualWidth, ElementName=interpolation}" />
-          <ColumnDefinition Width="{Binding ActualWidth, ElementName=scaling}" />
-          <ColumnDefinition Width="{Binding ActualWidth, ElementName=rotation}" />
-          <ColumnDefinition Width="{Binding ActualWidth, ElementName=avgTrainLoss}" />
-          <ColumnDefinition Width="{Binding ActualWidth, ElementName=trainErrors}" />
-          <ColumnDefinition Width="{Binding ActualWidth, ElementName=trainErrorPercentage}" />
-          <ColumnDefinition Width="{Binding ActualWidth, ElementName=trainAccuracy}" />
-          <ColumnDefinition Width="{Binding ActualWidth, ElementName=avgTestLoss}" />
-          <ColumnDefinition Width="{Binding ActualWidth, ElementName=testErrors}" />
-          <ColumnDefinition Width="{Binding ActualWidth, ElementName=testErrorPercentage}" />
-          <ColumnDefinition Width="{Binding ActualWidth, ElementName=testAccuracy}" />
-          <ColumnDefinition Width="{Binding ActualWidth, ElementName=duration}" />
-        </Grid.ColumnDefinitions>--><!--
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="48" />
+          <ColumnDefinition Width="50" />
+          <ColumnDefinition Width="50" />
+          <ColumnDefinition Width="0" />
+          <ColumnDefinition Width="50" />
+          <ColumnDefinition Width="50" />
+          <ColumnDefinition Width="0" />
+          <ColumnDefinition Width="36" />
+          <ColumnDefinition Width="36" />
+          <ColumnDefinition Width="92" />
+          <ColumnDefinition Width="98" />
+          <ColumnDefinition Width="66" />
+          <ColumnDefinition Width="72" />
+          <ColumnDefinition Width="66" />
+          <ColumnDefinition Width="66" />
+          <ColumnDefinition Width="82" />
+          <ColumnDefinition Width="64" />
+          <ColumnDefinition Width="100" />
+          <ColumnDefinition Width="54" />
+          <ColumnDefinition Width="54" />
+          <ColumnDefinition Width="94" />
+          <ColumnDefinition Width="78" />
+          <ColumnDefinition Width="78" />
+          <ColumnDefinition Width="80" />
+          <ColumnDefinition Width="88" />
+          <ColumnDefinition Width="84" />
+          <ColumnDefinition Width="108" />
+          <ColumnDefinition Width="64" />
+          <ColumnDefinition Width="70" />
+          <ColumnDefinition Width="80" />
+          <ColumnDefinition Width="64" />
+          <ColumnDefinition Width="70" />
+          <ColumnDefinition Width="78" />
+          <ColumnDefinition Width="80" />
+          <ColumnDefinition Width="64" />
+          <ColumnDefinition Width="70" />
+          <ColumnDefinition Width="78" />
+          <ColumnDefinition Width="90" />
+        </Grid.ColumnDefinitions>
 
         <Border Grid.Column="2" Grid.ColumnSpan="7" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  BorderThickness="1,1,0,0" BorderBrush="{DynamicResource TextBrush}" Margin="1,0,-1,0" Background="{DynamicResource BackgroundBrush}">
           <TextBlock Text="Resolution" HorizontalAlignment="Stretch" VerticalAlignment="Center" TextAlignment="Center" Foreground="{DynamicResource TextBrush}" FontFamily="Consolas" FontSize="14" />
@@ -127,12 +127,24 @@
           <TextBlock Text="Test" HorizontalAlignment="Stretch" VerticalAlignment="Center" TextAlignment="Center" Foreground="{DynamicResource TextBrush}" FontFamily="Consolas" FontSize="14" />
         </Border>
       </Grid>
-    </ScrollViewer>-->
+    </ScrollViewer>
 
     <DataGrid Grid.Row="2"  x:Name="listViewTrainingResult" AutoGenerateColumns="False" IsReadOnly="True" CanUserSortColumns="False" CanUserReorderColumns="False" CanUserResizeColumns="False" Foreground="{DynamicResource TextBrush}" Background="{DynamicResource BackgroundBrush}" BorderBrush="{DynamicResource DisabledBorderBrush}" BorderThickness="1" GridLinesVisibility="None" Margin="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" SelectedIndex="{Binding SelectedIndex}" ItemsSource="{Binding TrainingLog}" Grid.ColumnSpan="1" FontFamily="Consolas" FontWeight="Normal" FontSize="13">
       <DataGrid.Columns>
-        <DataGridTextColumn DisplayIndex="0" Header="Cycle" Binding="{Binding Cycle}" Width="48"/>
-        <DataGridTextColumn DisplayIndex="1" Header="Epoch" Binding="{Binding Epoch}" Width="50"/>
+        <DataGridTemplateColumn DisplayIndex="0" Header="Cycle" Width="48">
+          <DataGridTemplateColumn.CellTemplate>
+            <DataTemplate >
+              <TextBlock Text="{Binding Cycle}" VerticalAlignment="Center" HorizontalAlignment="Center" />
+            </DataTemplate>
+          </DataGridTemplateColumn.CellTemplate>
+        </DataGridTemplateColumn>
+        <DataGridTemplateColumn DisplayIndex="1" Header="Epoch" Width="50">
+          <DataGridTemplateColumn.CellTemplate>
+            <DataTemplate >
+              <TextBlock Text="{Binding Epoch}" VerticalAlignment="Center" HorizontalAlignment="Center" />
+            </DataTemplate>
+          </DataGridTemplateColumn.CellTemplate>
+        </DataGridTemplateColumn>
         <DataGridTextColumn DisplayIndex="2" Header="N" Binding="{Binding N}" Width="50"/>
         <DataGridTextColumn DisplayIndex="3" Header="D" Binding="{Binding D}" Width="50" IsVisible="False"/>
         <DataGridTextColumn DisplayIndex="4" Header="H" Binding="{Binding H}" Width="50"/>
@@ -141,6 +153,13 @@
         <DataGridTextColumn DisplayIndex="7" Header="PadH" Binding="{Binding PadH}" Width="36"/>
         <DataGridTextColumn DisplayIndex="8" Header="PadW" Binding="{Binding PadW}" Width="36"/>
         <DataGridTextColumn DisplayIndex="9" Header="Optimizer" Binding="{Binding Optimizer}" Width="92"/>
+        <DataGridTemplateColumn DisplayIndex="9" Header="Optimizer" Width="92">
+          <DataGridTemplateColumn.CellTemplate>
+            <DataTemplate >
+              <TextBlock Text="{Binding Optimizer}" VerticalAlignment="Center" HorizontalAlignment="Center" />
+            </DataTemplate>
+          </DataGridTemplateColumn.CellTemplate>
+        </DataGridTemplateColumn>
         <DataGridTemplateColumn DisplayIndex="10" Header="Rate" Width="98">
           <DataGridTemplateColumn.CellTemplate>
             <DataTemplate >
@@ -148,24 +167,102 @@
             </DataTemplate>
           </DataGridTemplateColumn.CellTemplate>
         </DataGridTemplateColumn>
-        <DataGridTextColumn DisplayIndex="11" Header="Eps" Binding="{Binding Eps}" Width="66"/>
-        <DataGridTextColumn DisplayIndex="12" Header="Momentum" Binding="{Binding Momentum}" Width="72"/>
-        <DataGridTextColumn DisplayIndex="13" Header="Beta2" Binding="{Binding Beta2}" Width="66"/>
-        <DataGridTextColumn DisplayIndex="14" Header="Gamma" Binding="{Binding Gamma}" Width="66"/>
-        <DataGridTextColumn DisplayIndex="15" Header="L2Penalty" Binding="{Binding L2Penalty}" Width="82"/>
-        <DataGridTextColumn DisplayIndex="16" Header="Dropout" Binding="{Binding Dropout}" Width="64"/>
-        <DataGridTextColumn DisplayIndex="17" Header="InputDropout" Binding="{Binding InputDropout}" Width="100"/>
+        <DataGridTextColumn DisplayIndex="11" Header="Eps" Binding="{Binding Eps, StringFormat=G}" Width="66"/>
+        <DataGridTemplateColumn DisplayIndex="12" Header="Momentum" Width="72">
+          <DataGridTemplateColumn.CellTemplate>
+            <DataTemplate >
+              <TextBlock Text="{Binding Momentum, StringFormat=0.#######}" VerticalAlignment="Center" HorizontalAlignment="Center" />
+            </DataTemplate>
+          </DataGridTemplateColumn.CellTemplate>
+        </DataGridTemplateColumn>
+        <DataGridTemplateColumn DisplayIndex="13" Header="Beta2" Width="66">
+          <DataGridTemplateColumn.CellTemplate>
+            <DataTemplate >
+              <TextBlock Text="{Binding Beta2, StringFormat=0.#########}" VerticalAlignment="Center" HorizontalAlignment="Center" />
+            </DataTemplate>
+          </DataGridTemplateColumn.CellTemplate>
+        </DataGridTemplateColumn>
+        <DataGridTemplateColumn DisplayIndex="14" Header="Gamma" Width="66">
+          <DataGridTemplateColumn.CellTemplate>
+            <DataTemplate >
+              <TextBlock Text="{Binding Gamma, StringFormat=0.#########}" VerticalAlignment="Center" HorizontalAlignment="Center" />
+            </DataTemplate>
+          </DataGridTemplateColumn.CellTemplate>
+        </DataGridTemplateColumn>
+        <DataGridTemplateColumn DisplayIndex="15" Header="L2Penalty" Width="82">
+          <DataGridTemplateColumn.CellTemplate>
+            <DataTemplate >
+              <TextBlock Text="{Binding L2Penalty, StringFormat=0.#########}" VerticalAlignment="Center" HorizontalAlignment="Center" />
+            </DataTemplate>
+          </DataGridTemplateColumn.CellTemplate>
+        </DataGridTemplateColumn>
+        <DataGridTemplateColumn DisplayIndex="16" Header="Dropout" Width="64">
+          <DataGridTemplateColumn.CellTemplate>
+            <DataTemplate >
+              <TextBlock Text="{Binding Dropout, StringFormat=0.#######}" VerticalAlignment="Center" HorizontalAlignment="Center" />
+            </DataTemplate>
+          </DataGridTemplateColumn.CellTemplate>
+        </DataGridTemplateColumn>
+        <DataGridTemplateColumn DisplayIndex="17" Header="InputDropout" Width="100">
+          <DataGridTemplateColumn.CellTemplate>
+            <DataTemplate >
+              <TextBlock Text="{Binding InputDropout}" VerticalAlignment="Center" HorizontalAlignment="Center" />
+            </DataTemplate>
+          </DataGridTemplateColumn.CellTemplate>
+        </DataGridTemplateColumn>
         <DataGridTextColumn DisplayIndex="18" Header="Cutout" Binding="{Binding Cutout}" Width="54"/>
         <DataGridCheckBoxColumn DisplayIndex="19" Header="CutMix" Binding="{Binding CutMix}" Width="54"/>
-        <DataGridTextColumn DisplayIndex="20" Header="AutoAugment" Binding="{Binding AutoAugment}" Width="94"/>
+        <DataGridTemplateColumn DisplayIndex="20" Header="AutoAugment" Width="94">
+          <DataGridTemplateColumn.CellTemplate>
+            <DataTemplate >
+              <TextBlock Text="{Binding AutoAugment, StringFormat=0.#####}" VerticalAlignment="Center" HorizontalAlignment="Center" />
+            </DataTemplate>
+          </DataGridTemplateColumn.CellTemplate>
+        </DataGridTemplateColumn>
         <DataGridCheckBoxColumn DisplayIndex="21" Header="Horz.Flip" Binding="{Binding HorizontalFlip}" Width="78"/>
         <DataGridCheckBoxColumn DisplayIndex="22" Header="Vert.Flip" Binding="{Binding VerticalFlip}" Width="78"/>
-        <DataGridTextColumn DisplayIndex="23" Header="ColorCast" Binding="{Binding ColorCast}" Width="80"/>
-        <DataGridTextColumn DisplayIndex="24" Header="ColorAngle" Binding="{Binding ColorAngle}" Width="88"/>
-        <DataGridTextColumn DisplayIndex="25" Header="Distortion" Binding="{Binding Distortion}" Width="84"/>
-        <DataGridTextColumn DisplayIndex="26" Header="Interpolation" Binding="{Binding Interpolation}" Width="108"/>
-        <DataGridTextColumn DisplayIndex="27" Header="Scaling" Binding="{Binding Scaling}" Width="64"/>
-        <DataGridTextColumn DisplayIndex="28" Header="Rotation" Binding="{Binding Rotation}" Width="70"/>
+        <DataGridTemplateColumn DisplayIndex="23" Header="ColorCast" Width="80">
+          <DataGridTemplateColumn.CellTemplate>
+            <DataTemplate >
+              <TextBlock Text="{Binding ColorCast, StringFormat=0.#####}" VerticalAlignment="Center" HorizontalAlignment="Center" />
+            </DataTemplate>
+          </DataGridTemplateColumn.CellTemplate>
+        </DataGridTemplateColumn>
+        <DataGridTemplateColumn DisplayIndex="24" Header="ColorAngle" Width="88">
+          <DataGridTemplateColumn.CellTemplate>
+            <DataTemplate >
+              <TextBlock Text="{Binding ColorAngle, StringFormat={}{0}°}" VerticalAlignment="Center" HorizontalAlignment="Center" />
+            </DataTemplate>
+          </DataGridTemplateColumn.CellTemplate>
+        </DataGridTemplateColumn>
+        <DataGridTemplateColumn DisplayIndex="25" Header="Distortion" Width="84">
+          <DataGridTemplateColumn.CellTemplate>
+            <DataTemplate >
+              <TextBlock Text="{Binding Distortion, StringFormat=0.#####}" VerticalAlignment="Center" HorizontalAlignment="Center" />
+            </DataTemplate>
+          </DataGridTemplateColumn.CellTemplate>
+        </DataGridTemplateColumn>
+        <DataGridTemplateColumn DisplayIndex="26" Header="Interpolation" Width="108">
+          <DataGridTemplateColumn.CellTemplate>
+            <DataTemplate >
+              <TextBlock Text="{Binding Interpolation}" VerticalAlignment="Center" HorizontalAlignment="Center" />
+            </DataTemplate>
+          </DataGridTemplateColumn.CellTemplate>
+        </DataGridTemplateColumn>
+        <DataGridTemplateColumn DisplayIndex="27" Header="Scaling" Width="64">
+          <DataGridTemplateColumn.CellTemplate>
+            <DataTemplate >
+              <TextBlock Text="{Binding Scaling, StringFormat='{}{0} %'}" VerticalAlignment="Center" HorizontalAlignment="Center" />
+            </DataTemplate>
+          </DataGridTemplateColumn.CellTemplate>
+        </DataGridTemplateColumn>
+        <DataGridTemplateColumn DisplayIndex="28" Header="Rotation" Width="70">
+          <DataGridTemplateColumn.CellTemplate>
+            <DataTemplate >
+              <TextBlock Text="{Binding Rotation, StringFormat='{}{0}°'}" VerticalAlignment="Center" HorizontalAlignment="Center" />
+            </DataTemplate>
+          </DataGridTemplateColumn.CellTemplate>
+        </DataGridTemplateColumn>
         <DataGridTemplateColumn DisplayIndex="29" Header="Loss" Width="80">
           <DataGridTemplateColumn.CellTemplate>
             <DataTemplate >
@@ -173,18 +270,24 @@
             </DataTemplate>
           </DataGridTemplateColumn.CellTemplate>
         </DataGridTemplateColumn>
-        <DataGridTextColumn DisplayIndex="30" Header="Errors" Binding="{Binding TrainErrors}" Width="64"/>
+        <DataGridTemplateColumn DisplayIndex="30" Header="Errors" Width="64">
+          <DataGridTemplateColumn.CellTemplate>
+            <DataTemplate >
+              <TextBlock  Text="{Binding TrainErrors}" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,5,0" />
+            </DataTemplate>
+          </DataGridTemplateColumn.CellTemplate>
+        </DataGridTemplateColumn>
         <DataGridTemplateColumn DisplayIndex="31" Header="Error" Width="70">
           <DataGridTemplateColumn.CellTemplate>
             <DataTemplate >
-              <TextBlock Text="{Binding TrainErrorPercentage, StringFormat='{}{0:#0.00}'}" VerticalAlignment="Center" HorizontalAlignment="Center" />
+              <TextBlock  Text="{Binding TrainErrorPercentage, StringFormat='{}{0:#0.00} %'}" VerticalAlignment="Center" HorizontalAlignment="Center" />
             </DataTemplate>
           </DataGridTemplateColumn.CellTemplate>
         </DataGridTemplateColumn>
         <DataGridTemplateColumn DisplayIndex="32" Header="Accuracy" Width="78">
           <DataGridTemplateColumn.CellTemplate>
             <DataTemplate >
-              <TextBlock Text="{Binding TrainAccuracy, StringFormat='{}{0:#0.00}'}" VerticalAlignment="Center" HorizontalAlignment="Center" />
+              <TextBlock Text="{Binding TrainAccuracy, StringFormat='{}{0:#0.00} %'}" VerticalAlignment="Center" HorizontalAlignment="Center" />
             </DataTemplate>
           </DataGridTemplateColumn.CellTemplate>
         </DataGridTemplateColumn>
@@ -195,18 +298,24 @@
             </DataTemplate>
           </DataGridTemplateColumn.CellTemplate>
         </DataGridTemplateColumn>
-        <DataGridTextColumn DisplayIndex="34" Header="Errors" Binding="{Binding TestErrors}" Width="64"/>
+        <DataGridTemplateColumn DisplayIndex="34" Header="Errors" Width="64">
+          <DataGridTemplateColumn.CellTemplate>
+            <DataTemplate >
+              <TextBlock  Text="{Binding TestErrors}" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,5,0" />
+            </DataTemplate>
+          </DataGridTemplateColumn.CellTemplate>
+        </DataGridTemplateColumn>
         <DataGridTemplateColumn DisplayIndex="35" Header="Error" Width="70">
           <DataGridTemplateColumn.CellTemplate>
             <DataTemplate >
-              <TextBlock Text="{Binding TestErrorPercentage, StringFormat='{}{0:#0.00}'}" VerticalAlignment="Center" HorizontalAlignment="Center" />
+              <TextBlock Text="{Binding TestErrorPercentage, StringFormat='{}{0:#0.00} %'}" VerticalAlignment="Center" HorizontalAlignment="Center" />
             </DataTemplate>
           </DataGridTemplateColumn.CellTemplate>
         </DataGridTemplateColumn>
         <DataGridTemplateColumn DisplayIndex="36" Header="Accuracy" Width="78">
           <DataGridTemplateColumn.CellTemplate>
             <DataTemplate >
-              <TextBlock Text="{Binding TestAccuracy, StringFormat='{}{0:#0.00}'}" VerticalAlignment="Center" HorizontalAlignment="Center" />
+              <TextBlock Text="{Binding TestAccuracy, StringFormat='{}{0:#0.00} %'}" VerticalAlignment="Center" HorizontalAlignment="Center" />
             </DataTemplate>
           </DataGridTemplateColumn.CellTemplate>
         </DataGridTemplateColumn>
