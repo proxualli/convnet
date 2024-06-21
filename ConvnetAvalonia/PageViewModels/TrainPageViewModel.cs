@@ -5,6 +5,7 @@ using Avalonia.Data;
 using Avalonia.Interactivity;
 using Avalonia.Threading;
 using ConvnetAvalonia.Common;
+using ConvnetAvalonia.Dialogs;
 using ConvnetAvalonia.Properties;
 using CustomMessageBox.Avalonia;
 using Interop;
@@ -71,7 +72,7 @@ namespace ConvnetAvalonia.PageViewModels
         private string pointsTestLabel;
         private PlotType currentPlotType;
         private LegendPosition currentLegendPosition;
-        private PlotModel plotModel;
+        private PlotModel? plotModel;
         private Avalonia.Media.Imaging.WriteableBitmap weightsSnapshot;
         private Avalonia.Media.Imaging.WriteableBitmap inputSnapshot;
         private readonly StringBuilder sb;
@@ -116,7 +117,6 @@ namespace ConvnetAvalonia.PageViewModels
             LayersComboBox_SelectionChanged(this, null);
             RefreshTrainingPlot();
         }
-
 
         private void AddCommandButtons()
         {
@@ -837,14 +837,18 @@ namespace ConvnetAvalonia.PageViewModels
                         PointsTestLabel = "Avg Test Loss";
                         break;
                 }
-                plotModel.Series[0].Title = PointsTrainLabel;
-                plotModel.Series[1].Title = PointsTestLabel;
+
+                if (plotModel != null)
+                {
+                    plotModel.Series[0].Title = PointsTrainLabel;
+                    plotModel.Series[1].Title = PointsTestLabel;
+                }
 
                 this.RaisePropertyChanged(nameof(PointsTrain));
                 this.RaisePropertyChanged(nameof(PointsTest));
 
-                plotModel.InvalidatePlot(true);
-                this.RaisePropertyChanged(nameof(PlotModel));
+                plotModel?.InvalidatePlot(true);
+                //this.RaisePropertyChanged(nameof(PlotModel));
             }, DispatcherPriority.Render);
         }
 
@@ -898,10 +902,10 @@ namespace ConvnetAvalonia.PageViewModels
             legend.LegendPosition = LegendPosition.RightBottom;
             plotModel.Legends.Add(legend);
             plotModel.TextColor = OxyColor.FromRgb(255, 255, 255);
-            this.RaisePropertyChanged(nameof(PlotModel));
+            //this.RaisePropertyChanged(nameof(PlotModel));
         }
 
-        public PlotModel PlotModel
+        public PlotModel? PlotModel
         {
             get => plotModel;
             set => this.RaiseAndSetIfChanged(ref plotModel, value);
@@ -1199,7 +1203,7 @@ namespace ConvnetAvalonia.PageViewModels
 
         private void StartButtonClick(object? sender, RoutedEventArgs e)
         {
-            Dispatcher.UIThread.Post(() =>
+            Dispatcher.UIThread.Post(async () =>
             {
                 if (Model?.TaskState == DNNTaskStates.Running)
                 {
@@ -1211,19 +1215,20 @@ namespace ConvnetAvalonia.PageViewModels
 
                 if (Model?.TaskState == DNNTaskStates.Stopped)
                 {
-                    //TrainParameters dialog = new TrainParameters
-                    //{
-                    //    Owner = Application.Current.MainWindow,
-                    //    Model = this.Model,
-                    //    Path = DefinitionsDirectory,
-                    //    IsEnabled = true,
-                    //    Rate = TrainRate,
-                    //    tpvm = this
-                    //};
-
-                    //if (dialog.ShowDialog() ?? false)
+                    TrainParameters dialog = new TrainParameters
                     {
-                    //  TrainRate = dialog.Rate;
+                        Model = this.Model,
+                        Path = DefinitionsDirectory,
+                        IsEnabled = true,
+                        Rate = TrainRate,
+                        tpvm = this,
+                    };
+
+                    await dialog.ShowDialog(App.MainWindow);
+
+                    if (dialog.DialogResult)
+                    {
+                        TrainRate = dialog.Rate;
 
                         if (SGDR)
                             Model.AddTrainingRateSGDR(TrainRate, true, GotoEpoch, GotoCycle, Model.TrainingSamples);

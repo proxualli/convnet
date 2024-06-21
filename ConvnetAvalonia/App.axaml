@@ -3,7 +3,6 @@
              x:Class="ConvnetAvalonia.App"
              xmlns:local="using:ConvnetAvalonia"
              xmlns:converters="clr-namespace:ConvnetAvalonia.Converters"
-             xmlns:dialogHostAvalonia="clr-namespace:DialogHostAvalonia;assembly=DialogHost.Avalonia"
              RequestedThemeVariant="Default">
   
   <Application.DataTemplates>
@@ -16,7 +15,6 @@
     <StyleInclude Source="avares://AvaloniaEdit/Themes/Fluent/AvaloniaEdit.xaml" />
     <StyleInclude Source="avares://Avalonia.Controls.ToolBar/Themes/Avalonia.Controls.ToolBar.axaml" />
     <StyleInclude Source="avares://OxyPlot.Avalonia/Themes/Default.axaml"/>
-    <dialogHostAvalonia:DialogHostStyles />
   </Application.Styles>
   
   <Application.Resources>

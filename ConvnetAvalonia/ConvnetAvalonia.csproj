@@ -14,6 +14,7 @@
     <SignAssembly>True</SignAssembly>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Remove="Common\RangeRule.cs" />
     <Compile Remove="PageViewModels\MainWindowViewModel.cs" />
   </ItemGroup>
 
@@ -98,7 +99,6 @@
     <PackageReference Include="AvaloniaEdit.TextMate.Grammars" Version="0.10.12" />
     <PackageReference Include="CsvHelper" Version="33.0.1" />
     <PackageReference Include="CustomMessageBox.Avalonia" Version="11.0.0.2" />
-    <PackageReference Include="DialogHost.Avalonia" Version="0.8.0-avalonia11dot1-1.2" />
     <PackageReference Include="Microsoft.Build.Locator" Version="1.7.8" />
     <PackageReference Include="OxyPlot.Avalonia" Version="2.1.0" />
     <PackageReference Include="Oxyplot.AvaloniaCore" Version="2.1.2" />
@@ -194,6 +194,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="Common\RangeRule.cs" />
     <None Include="PageViewModels\MainWindowViewModel.cs" />
   </ItemGroup>
 
@@ -201,7 +202,6 @@
     <Exec Command="xcopy /Y $(SolutionDir)$(PlatformName)\$(ConfigurationName)\dnn.dll $(TargetDir)" Condition="$([MSBuild]::IsOSPlatform('Windows'))" />
     <Exec Command="xcopy /Y $(SolutionDir)$(PlatformName)\$(ConfigurationName)\dnn.dll $(TargetDir)" Condition="$([MSBuild]::IsOSPlatform('Windows'))" />
     <Exec Command="xcopy /Y $(SolutionDir)$(PlatformName)\$(ConfigurationName)\dnnl.dll $(TargetDir)" Condition="$([MSBuild]::IsOSPlatform('Windows'))" />
-    <!--<Exec Command="xcopy /Y $(SolutionDir)\dnn\deps\oneDNN\build\src\$(ConfigurationName)\dnnl.dll $(TargetDir)" Condition="$([MSBuild]::IsOSPlatform('Windows'))"/>-->
     <Exec Command="xcopy /Y $(SolutionDir)$(PlatformName)\$(ConfigurationName)\libpng16.dll $(TargetDir)" Condition="$([MSBuild]::IsOSPlatform('Windows'))" />
     <Exec Command="cp $(SolutionDir)/dnn/build/libdnn.so $(TargetDir)" Condition="$([MSBuild]::IsOSPlatform('Linux'))" />
   </Target>
