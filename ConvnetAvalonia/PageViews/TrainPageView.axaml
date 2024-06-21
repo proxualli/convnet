@@ -129,7 +129,7 @@
       </Grid>
     </ScrollViewer>
 
-    <DataGrid Grid.Row="2"  x:Name="listViewTrainingResult" AutoGenerateColumns="False" IsReadOnly="True" CanUserSortColumns="False" CanUserReorderColumns="False" CanUserResizeColumns="False" Foreground="{DynamicResource TextBrush}" Background="{DynamicResource BackgroundBrush}" BorderBrush="{DynamicResource DisabledBorderBrush}" BorderThickness="1" GridLinesVisibility="None" Margin="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" SelectedIndex="{Binding SelectedIndex}" ItemsSource="{Binding TrainingLog}" Grid.ColumnSpan="1" FontFamily="Consolas" FontWeight="Normal" FontSize="13">
+    <DataGrid Grid.Row="2" x:Name="listViewTrainingResult" AutoGenerateColumns="False" IsReadOnly="True" CanUserSortColumns="False" CanUserReorderColumns="False" CanUserResizeColumns="False" Foreground="{DynamicResource TextBrush}" Background="{DynamicResource BackgroundBrush}" BorderBrush="{DynamicResource DisabledBorderBrush}" BorderThickness="1" GridLinesVisibility="None" Margin="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" SelectedIndex="{Binding SelectedIndex}" ItemsSource="{Binding TrainingLog}" Grid.ColumnSpan="1" FontFamily="Consolas" FontWeight="Normal" FontSize="13">
       <DataGrid.Columns>
         <DataGridTemplateColumn DisplayIndex="0" Header="Cycle" Width="48">
           <DataGridTemplateColumn.CellTemplate>
@@ -152,7 +152,6 @@
         <DataGridTextColumn DisplayIndex="6" Header="PadD" Binding="{Binding PadD}" Width="36" IsVisible="False"/>
         <DataGridTextColumn DisplayIndex="7" Header="PadH" Binding="{Binding PadH}" Width="36"/>
         <DataGridTextColumn DisplayIndex="8" Header="PadW" Binding="{Binding PadW}" Width="36"/>
-        <DataGridTextColumn DisplayIndex="9" Header="Optimizer" Binding="{Binding Optimizer}" Width="92"/>
         <DataGridTemplateColumn DisplayIndex="9" Header="Optimizer" Width="92">
           <DataGridTemplateColumn.CellTemplate>
             <DataTemplate >

@@ -3872,51 +3872,55 @@ namespace Interop
                                 var snapshot = new Float[nativeTotalSize];
                                 var labelVector = new UInt64[Hierarchies];
                                 
-                                var pictureLoaded = DNNGetInputSnapShot(snapshot, labelVector);
-
-                                if (totalSize > 0)
+                                if (totalSize > 0 && totalSize <= int.MaxValue)
                                 {
-                                    var img = new Byte[nativeTotalSize];
-                                   
-                                    if (MeanStdNormalization)
-                                        for (UInt channel = 0; channel < channels; channel++)
-                                            for (UInt hw = 0; hw < area; hw++)
-                                                img[(hw * channels) + channel] = pictureLoaded ? FloatSaturate((snapshot[hw + channel * area] * StdTrainSet[channel]) + MeanTrainSet[channel]) : FloatSaturate(MeanTrainSet[channel]);
-                                    else
-                                        for (UInt channel = 0; channel < channels; channel++)
-                                            for (UInt hw = 0; hw < area; hw++)
-                                                img[(hw * channels) + channel] = pictureLoaded ? FloatSaturate((snapshot[hw + channel * area] + (Float)(2)) * 64) : FloatSaturate(128);
+                                    var pictureLoaded = DNNGetInputSnapShot(snapshot, labelVector);
 
-                                    var newImg = new Byte[totalSize];
-                                    if (color)
+                                    if (pictureLoaded)
                                     {
-                                        for (var i = 0ul; i < area; i++)
+                                        var img = new Byte[nativeTotalSize];
+                                        if (MeanStdNormalization)
+                                            for (UInt channel = 0; channel < channels; channel++)
+                                                for (UInt hw = 0; hw < area; hw++)
+                                                    img[(hw * channels) + channel] = pictureLoaded ? FloatSaturate((snapshot[hw + channel * area] * StdTrainSet[channel]) + MeanTrainSet[channel]) : FloatSaturate(MeanTrainSet[channel]);
+                                        else
+                                            for (UInt channel = 0; channel < channels; channel++)
+                                                for (UInt hw = 0; hw < area; hw++)
+                                                    img[(hw * channels) + channel] = pictureLoaded ? FloatSaturate((snapshot[hw + channel * area] + (Float)(2)) * 64) : FloatSaturate(128);
+
+                                        var newImg = new Byte[totalSize];
+                                        if (color)
                                         {
-                                            newImg[(i * 4) + 0] = img[(i * 3) + 0];  // R
-                                            newImg[(i * 4) + 1] = img[(i * 3) + 1];  // G
-                                            newImg[(i * 4) + 2] = img[(i * 3) + 2];  // B
-                                            newImg[(i * 4) + 3] = 255;               // A
+                                            for (var i = 0ul; i < area; i++)
+                                            {
+                                                newImg[(i * 4) + 0] = img[(i * 3) + 0];  // R
+                                                newImg[(i * 4) + 1] = img[(i * 3) + 1];  // G
+                                                newImg[(i * 4) + 2] = img[(i * 3) + 2];  // B
+                                                newImg[(i * 4) + 3] = 255;               // A
+                                            }
                                         }
+                                        else
+                                        {
+                                            for (var i = 0ul; i < area; i++)
+                                            {
+                                                newImg[(i * 4) + 0] = img[i];  // R
+                                                newImg[(i * 4) + 1] = img[i];  // G
+                                                newImg[(i * 4) + 2] = img[i];  // B
+                                                newImg[(i * 4) + 3] = 255;     // A
+                                            }
+                                        }
+
+                                        int length = Marshal.SizeOf(newImg[0]) * newImg.Length;
+                                        IntPtr pnt = Marshal.AllocHGlobal(length);
+                                        Marshal.Copy(newImg, 0, pnt, newImg.Length);
+                                        var bitmap = new WriteableBitmap(format, AlphaFormat.Premul, pnt, new PixelSize((int)width, (int)height), new Vector(96, 96), stride);
+                                        Marshal.FreeHGlobal(pnt);
+                                        InputSnapshot = bitmap;
+                                        Label = LabelsCollection[LabelIndex][labelVector[LabelIndex]];
+                                        GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, true, true);
                                     }
                                     else
-                                    {
-                                        for (var i = 0ul; i < area; i++)
-                                        {
-                                            newImg[(i * 4) + 0] = img[i];  // R
-                                            newImg[(i * 4) + 1] = img[i];  // G
-                                            newImg[(i * 4) + 2] = img[i];  // B
-                                            newImg[(i * 4) + 3] = 255;     // A
-                                        }
-                                    }
-
-                                    int length = Marshal.SizeOf(newImg[0]) * newImg.Length;
-                                    IntPtr pnt = Marshal.AllocHGlobal(length);
-                                    Marshal.Copy(newImg, 0, pnt, newImg.Length);
-                                    var bitmap = new WriteableBitmap(format, AlphaFormat.Premul, pnt, new PixelSize((int)width, (int)height), new Vector(96, 96), stride);
-                                    Marshal.FreeHGlobal(pnt);
-                                    InputSnapshot = bitmap;
-                                    Label = pictureLoaded ? LabelsCollection[LabelIndex][labelVector[LabelIndex]] : System.String.Empty;
-                                    GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, true, true);
+                                        Label = System.String.Empty;
                                 }
                             }
                             break;
@@ -3939,7 +3943,7 @@ namespace Interop
                                 var format = Avalonia.Platform.PixelFormat.Rgba8888;
                                 var stride = (int)width * ((format.BitsPerPixel + 7) / 8);
 
-                                if (nativeTotalSize > 0 && nativeTotalSize <= int.MaxValue)
+                                if (totalSize > 0 && totalSize <= int.MaxValue)
                                 {
                                     var img = new Byte[nativeTotalSize];
                                     DNNGetImage(layerIndex, BackgroundColor, img);
@@ -3997,13 +4001,12 @@ namespace Interop
                                     var format = Avalonia.Platform.PixelFormat.Rgba8888;
                                     var stride = (int)width * ((format.BitsPerPixel + 7) / 8);
 
-                                    if (area > 0 && area <= int.MaxValue)
+                                    if (totalSize > 0 && totalSize <= int.MaxValue)
                                     {
                                         var img = new Byte[(int)(nativeTotalSize)];
                                         DNNGetImage(info.LayerIndex, BackgroundColor, img);
 
                                         var newImg = new Byte[totalSize];
-                                       
                                         for (var i = 0ul; i < area; i++)
                                         {
                                             newImg[(i * 4) + 0] = img[i];  // R
@@ -4037,13 +4040,12 @@ namespace Interop
                                 var format = Avalonia.Platform.PixelFormat.Rgba8888;
                                 var stride = (int)width * ((format.BitsPerPixel + 7) / 8);
 
-                                if (nativeTotalSize > 0 && nativeTotalSize <= int.MaxValue)
+                                if (totalSize > 0 && totalSize <= int.MaxValue)
                                 {
                                     var img = new Byte[(int)(nativeTotalSize)];
                                     DNNGetImage(info.LayerIndex, BackgroundColor, img);
 
                                     var newImg = new Byte[totalSize];
-
                                     for (var i = 0ul; i < area; i++)
                                     {
                                         newImg[(i * 4) + 0] = img[i];  // R
