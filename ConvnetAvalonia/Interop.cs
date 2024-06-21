@@ -3860,35 +3860,63 @@ namespace Interop
                     {
                         case DNNLayerTypes.Input:
                             {
-                                var totalSize = info.C * info.H * info.W;
-                                var snapshot = new Float[totalSize];
+                                var channels = info.C;
+                                var color = channels == 3;
+                                var width = info.W;
+                                var height = info.H;
+                                var area = width * height;
+                                var nativeTotalSize = color ? 3 * area : area + width;
+                                var totalSize = 4 * area;
+                                var format = Avalonia.Platform.PixelFormat.Rgba8888;
+                                var stride = (int)width * ((format.BitsPerPixel + 7) / 8);
+                                var snapshot = new Float[nativeTotalSize];
                                 var labelVector = new UInt64[Hierarchies];
                                 
                                 var pictureLoaded = DNNGetInputSnapShot(snapshot, labelVector);
 
                                 if (totalSize > 0)
                                 {
-                                    var img = new Byte[(int)totalSize];
-                                    var pixelFormat = info.C == 3 ? PixelFormats.Rgb24 : PixelFormats.Gray8;
-                                    var HW = info.H * info.W;
-
+                                    var img = new Byte[nativeTotalSize];
+                                   
                                     if (MeanStdNormalization)
-                                        for (UInt channel = 0; channel < info.C; channel++)
-                                            for (UInt hw = 0; hw < HW; hw++)
-                                                img[(int)((hw * info.C) + channel)] = pictureLoaded ? FloatSaturate((snapshot[hw + channel * HW] * StdTrainSet[channel]) + MeanTrainSet[channel]) : FloatSaturate(MeanTrainSet[channel]);
+                                        for (UInt channel = 0; channel < channels; channel++)
+                                            for (UInt hw = 0; hw < area; hw++)
+                                                img[(hw * channels) + channel] = pictureLoaded ? FloatSaturate((snapshot[hw + channel * area] * StdTrainSet[channel]) + MeanTrainSet[channel]) : FloatSaturate(MeanTrainSet[channel]);
                                     else
-                                        for (UInt channel = 0; channel < info.C; channel++)
-                                            for (UInt hw = 0; hw < HW; hw++)
-                                                img[(int)((hw * info.C) + channel)] = pictureLoaded ? FloatSaturate((snapshot[hw + channel * HW] + (Float)(2)) * 64) : FloatSaturate(128);
+                                        for (UInt channel = 0; channel < channels; channel++)
+                                            for (UInt hw = 0; hw < area; hw++)
+                                                img[(hw * channels) + channel] = pictureLoaded ? FloatSaturate((snapshot[hw + channel * area] + (Float)(2)) * 64) : FloatSaturate(128);
 
-                                    //var bitmap = new WriteableBitmap(new PixelSize((int)info.W, (int)info.H), new Vector(96, 96), pixelFormat, AlphaFormat.Unpremul);
-                                    //using (var frameBuffer = bitmap.Lock())
-                                    //{
-                                    //    Marshal.Copy(img, 0, frameBuffer.Address, img.Length);
-                                    //}
-                              
-                                    //InputSnapshot = bitmap;
-                                    Label = pictureLoaded ? LabelsCollection[(int)(LabelIndex)][(int)(labelVector[LabelIndex])] : System.String.Empty;
+                                    var newImg = new Byte[totalSize];
+                                    if (color)
+                                    {
+                                        for (var i = 0ul; i < area; i++)
+                                        {
+                                            newImg[(i * 4) + 0] = img[(i * 3) + 0];  // R
+                                            newImg[(i * 4) + 1] = img[(i * 3) + 1];  // G
+                                            newImg[(i * 4) + 2] = img[(i * 3) + 2];  // B
+                                            newImg[(i * 4) + 3] = 255;               // A
+                                        }
+                                    }
+                                    else
+                                    {
+                                        for (var i = 0ul; i < area; i++)
+                                        {
+                                            newImg[(i * 4) + 0] = img[i];  // R
+                                            newImg[(i * 4) + 1] = img[i];  // G
+                                            newImg[(i * 4) + 2] = img[i];  // B
+                                            newImg[(i * 4) + 3] = 255;     // A
+                                        }
+                                    }
+
+                                    int length = Marshal.SizeOf(newImg[0]) * newImg.Length;
+                                    IntPtr pnt = Marshal.AllocHGlobal(length);
+                                    Marshal.Copy(newImg, 0, pnt, newImg.Length);
+                                    var bitmap = new WriteableBitmap(format, AlphaFormat.Premul, pnt, new PixelSize((int)width, (int)height), new Vector(96, 96), stride);
+                                    Marshal.FreeHGlobal(pnt);
+                                    InputSnapshot = bitmap;
+                                    Label = pictureLoaded ? LabelsCollection[LabelIndex][labelVector[LabelIndex]] : System.String.Empty;
+                                    GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, true, true);
                                 }
                             }
                             break;

@@ -1220,54 +1220,54 @@ namespace ConvnetAvalonia.PageViewModels
                     //    Rate = TrainRate,
                     //    tpvm = this
                     //};
-                  
+
                     //if (dialog.ShowDialog() ?? false)
-                    //{
-                    //    TrainRate = dialog.Rate;
+                    {
+                    //  TrainRate = dialog.Rate;
 
-                    //    if (SGDR)
-                    //        Model.AddTrainingRateSGDR(TrainRate, true, GotoEpoch, GotoCycle, Model.TrainingSamples);
-                    //    else
-                    //        Model.AddTrainingRate(TrainRate, true, GotoEpoch, Model.TrainingSamples);
+                        if (SGDR)
+                            Model.AddTrainingRateSGDR(TrainRate, true, GotoEpoch, GotoCycle, Model.TrainingSamples);
+                        else
+                            Model.AddTrainingRate(TrainRate, true, GotoEpoch, Model.TrainingSamples);
 
-                    //    Model.SetOptimizer(TrainRate.Optimizer);
-                    //    Model.Optimizer = TrainRate.Optimizer;
-                    //    Optimizer = TrainRate.Optimizer;
+                        Model.SetOptimizer(TrainRate.Optimizer);
+                        Model.Optimizer = TrainRate.Optimizer;
+                        Optimizer = TrainRate.Optimizer;
 
-                    //    EpochDuration = TimeSpan.Zero;
+                        EpochDuration = TimeSpan.Zero;
 
-                    //    RefreshTimer = new Timer(1000 * Settings.Default.RefreshInterval.Value);
-                    //    RefreshTimer.Elapsed += new ElapsedEventHandler(RefreshTimer_Elapsed);
-                        
-                    //    Model.SetCostIndex((uint)SelectedCostIndex);
-                    //    Model.Start(true);
-                    //    RefreshTimer.Start();
-                    //    CommandToolBar[0].IsVisible = false;
-                    //    CommandToolBar[1].IsVisible = true;
-                    //    CommandToolBar[2].IsVisible = true;
+                        RefreshTimer = new Timer(1000 * Settings.Default.RefreshInterval);
+                        RefreshTimer.Elapsed += new ElapsedEventHandler(RefreshTimer_Elapsed);
 
-                    //    CommandToolBar[6].IsVisible = false;
-                    //    CommandToolBar[7].IsVisible = true;
-                    //    CommandToolBar[8].IsVisible = false;
-                                               
-                    //    CommandToolBar[17].IsVisible = false;
-                    //    CommandToolBar[18].IsVisible = false;
-                    //    CommandToolBar[19].IsVisible = false;
-                    //    CommandToolBar[20].IsVisible = false;
-                    //    CommandToolBar[21].IsVisible = false;
+                        Model.SetCostIndex((uint)SelectedCostIndex);
+                        Model.Start(true);
+                        RefreshTimer.Start();
+                        CommandToolBar[0].IsVisible = false;
+                        CommandToolBar[1].IsVisible = true;
+                        CommandToolBar[2].IsVisible = true;
 
-                    //    if (Model.Layers[layersComboBox.SelectedIndex].WeightCount > 0)
-                    //    {
-                    //        if ((Model.Layers[layersComboBox.SelectedIndex].IsNormLayer && Model.Layers[layersComboBox.SelectedIndex].Scaling) || !Model.Layers[layersComboBox.SelectedIndex].IsNormLayer)
-                    //        {
-                    //            CommandToolBar[17].IsVisible = !Settings.Default.DisableLocking;
-                    //            CommandToolBar[18].IsVisible = !Settings.Default.DisableLocking;
-                    //            CommandToolBar[20].IsVisible = true;
-                    //        }
-                    //    }
+                        CommandToolBar[6].IsVisible = false;
+                        CommandToolBar[7].IsVisible = true;
+                        CommandToolBar[8].IsVisible = false;
 
-                    //    ShowProgress = true;
-                    //}
+                        CommandToolBar[17].IsVisible = false;
+                        CommandToolBar[18].IsVisible = false;
+                        CommandToolBar[19].IsVisible = false;
+                        CommandToolBar[20].IsVisible = false;
+                        CommandToolBar[21].IsVisible = false;
+
+                        if (Model.Layers[layersComboBox.SelectedIndex].WeightCount > 0)
+                        {
+                            if ((Model.Layers[layersComboBox.SelectedIndex].IsNormLayer && Model.Layers[layersComboBox.SelectedIndex].Scaling) || !Model.Layers[layersComboBox.SelectedIndex].IsNormLayer)
+                            {
+                                CommandToolBar[17].IsVisible = !Settings.Default.DisableLocking;
+                                CommandToolBar[18].IsVisible = !Settings.Default.DisableLocking;
+                                CommandToolBar[20].IsVisible = true;
+                            }
+                        }
+
+                        ShowProgress = true;
+                    }
                 }
                 else
                 {
@@ -1286,51 +1286,49 @@ namespace ConvnetAvalonia.PageViewModels
             }, DispatcherPriority.Normal);
         }
 
-        private void StopButtonClick(object? sender, RoutedEventArgs e)
+        private async void StopButtonClick(object? sender, RoutedEventArgs e)
         {
-            Dispatcher.UIThread.Post(() =>
+            if (Model?.TaskState != DNNTaskStates.Stopped)
             {
-                if (Model?.TaskState != DNNTaskStates.Stopped)
+                var stop = await Dispatcher.UIThread.InvokeAsync(() => MessageBox.Show("Do you really want to stop?", "Stop Training", MessageBoxButtons.YesNo, MessageBoxIcon.None, MessageBoxDefaultButton.Button2));
+                if (stop == MessageBoxResult.Yes)
                 {
-                    if (Dispatcher.UIThread.InvokeAsync(() => MessageBox.Show("Do you really want to stop?", "Stop Training", MessageBoxButtons.YesNo, MessageBoxIcon.None, MessageBoxDefaultButton.Button2)).Result == MessageBoxResult.Yes)
+                    RefreshTimer.Stop();
+                    RefreshTimer.Elapsed -= new ElapsedEventHandler(RefreshTimer_Elapsed);
+                    RefreshTimer.Dispose();
+
+                    Model?.Stop();
+
+                    ToolTip.SetTip(CommandToolBar[0], "Start Training");
+                    CommandToolBar[0].IsVisible = true;
+                    CommandToolBar[1].IsVisible = false;
+                    CommandToolBar[2].IsVisible = false;
+
+                    CommandToolBar[6].IsVisible = true;
+                    CommandToolBar[7].IsVisible = true;
+                    CommandToolBar[8].IsVisible = true;
+
+                    CommandToolBar[17].IsVisible = false;
+                    CommandToolBar[18].IsVisible = false;
+                    CommandToolBar[19].IsVisible = false;
+                    CommandToolBar[20].IsVisible = false;
+                    CommandToolBar[21].IsVisible = false;
+
+                    if (Model?.Layers[layersComboBox.SelectedIndex].WeightCount > 0)
                     {
-                        RefreshTimer.Stop();
-                        RefreshTimer.Elapsed -= new ElapsedEventHandler(RefreshTimer_Elapsed);
-                        RefreshTimer.Dispose();
-                        
-                        Model?.Stop();
-
-                        ToolTip.SetTip(CommandToolBar[0], "Start Training");
-                        CommandToolBar[0].IsVisible = true;
-                        CommandToolBar[1].IsVisible = false;
-                        CommandToolBar[2].IsVisible = false;
-
-                        CommandToolBar[6].IsVisible = true;
-                        CommandToolBar[7].IsVisible = true;
-                        CommandToolBar[8].IsVisible = true;
-                       
-                        CommandToolBar[17].IsVisible = false;
-                        CommandToolBar[18].IsVisible = false;
-                        CommandToolBar[19].IsVisible = false;
-                        CommandToolBar[20].IsVisible = false;
-                        CommandToolBar[21].IsVisible = false;
-
-                        if (Model?.Layers[layersComboBox.SelectedIndex].WeightCount > 0)
+                        if ((Model.Layers[layersComboBox.SelectedIndex].IsNormLayer && Model.Layers[layersComboBox.SelectedIndex].Scaling) || !Model.Layers[layersComboBox.SelectedIndex].IsNormLayer)
                         {
-                            if ((Model.Layers[layersComboBox.SelectedIndex].IsNormLayer && Model.Layers[layersComboBox.SelectedIndex].Scaling) || !Model.Layers[layersComboBox.SelectedIndex].IsNormLayer)
-                            {
-                                CommandToolBar[17].IsVisible = !Settings.Default.DisableLocking;
-                                CommandToolBar[18].IsVisible = !Settings.Default.DisableLocking;
-                                CommandToolBar[19].IsVisible = true;
-                                CommandToolBar[20].IsVisible = true;
-                                CommandToolBar[21].IsVisible = true;
-                            }
+                            CommandToolBar[17].IsVisible = !Settings.Default.DisableLocking;
+                            CommandToolBar[18].IsVisible = !Settings.Default.DisableLocking;
+                            CommandToolBar[19].IsVisible = true;
+                            CommandToolBar[20].IsVisible = true;
+                            CommandToolBar[21].IsVisible = true;
                         }
-
-                        ShowProgress = false;
                     }
+
+                    ShowProgress = false;
                 }
-            }, DispatcherPriority.Normal);
+            }
         }
 
         private void PauseButtonClick(object? sender, RoutedEventArgs e)
