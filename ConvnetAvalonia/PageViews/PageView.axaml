@@ -5,7 +5,6 @@
              xmlns:vm="clr-namespace:ConvnetAvalonia.PageViewModels"
              xmlns:view="clr-namespace:ConvnetAvalonia.PageViews"
              xmlns:c="clr-namespace:ConvnetAvalonia.Common"
-             xmlns:converters="clr-namespace:ConvnetAvalonia.Converters"
              xmlns:props="clr-namespace:ConvnetAvalonia.Properties"
              xmlns:controls="clr-namespace:Avalonia.Controls.ToolBar.Controls;assembly=Avalonia.Controls.ToolBar"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"

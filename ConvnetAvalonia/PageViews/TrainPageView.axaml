@@ -4,16 +4,11 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:oxy="using:OxyPlot.Avalonia"
              xmlns:c="clr-namespace:ConvnetAvalonia.Common"
-             xmlns:converters="clr-namespace:ConvnetAvalonia.Converters"
              xmlns:props="clr-namespace:ConvnetAvalonia.Properties"
              xmlns:vm="clr-namespace:ConvnetAvalonia.PageViewModels"
              x:Class="ConvnetAvalonia.PageViews.TrainPageView"
              x:DataType="vm:TrainPageViewModel">
-
-  <UserControl.Resources>
-    <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
-  </UserControl.Resources>
-  
+    
   <Grid x:Name="gridMain" Background="{DynamicResource BackgroundBrushLight}">
     <Grid.RowDefinitions>
       <RowDefinition Height="Auto"/>

@@ -23,4 +23,114 @@
       </ResourceDictionary.MergedDictionaries>
     </ResourceDictionary>
   </Application.Resources>
+  <Application.Styles>
+     <Style Selector="DataGridColumnHeader">
+        <Setter Property="Background" Value="{DynamicResource BackgroundBrush}"/>
+        <Setter Property="Foreground" Value="{DynamicResource TextBrush}"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="Focusable" Value="False" />
+        <Setter Property="SeparatorBrush" Value="{DynamicResource DataGridGridLinesBrush}" />
+        <Setter Property="Padding" Value="10,0,0,0" />
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="FontWeight" Value="Bold" />
+        <Setter Property="MinHeight" Value="30" />
+        <Setter Property="Template">
+          <ControlTemplate>
+            <Grid Name="PART_ColumnHeaderRoot"
+                  ColumnDefinitions="*,Auto"
+                  Background="{TemplateBinding Background}">
+
+              <Grid HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                    Margin="{TemplateBinding Padding}">
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="*" />
+                  <ColumnDefinition MinWidth="32"
+                                    Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <ContentPresenter Content="{TemplateBinding Content}"
+                                  ContentTemplate="{TemplateBinding ContentTemplate}" />
+
+                <Path Name="SortIcon"
+                      Grid.Column="1"
+                      Fill="{DynamicResource SampleSortOrange}"
+                      HorizontalAlignment="Center"
+                      VerticalAlignment="Center"
+                      Stretch="Uniform"
+                      Height="12" />
+              </Grid>
+
+              <Rectangle Name="VerticalSeparator"
+                         Grid.Column="1"
+                         Width="1"
+                         VerticalAlignment="Stretch"
+                         Fill="{TemplateBinding SeparatorBrush}"
+                         IsVisible="{TemplateBinding AreSeparatorsVisible}" />
+
+              <Grid x:Name="FocusVisual"
+                    IsHitTestVisible="False">
+                <Rectangle x:Name="FocusVisualPrimary"
+                           HorizontalAlignment="Stretch"
+                           VerticalAlignment="Stretch"
+                           Fill="Transparent"
+                           IsHitTestVisible="False"
+                           Stroke="{DynamicResource DataGridCellFocusVisualPrimaryBrush}"
+                           StrokeThickness="2" />
+                <Rectangle x:Name="FocusVisualSecondary"
+                           Margin="2"
+                           HorizontalAlignment="Stretch"
+                           VerticalAlignment="Stretch"
+                           Fill="Transparent"
+                           IsHitTestVisible="False"
+                           Stroke="{DynamicResource DataGridCellFocusVisualSecondaryBrush}"
+                           StrokeThickness="1" />
+              </Grid>
+            </Grid>
+          </ControlTemplate>
+        </Setter>
+      </Style>
+
+      <Style Selector="DataGridRow:selected /template/ Rectangle#BackgroundRectangle">
+        <Setter Property="Fill" Value="{DynamicResource SampleSortOrange}" />
+        <Setter Property="Opacity" Value="0.3" />
+      </Style>
+
+      <Style Selector="DataGridRow:selected /template/ ContentPresenter">
+        <Setter Property="TextBlock.Foreground" Value="Black" />
+      </Style>
+
+      <Style Selector="DataGridColumnHeader /template/ Grid#FocusVisual">
+        <Setter Property="IsVisible" Value="False" />
+      </Style>
+      <Style Selector="DataGridColumnHeader:focus-visible /template/ Grid#FocusVisual">
+        <Setter Property="IsVisible" Value="True" />
+      </Style>
+
+      <Style Selector="DataGridColumnHeader:pointerover /template/ Grid#PART_ColumnHeaderRoot">
+        <Setter Property="Background" Value="{DynamicResource DataGridColumnHeaderHoveredBackgroundColor}" />
+      </Style>
+      <Style Selector="DataGridColumnHeader:pressed /template/ Grid#PART_ColumnHeaderRoot">
+        <Setter Property="Background" Value="{DynamicResource DataGridColumnHeaderPressedBackgroundColor}" />
+      </Style>
+
+      <Style Selector="DataGridColumnHeader:dragIndicator">
+        <Setter Property="Opacity" Value="0.5" />
+      </Style>
+
+      <Style Selector="DataGridColumnHeader /template/ Path#SortIcon">
+        <Setter Property="IsVisible" Value="False" />
+      </Style>
+
+      <Style Selector="DataGridColumnHeader:sortascending /template/ Path#SortIcon">
+        <Setter Property="IsVisible" Value="True" />
+        <Setter Property="Data" Value="{StaticResource DataGridSortIconAscendingPath}" />
+      </Style>
+
+      <Style Selector="DataGridColumnHeader:sortdescending /template/ Path#SortIcon">
+        <Setter Property="IsVisible" Value="True" />
+        <Setter Property="Data" Value="{StaticResource DataGridSortIconDescendingPath}" />
+      </Style>
+  </Application.Styles>
 </Application>

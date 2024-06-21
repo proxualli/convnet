@@ -10,6 +10,7 @@
     <converters:BooleanValueInverter x:Key="Inverter" />
     <converters:EnumToStringConverter x:Key="EnumToStringConverter"/>
     <converters:BatchSizeToBool x:Key="BatchSizeToBool"/>
+    <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
     <!--<converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     <converters:FirstDegreeFunctionConverter x:Key="AdjustHeight" A="113"/>-->
     
@@ -56,6 +57,11 @@
     </ResourceDictionary>
   </ResourceDictionary.ThemeDictionaries>
   
+  
+  
+ 
+
+
   <SolidColorBrush x:Key="TextBrush" Color="{DynamicResource TextColor}"/>
   <SolidColorBrush x:Key="BackgroundBrush" Color="{DynamicResource BackgroundColor}"/>
   <SolidColorBrush x:Key="ToolBarBackgroundBrush" Color="{DynamicResource ToolBarBackgroundColor}"/>

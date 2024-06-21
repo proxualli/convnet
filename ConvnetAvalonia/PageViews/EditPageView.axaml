@@ -4,7 +4,6 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:AvalonEdit="using:AvaloniaEdit"
              xmlns:c="clr-namespace:ConvnetAvalonia.Common"
-             xmlns:converters="clr-namespace:ConvnetAvalonia.Converters"
              xmlns:props="clr-namespace:ConvnetAvalonia.Properties"
              xmlns:vm="clr-namespace:ConvnetAvalonia.PageViewModels"
              x:Class="ConvnetAvalonia.PageViews.EditPageView"
