@@ -1,5 +1,4 @@
-﻿using Avalonia;
-using Avalonia.Controls;
+﻿using Avalonia.Controls;
 using Avalonia.Controls.Templates;
 using Avalonia.Data;
 using Avalonia.Interactivity;
@@ -1208,7 +1207,7 @@ namespace ConvnetAvalonia.PageViewModels
                 if (Model?.TaskState == DNNTaskStates.Running)
                 {
 
-                    MessageBox.Show("You must stop testing first.", "Information", MessageBoxButtons.OK);
+                    await MessageBox.Show("You must stop testing first.", "Information", MessageBoxButtons.OK);
 
                     return;
                 }
