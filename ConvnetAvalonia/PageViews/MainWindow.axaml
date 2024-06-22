@@ -8,7 +8,7 @@
         Icon="/Resources/App.ico"
         Title="Convnet Explorer"
         Background="{DynamicResource BackgroundBrush}"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450">
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450" Closing="MainWindow_Closing">
   
   <Window.DataTemplates>
     <DataTemplate DataType="{x:Type vm:PageViewModel}">

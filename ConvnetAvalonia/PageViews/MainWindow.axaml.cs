@@ -1,5 +1,6 @@
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
+using Avalonia.Threading;
 using AvaloniaEdit;
 using ConvnetAvalonia.Common;
 using ConvnetAvalonia.PageViewModels;
@@ -14,10 +15,11 @@ using System.Reactive;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading;
 
 namespace ConvnetAvalonia.PageViews
 {
-    public partial class MainWindow : Window, IDisposable
+    public partial class MainWindow : Window
     {
         const string Framework = "net8.0";
 #if DEBUG
@@ -426,23 +428,95 @@ namespace ConvnetAvalonia.PageViews
             AvaloniaXamlLoader.Load(this);
         }
 
-        protected virtual void Dispose(bool disposing)
+        public void MainWindow_Closing(object? sender, Avalonia.Controls.WindowClosingEventArgs e)
         {
-            if (disposing)
+            if (App.ShowCloseApplicationDialog)
             {
-                // Free managed objects.
+                MessageBoxResult exit = MessageBoxResult.Yes;
+                using (CancellationTokenSource source = new CancellationTokenSource())
+                {
+                    if (Dispatcher.UIThread.CheckAccess()) //Check if we are already on the UI thread
+                    {
+                        var dialog = new MessageBox("Do you really want to exit?", "Exit application");
 
+                        dialog.Show<MessageBoxResult>(new MessageBoxButton<MessageBoxResult>("Yes", MessageBoxResult.Yes, SpecialButtonRole.None), new MessageBoxButton<MessageBoxResult>("No", MessageBoxResult.No, SpecialButtonRole.IsCancel)).ContinueWith(t =>
+                        {
+                            exit = t.Result;
+                            source.Cancel();
+                        });
+
+                        Dispatcher.UIThread.MainLoop(source.Token);
+                    }
+                    else
+                    {
+                        Dispatcher.UIThread.InvokeAsync(() =>
+                        {
+                            var dialog = new MessageBox("Do you really want to exit?", "Exit application");
+                            dialog.Show<MessageBoxResult>(new MessageBoxButton<MessageBoxResult>("Yes", MessageBoxResult.Yes, SpecialButtonRole.None), new MessageBoxButton<MessageBoxResult>("No", MessageBoxResult.No, SpecialButtonRole.IsCancel)).ContinueWith(t =>
+                            {
+                                exit = t.Result;
+                                source.Cancel();
+                            });
+                        });
+
+                        while (!source.IsCancellationRequested) { } //Loop until dialog is closed
+                    }
+                }
+                if (exit == MessageBoxResult.Yes)
+                {
+                    if (PageVM?.Model?.TaskState != DNNTaskStates.Stopped)
+                        PageVM?.Model?.Stop();
+
+                    MessageBoxResult save = MessageBoxResult.Yes;
+                    using (CancellationTokenSource source = new CancellationTokenSource())
+                    {
+                        if (Dispatcher.UIThread.CheckAccess()) //Check if we are already on the UI thread
+                        {
+                            var dialog = new MessageBox("Do you want to save the state?", "Save state");
+
+                            dialog.Show<MessageBoxResult>(new MessageBoxButton<MessageBoxResult>("Yes", MessageBoxResult.Yes, SpecialButtonRole.IsDefault), new MessageBoxButton<MessageBoxResult>("No", MessageBoxResult.No, SpecialButtonRole.IsCancel)).ContinueWith(t =>
+                            {
+                                save = t.Result;
+                                source.Cancel();
+                            });
+
+                            Dispatcher.UIThread.MainLoop(source.Token);
+                        }
+                        else
+                        {
+                            Dispatcher.UIThread.InvokeAsync(() =>
+                            {
+                                var dialog = new MessageBox("Do you want to save the state?", "Save state");
+                                dialog.Show<MessageBoxResult>(new MessageBoxButton<MessageBoxResult>("Yes", MessageBoxResult.Yes, SpecialButtonRole.IsDefault), new MessageBoxButton<MessageBoxResult>("No", MessageBoxResult.No, SpecialButtonRole.IsCancel)).ContinueWith(t =>
+                                {
+                                    save = t.Result;
+                                    source.Cancel();
+                                });
+                            });
+
+                            while (!source.IsCancellationRequested) { } //Loop until dialog is closed
+                        }
+                    }
+                    if (save == MessageBoxResult.Yes)
+                    {
+                        var dataset = PageVM?.Model?.Dataset.ToString().ToLower();
+                        var optimizer = PageVM?.Model?.Optimizer.ToString().ToLower();
+                        var fileName = Path.Combine(StateDirectory, PageVM?.Model?.Name + @"-(" + dataset + @")" + (Settings.Default.PersistOptimizer ? (@"(" + optimizer + @").bin") : @".bin"));
+
+                        PageVM?.Model?.SaveWeights(fileName, Settings.Default.PersistOptimizer);
+                    }
+
+                    Settings.Default.Save();
+                    e.Cancel = false;
+                }
+                else
+                    e.Cancel = true;
             }
-            // Free unmanaged objects
+            else
+            {
+                Settings.Default.Save();
+                e.Cancel = false;
+            }
         }
-
-        public void Dispose()
-        {
-            Dispose(true);
-            // Ensure that the destructor is not called
-            GC.SuppressFinalize(this);
-        }
-
-       
     }
 }

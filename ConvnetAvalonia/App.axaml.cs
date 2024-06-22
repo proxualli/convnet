@@ -1,26 +1,21 @@
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
-using ConvnetAvalonia.PageViewModels;
-using ConvnetAvalonia.Properties;
-using CustomMessageBox.Avalonia;
-using Interop;
 using System;
 using System.Diagnostics;
-using System.Globalization;
 using System.Reflection;
 using System.Threading;
 
 
 namespace ConvnetAvalonia
 {
-    public partial class App : Application, IDisposable
+    public partial class App : Application
     {
         public static readonly bool SingleInstanceApp = true;
         private static readonly SingleInstanceMutex sim = new SingleInstanceMutex();
         public event EventHandler<ShutdownRequestedEventArgs>? ShutdownRequested;
         public static ConvnetAvalonia.PageViews.MainWindow? MainWindow = null;
-        public bool ShowCloseApplicationDialog = true;
+        public static bool ShowCloseApplicationDialog = true;
 
         public override void Initialize()
         {
@@ -37,14 +32,11 @@ namespace ConvnetAvalonia
                 desktop.ShutdownRequested += AppShutdownRequested;
                 desktop.MainWindow = new ConvnetAvalonia.PageViews.MainWindow
                 {
-                    
                 };
 
                 if (desktop.MainWindow != null)
                 {
                     App.MainWindow = desktop.MainWindow as ConvnetAvalonia.PageViews.MainWindow;
-                    if (App.MainWindow != null)
-                        App.MainWindow.Closing += MainWindow_Closing;
                 }
             }
             
@@ -62,67 +54,7 @@ namespace ConvnetAvalonia
             ShutdownRequested?.Invoke(this, e);
         }
 
-        public void MainWindow_Closing(object? sender, Avalonia.Controls.WindowClosingEventArgs e)
-        {           
-            if (ShowCloseApplicationDialog)
-            {
-                MessageBoxResult exit = MessageBoxResult.Yes;
-                //exit = Dispatcher.UIThread.Invoke(() => MessageBox.Show(MainWindow, "Do you really want to exit?", "Exit Application", MessageBoxButtons.YesNo, MessageBoxIcon.None, MessageBoxDefaultButton.Button2)).Result;
-               
-                if (exit == MessageBoxResult.Yes)
-                {
-                    if (MainWindow?.PageVM?.Model?.TaskState != DNNTaskStates.Stopped)
-                        MainWindow?.PageVM?.Model?.Stop();
-
-                    MessageBoxResult save = MessageBoxResult.Yes;
-                    //save = Dispatcher.UIThread.Invoke(() => MessageBox.Show("Do you want to save the network state?", "Save Network State", MessageBoxButtons.YesNo, MessageBoxIcon.None, MessageBoxDefaultButton.Button1)).Result;
-                    
-                    if (save == MessageBoxResult.Yes)
-                    {
-                        var dataset = Settings.Default.Dataset.ToString().ToLower(CultureInfo.CurrentCulture);
-                        var optimizer = Settings.Default.Optimizer.ToString().ToLower(CultureInfo.CurrentCulture);
-                        var fileName = System.IO.Path.Combine(PageViews.MainWindow.StateDirectory, MainWindow?.PageVM?.Model?.Name + @"-(" + dataset + @")" + (Settings.Default.PersistOptimizer ? (@"(" + optimizer + @").bin") : @".bin"));
-
-                        MainWindow?.PageVM?.Model?.SaveWeights(fileName, Settings.Default.PersistOptimizer);
-                    }
-
-                    Settings.Default.Save();
-                    e.Cancel = false;
-                }
-                else
-                    e.Cancel = true;
-            }
-            else
-            {
-                Settings.Default.Save();
-                e.Cancel = false;
-            }   
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                // Free managed objects.
-                if (MainWindow != null)
-                {
-                    Settings.Default.Save();
-                    MainWindow.Closing -= MainWindow_Closing;
-                    MainWindow.Dispose();
-                }
-            }
-            // Free unmanaged objects
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
-            // Ensure that the destructor is not called
-            GC.SuppressFinalize(this);
-        }
-
-
-
+       
         /// <summary>
         /// Represents a <see cref="SingleInstanceMutex"/> class.
         /// </summary>
