@@ -501,7 +501,7 @@ namespace ConvnetAvalonia.PageViewModels
                     var processInfo = new ProcessStartInfo("dotnet", @"build Scripts.csproj -p:Platform=AnyCPU -p:nugetinteractive=true -c:" + Mode + " -fl -flp:logfile=msbuild.log;verbosity=quiet")
                     {
                         WorkingDirectory = ScriptsDirectory,
-                        UseShellExecute = RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? true : false,
+                        UseShellExecute = RuntimeInformation.IsOSPlatform(OSPlatform.Windows),
                         CreateNoWindow = true,
                         WindowStyle = ProcessWindowStyle.Hidden,
                         Verb = "runas"

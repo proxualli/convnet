@@ -226,7 +226,7 @@ namespace ConvnetAvalonia.PageViews
             if (!Directory.Exists(ScriptsDirectory) && ApplicationPath != null)
             {
                 Directory.CreateDirectory(ScriptsDirectory);
-                ApplicationHelper.CopyDir(Path.Combine(ApplicationPath.Replace(Path.Combine("ConvnetAvalonia", "bin", RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? "x64" : "", Mode, Framework), ""), "Scripts"), ScriptsDirectory);
+                ApplicationHelper.CopyDir(Path.Combine(ApplicationPath.Replace(Path.Combine("ConvnetAvalonia", "bin", (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? "x64" : ""), Mode, Framework), ""), "Scripts"), ScriptsDirectory);
             }
 
             var fileName = Path.Combine(StateDirectory, Settings.Default.ModelNameActive + ".txt");
