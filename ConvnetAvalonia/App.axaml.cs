@@ -81,7 +81,7 @@ namespace ConvnetAvalonia
                     {
                         var dataset = Settings.Default.Dataset.ToString().ToLower(CultureInfo.CurrentCulture);
                         var optimizer = Settings.Default.Optimizer.ToString().ToLower(CultureInfo.CurrentCulture);
-                        var fileName = PageViews.MainWindow.StateDirectory + MainWindow?.PageVM?.Model?.Name + @"-(" + dataset + @")" + (Settings.Default.PersistOptimizer ? (@"(" + optimizer + @").bin") : @".bin");
+                        var fileName = System.IO.Path.Combine(PageViews.MainWindow.StateDirectory, MainWindow?.PageVM?.Model?.Name + @"-(" + dataset + @")" + (Settings.Default.PersistOptimizer ? (@"(" + optimizer + @").bin") : @".bin"));
 
                         MainWindow?.PageVM?.Model?.SaveWeights(fileName, Settings.Default.PersistOptimizer);
                     }
