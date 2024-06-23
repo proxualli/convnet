@@ -1,5 +1,7 @@
 ﻿using Avalonia.Controls;
+using Avalonia.Interactivity;
 using Avalonia.Threading;
+using ConvnetAvalonia.Common;
 using ConvnetAvalonia.Properties;
 using CsvHelper;
 using CustomMessageBox.Avalonia;
@@ -25,6 +27,11 @@ namespace ConvnetAvalonia.PageViewModels
     public class PageViewModel : PageViewModelBase
     {
         public event EventHandler? PageChange;
+        
+        public void DocumentationCommand()
+        {
+            ApplicationHelper.OpenBrowser("https://github.com/proxualli/convnet.git");
+        }
 
         public void Cut()
         {

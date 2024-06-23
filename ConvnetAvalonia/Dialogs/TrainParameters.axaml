@@ -75,11 +75,8 @@
         <TextBlock Foreground="{StaticResource TextBrush}" Grid.Column="4" Grid.Row="13" HorizontalAlignment="Stretch" Margin="2" Name="textBlockRotation" Text="Rotation:" VerticalAlignment="Center" FontSize="14"/>
 
 
-        <TextBox ContextMenu="{StaticResource MyContextMenu}" Text="{Binding Cycles, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Column="2" Grid.ColumnSpan="1" Grid.Row="0" Grid.RowSpan="1" HorizontalAlignment="Stretch" x:Name="textBoxCycles" VerticalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Stretch" Margin="2,2,2,1" TabIndex="0" MaxLines="1" BorderThickness="1" FontSize="14">
-            <!--<TextBox.Text>
-                <Binding Path="Cycles" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged" ValidatesOnNotifyDataErrors="True"}/>
-            </TextBox.Text>-->
-        </TextBox>
+        <TextBox ContextMenu="{StaticResource MyContextMenu}" Text="{Binding Cycles, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Column="2" Grid.ColumnSpan="1" Grid.Row="0" Grid.RowSpan="1" HorizontalAlignment="Stretch" x:Name="textBoxCycles" VerticalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Stretch" Margin="2,2,2,1" TabIndex="0" MaxLines="1" BorderThickness="1" FontSize="14"/>
+            
 
         <TextBox ContextMenu="{StaticResource MyContextMenu}" Grid.Column="2" Grid.Row="1" HorizontalAlignment="Stretch" x:Name="textBoxNumberOfEpochs" VerticalAlignment="Stretch" TabIndex="1" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" MaxLines="1" BorderThickness="1" Margin="2" FontSize="14">
             <TextBox.Text>
@@ -125,7 +122,7 @@
             </TextBox.Text>
         </TextBox>
 
-        <ComboBox x:Name="comboBoOptimizer" Grid.Column="2" Grid.Row="9" Margin="2,0,2,2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  FontSize="14" TabIndex="10" ItemsSource="{x:Static pvm:TrainPageViewModel.GetOptimizers}" SelectedItem="{Binding Path=Optimizer, Mode=TwoWay}" Height="27"/>
+        <ComboBox x:Name="comboBoOptimizer" Grid.Column="2" Grid.Row="9" Margin="2,0,2,2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  FontSize="14" TabIndex="10" ItemsSource="{x:Static pvm:TrainPageViewModel.GetOptimizers}" SelectedItem="{Binding Path=Optimizer, Mode=TwoWay}"/>
 
         <TextBox ContextMenu="{StaticResource MyContextMenu}" Grid.Column="2" Grid.Row="10" HorizontalAlignment="Stretch" x:Name="textBoxEps" VerticalAlignment="Stretch" TabIndex="11" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" MaxLines="1" BorderThickness="1" BorderBrush="DarkGray" Margin="2" FontSize="14">
             <TextBox.Text>
@@ -257,7 +254,7 @@
         <Button x:Name="ButtonStrategy" Background="{DynamicResource BackgroundBrushLight}" Foreground="{DynamicResource TextBrush}" Content="Strategy" Width="80" HorizontalAlignment="Left" Margin="44,0,0,0" Grid.Column="5" Grid.ColumnSpan="1" Grid.Row="2" TabIndex="23" VerticalAlignment="Center" FontSize="12" ClickMode="Release" />
 
         <CheckBox x:Name="CheckBoxSGDR" Foreground="{DynamicResource TextBrush}" Content="SGDR" IsThreeState="False" HorizontalAlignment="Center" Grid.Column="4" Grid.ColumnSpan="2" Grid.Row="15" TabIndex="37" VerticalAlignment="Center" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" FontSize="14"  ToolTip.Tip="Stochastic Gradient Descent with Warm Restarts" Checked="CheckBoxSGDR_Checked" Unchecked="CheckBoxSGDR_Checked"/>
-        <Button x:Name="ButtonSGDRHelp" Background="{DynamicResource BackgroundBrushLight}" Foreground="{DynamicResource TextBrush}" Content=" ? " HorizontalAlignment="Center" Margin="110,0,0,0" Grid.Column="4" Grid.ColumnSpan="2" Grid.Row="15" TabIndex="38" VerticalAlignment="Center" FontSize="12" Cursor="Help" ClickMode="Release" Click="ButtonSGDRHelp_Click"/>
+        <Button x:Name="ButtonSGDRHelp" Background="{DynamicResource BackgroundBrushLight}" Foreground="{DynamicResource TextBrush}" Content=" ? " HorizontalAlignment="Center" Margin="110,0,0,0" Grid.Column="4" Grid.ColumnSpan="2" Grid.Row="15" TabIndex="38" VerticalAlignment="Center" FontSize="12" ClickMode="Release" Click="ButtonSGDRHelp_Click"/>
 
         <Button Content="Train" Background="{DynamicResource BackgroundBrushLight}" Foreground="{DynamicResource TextBrush}" Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="19" Margin="0" Name="buttonTrain" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Center" TabIndex="39" ClickMode="Release" Click="ButtonTrain_Click"/>
         <Button Content="Cancel" Background="{DynamicResource BackgroundBrushLight}" Foreground="{DynamicResource TextBrush}" Grid.Column="4" Grid.ColumnSpan="2" Grid.Row="19" Margin="0" Name="buttonCancel" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Center" TabIndex="40" ClickMode="Release" IsCancel="True" IsDefault="True" Click="ButtonCancel_Click" />
