@@ -27,7 +27,7 @@ namespace ConvnetAvalonia.Common
                   o.FormattedText = v;
           },
           string.Empty,
-          Avalonia.Data.BindingMode.TwoWay);
+          Avalonia.Data.BindingMode.OneWay);
 
         public string? FormattedText
         {
@@ -51,7 +51,7 @@ namespace ConvnetAvalonia.Common
                     //base.Text = value;
                     //SetValue<string?>(FormattedTextProperty, value);
                     OnPropertyChanged(nameof(FormattedText));
-                    OnPropertyChanged(nameof(Text));
+                    //OnPropertyChanged(nameof(Text));
                 }
             }
         }
