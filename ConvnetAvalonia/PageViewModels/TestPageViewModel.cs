@@ -1,9 +1,11 @@
-﻿using Avalonia.Controls;
+﻿using Avalonia;
+using Avalonia.Controls;
 using Avalonia.Data;
 using Avalonia.Interactivity;
 using Avalonia.Media.Imaging;
 using Avalonia.Threading;
 using ConvnetAvalonia.Common;
+using ConvnetAvalonia.Dialogs;
 using ConvnetAvalonia.Properties;
 using CustomMessageBox.Avalonia;
 using Interop;
@@ -27,7 +29,7 @@ namespace ConvnetAvalonia.PageViewModels
         private string label;
         private bool showSample;
         private DataTable? confusionDataTable;
-        private Bitmap? inputSnapShot;
+        private Avalonia.Media.Imaging.WriteableBitmap inputSnapshot;
         private readonly StringBuilder sb;
         private ComboBox dataProviderComboBox;
         private ComboBox costLayersComboBox;
@@ -48,7 +50,7 @@ namespace ConvnetAvalonia.PageViewModels
                 Model.TestProgress += TestProgress;
             Modelhanged += TestPageViewModel_ModelChanged;
 
-            Dispatcher.UIThread.Post(() => LayerIndexChanged(this, null), DispatcherPriority.Render);
+            //Dispatcher.UIThread.Post(() => LayerIndexChanged(this, null), DispatcherPriority.Render);
         }
 
         private void AddCommandButtons()
@@ -160,7 +162,7 @@ namespace ConvnetAvalonia.PageViewModels
 
             dataProviderComboBox.SelectedIndex = (int)Dataset;
 
-            Dispatcher.UIThread.Post(() => LayerIndexChanged(this, null), DispatcherPriority.Render);
+            //Dispatcher.UIThread.Post(() => LayerIndexChanged(this, null), DispatcherPriority.Render);
         }
 
         private void TestProgress(UInt BatchSize, UInt SampleIndex, Float AvgTestLoss, Float TestErrorPercentage, Float TestAccuracy, UInt TestErrors, DNNStates State, DNNTaskStates TaskState)
@@ -176,7 +178,7 @@ namespace ConvnetAvalonia.PageViewModels
                     if (Model != null)
                     {
                         Model.UpdateLayerInfo(0ul, true);
-                        InputSnapShot = Model.InputSnapshot;
+                        InputSnapshot = Model.InputSnapshot;
                         Label = Model.Label;
                     }
                 }, DispatcherPriority.Render);
@@ -282,10 +284,10 @@ namespace ConvnetAvalonia.PageViewModels
             set => this.RaiseAndSetIfChanged(ref showSample, value);
         }
 
-        public Bitmap? InputSnapShot
+        public Avalonia.Media.Imaging.WriteableBitmap InputSnapshot
         {
-            get => inputSnapShot;
-            set => this.RaiseAndSetIfChanged(ref inputSnapShot, value);
+            get => inputSnapshot;
+            set => this.RaiseAndSetIfChanged(ref inputSnapshot, value);
         }
 
         public string Label
@@ -310,60 +312,55 @@ namespace ConvnetAvalonia.PageViewModels
 
         private void RefreshTimer_Elapsed(object? sender, ElapsedEventArgs e)
         {
-            Dispatcher.UIThread.Post(() => LayerIndexChanged(sender, null), DispatcherPriority.Render);
-        }
-
-        private void LayerIndexChanged(object? sender, SelectionChangedEventArgs e)
-        {
-            if (Model != null)
-            {
-                ShowSample = Model.TaskState == DNNTaskStates.Running;
-
-                if (ShowSample)
-                {
-                    Model.UpdateLayerInfo(0ul, true);
-                    InputSnapShot = Model.InputSnapshot;
-                    Label = Model.Label;
-                }
-            }
+            
         }
 
         private void StartButtonClick(object? sender, RoutedEventArgs e)
         {
-            Dispatcher.UIThread.Post(() =>
+            Dispatcher.UIThread.Post(async () =>
             {
+                if (Model?.TaskState == DNNTaskStates.Running)
+                {
+
+                    await MessageBox.Show("You must stop training first.", "Information", MessageBoxButtons.OK);
+
+                    return;
+                }
+
                 if (Model?.TaskState == DNNTaskStates.Stopped)
                 {
-                    //TestParameters dialog = new TestParameters
-                    //{
-                    //    Owner = Application.Current.MainWindow,
-                    //    Model = Model,
-                    //    Path = DefinitionsDirectory,
-                    //    IsEnabled = true,
-                    //    Rate = TestRate
-                    //};
+                    TestParameters dialog = new TestParameters
+                    {
+                        Model = this.Model,
+                        Path = DefinitionsDirectory,
+                        IsEnabled = true,
+                        Rate = TestRate,
+                        tpvm = this,
+                    };
 
-                    //if (dialog.ShowDialog() ?? false)
-                    //{
-                    //    IsValid = false;
+                    await dialog.ShowDialog(App.MainWindow);
 
-                    //    TestRate = dialog.Rate;
-                    //    Settings.Default.Save();
+                    if (dialog.DialogResult)
+                    {
+                        IsValid = false;
 
-                    //    flag = 0;
-                    //    Model.AddTrainingRate(new DNNTrainingRate(dialog.Rate.Optimizer, dialog.Rate.Momentum, dialog.Rate.Beta2, dialog.Rate.L2Penalty, dialog.Rate.Dropout, dialog.Rate.Eps, dialog.Rate.N, dialog.Rate.D, dialog.Rate.H, dialog.Rate.W, dialog.Rate.PadD, dialog.Rate.PadH, dialog.Rate.PadW, 1, 1, dialog.Rate.EpochMultiplier, dialog.Rate.MaximumRate, dialog.Rate.MinimumRate, dialog.Rate.FinalRate, dialog.Rate.Gamma, dialog.Rate.DecayAfterEpochs, dialog.Rate.DecayFactor, dialog.Rate.HorizontalFlip, dialog.Rate.VerticalFlip, dialog.Rate.InputDropout, dialog.Rate.Cutout, dialog.Rate.CutMix, dialog.Rate.AutoAugment, dialog.Rate.ColorCast, dialog.Rate.ColorAngle, dialog.Rate.Distortion, dialog.Rate.Interpolation, dialog.Rate.Scaling, dialog.Rate.Rotation), true, 1, Model.TrainingSamples);
-                    //    Model.SetCostIndex((uint)costLayersComboBox.SelectedIndex);
-                    //    Model.Start(false);
-                    //    RefreshTimer = new Timer(1000.0);
-                    //    RefreshTimer.Elapsed += RefreshTimer_Elapsed;
+                        TestRate = dialog.Rate;
+                        Settings.Default.Save();
 
-                    //    CommandToolBar[0].IsVisible = false;
-                    //    CommandToolBar[1].IsVisible = true;
-                    //    CommandToolBar[2].IsVisible = true;
+                        flag = 0;
+                        Model.AddTrainingRate(new DNNTrainingRate(dialog.Rate.Optimizer, dialog.Rate.Momentum, dialog.Rate.Beta2, dialog.Rate.L2Penalty, dialog.Rate.Dropout, dialog.Rate.Eps, dialog.Rate.N, dialog.Rate.D, dialog.Rate.H, dialog.Rate.W, dialog.Rate.PadD, dialog.Rate.PadH, dialog.Rate.PadW, 1, 1, dialog.Rate.EpochMultiplier, dialog.Rate.MaximumRate, dialog.Rate.MinimumRate, dialog.Rate.FinalRate, dialog.Rate.Gamma, dialog.Rate.DecayAfterEpochs, dialog.Rate.DecayFactor, dialog.Rate.HorizontalFlip, dialog.Rate.VerticalFlip, dialog.Rate.InputDropout, dialog.Rate.Cutout, dialog.Rate.CutMix, dialog.Rate.AutoAugment, dialog.Rate.ColorCast, dialog.Rate.ColorAngle, dialog.Rate.Distortion, dialog.Rate.Interpolation, dialog.Rate.Scaling, dialog.Rate.Rotation), true, 1, Model.TrainingSamples);
+                        Model.SetCostIndex((uint)costLayersComboBox.SelectedIndex);
+                        Model.Start(false);
+                        RefreshTimer = new Timer(1000.0);
+                        RefreshTimer.Elapsed += RefreshTimer_Elapsed;
 
-                    //    ShowProgress = true;
-                    //    ShowSample = true;
-                    //}
+                        CommandToolBar[0].IsVisible = false;
+                        CommandToolBar[1].IsVisible = true;
+                        CommandToolBar[2].IsVisible = true;
+
+                        ShowProgress = true;
+                        ShowSample = true;
+                    }
                 }
                 else
                 {
@@ -379,32 +376,30 @@ namespace ConvnetAvalonia.PageViewModels
             }, DispatcherPriority.Normal);
         }
 
-        private void StopButtonClick(object? sender, RoutedEventArgs e)
+        private async void StopButtonClick(object? sender, RoutedEventArgs e)
         {
-            Dispatcher.UIThread.Post(() =>
+            if (Model?.TaskState != DNNTaskStates.Stopped)
             {
-                if (Model?.TaskState != DNNTaskStates.Stopped)
+                var stop = await Dispatcher.UIThread.InvokeAsync(() => MessageBox.Show("Do you really want to stop?", "Stop Testing", MessageBoxButtons.YesNo, MessageBoxIcon.None, MessageBoxDefaultButton.Button2));
+                if (stop == MessageBoxResult.Yes)
                 {
-                    if (MessageBox.Show("Do you really want stop?", "Stop Test", MessageBoxButtons.YesNo, MessageBoxIcon.None, MessageBoxDefaultButton.Button2).Result == MessageBoxResult.Yes)
-                    {
-                        RefreshTimer.Stop();
-                        RefreshTimer.Elapsed -= new ElapsedEventHandler(RefreshTimer_Elapsed);
-                        RefreshTimer.Dispose();
+                    RefreshTimer.Stop();
+                    RefreshTimer.Elapsed -= new ElapsedEventHandler(RefreshTimer_Elapsed);
+                    RefreshTimer.Dispose();
 
-                        Model?.Stop();
-                        ConfusionDataTable = null;
+                    Model?.Stop();
+                    ConfusionDataTable = null;
 
-                        ToolTip.SetTip(CommandToolBar[0], "Start Testing");
-                        CommandToolBar[0].IsVisible = true;
-                        CommandToolBar[1].IsVisible = false;
-                        CommandToolBar[2].IsVisible = false;
+                    ToolTip.SetTip(CommandToolBar[0], "Start Testing");
+                    CommandToolBar[0].IsVisible = true;
+                    CommandToolBar[1].IsVisible = false;
+                    CommandToolBar[2].IsVisible = false;
 
-                        IsValid = true;
-                        ShowProgress = false;
-                        ShowSample = false;
-                    }
+                    IsValid = true;
+                    ShowProgress = false;
+                    ShowSample = false;
                 }
-            }, DispatcherPriority.Normal);
+            }
         }
 
         private void PauseButtonClick(object? sender, RoutedEventArgs e)
@@ -415,7 +410,7 @@ namespace ConvnetAvalonia.PageViewModels
                 {
                     Model.Pause();
 
-                    ToolTip.SetTip(CommandToolBar[0], "Start Testing");
+                    ToolTip.SetTip(CommandToolBar[0], "Resume Testing");
                     CommandToolBar[0].IsVisible = true;
                     CommandToolBar[1].IsVisible = true;
                     CommandToolBar[2].IsVisible = false;

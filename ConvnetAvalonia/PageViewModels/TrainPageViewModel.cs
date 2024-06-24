@@ -1643,15 +1643,18 @@ namespace ConvnetAvalonia.PageViewModels
                         ShowWeights = Model.Layers[index].WeightCount > 0 || Settings.Default.Timings;
                         ShowWeightsSnapshot = (Model.Layers[index].IsNormLayer && Model.Layers[index].Scaling) || Model.Layers[index].LayerType == DNNLayerTypes.PartialDepthwiseConvolution || Model.Layers[index].LayerType == DNNLayerTypes.DepthwiseConvolution || Model.Layers[index].LayerType == DNNLayerTypes.ConvolutionTranspose || Model.Layers[index].LayerType == DNNLayerTypes.Convolution || Model.Layers[index].LayerType == DNNLayerTypes.Dense || (Model.Layers[index].LayerType == DNNLayerTypes.Activation && Model.Layers[index].WeightCount > 0);
 
+                        if (index == 0)
+                            Model.UpdateLayerInfo((ulong)index, ShowSample);
+                        else
+                            Model.UpdateLayerInfo((ulong)index, ShowWeightsSnapshot);
+
                         if (ShowSample)
                         {
-                            Model.UpdateLayerInfo(0ul, true);
+                            if (index != 0)
+                                Model.UpdateLayerInfo(0ul, ShowSample);
                             InputSnapshot = Model.InputSnapshot;
                             Label = Model.Label;
                         }
-
-                        if (index > 0)
-                            Model.UpdateLayerInfo((ulong)index, ShowWeightsSnapshot);
 
 
                         CommandToolBar[17].IsVisible = !Settings.Default.DisableLocking;

@@ -997,7 +997,6 @@ extern "C" DNN_API void DNNGetTestingInfo(TestingInfo* info)
 		info->TestErrors = model->TestErrors;
 
 		info->SampleSpeed = model->SampleSpeed;
-
 		info->State = model->State.load();
 		info->TaskState = model->TaskState.load();
 	}

@@ -144,10 +144,6 @@
 	  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 	</PackageReference>
   </ItemGroup>
- 
-  <ItemGroup>
-    <ProjectReference Include="..\dnn\dnn.vcxproj" />
-  </ItemGroup>
   
   <ItemGroup>
     <Compile Update="Properties\Resources.Designer.cs">
