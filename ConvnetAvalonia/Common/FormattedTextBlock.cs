@@ -12,7 +12,7 @@ namespace ConvnetAvalonia.Common
 {
     public class FormattedTextBlock : TextBlock, INotifyPropertyChanged, IStyleable
     {
-        Type IStyleable.StyleKey => typeof(AvaloniaEdit.TextEditor);
+        Type IStyleable.StyleKey => typeof(TextBlock);
 
         public new event PropertyChangedEventHandler? PropertyChanged;
 
