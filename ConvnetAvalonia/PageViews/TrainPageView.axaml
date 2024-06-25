@@ -78,12 +78,12 @@
           <ColumnDefinition Width="50" />
           <ColumnDefinition Width="50" />
           <ColumnDefinition Width="0" />
-          <ColumnDefinition Width="36" />
-          <ColumnDefinition Width="36" />
+          <ColumnDefinition Width="40" />
+          <ColumnDefinition Width="40" />
           <ColumnDefinition Width="92" />
           <ColumnDefinition Width="98" />
-          <ColumnDefinition Width="66" />
-          <ColumnDefinition Width="72" />
+          <ColumnDefinition Width="60" />
+          <ColumnDefinition Width="82" />
           <ColumnDefinition Width="66" />
           <ColumnDefinition Width="66" />
           <ColumnDefinition Width="82" />
@@ -91,23 +91,23 @@
           <ColumnDefinition Width="100" />
           <ColumnDefinition Width="54" />
           <ColumnDefinition Width="54" />
-          <ColumnDefinition Width="94" />
+          <ColumnDefinition Width="100" />
+          <ColumnDefinition Width="76" />
+          <ColumnDefinition Width="76" />
           <ColumnDefinition Width="78" />
-          <ColumnDefinition Width="78" />
-          <ColumnDefinition Width="80" />
-          <ColumnDefinition Width="88" />
+          <ColumnDefinition Width="86" />
           <ColumnDefinition Width="84" />
-          <ColumnDefinition Width="108" />
-          <ColumnDefinition Width="64" />
+          <ColumnDefinition Width="106" />
+          <ColumnDefinition Width="60" />
           <ColumnDefinition Width="70" />
           <ColumnDefinition Width="80" />
           <ColumnDefinition Width="64" />
           <ColumnDefinition Width="70" />
-          <ColumnDefinition Width="78" />
+          <ColumnDefinition Width="76" />
           <ColumnDefinition Width="80" />
           <ColumnDefinition Width="64" />
           <ColumnDefinition Width="70" />
-          <ColumnDefinition Width="78" />
+          <ColumnDefinition Width="76" />
           <ColumnDefinition Width="90" />
         </Grid.ColumnDefinitions>
 
@@ -149,9 +149,9 @@
         <DataGridTextColumn DisplayIndex="3" Header="D" Binding="{Binding D}" Width="50" IsVisible="False"/>
         <DataGridTextColumn DisplayIndex="4" Header="H" Binding="{Binding H}" Width="50"/>
         <DataGridTextColumn DisplayIndex="5" Header="W" Binding="{Binding W}" Width="50"/>
-        <DataGridTextColumn DisplayIndex="6" Header="PadD" Binding="{Binding PadD}" Width="36" IsVisible="False"/>
-        <DataGridTextColumn DisplayIndex="7" Header="PadH" Binding="{Binding PadH}" Width="36"/>
-        <DataGridTextColumn DisplayIndex="8" Header="PadW" Binding="{Binding PadW}" Width="36"/>
+        <DataGridTextColumn DisplayIndex="6" Header="PadD" Binding="{Binding PadD}" Width="40" IsVisible="False"/>
+        <DataGridTextColumn DisplayIndex="7" Header="PadH" Binding="{Binding PadH}" Width="40"/>
+        <DataGridTextColumn DisplayIndex="8" Header="PadW" Binding="{Binding PadW}" Width="40"/>
         <DataGridTemplateColumn DisplayIndex="9" Header="Optimizer" Width="92">
           <DataGridTemplateColumn.CellTemplate>
             <DataTemplate >
@@ -166,8 +166,8 @@
             </DataTemplate>
           </DataGridTemplateColumn.CellTemplate>
         </DataGridTemplateColumn>
-        <DataGridTextColumn DisplayIndex="11" Header="Eps" Binding="{Binding Eps, StringFormat=G}" Width="66"/>
-        <DataGridTemplateColumn DisplayIndex="12" Header="Momentum" Width="72">
+        <DataGridTextColumn DisplayIndex="11" Header="Eps" Binding="{Binding Eps, StringFormat=G}" Width="60"/>
+        <DataGridTemplateColumn DisplayIndex="12" Header="Momentum" Width="82">
           <DataGridTemplateColumn.CellTemplate>
             <DataTemplate >
               <TextBlock Text="{Binding Momentum, StringFormat=0.#######}" VerticalAlignment="Center" HorizontalAlignment="Center" />
@@ -211,23 +211,23 @@
         </DataGridTemplateColumn>
         <DataGridTextColumn DisplayIndex="18" Header="Cutout" Binding="{Binding Cutout}" Width="54"/>
         <DataGridCheckBoxColumn DisplayIndex="19" Header="CutMix" Binding="{Binding CutMix}" Width="54"/>
-        <DataGridTemplateColumn DisplayIndex="20" Header="AutoAugment" Width="94">
+        <DataGridTemplateColumn DisplayIndex="20" Header="AutoAugment" Width="100">
           <DataGridTemplateColumn.CellTemplate>
             <DataTemplate >
               <TextBlock Text="{Binding AutoAugment, StringFormat=0.#####}" VerticalAlignment="Center" HorizontalAlignment="Center" />
             </DataTemplate>
           </DataGridTemplateColumn.CellTemplate>
         </DataGridTemplateColumn>
-        <DataGridCheckBoxColumn DisplayIndex="21" Header="Horz.Flip" Binding="{Binding HorizontalFlip}" Width="78"/>
-        <DataGridCheckBoxColumn DisplayIndex="22" Header="Vert.Flip" Binding="{Binding VerticalFlip}" Width="78"/>
-        <DataGridTemplateColumn DisplayIndex="23" Header="ColorCast" Width="80">
+        <DataGridCheckBoxColumn DisplayIndex="21" Header="Horz.Flip" Binding="{Binding HorizontalFlip}" Width="76"/>
+        <DataGridCheckBoxColumn DisplayIndex="22" Header="Vert.Flip" Binding="{Binding VerticalFlip}" Width="76"/>
+        <DataGridTemplateColumn DisplayIndex="23" Header="ColorCast" Width="78">
           <DataGridTemplateColumn.CellTemplate>
             <DataTemplate >
               <TextBlock Text="{Binding ColorCast, StringFormat=0.#####}" VerticalAlignment="Center" HorizontalAlignment="Center" />
             </DataTemplate>
           </DataGridTemplateColumn.CellTemplate>
         </DataGridTemplateColumn>
-        <DataGridTemplateColumn DisplayIndex="24" Header="ColorAngle" Width="88">
+        <DataGridTemplateColumn DisplayIndex="24" Header="ColorAngle" Width="86">
           <DataGridTemplateColumn.CellTemplate>
             <DataTemplate >
               <TextBlock Text="{Binding ColorAngle, StringFormat={}{0}°}" VerticalAlignment="Center" HorizontalAlignment="Center" />
@@ -241,14 +241,14 @@
             </DataTemplate>
           </DataGridTemplateColumn.CellTemplate>
         </DataGridTemplateColumn>
-        <DataGridTemplateColumn DisplayIndex="26" Header="Interpolation" Width="108">
+        <DataGridTemplateColumn DisplayIndex="26" Header="Interpolation" Width="106">
           <DataGridTemplateColumn.CellTemplate>
             <DataTemplate >
               <TextBlock Text="{Binding Interpolation}" VerticalAlignment="Center" HorizontalAlignment="Center" />
             </DataTemplate>
           </DataGridTemplateColumn.CellTemplate>
         </DataGridTemplateColumn>
-        <DataGridTemplateColumn DisplayIndex="27" Header="Scaling" Width="64">
+        <DataGridTemplateColumn DisplayIndex="27" Header="Scaling" Width="60">
           <DataGridTemplateColumn.CellTemplate>
             <DataTemplate >
               <TextBlock Text="{Binding Scaling, StringFormat='{}{0} %'}" VerticalAlignment="Center" HorizontalAlignment="Center" />
@@ -283,7 +283,7 @@
             </DataTemplate>
           </DataGridTemplateColumn.CellTemplate>
         </DataGridTemplateColumn>
-        <DataGridTemplateColumn DisplayIndex="32" Header="Accuracy" Width="78">
+        <DataGridTemplateColumn DisplayIndex="32" Header="Accuracy" Width="76">
           <DataGridTemplateColumn.CellTemplate>
             <DataTemplate >
               <TextBlock Text="{Binding TrainAccuracy, StringFormat='{}{0:#0.00} %'}" VerticalAlignment="Center" HorizontalAlignment="Center" />
@@ -311,7 +311,7 @@
             </DataTemplate>
           </DataGridTemplateColumn.CellTemplate>
         </DataGridTemplateColumn>
-        <DataGridTemplateColumn DisplayIndex="36" Header="Accuracy" Width="78">
+        <DataGridTemplateColumn DisplayIndex="36" Header="Accuracy" Width="76">
           <DataGridTemplateColumn.CellTemplate>
             <DataTemplate >
               <TextBlock Text="{Binding TestAccuracy, StringFormat='{}{0:#0.00} %'}" VerticalAlignment="Center" HorizontalAlignment="Center" />
