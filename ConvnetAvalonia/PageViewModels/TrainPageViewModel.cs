@@ -524,7 +524,7 @@ namespace ConvnetAvalonia.PageViewModels
 
         private void TrainProgress(DNNOptimizers Optim, UInt BatchSize, UInt Cycle, UInt TotalCycles, UInt Epoch, UInt TotalEpochs, bool HorizontalFlip, bool VerticalFlip, Float InputDropout, Float Cutout, bool CutMix, Float AutoAugment, Float ColorCast, UInt ColorAngle, Float Distortion, DNNInterpolations Interpolation, Float Scaling, Float Rotation, UInt SampleIndex, Float Rate, Float Momentum, Float Beta2, Float Gamma, Float L2Penalty, Float Dropout, Float AvgTrainLoss, Float TrainErrorPercentage, Float TrainAccuracy, UInt TrainErrors, Float AvgTestLoss, Float TestErrorPercentage, Float TestAccuracy, UInt TestErrors, DNNStates State, DNNTaskStates TaskState)
         {
-            Dispatcher.UIThread.Post(() =>
+            //Dispatcher.UIThread.Post(() =>
             { 
                 sb.Length = 0;
                 switch (State)
@@ -630,7 +630,7 @@ namespace ConvnetAvalonia.PageViewModels
                         break;
                 }
                 ProgressText = sb.ToString();
-            }, DispatcherPriority.Render);
+            }//, DispatcherPriority.Render);
         }
 
         public void OnDisableLockingChanged(object? sender, RoutedEventArgs e)
@@ -1214,7 +1214,7 @@ namespace ConvnetAvalonia.PageViewModels
 
                 if (Model?.TaskState == DNNTaskStates.Stopped)
                 {
-                    TrainParameters dialog = new TrainParameters
+                    var dialog = new TrainParameters
                     {
                         Model = this.Model,
                         Path = DefinitionsDirectory,
@@ -1666,7 +1666,7 @@ namespace ConvnetAvalonia.PageViewModels
                         LayerInfo = "<Span><Bold>Layer</Bold></Span><LineBreak/>";
                         LayerInfo += "<Span>" + Model.Layers[index].Description + "</Span><LineBreak/>";
 
-                        StringBuilder sb = new StringBuilder();
+                        var sb = new StringBuilder();
                         weightsMinMax = String.Empty;
 
                         weightsMinMax += "<Span><Bold>Neurons</Bold></Span><LineBreak/>";
@@ -1807,7 +1807,7 @@ namespace ConvnetAvalonia.PageViewModels
                         layersComboBox.ItemsSource = Model.Layers;
                     }
                 }
-            }, DispatcherPriority.Render);
+            }, DispatcherPriority.Send);
 
             //   RefreshTrainingPlot();
         }

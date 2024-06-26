@@ -34,7 +34,7 @@
             <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Orientation="Vertical">
               <TextBlock x:Name="TextBlockHeader" Text="Input" Margin="3,6,3,3" HorizontalAlignment="Left" VerticalAlignment="Center" FontFamily="Consolas" Foreground="{DynamicResource TextBrush}" Background="{DynamicResource BackgroundBrushLight}" FontSize="14" FontWeight="Bold"/>
               <Image Source="{Binding InputSnapshot}" Width="64" Height="64" Margin="12,1,3,3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
-              <TextBlock x:Name="TextBlockLabel" Text="{Binding Label}"  Margin="12,3,3,3" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="Consolas" Foreground="{DynamicResource TextBrush}" Background="{DynamicResource BackgroundBrushLight}"/>
+              <TextBlock x:Name="TextBlockLabel" Text="{Binding Label}" Margin="12,3,3,3" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="Consolas" Foreground="{DynamicResource TextBrush}" Background="{DynamicResource BackgroundBrushLight}"/>
             </StackPanel>
           </Border>
         </StackPanel>
@@ -44,7 +44,7 @@
           </ScrollViewer>
         </Border>
         <Border x:Name="BorderTrainingPlot" BorderThickness="1" CornerRadius="3" Margin="1,1,1,1" Padding="2" IsVisible="{Binding ShowTrainingPlot, Converter={StaticResource BooleanToVisibilityConverter}}" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="1" Grid.RowSpan="1" Background="{DynamicResource BackgroundBrushLight}">
-          <oxy:PlotView x:Name="TrainingPlot" Model="{Binding PlotModel, Mode=TwoWay}" Background="{DynamicResource BackgroundBrushLight}" IsVisible="{Binding PlotModel, Converter={x:Static ObjectConverters.IsNotNull}}">
+          <oxy:PlotView x:Name="TrainingPlot" Model="{Binding PlotModel, Mode=OneWay}" Background="{DynamicResource BackgroundBrushLight}" IsVisible="{Binding PlotModel, Converter={x:Static ObjectConverters.IsNotNull}}">
             <oxy:PlotView.DefaultTrackerTemplate>
               <ControlTemplate>
                 <oxy:TrackerControl VerticalLineVisibility="False" LineExtents="{Binding PlotModel.PlotArea}" Background="Transparent" BorderBrush="Transparent" Foreground="{DynamicResource TextBrush}">
@@ -82,7 +82,7 @@
           <ColumnDefinition Width="40" />
           <ColumnDefinition Width="92" />
           <ColumnDefinition Width="98" />
-          <ColumnDefinition Width="60" />
+          <ColumnDefinition Width="62" />
           <ColumnDefinition Width="82" />
           <ColumnDefinition Width="66" />
           <ColumnDefinition Width="66" />
@@ -166,7 +166,7 @@
             </DataTemplate>
           </DataGridTemplateColumn.CellTemplate>
         </DataGridTemplateColumn>
-        <DataGridTextColumn DisplayIndex="11" Header="Eps" Binding="{Binding Eps, StringFormat=G}" Width="60"/>
+        <DataGridTextColumn DisplayIndex="11" Header="Eps" Binding="{Binding Eps, StringFormat=G}" Width="62"/>
         <DataGridTemplateColumn DisplayIndex="12" Header="Momentum" Width="82">
           <DataGridTemplateColumn.CellTemplate>
             <DataTemplate >
