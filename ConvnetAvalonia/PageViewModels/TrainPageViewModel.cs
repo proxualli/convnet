@@ -503,28 +503,29 @@ namespace ConvnetAvalonia.PageViewModels
 
         private void NewEpoch(UInt Cycle, UInt Epoch, UInt TotalEpochs, UInt Optimizer, Float Beta2, Float Gamma, Float Eps, bool HorizontalFlip, bool VerticalFlip, Float InputDropout, Float Cutout, bool CutMix, Float AutoAugment, Float ColorCast, UInt ColorAngle, Float Distortion, UInt Interpolation, Float Scaling, Float Rotation, Float Rate, UInt N, UInt D, UInt H, UInt W, UInt PadD, UInt PadH, UInt PadW, Float Momentum, Float L2Penalty, Float Dropout, Float AvgTrainLoss, Float TrainErrorPercentage, Float TrainAccuracy, UInt TrainErrors, Float AvgTestLoss, Float TestErrorPercentage, Float TestAccuracy, UInt TestErrors, UInt ElapsedNanoSecondes)
         {
-            Dispatcher.UIThread.Post(() =>
+            Dispatcher.UIThread.Invoke(() =>
             {
                 if (Model != null)
                 {
-                    TimeSpan span = Model.Duration.Elapsed.Subtract(EpochDuration);
+                    var span = Model.Duration.Elapsed.Subtract(EpochDuration);
                     EpochDuration = Model.Duration.Elapsed;
-                    for (uint c = 0; c < Model.CostLayerCount; c++)
+                    for (UInt c = 0; c < Model.CostLayerCount; c++)
                     {
                         Model.UpdateCostInfo(c);
-                        TrainingLog.Add(new DNNTrainingResult(Cycle, Epoch, Model.CostLayers[c].GroupIndex, c, Model.CostLayers[c].Name, N, D, H, W, PadD, PadH, PadW, (DNNOptimizers)Optimizer, Rate, Eps, Momentum, Beta2, Gamma, L2Penalty, Dropout, InputDropout, Cutout, CutMix, AutoAugment, HorizontalFlip, VerticalFlip, ColorCast, ColorAngle, Distortion, (DNNInterpolations)Interpolation, Scaling, Rotation, Model.CostLayers[c].AvgTrainLoss, Model.CostLayers[c].TrainErrors, Model.CostLayers[c].TrainErrorPercentage, Model.CostLayers[c].TrainAccuracy, Model.CostLayers[c].AvgTestLoss, Model.CostLayers[c].TestErrors, Model.CostLayers[c].TestErrorPercentage, Model.CostLayers[c].TestAccuracy, (System.Int64)span.TotalMilliseconds, span));
+                        DNNCostLayer cost = Model.CostLayers[c];
+                        DNNTrainingResult item = new DNNTrainingResult(Cycle, Epoch, cost.GroupIndex, c, cost.Name, N, D, H, W, PadD, PadH, PadW, (DNNOptimizers)Optimizer, Rate, Eps, Momentum, Beta2, Gamma, L2Penalty, Dropout, InputDropout, Cutout, CutMix, AutoAugment, HorizontalFlip, VerticalFlip, ColorCast, ColorAngle, Distortion, (DNNInterpolations)Interpolation, Scaling, Rotation, cost.AvgTrainLoss, cost.TrainErrors, cost.TrainErrorPercentage, cost.TrainAccuracy, cost.AvgTestLoss, cost.TestErrors, cost.TestErrorPercentage, cost.TestAccuracy, (Int64)span.TotalMilliseconds, span);
+                        TrainingLog.Add(item);
                     }
-
-                    SelectedIndex = TrainingLog.Count - 1;                    
+                    SelectedIndex = TrainingLog.Count - 1;  
                 }
-            }, DispatcherPriority.Render);
+            }, DispatcherPriority.Send);
 
             RefreshTrainingPlot();
         }
 
         private void TrainProgress(DNNOptimizers Optim, UInt BatchSize, UInt Cycle, UInt TotalCycles, UInt Epoch, UInt TotalEpochs, bool HorizontalFlip, bool VerticalFlip, Float InputDropout, Float Cutout, bool CutMix, Float AutoAugment, Float ColorCast, UInt ColorAngle, Float Distortion, DNNInterpolations Interpolation, Float Scaling, Float Rotation, UInt SampleIndex, Float Rate, Float Momentum, Float Beta2, Float Gamma, Float L2Penalty, Float Dropout, Float AvgTrainLoss, Float TrainErrorPercentage, Float TrainAccuracy, UInt TrainErrors, Float AvgTestLoss, Float TestErrorPercentage, Float TestAccuracy, UInt TestErrors, DNNStates State, DNNTaskStates TaskState)
         {
-            //Dispatcher.UIThread.Post(() =>
+            Dispatcher.UIThread.Invoke(() =>
             { 
                 sb.Length = 0;
                 switch (State)
@@ -582,7 +583,7 @@ namespace ConvnetAvalonia.PageViewModels
                         {
                             sb.Append("<Span><Bold>Testing</Bold></Span><LineBreak/>");
                             sb.Append("<Span>");
-                            sb.AppendFormat(" Sample:\t\t{0:G}\n Loss:\t\t\t{1:N7}\n Errors:\t\t{2:G}\n Error:\t\t\t{3:N2} %\n Accuracy:\t\t{4:N2} %", SampleIndex, AvgTestLoss, TestErrors, TestErrorPercentage, (Float)100 - TestErrorPercentage);
+                            sb.AppendFormat(" Sample:\t\t  {0:G}\n Loss:\t\t\t{1:N7}\n Errors:\t\t  {2:G}\n Error:\t\t   {3:N2} %\n Accuracy:\t\t{4:N2} %", SampleIndex, AvgTestLoss, TestErrors, TestErrorPercentage, (Float)100 - TestErrorPercentage);
                             sb.Append("</Span>");
                         }
                         break;
@@ -630,7 +631,7 @@ namespace ConvnetAvalonia.PageViewModels
                         break;
                 }
                 ProgressText = sb.ToString();
-            }//, DispatcherPriority.Render);
+            }, DispatcherPriority.Render);
         }
 
         public void OnDisableLockingChanged(object? sender, RoutedEventArgs e)
@@ -1628,7 +1629,7 @@ namespace ConvnetAvalonia.PageViewModels
 
         public void LayersComboBox_SelectionChanged(object? sender, SelectionChangedEventArgs e)
         {
-            Dispatcher.UIThread.Post(() =>
+            Dispatcher.UIThread.Invoke(() =>
             {
                 if (Model != null && layersComboBox.SelectedIndex >= 0)
                 {

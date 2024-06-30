@@ -82,8 +82,8 @@
           <ColumnDefinition Width="40" />
           <ColumnDefinition Width="92" />
           <ColumnDefinition Width="98" />
-          <ColumnDefinition Width="62" />
-          <ColumnDefinition Width="82" />
+          <ColumnDefinition Width="66" />
+          <ColumnDefinition Width="84" />
           <ColumnDefinition Width="66" />
           <ColumnDefinition Width="66" />
           <ColumnDefinition Width="82" />
@@ -129,7 +129,7 @@
       </Grid>
     </ScrollViewer>
 
-    <DataGrid Grid.Row="2" x:Name="listViewTrainingResult" AutoGenerateColumns="False" IsReadOnly="True" CanUserSortColumns="False" CanUserReorderColumns="False" CanUserResizeColumns="False" Foreground="{DynamicResource TextBrush}" Background="{DynamicResource BackgroundBrush}" BorderBrush="{DynamicResource DisabledBorderBrush}" BorderThickness="1" GridLinesVisibility="None" Margin="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" SelectedIndex="{Binding SelectedIndex}" ItemsSource="{Binding TrainingLog}" Grid.ColumnSpan="1" FontFamily="Consolas" FontWeight="Normal" FontSize="13">
+    <DataGrid Grid.Row="2" x:Name="listViewTrainingResult" AutoGenerateColumns="False" IsReadOnly="True" CanUserSortColumns="False" CanUserReorderColumns="False" CanUserResizeColumns="False" Foreground="{DynamicResource TextBrush}" Background="{DynamicResource BackgroundBrush}" BorderBrush="{DynamicResource DisabledBorderBrush}" BorderThickness="1" GridLinesVisibility="All" Margin="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" SelectedIndex="{Binding SelectedIndex}" ItemsSource="{Binding TrainingLog}" Grid.ColumnSpan="1" FontFamily="Consolas" FontWeight="Normal" FontSize="13">
       <DataGrid.Columns>
         <DataGridTemplateColumn DisplayIndex="0" Header="Cycle" Width="48">
           <DataGridTemplateColumn.CellTemplate>
@@ -166,8 +166,8 @@
             </DataTemplate>
           </DataGridTemplateColumn.CellTemplate>
         </DataGridTemplateColumn>
-        <DataGridTextColumn DisplayIndex="11" Header="Eps" Binding="{Binding Eps, StringFormat=G}" Width="62"/>
-        <DataGridTemplateColumn DisplayIndex="12" Header="Momentum" Width="82">
+        <DataGridTextColumn DisplayIndex="11" Header="Eps" Binding="{Binding Eps, StringFormat=G}" Width="66"/>
+        <DataGridTemplateColumn DisplayIndex="12" Header="Momentum" Width="84">
           <DataGridTemplateColumn.CellTemplate>
             <DataTemplate >
               <TextBlock Text="{Binding Momentum, StringFormat=0.#######}" VerticalAlignment="Center" HorizontalAlignment="Center" />
