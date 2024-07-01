@@ -1789,7 +1789,7 @@ namespace ConvnetAvalonia.PageViewModels
                                 if (ShowWeightsSnapshot)
                                 {
                                     sb.Length = 0;
-                                    sb.AppendFormat(" update:  \t\t{0:D}/{1:D} ms", (int)Model.Layers[index].UpdateLayerTime, (int)Model.updateTime);
+                                    sb.AppendFormat(" update: \t\t{0:D}/{1:D} ms", (int)Model.Layers[index].UpdateLayerTime, (int)Model.updateTime);
                                     LayerInfo += "<Span>" + sb.ToString() + "</Span>";
                                 }
                             }
