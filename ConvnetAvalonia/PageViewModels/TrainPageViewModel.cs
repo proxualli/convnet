@@ -480,7 +480,7 @@ namespace ConvnetAvalonia.PageViewModels
             costLayersComboBox.SelectedIndex = (int)Model.CostIndex;
             selectedCostIndex = costLayersComboBox.SelectedIndex;
             costLayersComboBox.IsEnabled = Model.CostLayerCount > 1;
-            costLayersComboBox.IsVisible = Model.CostLayerCount > 1 ? true : false;
+            costLayersComboBox.IsVisible = Model.CostLayerCount > 1;
 
             layersComboBox.ItemsSource = Model.Layers;
             layersComboBox.SelectedIndex = 0;
@@ -1789,7 +1789,7 @@ namespace ConvnetAvalonia.PageViewModels
                                 if (ShowWeightsSnapshot)
                                 {
                                     sb.Length = 0;
-                                    sb.AppendFormat(" update:  \t{0:D}/{1:D} ms", (int)Model.Layers[index].UpdateLayerTime, (int)Model.updateTime);
+                                    sb.AppendFormat(" update:  \t\t{0:D}/{1:D} ms", (int)Model.Layers[index].UpdateLayerTime, (int)Model.updateTime);
                                     LayerInfo += "<Span>" + sb.ToString() + "</Span>";
                                 }
                             }
