@@ -1808,7 +1808,7 @@ namespace ConvnetAvalonia.PageViewModels
                         layersComboBox.ItemsSource = Model.Layers;
                     }
                 }
-            }, DispatcherPriority.Send);
+            }, DispatcherPriority.Render);
 
             //   RefreshTrainingPlot();
         }
