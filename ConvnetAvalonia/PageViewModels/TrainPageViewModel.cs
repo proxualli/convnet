@@ -3,9 +3,9 @@ using Avalonia.Controls.Templates;
 using Avalonia.Data;
 using Avalonia.Interactivity;
 using Avalonia.Threading;
-using ConvnetAvalonia.Common;
-using ConvnetAvalonia.Dialogs;
-using ConvnetAvalonia.Properties;
+using Convnet.Common;
+using Convnet.Dialogs;
+using Convnet.Properties;
 using CustomMessageBox.Avalonia;
 using Interop;
 using OxyPlot;
@@ -21,7 +21,7 @@ using System.Timers;
 using Float = System.Single;
 using UInt = System.UInt64;
 
-namespace ConvnetAvalonia.PageViewModels
+namespace Convnet.PageViewModels
 {
     [Serializable]
     public enum PlotType

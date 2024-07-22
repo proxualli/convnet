@@ -1,11 +1,11 @@
-﻿<Window x:Class="ConvnetAvalonia.Dialogs.TestParameters"
+﻿<Window x:Class="Convnet.Dialogs.TestParameters"
         xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:c="clr-namespace:ConvnetAvalonia.Common"
+        xmlns:c="clr-namespace:Convnet.Common"
         xmlns:cl="clr-namespace:Interop"
-        xmlns:pvm="clr-namespace:ConvnetAvalonia.PageViewModels"
+        xmlns:pvm="clr-namespace:Convnet.PageViewModels"
         x:DataType="cl:DNNTrainingRate"
         Title="Test Parameters" Height="580" Width="860" WindowStartupLocation="CenterOwner" Background="{DynamicResource BackgroundBrush}" ShowInTaskbar="False" UseLayoutRounding="True"  IsTabStop="False" Opened="OnOpened">
 

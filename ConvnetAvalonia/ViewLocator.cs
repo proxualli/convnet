@@ -1,9 +1,9 @@
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
-using ConvnetAvalonia.PageViewModels;
+using Convnet.PageViewModels;
 using System;
 
-namespace ConvnetAvalonia
+namespace Convnet
 {
     public class ViewLocator : IDataTemplate
     {

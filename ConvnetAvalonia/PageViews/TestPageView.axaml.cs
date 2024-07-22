@@ -1,7 +1,7 @@
 ﻿using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 
-namespace ConvnetAvalonia.PageViews
+namespace Convnet.PageViews
 {
     public partial class TestPageView : UserControl
     {

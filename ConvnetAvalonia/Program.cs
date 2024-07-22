@@ -2,7 +2,7 @@
 using Avalonia.ReactiveUI;
 using System;
 
-namespace ConvnetAvalonia
+namespace Convnet
 {
     internal sealed class Program
     {

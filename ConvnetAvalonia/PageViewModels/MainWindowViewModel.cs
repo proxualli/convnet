@@ -1,7 +1,7 @@
 ﻿using ReactiveUI;
 
 
-namespace ConvnetAvalonia.PageViewModels
+namespace Convnet.PageViewModels
 {
     public class MainWindowViewModel : ReactiveObject
     {

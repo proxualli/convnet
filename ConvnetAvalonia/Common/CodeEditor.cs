@@ -11,7 +11,7 @@ using System;
 using System.ComponentModel;
 using System.Diagnostics;
 
-namespace ConvnetAvalonia.Common
+namespace Convnet.Common
 {
     //public class HighlightCurrentLineBackgroundRenderer : IBackgroundRenderer
     //{
@@ -53,7 +53,7 @@ namespace ConvnetAvalonia.Common
 
         public CodeEditor()
         {
-            FontSize = 13;
+            FontSize = 14;
             FontFamily = new FontFamily("Cascadia Code,Consolas,Menlo,Monospace");
             Options = new TextEditorOptions
             {

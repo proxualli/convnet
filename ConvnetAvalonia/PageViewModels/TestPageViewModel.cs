@@ -4,9 +4,9 @@ using Avalonia.Data;
 using Avalonia.Interactivity;
 using Avalonia.Media.Imaging;
 using Avalonia.Threading;
-using ConvnetAvalonia.Common;
-using ConvnetAvalonia.Dialogs;
-using ConvnetAvalonia.Properties;
+using Convnet.Common;
+using Convnet.Dialogs;
+using Convnet.Properties;
 using CustomMessageBox.Avalonia;
 using Interop;
 using ReactiveUI;
@@ -19,7 +19,7 @@ using System.Timers;
 using Float = System.Single;
 using UInt = System.UInt64;
 
-namespace ConvnetAvalonia.PageViewModels
+namespace Convnet.PageViewModels
 {
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Interoperability", "CA1416:Validate platform compatibility", Justification = "<Pending>")]
     public class TestPageViewModel : PageViewModelBase, IDisposable

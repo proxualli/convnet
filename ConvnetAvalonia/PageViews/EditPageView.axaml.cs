@@ -5,9 +5,9 @@ using AvaloniaEdit;
 using AvaloniaEdit.Highlighting;
 using AvaloniaEdit.Highlighting.Xshd;
 using AvaloniaEdit.TextMate;
-using ConvnetAvalonia.Common;
-using ConvnetAvalonia.PageViewModels;
-using ConvnetAvalonia.Properties;
+using Convnet.Common;
+using Convnet.PageViewModels;
+using Convnet.Properties;
 using System;
 using System.IO;
 using System.Linq;
@@ -15,7 +15,7 @@ using System.Xml;
 using TextMateSharp.Grammars;
 using TextMateSharp.Themes;
 
-namespace ConvnetAvalonia.PageViews
+namespace Convnet.PageViews
 {
     public partial class EditPageView : UserControl
     {
@@ -47,7 +47,7 @@ namespace ConvnetAvalonia.PageViews
 
 
             //IHighlightingDefinition CSharpHighlighting;
-            //using (Stream? s = typeof(EditPageView).Assembly.GetManifestResourceStream("ConvnetAvalonia.Resources.CSharp-Mode.xshd"))
+            //using (Stream? s = typeof(EditPageView).Assembly.GetManifestResourceStream("Convnet.Resources.CSharp-Mode.xshd"))
             //{
             //    if (s == null)
             //        throw new InvalidOperationException("Could not find embedded resource");

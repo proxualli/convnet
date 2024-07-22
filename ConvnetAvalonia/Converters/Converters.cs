@@ -3,7 +3,7 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 
-namespace ConvnetAvalonia.Converters
+namespace Convnet.Converters
 {
     public class EnumConverter : IValueConverter
     {

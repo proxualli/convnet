@@ -7,14 +7,14 @@ using System.Reflection;
 using System.Threading;
 
 
-namespace ConvnetAvalonia
+namespace Convnet
 {
     public partial class App : Application
     {
         public static readonly bool SingleInstanceApp = true;
         private static readonly SingleInstanceMutex sim = new SingleInstanceMutex();
         public event EventHandler<ShutdownRequestedEventArgs>? ShutdownRequested;
-        public static ConvnetAvalonia.PageViews.MainWindow? MainWindow = null;
+        public static Convnet.PageViews.MainWindow? MainWindow = null;
         public static bool ShowCloseApplicationDialog = true;
 
         public override void Initialize()
@@ -30,13 +30,13 @@ namespace ConvnetAvalonia
                     return;
 
                 desktop.ShutdownRequested += AppShutdownRequested;
-                desktop.MainWindow = new ConvnetAvalonia.PageViews.MainWindow
+                desktop.MainWindow = new Convnet.PageViews.MainWindow
                 {
                 };
 
                 if (desktop.MainWindow != null)
                 {
-                    App.MainWindow = desktop.MainWindow as ConvnetAvalonia.PageViews.MainWindow;
+                    App.MainWindow = desktop.MainWindow as Convnet.PageViews.MainWindow;
                 }
             }
             

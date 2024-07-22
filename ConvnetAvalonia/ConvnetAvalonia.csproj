@@ -6,11 +6,11 @@
     <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
-    <StartupObject>ConvnetAvalonia.Program</StartupObject>
+    <StartupObject>Convnet.Program</StartupObject>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <ApplicationIcon>Resources\App.ico</ApplicationIcon>
     <Platforms>x64</Platforms>
-    <AssemblyName>ConvnetAvalonia</AssemblyName>
+    <AssemblyName>Convnet</AssemblyName>
     <SignAssembly>True</SignAssembly>
   </PropertyGroup>
   <ItemGroup>
@@ -27,6 +27,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Resources\Fonts\*" />
     <None Remove="Resources\Calculator.png" />
     <None Remove="Resources\Cancel.png" />
     <None Remove="Resources\Delete.png" />
@@ -84,20 +85,20 @@
 
  
   <ItemGroup>
-    <PackageReference Include="Avalonia" Version="11.1.0-rc2" />
+    <PackageReference Include="Avalonia" Version="11.1.0" />
     <PackageReference Include="Avalonia.Angle.Windows.Natives" Version="2.1.22087.20231008" />
     <PackageReference Include="Avalonia.AvaloniaEdit" Version="11.0.6" />
     <PackageReference Include="Avalonia.BuildServices" Version="0.0.31" />
-    <PackageReference Include="Avalonia.Desktop" Version="11.1.0-rc2" />
-    <PackageReference Include="Avalonia.Markup.Xaml.Loader" Version="11.1.0-rc2" />
-    <PackageReference Include="Avalonia.Themes.Fluent" Version="11.1.0-rc2" />
-    <PackageReference Include="Avalonia.Fonts.Inter" Version="11.1.0-rc2" />
+    <PackageReference Include="Avalonia.Desktop" Version="11.1.0" />
+    <PackageReference Include="Avalonia.Markup.Xaml.Loader" Version="11.1.0" />
+    <PackageReference Include="Avalonia.Themes.Fluent" Version="11.1.0" />
+    <PackageReference Include="Avalonia.Fonts.Inter" Version="11.1.0" />
     <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
-    <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.1.0-rc1" />
-    <PackageReference Include="Avalonia.ReactiveUI" Version="11.1.0-rc2" />
-    <PackageReference Include="Avalonia.Xaml.Interactivity" Version="11.1.0-rc2" />
+    <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.1.0" />
+    <PackageReference Include="Avalonia.ReactiveUI" Version="11.1.0" />
+    <PackageReference Include="Avalonia.Xaml.Interactivity" Version="11.1.0" />
     <PackageReference Include="AvaloniaControlsToolBar" Version="0.0.1" />
-    <PackageReference Include="Avalonia.Controls.DataGrid" Version="11.1.0-rc2" />
+    <PackageReference Include="Avalonia.Controls.DataGrid" Version="11.1.0" />
     <PackageReference Include="AvaloniaEdit.TextMate.Grammars" Version="0.10.12" />
     <PackageReference Include="CsvHelper" Version="33.0.1" />
     <PackageReference Include="CustomMessageBox.Avalonia" Version="11.0.0.2" />
@@ -116,6 +117,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <AvaloniaResource Include="Resources\Fonts\*" /> 
     <AvaloniaResource Include="Resources\Annotate_HighPriority.ico" />
     <AvaloniaResource Include="Resources\App.ico" />
     <AvaloniaResource Include="Resources\Calculator.png" />

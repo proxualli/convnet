@@ -1,7 +1,7 @@
 ﻿using Interop;
 using System.Collections.ObjectModel;
 
-namespace ConvnetAvalonia.Properties
+namespace Convnet.Properties
 {
     public sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase
     {

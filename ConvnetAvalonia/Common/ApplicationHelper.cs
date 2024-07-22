@@ -14,7 +14,7 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 
-namespace ConvnetAvalonia.Common
+namespace Convnet.Common
 {
     public static class ApplicationHelper
     {

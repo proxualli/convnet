@@ -5,9 +5,9 @@ using AvaloniaEdit;
 using AvaloniaEdit.Highlighting;
 using AvaloniaEdit.Highlighting.Xshd;
 using AvaloniaEdit.TextMate;
-using ConvnetAvalonia.Common;
-using ConvnetAvalonia.PageViewModels;
-using ConvnetAvalonia.Properties;
+using Convnet.Common;
+using Convnet.PageViewModels;
+using Convnet.Properties;
 using System;
 using System.IO;
 using System.Linq;
@@ -18,7 +18,7 @@ using CustomMessageBox.Avalonia;
 using Avalonia.Threading;
 
 
-namespace ConvnetAvalonia.Dialogs
+namespace Convnet.Dialogs
 {
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Interoperability", "CA1416:Validate platform compatibility", Justification = "<Pending>")]
     public partial class TrainParameters : Window

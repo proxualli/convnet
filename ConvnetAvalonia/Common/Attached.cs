@@ -5,7 +5,7 @@ using Avalonia.Media;
 using System;
 using System.IO;
 
-namespace ConvnetAvalonia.Common
+namespace Convnet.Common
 {
     public class Attached : AvaloniaObject
     {

@@ -12,7 +12,7 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 
-namespace ConvnetAvalonia.PageViewModels
+namespace Convnet.PageViewModels
 {
     public abstract class PageViewModelBase : ReactiveObject
     {

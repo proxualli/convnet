@@ -2,9 +2,9 @@ using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using Avalonia.Threading;
 using AvaloniaEdit;
-using ConvnetAvalonia.Common;
-using ConvnetAvalonia.PageViewModels;
-using ConvnetAvalonia.Properties;
+using Convnet.Common;
+using Convnet.PageViewModels;
+using Convnet.Properties;
 using CustomMessageBox.Avalonia;
 using Interop;
 using ReactiveUI;
@@ -17,7 +17,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 
-namespace ConvnetAvalonia.PageViews
+namespace Convnet.PageViews
 {
     public partial class MainWindow : Window
     {
@@ -228,7 +228,7 @@ namespace ConvnetAvalonia.PageViews
             if (!Directory.Exists(ScriptsDirectory) && ApplicationPath != null)
             {
                 Directory.CreateDirectory(ScriptsDirectory);
-                ApplicationHelper.CopyDir(Path.Combine(ApplicationPath.Replace(Path.Combine("ConvnetAvalonia", "bin", (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? "x64" : ""), Mode, Framework), ""), "Scripts"), ScriptsDirectory);
+                ApplicationHelper.CopyDir(Path.Combine(ApplicationPath.Replace(Path.Combine("Convnet", "bin", (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? "x64" : ""), Mode, Framework), ""), "Scripts"), ScriptsDirectory);
             }
 
             var fileName = Path.Combine(StateDirectory, Settings.Default.ModelNameActive + ".txt");

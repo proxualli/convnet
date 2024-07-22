@@ -3,8 +3,8 @@ using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Threading;
 using AvaloniaEdit.Document;
-using ConvnetAvalonia.Common;
-using ConvnetAvalonia.Properties;
+using Convnet.Common;
+using Convnet.Properties;
 using CustomMessageBox.Avalonia;
 using Interop;
 using ReactiveUI;
@@ -20,7 +20,7 @@ using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ConvnetAvalonia.PageViewModels
+namespace Convnet.PageViewModels
 {
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Interoperability", "CA1416:Validate platform compatibility", Justification = "<Pending>")]
     public class EditPageViewModel : PageViewModelBase

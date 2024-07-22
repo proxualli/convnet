@@ -1,4 +1,4 @@
-﻿namespace ConvnetAvalonia.Common
+﻿namespace Convnet.Common
 {
     using System.Collections.Generic;
     using System.Diagnostics;

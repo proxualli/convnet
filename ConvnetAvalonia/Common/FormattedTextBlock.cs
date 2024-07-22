@@ -8,7 +8,7 @@ using System.Diagnostics;
 using System.IO;
 
 
-namespace ConvnetAvalonia.Common
+namespace Convnet.Common
 {
     public class FormattedTextBlock : TextBlock, INotifyPropertyChanged, IStyleable
     {

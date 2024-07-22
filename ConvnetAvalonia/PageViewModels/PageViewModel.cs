@@ -1,8 +1,8 @@
 ﻿using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Threading;
-using ConvnetAvalonia.Common;
-using ConvnetAvalonia.Properties;
+using Convnet.Common;
+using Convnet.Properties;
 using CsvHelper;
 using CustomMessageBox.Avalonia;
 using Interop;
@@ -15,7 +15,7 @@ using System.IO;
 using Float = System.Single;
 using UInt = System.UInt64;
 
-namespace ConvnetAvalonia.PageViewModels
+namespace Convnet.PageViewModels
 {
     public enum ViewModels
     {
@@ -30,7 +30,7 @@ namespace ConvnetAvalonia.PageViewModels
         
         public void DocumentationCommand()
         {
-            ApplicationHelper.OpenBrowser("https://github.com/proxualli/convnet.git");
+            ApplicationHelper.OpenBrowser("https://github.com/uapconvnet/convnet.git");
         }
 
         public void Cut()
