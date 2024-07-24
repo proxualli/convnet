@@ -328,7 +328,7 @@ namespace Convnet.PageViewModels
             {
                 Source = this,
                 Path = "ShowTrainingPlot",
-                Mode = BindingMode.TwoWay,
+                Mode = BindingMode.TwoWay                
             };
             trainingPlotCheckBox.Bind(CheckBox.IsCheckedProperty, tpBinding);
             trainingPlotCheckBox.IsCheckedChanged += TrainingPlotCheckBox_IsCheckedChanged;
