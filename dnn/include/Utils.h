@@ -135,7 +135,7 @@ namespace
 	constexpr auto TestMultiply = false;
 
 	constexpr auto ReferenceBatchNormalization = false;
-	constexpr auto ReferenceConcat = false;
+	constexpr auto ReferenceConcat = true;
 	constexpr auto ReferenceMultiply = true;
 
 	typedef float Float;
