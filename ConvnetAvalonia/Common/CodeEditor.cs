@@ -8,8 +8,10 @@ using AvaloniaEdit;
 using AvaloniaEdit.Document;
 using AvaloniaEdit.Editing;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using TextMateSharp.Grammars;
 
 namespace Convnet.Common
 {
@@ -66,7 +68,7 @@ namespace Convnet.Common
             TextArea.IndentationStrategy = new AvaloniaEdit.Indentation.CSharp.CSharpIndentationStrategy(Options);
             //TextArea.TextView.BackgroundRenderers.Add(new HighlightCurrentLineBackgroundRenderer(this));
             //TextArea.Caret.PositionChanged += (sender, e) => TextArea.TextView.InvalidateLayer(KnownLayer.Background);
-
+                        
             var cmdKey = ApplicationHelper.GetPlatformCommandKey();
 
             var cm = new ContextMenu();

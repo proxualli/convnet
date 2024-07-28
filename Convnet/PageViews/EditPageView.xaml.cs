@@ -23,10 +23,9 @@ namespace Convnet.PageViews
                     HighlightingLoader.Load(reader, HighlightingManager.Instance);
                 }
             }
-
             HighlightingManager.Instance.RegisterHighlighting("Definition", new string[] { ".txt" }, DefinitionHighlighting);
-
             
+
             IHighlightingDefinition CSharpHighlighting;
             using (Stream s = typeof(EditPageView).Assembly.GetManifestResourceStream("Convnet.Resources.CSharp-Mode.xshd"))
             {
@@ -38,10 +37,8 @@ namespace Convnet.PageViews
                     HighlightingLoader.Load(reader, HighlightingManager.Instance);
                 }
             }
-
             HighlightingManager.Instance.RegisterHighlighting("C#", new string[] { ".cs" }, CSharpHighlighting);
-
-
+            
             InitializeComponent();
 
             EditorDefinition.SyntaxHighlighting = HighlightingManager.Instance.GetDefinitionByExtension(".txt");
