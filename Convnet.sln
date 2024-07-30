@@ -3,11 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.1.32407.343
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Convnet", "Convnet\Convnet.csproj", "{45AAE32B-0D5D-4494-A0A7-C170F8DBCA8B}"
-	ProjectSection(ProjectDependencies) = postProject
-		{78F1BB71-C716-48F5-9429-4537F1AE6319} = {78F1BB71-C716-48F5-9429-4537F1AE6319}
-	EndProjectSection
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "dnn", "dnn\dnn.vcxproj", "{78F1BB71-C716-48F5-9429-4537F1AE6319}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{304AAB49-EF9B-4B22-8957-2B3FD8113F10}"
 	ProjectSection(SolutionItems) = preProject
@@ -83,14 +78,6 @@ Global
 		{45AAE32B-0D5D-4494-A0A7-C170F8DBCA8B}.Release|Any CPU.Build.0 = Release|x64
 		{45AAE32B-0D5D-4494-A0A7-C170F8DBCA8B}.Release|x64.ActiveCfg = Release|x64
 		{45AAE32B-0D5D-4494-A0A7-C170F8DBCA8B}.Release|x64.Build.0 = Release|x64
-		{78F1BB71-C716-48F5-9429-4537F1AE6319}.Debug|Any CPU.ActiveCfg = Debug|x64
-		{78F1BB71-C716-48F5-9429-4537F1AE6319}.Debug|Any CPU.Build.0 = Debug|x64
-		{78F1BB71-C716-48F5-9429-4537F1AE6319}.Debug|x64.ActiveCfg = Debug|x64
-		{78F1BB71-C716-48F5-9429-4537F1AE6319}.Debug|x64.Build.0 = Debug|x64
-		{78F1BB71-C716-48F5-9429-4537F1AE6319}.Release|Any CPU.ActiveCfg = Release|x64
-		{78F1BB71-C716-48F5-9429-4537F1AE6319}.Release|Any CPU.Build.0 = Release|x64
-		{78F1BB71-C716-48F5-9429-4537F1AE6319}.Release|x64.ActiveCfg = Release|x64
-		{78F1BB71-C716-48F5-9429-4537F1AE6319}.Release|x64.Build.0 = Release|x64
 		{A784163B-D496-38EE-BC2F-170E1E7026C6}.Debug|Any CPU.ActiveCfg = Debug|x64
 		{A784163B-D496-38EE-BC2F-170E1E7026C6}.Debug|Any CPU.Build.0 = Debug|x64
 		{A784163B-D496-38EE-BC2F-170E1E7026C6}.Debug|x64.ActiveCfg = Debug|x64

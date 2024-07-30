@@ -28,8 +28,8 @@ if(POLICY CMP0048)
 endif(POLICY CMP0048)
 
 if("${CMAKE_BUILD_TYPE}" STREQUAL "")
-    message(STATUS "CMAKE_BUILD_TYPE is unset, defaulting to Release")
-    set(CMAKE_BUILD_TYPE "Release" CACHE STRING
+    message(STATUS "CMAKE_BUILD_TYPE is unset, defaulting to Debug")
+    set(CMAKE_BUILD_TYPE "Debug" CACHE STRING
         "Choose the type of build, options are: None Debug Release RelWithDebInfo MinSizeRel RelWithAssert ...")
 endif()
 
@@ -45,13 +45,13 @@ set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 if(WIN32 OR MSVC)
   set(BUILD_SHARED_LIBS ON CACHE BOOL "" FORCE)
-  set(flags /arch:AVX512)
+  set(flags /arch:AVX512 /fp:contract /favor:AMD64)
   set(linkflags "")
   add_compile_options(
     "$<$<COMPILE_LANGUAGE:CXX>:${flags}>"
     "$<$<COMPILE_LANGUAGE:C>:${flags}>")
-  set(debug_flags /bigobj /openmp:llvm /fp:contract /favor:AMD64 /W4 /Od)
-  set(release_flags /bigobj /openmp:llvm /fp:contract /favor:AMD64 /W3 /O2 /Ob2 /Oi /Ot /GL /GF /Gy /fp:fast)
+  set(debug_flags /bigobj /openmp:llvm /W4 /Od)
+  set(release_flags /bigobj /openmp:llvm /W3 /O2 /Ob2 /Oi /Ot /GL /GF /Gy /fp:fast)
 else()
   set(flags -mrdseed -mrdrnd -mfma -mavx512f -mavx512dq -mavx512vl -mavx512bw -mavx512ifma -mavx512vbmi -mavx512vbmi2 -mavx512bitalg -mavx512vpopcntdq -mavx512vnni -mavx512bf16 -march=native -fopenmp)
   if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
@@ -83,10 +83,13 @@ MACRO(DNN_TARGET_ENABLE_CXX17 target)
     "$<$<COMPILE_LANGUAGE:C>:${linkflags}>")
 ENDMACRO()
 
+set(DNNL_LIBRARY_TYPE "STATIC" CACHE STRING "" FORCE)
 set(DNNL_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
 set(DNNL_BUILD_TESTS OFF CACHE BOOL "" FORCE)
+set(DNNL_ENABLE_CONCURRENT_EXEC ON CACHE BOOL "" FORCE)
+set(DNNL_ENABLE_PRIMITIVE_CACHE ON CACHE BOOL "" FORCE)
 if(WIN32 OR MSVC)
-  set(DNNL_ARCH_OPT_FLAGS "/arch:AVX512" CACHE STRING "" FORCE)
+  set(DNNL_ARCH_OPT_FLAGS "/arch:AVX512 /openmp:llvm" CACHE STRING "" FORCE)
 else()
   if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
     set(DNNL_ARCH_OPT_FLAGS "-O3 -ffp-contract=on -funroll-loops -ftree-vectorize -Wno-error -mfma -mavx512f -mavx512dq -mavx512vl -mavx512bw -mavx512ifma -mavx512vbmi -mavx512vbmi2 -mavx512bitalg -mavx512vpopcntdq -mavx512vnni -mavx512bf16 -march=native -fopenmp" CACHE STRING "" FORCE)
@@ -98,20 +101,10 @@ set(WITH_TURBOJPEG FALSE CACHE BOOL "" FORCE)
 set(PNG_EXECUTABLES FALSE CACHE BOOL "" FORCE)
 set(PNG_TESTS FALSE CACHE BOOL "" FORCE)
 set(PNG_BUILD_ZLIB ON CACHE BOOL "" FORCE)
-
-if(BUILD_SHARED_LIBS)
-  set(DNNL_LIBRARY_TYPE "STATIC" CACHE STRING "" FORCE)
-  set(PNG_SHARED FALSE CACHE BOOL "" FORCE)
-  set(PNG_STATIC TRUE CACHE BOOL "" FORCE)
-  set(ENABLE_SHARED FALSE CACHE BOOL "" FORCE)
-  set(ENABLE_STATIC TRUE CACHE BOOL "" FORCE)
-else()
-  set(DNNL_LIBRARY_TYPE "STATIC" CACHE STRING "" FORCE)
-  set(PNG_SHARED FALSE CACHE BOOL "" FORCE)
-  set(PNG_STATIC TRUE CACHE BOOL "" FORCE)
-  set(ENABLE_SHARED FALSE CACHE BOOL "" FORCE)
-  set(ENABLE_STATIC TRUE CACHE BOOL "" FORCE)
-endif()
+set(PNG_SHARED FALSE CACHE BOOL "" FORCE)
+set(PNG_STATIC TRUE CACHE BOOL "" FORCE)
+set(ENABLE_SHARED FALSE CACHE BOOL "" FORCE)
+set(ENABLE_STATIC TRUE CACHE BOOL "" FORCE)
 
 set(libdnn_headers
   include/Activation.h
@@ -290,7 +283,7 @@ ENDIF()
 add_library(${PROJECT_NAME} ${libdnn_sources})
 DNN_TARGET_ENABLE_CXX17(${PROJECT_NAME})
 if(BUILD_SHARED_LIBS)
-  target_compile_definitions(${PROJECT_NAME} PRIVATE DNN_EXPORTS DNN_DLL DNN_CACHE_PRIMITIVES DNN_AVX512 cimg_use_openmp cimg_use_cpp11 cimg_use_jpeg cimg_use_png cimg_use_zlib)
+  target_compile_definitions(${PROJECT_NAME} PRIVATE DNN_DLL DNN_EXPORTS DNN_CACHE_PRIMITIVES DNN_AVX512 cimg_use_openmp cimg_use_cpp11 cimg_use_jpeg cimg_use_png cimg_use_zlib)
 else()
   target_compile_definitions(${PROJECT_NAME} PRIVATE DNN_EXPORTS DNN_CACHE_PRIMITIVES DNN_AVX512 cimg_use_openmp cimg_use_cpp11 cimg_use_jpeg cimg_use_png cimg_use_zlib)
 endif()
@@ -355,7 +348,6 @@ IF(NOT TARGET zlib)
 ENDIF()
 TARGET_LINK_LIBRARIES(${PROJECT_NAME} PUBLIC zlibstatic)
 
-
 if(WIN32 OR MSVC)
   set(SKIP_INSTALL_ALL ON)
 endif()
@@ -365,11 +357,7 @@ IF(NOT TARGET png)
     "${PNG_SOURCE_DIR}"
     "${DNN_DEPENDENCIES_BINARY_DIR}/libpng")
 ENDIF()
-if(WIN32 OR MSVC AND BUILD_SHARED_LIBS)
-  TARGET_LINK_LIBRARIES(png PRIVATE zlib)
-endif()
 TARGET_LINK_LIBRARIES(${PROJECT_NAME} PUBLIC png_static)
-
 
 # ---[ Configure JPEG
 IF(NOT TARGET jpeg)
@@ -417,10 +405,8 @@ IF(DNN_BUILD_TESTS)
   ADD_TEST(batchnormactivation-smoketest batchnormactivation-smoketest)
 ENDIF()
 
-TARGET_LINK_LIBRARIES(test PUBLIC ${PROJECT_NAME} zlib)
+TARGET_LINK_LIBRARIES(test PUBLIC ${PROJECT_NAME})
 
 install(TARGETS test DESTINATION bin)
-install(TARGETS zlib LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-    PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 install(TARGETS ${PROJECT_NAME} ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR} LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
