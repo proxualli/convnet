@@ -33,8 +33,8 @@ namespace dnn
 		{
 			auto description = GetDescriptionHeader();
 
-			description.append(nwl + std::string(" Groups:") + tab + std::to_string(Groups));
-			description.append(nwl + std::string(" Group:") + dtab + std::to_string(Group));
+			description.append(nwl + std::string(" Groups: ") + dtab + std::to_string(Groups));
+			description.append(nwl + std::string(" Group:  ") + dtab + std::to_string(Group));
 
 			return description;
 		}
@@ -149,8 +149,8 @@ namespace dnn
 				else
 				{
 					if (!plain)
-					{
-						/*VecFloat In;
+					{/*
+						VecFloat In;
 						for (auto c = 0ull; c < part; c += VectorSize)
 						{
 							const auto inputOffset = InputLayer->OffsetPaddedMem(0, c + ChannelsLeft, 0, 0);
@@ -356,8 +356,8 @@ namespace dnn
 				{
 					for_i(batchSize, threads, [=](UInt n)
 					{
-						/*
-						VecFloat inputD1, D1;
+						
+						/*VecFloat inputD1, D1;
 						for (auto c = 0ull; c < part; c += VectorSize)
 						{
 							const auto inputOffset = InputLayer->OffsetPaddedMem(n, c + ChannelsLeft, 0, 0);

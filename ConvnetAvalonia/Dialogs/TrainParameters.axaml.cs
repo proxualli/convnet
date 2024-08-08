@@ -1,21 +1,12 @@
 ﻿using Avalonia.Controls;
-using Avalonia.Input;
 using Avalonia.Markup.Xaml;
-using AvaloniaEdit;
-using AvaloniaEdit.Highlighting;
-using AvaloniaEdit.Highlighting.Xshd;
-using AvaloniaEdit.TextMate;
+using Avalonia.Threading;
 using Convnet.Common;
 using Convnet.PageViewModels;
 using Convnet.Properties;
-using System;
-using System.IO;
-using System.Linq;
-using System.Xml;
+using CustomMessageBox.Avalonia;
 using Interop;
 using System.Collections.ObjectModel;
-using CustomMessageBox.Avalonia;
-using Avalonia.Threading;
 
 
 namespace Convnet.Dialogs
@@ -220,25 +211,42 @@ namespace Convnet.Dialogs
 
         private void Window_Closing(object? sender, System.ComponentModel.CancelEventArgs e)
         {
-            buttonCancel.Focus();
+            var bc = this.FindControl<Button>("buttonCancel");
+            if (bc != null)
+                bc.Focus();
         }
 
         private void TextBoxDistortions_TextChanged(object? sender, TextChangedEventArgs e)
         {
-            if (textBoxDistortions != null)
+            var tbd = this.FindControl<TextBox>("textBoxDistortions");
+            if (tbd != null)
             {
-                var enabled = (float.TryParse(textBoxDistortions.Text, out float result) && result > 0.0f);
+                var enabled = (float.TryParse(tbd.Text, out float result) && result > 0.0f);
 
-                comboBoInterpolation.IsEnabled = enabled;
-                textBoxRotation.IsEnabled = enabled;
-                textBoxScaling.IsEnabled = enabled;
+                var cbi = this.FindControl<ComboBox>("comboBoInterpolation");
+                var tbr = this.FindControl<TextBox>("textBoxRotation");
+                var tbs = this.FindControl<TextBox>("textBoxScaling");
+
+                if (cbi != null && tbr != null && tbs != null)
+                {
+                    cbi.IsEnabled = enabled;
+                    tbr.IsEnabled = enabled;
+                    tbs.IsEnabled = enabled;
+
+                    e.Handled = true;
+                }
             }
         }
 
         private void TextBoxColorCast_TextChanged(object? sender, TextChangedEventArgs e)
         {
-            if (textBoxColorAngle != null && textBoxColorCast != null)
-                textBoxColorAngle.IsEnabled = (float.TryParse(textBoxColorCast.Text, out float result) && result > 0.0f);
+            var tbca = this.FindControl<TextBox>("textBoxColorAngle");
+            var tbcc = this.FindControl<TextBox>("textBoxColorCast");
+            if (tbca != null && tbcc != null)
+            {
+                tbca.IsEnabled = (float.TryParse(tbcc.Text, out float result) && result > 0.0f);
+                e.Handled = true;
+            }
         }
 
         private void CheckBoxSGDR_Checked(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
@@ -248,18 +256,30 @@ namespace Convnet.Dialogs
 
         private void CheckBoxStrategy_Checked(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
         {
-            var useStrategy = CheckBoxStrategy.IsChecked.HasValue && CheckBoxStrategy.IsChecked.Value;
-            tpvm.Model.SetUseTrainingStrategy(useStrategy);
-            Settings.Default.UseTrainingStrategy = useStrategy;
-            Settings.Default.Save();
+            var cbs = this.FindControl<CheckBox>("CheckBoxStrategy");
+            if (cbs != null)
+            {
+                var useStrategy = cbs.IsChecked.HasValue && cbs.IsChecked.Value;
+                tpvm.Model.SetUseTrainingStrategy(useStrategy);
+                Settings.Default.UseTrainingStrategy = useStrategy;
+                Settings.Default.Save();
+
+                e.Handled = true;
+            }
         }
 
         private void CheckBoxStrategy_Unchecked(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
         {
-            var useStrategy = CheckBoxStrategy.IsChecked.HasValue && CheckBoxStrategy.IsChecked.Value;
-            tpvm.Model.SetUseTrainingStrategy(useStrategy);
-            Settings.Default.UseTrainingStrategy = useStrategy;
-            Settings.Default.Save();
+            var cbs = this.FindControl<CheckBox>("CheckBoxStrategy");
+            if (cbs != null)
+            {
+                var useStrategy = cbs.IsChecked.HasValue && cbs.IsChecked.Value;
+                tpvm.Model.SetUseTrainingStrategy(useStrategy);
+                Settings.Default.UseTrainingStrategy = useStrategy;
+                Settings.Default.Save();
+
+                e.Handled = true;
+            }
         }
 
         private void ChangeSGDR()

@@ -62,8 +62,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "dnn", "dnn\build\dnn.vcxpro
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "csv", "dnn\build\deps\csv-parser\include\internal\csv.vcxproj", "{D7EB3CE3-2880-376B-B637-0ABE1D1B84A0}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ZERO_CHECK", "dnn\build\ZERO_CHECK.vcxproj", "{39D1803F-93D4-3850-A86E-B6ADE68CC24E}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -459,22 +457,6 @@ Global
 		{D7EB3CE3-2880-376B-B637-0ABE1D1B84A0}.RelWithDebInfo|Any CPU.Build.0 = RelWithDebInfo|x64
 		{D7EB3CE3-2880-376B-B637-0ABE1D1B84A0}.RelWithDebInfo|x64.ActiveCfg = RelWithDebInfo|x64
 		{D7EB3CE3-2880-376B-B637-0ABE1D1B84A0}.RelWithDebInfo|x64.Build.0 = RelWithDebInfo|x64
-		{39D1803F-93D4-3850-A86E-B6ADE68CC24E}.Debug|Any CPU.ActiveCfg = Debug|x64
-		{39D1803F-93D4-3850-A86E-B6ADE68CC24E}.Debug|Any CPU.Build.0 = Debug|x64
-		{39D1803F-93D4-3850-A86E-B6ADE68CC24E}.Debug|x64.ActiveCfg = Debug|x64
-		{39D1803F-93D4-3850-A86E-B6ADE68CC24E}.Debug|x64.Build.0 = Debug|x64
-		{39D1803F-93D4-3850-A86E-B6ADE68CC24E}.MinSizeRel|Any CPU.ActiveCfg = MinSizeRel|x64
-		{39D1803F-93D4-3850-A86E-B6ADE68CC24E}.MinSizeRel|Any CPU.Build.0 = MinSizeRel|x64
-		{39D1803F-93D4-3850-A86E-B6ADE68CC24E}.MinSizeRel|x64.ActiveCfg = MinSizeRel|x64
-		{39D1803F-93D4-3850-A86E-B6ADE68CC24E}.MinSizeRel|x64.Build.0 = MinSizeRel|x64
-		{39D1803F-93D4-3850-A86E-B6ADE68CC24E}.Release|Any CPU.ActiveCfg = Release|x64
-		{39D1803F-93D4-3850-A86E-B6ADE68CC24E}.Release|Any CPU.Build.0 = Release|x64
-		{39D1803F-93D4-3850-A86E-B6ADE68CC24E}.Release|x64.ActiveCfg = Release|x64
-		{39D1803F-93D4-3850-A86E-B6ADE68CC24E}.Release|x64.Build.0 = Release|x64
-		{39D1803F-93D4-3850-A86E-B6ADE68CC24E}.RelWithDebInfo|Any CPU.ActiveCfg = RelWithDebInfo|x64
-		{39D1803F-93D4-3850-A86E-B6ADE68CC24E}.RelWithDebInfo|Any CPU.Build.0 = RelWithDebInfo|x64
-		{39D1803F-93D4-3850-A86E-B6ADE68CC24E}.RelWithDebInfo|x64.ActiveCfg = RelWithDebInfo|x64
-		{39D1803F-93D4-3850-A86E-B6ADE68CC24E}.RelWithDebInfo|x64.Build.0 = RelWithDebInfo|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
