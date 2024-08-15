@@ -1,7 +1,6 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Documents;
-using Avalonia.Styling;
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -10,15 +9,17 @@ using System.IO;
 
 namespace Convnet.Common
 {
-    public class FormattedTextBlock : TextBlock, INotifyPropertyChanged, IStyleable
+    public class FormattedTextBlock : TextBlock, INotifyPropertyChanged
     {
-        Type IStyleable.StyleKey => typeof(TextBlock);
-
+        protected override Type StyleKeyOverride => typeof(TextBlock);
+       
         public new event PropertyChangedEventHandler? PropertyChanged;
+        
+        private string formattedText = string.Empty;
+        
+        //public static readonly StyledProperty<string> FormattedTextProperty = AvaloniaProperty.Register<FormattedTextBlock, string>(nameof(FormattedText), defaultValue: string.Empty, false, Avalonia.Data.BindingMode.OwoWay);
 
-        //public static readonly StyledProperty<string> FormattedTextProperty = AvaloniaProperty.Register<FormattedTextBlock, string>(nameof(FormattedText), defaultValue: string.Empty, false, Avalonia.Data.BindingMode.TwoWay);
-
-        public static readonly DirectProperty<FormattedTextBlock, string?> FormattedTextProperty = AvaloniaProperty.RegisterDirect<FormattedTextBlock, string?>(
+        public static readonly DirectProperty<FormattedTextBlock, string> FormattedTextProperty = AvaloniaProperty.RegisterDirect<FormattedTextBlock, string>(
           nameof(FormattedText),
           o => o.FormattedText,
           (o, v) =>
@@ -27,17 +28,17 @@ namespace Convnet.Common
                   o.FormattedText = v;
           },
           string.Empty,
-          Avalonia.Data.BindingMode.OneWay);
+          Avalonia.Data.BindingMode.OneWay,
+          false);
 
-        public string? FormattedText
+        public string FormattedText
         {
-            get { return base.Text; }
+            get { return formattedText; }
             set
             {
-                if (value != base.Text)
+                if (value != string.Empty)
                 {
-                    string? formattedText = (string?)value ?? string.Empty;
-                    formattedText = string.Format("<Span xml:space=\"preserve\" xmlns=\"https://github.com/avaloniaui\" xmlns:x=\"http://schemas.microsoft.com/winfx/2006/xaml\">{0}</Span>", formattedText);
+                    formattedText = string.Format("<Span xml:space=\"preserve\" xmlns=\"https://github.com/avaloniaui\" xmlns:x=\"http://schemas.microsoft.com/winfx/2006/xaml\">{0}</Span>", value);
 
                     using (TextReader sr = new StringReader(formattedText))
                     {
@@ -48,20 +49,15 @@ namespace Convnet.Common
                         }
                     }
 
-                    //base.Text = value;
-                    //SetValue<string?>(FormattedTextProperty, value);
                     OnPropertyChanged(nameof(FormattedText));
-                    //OnPropertyChanged(nameof(Text));
+                    OnPropertyChanged(nameof(Text));
+                    //InvalidateVisual();
                 }
             }
         }
-
         public FormattedTextBlock()
         {
-            
         }
-  
-
 
         #region INotifyPropertyChanged Members
 

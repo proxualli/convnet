@@ -106,10 +106,6 @@
 #define MAGIC_ENUM_RANGE_MAX 255
 #include "magic_enum/magic_enum.hpp"
 
-// #define NAMEOF_ENUM_RANGE_MIN 0
-// #define NAMEOF_ENUM_RANGE_MAX 255
-// #include "nameof.hpp"
-
 #include "bitsery/bitsery.h"
 #include "bitsery/adapter/stream.h"
 #include "bitsery/traits/string.h"

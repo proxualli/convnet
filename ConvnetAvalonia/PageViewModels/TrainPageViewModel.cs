@@ -244,23 +244,26 @@ namespace Convnet.PageViewModels
                 costLayersComboBox.Items.Add(item);
             }
             ToolTip.SetTip(costLayersComboBox, "Cost Layer");
-            costLayersComboBox.SelectedIndex = (int)Model.CostIndex;
+            if (Model != null) 
+                costLayersComboBox.SelectedIndex = (int)Model.CostIndex;
             selectedCostIndex = costLayersComboBox.SelectedIndex;
             costLayersComboBox.SelectionChanged += CostLayersComboBox_SelectionChanged;
-            costLayersComboBox.IsVisible = Model.CostLayerCount > 1;
+            if (Model != null)
+                costLayersComboBox.IsVisible = Model.CostLayerCount > 1;
 
             layersComboBox = new ComboBox { Name = "ComboBoxLayers" };
             layersComboBox.DataContext = Model;
-            layersComboBox.ItemsSource = Model.Layers;
-            var template = new FuncDataTemplate<DNNLayerInfo>((value, namescope) => new TextBlock { [!TextBlock.TextProperty] = new Binding("Name"), });
-            layersComboBox.ItemTemplate = template;
+            if (Model != null)
+                layersComboBox.ItemsSource = Model.Layers;
+            layersComboBox.ItemTemplate = new FuncDataTemplate<DNNLayerInfo>((value, namescope) => new TextBlock { [!TextBlock.TextProperty] = new Binding("Name"), }); ;
             //layersComboBox.ItemTemplate = GetLockTemplate();
             //layersComboBox.SourceUpdated += LayersComboBox_SourceUpdated;
             //layersComboBox.IsSynchronizedWithCurrentItem = true;
             layersComboBox.SelectedIndex = Settings.Default.SelectedLayer;
             layersComboBox.SelectionChanged += LayersComboBox_SelectionChanged;
             ToolTip.SetTip(layersComboBox, "Layer");
-            Model.SelectedIndex = Settings.Default.SelectedLayer;
+            if (Model != null)
+                Model.SelectedIndex = Settings.Default.SelectedLayer;
 
             disableLockingCheckBox = new CheckBox
             {
@@ -276,7 +279,7 @@ namespace Convnet.PageViewModels
                 Name = "UnlockAllButton",
                 Content = ApplicationHelper.LoadFromResource("Unlock.png"),
                 ClickMode = ClickMode.Release,
-                IsVisible = !Settings.Default.DisableLocking && Model.Layers[Settings.Default.SelectedLayer].Lockable
+                IsVisible = !Settings.Default.DisableLocking && Model != null && Model.Layers[Settings.Default.SelectedLayer].Lockable
             };
             ToolTip.SetTip(unlockAllButton, "Unlock All");
             unlockAllButton.Click += UnlockAll_Click;
@@ -286,7 +289,7 @@ namespace Convnet.PageViewModels
                 Name = "LockAllButton",
                 Content = ApplicationHelper.LoadFromResource("Lock.png"),
                 ClickMode = ClickMode.Release,
-                IsVisible = !Settings.Default.DisableLocking && Model.Layers[Settings.Default.SelectedLayer].Lockable
+                IsVisible = !Settings.Default.DisableLocking && Model != null && Model.Layers[Settings.Default.SelectedLayer].Lockable
             };
             ToolTip.SetTip(lockAllButton, "Lock All");
             lockAllButton.Click += LockAll_Click;
@@ -328,7 +331,8 @@ namespace Convnet.PageViewModels
             {
                 Source = this,
                 Path = "ShowTrainingPlot",
-                Mode = BindingMode.TwoWay                
+                Mode = BindingMode.TwoWay,
+                UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged
             };
             trainingPlotCheckBox.Bind(CheckBox.IsCheckedProperty, tpBinding);
             trainingPlotCheckBox.IsCheckedChanged += TrainingPlotCheckBox_IsCheckedChanged;
@@ -344,7 +348,7 @@ namespace Convnet.PageViewModels
                 Source = this,
                 Path = "ShowTrainingPlot",
                 Mode = BindingMode.TwoWay,
-                Converter = new Converters.BooleanToVisibilityConverter(),
+                UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged
             };
             plotTypeComboBox.Bind(ComboBox.IsVisibleProperty, binding);
             plotTypeComboBox.SelectionChanged += PlotTypeComboBox_SelectionChanged;
@@ -354,7 +358,8 @@ namespace Convnet.PageViewModels
                 Path = "CurrentPlotType",
                 Mode = BindingMode.TwoWay,
                 Converter = new Converters.EnumConverter(),
-                ConverterParameter = typeof(PlotType)
+                ConverterParameter = typeof(PlotType),
+                UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged
             };
             plotTypeComboBox.Bind(ComboBox.SelectedValueProperty, binding);
 
@@ -377,7 +382,8 @@ namespace Convnet.PageViewModels
                 Source = this,
                 Path = "ShowTrainingPlot",
                 Mode = BindingMode.TwoWay,
-                Converter = new Converters.InverseBooleanToVisibilityConverter()
+                Converter = new Converters.InverseBooleanToVisibilityConverter(),
+                UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged
             };
             pixelSizeSlider.Bind(Slider.IsVisibleProperty, binding);
             pixelSizeSlider.ValueChanged += PixelSizeSlider_ValueChanged;
@@ -454,7 +460,7 @@ namespace Convnet.PageViewModels
             showSample = false;
             showWeights = false;
             showWeightsSnapshot = false;
-            
+
             gotoEpoch = Settings.Default.GotoEpoch;
             showTrainingPlot = Settings.Default.ShowTrainingPlot;
             currentPlotType = (PlotType)Settings.Default.PlotType;
@@ -477,14 +483,18 @@ namespace Convnet.PageViewModels
                 };
                 costLayersComboBox.Items.Add(item);
             }
-            costLayersComboBox.SelectedIndex = (int)Model.CostIndex;
-            selectedCostIndex = costLayersComboBox.SelectedIndex;
-            costLayersComboBox.IsEnabled = Model.CostLayerCount > 1;
-            costLayersComboBox.IsVisible = Model.CostLayerCount > 1;
 
-            layersComboBox.ItemsSource = Model.Layers;
-            layersComboBox.SelectedIndex = 0;
-            Model.SelectedIndex = 0;
+            if (Model != null)
+            { 
+                costLayersComboBox.SelectedIndex = (int)Model.CostIndex;
+                selectedCostIndex = costLayersComboBox.SelectedIndex;
+                costLayersComboBox.IsEnabled = Model.CostLayerCount > 1;
+                costLayersComboBox.IsVisible = Model.CostLayerCount > 1;
+                layersComboBox.ItemsSource = Model.Layers;
+                layersComboBox.SelectedIndex = 0;
+                Model.SelectedIndex = 0;
+            }
+                       
             Settings.Default.SelectedLayer = 0;
             Settings.Default.Save();
             dataProviderComboBox.SelectedIndex = (int)Dataset;
@@ -516,11 +526,13 @@ namespace Convnet.PageViewModels
                         DNNTrainingResult item = new DNNTrainingResult(Cycle, Epoch, cost.GroupIndex, c, cost.Name, N, D, H, W, PadD, PadH, PadW, (DNNOptimizers)Optimizer, Rate, Eps, Momentum, Beta2, Gamma, L2Penalty, Dropout, InputDropout, Cutout, CutMix, AutoAugment, HorizontalFlip, VerticalFlip, ColorCast, ColorAngle, Distortion, (DNNInterpolations)Interpolation, Scaling, Rotation, cost.AvgTrainLoss, cost.TrainErrors, cost.TrainErrorPercentage, cost.TrainAccuracy, cost.AvgTestLoss, cost.TestErrors, cost.TestErrorPercentage, cost.TestAccuracy, (Int64)span.TotalMilliseconds, span);
                         TrainingLog.Add(item);
                     }
-                    SelectedIndex = TrainingLog.Count - 1;  
+                    SelectedIndex = TrainingLog.Count - 1;
                 }
             }, DispatcherPriority.Send);
 
             RefreshTrainingPlot();
+
+            GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, true, true);
         }
 
         private void TrainProgress(DNNOptimizers Optim, UInt BatchSize, UInt Cycle, UInt TotalCycles, UInt Epoch, UInt TotalEpochs, bool HorizontalFlip, bool VerticalFlip, Float InputDropout, Float Cutout, bool CutMix, Float AutoAugment, Float ColorCast, UInt ColorAngle, Float Distortion, DNNInterpolations Interpolation, Float Scaling, Float Rotation, UInt SampleIndex, Float Rate, Float Momentum, Float Beta2, Float Gamma, Float L2Penalty, Float Dropout, Float AvgTrainLoss, Float TrainErrorPercentage, Float TrainAccuracy, UInt TrainErrors, Float AvgTestLoss, Float TestErrorPercentage, Float TestAccuracy, UInt TestErrors, DNNStates State, DNNTaskStates TaskState)
@@ -581,10 +593,13 @@ namespace Convnet.PageViewModels
 
                     case DNNStates.Testing:
                         {
-                            sb.Append("<Span><Bold>Testing</Bold></Span><LineBreak/>");
-                            sb.Append("<Span>");
-                            sb.AppendFormat(" Sample:\t\t  {0:G}\n Loss:\t\t\t{1:N7}\n Errors:\t\t  {2:G}\n Error:\t\t   {3:N2} %\n Accuracy:\t\t{4:N2} %", SampleIndex, AvgTestLoss, TestErrors, TestErrorPercentage, (Float)100 - TestErrorPercentage);
-                            sb.Append("</Span>");
+                            if (Model != null)
+                            {
+                                sb.Append("<Span><Bold>Testing</Bold></Span><LineBreak/>");
+                                sb.Append("<Span>");
+                                sb.AppendFormat(" Sample:\t\t\t{0:G}\n Cycle:\t\t\t {1}/{2}\n Epoch:\t\t\t {3}/{4}\n Batch Size:\t\t{5:G}\n Loss:\t\t\t  {6:N7}\n Errors:\t\t\t{7:G}\n Error:\t\t\t {8:N2} %\n Accuracy:\t\t  {9:N2} %", SampleIndex, Cycle, TotalCycles, Epoch, TotalEpochs, Model.BatchSize, AvgTestLoss, TestErrors, TestErrorPercentage, (Float)100 - TestErrorPercentage);
+                                sb.Append("</Span>");
+                            }
                         }
                         break;
 
@@ -762,7 +777,32 @@ namespace Convnet.PageViewModels
             if (Model != null)
                 Model.BlockSize = (ulong)temp;
 
-            LayersComboBox_SelectionChanged(this, null);
+            Dispatcher.UIThread.Invoke(() =>
+            {
+                if (Model != null && layersComboBox.SelectedIndex >= 0)
+                {
+                    var index = layersComboBox.SelectedIndex;
+                    if (index < (int)Model.LayerCount)
+                    {
+                        Settings.Default.SelectedLayer = index;
+                        Settings.Default.Save();
+                        Model.SelectedIndex = index;
+
+                        ShowSample = Model.TaskState == DNNTaskStates.Running;
+                        ShowWeights = Model.Layers[index].WeightCount > 0 || Settings.Default.Timings;
+                        ShowWeightsSnapshot = (Model.Layers[index].IsNormLayer && Model.Layers[index].Scaling) || Model.Layers[index].LayerType == DNNLayerTypes.PartialDepthwiseConvolution || Model.Layers[index].LayerType == DNNLayerTypes.DepthwiseConvolution || Model.Layers[index].LayerType == DNNLayerTypes.ConvolutionTranspose || Model.Layers[index].LayerType == DNNLayerTypes.Convolution || Model.Layers[index].LayerType == DNNLayerTypes.Dense || (Model.Layers[index].LayerType == DNNLayerTypes.Activation && Model.Layers[index].WeightCount > 0);
+
+                        if (index == 0)
+                            Model.UpdateLayerInfo((ulong)index, ShowSample);
+                        else
+                            Model.UpdateLayerInfo((ulong)index, ShowWeightsSnapshot);
+
+                        WeightsSnapshotX = Model.Layers[index].WeightsSnapshotX;
+                        WeightsSnapshotY = Model.Layers[index].WeightsSnapshotY;
+                        WeightsSnapshot = Model.Layers[index].WeightsSnapshot;
+                    }
+                }
+            }, DispatcherPriority.Render);
         }
 
         private void TrainingPlotCheckBox_IsCheckedChanged(object? sender, RoutedEventArgs e)
@@ -780,7 +820,7 @@ namespace Convnet.PageViewModels
             RefreshTrainingPlot();
         }
                
-        public void CostLayersComboBox_SelectionChanged(object? sender, SelectionChangedEventArgs e)
+        public void CostLayersComboBox_SelectionChanged(object? sender, SelectionChangedEventArgs? e)
         {
             if (costLayersComboBox.SelectedIndex >= 0)
             {
@@ -1207,71 +1247,74 @@ namespace Convnet.PageViewModels
             {
                 if (Model?.TaskState == DNNTaskStates.Running)
                 {
-
                     await MessageBox.Show("You must stop testing first.", "Information", MessageBoxButtons.OK);
-
                     return;
                 }
 
                 if (Model?.TaskState == DNNTaskStates.Stopped)
                 {
-                    var dialog = new TrainParameters
+                    if (App.MainWindow != null)
                     {
-                        Model = this.Model,
-                        Path = DefinitionsDirectory,
-                        IsEnabled = true,
-                        Rate = TrainRate,
-                        tpvm = this,
-                    };
-
-                    await dialog.ShowDialog(App.MainWindow);
-
-                    if (dialog.DialogResult)
-                    {
-                        TrainRate = dialog.Rate;
-
-                        if (SGDR)
-                            Model.AddTrainingRateSGDR(TrainRate, true, GotoEpoch, GotoCycle, Model.TrainingSamples);
-                        else
-                            Model.AddTrainingRate(TrainRate, true, GotoEpoch, Model.TrainingSamples);
-
-                        Model.SetOptimizer(TrainRate.Optimizer);
-                        Model.Optimizer = TrainRate.Optimizer;
-                        Optimizer = TrainRate.Optimizer;
-
-                        EpochDuration = TimeSpan.Zero;
-
-                        RefreshTimer = new Timer(1000 * Settings.Default.RefreshInterval);
-                        RefreshTimer.Elapsed += new ElapsedEventHandler(RefreshTimer_Elapsed);
-
-                        Model.SetCostIndex((uint)SelectedCostIndex);
-                        Model.Start(true);
-                        RefreshTimer.Start();
-                        CommandToolBar[0].IsVisible = false;
-                        CommandToolBar[1].IsVisible = true;
-                        CommandToolBar[2].IsVisible = true;
-
-                        CommandToolBar[6].IsVisible = false;
-                        CommandToolBar[7].IsVisible = true;
-                        CommandToolBar[8].IsVisible = false;
-
-                        CommandToolBar[17].IsVisible = false;
-                        CommandToolBar[18].IsVisible = false;
-                        CommandToolBar[19].IsVisible = false;
-                        CommandToolBar[20].IsVisible = false;
-                        CommandToolBar[21].IsVisible = false;
-
-                        if (Model.Layers[layersComboBox.SelectedIndex].WeightCount > 0)
+                        var dialog = new TrainParameters
                         {
-                            if ((Model.Layers[layersComboBox.SelectedIndex].IsNormLayer && Model.Layers[layersComboBox.SelectedIndex].Scaling) || !Model.Layers[layersComboBox.SelectedIndex].IsNormLayer)
-                            {
-                                CommandToolBar[17].IsVisible = !Settings.Default.DisableLocking;
-                                CommandToolBar[18].IsVisible = !Settings.Default.DisableLocking;
-                                CommandToolBar[20].IsVisible = true;
-                            }
-                        }
+                            Model = this.Model,
+                            Path = DefinitionsDirectory,
+                            IsEnabled = true,
+                            Rate = TrainRate,
+                            tpvm = this,
+                        };
 
-                        ShowProgress = true;
+                        await dialog.ShowDialog(App.MainWindow);
+
+                        if (dialog.DialogResult)
+                        {
+                            GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, true, true);
+
+                            TrainRate = dialog.Rate;
+
+                            if (SGDR)
+                                Model.AddTrainingRateSGDR(TrainRate, true, GotoEpoch, GotoCycle, Model.TrainingSamples);
+                            else
+                                Model.AddTrainingRate(TrainRate, true, GotoEpoch, Model.TrainingSamples);
+
+                            Model.SetOptimizer(TrainRate.Optimizer);
+                            Model.Optimizer = TrainRate.Optimizer;
+                            Optimizer = TrainRate.Optimizer;
+
+                            EpochDuration = TimeSpan.Zero;
+
+                            RefreshTimer = new Timer(1000 * Settings.Default.RefreshInterval);
+                            RefreshTimer.Elapsed += new ElapsedEventHandler(RefreshTimer_Elapsed);
+
+                            Model.SetCostIndex((uint)SelectedCostIndex);
+                            Model.Start(true);
+                            RefreshTimer.Start();
+                            CommandToolBar[0].IsVisible = false;
+                            CommandToolBar[1].IsVisible = true;
+                            CommandToolBar[2].IsVisible = true;
+
+                            CommandToolBar[6].IsVisible = false;
+                            CommandToolBar[7].IsVisible = true;
+                            CommandToolBar[8].IsVisible = false;
+
+                            CommandToolBar[17].IsVisible = false;
+                            CommandToolBar[18].IsVisible = false;
+                            CommandToolBar[19].IsVisible = false;
+                            CommandToolBar[20].IsVisible = false;
+                            CommandToolBar[21].IsVisible = false;
+
+                            if (Model.Layers[layersComboBox.SelectedIndex].WeightCount > 0)
+                            {
+                                if ((Model.Layers[layersComboBox.SelectedIndex].IsNormLayer && Model.Layers[layersComboBox.SelectedIndex].Scaling) || !Model.Layers[layersComboBox.SelectedIndex].IsNormLayer)
+                                {
+                                    CommandToolBar[17].IsVisible = !Settings.Default.DisableLocking;
+                                    CommandToolBar[18].IsVisible = !Settings.Default.DisableLocking;
+                                    CommandToolBar[20].IsVisible = true;
+                                }
+                            }
+
+                            ShowProgress = true;
+                        }
                     }
                 }
                 else
@@ -1621,13 +1664,13 @@ namespace Convnet.PageViewModels
             }
         }
 
-        public void RefreshButtonClick(object? sender, RoutedEventArgs e)
+        public void RefreshButtonClick(object? sender, RoutedEventArgs? e)
         {
             LayersComboBox_SelectionChanged(sender, null);
             RefreshTrainingPlot();
         }
 
-        public void LayersComboBox_SelectionChanged(object? sender, SelectionChangedEventArgs e)
+        public void LayersComboBox_SelectionChanged(object? sender, SelectionChangedEventArgs? e)
         {
             Dispatcher.UIThread.Invoke(() =>
             {
@@ -1645,32 +1688,61 @@ namespace Convnet.PageViewModels
                         ShowWeightsSnapshot = (Model.Layers[index].IsNormLayer && Model.Layers[index].Scaling) || Model.Layers[index].LayerType == DNNLayerTypes.PartialDepthwiseConvolution || Model.Layers[index].LayerType == DNNLayerTypes.DepthwiseConvolution || Model.Layers[index].LayerType == DNNLayerTypes.ConvolutionTranspose || Model.Layers[index].LayerType == DNNLayerTypes.Convolution || Model.Layers[index].LayerType == DNNLayerTypes.Dense || (Model.Layers[index].LayerType == DNNLayerTypes.Activation && Model.Layers[index].WeightCount > 0);
 
                         if (index == 0)
-                            Model.UpdateLayerInfo((ulong)index, ShowSample);
+                            Model.UpdateLayerInfo((UInt)index, ShowSample);
                         else
-                            Model.UpdateLayerInfo((ulong)index, ShowWeightsSnapshot);
+                            Model.UpdateLayerInfo((UInt)index, ShowWeightsSnapshot);
 
                         if (ShowSample)
                         {
                             if (index != 0)
                                 Model.UpdateLayerInfo(0ul, ShowSample);
+
                             InputSnapshot = Model.InputSnapshot;
                             Label = Model.Label;
                         }
-
 
                         CommandToolBar[17].IsVisible = !Settings.Default.DisableLocking;
                         CommandToolBar[18].IsVisible = !Settings.Default.DisableLocking;
                         CommandToolBar[19].IsVisible = Model.Layers[index].Lockable && Model.TaskState == DNNTaskStates.Stopped;
                         CommandToolBar[20].IsVisible = Model.Layers[index].Lockable;
                         CommandToolBar[21].IsVisible = Model.Layers[index].Lockable && Model.TaskState == DNNTaskStates.Stopped;
-
-                        LayerInfo = "<Span><Bold>Layer</Bold></Span><LineBreak/>";
-                        LayerInfo += "<Span>" + Model.Layers[index].Description + "</Span><LineBreak/>";
-
+                        
                         var sb = new StringBuilder();
-                        weightsMinMax = String.Empty;
 
-                        weightsMinMax += "<Span><Bold>Neurons</Bold></Span><LineBreak/>";
+
+                        layerInfo = "<Span><Bold>Layer</Bold></Span><LineBreak/><Span>" + Model.Layers[index].Description + "</Span><LineBreak/>";
+
+                        if (Settings.Default.Timings)
+                        {
+                            if (Model.State == DNNStates.Training)
+                            {
+                                layerInfo += "<Span><Bold>Timings</Bold></Span><LineBreak/>";
+                                sb.Length = 0;
+                                sb.AppendFormat(" fprop:  \t\t{0:D}/{1:D} ms", (int)Model.Layers[index].FPropLayerTime, (int)Model.fpropTime);
+                                layerInfo += "<Span>" + sb.ToString() + "</Span><LineBreak/>";
+                                sb.Length = 0;
+                                sb.AppendFormat(" bprop:  \t\t{0:D}/{1:D} ms", (int)Model.Layers[index].BPropLayerTime, (int)Model.bpropTime);
+                                layerInfo += "<Span>" + sb.ToString() + "</Span><LineBreak/>";
+                                if (ShowWeightsSnapshot)
+                                {
+                                    sb.Length = 0;
+                                    sb.AppendFormat(" update: \t\t{0:D}/{1:D} ms", (int)Model.Layers[index].UpdateLayerTime, (int)Model.updateTime);
+                                    layerInfo += "<Span>" + sb.ToString() + "</Span>";
+                                }
+                            }
+                            else if (Model.State == DNNStates.Testing)
+                            {
+                                layerInfo += "<Span><Bold>Timings</Bold></Span><LineBreak/>";
+                                sb.Length = 0;
+                                sb.AppendFormat(" fprop:  \t\t{0:D}/{1:D} ms", (int)Model.Layers[index].FPropLayerTime, (int)Model.fpropTime);
+                                layerInfo += "<Span>" + sb.ToString() + "</Span>";
+                            }
+                        }
+
+                        this.RaisePropertyChanged(nameof(LayerInfo));
+
+
+                        weightsMinMax = "<Span><Bold>Neurons</Bold></Span><LineBreak/>";
 
                         sb.Length = 0;
                         if (Model.Layers[index].NeuronsStats.StdDev >= 0.0f)
@@ -1702,6 +1774,10 @@ namespace Convnet.PageViewModels
 
                         if (ShowWeightsSnapshot)
                         {
+                            WeightsSnapshotX = Model.Layers[index].WeightsSnapshotX;
+                            WeightsSnapshotY = Model.Layers[index].WeightsSnapshotY;
+                            WeightsSnapshot = Model.Layers[index].WeightsSnapshot;
+
                             weightsMinMax += "<Span><Bold>Weights</Bold></Span><LineBreak/>";
 
                             sb.Length = 0;
@@ -1772,45 +1848,15 @@ namespace Convnet.PageViewModels
                                     weightsMinMax += "<Span>" + sb.ToString() + "</Span>";
                             }
                         }
+
                         this.RaisePropertyChanged(nameof(WeightsMinMax));
 
-                        if (Settings.Default.Timings)
-                        {
-                            LayerInfo += "<Span><Bold>Timings</Bold></Span><LineBreak/>";
 
-                            if (Model.State == DNNStates.Training)
-                            {
-                                sb.Length = 0;
-                                sb.AppendFormat(" fprop:  \t\t{0:D}/{1:D} ms", (int)Model.Layers[index].FPropLayerTime, (int)Model.fpropTime);
-                                LayerInfo += "<Span>" + sb.ToString() + "</Span><LineBreak/>";
-                                sb.Length = 0;
-                                sb.AppendFormat(" bprop:  \t\t{0:D}/{1:D} ms", (int)Model.Layers[index].BPropLayerTime, (int)Model.bpropTime);
-                                LayerInfo += "<Span>" + sb.ToString() + "</Span><LineBreak/>";
-                                if (ShowWeightsSnapshot)
-                                {
-                                    sb.Length = 0;
-                                    sb.AppendFormat(" update: \t\t{0:D}/{1:D} ms", (int)Model.Layers[index].UpdateLayerTime, (int)Model.updateTime);
-                                    LayerInfo += "<Span>" + sb.ToString() + "</Span>";
-                                }
-                            }
-                            else
-                            {
-                                sb.Length = 0;
-                                sb.AppendFormat(" fprop:  \t\t{0:D}/{1:D} ms", (int)Model.Layers[index].FPropLayerTime, (int)Model.fpropTime);
-                                LayerInfo += "<Span>" + sb.ToString() + "</Span>";
-                            }
-                        }
-
-                        WeightsSnapshotX = Model.Layers[index].WeightsSnapshotX;
-                        WeightsSnapshotY = Model.Layers[index].WeightsSnapshotY;
-                        WeightsSnapshot = Model.Layers[index].WeightsSnapshot;
-
-                        layersComboBox.ItemsSource = Model.Layers;
+                        if (e != null)
+                            e.Handled = true;
                     }
                 }
             }, DispatcherPriority.Render);
-
-            //   RefreshTrainingPlot();
         }
     }
 }
