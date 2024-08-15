@@ -400,7 +400,7 @@ namespace dnn
 					auto mapping = 0ull;
 					for (auto c = 0ull; c < C; c++)
 					{
-						const auto mapOffset = 1 + (c * (KernelH + 1));
+						const auto mapOffset = c * pitchH + border;
 						for (auto inputC = 0ull; inputC < 3; inputC++)
 						{
 							const auto channelOffset = inputC * size;
@@ -408,27 +408,26 @@ namespace dnn
 
 							for (auto y = 0ull; y < KernelW; y++)
 								for (auto x = 0ull; x < KernelH; x++)
-									image[x + mapOffset + ((1 + y) * width) + channelOffset] = GetColorFromRange<Float>(rangeWeights, WeightsStats.Min, weights[x + (y * KernelW) + mapIndex]);
-
+									image[x + mapOffset + ((border + y) * width) + channelOffset] = GetColorFromRange<Float>(rangeWeights, WeightsStats.Min, weights[x + (y * KernelW) + mapIndex]);
+								
 							if (HasBias)
-								image[mapOffset + ((2 + KernelW) * width) + channelOffset] = GetColorFromRange<Float>(rangeBiases, BiasesStats.Min, Biases[c]);
+								image[mapOffset + ((1ull + pitchW) * width) + channelOffset] = GetColorFromRange<Float>(rangeBiases, BiasesStats.Min, Biases[c]);
 
 							mapping++;
 						}
 					}
 
 					auto temp = ByteArray(totalSize);
-					mapping = 0ull;
 					for (auto i = 0ull; i < size; i++)
 					{
-						temp[mapping++] = image[i];
-						temp[mapping++] = image[i + size];
-						temp[mapping++] = image[i + (size * 2)];
+						temp[0 + (3 * i)] = image[i + (0 * size)];
+						temp[1 + (3 * i)] = image[i + (1 * size)];
+						temp[2 + (3 * i)] = image[i + (2 * size)];
 					}
-					for (auto i = 0ull; i < totalSize; i++)
-						image[i] = temp[i];
+					
+					image.release();
 
-					return image;
+					return temp;
 				}
 			}
 		}
