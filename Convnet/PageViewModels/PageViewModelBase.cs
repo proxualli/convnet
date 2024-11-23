@@ -15,7 +15,7 @@ namespace Convnet.PageViewModels
 {
     public abstract class PageViewModelBase : INotifyPropertyChanged
     {
-        const string Framework = "net8.0";
+        const string Framework = "net9.0";
 #if DEBUG
         const string Mode = "Debug";
 #else
