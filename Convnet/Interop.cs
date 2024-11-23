@@ -4009,27 +4009,27 @@ namespace Interop
                                                 for (UInt hw = 0; hw < area; hw++)
                                                     img[(hw * channels) + channel] = pictureLoaded ? FloatSaturate((snapshot[hw + channel * area] + (Float)(2)) * 64) : FloatSaturate(128);
 
-                                        var newImg = new Byte[totalSize];
-                                        if (color)
-                                        {
-                                            for (var i = 0ul; i < area; i++)
-                                            {
-                                                newImg[(i * 4) + 0] = img[(i * 3) + 0];  // R
-                                                newImg[(i * 4) + 1] = img[(i * 3) + 1];  // G
-                                                newImg[(i * 4) + 2] = img[(i * 3) + 2];  // B
-                                                newImg[(i * 4) + 3] = 255;               // A
-                                            }
-                                        }
-                                        else
-                                        {
-                                            for (var i = 0ul; i < area; i++)
-                                            {
-                                                newImg[(i * 4) + 0] = img[i];  // R
-                                                newImg[(i * 4) + 1] = img[i];  // G
-                                                newImg[(i * 4) + 2] = img[i];  // B
-                                                newImg[(i * 4) + 3] = 255;     // A
-                                            }
-                                        }
+                                        //var newImg = new Byte[totalSize];
+                                        //if (color)
+                                        //{
+                                        //    for (var i = 0ul; i < area; i++)
+                                        //    {
+                                        //        newImg[(i * 4) + 0] = img[(i * 3) + 0];  // R
+                                        //        newImg[(i * 4) + 1] = img[(i * 3) + 1];  // G
+                                        //        newImg[(i * 4) + 2] = img[(i * 3) + 2];  // B
+                                        //        newImg[(i * 4) + 3] = 255;               // A
+                                        //    }
+                                        //}
+                                        //else
+                                        //{
+                                        //    for (var i = 0ul; i < area; i++)
+                                        //    {
+                                        //        newImg[(i * 4) + 0] = img[i];  // R
+                                        //        newImg[(i * 4) + 1] = img[i];  // G
+                                        //        newImg[(i * 4) + 2] = img[i];  // B
+                                        //        newImg[(i * 4) + 3] = 255;     // A
+                                        //    }
+                                        //}
 
                                         var bitmap = System.Windows.Media.Imaging.BitmapSource.Create((int)info.W, (int)info.H, 96.0, 96.0, pixelFormat, null, img, (int)info.W * ((pixelFormat.BitsPerPixel + 7) / 8));
                                         if (bitmap.CanFreeze)
@@ -4067,27 +4067,27 @@ namespace Interop
                                     var img = new Byte[nativeTotalSize];
                                     DNNGetImage(layerIndex, BackgroundColor, img);
                                     
-                                    var newImg = new Byte[totalSize];
-                                    if (color)
-                                    {
-                                        for (var i = 0ul; i < area; i++)
-                                        {
-                                            newImg[(i * 4) + 0] = img[(i * 3) + 0];  // R
-                                            newImg[(i * 4) + 1] = img[(i * 3) + 1];  // G
-                                            newImg[(i * 4) + 2] = img[(i * 3) + 2];  // B
-                                            newImg[(i * 4) + 3] = 255;               // A
-                                        }
-                                    }
-                                    else
-                                    {
-                                        for (var i = 0ul; i < area; i++)
-                                        {
-                                            newImg[(i * 4) + 0] = img[i];  // R
-                                            newImg[(i * 4) + 1] = img[i];  // G
-                                            newImg[(i * 4) + 2] = img[i];  // B
-                                            newImg[(i * 4) + 3] = 255;     // A
-                                        }
-                                    }
+                                    //var newImg = new Byte[totalSize];
+                                    //if (color)
+                                    //{
+                                    //    for (var i = 0ul; i < area; i++)
+                                    //    {
+                                    //        newImg[(i * 4) + 0] = img[(i * 3) + 0];  // R
+                                    //        newImg[(i * 4) + 1] = img[(i * 3) + 1];  // G
+                                    //        newImg[(i * 4) + 2] = img[(i * 3) + 2];  // B
+                                    //        newImg[(i * 4) + 3] = 255;               // A
+                                    //    }
+                                    //}
+                                    //else
+                                    //{
+                                    //    for (var i = 0ul; i < area; i++)
+                                    //    {
+                                    //        newImg[(i * 4) + 0] = img[i];  // R
+                                    //        newImg[(i * 4) + 1] = img[i];  // G
+                                    //        newImg[(i * 4) + 2] = img[i];  // B
+                                    //        newImg[(i * 4) + 3] = 255;     // A
+                                    //    }
+                                    //}
 
                                     var bitmap = System.Windows.Media.Imaging.BitmapSource.Create((int)width, (int)height, 96.0, 96.0, pixelFormat, null, img, (int)width * ((pixelFormat.BitsPerPixel + 7) / 8));
                                     if (bitmap.CanFreeze)
@@ -4123,14 +4123,14 @@ namespace Interop
                                         var img = new Byte[(int)(nativeTotalSize)];
                                         DNNGetImage(info.LayerIndex, BackgroundColor, img);
 
-                                        var newImg = new Byte[totalSize];
-                                        for (var i = 0ul; i < area; i++)
-                                        {
-                                            newImg[(i * 4) + 0] = img[i];  // R
-                                            newImg[(i * 4) + 1] = img[i];  // G
-                                            newImg[(i * 4) + 2] = img[i];  // B
-                                            newImg[(i * 4) + 3] = 255;     // A
-                                        }
+                                        //var newImg = new Byte[totalSize];
+                                        //for (var i = 0ul; i < area; i++)
+                                        //{
+                                        //    newImg[(i * 4) + 0] = img[i];  // R
+                                        //    newImg[(i * 4) + 1] = img[i];  // G
+                                        //    newImg[(i * 4) + 2] = img[i];  // B
+                                        //    newImg[(i * 4) + 3] = 255;     // A
+                                        //}
 
                                         var bitmap = System.Windows.Media.Imaging.BitmapSource.Create((int)width, (int)height, 96.0, 96.0, pixelFormat, null, img, (int)width * ((pixelFormat.BitsPerPixel + 7) / 8));
                                         if (bitmap.CanFreeze)
@@ -4159,14 +4159,14 @@ namespace Interop
                                     var img = new Byte[(int)(nativeTotalSize)];
                                     DNNGetImage(info.LayerIndex, BackgroundColor, img);
 
-                                    var newImg = new Byte[totalSize];
-                                    for (var i = 0ul; i < area; i++)
-                                    {
-                                        newImg[(i * 4) + 0] = img[i];  // R
-                                        newImg[(i * 4) + 1] = img[i];  // G
-                                        newImg[(i * 4) + 2] = img[i];  // B
-                                        newImg[(i * 4) + 3] = 255;     // A
-                                    }
+                                    //var newImg = new Byte[totalSize];
+                                    //for (var i = 0ul; i < area; i++)
+                                    //{
+                                    //    newImg[(i * 4) + 0] = img[i];  // R
+                                    //    newImg[(i * 4) + 1] = img[i];  // G
+                                    //    newImg[(i * 4) + 2] = img[i];  // B
+                                    //    newImg[(i * 4) + 3] = 255;     // A
+                                    //}
 
                                     var bitmap = System.Windows.Media.Imaging.BitmapSource.Create((int)width, (int)height, 96.0, 96.0, pixelFormat, null, img, (int)width * ((pixelFormat.BitsPerPixel + 7) / 8));
                                     if (bitmap.CanFreeze)
