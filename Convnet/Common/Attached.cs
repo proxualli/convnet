@@ -33,6 +33,7 @@ namespace Convnet.Common
                 formattedText = string.Format("<Span xml:space=\"preserve\" xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\">{0}</Span>", formattedText);
 
                 textBlock.Inlines.Clear();
+               
                 using (var xmlReader = XmlReader.Create(new StringReader(formattedText)))
                 {
                     if (XamlReader.Load(xmlReader) is Span result)

@@ -2,12 +2,13 @@
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
+using System.Windows.Media;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
-using System.Windows.Media;
 using Float = System.Single;
 using UInt = System.UInt64;
+using System.Drawing;
 
 
 namespace Interop
@@ -154,8 +155,16 @@ namespace Interop
     public enum Algorithms
     {
         Linear = 0,
-		Nearest = 1
-	};
+        Nearest = 1
+    };
+
+    public enum ReduceOperations
+    {
+        Avg = 0,
+        Min = 1,
+        Max = 2,
+        Sum = 3
+    };
 
     public enum Datasets
     {
@@ -544,6 +553,7 @@ namespace Interop
         public LayerTypes LayerType;
         public Activations Activation;
         public Algorithms Algorithm;
+        public ReduceOperations ReduceOperation;
         public Costs Cost;
         public UInt NeuronCount;
         public UInt WeightCount;
@@ -579,6 +589,8 @@ namespace Interop
         public Float K;
         public Float fH;
         public Float fW;
+        public Float P;
+        public Float Eps;
         [MarshalAs(UnmanagedType.U1)]
         public bool HasBias;
         [MarshalAs(UnmanagedType.U1)]
@@ -626,6 +638,7 @@ namespace Interop
             NeuronsStats = new Stats();
             WeightsStats = new Stats();
             BiasesStats = new Stats();
+            Description = "";
         }
     };
 
@@ -634,6 +647,14 @@ namespace Interop
     {
         Linear = 0,
         Nearest = 1
+    };
+
+    public enum DNNReduceOperations
+    {
+        Avg = 0,
+        Min = 1,
+        Max = 2,
+        Sum = 3
     };
 
     [Serializable()]
@@ -882,10 +903,10 @@ namespace Interop
     };
 
     [Serializable()]
-    public class DNNTrainingRate : System.ComponentModel.INotifyPropertyChanged
+    public class DNNTrainingRate : INotifyPropertyChanged
     {
         [field: NonSerializedAttribute()]
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
 
         private DNNOptimizers optimizer = DNNOptimizers.NAG;
         private Float momentum = (Float)0.9;
@@ -922,7 +943,6 @@ namespace Interop
         private Float scaling = (Float)10;
         private Float rotation = (Float)12;
 
-
         public DNNOptimizers Optimizer
         {
             get { return optimizer; }
@@ -940,7 +960,9 @@ namespace Interop
             get { return momentum; }
             set
             {
-                if (value == momentum || value < (Float)0 || value > (Float)1)
+                if (value == momentum)
+                    return;
+                if (value < (Float)0 || value > (Float)1)
                     return;
 
                 momentum = value;
@@ -952,7 +974,9 @@ namespace Interop
             get { return beta2; }
             set
             {
-                if (value == beta2 || value < (Float)0 || value > (Float)1)
+                if (value == beta2)
+                    return;
+                if (value < (Float)0 || value > (Float)1)
                     return;
 
                 beta2 = value;
@@ -964,7 +988,9 @@ namespace Interop
             get { return l2Penalty; }
             set
             {
-                if (value == l2Penalty || value < (Float)0 || value > (Float)1)
+                if (value == l2Penalty)
+                    return;
+                if (value < (Float)0 || value > (Float)1)
                     return;
 
                 l2Penalty = value;
@@ -976,7 +1002,9 @@ namespace Interop
             get { return dropout; }
             set
             {
-                if (value == dropout || value < (Float)0 || value > (Float)1)
+                if (value == dropout)
+                    return;
+                if (value < (Float)0 || value > (Float)1)
                     return;
 
                 dropout = value;
@@ -988,7 +1016,9 @@ namespace Interop
             get { return eps; }
             set
             {
-                if (value == eps || value < (Float)0 || value > (Float)1)
+                if (value == eps)
+                    return;
+                if (value < (Float)0 || value > (Float)1)
                     return;
 
                 eps = value;
@@ -1000,7 +1030,9 @@ namespace Interop
             get { return n; }
             set
             {
-                if (value == n && value == 0)
+                if (value == n)
+                    return;
+                if (value == 0)
                     return;
 
                 n = value;
@@ -1012,7 +1044,9 @@ namespace Interop
             get { return d; }
             set
             {
-                if (value == d && value == 0)
+                if (value == d)
+                    return;
+                if (value == 0)
                     return;
 
                 d = value;
@@ -1024,7 +1058,9 @@ namespace Interop
             get { return h; }
             set
             {
-                if (value == h && value == 0)
+                if (value == h)
+                    return;
+                if (value == 0)
                     return;
 
                 h = value;
@@ -1036,7 +1072,9 @@ namespace Interop
             get { return w; }
             set
             {
-                if (value == w && value == 0)
+                if (value == w)
+                    return;
+                if (value == 0)
                     return;
 
                 w = value;
@@ -1048,7 +1086,7 @@ namespace Interop
             get { return padD; }
             set
             {
-                if (value == padD && value == 0)
+                if (value == padD)
                     return;
 
                 padD = value;
@@ -1060,7 +1098,9 @@ namespace Interop
             get { return padH; }
             set
             {
-                if (value == padH && value == 0)
+                if (value == padH)
+                    return;
+                if (value == 0)
                     return;
 
                 padH = value;
@@ -1072,9 +1112,8 @@ namespace Interop
             get { return padW; }
             set
             {
-                if (value == padW && value == 0)
+                if (value == padW)
                     return;
-
                 padW = value;
                 OnPropertyChanged(nameof(PadW));
             }
@@ -1084,7 +1123,9 @@ namespace Interop
             get { return cycles; }
             set
             {
-                if (value == cycles && value == 0)
+                if (value == cycles)
+                    return;
+                if (value == 0)
                     return;
 
                 cycles = value;
@@ -1096,7 +1137,9 @@ namespace Interop
             get { return epochs; }
             set
             {
-                if (value == epochs && value == 0)
+                if (value == epochs)
+                    return;
+                if (value == 0)
                     return;
 
                 epochs = value;
@@ -1108,7 +1151,9 @@ namespace Interop
             get { return epochMultiplier; }
             set
             {
-                if (value == epochMultiplier && value == 0)
+                if (value == epochMultiplier)
+                    return;
+                if (value == 0)
                     return;
 
                 epochMultiplier = value;
@@ -1120,7 +1165,9 @@ namespace Interop
             get { return maximumRate; }
             set
             {
-                if (value == maximumRate || value < (Float)0 || value > (Float)1)
+                if (value == maximumRate)
+                    return;
+                if (value < (Float)0 || value > (Float)1)
                     return;
 
                 maximumRate = value;
@@ -1132,7 +1179,9 @@ namespace Interop
             get { return minimumRate; }
             set
             {
-                if (value == minimumRate || value < (Float)0 || value > (Float)1)
+                if (value == minimumRate)
+                    return;
+                if (value < (Float)0 || value > (Float)1)
                     return;
 
                 minimumRate = value;
@@ -1144,7 +1193,9 @@ namespace Interop
             get { return finalRate; }
             set
             {
-                if (value == finalRate || value < (Float)0 || value > (Float)1)
+                if (value == finalRate)
+                    return;
+                if (value < (Float)0 || value > (Float)1)
                     return;
 
                 finalRate = value;
@@ -1156,7 +1207,9 @@ namespace Interop
             get { return gamma; }
             set
             {
-                if (value == gamma || value < (Float)0 || value > (Float)1)
+                if (value == gamma)
+                    return;
+                if (value < (Float)0 || value > (Float)1)
                     return;
 
                 gamma = value;
@@ -1168,7 +1221,9 @@ namespace Interop
             get { return decayAfterEpochs; }
             set
             {
-                if (value == decayAfterEpochs && value == 0)
+                if (value == decayAfterEpochs)
+                    return;
+                if (value == 0)
                     return;
 
                 decayAfterEpochs = value;
@@ -1180,7 +1235,9 @@ namespace Interop
             get { return decayFactor; }
             set
             {
-                if (value == decayFactor || value < (Float)0 || value > (Float)1)
+                if (value == decayFactor)
+                    return;
+                if (value < (Float)0 || value > (Float)1)
                     return;
 
                 decayFactor = value;
@@ -1216,7 +1273,9 @@ namespace Interop
             get { return inputDropout; }
             set
             {
-                if (value == inputDropout || value < (Float)0 || value > (Float)1)
+                if (value == inputDropout)
+                    return;
+                if (value < (Float)0 || value > (Float)1)
                     return;
 
                 inputDropout = value;
@@ -1228,7 +1287,9 @@ namespace Interop
             get { return cutout; }
             set
             {
-                if (value == cutout || value < (Float)0 || value > (Float)1)
+                if (value == cutout)
+                    return;
+                if (value < (Float)0 || value > (Float)1)
                     return;
 
                 cutout = value;
@@ -1252,7 +1313,9 @@ namespace Interop
             get { return autoAugment; }
             set
             {
-                if (value == autoAugment || value < (Float)0 || value > (Float)1)
+                if (value == autoAugment)
+                    return;
+                if (value < (Float)0 || value > (Float)1)
                     return;
 
                 autoAugment = value;
@@ -1264,9 +1327,10 @@ namespace Interop
             get { return colorCast; }
             set
             {
-                if (value == colorCast || value < (Float)0 || value > (Float)1)
+                if (value == colorCast)
                     return;
-
+                if (value < (Float)0 || value > (Float)1)
+                    return;
                 colorCast = value;
                 OnPropertyChanged(nameof(ColorCast));
             }
@@ -1276,7 +1340,9 @@ namespace Interop
             get { return colorAngle; }
             set
             {
-                if (value == colorAngle || value > (Float)360)
+                if (value == colorAngle)
+                    return;
+                if (value > (Float)360)
                     return;
 
                 colorAngle = value;
@@ -1288,7 +1354,9 @@ namespace Interop
             get { return distortion; }
             set
             {
-                if (value == distortion || value < (Float)0 || value > (Float)1)
+                if (value == distortion)
+                    return;
+                if(value < (Float)0 || value > (Float)1)
                     return;
 
                 distortion = value;
@@ -1312,7 +1380,9 @@ namespace Interop
             get { return scaling; }
             set
             {
-                if (value == scaling || value <= (Float)0 || value > (Float)200)
+                if (value == scaling)
+                    return;
+                if (value <= (Float)0 || value > (Float)200)
                     return;
 
                 scaling = value;
@@ -1324,14 +1394,16 @@ namespace Interop
             get { return rotation; }
             set
             {
-                if (value == rotation || value < (Float)0 || value > (Float)360)
+                if (value == rotation)
+                    return;
+                if (value < (Float)0 || value > (Float)360)
                     return;
 
                 rotation = value;
                 OnPropertyChanged(nameof(Rotation));
             }
-        }
 
+        }
 
         public DNNTrainingRate()
         {
@@ -1409,17 +1481,17 @@ namespace Interop
             Rotation = rotation;
         }
 
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     };
 
     [Serializable()]
-    public class DNNTrainingStrategy : System.ComponentModel.INotifyPropertyChanged
+    public class DNNTrainingStrategy : INotifyPropertyChanged
     {
         [field: NonSerializedAttribute()]
-        public virtual event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        public virtual event PropertyChangedEventHandler? PropertyChanged;
 
         private Float epochs = (Float)1;
         private UInt n = 128;
@@ -1810,17 +1882,17 @@ namespace Interop
         
         protected virtual void OnPropertyChanged(string propertyName)
         {
-            PropertyChangedEventHandler handler = PropertyChanged;
+            PropertyChangedEventHandler? handler = PropertyChanged;
             if (handler != null) 
                 handler(this, new PropertyChangedEventArgs(propertyName));
         }
     };
 
     [Serializable()]
-    public class DNNTrainingResult : System.ComponentModel.INotifyPropertyChanged
+    public class DNNTrainingResult : INotifyPropertyChanged
     {
         [field: NonSerializedAttribute()]
-        public virtual event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        public virtual event PropertyChangedEventHandler? PropertyChanged;
 
         public UInt Cycle
         {
@@ -2333,7 +2405,7 @@ namespace Interop
 
         public DNNTrainingResult(UInt cycle, UInt epoch, UInt groupIndex, UInt costIndex, string costName, UInt n, UInt d, UInt h, UInt w, UInt padD, UInt padH, UInt padW, DNNOptimizers optimizer, Float rate, Float eps, Float momentum, Float beta2, Float gamma, Float l2Penalty, Float dropout, Float inputDropout, Float cutout, bool cutMix, Float autoAugment, bool horizontalFlip, bool verticalFlip, Float colorCast, UInt colorAngle, Float distortion, DNNInterpolations interpolation, Float scaling, Float rotation, Float avgTrainLoss, UInt trainErrors, Float trainErrorPercentage, Float trainAccuracy, Float avgTestLoss, UInt testErrors, Float testErrorPercentage, Float testAccuracy, long elapsedMilliSeconds, TimeSpan elapsedTime)
         {
-             Cycle = cycle;
+            Cycle = cycle;
             Epoch = epoch;
             GroupIndex = groupIndex;
             CostIndex = costIndex;
@@ -2420,7 +2492,7 @@ namespace Interop
         private long elapsedMilliSeconds;
         private TimeSpan elapsedTime;
 
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
@@ -2437,10 +2509,10 @@ namespace Interop
     };
 
     [Serializable()]
-    public class DNNLayerInfo : System.ComponentModel.INotifyPropertyChanged
+    public class DNNLayerInfo : INotifyPropertyChanged
     {
         [field: NonSerializedAttribute()]
-        public virtual event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        public virtual event PropertyChangedEventHandler? PropertyChanged;
 
         private string name;
         private string description;
@@ -2448,7 +2520,7 @@ namespace Interop
         private DNNActivations activation;
         private DNNCosts cost;
         private System.Collections.Generic.List<UInt> inputs;
-        //private System.Collections.Generic.List<string> InputsNames;
+        private System.Collections.Generic.List<string> inputsNames;
         private System.Windows.Media.Imaging.BitmapSource weightsSnapshot;
         private bool lockable;
         private bool? lockUpdate = false;
@@ -2495,6 +2567,9 @@ namespace Interop
         private Float alpha;
         private Float beta;
         private Float k;
+        private Float p;
+        private Float eps;
+        private DNNReduceOperations reduceOperation;
         private DNNAlgorithms algorithm;
         private Float factorH;
         private Float factorW;
@@ -2574,7 +2649,18 @@ namespace Interop
                 OnPropertyChanged(nameof(Inputs));
             }
         }
-        //public System.Collections.Generic.List<string> InputsNames;
+        public System.Collections.Generic.List<string> InputsNames
+        {
+            get { return inputsNames; }
+            set
+            {
+                if (value == inputsNames)
+                    return;
+
+                inputsNames = value;
+                OnPropertyChanged(nameof(InputsNames));
+            }
+        }
         public System.Windows.Media.Imaging.BitmapSource WeightsSnapshot
         {
             get { return weightsSnapshot; }
@@ -3127,6 +3213,42 @@ namespace Interop
                 OnPropertyChanged(nameof(K));
             }
         }
+        public Float P
+        {
+            get { return p; }
+            set
+            {
+                if (value == p)
+                    return;
+
+                p = value;
+                OnPropertyChanged(nameof(P));
+            }
+        }
+        public Float Eps
+        {
+            get { return eps; }
+            set
+            {
+                if (value == eps)
+                    return;
+
+                eps = value;
+                OnPropertyChanged(nameof(Eps));
+            }
+        }
+        public DNNReduceOperations ReduceOperation
+        {
+            get { return reduceOperation; }
+            set
+            {
+                if (value == reduceOperation)
+                    return;
+
+                reduceOperation = value;
+                OnPropertyChanged(nameof(ReduceOperation));
+            }
+        }
         public DNNAlgorithms Algorithm
         {
             get { return algorithm; }
@@ -3205,9 +3327,11 @@ namespace Interop
             NeuronsStats = new DNNStats((Float)0, (Float)0, (Float)0, (Float)0);
             WeightsStats = new DNNStats((Float)0, (Float)0, (Float)0, (Float)0);
             BiasesStats = new DNNStats((Float)0, (Float)0, (Float)0, (Float)0);
+            Name = "";
+            Description = "";
         }
 
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
@@ -3352,7 +3476,7 @@ namespace Interop
         public UInt[] ConfusionMatrix;
         public string[][] LabelsCollection;
         public bool UseTrainingStrategy;
-        public System.Collections.ObjectModel.ObservableCollection<DNNTrainingStrategy> TrainingStrategies;
+        public System.Collections.ObjectModel.ObservableCollection<DNNTrainingStrategy>? TrainingStrategies;
         public DNNTrainingRate[] TrainingRates;
         public DNNTrainingRate TrainingRate;
 		public string Definition;
@@ -3424,9 +3548,9 @@ namespace Interop
 		public bool PersistOptimizer;
         public bool DisableLocking;
         public bool PlainFormat;
-        private bool disposedValue;
+        private bool disposedValue = false;
 
-        public void OnElapsed(object sender, System.Timers.ElapsedEventArgs e)
+        public void OnElapsed(object? sender, System.Timers.ElapsedEventArgs e)
         {
             sb.Length = 0;
             if (Duration.Elapsed.Days > 0)
@@ -3570,7 +3694,7 @@ namespace Interop
             return list;
 	    }
 
-        static public ref DNNLayerInfo GetLayerInfo(ref DNNLayerInfo infoManaged, UInt layerIndex)
+        static public ref DNNLayerInfo? GetLayerInfo(ref DNNLayerInfo? infoManaged, UInt layerIndex)
 	    {
             if (infoManaged == null)
 			    infoManaged = new DNNLayerInfo();
@@ -3592,6 +3716,7 @@ namespace Interop
 
             infoManaged.Activation = (DNNActivations)infoNative.Activation;
             infoManaged.Algorithm = (DNNAlgorithms)infoNative.Algorithm;
+            infoManaged.ReduceOperation = (DNNReduceOperations)infoNative.ReduceOperation;
             infoManaged.Cost = (DNNCosts)infoNative.Cost;
             infoManaged.NeuronCount = infoNative.NeuronCount;
             infoManaged.WeightCount = infoNative.WeightCount;
@@ -3626,6 +3751,8 @@ namespace Interop
             infoManaged.Alpha = infoNative.Alpha;
             infoManaged.Beta = infoNative.Beta;
             infoManaged.K = infoNative.K;
+            infoManaged.P = infoNative.P;
+            infoManaged.Eps = infoNative.Eps;
             infoManaged.FactorH = infoNative.fH;
             infoManaged.FactorW = infoNative.fW;
             infoManaged.HasBias = infoNative.HasBias;
@@ -3634,13 +3761,13 @@ namespace Interop
             infoManaged.LockUpdate = infoNative.Lockable ? (bool?)infoNative.Locked : (bool?)false;
             infoManaged.Lockable = infoNative.Lockable;
 
-            //infoManaged.InputsNames = new System.Collections.Generic.List<string>();
-            //foreach (var index in infoManaged.Inputs)
-            //{
-            //    var infoNativ = new LayerInfo();
-            //    DNNGetLayerInfo(index, ref infoNativ);
-            //    infoManaged.InputsNames.Add(infoNativ.Name);
-            //}
+            infoManaged.InputsNames = new System.Collections.Generic.List<string>();
+            foreach (var index in infoManaged.Inputs)
+            {
+                var infoNativ = new LayerInfo();
+                DNNGetLayerInfo(index, ref infoNativ);
+                infoManaged.InputsNames.Add(infoNativ.Name);
+            }
 
             return ref infoManaged;
 	    }
@@ -3734,14 +3861,14 @@ namespace Interop
                     break;
             }
 
-            Layers = new System.Collections.ObjectModel.ObservableCollection< DNNLayerInfo>();
-            TrainingStrategies = new System.Collections.ObjectModel.ObservableCollection< DNNTrainingStrategy>();
+            Layers = new System.Collections.ObjectModel.ObservableCollection<DNNLayerInfo>();
+            TrainingStrategies = new System.Collections.ObjectModel.ObservableCollection<DNNTrainingStrategy>();
             CostLayers = new DNNCostLayer[CostLayerCount];
                         
             UInt counter = 0;
             for (UInt layer = 0; layer < LayerCount; layer++)
             {
-                DNNLayerInfo inf = null;
+                DNNLayerInfo? inf = null;
                 inf = GetLayerInfo(ref inf, layer);
                 if (inf != null)
                 {
@@ -3768,7 +3895,7 @@ namespace Interop
 		    TaskState = DNNTaskStates.Stopped;
             MeanTrainSet = new Float[] { (Float)0, (Float)0, (Float)0 };
             StdTrainSet = new Float[] { (Float)0, (Float)0, (Float)0 };
-            StorageDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "convnet");
+            StorageDirectory = Path.Combine(Environment.GetFolderPath(RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? Environment.SpecialFolder.MyDocuments : Environment.SpecialFolder.UserProfile), "convnet");
 		    DatasetsDirectory = Path.Combine(StorageDirectory, "datasets");
 		    DefinitionsDirectory = Path.Combine(StorageDirectory, "definitions");
 
@@ -3829,7 +3956,7 @@ namespace Interop
             return DNNStochasticEnabled();
         }
 
-        public void UpdateLayerStatistics(ref DNNLayerInfo info, UInt layerIndex, bool updateUI)
+        public void UpdateLayerStatistics(ref DNNLayerInfo? info, UInt layerIndex, bool updateUI)
         {
             if (info != null)
             {
@@ -3854,33 +3981,65 @@ namespace Interop
                     {
                         case DNNLayerTypes.Input:
                             {
-                                var totalSize = info.C * info.H * info.W;
-                                var snapshot = new Float[totalSize];
+                                var channels = info.C;
+                                var color = channels == 3;
+                                var width = info.W;
+                                var height = info.H;
+                                var area = width * height;
+                                var nativeTotalSize = color ? 3 * area : area + width;
+                                var totalSize = 4 * area;
+                                var pixelFormat = color ? PixelFormats.Rgb24 : PixelFormats.Gray8;
+                                var stride = (int)width * ((pixelFormat.BitsPerPixel + 7) / 8);
+                                var snapshot = new Float[nativeTotalSize];
                                 var labelVector = new UInt64[Hierarchies];
                                 
-                                var pictureLoaded = DNNGetInputSnapShot(snapshot, labelVector);
-
-                                if (totalSize > 0)
+                                if (totalSize > 0 && totalSize <= int.MaxValue)
                                 {
-                                    var img = new Byte[(int)totalSize];
-                                    var pixelFormat = info.C == 3 ? PixelFormats.Rgb24 : PixelFormats.Gray8;
-                                    var HW = info.H * info.W;
+                                    var pictureLoaded = DNNGetInputSnapShot(snapshot, labelVector);
 
-                                    if (MeanStdNormalization)
-                                        for (UInt channel = 0; channel < info.C; channel++)
-                                            for (UInt hw = 0; hw < HW; hw++)
-                                                img[(int)((hw * info.C) + channel)] = pictureLoaded ? FloatSaturate((snapshot[hw + channel * HW] * StdTrainSet[channel]) + MeanTrainSet[channel]) : FloatSaturate(MeanTrainSet[channel]);
+                                    if (pictureLoaded)
+                                    {
+                                        var img = new Byte[nativeTotalSize];
+                                        if (MeanStdNormalization)
+                                            for (UInt channel = 0; channel < channels; channel++)
+                                                for (UInt hw = 0; hw < area; hw++)
+                                                    img[(hw * channels) + channel] = pictureLoaded ? FloatSaturate((snapshot[hw + channel * area] * StdTrainSet[channel]) + MeanTrainSet[channel]) : FloatSaturate(MeanTrainSet[channel]);
+                                        else
+                                            for (UInt channel = 0; channel < channels; channel++)
+                                                for (UInt hw = 0; hw < area; hw++)
+                                                    img[(hw * channels) + channel] = pictureLoaded ? FloatSaturate((snapshot[hw + channel * area] + (Float)(2)) * 64) : FloatSaturate(128);
+
+                                        var newImg = new Byte[totalSize];
+                                        if (color)
+                                        {
+                                            for (var i = 0ul; i < area; i++)
+                                            {
+                                                newImg[(i * 4) + 0] = img[(i * 3) + 0];  // R
+                                                newImg[(i * 4) + 1] = img[(i * 3) + 1];  // G
+                                                newImg[(i * 4) + 2] = img[(i * 3) + 2];  // B
+                                                newImg[(i * 4) + 3] = 255;               // A
+                                            }
+                                        }
+                                        else
+                                        {
+                                            for (var i = 0ul; i < area; i++)
+                                            {
+                                                newImg[(i * 4) + 0] = img[i];  // R
+                                                newImg[(i * 4) + 1] = img[i];  // G
+                                                newImg[(i * 4) + 2] = img[i];  // B
+                                                newImg[(i * 4) + 3] = 255;     // A
+                                            }
+                                        }
+
+                                        var bitmap = System.Windows.Media.Imaging.BitmapSource.Create((int)info.W, (int)info.H, 96.0, 96.0, pixelFormat, null, img, (int)info.W * ((pixelFormat.BitsPerPixel + 7) / 8));
+                                        if (bitmap.CanFreeze)
+                                            bitmap.Freeze();
+                                        InputSnapshot = bitmap;
+
+                                        Label = LabelsCollection[LabelIndex][labelVector[LabelIndex]];
+                                    }
                                     else
-                                        for (UInt channel = 0; channel < info.C; channel++)
-                                            for (UInt hw = 0; hw < HW; hw++)
-                                                img[(int)((hw * info.C) + channel)] = pictureLoaded ? FloatSaturate((snapshot[hw + channel * HW] + (Float)(2)) * 64) : FloatSaturate(128);
-
-                                    var outputImage = System.Windows.Media.Imaging.BitmapSource.Create((int)info.W, (int)info.H, 96.0, 96.0, pixelFormat, null, img, (int)info.W * ((pixelFormat.BitsPerPixel + 7) / 8));
-                                    if (outputImage.CanFreeze)
-                                        outputImage.Freeze();
-
-                                    InputSnapshot = outputImage;
-                                    Label = pictureLoaded ? LabelsCollection[(int)(LabelIndex)][(int)(labelVector[LabelIndex])] : System.String.Empty;
+                                        Label = System.String.Empty;
                                 }
                             }
                             break;
@@ -3890,32 +4049,53 @@ namespace Interop
                         case DNNLayerTypes.DepthwiseConvolution:
                         case DNNLayerTypes.PartialDepthwiseConvolution:
                             {
-                                var border = (info.InputC != 3 && info.KernelH == 1 && info.KernelW == 1) ? (UInt)0 : (UInt)1;
                                 var depthwise = info.LayerType == DNNLayerTypes.DepthwiseConvolution || info.LayerType == DNNLayerTypes.PartialDepthwiseConvolution;
+                                var color = !depthwise && info.InputC == 3;
+                                var border = (info.InputC != 3 && info.KernelH == 1 && info.KernelW == 1) ? (UInt)0 : (UInt)1;
                                 var pitchH = info.KernelH + border;
                                 var pitchW = info.KernelW + border;
                                 var width = info.C * pitchH + border;
-                                var height = info.InputC == 3 ? (pitchW + 3 * border) : depthwise ? (pitchW + border) : ((info.InputC / info.Groups) * pitchW + border);
-                                var biasOffset = height * width + width;
-
-                                var totalSize = (!depthwise && info.InputC == 3) ? 3 * biasOffset : biasOffset;
-                                var pixelFormat = (!depthwise && info.InputC == 3) ? PixelFormats.Rgb24 : PixelFormats.Gray8;
-
+                                var height = (info.InputC == 3) ? (pitchW + 3 * border) : (depthwise ? (pitchW + border) : ((info.InputC / info.Groups) * pitchW + border));
+                                var area = height * width;
+                                var nativeTotalSize = color ? 3 * area : area + width;
+                                var totalSize = 4 * area;
+                                var pixelFormat = color ? PixelFormats.Rgb24 : PixelFormats.Gray8;
+                                var stride = (int)width * ((pixelFormat.BitsPerPixel + 7) / 8);
+                               
                                 if (totalSize > 0 && totalSize <= int.MaxValue)
                                 {
-                                    
-                                    var img = new Byte[(int)(totalSize)];
+                                    var img = new Byte[nativeTotalSize];
                                     DNNGetImage(layerIndex, BackgroundColor, img);
-                                        
-                                    var outputImage = System.Windows.Media.Imaging.BitmapSource.Create((int)width, (int)height, 96.0, 96.0, pixelFormat, null, img, (int)width * ((pixelFormat.BitsPerPixel + 7) / 8));
-                                    if (outputImage.CanFreeze)
-                                        outputImage.Freeze();
+                                    
+                                    var newImg = new Byte[totalSize];
+                                    if (color)
+                                    {
+                                        for (var i = 0ul; i < area; i++)
+                                        {
+                                            newImg[(i * 4) + 0] = img[(i * 3) + 0];  // R
+                                            newImg[(i * 4) + 1] = img[(i * 3) + 1];  // G
+                                            newImg[(i * 4) + 2] = img[(i * 3) + 2];  // B
+                                            newImg[(i * 4) + 3] = 255;               // A
+                                        }
+                                    }
+                                    else
+                                    {
+                                        for (var i = 0ul; i < area; i++)
+                                        {
+                                            newImg[(i * 4) + 0] = img[i];  // R
+                                            newImg[(i * 4) + 1] = img[i];  // G
+                                            newImg[(i * 4) + 2] = img[i];  // B
+                                            newImg[(i * 4) + 3] = 255;     // A
+                                        }
+                                    }
+
+                                    var bitmap = System.Windows.Media.Imaging.BitmapSource.Create((int)width, (int)height, 96.0, 96.0, pixelFormat, null, img, (int)width * ((pixelFormat.BitsPerPixel + 7) / 8));
+                                    if (bitmap.CanFreeze)
+                                        bitmap.Freeze();
 
                                     info.WeightsSnapshotX = (int)(width * BlockSize);
                                     info.WeightsSnapshotY = (int)(height * BlockSize);
-                                    info.WeightsSnapshot = outputImage;
-                                   
-                                    GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, true, true); 
+                                    info.WeightsSnapshot = bitmap;
                                 }
                             }
                             break;
@@ -3932,23 +4112,33 @@ namespace Interop
                                 {
                                     var width = info.BiasCount;
                                     var height = (info.WeightCount / width) + 3;
-                                    var totalSize = width * height;
+                                    var area = width * height;
+                                    var nativeTotalSize = area + width;
+                                    var totalSize = 4 * area;
                                     var pixelFormat = PixelFormats.Gray8;
+                                    var stride = (int)width * ((pixelFormat.BitsPerPixel + 7) / 8);
 
                                     if (totalSize > 0 && totalSize <= int.MaxValue)
                                     {
-                                        var img = new Byte[(int)(totalSize)];
+                                        var img = new Byte[(int)(nativeTotalSize)];
                                         DNNGetImage(info.LayerIndex, BackgroundColor, img);
 
-                                        var outputImage = System.Windows.Media.Imaging.BitmapSource.Create((int)width, (int)height, 96.0, 96.0, pixelFormat, null, img, (int)width * ((pixelFormat.BitsPerPixel + 7) / 8));
-                                        if (outputImage.CanFreeze)
-                                            outputImage.Freeze();
+                                        var newImg = new Byte[totalSize];
+                                        for (var i = 0ul; i < area; i++)
+                                        {
+                                            newImg[(i * 4) + 0] = img[i];  // R
+                                            newImg[(i * 4) + 1] = img[i];  // G
+                                            newImg[(i * 4) + 2] = img[i];  // B
+                                            newImg[(i * 4) + 3] = 255;     // A
+                                        }
+
+                                        var bitmap = System.Windows.Media.Imaging.BitmapSource.Create((int)width, (int)height, 96.0, 96.0, pixelFormat, null, img, (int)width * ((pixelFormat.BitsPerPixel + 7) / 8));
+                                        if (bitmap.CanFreeze)
+                                            bitmap.Freeze();
 
                                         info.WeightsSnapshotX = (int)(width * BlockSize);
                                         info.WeightsSnapshotY = (int)(height * BlockSize);
-                                        info.WeightsSnapshot = outputImage;
-
-                                        GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, true, true);
+                                        info.WeightsSnapshot = bitmap;
                                     }
                                 }
                             }
@@ -3958,23 +4148,33 @@ namespace Interop
                             {
                                 var width = info.WeightCount;
                                 var height = (UInt)4;
-                                var totalSize = width * height;
+                                var area = width * height;
+                                var nativeTotalSize = area;
+                                var totalSize = 4 * area;
                                 var pixelFormat = PixelFormats.Gray8;
+                                var stride = (int)width * ((pixelFormat.BitsPerPixel + 7) / 8);
 
                                 if (totalSize > 0 && totalSize <= int.MaxValue)
                                 {
-                                    var img = new Byte[(int)(totalSize)];
+                                    var img = new Byte[(int)(nativeTotalSize)];
                                     DNNGetImage(info.LayerIndex, BackgroundColor, img);
 
-                                    var outputImage = System.Windows.Media.Imaging.BitmapSource.Create((int)width, (int)height, 96.0, 96.0, pixelFormat, null, img, (int)width * ((pixelFormat.BitsPerPixel + 7) / 8));
-                                    if (outputImage.CanFreeze)
-                                        outputImage.Freeze();
+                                    var newImg = new Byte[totalSize];
+                                    for (var i = 0ul; i < area; i++)
+                                    {
+                                        newImg[(i * 4) + 0] = img[i];  // R
+                                        newImg[(i * 4) + 1] = img[i];  // G
+                                        newImg[(i * 4) + 2] = img[i];  // B
+                                        newImg[(i * 4) + 3] = 255;     // A
+                                    }
+
+                                    var bitmap = System.Windows.Media.Imaging.BitmapSource.Create((int)width, (int)height, 96.0, 96.0, pixelFormat, null, img, (int)width * ((pixelFormat.BitsPerPixel + 7) / 8));
+                                    if (bitmap.CanFreeze)
+                                        bitmap.Freeze();
 
                                     info.WeightsSnapshotX = (int)(width * BlockSize);
                                     info.WeightsSnapshotY = (int)(height * BlockSize);
-                                    info.WeightsSnapshot = outputImage;
-
-                                    GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, true, true);
+                                    info.WeightsSnapshot = bitmap;
                                 }
                             }
                             break;
