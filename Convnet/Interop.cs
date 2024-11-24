@@ -304,7 +304,7 @@ namespace Interop
             DecayAfterEpochs = decayAfterEpochs;
             DecayFactor = decayFactor;
             HorizontalFlip = horizontalFlip;
-            VerticalFlip =verticalFlip;
+            VerticalFlip = verticalFlip;
             InputDropout =inputDropout;
             Cutout = cutout;
             CutMix = cutMix;
