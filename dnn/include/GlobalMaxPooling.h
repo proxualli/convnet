@@ -17,7 +17,7 @@ namespace dnn
 #endif
 		bool reorderFwdSrc;
 		bool reorderBwdDiffSrc;
-		
+
 	public:
 		UInt KernelH;
 		UInt KernelW;
@@ -70,7 +70,7 @@ namespace dnn
 			return 1;
 		}
 
-		void InitializeDescriptorsFwd(const UInt batchSize) final override
+		void InitializeDescriptors(const UInt batchSize) final override
 		{
 			if (GetMemoryNDims(*InputLayer->DstMemDesc) == 2)
 			{
@@ -97,7 +97,7 @@ namespace dnn
 
 			reorderFwdSrc = fwdDesc->src_desc() != *InputLayer->DstMemDesc;
 			reorderBwdDiffSrc = bwdDesc->diff_src_desc() != *InputLayer->DiffDstMemDesc;
-			
+
 			bwdAddDesc = std::make_unique<dnnl::binary::primitive_desc>(dnnl::binary::primitive_desc(Device.engine, dnnl::algorithm::binary_add, *InputLayer->DiffDstMemDesc, *InputLayer->DiffDstMemDesc, *InputLayer->DiffDstMemDesc));
 
 #ifdef DNN_CACHE_PRIMITIVES
@@ -107,14 +107,10 @@ namespace dnn
 #endif
 		}
 
-		void InitializeDescriptorsBwd(const UInt batchSize) final override
-		{
-		}
-
 		void ForwardProp(const UInt batchSize, const bool training) final override
 		{
 			const auto& memSrc = dnnl::memory(*InputLayer->DstMemDesc, Device.engine, InputLayer->Neurons.data());
-			auto& srcMem = reorderFwdSrc ? dnnl::memory(fwdDesc->src_desc(), Device.engine) : memSrc;
+			auto srcMem = reorderFwdSrc ? dnnl::memory(fwdDesc->src_desc(), Device.engine) : memSrc;
 			if (reorderFwdSrc)
 			{
 				dnnl::reorder(memSrc, srcMem).execute(Device.stream, std::unordered_map<int, dnnl::memory> { {DNNL_ARG_FROM, memSrc}, { DNNL_ARG_TO, srcMem } });
@@ -122,7 +118,6 @@ namespace dnn
 			}
 
 			auto dstMem = dnnl::memory(*DstMemDesc, Device.engine, Neurons.data());
-
 #ifdef DNN_CACHE_PRIMITIVES
 			fwd->execute(Device.stream, std::unordered_map<int, dnnl::memory> { {DNNL_ARG_SRC, srcMem}, { DNNL_ARG_DST, dstMem }, { DNNL_ARG_WORKSPACE, *workspaceMemory } });
 #else
@@ -147,10 +142,9 @@ namespace dnn
 #endif // DNN_LEAN
 
 			const auto& diffDstMem = dnnl::memory(*DiffDstMemDesc, Device.engine, NeuronsD1.data());
-			
+
 			auto memDiffSrc = SharesInput ? dnnl::memory(*InputLayer->DiffDstMemDesc, Device.engine) : dnnl::memory(*InputLayer->DiffDstMemDesc, Device.engine, InputLayer->NeuronsD1.data());
 			auto diffSrcMem = reorderBwdDiffSrc ? dnnl::memory(bwdDesc->diff_src_desc(), Device.engine) : memDiffSrc;
-
 #ifdef DNN_CACHE_PRIMITIVES
 			bwd->execute(Device.stream, std::unordered_map<int, dnnl::memory> { {DNNL_ARG_DIFF_DST, diffDstMem}, { DNNL_ARG_WORKSPACE, *workspaceMemory }, { DNNL_ARG_DIFF_SRC, diffSrcMem } });
 #else
