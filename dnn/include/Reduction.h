@@ -169,7 +169,7 @@ namespace dnn
 						for (auto c = 0ull; c < InputLayer->C; c++)
 							PRAGMA_OMP_SIMD()
 							for (auto hw = 0ull; hw < HW(); hw++)
-								InputLayer->NeuronsD1[inStart + (c * HW()) + hw] += NeuronsD1[start + hw] / Float(InputLayerFwd->C);
+								InputLayer->NeuronsD1[inStart + (c * HW()) + hw] += NeuronsD1[start + hw] / Float(InputLayer->C);
 					});
 #ifdef DNN_STOCHASTIC
 			}
@@ -190,7 +190,7 @@ namespace dnn
 						for (auto c = 0ull; c < InputLayer->C; c++)
 							for (auto h = 0ull; h < H; h++)
 								for (auto w = 0ull; w < W; w++)
-									InputLayer->NeuronsD1[InputLayer->OffsetPaddedMem(0, c, h, w)] += (InputLayerFwd->Neurons[InputLayerFwd->OffsetPaddedMem(0, c, h, w)] == Neurons[OffsetPaddedMem(0, 0, h, w)] ? NeuronsD1[OffsetPaddedMem(0, 0, h, w)] : Float(0));
+									InputLayer->NeuronsD1[InputLayer->OffsetPaddedMem(0, c, h, w)] += (InputLayer->Neurons[InputLayer->OffsetPaddedMem(0, c, h, w)] == Neurons[OffsetPaddedMem(0, 0, h, w)] ? NeuronsD1[OffsetPaddedMem(0, 0, h, w)] : Float(0));
 					});
 				}
 				else
@@ -217,7 +217,7 @@ namespace dnn
 						for (auto c = 0ull; c < InputLayer->C; c++)
 							for (auto h = 0ull; h < H; h++)
 								for (auto w = 0ull; w < W; w++)
-									InputLayer->NeuronsD1[InputLayer->OffsetPaddedMem(n, c, h, w)] += (InputLayerFwd->Neurons[InputLayerFwd->OffsetPaddedMem(n, c, h, w)] == Neurons[OffsetPaddedMem(n, 0, h, w)] ? NeuronsD1[OffsetPaddedMem(n, 0, h, w)] : Float(0));
+									InputLayer->NeuronsD1[InputLayer->OffsetPaddedMem(n, c, h, w)] += (InputLayer->Neurons[InputLayer->OffsetPaddedMem(n, c, h, w)] == Neurons[OffsetPaddedMem(n, 0, h, w)] ? NeuronsD1[OffsetPaddedMem(n, 0, h, w)] : Float(0));
 					});
 				else
 					for_i(batchSize, threads, [=](UInt n)
@@ -227,7 +227,7 @@ namespace dnn
 						for (auto c = 0ull; c < InputLayer->C; c++)
 							PRAGMA_OMP_SIMD()
 							for (auto hw = 0ull; hw < HW(); hw++)
-								InputLayer->NeuronsD1[inStart + (c * HW()) + hw] += (InputLayerFwd->Neurons[inStart + (c * HW()) + hw] == Neurons[start + hw]) ? NeuronsD1[start + hw] : Float(0);
+								InputLayer->NeuronsD1[inStart + (c * HW()) + hw] += (InputLayer->Neurons[inStart + (c * HW()) + hw] == Neurons[start + hw]) ? NeuronsD1[start + hw] : Float(0);
 					});
 #ifdef DNN_STOCHASTIC
 			}
@@ -248,7 +248,7 @@ namespace dnn
 						for (auto c = 0ull; c < InputLayer->C; c++)
 							for (auto h = 0ull; h < H; h++)
 								for (auto w = 0ull; w < W; w++)
-									InputLayer->NeuronsD1[InputLayer->OffsetPaddedMem(0, c, h, w)] += (InputLayerFwd->Neurons[InputLayerFwd->OffsetPaddedMem(0, c, h, w)] == Neurons[OffsetPaddedMem(0, 0, h, w)] ? NeuronsD1[OffsetPaddedMem(0, 0, h, w)] : Float(0));
+									InputLayer->NeuronsD1[InputLayer->OffsetPaddedMem(0, c, h, w)] += (InputLayer->Neurons[InputLayer->OffsetPaddedMem(0, c, h, w)] == Neurons[OffsetPaddedMem(0, 0, h, w)] ? NeuronsD1[OffsetPaddedMem(0, 0, h, w)] : Float(0));
 					});
 				}
 				else
@@ -275,7 +275,7 @@ namespace dnn
 						for (auto c = 0ull; c < InputLayer->C; c++)
 							for (auto h = 0ull; h < H; h++)
 								for (auto w = 0ull; w < W; w++)
-									InputLayer->NeuronsD1[InputLayer->OffsetPaddedMem(n, c, h, w)] += (InputLayerFwd->Neurons[InputLayerFwd->OffsetPaddedMem(n, c, h, w)] == Neurons[OffsetPaddedMem(n, 0, h, w)] ? NeuronsD1[OffsetPaddedMem(n, 0, h, w)] : Float(0));
+									InputLayer->NeuronsD1[InputLayer->OffsetPaddedMem(n, c, h, w)] += (InputLayer->Neurons[InputLayer->OffsetPaddedMem(n, c, h, w)] == Neurons[OffsetPaddedMem(n, 0, h, w)] ? NeuronsD1[OffsetPaddedMem(n, 0, h, w)] : Float(0));
 					});
 				else
 					for_i(batchSize, threads, [=](UInt n)
@@ -285,7 +285,7 @@ namespace dnn
 						for (auto c = 0ull; c < InputLayer->C; c++)
 							PRAGMA_OMP_SIMD()
 							for (auto hw = 0ull; hw < HW(); hw++)
-								InputLayer->NeuronsD1[inStart + (c * HW()) + hw] += (InputLayerFwd->Neurons[inStart + (c * HW()) + hw] == Neurons[start + hw]) ? NeuronsD1[start + hw] : Float(0);
+								InputLayer->NeuronsD1[inStart + (c * HW()) + hw] += (InputLayer->Neurons[inStart + (c * HW()) + hw] == Neurons[start + hw]) ? NeuronsD1[start + hw] : Float(0);
 					});
 #ifdef DNN_STOCHASTIC
 			}
