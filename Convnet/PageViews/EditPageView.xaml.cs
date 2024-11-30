@@ -24,7 +24,7 @@ namespace Convnet.PageViews
                     HighlightingLoader.Load(reader, HighlightingManager.Instance);
                 }
             }
-            HighlightingManager.Instance.RegisterHighlighting("Definition", new string[] { ".txt" }, DefinitionHighlighting);
+            HighlightingManager.Instance.RegisterHighlighting("Definition", [".txt"], DefinitionHighlighting);
             
 
             IHighlightingDefinition CSharpHighlighting;
@@ -38,7 +38,7 @@ namespace Convnet.PageViews
                     HighlightingLoader.Load(reader, HighlightingManager.Instance);
                 }
             }
-            HighlightingManager.Instance.RegisterHighlighting("C#", new string[] { ".cs" }, CSharpHighlighting);
+            HighlightingManager.Instance.RegisterHighlighting("C#", [".cs"], CSharpHighlighting);
             
             InitializeComponent();
 

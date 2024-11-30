@@ -158,7 +158,6 @@ namespace dnn
 
 							for (auto c = channelOffset; c < DivUp(channelOffset); c++)
 								for (auto h = 0ull; h < H; h++)
-									PRAGMA_OMP_SIMD()
 									for (auto w = 0ull; w < W; w++)
 									{
 										Neurons[OffsetPaddedMem(0, c, h, w)] = Float(0);
@@ -214,7 +213,6 @@ namespace dnn
 
 								for (auto c = channelOffset; c < DivUp(channelOffset); c++)
 									for (auto h = 0ull; h < H; h++)
-										PRAGMA_OMP_SIMD()
 										for (auto w = 0ull; w < W; w++)
 										{
 											Neurons[OffsetPaddedMem(n, c, h, w)] = Float(0);
