@@ -476,10 +476,10 @@ namespace dnn
 			switch (Op)
 			{
 			case ReduceOperations::Avg:
-				BackwardPropAvgRef(batchSize);
+				BackwardPropAvg(batchSize);
 				break;
 			case ReduceOperations::Max:
-				BackwardPropMaxRef(batchSize);
+				BackwardPropMax(batchSize);
 				break;
 			case ReduceOperations::Min:
 				BackwardPropMin(batchSize);
@@ -499,14 +499,13 @@ namespace dnn
 				for (auto i = 0ull; i < InputLayer->NeuronsD1.size(); i++)
 					InputLayer->NeuronsD1[i] = output[i];
 
-				
 				switch (Op)
 				{
 				case ReduceOperations::Avg:
-					BackwardPropAvg(batchSize);
+					BackwardPropAvgRef(batchSize);
 					break;
 				case ReduceOperations::Max:
-					BackwardPropMax(batchSize);
+					BackwardPropMaxRef(batchSize);
 					break;
 				case ReduceOperations::Min:
 					BackwardPropMin(batchSize);
