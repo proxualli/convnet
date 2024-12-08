@@ -32,6 +32,8 @@ namespace Convnet.Dialogs
 
         public TestParameters()
         {
+            Rate = new DNNTrainingRate();
+            Path = string.Empty;
             DialogResult = false;
 
             InitializeComponent();

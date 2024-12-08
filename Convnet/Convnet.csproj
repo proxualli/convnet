@@ -20,6 +20,7 @@
     <Platforms>x64</Platforms>
     <EnableNETAnalyzers>true</EnableNETAnalyzers>
     <ImplicitUsings>disable</ImplicitUsings>
+    <Nullable>disable</Nullable>
   </PropertyGroup>
   
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">

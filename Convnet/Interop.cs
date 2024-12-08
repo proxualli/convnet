@@ -906,8 +906,9 @@ namespace Interop
     public class DNNTrainingRate : INotifyPropertyChanged
     {
         [field: NonSerializedAttribute()]
+#nullable enable
         public event PropertyChangedEventHandler? PropertyChanged;
-
+#nullable disable
         private DNNOptimizers optimizer = DNNOptimizers.NAG;
         private Float momentum = (Float)0.9;
         private Float beta2 = (Float)0.999;
@@ -1480,19 +1481,21 @@ namespace Interop
             Scaling = scaling;
             Rotation = rotation;
         }
-
+#nullable enable
         protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+#nullable disable
     };
 
     [Serializable()]
     public class DNNTrainingStrategy : INotifyPropertyChanged
     {
         [field: NonSerializedAttribute()]
+#nullable enable
         public virtual event PropertyChangedEventHandler? PropertyChanged;
-
+#nullable disable
         private Float epochs = (Float)1;
         private UInt n = 128;
         private UInt d = 1;
@@ -1882,7 +1885,9 @@ namespace Interop
         
         protected virtual void OnPropertyChanged(string propertyName)
         {
+#nullable enable
             PropertyChangedEventHandler? handler = PropertyChanged;
+#nullable disable
             if (handler != null) 
                 handler(this, new PropertyChangedEventArgs(propertyName));
         }
@@ -1892,8 +1897,9 @@ namespace Interop
     public class DNNTrainingResult : INotifyPropertyChanged
     {
         [field: NonSerializedAttribute()]
+#nullable enable
         public virtual event PropertyChangedEventHandler? PropertyChanged;
-
+#nullable disable
         public UInt Cycle
         {
             get { return cycle; }
@@ -2492,10 +2498,12 @@ namespace Interop
         private long elapsedMilliSeconds;
         private TimeSpan elapsedTime;
 
+#nullable enable
         protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+#nullable disable
     };
 
     [Serializable()]
@@ -2512,8 +2520,9 @@ namespace Interop
     public class DNNLayerInfo : INotifyPropertyChanged
     {
         [field: NonSerializedAttribute()]
+#nullable enable
         public virtual event PropertyChangedEventHandler? PropertyChanged;
-
+#nullable disable
         private string name;
         private string description;
         private DNNLayerTypes layerType;
@@ -3330,11 +3339,12 @@ namespace Interop
             Name = "";
             Description = "";
         }
-
+#nullable enable
         protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+#nullable disable
     }
 
     public class DNNModel : IDisposable
@@ -3476,7 +3486,9 @@ namespace Interop
         public UInt[] ConfusionMatrix;
         public string[][] LabelsCollection;
         public bool UseTrainingStrategy;
+#nullable enable
         public System.Collections.ObjectModel.ObservableCollection<DNNTrainingStrategy>? TrainingStrategies;
+#nullable disable
         public DNNTrainingRate[] TrainingRates;
         public DNNTrainingRate TrainingRate;
 		public string Definition;
@@ -3550,6 +3562,7 @@ namespace Interop
         public bool PlainFormat;
         private bool disposedValue = false;
 
+#nullable enable
         public void OnElapsed(object? sender, System.Timers.ElapsedEventArgs e)
         {
             sb.Length = 0;
@@ -3656,7 +3669,7 @@ namespace Interop
                 }
             }
         }
-
+#nullable disable
         static public string[] GetTextLabels(string fileName)
 	    {	         
             int lines = 0;
@@ -3694,6 +3707,7 @@ namespace Interop
             return list;
 	    }
 
+#nullable enable
         static public ref DNNLayerInfo? GetLayerInfo(ref DNNLayerInfo? infoManaged, UInt layerIndex)
 	    {
             if (infoManaged == null)
@@ -3771,7 +3785,7 @@ namespace Interop
 
             return ref infoManaged;
 	    }
-
+#nullable disable
         public void ApplyParameters()
         {
             var info = new ModelInfo();
@@ -3868,7 +3882,9 @@ namespace Interop
             UInt counter = 0;
             for (UInt layer = 0; layer < LayerCount; layer++)
             {
+#nullable enable
                 DNNLayerInfo? inf = null;
+#nullable disable
                 inf = GetLayerInfo(ref inf, layer);
                 if (inf != null)
                 {
@@ -3955,7 +3971,7 @@ namespace Interop
         {
             return DNNStochasticEnabled();
         }
-
+#nullable enable
         public void UpdateLayerStatistics(ref DNNLayerInfo? info, UInt layerIndex, bool updateUI)
         {
             if (info != null)
@@ -4182,7 +4198,7 @@ namespace Interop
                 }
             }
         }
-
+#nullable disable
         public void UpdateLayerInfo(UInt layerIndex, bool updateUI)
         {
            var layer = Layers[(int)layerIndex];

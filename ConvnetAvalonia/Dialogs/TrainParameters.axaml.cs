@@ -17,12 +17,15 @@ namespace Convnet.Dialogs
         public DNNTrainingRate Rate { get; set; }
         public DNNModel Model { get; set; }
         public string Path { get; set; }
-
         public TrainPageViewModel tpvm;
         public bool DialogResult { get; set; }
 
         public TrainParameters()
         {
+            Rate = new DNNTrainingRate();
+            //Model = new DNNModel(string.Empty);
+            Path = string.Empty;
+            //tpvm = new TrainPageViewModel(Model);
             DialogResult = false;
 
             InitializeComponent();

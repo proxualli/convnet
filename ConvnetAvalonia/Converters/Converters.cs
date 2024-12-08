@@ -23,7 +23,7 @@ namespace Convnet.Converters
             int returnValue = 0;
             if (parameter is Type && value != null)
             {
-                returnValue = (int)Enum.Parse((Type)parameter, value.ToString());
+                returnValue = (int)Enum.Parse((Type)parameter, value?.ToString());
             }
             return returnValue;
         }
@@ -37,18 +37,18 @@ namespace Convnet.Converters
             {
                 if (value != null)
                 {
-                    var type = value.GetType();
-                    var member = type?.GetMember(value.ToString());
+                    var type = value?.GetType();
+                    var member = type?.GetMember(value?.ToString());
                     var attributes = member?[0].GetCustomAttributes(typeof(DisplayAttribute), true);
                     var attribute = attributes?[0] as DisplayAttribute;
-                    var result = attribute?.Name ?? value.ToString();
+                    var result = attribute?.Name ?? value?.ToString();
+
                     return result;
                 }
             }
             catch
             {
-                if (value != null)
-                    return value.ToString();                    
+                return value?.ToString();                    
             }
 
             return string.Empty;
