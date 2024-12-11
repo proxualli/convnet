@@ -136,7 +136,7 @@
    	<PackageReference Include="CsvHelper" Version="33.0.1" />
 	<PackageReference Include="OxyPlot.Core" Version="2.2.0" />
 	<PackageReference Include="OxyPlot.Wpf" Version="2.2.0" />
-	<PackageReference Include="DotNetProjects.Extended.Wpf.Toolkit" Version="5.0.115" />
+	<PackageReference Include="DotNetProjects.Extended.Wpf.Toolkit" Version="5.0.124" />
 	<PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="6.1.0" />
 	<PackageReference Include="Microsoft.VisualStudio.Setup.Configuration.Interop" Version="3.12.2149">
 	  <PrivateAssets>all</PrivateAssets>

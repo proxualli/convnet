@@ -2,6 +2,7 @@
 using Avalonia.Controls;
 using Avalonia.Controls.Documents;
 using Avalonia.Media;
+using Avalonia.Threading;
 using System;
 using System.IO;
 
@@ -9,7 +10,7 @@ namespace Convnet.Common
 {
     public class Attached : AvaloniaObject
     {
-        public static readonly AttachedProperty<string> FormattedTextProperty = AvaloniaProperty.RegisterAttached<Attached, AvaloniaObject, string>(nameof(FormattedText), defaultValue: string.Empty, false, Avalonia.Data.BindingMode.TwoWay);
+        public static readonly AttachedProperty<string> FormattedTextProperty = AvaloniaProperty.RegisterAttached<Attached, AvaloniaObject, string>(nameof(FormattedText), defaultValue: string.Empty, false, Avalonia.Data.BindingMode.OneWay);
 
         static Attached()
         {
@@ -42,15 +43,32 @@ namespace Convnet.Common
         {
             if (d is TextBlock textBlock)
             {
-                string? formattedText = (string?)e.NewValue ?? string.Empty;
-                formattedText = string.Format("<Span xml:space=\"preserve\" xmlns=\"https://github.com/avaloniaui\" xmlns:x=\"http://schemas.microsoft.com/winfx/2006/xaml\">{0}</Span>", formattedText);
-
-                using (TextReader sr = new StringReader(formattedText))
+                var text = (string?)e.NewValue ?? string.Empty;
+               
+                using (TextReader sr = new StringReader(string.Format("<Span xml:space=\"preserve\" xmlns=\"https://github.com/avaloniaui\" xmlns:x=\"http://schemas.microsoft.com/winfx/2006/xaml\">{0}</Span>", text)))
                 {
-                    if (Avalonia.Markup.Xaml.AvaloniaRuntimeXamlLoader.Load(sr.ReadToEnd()) is Span result)
+                    if (Dispatcher.UIThread.CheckAccess()) //Check if we are already on the UI thread
                     {
-                        textBlock.Inlines?.Clear();
-                        textBlock.Inlines?.Add(result);
+                        if (Avalonia.Markup.Xaml.AvaloniaRuntimeXamlLoader.Load(sr.ReadToEnd()) is Span result)
+                        {
+                            textBlock.Text = string.Empty;
+                            textBlock.Inlines = new InlineCollection();
+                            textBlock.Inlines?.Add(result);
+                            textBlock.UpdateLayout();
+                        }
+                    }
+                    else
+                    {
+                        Dispatcher.UIThread.InvokeAsync(() =>
+                        {
+                            if (Avalonia.Markup.Xaml.AvaloniaRuntimeXamlLoader.Load(sr.ReadToEnd()) is Span result)
+                            {
+                                textBlock.Text = string.Empty;
+                                textBlock.Inlines = new InlineCollection();
+                                textBlock.Inlines?.Add(result);
+                                textBlock.UpdateLayout();
+                            }
+                        }, DispatcherPriority.Render);
                     }
                 }
             }
