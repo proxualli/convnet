@@ -109,7 +109,7 @@
     <PackageReference Include="AvaloniaEdit.TextMate" Version="11.1.0" />
     <PackageReference Include="System.Reactive" Version="6.0.1" />
     <PackageReference Include="System.Text.Json" Version="9.0.0" />
-    <PackageReference Include="TextMateSharp.Grammars" Version="1.0.64" />
+    <PackageReference Include="TextMateSharp.Grammars" Version="1.0.65" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="Tmds.DBus.Protocol" Version="0.21.2" />
     <PackageVersion Include="XamlNameReferenceGenerator" Version="1.6.1" />

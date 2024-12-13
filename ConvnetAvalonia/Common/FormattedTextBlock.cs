@@ -35,36 +35,20 @@ namespace Convnet.Common
             {
                 if (value != formattedText)
                 {
-                    using (TextReader sr = new StringReader(string.Format("<Span xml:space=\"preserve\" xmlns=\"https://github.com/avaloniaui\" xmlns:x=\"http://schemas.microsoft.com/winfx/2006/xaml\">{0}</Span>", value)))
+                    Dispatcher.UIThread.Post(() =>
                     {
-                        if (Dispatcher.UIThread.CheckAccess()) //Check if we are already on the UI thread
+                        using (TextReader sr = new StringReader(string.Format("<Span xml:space=\"preserve\" xmlns=\"https://github.com/avaloniaui\" xmlns:x=\"http://schemas.microsoft.com/winfx/2006/xaml\">{0}</Span>", value)))
                         {
                             if (Avalonia.Markup.Xaml.AvaloniaRuntimeXamlLoader.Load(sr.ReadToEnd()) is Span result)
                             {
-                                Text = string.Empty;
-                                Inlines = new InlineCollection();
+                                Inlines?.Clear();
                                 Inlines?.Add(result);
                                 formattedText = value;
                                 OnPropertyChanged(nameof(FormattedText));
-                                UpdateLayout();
+                                InvalidateVisual();
                             }
                         }
-                        else
-                        {
-                            Dispatcher.UIThread.InvokeAsync(() =>
-                            {
-                                if (Avalonia.Markup.Xaml.AvaloniaRuntimeXamlLoader.Load(sr.ReadToEnd()) is Span result)
-                                {
-                                    Text = string.Empty;
-                                    Inlines = new InlineCollection();
-                                    Inlines?.Add(result);
-                                    formattedText = value;
-                                    OnPropertyChanged(nameof(FormattedText));
-                                    UpdateLayout();
-                                }
-                            }, DispatcherPriority.Render);
-                        }
-                    }
+                    });
                 }
             }
         }
