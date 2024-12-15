@@ -253,7 +253,7 @@ namespace Convnet.PageViewModels
             layersComboBox.DataContext = Model;
             if (Model != null)
                 layersComboBox.ItemsSource = Model.Layers;
-            layersComboBox.ItemTemplate = new FuncDataTemplate<DNNLayerInfo>((value, namescope) => new TextBlock { [!TextBlock.TextProperty] = new Binding("Name"), }); ;
+            layersComboBox.ItemTemplate = new FuncDataTemplate<DNNLayerInfo>((value, namescope) => new TextBlock { [!TextBlock.TextProperty] = new Binding("Name"), [!TextBlock.FontWeightProperty] = new Binding("HasWeights") }); ;
             //layersComboBox.ItemTemplate = GetLockTemplate();
             //layersComboBox.SourceUpdated += LayersComboBox_SourceUpdated;
             //layersComboBox.IsSynchronizedWithCurrentItem = true;
