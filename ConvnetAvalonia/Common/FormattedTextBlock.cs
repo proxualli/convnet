@@ -5,7 +5,6 @@ using Avalonia.Threading;
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.IO;
 
 
 namespace Convnet.Common
@@ -37,16 +36,13 @@ namespace Convnet.Common
                 {
                     Dispatcher.UIThread.Post(() =>
                     {
-                        using (TextReader sr = new StringReader(string.Format("<Span xml:space=\"preserve\" xmlns=\"https://github.com/avaloniaui\" xmlns:x=\"http://schemas.microsoft.com/winfx/2006/xaml\">{0}</Span>", value)))
+                        if (Avalonia.Markup.Xaml.AvaloniaRuntimeXamlLoader.Load(string.Format("<Span xml:space=\"preserve\" xmlns=\"https://github.com/avaloniaui\" xmlns:x=\"http://schemas.microsoft.com/winfx/2006/xaml\">{0}</Span>", value)) is Span result)
                         {
-                            if (Avalonia.Markup.Xaml.AvaloniaRuntimeXamlLoader.Load(sr.ReadToEnd()) is Span result)
-                            {
-                                Inlines?.Clear();
-                                Inlines?.Add(result);
-                                formattedText = value;
-                                OnPropertyChanged(nameof(FormattedText));
-                                InvalidateVisual();
-                            }
+                            Inlines?.Clear();
+                            Inlines?.Add(result);
+                            formattedText = value;
+                            OnPropertyChanged(nameof(FormattedText));
+                            InvalidateVisual();
                         }
                     });
                 }
