@@ -1,5 +1,6 @@
 ﻿using Avalonia;
 using Avalonia.Data;
+using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
 using System;
@@ -3025,6 +3026,12 @@ namespace Interop
                 OnPropertyChanged(nameof(WeightCount));
             }
         }
+
+        public FontWeight HasWeights
+        {
+            get { return WeightCount > 0 ? FontWeight.UltraBlack : FontWeight.Normal; }
+        }
+
         public UInt BiasCount
         {
             get { return biasCount; }
