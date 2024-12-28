@@ -13,8 +13,6 @@ using System.Net.NetworkInformation;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
-using TextMateSharp.Internal.Themes.Reader;
-using TextMateSharp.Themes;
 
 namespace Convnet.Common
 {

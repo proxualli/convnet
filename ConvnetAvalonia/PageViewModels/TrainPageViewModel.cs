@@ -2,6 +2,7 @@
 using Avalonia.Controls.Templates;
 using Avalonia.Data;
 using Avalonia.Interactivity;
+using Avalonia.Media;
 using Avalonia.Threading;
 using Convnet.Common;
 using Convnet.Dialogs;
@@ -15,9 +16,9 @@ using ReactiveUI;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Runtime;
 using System.Text;
 using System.Timers;
-
 using Float = System.Single;
 using UInt = System.UInt64;
 
@@ -34,16 +35,37 @@ namespace Convnet.PageViewModels
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Interoperability", "CA1416:Validate platform compatibility", Justification = "<Pending>")]
     public class TrainPageViewModel : PageViewModelBase
     {
-        private string progressText;
-        private bool showProgress;
-        private string layerInfo;
-        private string weightsMinMax;
-        private string label;
-        private bool showSample;
-        private ObservableCollection<DNNTrainingRate> trainRates;
-        private ObservableCollection<DNNTrainingStrategy> trainingStrategies;
+        private static readonly string nwl              = Environment.NewLine;
+
+        private readonly string stringTesting           = "Testing" + nwl + " Sample:\t\t\t{0:G}" + nwl + " Cycle:\t\t\t {1}/{2}" + nwl + " Epoch:\t\t\t {3}/{4}" + nwl + " Batch Size:\t\t{5:G}" + nwl + " Loss:\t\t\t  {6:N7}" + nwl + " Errors:\t\t\t{7:G}" + nwl + " Error:\t\t\t {8:N2} %" + nwl + " Accuracy:\t\t  {9:N2} %";
+        private readonly string stringTraining          = "Training" + nwl + " Sample:\t\t\t{0:G}" + nwl + " Cycle:\t\t\t {1}/{2}" + nwl + " Epoch:\t\t\t {3}/{4}" + nwl + " Batch Size:\t\t{5:G}" + nwl + " Rate:\t\t\t  {6:0.#######}" + nwl;
+        private readonly string stringLayer             = "Layer" + nwl;
+        private readonly string stringNeurons           = "Neurons" + nwl;
+        private readonly string stringWeights           = "Weights" + nwl;
+        private readonly string stringBiases            = "Biases" + nwl;
+        private readonly string stringTimings           = "Timings" + nwl;
+        private readonly string stringFprop             = " fprop:  \t\t{0:D}/{1:D} ms";
+        private readonly string stringBprop             = " bprop:  \t\t{0:D}/{1:D} ms" + nwl;
+        private readonly string stringUpdate            = " update: \t\t{0:D}/{1:D} ms";
+        private readonly string stringStdDevPositive    = " Std:     {0:N8}" + nwl;
+        private readonly string stringStdDevNegative    = " Std:    {0:N8}" + nwl;
+        private readonly string stringMeanPositive      = " Mean:    {0:N8}" + nwl;
+        private readonly string stringMeanNegative      = " Mean:   {0:N8}" + nwl;
+        private readonly string stringMminPositive      = " Min:     {0:N8}" + nwl;
+        private readonly string stringMinNegative       = " Min:    {0:N8}" + nwl;
+        private readonly string stringMaxPositive       = " Max:     {0:N8}" + nwl;
+        private readonly string stringMaxNegative       = " Max:    {0:N8}" + nwl;
+
+        private string progressText = string.Empty;
+        private string layerInfo = string.Empty;
+        private string weightsMinMax = string.Empty;
+        private string label = string.Empty;
+        private bool showProgress = false;
+        private bool showSample = false;
+        private ObservableCollection<DNNTrainingRate> trainRates = new ObservableCollection<DNNTrainingRate>();
+        private ObservableCollection<DNNTrainingStrategy> trainingStrategies = new ObservableCollection<DNNTrainingStrategy>();
         private int selectedIndex = -1;
-        private bool sgdr;
+        private bool sgdr = false;
         private uint gotoEpoch = 1;
         private uint gotoCycle = 1;
         private int selectedCostIndex = 0;
@@ -59,28 +81,28 @@ namespace Convnet.PageViewModels
         private CheckBox trainingPlotCheckBox;
         private Slider pixelSizeSlider;
         private DNNOptimizers optimizer;
-        private int? refreshRate;
-        private int weightsSnapshotX;
-        private int weightsSnapshotY;
-        private bool showWeights;
-        private bool showWeightsSnapshot;
-        private bool showTrainingPlot;
-        private ObservableCollection<DataPoint> pointsTrain;
-        private ObservableCollection<DataPoint> pointsTest;
-        private string pointsTrainLabel;
-        private string pointsTestLabel;
+        private int refreshRate = 0;
+        private int weightsSnapshotX = 0;
+        private int weightsSnapshotY = 0;
+        private bool showWeights = false;
+        private bool showWeightsSnapshot = false;
+        private bool showTrainingPlot = false;
+        private ObservableCollection<DataPoint> pointsTrain = new ObservableCollection<DataPoint>();
+        private ObservableCollection<DataPoint> pointsTest = new ObservableCollection<DataPoint>();
+        private string pointsTrainLabel = string.Empty;
+        private string pointsTestLabel = string.Empty;
         private PlotType currentPlotType;
         private LegendPosition currentLegendPosition;
-        private PlotModel? plotModel;
+        private PlotModel plotModel;
         private Avalonia.Media.Imaging.WriteableBitmap weightsSnapshot;
         private Avalonia.Media.Imaging.WriteableBitmap inputSnapshot;
-
+        private StringBuilder sb = new StringBuilder();
         public Timer RefreshTimer;
         public TimeSpan EpochDuration { get; set; }
         public event EventHandler Open;
         public event EventHandler Save;
-        public event EventHandler<int?> RefreshRateChanged;
-
+        public event EventHandler<int> RefreshRateChanged;
+        
         public TrainPageViewModel(DNNModel model) : base(model)
         {
             refreshRate = Settings.Default.RefreshInterval;
@@ -233,7 +255,7 @@ namespace Convnet.PageViewModels
             costLayersComboBox.Items.Clear();
             for (uint layer = 0u; layer < Model?.CostLayerCount; layer++)
             {
-                ComboBoxItem item = new ComboBoxItem
+                var item = new ComboBoxItem
                 {
                     Name = "CostLayer" + layer.ToString(),
                     Content = Model.CostLayers[layer].Name,
@@ -253,7 +275,7 @@ namespace Convnet.PageViewModels
             layersComboBox.DataContext = Model;
             if (Model != null)
                 layersComboBox.ItemsSource = Model.Layers;
-            layersComboBox.ItemTemplate = new FuncDataTemplate<DNNLayerInfo>((value, namescope) => new TextBlock { [!TextBlock.TextProperty] = new Binding("Name"), [!TextBlock.FontWeightProperty] = new Binding("HasWeights") }); ;
+            layersComboBox.ItemTemplate = new FuncDataTemplate<DNNLayerInfo>((value, namescope) => new TextBlock { [!TextBlock.TextProperty] = new Binding("Name"), [!TextBlock.FontWeightProperty] = new Binding {Path = "HasWeights", Mode = BindingMode.OneWay, Converter = new Converters.BoolToFontWeightConverter(), ConverterParameter = typeof(FontWeight) }});
             //layersComboBox.ItemTemplate = GetLockTemplate();
             //layersComboBox.SourceUpdated += LayersComboBox_SourceUpdated;
             //layersComboBox.IsSynchronizedWithCurrentItem = true;
@@ -446,10 +468,10 @@ namespace Convnet.PageViewModels
             CommandToolBar.Add(refreshRateIntegerUpDown);           // 28
         }
 
-        private void TrainPageViewModel_RefreshRateChanged(object? sender, int? e)
+        private void TrainPageViewModel_RefreshRateChanged(object? sender, int e)
         {
-            if (RefreshTimer != null && e.HasValue)
-               RefreshTimer.Interval = 1000 * e.Value;
+            if (RefreshTimer != null)
+               RefreshTimer.Interval = 1000 * e;
         }
 
         private async void TrainPageViewModel_ModelChanged(object? sender, EventArgs e)
@@ -511,7 +533,7 @@ namespace Convnet.PageViewModels
 
         private void NewEpoch(UInt Cycle, UInt Epoch, UInt TotalEpochs, UInt Optimizer, Float Beta2, Float Gamma, Float Eps, bool HorizontalFlip, bool VerticalFlip, Float InputDropout, Float Cutout, bool CutMix, Float AutoAugment, Float ColorCast, UInt ColorAngle, Float Distortion, UInt Interpolation, Float Scaling, Float Rotation, Float Rate, UInt N, UInt D, UInt H, UInt W, UInt PadD, UInt PadH, UInt PadW, Float Momentum, Float L2Penalty, Float Dropout, Float AvgTrainLoss, Float TrainErrorPercentage, Float TrainAccuracy, UInt TrainErrors, Float AvgTestLoss, Float TestErrorPercentage, Float TestAccuracy, UInt TestErrors, UInt ElapsedNanoSecondes)
         {
-            Dispatcher.UIThread.Post(() =>
+            Dispatcher.UIThread.Invoke(() =>
             {
                 if (Model != null)
                 {
@@ -526,19 +548,33 @@ namespace Convnet.PageViewModels
                     }
                     SelectedIndex = TrainingLog.Count - 1;
                 }
-            });
+            }, DispatcherPriority.Send);
 
             RefreshTrainingPlot();
 
+            GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
             GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, true, true);
+        }
+
+        private string FloatToString(Float number)
+        {
+            return number > 0 ? number.ToString() : "No";
+        }
+
+        private string BoolToString(bool value)
+        {
+            return value ? "Yes" : "No";
+        }
+
+        private string CutMixToString(bool cutMix)
+        {
+            return cutMix ? " CutMix:\t\t\t" : " Cutout:\t\t\t";
         }
 
         private void TrainProgress(DNNOptimizers Optim, UInt BatchSize, UInt Cycle, UInt TotalCycles, UInt Epoch, UInt TotalEpochs, bool HorizontalFlip, bool VerticalFlip, Float InputDropout, Float Cutout, bool CutMix, Float AutoAugment, Float ColorCast, UInt ColorAngle, Float Distortion, DNNInterpolations Interpolation, Float Scaling, Float Rotation, UInt SampleIndex, Float Rate, Float Momentum, Float Beta2, Float Gamma, Float L2Penalty, Float Dropout, Float AvgTrainLoss, Float TrainErrorPercentage, Float TrainAccuracy, UInt TrainErrors, Float AvgTestLoss, Float TestErrorPercentage, Float TestAccuracy, UInt TestErrors, DNNStates State, DNNTaskStates TaskState)
         {
-            Dispatcher.UIThread.Post(() =>
+            Dispatcher.UIThread.Invoke(() =>
             {
-                var sb = new StringBuilder();
-               
                 switch (State)
                 {
                     case DNNStates.Training:
@@ -549,23 +585,21 @@ namespace Convnet.PageViewModels
                                 Model.Optimizer = Optim;
                             }
 
-                            sb.Append("<Span><Bold>Training</Bold></Span><LineBreak/>");
-                            sb.Append("<Span>");
                             switch (Model?.Optimizer)
                             {
                                 case DNNOptimizers.AdaGrad:
-                                    sb.AppendFormat(" Sample:\t\t\t{0:G}\n Cycle:\t\t\t {1}/{2}\n Epoch:\t\t\t {3}/{4}\n Batch Size:\t\t{5:G}\n Rate:\t\t\t  {6:0.#######}\n Dropout:\t\t   " + (Dropout > 0 ? Dropout.ToString() + "\n" : "No\n") + (CutMix ? " CutMix:\t\t\t" : " Cutout:\t\t\t") + (Cutout > 0 ? Cutout.ToString() + "\n" : "No\n") + " Auto Augment:\t  " + (AutoAugment > 0 ? AutoAugment.ToString() + "\n" : "No\n") + (HorizontalFlip ? " Horizontal Flip:   Yes\n" : " Horizontal Flip:   No\n") + (VerticalFlip ? " Vertical Flip:\t Yes\n" : " Vertical Flip:\t No\n") + " Color Cast:\t\t" + (ColorCast > 0u ? ColorCast.ToString() + "\n" : "No\n") + " Distortion:\t\t" + (Model.Distortion > 0 ? Distortion.ToString() + "\n" : "No\n") + " Loss:\t\t\t  {7:N7}\n Errors:\t\t\t{8:G}\n Error:\t\t\t {9:N2} %\n Accuracy:\t\t  {10:N2} %", SampleIndex, Cycle, TotalCycles, Epoch, TotalEpochs, Model.BatchSize, Rate, AvgTrainLoss, TrainErrors, TrainErrorPercentage, 100 - TrainErrorPercentage);
+                                    ProgressText = string.Format(stringTraining + " Dropout:\t\t   {7}" + nwl + CutMixToString(CutMix) + "{8}" + nwl + " Auto Augment:\t  {9}" + nwl + " Horizontal Flip:   {10}" + nwl + " Vertical Flip:\t {11}" + nwl + " Color Cast:\t\t{12}" + nwl + " Distortion:\t\t{13}" + nwl + " Loss:\t\t\t  {14:N7}" + nwl + " Errors:\t\t\t{15:G}" + nwl + " Error:\t\t\t {16:N2} %" + nwl + " Accuracy:\t\t  {17:N2} %", SampleIndex, Cycle, TotalCycles, Epoch, TotalEpochs, Model.BatchSize, Rate, FloatToString(Dropout), FloatToString(Cutout), FloatToString(AutoAugment), BoolToString(HorizontalFlip), BoolToString(VerticalFlip), FloatToString(ColorCast), FloatToString(Distortion), AvgTrainLoss, TrainErrors, TrainErrorPercentage, 100 - TrainErrorPercentage);
                                     break;
 
                                 case DNNOptimizers.AdaDelta:
                                 case DNNOptimizers.RMSProp:
-                                    sb.AppendFormat(" Sample:\t\t\t{0:G}\n Cycle:\t\t\t {1}/{2}\n Epoch:\t\t\t {3}/{4}\n Batch Size:\t\t{5:G}\n Rate:\t\t\t  {6:0.#######}\n Momentum:  \t\t{7:0.#######}\n Dropout:\t\t   " + (Dropout > 0 ? Dropout.ToString() + "\n" : "No\n") + (CutMix ? " CutMix:\t\t\t" : " Cutout:\t\t\t") + (Cutout > 0 ? Cutout.ToString() + "\n" : "No\n") + " Auto Augment:\t  " + (AutoAugment > 0 ? AutoAugment.ToString() + "\n" : "No\n") + (HorizontalFlip ? " Horizontal Flip:   Yes\n" : " Horizontal Flip:   No\n") + (VerticalFlip ? " Vertical Flip:\t Yes\n" : " Vertical Flip:\t No\n") + " Color Cast:\t\t" + (ColorCast > 0u ? ColorCast.ToString() + "\n" : "No\n") + " Distortion:\t\t" + (Model.Distortion > 0 ? Distortion.ToString() + "\n" : "No\n") + " Loss:  \t\t\t{8:N7}\n Errors:\t\t\t{9:G}\n Error:\t\t\t {10:N2} %\n Accuracy:\t\t  {11:N2} %", SampleIndex, Cycle, TotalCycles, Epoch, TotalEpochs, Model.BatchSize, Rate, Momentum, AvgTrainLoss, TrainErrors, TrainErrorPercentage, 100 - TrainErrorPercentage);
+                                    ProgressText = string.Format(stringTraining + " Momentum: \t\t {7:0.#######}" + nwl + " Dropout:\t\t   {8}" + nwl + CutMixToString(CutMix) + "{9}" + nwl + " Auto Augment:\t  {10}" + nwl + " Horizontal Flip:   {11}" + nwl + " Vertical Flip:\t {12}" + nwl + " Color Cast:\t\t{13}" + nwl + " Distortion:\t\t{14}" + nwl + " Loss:\t\t\t  {15:N7}" + nwl + " Errors:\t\t\t{16:G}" + nwl + " Error:\t\t\t {17:N2} %" + nwl + " Accuracy:\t\t  {18:N2} %", SampleIndex, Cycle, TotalCycles, Epoch, TotalEpochs, Model.BatchSize, Rate, Momentum, FloatToString(Dropout), FloatToString(Cutout), FloatToString(AutoAugment), BoolToString(HorizontalFlip), BoolToString(VerticalFlip), FloatToString(ColorCast), FloatToString(Distortion), AvgTrainLoss, TrainErrors, TrainErrorPercentage, 100 - TrainErrorPercentage);
                                     break;
 
                                 case DNNOptimizers.AdaBoundW:
                                 case DNNOptimizers.AdamW:
                                 case DNNOptimizers.AmsBoundW:
-                                    sb.AppendFormat(" Sample:\t\t\t{0:G}\n Cycle:\t\t\t {1}/{2}\n Epoch:\t\t\t {3}/{4}\n Batch Size:\t\t{5:G}\n Rate:\t\t\t  {6:0.#######}\n Momentum: \t\t {7:0.#######}\n Beta2:\t\t\t {8:0.#######}\n L2 Penalty:\t\t{9:0.#######}\n Dropout:\t\t   " + (Dropout > 0 ? Dropout.ToString() + "\n" : "No\n") + " Cutout:\t\t\t" + (Cutout > 0 ? Cutout.ToString() + "\n" : "No\n") + " Auto Augment:\t  " + (AutoAugment > 0 ? AutoAugment.ToString() + "\n" : "No\n") + (HorizontalFlip ? " Horizontal Flip:   Yes\n" : " Horizontal Flip:   No\n") + (VerticalFlip ? " Vertical Flip:\t Yes\n" : " Vertical Flip:\t No\n") + " Color Cast:\t\t" + (ColorCast > 0u ? ColorCast.ToString() + "\n" : "No\n") + " Distortion:\t\t" + (Model.Distortion > 0 ? Distortion.ToString() + "\n" : "No\n") + " Loss:\t\t\t  {10:N7}\n Errors:\t\t\t{11:G}\n Error:\t\t\t {12:N2} %\n Accuracy:\t\t  {13:N2} %", SampleIndex, Cycle, TotalCycles, Epoch, TotalEpochs, Model.BatchSize, Rate, Momentum, Beta2, L2Penalty, AvgTrainLoss, TrainErrors, TrainErrorPercentage, 100 - TrainErrorPercentage);
+                                    ProgressText = string.Format(stringTraining + " Momentum: \t\t {7:0.#######}" + nwl + " Beta2:\t\t\t {8:0.#######}" + nwl + " L2 Penalty:\t\t{9:0.#######}" + nwl + " Dropout:\t\t   {10}" + nwl + CutMixToString(CutMix) + "{11}" + nwl + " Auto Augment:\t  {12}" + nwl + " Horizontal Flip:   {13}" + nwl + " Vertical Flip:\t {14}" + nwl + " Color Cast:\t\t{15}" + nwl + " Distortion:\t\t{16}" + nwl + " Loss:\t\t\t  {17:N7}" + nwl + " Errors:\t\t\t{18:G}" + nwl + " Error:\t\t\t {19:N2} %" + nwl + " Accuracy:\t\t  {20:N2} %", SampleIndex, Cycle, TotalCycles, Epoch, TotalEpochs, Model.BatchSize, Rate, Momentum, Beta2, L2Penalty, FloatToString(Dropout), FloatToString(Cutout), FloatToString(AutoAugment), BoolToString(HorizontalFlip), BoolToString(VerticalFlip), FloatToString(ColorCast), FloatToString(Distortion), AvgTrainLoss, TrainErrors, TrainErrorPercentage, 100 - TrainErrorPercentage);
                                     break;
 
                                 case DNNOptimizers.AdaBelief:
@@ -573,37 +607,31 @@ namespace Convnet.PageViewModels
                                 case DNNOptimizers.Adam:
                                 case DNNOptimizers.Adamax:
                                 case DNNOptimizers.AmsBound:
-                                    sb.AppendFormat(" Sample:\t\t\t{0:G}\n Cycle:\t\t\t {1}/{2}\n Epoch:\t\t\t {3}/{4}\n Batch Size:\t\t{5:G}\n Rate:\t\t\t  {6:0.#######}\n Momentum: \t\t {7:0.#######}\n Beta2:\t\t\t {8:0.#######}\n Dropout:\t\t   " + (Dropout > 0 ? Dropout.ToString() + "\n" : "No\n") + (CutMix ? " CutMix:\t\t\t" : " Cutout:\t\t\t") + (Cutout > 0 ? Cutout.ToString() + "\n" : "No\n") + " Auto Augment:\t  " + (AutoAugment > 0 ? AutoAugment.ToString() + "\n" : "No\n") + (HorizontalFlip ? " Horizontal Flip:   Yes\n" : " Horizontal Flip:   No\n") + (VerticalFlip ? " Vertical Flip:\t Yes\n" : " Vertical Flip:\t No\n") + " Color Cast:\t\t" + (ColorCast > 0u ? ColorCast.ToString() + "\n" : "No\n") + " Distortion:\t\t" + (Model.Distortion > 0 ? Distortion.ToString() + "\n" : "No\n") + " Loss:\t\t\t  {9:N7}\n Errors:\t\t\t{10:G}\n Error:\t\t\t {11:N2} %\n Accuracy:\t\t  {12:N2} %", SampleIndex, Cycle, TotalCycles, Epoch, TotalEpochs, Model.BatchSize, Rate, Momentum, Beta2, AvgTrainLoss, TrainErrors, TrainErrorPercentage, 100 - TrainErrorPercentage);
+                                    ProgressText = string.Format(stringTraining + " Momentum: \t\t {7:0.#######}" + nwl + " Beta2:\t\t\t {8:0.#######}" + nwl + " Dropout:\t\t   {9}" + nwl + CutMixToString(CutMix) + "{10} Auto Augment:\t  {11}" + nwl + " Horizontal Flip:   {12}" + nwl + " Vertical Flip:\t {13}" + nwl + " Color Cast:\t\t{14}" + nwl + " Distortion:\t\t{15}" + nwl + " Loss:\t\t\t  {16:N7}" + nwl + " Errors:\t\t\t{17:G}" + nwl + " Error:\t\t\t {18:N2} %" + nwl + " Accuracy:\t\t  {19:N2} %", SampleIndex, Cycle, TotalCycles, Epoch, TotalEpochs, Model.BatchSize, Rate, Momentum, Beta2, FloatToString(Dropout), FloatToString(Cutout), FloatToString(AutoAugment), BoolToString(HorizontalFlip), BoolToString(VerticalFlip), FloatToString(ColorCast), FloatToString(Distortion), AvgTrainLoss, TrainErrors, TrainErrorPercentage, 100 - TrainErrorPercentage);
                                     break;
 
                                 case DNNOptimizers.SGD:
-                                    sb.AppendFormat(" Sample:\t\t\t{0:G}\n Cycle:\t\t\t {1}/{2}\n Epoch:\t\t\t {3}/{4}\n Batch Size:\t\t{5:G}\n Rate:\t\t\t  {6:0.#######}\n L2 Penalty:\t\t{7:0.#######}\n Dropout:\t\t   " + (Dropout > 0 ? Dropout.ToString() + "\n" : "No\n") + (CutMix ? " CutMix:\t\t\t" : " Cutout:\t\t\t") + (Cutout > 0 ? Cutout.ToString() + "\n" : "No\n") + " Auto Augment:\t  " + (AutoAugment > 0 ? AutoAugment.ToString() + "\n" : "No\n") + (HorizontalFlip ? " Horizontal Flip:   Yes\n" : " Horizontal Flip:   No\n") + (VerticalFlip ? " Vertical Flip:    Yes\n" : " Vertical Flip:     No\n") + " Color Cast:\t\t" + (ColorCast > 0u ? ColorCast.ToString() + "\n" : "No\n") + " Distortion:\t\t" + (Model.Distortion > 0 ? Distortion.ToString() + "\n" : "No\n") + " Loss:\t\t\t  {8:N7}\n Errors:\t\t\t{9:G}\n Error:\t\t\t {10:N2} %\n Accuracy:\t\t  {11:N2} %", SampleIndex, Cycle, TotalCycles, Epoch, TotalEpochs, Model.BatchSize, Rate, L2Penalty, AvgTrainLoss, TrainErrors, TrainErrorPercentage, 100 - TrainErrorPercentage);
+                                    ProgressText = string.Format(stringTraining + " L2 Penalty:\t\t{7:0.#######}" + nwl + " Dropout:\t\t   {8}" + nwl + CutMixToString(CutMix) + "{9}" + nwl + " Auto Augment:\t  {10}" + nwl + " Horizontal Flip:   {11}" + nwl + " Vertical Flip:\t {12}" + nwl + " Color Cast:\t\t{13}" + nwl + " Distortion:\t\t{14}" + nwl + " Loss:\t\t\t  {15:N7}" + nwl + " Errors:\t\t\t{16:G}" + nwl + " Error:\t\t\t {17:N2} %" + nwl + " Accuracy:\t\t  {18:N2} %", SampleIndex, Cycle, TotalCycles, Epoch, TotalEpochs, Model.BatchSize, Rate, L2Penalty, FloatToString(Dropout), FloatToString(Cutout), FloatToString(AutoAugment), BoolToString(HorizontalFlip), BoolToString(VerticalFlip), FloatToString(ColorCast), FloatToString(Distortion), AvgTrainLoss, TrainErrors, TrainErrorPercentage, 100 - TrainErrorPercentage);
                                     break;
 
                                 case DNNOptimizers.NAG:
                                 case DNNOptimizers.SGDMomentum:
                                 case DNNOptimizers.SGDW:
-                                    sb.AppendFormat(" Sample:\t\t\t{0:G}\n Cycle:\t\t\t {1}/{2}\n Epoch:\t\t\t {3}/{4}\n Batch Size:\t\t{5:G}\n Rate:\t\t\t  {6:0.#######}\n Momentum:\t\t  {7:0.#######}\n L2 Penalty:\t\t{8:0.#######}\n Dropout:\t\t   " + (Dropout > 0 ? Dropout.ToString() + "\n" : "No\n") + (CutMix ? " CutMix:\t\t\t" : " Cutout:\t\t\t") + (Cutout > 0 ? Cutout.ToString() + "\n" : "No\n") + " Auto Augment:\t  " + (AutoAugment > 0 ? AutoAugment.ToString() + "\n" : "No\n") + (HorizontalFlip ? " Horizontal Flip:   Yes\n" : " Horizontal Flip:\tNo\n") + (VerticalFlip ? " Vertical Flip:   Yes\n" : " Vertical Flip:\t No\n") + " Color Cast:\t\t" + (ColorCast > 0u ? ColorCast.ToString() + "\n" : "No\n") + " Distortion:\t\t" + (Model.Distortion > 0 ? Distortion.ToString() + "\n" : "No\n") + " Loss:\t\t\t  {9:N7}\n Errors:\t\t\t{10:G}\n Error:\t\t\t {11:N2} %\n Accuracy:\t\t  {12:N2} %", SampleIndex, Cycle, TotalCycles, Epoch, TotalEpochs, Model.BatchSize, Rate, Momentum, L2Penalty, AvgTrainLoss, TrainErrors, TrainErrorPercentage, 100 - TrainErrorPercentage);
+                                    ProgressText = string.Format(stringTraining + " Momentum:\t\t  {7:0.#######}" + nwl + " L2 Penalty:\t\t{8:0.#######}" + nwl + " Dropout:\t\t   {9}" + nwl + CutMixToString(CutMix) + "{10}" + nwl + " Auto Augment:\t  {11}" + nwl + " Horizontal Flip:   {12}" + nwl + " Vertical Flip:\t {13}" + nwl + " Color Cast:\t\t{14}" + nwl + " Distortion:\t\t{15}" + nwl + " Loss:\t\t\t  {16:N7}" + nwl + " Errors:\t\t\t{17:G}" + nwl + " Error:\t\t\t {18:N2} %" + nwl + " Accuracy:\t\t  {19:N2} %", SampleIndex, Cycle, TotalCycles, Epoch, TotalEpochs, Model.BatchSize, Rate, Momentum, L2Penalty, FloatToString(Dropout), FloatToString(Cutout), FloatToString(AutoAugment), BoolToString(HorizontalFlip), BoolToString(VerticalFlip), FloatToString(ColorCast), FloatToString(Distortion), AvgTrainLoss, TrainErrors, TrainErrorPercentage, 100 - TrainErrorPercentage);
                                     break;
                             }
-                            sb.Append("</Span>");
                         }
                         break;
 
                     case DNNStates.Testing:
                         {
                             if (Model != null)
-                            {
-                                sb.Append("<Span><Bold>Testing</Bold></Span><LineBreak/>");
-                                sb.Append("<Span>");
-                                sb.AppendFormat(" Sample:\t\t\t{0:G}\n Cycle:\t\t\t {1}/{2}\n Epoch:\t\t\t {3}/{4}\n Batch Size:\t\t{5:G}\n Loss:\t\t\t  {6:N7}\n Errors:\t\t\t{7:G}\n Error:\t\t\t {8:N2} %\n Accuracy:\t\t  {9:N2} %", SampleIndex, Cycle, TotalCycles, Epoch, TotalEpochs, Model.BatchSize, AvgTestLoss, TestErrors, TestErrorPercentage, (Float)100 - TestErrorPercentage);
-                                sb.Append("</Span>");
-                            }
+                                ProgressText = string.Format(stringTesting, SampleIndex, Cycle, TotalCycles, Epoch, TotalEpochs, Model.BatchSize, AvgTestLoss, TestErrors, TestErrorPercentage, 100 - TestErrorPercentage);
                         }
                         break;
 
                     case DNNStates.SaveWeights:
-                        sb.Append("<Span><Bold>Saving weights</Bold></Span>");
+                        ProgressText = "Saving weights" + nwl;
                         break;
 
                     case DNNStates.Completed:
@@ -644,7 +672,6 @@ namespace Convnet.PageViewModels
                         }
                         break;
                 }
-                ProgressText = sb.ToString();
             });
         }
 
@@ -667,18 +694,18 @@ namespace Convnet.PageViewModels
 
                 //layersComboBox.ItemTemplate = GetLockTemplate();
 
-                int index = layersComboBox.SelectedIndex;
-                if (index > 0)
-                {
-                    layersComboBox.SelectedIndex = index - 1;
-                    layersComboBox.SelectedIndex = index;
-                }
-                else
-                    if (Model?.LayerCount > (ulong)(index + 1))
-                {
-                    layersComboBox.SelectedIndex = index + 1;
-                    layersComboBox.SelectedIndex = index;
-                }
+                //int index = layersComboBox.SelectedIndex;
+                //if (index > 0)
+                //{
+                //    layersComboBox.SelectedIndex = index - 1;
+                //    layersComboBox.SelectedIndex = index;
+                //}
+                //else
+                //    if (Model?.LayerCount > (ulong)(index + 1))
+                //{
+                //    layersComboBox.SelectedIndex = index + 1;
+                //    layersComboBox.SelectedIndex = index;
+                //}
             }
         }
 
@@ -776,7 +803,7 @@ namespace Convnet.PageViewModels
             if (Model != null)
                 Model.BlockSize = (ulong)temp;
 
-            Dispatcher.UIThread.Post(() =>
+            Dispatcher.UIThread.Invoke(() =>
             {
                 if (Model != null && layersComboBox.SelectedIndex >= 0)
                 {
@@ -830,7 +857,7 @@ namespace Convnet.PageViewModels
 
         public void RefreshTrainingPlot()
         {
-            Dispatcher.UIThread.Post(() =>
+            Dispatcher.UIThread.Invoke(() =>
             {
                 PointsTrain.Clear();
                 PointsTest.Clear();
@@ -888,63 +915,66 @@ namespace Convnet.PageViewModels
 
                 plotModel?.InvalidatePlot(true);
                 //this.RaisePropertyChanged(nameof(PlotModel));
-            });
+            }, DispatcherPriority.Render);
         }
 
         private void InitializeTrainingPlot()
         {
-            plotModel = new PlotModel();
-            var laLeft = new LinearAxis
+            Dispatcher.UIThread.Invoke(() =>
             {
-                Title = "",
-                Position = AxisPosition.Left,
-                MajorGridlineStyle = LineStyle.Solid,
-                MinorGridlineStyle = LineStyle.Dot,
-                IsAxisVisible = true,
-                IsPanEnabled = false,
-                IsZoomEnabled = false               
-            };
-            var laBottomn = new LinearAxis
-            {
-                Title = "Epochs",
-                TitleFontSize = 14,
-                Position = AxisPosition.Bottom,
-                MajorGridlineStyle = LineStyle.Solid,
-                MinorGridlineStyle = LineStyle.Dot,
-                IsAxisVisible = true,
-                IsPanEnabled = false,
-                IsZoomEnabled = false
-            };
-            plotModel.Axes.Add(laLeft);
-            plotModel.Axes.Add(laBottomn);
-            pointsTrain = new ObservableCollection<DataPoint>();
-            pointsTest = new ObservableCollection<DataPoint>();
-            var lsTrain = new OxyPlot.Series.LineSeries
-            {
-                ItemsSource = PointsTrain,
-                Title = PointsTrainLabel,
-                Color = OxyColor.FromRgb(237, 125, 49)
-            };
-            var lsTest = new OxyPlot.Series.LineSeries
-            {
-                ItemsSource = PointsTest,
-                Title = PointsTestLabel,
-                Color = OxyColor.FromRgb(91, 155, 213)
-            };
-            plotModel.Series.Add(lsTrain);
-            plotModel.Series.Add(lsTest);
-            var legend = new Legend();
-            legend.LegendFont = "Consolas";
-            legend.LegendPosition = CurrentLegendPosition;
-            legend.LegendTitleFontSize = 16;
-            legend.LegendFontSize = 16;
-            legend.LegendPosition = LegendPosition.RightBottom;
-            plotModel.Legends.Add(legend);
-            plotModel.TextColor = OxyColor.FromRgb(255, 255, 255);
-            //this.RaisePropertyChanged(nameof(PlotModel));
+                plotModel = new PlotModel();
+                var laLeft = new LinearAxis
+                {
+                    Title = "",
+                    Position = AxisPosition.Left,
+                    MajorGridlineStyle = LineStyle.Solid,
+                    MinorGridlineStyle = LineStyle.Dot,
+                    IsAxisVisible = true,
+                    IsPanEnabled = false,
+                    IsZoomEnabled = false
+                };
+                var laBottomn = new LinearAxis
+                {
+                    Title = "Epochs",
+                    TitleFontSize = 14,
+                    Position = AxisPosition.Bottom,
+                    MajorGridlineStyle = LineStyle.Solid,
+                    MinorGridlineStyle = LineStyle.Dot,
+                    IsAxisVisible = true,
+                    IsPanEnabled = false,
+                    IsZoomEnabled = false
+                };
+                plotModel.Axes.Add(laLeft);
+                plotModel.Axes.Add(laBottomn);
+                pointsTrain = new ObservableCollection<DataPoint>();
+                pointsTest = new ObservableCollection<DataPoint>();
+                var lsTrain = new OxyPlot.Series.LineSeries
+                {
+                    ItemsSource = PointsTrain,
+                    Title = PointsTrainLabel,
+                    Color = OxyColor.FromRgb(237, 125, 49)
+                };
+                var lsTest = new OxyPlot.Series.LineSeries
+                {
+                    ItemsSource = PointsTest,
+                    Title = PointsTestLabel,
+                    Color = OxyColor.FromRgb(91, 155, 213)
+                };
+                plotModel.Series.Add(lsTrain);
+                plotModel.Series.Add(lsTest);
+                var legend = new Legend();
+                legend.LegendFont = "Consolas";
+                legend.LegendPosition = CurrentLegendPosition;
+                legend.LegendTitleFontSize = 16;
+                legend.LegendFontSize = 16;
+                legend.LegendPosition = LegendPosition.RightBottom;
+                plotModel.Legends.Add(legend);
+                plotModel.TextColor = OxyColor.FromRgb(255, 255, 255);
+                //this.RaisePropertyChanged(nameof(PlotModel));
+            }, DispatcherPriority.Render);
         }
 
-        public PlotModel? PlotModel
+        public PlotModel PlotModel
         {
             get => plotModel;
             set => this.RaiseAndSetIfChanged(ref plotModel, value);
@@ -1202,23 +1232,20 @@ namespace Convnet.PageViewModels
 
         public override string DisplayName => "Train";
 
-        public int? RefreshRate
+        public int RefreshRate
         {
             get => refreshRate;
             set
             {
-                if (value.HasValue && value.Value == refreshRate)
+                if (value == refreshRate)
                     return;
 
                 this.RaiseAndSetIfChanged(ref refreshRate, value);
 
-                if (refreshRate != null)
-                {
-                    Settings.Default.RefreshInterval = refreshRate.Value;
-                    Settings.Default.Save();
-                    EventHandler<int?> handler = RefreshRateChanged;
-                    handler.Invoke(this, refreshRate);
-                }
+                Settings.Default.RefreshInterval = refreshRate;
+                Settings.Default.Save();
+                EventHandler<int> handler = RefreshRateChanged;
+                handler.Invoke(this, refreshRate);
             }
         }
 
@@ -1330,7 +1357,7 @@ namespace Convnet.PageViewModels
                         CommandToolBar[8].IsVisible = false;
                     }
                 }
-            });
+            }, DispatcherPriority.Normal);
         }
 
         private async void StopButtonClick(object? sender, RoutedEventArgs e)
@@ -1395,7 +1422,7 @@ namespace Convnet.PageViewModels
                     CommandToolBar[7].IsVisible = true;
                     CommandToolBar[8].IsVisible = false;
                 }
-            });
+            }, DispatcherPriority.Normal);
         }
 
         private void OpenButtonClick(object? sender, RoutedEventArgs e)
@@ -1706,138 +1733,104 @@ namespace Convnet.PageViewModels
                         CommandToolBar[20].IsVisible = Model.Layers[index].Lockable;
                         CommandToolBar[21].IsVisible = Model.Layers[index].Lockable && Model.TaskState == DNNTaskStates.Stopped;
 
-                        var sb = new StringBuilder();
-
-                        sb.Append("<Span Foreground=\"White\"><Bold>Layer</Bold></Span><LineBreak/><Span>" + Model.Layers[index]?.Description + "</Span><LineBreak/>");
+                        sb.Length = 0;
+                        sb.Append(stringLayer + Model.Layers[index].Description + nwl);
                         if (Settings.Default.Timings)
                         {
                             if (Model.State == DNNStates.Training)
                             {
-                                sb.Append("<Span Foreground=\"White\"><Bold>Timings</Bold></Span><LineBreak/>");
-                                sb.Append("<Span>");
-                                sb.AppendFormat(" fprop:  \t\t{0:D}/{1:D} ms", (int)Model.Layers[index].FPropLayerTime, (int)Model.fpropTime);
-                                sb.Append("</Span><LineBreak/>");
-                                sb.Append("<Span>");
-                                sb.AppendFormat(" bprop:  \t\t{0:D}/{1:D} ms", (int)Model.Layers[index].BPropLayerTime, (int)Model.bpropTime);
-                                sb.Append("</Span><LineBreak/>");
-
+                                sb.Append(stringTimings);
+                                sb.AppendFormat(stringFprop + nwl, (int)Model.Layers[index].FPropLayerTime, (int)Model.fpropTime);
+                                sb.AppendFormat(stringBprop, (int)Model.Layers[index].BPropLayerTime, (int)Model.bpropTime);
+                               
                                 if (ShowWeightsSnapshot)
-                                {
-                                    sb.Append("<Span>");
-                                    sb.AppendFormat(" update: \t\t{0:D}/{1:D} ms", (int)Model.Layers[index].UpdateLayerTime, (int)Model.updateTime);
-                                    sb.Append("</Span>");
-                                }
+                                    sb.AppendFormat(stringUpdate, (int)Model.Layers[index].UpdateLayerTime, (int)Model.updateTime);
                             }
                             else if (Model.State == DNNStates.Testing)
                             {
-                                sb.Append("<Span Foreground=\"White\"><Bold>Timings</Bold></Span><LineBreak/>");
-                                sb.Append("<Span>");
-                                sb.AppendFormat(" fprop:  \t\t{0:D}/{1:D} ms", (int)Model.Layers[index].FPropLayerTime, (int)Model.fpropTime);
-                                sb.Append("</Span>");
+                                sb.Append(stringTimings);
+                                sb.AppendFormat(stringFprop, (int)Model.Layers[index].FPropLayerTime, (int)Model.fpropTime);
                             }
                         }
                         LayerInfo = sb.ToString();
 
                         sb.Length = 0;
-
-                        sb.Append("<Span Foreground=\"White\"><Bold>Neurons</Bold></Span><LineBreak/>");
-                        sb.Append("<Span>");
-                        if (Model.Layers[index].NeuronsStats?.StdDev >= 0.0f)
-                            sb.AppendFormat(" Std:     {0:N8}", Model.Layers[index].NeuronsStats?.StdDev);
+                        sb.Append(stringNeurons);
+                        if (Model.Layers[index].NeuronsStats.StdDev >= 0.0f)
+                            sb.AppendFormat(stringStdDevPositive, Model.Layers[index].NeuronsStats.StdDev);
                         else
-                            sb.AppendFormat(" Std:    {0:N8}", Model.Layers[index].NeuronsStats?.StdDev);
-                        sb.Append("</Span><LineBreak/>");
-
-                        sb.Append("<Span>");
-                        if (Model.Layers[index].NeuronsStats?.Mean >= 0.0f)
-                            sb.AppendFormat(" Mean:    {0:N8}", Model.Layers[index].NeuronsStats?.Mean);
+                            sb.AppendFormat(stringStdDevNegative, Model.Layers[index].NeuronsStats.StdDev);
+                       
+                        if (Model.Layers[index].NeuronsStats.Mean >= 0.0f)
+                            sb.AppendFormat(stringMeanPositive, Model.Layers[index].NeuronsStats.Mean);
                         else
-                            sb.AppendFormat(" Mean:   {0:N8}", Model.Layers[index].NeuronsStats?.Mean);
-                        sb.Append("</Span><LineBreak/>");
-
-                        sb.Append("<Span>");
-                        if (Model.Layers[index].NeuronsStats?.Min >= 0.0f)
-                            sb.AppendFormat(" Min:     {0:N8}", Model.Layers[index].NeuronsStats?.Min);
+                            sb.AppendFormat(stringMeanNegative, Model.Layers[index].NeuronsStats.Mean);
+                       
+                        if (Model.Layers[index].NeuronsStats.Min >= 0.0f)
+                            sb.AppendFormat(stringMminPositive, Model.Layers[index].NeuronsStats.Min);
                         else
-                            sb.AppendFormat(" Min:    {0:N8}", Model.Layers[index].NeuronsStats?.Min);
-                        sb.Append("</Span><LineBreak/>");
-
-                        sb.Append("<Span>");
-                        if (Model.Layers[index].NeuronsStats?.Max >= 0.0f)
-                            sb.AppendFormat(" Max:     {0:N8}", Model.Layers[index].NeuronsStats?.Max);
+                            sb.AppendFormat(stringMinNegative, Model.Layers[index].NeuronsStats.Min);
+                      
+                        if (Model.Layers[index].NeuronsStats.Max >= 0.0f)
+                            sb.AppendFormat(stringMaxPositive, Model.Layers[index].NeuronsStats.Max);
                         else
-                            sb.AppendFormat(" Max:    {0:N8}", Model.Layers[index].NeuronsStats?.Max);
-                        sb.Append("</Span><LineBreak/>");
-
+                            sb.AppendFormat(stringMaxNegative, Model.Layers[index].NeuronsStats.Max);
+                                                
                         if (ShowWeightsSnapshot)
                         {
                             WeightsSnapshotX = Model.Layers[index].WeightsSnapshotX;
                             WeightsSnapshotY = Model.Layers[index].WeightsSnapshotY;
                             WeightsSnapshot = Model.Layers[index].WeightsSnapshot;
 
-                            sb.Append("<Span Foreground=\"White\"><Bold>Weights</Bold></Span><LineBreak/>");
-                            sb.Append("<Span>");
-                            if (Model.Layers[index].WeightsStats?.StdDev >= 0.0f)
-                                sb.AppendFormat(" Std:     {0:N8}", Model.Layers[index].WeightsStats?.StdDev);
+                            sb.Append(stringWeights);
+                           
+                            if (Model.Layers[index].WeightsStats.StdDev >= 0.0f)
+                                sb.AppendFormat(stringStdDevPositive, Model.Layers[index].WeightsStats.StdDev);
                             else
-                                sb.AppendFormat(" Std:    {0:N8}", Model.Layers[index].WeightsStats?.StdDev);
-                            sb.Append("</Span><LineBreak/>");
-
-                            sb.Append("<Span>");
-                            if (Model.Layers[index].WeightsStats?.Mean >= 0.0f)
-                                sb.AppendFormat(" Mean:    {0:N8}", Model.Layers[index].WeightsStats?.Mean);
+                                sb.AppendFormat(stringStdDevNegative, Model.Layers[index].WeightsStats.StdDev);
+                           
+                            if (Model.Layers[index].WeightsStats.Mean >= 0.0f)
+                                sb.AppendFormat(stringMeanPositive, Model.Layers[index].WeightsStats.Mean);
                             else
-                                sb.AppendFormat(" Mean:   {0:N8}", Model.Layers[index].WeightsStats?.Mean);
-                            sb.Append("</Span><LineBreak/>");
-
-                            sb.Append("<Span>");
-                            if (Model.Layers[index].WeightsStats?.Min >= 0.0f)
-                                sb.AppendFormat(" Min:     {0:N8}", Model.Layers[index].WeightsStats?.Min);
+                                sb.AppendFormat(stringMeanNegative, Model.Layers[index].WeightsStats.Mean);
+                           
+                            if (Model.Layers[index].WeightsStats.Min >= 0.0f)
+                                sb.AppendFormat(stringMminPositive, Model.Layers[index].WeightsStats.Min);
                             else
-                                sb.AppendFormat(" Min:    {0:N8}", Model.Layers[index].WeightsStats?.Min);
-                            sb.Append("</Span><LineBreak/>");
-
-                            sb.Append("<Span>");
-                            if (Model.Layers[index].WeightsStats?.Max >= 0.0f)
-                                sb.AppendFormat(" Max:     {0:N8}", Model.Layers[index].WeightsStats?.Max);
+                                sb.AppendFormat(stringMinNegative, Model.Layers[index].WeightsStats.Min);
+                          
+                            if (Model.Layers[index].WeightsStats.Max >= 0.0f)
+                                sb.AppendFormat(stringMaxPositive, Model.Layers[index].WeightsStats.Max);
                             else
-                                sb.AppendFormat(" Max:    {0:N8}", Model.Layers[index].WeightsStats?.Max);
-                            sb.Append("</Span><LineBreak/>");
-
+                                sb.AppendFormat(stringMaxNegative, Model.Layers[index].WeightsStats.Max);
+                          
                             if (Model.Layers[index].HasBias)
                             {
-                                sb.Append("<Span Foreground=\"White\"><Bold>Biases</Bold></Span><LineBreak/>");
-                                sb.Append("<Span>");
-                                if (Model.Layers[index].BiasesStats?.StdDev >= 0.0f)
-                                    sb.AppendFormat(" Std:     {0:N8}", Model.Layers[index].BiasesStats?.StdDev);
+                                sb.Append(stringBiases);
+                            
+                                if (Model.Layers[index].BiasesStats.StdDev >= 0.0f)
+                                    sb.AppendFormat(stringStdDevPositive, Model.Layers[index].BiasesStats.StdDev);
                                 else
-                                    sb.AppendFormat(" Std:    {0:N8}", Model.Layers[index].BiasesStats?.StdDev);
-                                sb.Append("</Span><LineBreak/>");
-
-                                sb.Append("<Span>");
-                                if (Model.Layers[index].BiasesStats?.Mean >= 0.0f)
-                                    sb.AppendFormat(" Mean:    {0:N8}", Model.Layers[index].BiasesStats?.Mean);
+                                    sb.AppendFormat(stringStdDevNegative, Model.Layers[index].BiasesStats.StdDev);
+                               
+                                if (Model.Layers[index].BiasesStats.Mean >= 0.0f)
+                                    sb.AppendFormat(stringMeanPositive, Model.Layers[index].BiasesStats.Mean);
                                 else
-                                    sb.AppendFormat(" Mean:   {0:N8}", Model.Layers[index].BiasesStats?.Mean);
-                                sb.Append("</Span><LineBreak/>");
-
-                                sb.Append("<Span>");
-                                if (Model.Layers[index].BiasesStats?.Min >= 0.0f)
-                                    sb.AppendFormat(" Min:     {0:N8}", Model.Layers[index].BiasesStats?.Min);
+                                    sb.AppendFormat(stringMeanNegative, Model.Layers[index].BiasesStats.Mean);
+                                
+                                if (Model.Layers[index].BiasesStats.Min >= 0.0f)
+                                    sb.AppendFormat(stringMminPositive, Model.Layers[index].BiasesStats.Min);
                                 else
-                                    sb.AppendFormat(" Min:    {0:N8}", Model.Layers[index].BiasesStats?.Min);
-                                sb.Append("</Span><LineBreak/>");
-
-                                sb.Append("<Span>");
-                                if (Model.Layers[index].BiasesStats?.Max >= 0.0f)
-                                    sb.AppendFormat(" Max:     {0:N8}", Model.Layers[index].BiasesStats?.Max);
+                                    sb.AppendFormat(stringMinNegative, Model.Layers[index].BiasesStats.Min);
+                                
+                                if (Model.Layers[index].BiasesStats.Max >= 0.0f)
+                                    sb.AppendFormat(stringMaxPositive, Model.Layers[index].BiasesStats.Max);
                                 else
-                                    sb.AppendFormat(" Max:    {0:N8}", Model.Layers[index].BiasesStats?.Max);
-                                sb.Append("</Span><LineBreak/>");
+                                    sb.AppendFormat(stringMaxNegative, Model.Layers[index].BiasesStats.Max);
                             }
                         }
                         WeightsMinMax = sb.ToString();
-
+                                               
                         if (e != null)
                             e.Handled = true;
                     }
