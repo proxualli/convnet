@@ -3027,9 +3027,9 @@ namespace Interop
             }
         }
 
-        public FontWeight HasWeights
+        public bool HasWeights
         {
-            get { return WeightCount > 0 ? FontWeight.UltraBlack : FontWeight.Normal; }
+            get { return WeightCount > 0; }
         }
 
         public UInt BiasCount
