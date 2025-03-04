@@ -121,10 +121,10 @@
 	<PackageReference Include="Microsoft.Build.Tasks.Core" Version="17.13.9" ExcludeAssets="runtime" />
 	<PackageReference Include="Microsoft.Build.Locator" Version="1.7.8" />
 	<PackageReference Include="Microsoft.NET.StringTools" Version="17.13.9" />
-	<PackageReference Include="NuGet.Frameworks" Version="6.13.1" />
-	<PackageReference Include="NuGet.ProjectModel" Version="6.13.1" />
-	<PackageReference Include="NuGet.Protocol" Version="6.13.1" />
-	<PackageReference Include="NuGet.Resolver" Version="6.13.1" />
+	<PackageReference Include="NuGet.Frameworks" Version="6.13.2" />
+	<PackageReference Include="NuGet.ProjectModel" Version="6.13.2" />
+	<PackageReference Include="NuGet.Protocol" Version="6.13.2" />
+	<PackageReference Include="NuGet.Resolver" Version="6.13.2" />
 	<PackageReference Include="System.Formats.Asn1" Version="9.0.2" />
 	<PackageReference Include="System.Security.Cryptography.Pkcs" Version="9.0.2" />
 	<PackageReference Include="System.Security.Cryptography.Xml" Version="9.0.2" />
