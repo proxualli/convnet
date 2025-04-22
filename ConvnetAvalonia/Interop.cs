@@ -45,11 +45,12 @@ namespace Interop
         AdamW = 7,
         AmsBound = 8,
         AmsBoundW = 9,
-        NAG = 10,
-        RMSProp = 11,
-        SGD = 12,
-        SGDMomentum = 13,
-        SGDW = 14
+        DiffGrad = 10,
+        NAG = 11,
+        RMSProp = 12,
+        SGD = 13,
+        SGDMomentum = 14,
+        SGDW = 15
     };
 
     public enum Costs
@@ -662,11 +663,12 @@ namespace Interop
         AdamW = 7,
         AmsBound = 8,
         AmsBoundW = 9,
-        NAG = 10,
-        RMSProp = 11,
-        SGD = 12,
-        SGDMomentum = 13,
-        SGDW = 14
+        DiffGrad = 10,
+        NAG = 11,
+        RMSProp = 12,
+        SGD = 13,
+        SGDMomentum = 14,
+        SGDW = 15
     };
 
     [Serializable()]
