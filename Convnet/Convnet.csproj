@@ -116,21 +116,21 @@
   </ItemGroup>
  
   <ItemGroup>
-	<PackageReference Include="Microsoft.Build" Version="17.13.9" ExcludeAssets="runtime" />
-	<PackageReference Include="Microsoft.Build.Utilities.Core" Version="17.13.9" ExcludeAssets="runtime" />
-	<PackageReference Include="Microsoft.Build.Tasks.Core" Version="17.13.9" ExcludeAssets="runtime" />
+	<PackageReference Include="Microsoft.Build" Version="17.14.8" ExcludeAssets="runtime" />
+	<PackageReference Include="Microsoft.Build.Utilities.Core" Version="17.14.8" ExcludeAssets="runtime" />
+	<PackageReference Include="Microsoft.Build.Tasks.Core" Version="17.14.8" ExcludeAssets="runtime" />
 	<PackageReference Include="Microsoft.Build.Locator" Version="1.9.1" />
-	<PackageReference Include="Microsoft.NET.StringTools" Version="17.13.9" />
-	<PackageReference Include="NuGet.Frameworks" Version="6.13.2" />
-	<PackageReference Include="NuGet.ProjectModel" Version="6.13.2" />
-	<PackageReference Include="NuGet.Protocol" Version="6.13.2" />
-	<PackageReference Include="NuGet.Resolver" Version="6.13.2" />
-	<PackageReference Include="System.Formats.Asn1" Version="9.0.4" />
-	<PackageReference Include="System.Security.Cryptography.Pkcs" Version="9.0.4" />
-	<PackageReference Include="System.Security.Cryptography.Xml" Version="9.0.4" />
-	<PackageReference Include="System.Text.Json" Version="9.0.4" />
+	<PackageReference Include="Microsoft.NET.StringTools" Version="17.14.8" />
+	<PackageReference Include="NuGet.Frameworks" Version="6.14.0" />
+	<PackageReference Include="NuGet.ProjectModel" Version="6.14.0" />
+	<PackageReference Include="NuGet.Protocol" Version="6.14.0" />
+	<PackageReference Include="NuGet.Resolver" Version="6.14.0" />
+	<PackageReference Include="System.Formats.Asn1" Version="9.0.5" />
+	<PackageReference Include="System.Security.Cryptography.Pkcs" Version="9.0.5" />
+	<PackageReference Include="System.Security.Cryptography.Xml" Version="9.0.5" />
+	<PackageReference Include="System.Text.Json" Version="9.0.5" />
 	<PackageReference Include="Microsoft.NET.HostModel" Version="3.1.16" />
-	<PackageReference Include="Microsoft.Extensions.DependencyModel" Version="9.0.4" />
+	<PackageReference Include="Microsoft.Extensions.DependencyModel" Version="9.0.5" />
 	<PackageReference Include="Microsoft.DotNet.PlatformAbstractions" Version="3.1.6" />
 	<PackageReference Include="AvalonEdit" Version="6.3.1.120" />
    	<PackageReference Include="CsvHelper" Version="33.0.1" />
@@ -138,7 +138,7 @@
 	<PackageReference Include="OxyPlot.Wpf" Version="2.2.0" />
 	<PackageReference Include="DotNetProjects.Extended.Wpf.Toolkit" Version="5.0.124" />
 	<PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="6.1.2" />
-	<PackageReference Include="Microsoft.VisualStudio.Setup.Configuration.Interop" Version="3.13.2069">
+	<PackageReference Include="Microsoft.VisualStudio.Setup.Configuration.Interop" Version="3.14.2075">
 	  <PrivateAssets>all</PrivateAssets>
 	  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 	</PackageReference>
