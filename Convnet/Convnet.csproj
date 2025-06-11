@@ -125,12 +125,12 @@
 	<PackageReference Include="NuGet.ProjectModel" Version="6.14.0" />
 	<PackageReference Include="NuGet.Protocol" Version="6.14.0" />
 	<PackageReference Include="NuGet.Resolver" Version="6.14.0" />
-	<PackageReference Include="System.Formats.Asn1" Version="9.0.5" />
-	<PackageReference Include="System.Security.Cryptography.Pkcs" Version="9.0.5" />
-	<PackageReference Include="System.Security.Cryptography.Xml" Version="9.0.5" />
-	<PackageReference Include="System.Text.Json" Version="9.0.5" />
+	<PackageReference Include="System.Formats.Asn1" Version="9.0.6" />
+	<PackageReference Include="System.Security.Cryptography.Pkcs" Version="9.0.6" />
+	<PackageReference Include="System.Security.Cryptography.Xml" Version="9.0.6" />
+	<PackageReference Include="System.Text.Json" Version="9.0.6" />
 	<PackageReference Include="Microsoft.NET.HostModel" Version="3.1.16" />
-	<PackageReference Include="Microsoft.Extensions.DependencyModel" Version="9.0.5" />
+	<PackageReference Include="Microsoft.Extensions.DependencyModel" Version="9.0.6" />
 	<PackageReference Include="Microsoft.DotNet.PlatformAbstractions" Version="3.1.6" />
 	<PackageReference Include="AvalonEdit" Version="6.3.1.120" />
    	<PackageReference Include="CsvHelper" Version="33.1.0" />
